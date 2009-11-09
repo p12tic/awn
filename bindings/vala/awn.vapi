@@ -154,6 +154,7 @@ namespace Awn {
 		public Dialog.for_widget (Gtk.Widget widget);
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Dialog.for_widget_with_applet (Gtk.Widget widget, Awn.Applet applet);
+		public unowned Gtk.Widget get_content_area ();
 		public void set_padding (int padding);
 		[NoAccessorMethod]
 		public Gtk.Widget anchor { set; }

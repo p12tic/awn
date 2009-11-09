@@ -233,6 +233,12 @@
   )
 )
 
+(define-method get_content_area
+  (c-name "awn_dialog_get_content_area")
+  (of-object "AwnDialog")
+  (return-type "GtkWidget*")
+)
+
 ;; From awn-alignment.h
 
 (define-function alignment_new_for_applet

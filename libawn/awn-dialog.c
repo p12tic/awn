@@ -699,8 +699,7 @@ awn_dialog_add(GtkContainer *dialog, GtkWidget *widget)
 {
   AwnDialogPrivate *priv;
 
-  g_return_if_fail (AWN_IS_DIALOG (dialog));
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (AWN_IS_DIALOG (dialog) && GTK_IS_WIDGET (widget));
   priv = AWN_DIALOG (dialog)->priv;
 
   gtk_box_pack_start (GTK_BOX (priv->vbox), widget, TRUE, TRUE, 0);
@@ -1345,6 +1344,16 @@ _applet_on_size_changed (AwnDialog *dialog)
   AwnDialogPrivate *priv = dialog->priv;
 
   awn_dialog_set_offset (dialog, priv->window_offset_pub);
+}
+
+GtkWidget*
+awn_dialog_get_content_area (AwnDialog *dialog)
+{
+  g_return_val_if_fail (AWN_IS_DIALOG (dialog), NULL);
+
+  AwnDialogPrivate *priv = dialog->priv;
+
+  return priv->vbox;
 }
 
 static void

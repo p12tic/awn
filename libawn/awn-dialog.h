@@ -77,6 +77,8 @@ GtkWidget* awn_dialog_new_for_widget_with_applet (GtkWidget *widget,
 
 void       awn_dialog_set_padding (AwnDialog *dialog, gint padding);
 
+GtkWidget* awn_dialog_get_content_area (AwnDialog *dialog);
+
 G_END_DECLS
 
 #endif

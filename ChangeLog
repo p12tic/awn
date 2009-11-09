@@ -1,3 +1,13 @@
+2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	Added AwnDialog.get_content_area() method. Fixes issues with removing
+	widgets from the dialog.
+
 2009-11-09  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

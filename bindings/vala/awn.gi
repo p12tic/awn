@@ -648,6 +648,13 @@
 				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
 			</implements>
+			<method name="get_content_area" symbol="awn_dialog_get_content_area">
+				<return-type type="GtkWidget*"/>
+				<parameters>
+					<parameter name="dialog" type="AwnDialog*"/>
+				</parameters>
+			</method>
+
 			<constructor name="new" symbol="awn_dialog_new">
 				<return-type type="GtkWidget*"/>
 			</constructor>
