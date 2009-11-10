@@ -2276,7 +2276,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="grouping_config">
-                    <property name="label" translatable="yes">Group Common Windows</property>
+                    <property name="label" translatable="yes">Group common windows</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -2293,7 +2293,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="only_launchers_config">
-                    <property name="label" translatable="yes">Display Launchers Only</property>
+                    <property name="label" translatable="yes">Display launchers only</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -2308,7 +2308,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="tm_drag_drop">
-                    <property name="label" translatable="yes">Drag and Drop Reordering</property>
+                    <property name="label" translatable="yes">Drag and drop reordering</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
@@ -2323,7 +2323,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="tm_long_press">
-                    <property name="label" translatable="yes">Enable Long Press</property>
+                    <property name="label" translatable="yes">Show dialog after long press</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>

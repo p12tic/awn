@@ -523,7 +523,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         
         if not os.path.isdir(defs.HOME_THEME_DIR):
             os.mkdir(defs.HOME_THEME_DIR)
-			
+				
         self.wTree = wTree
         self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
         self.view_themes_scroll = self.wTree.get_object("list_themes_scroll")
@@ -624,10 +624,6 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 
 		filename = "".join([x for x in name if x.isalpha() or x.isdigit()])
 		
-		tmpdir = tempfile.gettempdir()
-		self.themefile = os.path.join(tmpdir, filename+'.awn-theme')
-		
-		'''
 		fc = gtk.FileChooserDialog(title='Save Theme...',
                                    parent=None,
                                    action=gtk.FILE_CHOOSER_ACTION_SAVE,
@@ -642,27 +638,39 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 		response = fc.run()
 		if response == gtk.RESPONSE_OK:
 			result = fc.get_filename()
-			f = open(self.themefile, "w")
+			
+			tmpdir = tempfile.gettempdir()
+			themedir = os.path.join(tmpdir, filename)
+			os.mkdir(themedir)
+			themefile = os.path.join(themedir, filename+'.awn-theme')			
+			
+			f = open(themefile, "w")
 			config.write(f)
 			f.close()	
 			
-			self.tarpath = os.path.join(tmpdir, filename+'.tgz')
-			tFile = tarfile.open(self.tarpath, "w:gz")
-			tFile.add(self.themefile, os.path.basename(self.themefile))
-
 			arrow_path = self.client.get_string(defs.EFFECTS, defs.ARROW_ICON)
 			if os.path.exists(arrow_path):
-				tFile.add(arrow_path, os.path.basename(arrow_path))		
+				shutil.copy(arrow_path, themedir)
+								
+			tarpath = os.path.join(tmpdir, filename+'.tgz')
+			tFile = tarfile.open(tarpath, "w:gz")
+			tFile.add(themedir, os.path.basename(themedir))
 
 			tFile.close()
 		
-			shutil.move(self.tarpath, result)
-			os.remove(self.themefile)
+			shutil.move(tarpath, result)
+			shutil.rmtree(themedir)
 		fc.destroy()
-		'''
 		
 		self.hide_export_dialog(None)
-				
+		
+    def get_dock_image(self):
+        fx = os.popen("xwininfo -name 'avant-window-navigator'")
+        for line in fx.readlines():
+			if line.find('Window id') > -1:
+				#print long(line.split(' ')[3], 16)
+				break
+							
     def show_export_dialog(self, widget):
 		fullname = pwd.getpwnam(os.environ['USER'])[4]
 		if not fullname: fullname = os.environ['USER']
@@ -786,7 +794,9 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         selection = self.treeview_themes.get_selection()
         (model, iter) = selection.get_selected()
         if iter is not None:
-            os.remove(model.get_value(iter, 2))
+            themedir = os.path.dirname(model.get_value(iter, 2))
+            if os.path.isdir(themedir):
+				shutil.rmtree(themedir)
             model.remove(iter)
             self.delete_theme.set_sensitive(False)
             
@@ -813,21 +823,34 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         
         filter = gtk.FileFilter()
         filter.set_name("AWN Theme File")
-        #filter.add_pattern("*.tar.gz")
-        #filter.add_pattern("*.tgz")
+        filter.add_pattern("*.tar.gz")
+        filter.add_pattern("*.tgz")
         #filter.add_pattern("*.bz2")
-        filter.add_pattern("*.awn-theme")
+        #filter.add_pattern("*.awn-theme")
         dialog.add_filter(filter)
 
         response = dialog.run()
         if response == gtk.RESPONSE_OK:
             file = dialog.get_filename()
             dialog.destroy()
-            filesplit = os.path.splitext(os.path.basename(file))
-            t = time.time()
-            newpath = defs.HOME_THEME_DIR+'/'+filesplit[0]+'-'+str(t)+filesplit[1]
-            shutil.copyfile(file, newpath)
-            self.add_uris_to_model(self.treeview_themes.get_model(),[newpath])
+            
+            goodTheme = False
+            customArrow = False
+            if tarfile.is_tarfile(file):
+                tar = tarfile.open(file, "r:gz")
+                for member in tar.getmembers():
+                    if member.name.endswith(".awn-theme"):
+                        goodTheme = member.name
+                    elif member.name.endswith("arrow.png"):
+                        customArrow = member.name
+
+                if goodTheme:
+					tar.extractall(defs.HOME_THEME_DIR)
+					tar.close()
+					newpath = os.path.join(defs.HOME_THEME_DIR, goodTheme)
+					self.add_uris_to_model(self.treeview_themes.get_model(),[newpath])
+                if customArrow:
+                    pass
         else:
             dialog.destroy()
     
