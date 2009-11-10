@@ -2229,22 +2229,216 @@ task_manager_set_drag_and_drop (TaskManager *manager,
   }
 }
 
+/*
+static void
+task_manager_regroup_icon (TaskManager * manager,TaskIcon * icon)
+{
+
+}
+*/
+
+static void
+task_manager_regroup_launcher_icon (TaskManager * manager,TaskIcon * grouping_icon)
+{
+  g_assert (TASK_IS_ICON(grouping_icon));
+  g_assert (TASK_IS_MANAGER(manager));
+  
+  GSList * i;
+  GSList * j;
+  TaskManagerPrivate * priv = manager->priv;
+  GtkWidget * grouping_launcher = GTK_WIDGET(task_icon_get_launcher (grouping_icon));
+
+  g_assert (grouping_launcher);
+  for (i=priv->icons; i; i=i->next)
+  {
+    GtkWidget * launcher;
+    TaskIcon  * icon;
+    icon = i->data;
+    if (icon == grouping_icon)
+    {
+      continue;
+    }
+    launcher = GTK_WIDGET(task_icon_get_launcher (icon));
+    if (!launcher ) /* no launcher...  need to do matches on these eventually TODO */
+    {
+      continue;
+    }/* Is i an existing permanent launcher... if so then ignore.*/
+    else if ( task_icon_count_ephemeral_items (icon) == 0)
+    {
+      continue;
+    }
+    /*ok... non-permanent launcher check if the desktop file paths match.*/
+    if ( g_strcmp0 (task_launcher_get_desktop_path(TASK_LAUNCHER(grouping_launcher)),
+                    task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)) )==0)
+    {
+      for (j=task_icon_get_items(icon);j;j=j->next)
+      {
+        TaskItem * item = j->data;
+        if (TASK_IS_LAUNCHER(item))
+        {
+          continue;
+        }
+        task_icon_moving_item (grouping_icon,icon,item);
+        j = task_icon_get_items(icon);
+      }
+    }
+  }
+}
+
+static void
+task_manager_regroup (TaskManager * manager)
+{
+  GSList * i;
+
+  TaskManagerPrivate * priv = manager->priv;
+
+  /*
+   find the permanent Launchers and regroup them*/
+  for (i=priv->icons; i; i=i->next)
+  {
+    GtkWidget * launcher;
+    TaskIcon  * icon;
+    icon = i->data;
+    launcher = GTK_WIDGET(task_icon_get_launcher (icon));
+    if (launcher && (task_icon_count_ephemeral_items (icon) == 0) )
+    {
+      task_manager_regroup_launcher_icon (manager,icon);      
+    }
+  }
+
+  /* Find the ephemeral launchers and regroup them */
+  for (i=priv->icons; i; i=i->next)
+  {
+    GtkWidget * launcher;
+    TaskIcon  * icon;
+    icon = i->data;
+    launcher = GTK_WIDGET(task_icon_get_launcher (icon));
+    if (launcher && (task_icon_count_ephemeral_items (icon) != 0) )
+    {
+      task_manager_regroup_launcher_icon (manager,icon);      
+    }
+  }
+
+#if 0  
+  GSList * icons = task_manager_get_icons (TASK_MANAGER(priv->applet));
+  TaskItem * launcher;
+  const gchar * desktop_filename = NULL;
+  TaskIcon * permanent_launcher_icon = NULL;
+  GSList * iter;
+  
+  launcher = task_icon_get_launcher (icon);
+  if (launcher)
+  {
+    desktop_filename = task_launcher_get_desktop_path (TASK_LAUNCHER(launcher));
+  }
+  /*find the permanent launcher for that desktop file, if there is one*/
+  if (desktop_filename)
+  {
+    for (iter=icons; iter ; iter=iter->next)
+    {
+      TaskItem *l = task_icon_get_launcher (iter->data);
+      if (l)
+      {
+        if (g_strcmp0 (desktop_filename, task_launcher_get_desktop_path (TASK_LAUNCHER(l)))==0)
+        {
+          if (task_icon_count_ephemeral_items (iter->data) == 0)
+          {
+            permanent_launcher_icon = iter->data;
+            break;
+          }
+        }
+      }
+    }
+  }
+  /*
+   there is either no permanent launcher or icon is the permanent launcher icon*/
+  if ( !permanent_launcher_icon || (permanent_launcher_icon == icon) )
+  {
+    /*loop through the icons*/
+    for (iter=icons; iter ; iter=iter->next)
+    {
+      if (icon == iter->data)
+      {
+        continue;
+      }
+      TaskItem *l = task_icon_get_launcher (iter->data);
+      /* does it contain a launcher and is that launcher the same as icon*/
+      if (l)
+      {
+        if (g_strcmp0 (desktop_filename, task_launcher_get_desktop_path (TASK_LAUNCHER(l)))==0)
+        {
+          GSList * i;
+          GSList * items_to_move = task_icon_get_items(iter->data);
+          for (i=items_to_move;i;i=i->next)
+          {
+            TaskItem * item = i->data;
+            if (TASK_IS_LAUNCHER(item))
+            {
+              continue;
+            }
+            /*
+             toggling grouping on and off rather quickly is a problem...
+             TODO:  this bothers me.
+             */
+            if (TASK_ICON_GET_PRIVATE(iter->data)->main_item == item)
+            {
+              g_signal_handlers_disconnect_by_func(item, 
+                                                   G_CALLBACK (on_main_item_name_changed),
+                                                   iter->data);
+              g_signal_handlers_disconnect_by_func(item, 
+                                                   G_CALLBACK (on_main_item_icon_changed),
+                                                   iter->data);
+              g_signal_handlers_disconnect_by_func(item, 
+                                                   G_CALLBACK (on_main_item_visible_changed),
+                                                   iter->data);
+            }                
+            if (G_IS_OBJECT(item))
+            {
+              g_signal_handlers_disconnect_by_func (item, 
+                                                    G_CALLBACK (on_window_active_changed), 
+                                                    iter->data);
+              g_signal_handlers_disconnect_by_func (item,
+                                                    G_CALLBACK (on_window_needs_attention_changed),
+                                                    iter->data);
+              g_signal_handlers_disconnect_by_func (item,
+                                                    G_CALLBACK (on_window_progress_changed),
+                                                    iter->data);
+              g_signal_handlers_disconnect_by_func (item,
+                                                    G_CALLBACK (on_window_progress_changed),
+                                                    iter->data);                 
+              items_to_move = g_slist_remove (items_to_move,item);
+              g_object_ref (item);
+              gtk_container_remove(GTK_CONTAINER(awn_dialog_get_content_area(AWN_DIALOG(task_icon_get_dialog(iter->data)))),
+                                   GTK_WIDGET(item));
+              task_icon_append_item (TASK_ICON (icon), TASK_ITEM(item));
+              g_object_unref (item);                
+            }
+            else
+            {
+              g_debug ("Stop that!");
+            }
+          }
+        }
+      }
+    }
+  }
+#endif
+}
+
 
 static void
 task_manager_set_grouping (TaskManager *manager, 
                                 gboolean  grouping)
 {
-  static gboolean guard = FALSE;
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
-  if (!guard)
+  TaskManagerPrivate *priv = manager->priv;
+  priv->grouping = grouping;
+  if (grouping)
   {
-    TaskManagerPrivate *priv = manager->priv;
-    priv->grouping = grouping;
-    guard = TRUE;
-    g_signal_emit (manager,_taskman_signals[GROUPING_CHANGED],0,grouping);
-    guard = FALSE;
+    task_manager_regroup(manager);
   }
+  g_signal_emit (manager,_taskman_signals[GROUPING_CHANGED],0,grouping);
 }
 
 GSList *

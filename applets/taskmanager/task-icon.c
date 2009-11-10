@@ -433,7 +433,6 @@ static void
 task_icon_finalize (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
-
   /*
    This needs to be an empty list.
 
@@ -1848,6 +1847,46 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   }  
 }
 
+
+/**
+ * Moves a TaskWindow from one icon to another icon (grouping was toggled
+ */
+void
+task_icon_moving_item (TaskIcon *dest, TaskIcon *src, TaskItem *item)
+{
+  TASK_ICON_GET_PRIVATE(src)->items = g_slist_remove (TASK_ICON_GET_PRIVATE(src)->items,item);
+  g_object_ref (item);
+  gtk_container_remove(GTK_CONTAINER(awn_dialog_get_content_area(AWN_DIALOG(task_icon_get_dialog(src)))),
+                       GTK_WIDGET(item));
+  if (TASK_ICON_GET_PRIVATE(src)->main_item == item)
+  {
+    g_signal_handlers_disconnect_by_func(item, 
+                                         G_CALLBACK (on_main_item_name_changed),
+                                         src);
+    g_signal_handlers_disconnect_by_func(item, 
+                                         G_CALLBACK (on_main_item_icon_changed),
+                                         src);
+    g_signal_handlers_disconnect_by_func(item, 
+                                         G_CALLBACK (on_main_item_visible_changed),
+                                         src);
+  }                
+  g_signal_handlers_disconnect_by_func (item, 
+                                        G_CALLBACK (on_window_active_changed), 
+                                        src);
+  g_signal_handlers_disconnect_by_func (item,
+                                        G_CALLBACK (on_window_needs_attention_changed),
+                                        src);
+  g_signal_handlers_disconnect_by_func (item,
+                                        G_CALLBACK (on_window_progress_changed),
+                                        src);
+  g_signal_handlers_disconnect_by_func (item,
+                                        G_CALLBACK (on_window_progress_changed),
+                                        src);
+  g_object_weak_unref (G_OBJECT (item), (GWeakNotify)_destroyed_task_item, src);
+  task_icon_append_item (dest,item);  
+  g_object_unref (item);  
+}
+  
 /**
  * Adds a TaskWindow to this task-icon
  */
@@ -2450,6 +2489,32 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
           priv->items = g_slist_remove (priv->items,item);
           g_object_ref (item);
           gtk_container_remove(GTK_CONTAINER(awn_dialog_get_content_area(AWN_DIALOG(priv->dialog))), item);
+          if (TASK_ICON_GET_PRIVATE(icon)->main_item == TASK_ITEM(item))
+          {
+            g_signal_handlers_disconnect_by_func(item, 
+                                                 G_CALLBACK (on_main_item_name_changed),
+                                                 icon);
+            g_signal_handlers_disconnect_by_func(item, 
+                                                 G_CALLBACK (on_main_item_icon_changed),
+                                                 icon);
+            g_signal_handlers_disconnect_by_func(item, 
+                                                 G_CALLBACK (on_main_item_visible_changed),
+                                                 icon);
+          }                
+          g_signal_handlers_disconnect_by_func (item, 
+                                                G_CALLBACK (on_window_active_changed), 
+                                                icon);
+          g_signal_handlers_disconnect_by_func (item,
+                                                G_CALLBACK (on_window_needs_attention_changed),
+                                                icon);
+          g_signal_handlers_disconnect_by_func (item,
+                                                G_CALLBACK (on_window_progress_changed),
+                                                icon);
+          g_signal_handlers_disconnect_by_func (item,
+                                                G_CALLBACK (on_window_progress_changed),
+                                                icon);
+          
+          g_object_weak_unref (G_OBJECT(item),(GWeakNotify)_destroyed_task_item,icon);
           task_icon_append_item (TASK_ICON (new_icon), TASK_ITEM(item));
           task_manager_add_icon (TASK_MANAGER(priv->applet),TASK_ICON(new_icon));
           g_object_unref (item);
@@ -2462,112 +2527,7 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
       }    
     }
   }
-  else /*we're grouping.  This code will not work for TaskIcons that 
-     failed to lookup a desktop file.  TODO*/
-  {
-    GSList * icons = task_manager_get_icons (TASK_MANAGER(priv->applet));
-    TaskItem * launcher;
-    const gchar * desktop_filename = NULL;
-    TaskIcon * permanent_launcher_icon = NULL;
-    GSList * iter;
-    
-    launcher = task_icon_get_launcher (icon);
-    if (launcher)
-    {
-      desktop_filename = task_launcher_get_desktop_path (TASK_LAUNCHER(launcher));
-    }
-    /*find the permanent launcher for that desktop file, if there is one*/
-    if (desktop_filename)
-    {
-      for (iter=icons; iter ; iter=iter->next)
-      {
-        TaskItem *l = task_icon_get_launcher (iter->data);
-        if (l)
-        {
-          if (g_strcmp0 (desktop_filename, task_launcher_get_desktop_path (TASK_LAUNCHER(l)))==0)
-          {
-            if (task_icon_count_ephemeral_items (iter->data) == 0)
-            {
-              permanent_launcher_icon = iter->data;
-              break;
-            }
-          }
-        }
-      }
-    }
-    /*
-     there is either no permanent launcher or icon is the permanent launcher icon*/
-    if ( !permanent_launcher_icon || (permanent_launcher_icon == icon) )
-    {
-      /*loop through the icons*/
-      for (iter=icons; iter ; iter=iter->next)
-      {
-        if (icon == iter->data)
-        {
-          continue;
-        }
-        TaskItem *l = task_icon_get_launcher (iter->data);
-        /* does it contain a launcher and is that launcher the same as icon*/
-        if (l)
-        {
-          if (g_strcmp0 (desktop_filename, task_launcher_get_desktop_path (TASK_LAUNCHER(l)))==0)
-          {
-            GSList * i;
-            GSList * items_to_move = task_icon_get_items(iter->data);
-            for (i=items_to_move;i;i=i->next)
-            {
-              TaskItem * item = i->data;
-              if (TASK_IS_LAUNCHER(item))
-              {
-                continue;
-              }
-              /*
-               toggling grouping on and off rather quickly is a problem...
-               TODO:  this bothers me.
-               */
-              if (TASK_ICON_GET_PRIVATE(iter->data)->main_item == item)
-              {
-                g_signal_handlers_disconnect_by_func(item, 
-                                                     G_CALLBACK (on_main_item_name_changed),
-                                                     iter->data);
-                g_signal_handlers_disconnect_by_func(item, 
-                                                     G_CALLBACK (on_main_item_icon_changed),
-                                                     iter->data);
-                g_signal_handlers_disconnect_by_func(item, 
-                                                     G_CALLBACK (on_main_item_visible_changed),
-                                                     iter->data);
-              }                
-              if (G_IS_OBJECT(item))
-              {
-                g_signal_handlers_disconnect_by_func (item, 
-                                                      G_CALLBACK (on_window_active_changed), 
-                                                      iter->data);
-                g_signal_handlers_disconnect_by_func (item,
-                                                      G_CALLBACK (on_window_needs_attention_changed),
-                                                      iter->data);
-                g_signal_handlers_disconnect_by_func (item,
-                                                      G_CALLBACK (on_window_progress_changed),
-                                                      iter->data);
-                g_signal_handlers_disconnect_by_func (item,
-                                                      G_CALLBACK (on_window_progress_changed),
-                                                      iter->data);                 
-                items_to_move = g_slist_remove (items_to_move,item);
-                g_object_ref (item);
-                gtk_container_remove(GTK_CONTAINER(awn_dialog_get_content_area(AWN_DIALOG(task_icon_get_dialog(iter->data)))),
-                                     GTK_WIDGET(item));
-                task_icon_append_item (TASK_ICON (icon), TASK_ITEM(item));
-                g_object_unref (item);                
-              }
-              else
-              {
-                g_debug ("Stop that!");
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  /*else we're regrouping which is orchestrated by TaskManager.*/
   task_icon_refresh_visible (icon);
 }
   
