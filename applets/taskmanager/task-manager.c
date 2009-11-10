@@ -2234,11 +2234,26 @@ static void
 task_manager_set_grouping (TaskManager *manager, 
                                 gboolean  grouping)
 {
+  static gboolean guard = FALSE;
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
+  if (!guard)
+  {
+    TaskManagerPrivate *priv = manager->priv;
+    priv->grouping = grouping;
+    guard = TRUE;
+    g_signal_emit (manager,_taskman_signals[GROUPING_CHANGED],0,grouping);
+    guard = FALSE;
+  }
+}
+
+GSList *
+task_manager_get_icons (TaskManager * manager)
+{
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),NULL);
+
   TaskManagerPrivate *priv = manager->priv;
-  priv->grouping = grouping;
-  g_signal_emit (manager,_taskman_signals[GROUPING_CHANGED],0,grouping);
+  return priv->icons;
 }
 /**
  * D-BUS functionality

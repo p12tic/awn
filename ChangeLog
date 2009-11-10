@@ -1,6 +1,16 @@
 2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icons.c:
+	* applets/taskmanager/task-manager.h:
+	* applets/taskmanager/task-manager.c:
+	Immediately group when configuration changed. There's some 
+	strangeness that happens if one toggles back and forth quickly, 
+	It's beeing dealt with but I'm not happy with the "solution".  Will
+	revisit when I don't have a headache.
+
+2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icons.c:
 	Minor cleanup.
 
 2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>

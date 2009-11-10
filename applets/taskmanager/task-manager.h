@@ -75,12 +75,15 @@ gboolean task_manager_update (TaskManager *manager,
                               GHashTable *hints, /* mappings from string to GValue */
                               GError **error);
 
-void task_manager_append_launcher (TaskManager  *manager, 
-                                    const gchar * launcher_path);
+void task_manager_append_launcher     (TaskManager  *manager, 
+                                      const gchar * launcher_path);
 
-void task_manager_remove_task_icon (TaskManager  *manager, GtkWidget *icon);
+void task_manager_remove_task_icon    (TaskManager  *manager, GtkWidget *icon);
 
-void task_manager_add_icon         (TaskManager *manager, TaskIcon * icon);
+void task_manager_add_icon            (TaskManager *manager, TaskIcon * icon);
+
+GSList * task_manager_get_icons       (TaskManager * manager);
+
 
 #endif /* _TASK_MANAGER_H_ */
 
