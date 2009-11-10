@@ -111,6 +111,10 @@ void        awn_panel_docklet_request     (AwnPanel         *panel,
                                            gboolean          expand,
                                            DBusGMethodInvocation *context);
 
+gboolean    awn_panel_get_snapshot        (AwnPanel *panel,
+                                           GValue *value,
+                                           GError **error);
+
 gboolean    awn_panel_get_all_server_flags(AwnPanel *panel,
                                            GHashTable **hash,
                                            gchar     *name,

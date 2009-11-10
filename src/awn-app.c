@@ -106,6 +106,8 @@ awn_app_init (AwnApp *app)
     gtk_main_quit ();
   }
 
+  gtk_window_set_default_icon_name ("avant-window-navigator");
+
   /* Grab a connection to the bus */
   priv->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
   if (priv->connection == NULL)

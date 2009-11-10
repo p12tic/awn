@@ -493,6 +493,21 @@ on_close_activated (GtkMenuItem *item, AwnPanel *panel)
 }
 
 static void
+on_about_activated (GtkMenuItem *item, AwnPanel *panel)
+{
+  GError *err = NULL;
+
+  gdk_spawn_command_line_on_screen (gtk_widget_get_screen (GTK_WIDGET (panel)),
+                                    "awn-settings --about", &err);
+
+  if (err)
+  {
+    g_critical ("%s", err->message);
+    g_error_free (err);
+  }
+}
+
+static void
 awn_panel_constructed (GObject *object)
 {
   AwnPanelPrivate *priv;
@@ -594,9 +609,6 @@ awn_panel_constructed (GObject *object)
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
       gtk_image_new_from_icon_name ("avant-window-navigator",
                                     GTK_ICON_SIZE_MENU));
-#if GTK_CHECK_VERSION(2, 16, 0)
-  gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (item), TRUE);
-#endif
   gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
   g_signal_connect (G_OBJECT (item), "activate",
                     G_CALLBACK (on_prefs_activated), panel);
@@ -604,13 +616,19 @@ awn_panel_constructed (GObject *object)
   item = gtk_separator_menu_item_new ();
   gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
 
-  item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE, NULL);
-#if GTK_CHECK_VERSION(2, 16, 0)
-  gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (item), TRUE);
-#endif
+  item = gtk_image_menu_item_new_from_stock (GTK_STOCK_QUIT, NULL);
   gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
   g_signal_connect (G_OBJECT (item), "activate",
                     G_CALLBACK (on_close_activated), panel);
+
+  item = gtk_image_menu_item_new_with_label (_("About Awn"));
+  gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
+      gtk_image_new_from_stock (GTK_STOCK_ABOUT, GTK_ICON_SIZE_MENU));
+  gtk_menu_shell_append (GTK_MENU_SHELL (priv->menu), item);
+  g_signal_connect (G_OBJECT (item), "activate",
+                    G_CALLBACK (on_about_activated), panel);
+
+  awn_utils_show_menu_images (GTK_MENU (priv->menu));
 
   gtk_widget_show_all (priv->menu);
 }
@@ -3167,6 +3185,95 @@ awn_panel_docklet_request (AwnPanel *panel,
   window_id = gtk_socket_get_id (GTK_SOCKET (priv->docklet));
 
   dbus_g_method_return (context, window_id);
+}
+
+static void
+value_array_append_int (GValueArray *array, gint i)
+{
+  GValue *value = g_new0 (GValue, 1);
+
+  g_value_init (value, G_TYPE_INT);
+  g_value_set_int (value, i);
+
+  g_value_array_append (array, value);
+}
+
+static void
+value_array_append_bool (GValueArray *array, gboolean b)
+{
+  GValue *value = g_new0 (GValue, 1);
+
+  g_value_init (value, G_TYPE_BOOLEAN);
+  g_value_set_boolean (value, b);
+
+  g_value_array_append (array, value);
+}
+
+static void
+value_array_append_array (GValueArray *array, guchar *data, gsize data_len)
+{
+  GArray *byte_array;
+  GValue *value = g_new0 (GValue, 1);
+
+  byte_array = g_array_sized_new (FALSE, FALSE, sizeof(guchar), data_len);
+  g_array_append_vals (byte_array, data, data_len);
+
+  g_value_init (value, dbus_g_type_get_collection ("GArray", G_TYPE_CHAR));
+  g_value_take_boxed (value, byte_array);
+
+  g_value_array_append (array, value);
+}
+
+gboolean
+awn_panel_get_snapshot (AwnPanel *panel, GValue *value, GError **error)
+{
+  GdkRectangle rect;
+  gint x, y;
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+
+  awn_panel_get_draw_rect (panel, &rect, 0, 0);
+
+  // get snapshot from root window, cause we'll loose alpha anyway
+  GdkWindow *window =
+    gdk_screen_get_root_window (gtk_widget_get_screen (GTK_WIDGET (panel)));
+
+  gdk_window_get_origin (gtk_widget_get_window (GTK_WIDGET (panel)), &x, &y);
+
+  // FIXME: incorrect width/height for curved dock
+  GdkPixbuf *pixbuf = 
+    gdk_pixbuf_get_from_drawable (NULL, 
+                                  window,
+                                  gdk_drawable_get_colormap (window),
+                                  x + rect.x, y + rect.y, 0, 0,
+                                  rect.width, rect.height);
+
+  // stuff the pixbuf to our out param
+  gint width = gdk_pixbuf_get_width (pixbuf);
+  gint height = gdk_pixbuf_get_height (pixbuf);
+  gint rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+  gint n_channels = gdk_pixbuf_get_n_channels (pixbuf);
+  gint bits_per_sample = gdk_pixbuf_get_bits_per_sample (pixbuf);
+  gint image_len = (height - 1) * rowstride + width *
+    ((n_channels * bits_per_sample + 7) / 8);
+
+  guchar *image = gdk_pixbuf_get_pixels (pixbuf);
+
+  GValueArray *image_struct = g_value_array_new (1);
+
+  value_array_append_int (image_struct, width);
+  value_array_append_int (image_struct, height);
+  value_array_append_int (image_struct, rowstride);
+  value_array_append_bool (image_struct, gdk_pixbuf_get_has_alpha (pixbuf));
+  value_array_append_int (image_struct, bits_per_sample);
+  value_array_append_int (image_struct, n_channels);
+  value_array_append_array (image_struct, image, image_len);
+
+  g_value_init (value, G_TYPE_VALUE_ARRAY);
+  g_value_take_boxed (value, image_struct);
+
+  g_object_unref (pixbuf);
+
+  return TRUE;
 }
 
 gboolean

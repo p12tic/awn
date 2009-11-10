@@ -40,6 +40,10 @@
       <arg name="window_id" type="x" direction="out" />
     </method>
 
+    <method name="GetSnapshot">
+      <arg name="pixbuf" type="v" direction="out" />
+    </method>
+
     <!-- Signals -->
     <signal name="SizeChanged">
       <arg name="size" type="i" />
