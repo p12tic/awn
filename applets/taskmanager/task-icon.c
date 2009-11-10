@@ -2402,7 +2402,8 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
   g_assert (TASK_IS_ICON (icon));
 
   priv = icon->priv;
-  
+
+  /*ungroup*/
   if (!grouping)
   {
     if ( (task_icon_contains_launcher(icon) && g_slist_length (priv->items) >2) ||
@@ -2410,16 +2411,16 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
     {
       GSList * iter;
       GSList * next;
-      TaskLauncher *launcher = NULL;
+      TaskItem *launcher = NULL;
 
-      for (iter = priv->items; iter; iter = iter->next)
-      {
-        if (TASK_IS_LAUNCHER (iter->data))
-        {
-          launcher = iter->data;
-          break;
-        }
-      }
+      /*
+       Find a launcher if there is one
+       */
+      launcher = task_icon_get_launcher (icon);
+
+      /*
+       Find the first Window... we'll keep that in the current icon
+       */
       for (iter = priv->items; iter; iter = iter->next)
       {
         if (TASK_IS_WINDOW (iter->data))
@@ -2428,13 +2429,16 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
           break;
         }
       }
+      /*
+       Find the rest of the Windows and move them into their own icon
+       */
       while(iter)
       {
         GtkWidget * item = iter->data;
         if (TASK_IS_WINDOW (item))
         {
           GtkWidget * new_icon = task_icon_new (AWN_APPLET (priv->applet));
-          TaskItem * new_launcher = task_launcher_new_for_desktop_file ( task_launcher_get_desktop_path(launcher));
+          TaskItem * new_launcher = task_launcher_new_for_desktop_file ( task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)));
 
           if (new_launcher)
           {

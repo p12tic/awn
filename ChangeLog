@@ -1,6 +1,11 @@
 2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icons.c:
+	Minor cleanup.
+
+2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icons.c:
 	Immediately ungroup when configuration changed.  Reverse not yet 
 	implemented.
 
