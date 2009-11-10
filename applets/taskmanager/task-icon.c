@@ -1896,19 +1896,17 @@ task_icon_append_item (TaskIcon      *icon,
       {
         awn_themed_icon_set_state (AWN_THEMED_ICON(icon),"::no_drop::desktop");
       }
-      
       awn_themed_icon_set_size (AWN_THEMED_ICON(icon),size);
       g_signal_connect (item, "icon-changed",G_CALLBACK (on_desktop_icon_changed), icon);
-      
       g_free (name);
       g_free (uid);
-    }    
+    }
   }
-  
+
   priv->items = g_slist_append (priv->items, item);
   gtk_widget_show_all (GTK_WIDGET (item));
   gtk_container_add (GTK_CONTAINER (priv->dialog), GTK_WIDGET (item));
-  
+
   g_object_weak_ref (G_OBJECT (item), (GWeakNotify)_destroyed_task_item, icon);
 
   task_item_set_task_icon (item, icon);
@@ -2395,13 +2393,70 @@ task_icon_button_release_event (GtkWidget      *widget,
   return FALSE;
 }
 
-
 static void
 grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
 {
+  TaskIconPrivate *priv;
+
   g_assert (TASK_IS_MANAGER (applet));
   g_assert (TASK_IS_ICON (icon));
 
+  priv = icon->priv;
+  
+  if (!grouping)
+  {
+    if ( (task_icon_contains_launcher(icon) && g_slist_length (priv->items) >2) ||
+         (!task_icon_contains_launcher(icon)&& g_slist_length (priv->items)>1))
+    {
+      GSList * iter;
+      GSList * next;
+      TaskLauncher *launcher = NULL;
+
+      for (iter = priv->items; iter; iter = iter->next)
+      {
+        if (TASK_IS_LAUNCHER (iter->data))
+        {
+          launcher = iter->data;
+          break;
+        }
+      }
+      for (iter = priv->items; iter; iter = iter->next)
+      {
+        if (TASK_IS_WINDOW (iter->data))
+        {
+          iter = iter->next;
+          break;
+        }
+      }
+      while(iter)
+      {
+        GtkWidget * item = iter->data;
+        if (TASK_IS_WINDOW (item))
+        {
+          GtkWidget * new_icon = task_icon_new (AWN_APPLET (priv->applet));
+          TaskItem * new_launcher = task_launcher_new_for_desktop_file ( task_launcher_get_desktop_path(launcher));
+
+          if (new_launcher)
+          {
+            task_icon_append_ephemeral_item (TASK_ICON (new_icon), new_launcher);
+          }
+          next = iter->next;
+          priv->items = g_slist_remove (priv->items,item);
+          g_object_ref (item);
+          gtk_container_remove(GTK_CONTAINER(awn_dialog_get_content_area(AWN_DIALOG(priv->dialog))), item);
+          task_icon_append_item (TASK_ICON (new_icon), TASK_ITEM(item));
+          task_manager_add_icon (TASK_MANAGER(priv->applet),TASK_ICON(new_icon));
+          g_object_unref (item);
+          iter = next;
+        }
+        else
+        {
+          iter = iter->next;
+        }
+      }    
+    }
+  }
+  task_icon_refresh_visible (icon);
 }
   
 static void
