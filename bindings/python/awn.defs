@@ -376,17 +376,20 @@
   (of-object "AwnApplet")
   (c-name "awn_applet_create_default_menu")
   (return-type "GtkWidget*")
+  (caller-owns-return #t)
 )
 
 (define-function create_pref_item
   (c-name "awn_applet_create_pref_item")
   (return-type "GtkWidget*")
+  (caller-owns-return #t)
 )
 
 (define-method create_about_item
   (of-object "AwnApplet")
   (c-name "awn_applet_create_about_item")
   (return-type "GtkWidget*")
+  (caller-owns-return #t)
   (parameters
     '("const-gchar*" "copyright")
     '("AwnAppletLicense" "license")
@@ -406,6 +409,7 @@
   (of-object "AwnApplet")
   (c-name "awn_applet_create_about_item_simple")
   (return-type "GtkWidget*")
+  (caller-owns-return #t)
   (parameters
     '("const-gchar*" "copyright")
     '("AwnAppletLicense" "license")
@@ -1094,6 +1098,7 @@
   (parameters
     '("GtkWidget*" "widget")
   )
+  (caller-owns-return #t)
 )
 
 (define-method set_text
@@ -1286,6 +1291,7 @@
   (of-object "AwnThemedIcon")
   (c-name "awn_themed_icon_get_icon_at_size")
   (return-type "GdkPixbuf*")
+  (caller-owns-return #t)
   (parameters
     '("guint" "size")
     '("const-gchar*" "state" (default "NULL") (null-ok))
