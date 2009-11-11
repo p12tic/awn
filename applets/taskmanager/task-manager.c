@@ -3011,7 +3011,7 @@ task_manager_update (TaskManager *manager,
       }
       else if (strcmp ("visible", key_name) == 0)
       {
-        g_debug ("Request to change visibility...");
+        
       }
       else
       {

@@ -1,3 +1,12 @@
+2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Reworked some of the visibility code associated with the show_all_windows
+	config key.  Please watch for regressions, especially with 
+	show_all_windows = false.
+
 2009-11-10  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-app.c:

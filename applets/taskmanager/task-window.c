@@ -61,6 +61,10 @@ struct _TaskWindowPrivate
   /* Properties */
   gchar   *message;
   gfloat   progress;
+
+  /*Controls whether the item has been explicitly hidden using the dbus api.
+   This is no longer related to the hide/show controled by the show_all_windows
+   config key*/
   gboolean hidden;
   gboolean needs_attention;
   gboolean is_active;
@@ -550,10 +554,15 @@ on_window_workspace_changed (WnckWindow *wnckwin, TaskWindow *window)
     priv->in_workspace = wnck_window_is_in_viewport (priv->window, priv->workspace);
 
   if (priv->in_workspace && !priv->hidden)
+  {
+    gtk_widget_show (GTK_WIDGET(window));
     task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
+  }
   else
+  {
+    gtk_widget_hide (GTK_WIDGET(window));
     task_item_emit_visible_changed (TASK_ITEM (window), FALSE);
-  
+  }
   g_signal_emit (window, _window_signals[WORKSPACE_CHANGED], 
                  0, wnck_window_get_workspace (wnckwin));
 }
@@ -575,11 +584,18 @@ on_window_state_changed (WnckWindow      *wnckwin,
   if (state & WNCK_WINDOW_STATE_SKIP_TASKLIST)
     hidden = TRUE;
 
-  if (priv->hidden != hidden)
+  if ( GTK_WIDGET_VISIBLE(window) != hidden)
   {
-    priv->hidden = hidden;
+    if (hidden && !priv->hidden)
+    {
+      gtk_widget_hide (GTK_WIDGET(window));
+    }
+    else
+    {
+      gtk_widget_show (GTK_WIDGET(window));
+    }
 
-    if (priv->in_workspace && !priv->hidden)
+    if (priv->in_workspace && !hidden && GTK_WIDGET_VISIBLE(window))
       task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
     else
       task_item_emit_visible_changed (TASK_ITEM (window), FALSE);      
@@ -819,9 +835,17 @@ task_window_is_hidden (TaskWindow    *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
 
-  return window->priv->hidden;
+  return GTK_WIDGET_VISIBLE(window);
 }
 
+/*hidden should be a prop*/
+void
+task_window_set_hidden (TaskWindow *window,gboolean hidden)
+{
+  g_return_if_fail (TASK_IS_WINDOW(window));
+  window->priv->hidden = hidden;
+  task_item_emit_visible_changed (TASK_ITEM (window), hidden);
+}
 void
 task_window_set_active_workspace   (TaskWindow    *window,
                                     WnckWorkspace *space)
@@ -1075,7 +1099,7 @@ _is_visible (TaskItem *item)
 {
   TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;
   
-  return priv->in_workspace && !priv->hidden;
+  return priv->in_workspace && !priv->hidden && GTK_WIDGET_VISIBLE(item);
 }
 
 static GtkWidget *
