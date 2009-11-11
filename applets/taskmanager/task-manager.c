@@ -3011,7 +3011,9 @@ task_manager_update (TaskManager *manager,
       }
       else if (strcmp ("visible", key_name) == 0)
       {
-        
+        gboolean visible = g_value_get_boolean (value);
+        g_debug ("%s: %d",__func__,visible);
+        task_window_set_hidden (TASK_WINDOW(matched_window),!visible);
       }
       else
       {

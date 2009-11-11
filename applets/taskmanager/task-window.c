@@ -842,10 +842,23 @@ task_window_is_hidden (TaskWindow    *window)
 void
 task_window_set_hidden (TaskWindow *window,gboolean hidden)
 {
+  TaskWindowPrivate * priv;
   g_return_if_fail (TASK_IS_WINDOW(window));
-  window->priv->hidden = hidden;
-  task_item_emit_visible_changed (TASK_ITEM (window), hidden);
+  priv=window->priv;
+
+  g_debug ("%s: %d, %p",__func__,priv->in_workspace,priv->workspace);
+  priv->hidden = hidden;
+  if (priv->in_workspace && !hidden)
+  {
+    gtk_widget_show (GTK_WIDGET(window));
+  }
+  else
+  {
+    gtk_widget_hide (GTK_WIDGET(window));
+  }
+  task_item_emit_visible_changed (TASK_ITEM (window), !hidden);
 }
+
 void
 task_window_set_active_workspace   (TaskWindow    *window,
                                     WnckWorkspace *space)
