@@ -1914,14 +1914,26 @@ task_icon_append_item (TaskIcon      *icon,
       gint  size;
       const gchar * states[3] = {"::no_drop::desktop","::no_drop::customized",NULL};
       const gchar * names[3]  = {NULL,NULL,NULL};
-
+      gchar * icon_name;
+      gchar * base;
+      
       g_object_get (priv->applet,
                     "uid",&uid,
                     "canonical-name",&name,
                     "size",&size,
                     NULL);
       names[0] = task_launcher_get_icon_name(item);
-      priv->custom_name = g_strdup_printf ("%s-%s",name,task_launcher_get_icon_name(item));
+      icon_name = g_strdup(task_launcher_get_icon_name(item));
+      base = g_path_get_basename (icon_name);
+      if ( g_strcmp0(base,icon_name)!=0)
+      {
+        g_free (icon_name);
+        icon_name = g_strdup_printf ("%s-%u",base,
+                                     g_str_hash(task_launcher_get_icon_name(item)));
+      }
+      priv->custom_name = g_strdup_printf ("%s-%s",name,icon_name);
+      g_free (icon_name);
+      g_free (base);
       names[1] = priv->custom_name;
       awn_themed_icon_set_info (AWN_THEMED_ICON(icon),
                                        name,
