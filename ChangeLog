@@ -1,3 +1,9 @@
+2009-11-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* src/awn-panel.c:
+	Speed up the snapshotting in awn-settings.
+
 2009-11-11  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

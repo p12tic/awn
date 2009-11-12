@@ -1638,10 +1638,9 @@ class awnThemeCustomize(awnBzr):
     def get_dock_image(self, themedir):
 		bus = dbus.SessionBus()
 		panel = bus.get_object('org.awnproject.Awn', '/org/awnproject/Awn/Panel1', 'org.awnproject.Awn.Panel')
-		data = panel.GetSnapshot()
-		width, height, rowstride, has_alpha, bits_per_sample, n_channels, pixels = data	
-		buffer = reduce(lambda x,y: x + chr(y), pixels, '')
-		pixbuf = gtk.gdk.pixbuf_new_from_data(buffer, gtk.gdk.COLORSPACE_RGB, has_alpha, bits_per_sample, width, height, rowstride)		
+		data = panel.GetSnapshot(byte_arrays=True)
+		width, height, rowstride, has_alpha, bits_per_sample, n_channels, pixels = data
+		pixbuf = gtk.gdk.pixbuf_new_from_data(pixels, gtk.gdk.COLORSPACE_RGB, has_alpha, bits_per_sample, width, height, rowstride)
 		newpixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, has_alpha, bits_per_sample, 150, height)
 		pixbuf.copy_area(0, 0, 150, height, newpixbuf, 0, 0)
 		newpixbuf.save(themedir+'/thumb.png', 'png')

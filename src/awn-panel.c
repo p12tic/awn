@@ -3253,8 +3253,8 @@ awn_panel_get_snapshot (AwnPanel *panel, GValue *value, GError **error)
   gint rowstride = gdk_pixbuf_get_rowstride (pixbuf);
   gint n_channels = gdk_pixbuf_get_n_channels (pixbuf);
   gint bits_per_sample = gdk_pixbuf_get_bits_per_sample (pixbuf);
-  gint image_len = (height - 1) * rowstride + width *
-    ((n_channels * bits_per_sample + 7) / 8);
+  //gint image_len = (height - 1) * rowstride + width *
+  //  ((n_channels * bits_per_sample + 7) / 8);
 
   guchar *image = gdk_pixbuf_get_pixels (pixbuf);
 
@@ -3266,7 +3266,7 @@ awn_panel_get_snapshot (AwnPanel *panel, GValue *value, GError **error)
   value_array_append_bool (image_struct, gdk_pixbuf_get_has_alpha (pixbuf));
   value_array_append_int (image_struct, bits_per_sample);
   value_array_append_int (image_struct, n_channels);
-  value_array_append_array (image_struct, image, image_len);
+  value_array_append_array (image_struct, image, height * rowstride);
 
   g_value_init (value, G_TYPE_VALUE_ARRAY);
   g_value_take_boxed (value, image_struct);
