@@ -1518,17 +1518,14 @@ find_desktop_special_case (TaskIcon *icon, gchar * cmd, gchar *res_name,
                                  gchar * class_name,const gchar *title)
 {
   gchar * result = NULL;
-  GSList * desktops = get_special_desktop_from_window_data (cmd,
-                                                                  res_name,
-                                                                  class_name,
-                                                                  title);
+  GSList * desktops = get_special_desktop_from_window_data (cmd,res_name,class_name,title);
   if (desktops)
   {
     GSList * iter;
     for (iter = desktops; iter; iter = iter->next)
     {
       result = find_desktop (icon,iter->data);
-      if ( !result && (strlen (cmd) > 8) ) 
+      if ( !result && cmd && (strlen (cmd) > 8) ) 
       {
         result = find_desktop_fuzzy (icon,iter->data,cmd);
       }

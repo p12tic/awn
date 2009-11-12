@@ -1,5 +1,10 @@
 2009-11-11  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Make sure we don't send a NULL to strlen.
+
+2009-11-11  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Fix for https://bugs.launchpad.net/awn/+bug/480851
 	If Icon = to a path in the desktop file then the customize icon menu
