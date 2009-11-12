@@ -1494,19 +1494,48 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHButtonBox" id="hbuttonbox3">
+                  <object class="GtkHBox" id="hbox8">
                     <property name="visible">True</property>
-                    <property name="spacing">6</property>
-                    <property name="layout_style">end</property>
                     <child>
-                      <object class="GtkButton" id="appletDelete">
-                        <property name="label">gtk-delete</property>
+                      <object class="GtkHBox" id="hbox13">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="tooltip_markup">Delete selected applet</property>
-                        <property name="use_stock">True</property>
+                        <property name="spacing">6</property>
+                        <child>
+                          <object class="GtkButton" id="appletActivate">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Activate applet</property>
+                            <child>
+                              <object class="GtkImage" id="image4">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-go-down</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="appletDeactivate">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">Deactivate applet</property>
+                            <child>
+                              <object class="GtkImage" id="image5">
+                                <property name="visible">True</property>
+                                <property name="stock">gtk-go-up</property>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1515,17 +1544,41 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="appletInstall">
-                        <property name="label">Install applet...</property>
+                      <object class="GtkHButtonBox" id="hbuttonbox3">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="tooltip_markup">Install new applets from third party sources</property>
-                        <property name="image">image1</property>
+                        <property name="spacing">6</property>
+                        <property name="layout_style">end</property>
+                        <child>
+                          <object class="GtkButton" id="appletDelete">
+                            <property name="label">gtk-delete</property>
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="use_stock">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="appletInstall">
+                            <property name="label">Install applet...</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="image">image1</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -2197,10 +2250,6 @@
     <property name="upper">1</property>
     <property name="step_increment">0.01</property>
   </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="stock">gtk-open</property>
-  </object>
   <object class="GtkVBox" id="launchPanel">
     <property name="visible">True</property>
     <property name="orientation">vertical</property>
@@ -2763,7 +2812,49 @@
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
-          <object class="GtkTable" id="table1">
+          <object class="GtkEventBox" id="theme_export_infobar">
+            <child>
+              <object class="GtkHBox" id="hbox14">
+                <property name="visible">True</property>
+                <child>
+                  <object class="GtkAlignment" id="alignment4">
+                    <property name="visible">True</property>
+                    <property name="left_padding">5</property>
+                    <property name="right_padding">5</property>
+                    <child>
+                      <object class="GtkImage" id="image6">
+                        <property name="visible">True</property>
+                        <property name="stock">gtk-dialog-info</property>
+                        <property name="icon-size">5</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="label55">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Theme package is being generated.</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkTable" id="theme_export_options">
             <property name="visible">True</property>
             <property name="n_rows">3</property>
             <property name="n_columns">2</property>
@@ -2846,11 +2937,11 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area2">
+          <object class="GtkHButtonBox" id="theme_export_buttons">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
@@ -2895,14 +2986,18 @@
       <action-widget response="0">theme_export_save</action-widget>
     </action-widgets>
   </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-open</property>
+  </object>
   <object class="GtkSizeGroup" id="sizegroup_panel_labels">
     <widgets>
-      <widget name="iconeffects"/>
-      <widget name="monitor_align_hscale"/>
-      <widget name="behaviorcombo"/>
-      <widget name="stylecombo"/>
-      <widget name="orientationcombo"/>
       <widget name="hbox2"/>
+      <widget name="orientationcombo"/>
+      <widget name="stylecombo"/>
+      <widget name="behaviorcombo"/>
+      <widget name="monitor_align_hscale"/>
+      <widget name="iconeffects"/>
     </widgets>
   </object>
   <object class="GtkAdjustment" id="adj_curviness">

@@ -48,12 +48,13 @@ from desktopagnostic import vfs
 from desktopagnostic.config import GROUP_DEFAULT
 from desktopagnostic.ui import LauncherEditorDialog
 import tarfile
+import shutil
+import tempfile
+import dbus
 
 from bzrlib import branch
 from bzrlib.builtins import cmd_branch, cmd_pull
 from bzrlib.plugins.launchpad.lp_directory import LaunchpadDirectory
-
-
 
 defs.i18nize(globals())
 
@@ -574,7 +575,8 @@ class awnBzr(gobject.GObject):
                                          parser.get('theme-info', 'Version'))
                 if parser.has_option('theme-info', 'Author'):
                     text += "\n<span style='italic'>by</span> %s" % parser.get('theme-info', 'Author')
-                icon = self.make_icon(parser.get('theme-info', 'Icon'))
+                #icon = self.make_icon(parser.get('theme-info', 'Icon'))
+                icon = gdk.pixbuf_new_from_file(parser.get('theme-info', 'Icon'))
         except:
             pass
         return icon, text, name
@@ -636,12 +638,14 @@ class awnBzr(gobject.GObject):
             except:
                 icon = None
         elif type_icon is "pixmap":
+            
             for i in path:
                 if os.path.exists(os.path.join(i,name+extension)):
                     try:
                         icon = gdk.pixbuf_new_from_file_at_size(os.path.join(i,name+extension), size, size)
                     except:
                         icon = None
+
         return icon
 
     def add_uris_to_model(self, model, uris):
@@ -1344,7 +1348,10 @@ class awnApplet(awnBzr):
         hs = self.scrollwindow1.get_hscrollbar()
         ha = self.scrollwindow1.get_hadjustment()
         hs.set_value(ha.upper - ha.page_size)
-            
+    
+    def activate_applet_btn(self, widget, data=None):
+        self.activate_applet(self.treeview_available, None, None)
+        
     def row_active (self, q, w, e):
         self.activate_applet (None)
 
@@ -1472,7 +1479,9 @@ class awnApplet(awnBzr):
  
         self.scrollwindow1.add(self.icon_view)
         self.scrollwindow1.show_all()
-
+        
+        self.icon_view.connect('selection-changed', self.callback_active_applet_selection)
+        
         applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST)
 
         ua_applets = self.client.get_list(defs.PANEL, defs.UA_LIST)
@@ -1482,7 +1491,7 @@ class awnApplet(awnBzr):
             applets.insert(int(tokens[1]), ua)
 
         self.refresh_icon_list (applets, self.active_model)
-
+        
     def refresh_icon_list (self, applets, model):
         for a in applets:
             tokens = a.split("::")
@@ -1564,6 +1573,7 @@ class awnApplet(awnBzr):
     def callback_applet_selection(self, selection, data=None):
         (model, iter) = selection.get_selected()
         if iter is not None:
+            self.appletActivate.set_sensitive(True)
             if os.access(model.get_value(iter, 2), os.W_OK):
                 self.btn_delete.set_sensitive(True)
             else:
@@ -1571,14 +1581,114 @@ class awnApplet(awnBzr):
         else:
             self.btn_delete.set_sensitive(False)
 
-
-
+    def callback_active_applet_selection(self, iconview, data=None):
+        sel = iconview.get_selected_items()
+        if len(sel):
+            model = iconview.get_model()
+            iter = model.get_iter(sel[0])
+            if iter is not None:
+                self.appletDeactivate.set_sensitive(True)
+            else:
+                self.appletDeactivate.set_sensitive(False)
+        else:
+            self.appletDeactivate.set_sensitive(False)
+                
 class awnThemeCustomize(awnBzr):
-    
-    def ding(self):
-        pass
-        
 
+    def export_theme(self, config, filename, newfilename):
+        tmpdir = tempfile.gettempdir()
+        themedir = os.path.join(tmpdir, filename)
+        themefile = os.path.join(tmpdir, filename+'.awn-theme')
+        if os.path.exists(themefile):
+            os.remove(themefile)
+            if os.path.exists(themedir):
+                shutil.rmtree(themedir) 
+        if os.path.exists(themedir):
+            self.hide_export_dialog(None)
+            msg = themedir+" already exists, unable to export theme."
+            message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE, message_format=msg)
+            resp = message.run()
+            if resp == gtk.RESPONSE_CLOSE:
+                message.destroy()
+            return
+                    
+        os.mkdir(themedir)
+        
+        f = open(themefile, "w")
+        config.write(f)
+        f.close()	
+		
+        arrow_path = self.client.get_string(defs.EFFECTS, defs.ARROW_ICON)
+        if os.path.exists(arrow_path):
+            shutil.copy(arrow_path, themedir+'/arrow.png')
+		
+        self.get_dock_image(themedir)
+							
+        tarpath = os.path.join(tmpdir, filename+'.tgz')
+        tFile = tarfile.open(tarpath, "w:gz")
+        tFile.add(themedir, os.path.basename(themedir))
+        tFile.add(themefile, os.path.basename(themefile))
+        tFile.close()
+	
+        shutil.move(tarpath, newfilename)
+        shutil.rmtree(themedir)	
+        os.remove(themefile)
+        self.hide_export_dialog(None)
+        
+    def get_dock_image(self, themedir):
+		bus = dbus.SessionBus()
+		panel = bus.get_object('org.awnproject.Awn', '/org/awnproject/Awn/Panel1', 'org.awnproject.Awn.Panel')
+		data = panel.GetSnapshot()
+		width, height, rowstride, has_alpha, bits_per_sample, n_channels, pixels = data	
+		buffer = reduce(lambda x,y: x + chr(y), pixels, '')
+		pixbuf = gtk.gdk.pixbuf_new_from_data(buffer, gtk.gdk.COLORSPACE_RGB, has_alpha, bits_per_sample, width, height, rowstride)		
+		newpixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, has_alpha, bits_per_sample, 150, height)
+		pixbuf.copy_area(0, 0, 150, height, newpixbuf, 0, 0)
+		newpixbuf.save(themedir+'/thumb.png', 'png')
+            
+    def install_theme(self, file):
+        goodTheme = False
+        customArrow = False
+        if tarfile.is_tarfile(file):
+            tar = tarfile.open(file, "r:gz")
+            for member in tar.getmembers():
+                if member.name.endswith(".awn-theme"):
+                    goodTheme = member.name                        
+                elif member.name.endswith("arrow.png"):
+                    customArrow = member.name
+            
+            if goodTheme:
+                tar.extractall(defs.HOME_THEME_DIR)
+                tar.close()
+                
+                themefile = os.path.join(defs.HOME_THEME_DIR, goodTheme)
+                (filename, fileext) = os.path.splitext(goodTheme)
+                themedir = os.path.join(defs.HOME_THEME_DIR, filename)
+                
+                config = ConfigParser()
+                config.read(themefile)
+                config.set('theme-info', 'Icon', themedir+'/thumb.png')
+                if customArrow:
+                    config.set("config/effects", 'arrow_icon', themedir+'/arrow.png')
+                f = open(themefile, "w")
+                config.write(f)
+                f.close()
+                self.add_uris_to_model(self.treeview_themes.get_model(),[themefile])
+        
+    def delete_theme(self):
+        model = self.treeview_themes.get_model()
+        selection = self.treeview_themes.get_selection()
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            themefile = model.get_value(iter, 2)
+            (themedir, fileExtension) = os.path.splitext(themefile)
+            if os.path.isdir(themedir):
+				shutil.rmtree(themedir)
+            if os.path.exists(themefile):
+                os.remove(themefile)
+            model.remove(iter)
+            self.deleteTheme.set_sensitive(False)
+            
 class awnTaskManager(awnBzr):
     
     def ding(self):
