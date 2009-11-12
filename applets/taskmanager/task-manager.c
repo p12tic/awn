@@ -1722,6 +1722,7 @@ process_window_opened (WnckWindow    *window,
     */
     gchar   *res_name = NULL;
     gchar   *class_name = NULL;
+    gchar   *client_name = NULL;
     gchar   *cmd;
     gchar   *full_cmd;
     gchar   *cmd_basename = NULL;
@@ -1737,11 +1738,23 @@ process_window_opened (WnckWindow    *window,
     
     icon = task_icon_new (AWN_APPLET (manager));
     task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);
-
+    task_window_get_wm_client(TASK_WINDOW (item), &client_name);
+    if (!client_name)
+    {
+      /*
+       WM_CLIENT_NAME is not necessarily set... in those case we'll assume 
+       that it's the host
+       */
+      gchar buffer[256];
+      gethostname (buffer, sizeof(buffer));
+      buffer [sizeof(buffer) - 1] = '\0';
+      client_name = g_strdup (buffer);
+    }
+    g_free (client_name);
 #ifdef DEBUG
+      g_debug ("client name is %s",client_name);    
       g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
 #endif      
-    
     id = get_special_id_from_window_data (cmd, res_name, class_name, wnck_window_get_name(window));
     found_desktop = search_desktop_cache (manager,TASK_ICON(icon),class_name,res_name,cmd_basename,id);
 /*

@@ -37,6 +37,10 @@ _wnck_get_wmclass (Window xwindow,
                    char **res_class,
                    char **res_name);
 
+void
+_wnck_get_client_name (Window xwindow, 
+                    char **client_name);
+
 GdkPixbuf *
 _wnck_get_icon_at_size (WnckWindow *window,
                         gint        width,

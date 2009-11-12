@@ -778,6 +778,25 @@ task_window_get_wm_class (TaskWindow    *window,
 }
 
 gboolean   
+task_window_get_wm_client (TaskWindow    *window,
+                          gchar        **client_name)
+{
+  g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
+ 
+  *client_name = NULL;
+  
+  if (WNCK_IS_WINDOW (window->priv->window))
+  {
+    _wnck_get_client_name (wnck_window_get_xid (window->priv->window),client_name);
+    
+    if (*client_name)
+      return TRUE;
+  }
+
+  return FALSE;
+}
+
+gboolean   
 task_window_is_active (TaskWindow    *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);

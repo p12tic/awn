@@ -87,6 +87,10 @@ gint            task_window_get_pid           (TaskWindow    *window);
 gboolean        task_window_get_wm_class      (TaskWindow    *window,
                                                gchar        **res_name,
                                                gchar        **class_name);
+
+gboolean        task_window_get_wm_client     (TaskWindow    *window,
+                                               gchar        **client_name);
+
 WnckApplication*task_window_get_application   (TaskWindow    *window);
 WnckWindow*     task_window_get_window        (TaskWindow    *window);
 
