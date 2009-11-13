@@ -1,5 +1,12 @@
 2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Disconnect a missed signal when ungrouping.
+	Removed some #if 0 'd code.
+
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Do not try to copy a TaskLauncher on ungroup if there isn't one to
 	copy.

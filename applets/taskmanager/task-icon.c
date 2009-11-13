@@ -1884,6 +1884,10 @@ task_icon_moving_item (TaskIcon *dest, TaskIcon *src, TaskItem *item)
   g_signal_handlers_disconnect_by_func (item,
                                         G_CALLBACK (on_window_progress_changed),
                                         src);
+  g_signal_handlers_disconnect_by_func (item,
+                                        G_CALLBACK (on_item_visible_changed),
+                                        src);
+  
   g_object_weak_unref (G_OBJECT (item), (GWeakNotify)_destroyed_task_item, src);
   task_icon_append_item (dest,item);  
   g_object_unref (item);  
