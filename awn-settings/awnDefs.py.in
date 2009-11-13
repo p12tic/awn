@@ -36,6 +36,7 @@ SYS_THEME_DIR = os.path.join (PREFIX, "share", "avant-window-navigator","themes"
 HOME_CUSTOM_ICONS_DIR = os.path.join(HOME_CONFIG_DIR, "custom-icons")
 VERSION = '@VERSION@'
 EXTRA_VERSION = '@EXTRA_VERSION@'
+THEME_VERSION = '0.4.0'
 
 #TODO update to real branches when stable
 DEFAULT_SOURCES_LIST = [[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local'], [SYS_APPLET_DIR,'local'], [HOME_APPLET_DIR,'local']]

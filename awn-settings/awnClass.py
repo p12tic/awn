@@ -1606,10 +1606,7 @@ class awnThemeCustomize(awnBzr):
         if os.path.exists(themedir):
             self.hide_export_dialog(None)
             msg = themedir+" already exists, unable to export theme."
-            message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE, message_format=msg)
-            resp = message.run()
-            if resp == gtk.RESPONSE_CLOSE:
-                message.destroy()
+            self.theme_message(msg)
             return
                     
         os.mkdir(themedir)
@@ -1657,15 +1654,29 @@ class awnThemeCustomize(awnBzr):
                     customArrow = member.name
             
             if goodTheme:
-                tar.extractall(defs.HOME_THEME_DIR)
-                tar.close()
-                
                 themefile = os.path.join(defs.HOME_THEME_DIR, goodTheme)
                 (filename, fileext) = os.path.splitext(goodTheme)
                 themedir = os.path.join(defs.HOME_THEME_DIR, filename)
                 
+                if os.path.exists(themefile):
+                    msg = "Theme already installed, do you wish to overwrite it?"
+                    message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_YES_NO, message_format=msg)
+                    resp = message.run()
+                    if resp != gtk.RESPONSE_YES:
+                        message.destroy()  
+                        return
+                    else:
+                        model = self.treeview_themes.get_model()
+                        model.foreach(self.search_treeview, themefile)
+                        message.destroy()
+                
+                tar.extractall(defs.HOME_THEME_DIR)
+                tar.close()
+                 
                 config = ConfigParser()
                 config.read(themefile)
+                self.check_version(config.get('theme-info', 'Awn-Theme-Version'))
+                
                 config.set('theme-info', 'Icon', themedir+'/thumb.png')
                 if customArrow:
                     config.set("config/effects", 'arrow_icon', themedir+'/arrow.png')
@@ -1673,7 +1684,10 @@ class awnThemeCustomize(awnBzr):
                 config.write(f)
                 f.close()
                 self.add_uris_to_model(self.treeview_themes.get_model(),[themefile])
-        
+            else:
+                msg = "This is an incompatible theme file."
+                self.theme_message(msg)
+                
     def delete_theme(self):
         model = self.treeview_themes.get_model()
         selection = self.treeview_themes.get_selection()
@@ -1687,7 +1701,31 @@ class awnThemeCustomize(awnBzr):
                 os.remove(themefile)
             model.remove(iter)
             self.deleteTheme.set_sensitive(False)
-            
+    
+    def check_version(self, version):   
+        req_version = defs.THEME_VERSION.split('.')
+        version = version.split('.')
+        if version[0] < req_version[0]:
+            print "Major version is low"
+        else:
+            if version[1] < req_version[1]:
+                print "Minor version is low"
+            else:
+                if version[2] < req_version[2]:
+                    print "Micro version is low"
+        
+    def theme_message(self, msg):
+        message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE, message_format=msg)
+        resp = message.run()
+        if resp == gtk.RESPONSE_CLOSE:
+            message.destroy()
+    
+    def search_treeview(self, model, path, iter, filename=None):
+        if model.get_value(iter, 2) == filename:
+            model.remove(iter)
+            return True
+        
+                                   
 class awnTaskManager(awnBzr):
     
     def ding(self):

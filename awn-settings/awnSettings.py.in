@@ -584,12 +584,13 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 		author = self.themeExportAuthor.get_text()
 		version = self.themeExportVersion.get_text()
 		
-		if not len( name ): return 0 
+		if not len( name ) or not len( author ) or not len( version ): return 0 
 		
 		config.set("theme-info", "Name", name)
 		config.set("theme-info", "Icon", 'thumb.png')
 		config.set("theme-info", "Author", author)
 		config.set("theme-info", "Version", version)
+		config.set("theme-info", "Awn-Theme-Version", defs.THEME_VERSION)
 		
 		#Write config file
 		theme_settings = [
@@ -636,6 +637,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                                    buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_SAVE,gtk.RESPONSE_OK))
 		fc.set_current_folder(os.path.expanduser('~'))
 		fc.set_default_response(gtk.RESPONSE_OK)
+		fc.set_current_name(filename+'.tgz')
 		fc.set_current_name(filename+'.tgz')
 		filter = gtk.FileFilter()
 		filter.set_name('Awn Theme')
