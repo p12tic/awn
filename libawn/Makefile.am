@@ -33,6 +33,7 @@ public_headers = \
 	awn-box.h \
 	awn-cairo-utils.h \
 	awn-config.h \
+	awn-dbus-watcher.h \
 	awn-dialog.h \
 	awn-effects.h \
 	awn-icon.h \
@@ -99,6 +100,7 @@ source_c = \
 	awn-box.c \
 	awn-cairo-utils.c \
 	awn-config.c \
+	awn-dbus-watcher.c \
 	awn-dialog.c \
 	awn-effects.c \
 	awn-effects-ops-new.c \

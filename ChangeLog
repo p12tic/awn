@@ -1,3 +1,16 @@
+2009-11-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/Makefile.am:
+	* libawn/awn-dbus-watcher.c:
+	* libawn/awn-dbus-watcher.h:
+	* libawn/libawn.h:
+	* src/Makefile.am:
+	* src/awn-panel.c:
+	Move AwnDBusWatcher to libawn.
+
 2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:

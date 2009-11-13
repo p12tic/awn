@@ -617,9 +617,9 @@
 		</object>
 		<object name="AwnBox" parent="GtkBox" type-name="AwnBox" get-type="awn_box_get_type">
 			<implements>
-				<interface name="GtkOrientable"/>
 				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="GtkOrientable"/>
 			</implements>
 			<constructor name="new" symbol="awn_box_new">
 				<return-type type="GtkWidget*"/>
@@ -643,6 +643,25 @@
 			</method>
 			<property name="orientation" type="GtkOrientation" readable="1" writable="1" construct="0" construct-only="0"/>
 		</object>
+		<object name="AwnDBusWatcher" parent="GObject" type-name="AwnDBusWatcher" get-type="awn_dbus_watcher_get_type">
+			<method name="get_default" symbol="awn_dbus_watcher_get_default">
+				<return-type type="AwnDBusWatcher*"/>
+			</method>
+			<signal name="name-appeared" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="watcher" type="AwnDBusWatcher*"/>
+					<parameter name="name" type="char*"/>
+				</parameters>
+			</signal>
+			<signal name="name-disappeared" when="FIRST">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="watcher" type="AwnDBusWatcher*"/>
+					<parameter name="name" type="char*"/>
+				</parameters>
+			</signal>
+		</object>
 		<object name="AwnDialog" parent="GtkWindow" type-name="AwnDialog" get-type="awn_dialog_get_type">
 			<implements>
 				<interface name="AtkImplementor"/>
@@ -654,7 +673,6 @@
 					<parameter name="dialog" type="AwnDialog*"/>
 				</parameters>
 			</method>
-
 			<constructor name="new" symbol="awn_dialog_new">
 				<return-type type="GtkWidget*"/>
 			</constructor>
@@ -1056,9 +1074,9 @@
 		</object>
 		<object name="AwnIconBox" parent="AwnBox" type-name="AwnIconBox" get-type="awn_icon_box_get_type">
 			<implements>
-				<interface name="GtkOrientable"/>
 				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="GtkOrientable"/>
 			</implements>
 			<constructor name="new" symbol="awn_icon_box_new">
 				<return-type type="GtkWidget*"/>

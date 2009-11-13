@@ -33,7 +33,6 @@
 #include <dbus/dbus-glib-lowlevel.h>
 
 #include <libawn/libawn.h>
-#include <libawn/awn-utils.h>
 
 #include "awn-panel.h"
 
@@ -44,7 +43,6 @@
 #include "awn-background-curves.h"
 #include "awn-background-edgy.h"
 #include "awn-background-floaty.h"
-#include "awn-dbus-watcher.h"
 #include "awn-defines.h"
 #include "awn-marshal.h"
 #include "awn-monitor.h"
@@ -778,6 +776,12 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
     return;
 
   gtk_widget_size_request (child, &child_requisition);
+
+  // limit our max width/height
+  child_requisition.width = MIN (child_requisition.width,
+                                 priv->monitor->width);
+  child_requisition.height = MIN (child_requisition.height,
+                                  priv->monitor->height);
 
   gint size = priv->size + priv->offset + priv->extra_padding;
 

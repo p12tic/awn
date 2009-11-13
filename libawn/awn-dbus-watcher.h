@@ -61,9 +61,9 @@ struct _AwnDBusWatcherClass
   GObjectClass    parent_class;
 
   /*< signals >*/
-  void (*connection_opened) (AwnDBusWatcher* watcher,
+  void (*name_appeared) (AwnDBusWatcher* watcher,
                              gchar* name);
-  void (*connection_closed) (AwnDBusWatcher* watcher,
+  void (*name_disappeared) (AwnDBusWatcher* watcher,
                              gchar* name);
   void (*_awn_dbus_watcher_1) (void);
   void (*_awn_dbus_watcher_2) (void);

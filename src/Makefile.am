@@ -43,8 +43,6 @@ avant_window_navigator_SOURCES =	\
 	awn-background-floaty.c \
 	awn-background-floaty.h \
 	awn-defines.h \
-	awn-dbus-watcher.c \
-	awn-dbus-watcher.h \
 	$(builddir)/awn-marshal.c \
 	$(builddir)/awn-marshal.h \
 	awn-monitor.c \

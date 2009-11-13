@@ -138,13 +138,19 @@ namespace Awn {
 		public virtual signal void middle_clicked ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Box : Gtk.Box, Gtk.Orientable, Atk.Implementor, Gtk.Buildable {
+	public class Box : Gtk.Box, Atk.Implementor, Gtk.Buildable, Gtk.Orientable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Box (Gtk.Orientation orient);
 		public void set_orientation (Gtk.Orientation orient);
 		public void set_orientation_from_pos_type (Gtk.PositionType pos_type);
 		[NoAccessorMethod]
 		public Gtk.Orientation orientation { get; set; }
+	}
+	[CCode (cheader_filename = "libawn/libawn.h")]
+	public class DBusWatcher : GLib.Object {
+		public static unowned Awn.DBusWatcher get_default ();
+		public virtual signal void name_appeared (string name);
+		public virtual signal void name_disappeared (string name);
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Dialog : Gtk.Window, Atk.Implementor, Gtk.Buildable {
@@ -304,7 +310,7 @@ namespace Awn {
 		public virtual signal void size_changed ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class IconBox : Awn.Box, Gtk.Orientable, Atk.Implementor, Gtk.Buildable {
+	public class IconBox : Awn.Box, Atk.Implementor, Gtk.Buildable, Gtk.Orientable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public IconBox ();
 		[CCode (type = "GtkWidget*", has_construct_function = false)]

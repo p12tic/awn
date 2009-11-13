@@ -29,6 +29,7 @@
 #include <libawn/awn-box.h>
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config.h>
+#include <libawn/awn-dbus-watcher.h>
 #include <libawn/awn-defines.h>
 #include <libawn/awn-dialog.h>
 #include <libawn/awn-effects.h>
@@ -46,7 +47,8 @@
 #include <libawn/awn-overlay-text.h>
 #include <libawn/awn-overlay-throbber.h>
 #include <libawn/awn-themed-icon.h>
-#include <libawn/awn-tooltip.h> 
+#include <libawn/awn-tooltip.h>
+#include <libawn/awn-utils.h>
 
 #endif /* < __LIBAWN_H__ /> */
 

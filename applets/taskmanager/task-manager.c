@@ -2523,7 +2523,7 @@ task_manager_get_capabilities (TaskManager *manager,
     "icon-file",
     "progress",
     "message",
-    "visible", // FIXME: uncomment once it's implemented
+    "visible",
     NULL
   };
 
@@ -2998,6 +2998,10 @@ task_manager_update (TaskManager *manager,
   else if (G_VALUE_HOLDS_INT64 (window))
   {
     matched_window = _match_xid (manager, g_value_get_int64 (window));
+  }
+  else if (G_VALUE_HOLDS_INT (window))
+  {
+    matched_window = _match_xid (manager, g_value_get_int (window));
   }
   else
   {
