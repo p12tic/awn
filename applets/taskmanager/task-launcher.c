@@ -264,7 +264,7 @@ task_launcher_init (TaskLauncher *launcher)
 }
 
 TaskItem * 
-task_launcher_new_for_desktop_file (const gchar *path)
+task_launcher_new_for_desktop_file (AwnApplet * applet, const gchar *path)
 {
   TaskItem *item = NULL;
 
@@ -272,6 +272,7 @@ task_launcher_new_for_desktop_file (const gchar *path)
     return NULL;
 
   item = g_object_new (TASK_TYPE_LAUNCHER,
+                       "applet",applet,
                        "desktopfile", path,
                        NULL);
 
@@ -584,6 +585,10 @@ _match (TaskItem *item,
   GTimeVal timeval;
   gchar * id = NULL;
   gint    result = 0;
+  gchar buffer[256];
+  gchar * client_name = NULL;
+  gchar * client_name_to_match = NULL;
+  gboolean ignore_wm_client_name;
     
   g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
 
@@ -598,6 +603,36 @@ _match (TaskItem *item,
   priv->timestamp = 0;
   window = TASK_WINDOW (item_to_match);
 
+  g_object_get (item,
+                "ignore_wm_client_name",&ignore_wm_client_name,
+                NULL);
+  if (!ignore_wm_client_name)
+  {
+    gethostname (buffer, sizeof(buffer));
+    buffer [sizeof(buffer) - 1] = '\0';
+    client_name = g_strdup (buffer);
+    task_window_get_wm_client(TASK_WINDOW (item_to_match), &client_name_to_match);
+    if (!client_name_to_match)
+    {
+      /*
+       WM_CLIENT_NAME is not necessarily set... in those case we'll assume 
+       that it's the host
+       */
+      gethostname (buffer, sizeof(buffer));
+      buffer [sizeof(buffer) - 1] = '\0';
+      client_name_to_match = g_strdup (buffer);
+    }
+    if (g_strcmp0(client_name,client_name_to_match)!=0)
+    {
+      g_debug ("%s: different client names: %s, %s",__func__,client_name,client_name_to_match);
+      g_free (client_name_to_match);
+      g_free (client_name);      
+      return 0;
+    }
+    g_free (client_name_to_match);
+    g_free (client_name);  
+  }
+  
   pid = task_window_get_pid(window);
   glibtop_get_proc_uid (&buf_proc_uid,pid);
   glibtop_get_proc_uid (&ppid_buf_proc_uid,buf_proc_uid.ppid);  

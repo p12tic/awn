@@ -1,3 +1,20 @@
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-launcher.h:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	No longer group windows with different WM_CLIENT_NAME by default.
+	There is a config key.  I'm expecting this will break in certain 
+	configurations.  The default will change if this occurs.
+	If no WM_CLIENT_NAME is available then using assume it's the local
+	hostname (gethostname()).
+	As consequence changed of this addition, constructor for TaskLauncher
+	was changed and the applet prop of TaskIcon was made readable.
+
 2009-11-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

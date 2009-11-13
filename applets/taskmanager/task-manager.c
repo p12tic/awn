@@ -1088,12 +1088,13 @@ icon_closed (TaskManager *manager, GObject *old_icon)
 
 
 static TaskItem *
-get_launcher(gchar * desktop)
+get_launcher(TaskManager * manager, gchar * desktop)
 {
   TaskItem     *launcher = NULL;  
   DesktopAgnosticFDODesktopEntry *entry=NULL;
   DesktopAgnosticVFSFile *file;
 
+  g_assert (TASK_IS_MANAGER (manager));
   file = desktop_agnostic_vfs_file_new_for_path (desktop, NULL);
   if (file)
   {
@@ -1108,7 +1109,7 @@ get_launcher(gchar * desktop)
     gboolean key_exists = desktop_agnostic_fdo_desktop_entry_key_exists (entry,"NoDisplay");
     if (!key_exists || !desktop_agnostic_fdo_desktop_entry_get_boolean (entry,"NoDisplay"))
     {
-      launcher = task_launcher_new_for_desktop_file (desktop);
+      launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),desktop);
     }
     g_object_unref (entry);                                                    
   }
@@ -1143,7 +1144,9 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
   TaskItem     *launcher = NULL;
   GDir      * dir;
   gchar     * result;
- 
+  AwnApplet * applet;
+
+  g_assert (TASK_IS_ICON(icon));
   if (check_if_blacklisted(name) )
   {
     return NULL;
@@ -1153,7 +1156,11 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
 #ifdef DEBUG
   g_debug ("%s: desktop = %s",__func__,desktop);
 #endif      
-  launcher = get_launcher(desktop);  
+  g_object_get (icon,
+                "applet",&applet,
+                NULL);
+  launcher = get_launcher(TASK_MANAGER(applet),desktop);
+  g_object_unref (applet);
   if (launcher)
   {
 #ifdef DEBUG
@@ -1192,7 +1199,11 @@ task_icon_check_system_dir_for_desktop (TaskIcon *icon,
         filename_lower = g_utf8_strdown (desktop, -1);
         if ( g_strrstr (filename_lower,name_desktop) )
         {
-          launcher = get_launcher(desktop);
+          g_object_get (icon,
+                        "applet",&applet,
+                        NULL);
+          launcher = get_launcher(TASK_MANAGER(applet),desktop);
+          g_object_unref (applet);
           if (launcher)
           {
 #ifdef DEBUG
@@ -1230,6 +1241,7 @@ find_desktop (TaskIcon *icon, gchar * name)
   gchar * name_stripped = NULL;
   const gchar * extensions[] = { ".py",".pl",".exe",NULL};
   gchar * result;
+  AwnApplet * applet = NULL;
   
   g_return_val_if_fail (name,FALSE);
   
@@ -1288,7 +1300,11 @@ find_desktop (TaskIcon *icon, gchar * name)
 #ifdef DEBUG  
   g_debug ("%s: local desktop search = %s",__func__,desktop);
 #endif
-  launcher = get_launcher (desktop);
+  g_object_get (icon,
+                "applet",&applet,
+                NULL);
+  launcher = get_launcher(TASK_MANAGER(applet),desktop);
+  g_object_unref (applet);
   if (launcher)
   {
 #ifdef DEBUG
@@ -1356,6 +1372,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
   GStrv   iter;
   TaskItem     *launcher = NULL;
   gchar ** tokens;
+  AwnApplet * applet;
   
   g_return_val_if_fail (class_name,NULL);
   lower = g_utf8_strdown (class_name, -1);
@@ -1466,7 +1483,11 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
 #endif              
             if ( g_regex_match_simple (exec_regex_escaped, cmd,G_REGEX_CASELESS,0) )              
             {
-              launcher = get_launcher (full_path);
+              g_object_get (icon,
+                            "applet",&applet,
+                            NULL);
+              launcher = get_launcher(TASK_MANAGER(applet),full_path);
+              g_object_unref (applet);
               if (launcher)
               {
                 task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
@@ -1560,7 +1581,7 @@ search_desktop_cache (TaskManager * manager, TaskIcon * icon,gchar * class_name,
 
   if (desktop_path)
   {
-    launcher = get_launcher (desktop_path);
+    launcher = get_launcher (manager,desktop_path);
     if (launcher)
     {
       task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);      
@@ -2142,7 +2163,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       TaskItem  *launcher = NULL;
       GtkWidget *icon;
 
-      launcher = task_launcher_new_for_desktop_file (path);
+      launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),path);
       
       if (launcher)
       {

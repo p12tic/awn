@@ -35,12 +35,14 @@ struct _TaskItemPrivate
 
   TaskIcon *task_icon;
   AwnApplet * applet;
+  gboolean  ignore_wm_client_name;
 };
 
 enum
 {
   PROP_0,
-  PROP_APPLET
+  PROP_APPLET,
+  PROP_IGNORE_WM_CLIENT_NAME
 };
 
 enum
@@ -80,6 +82,9 @@ task_item_get_property (GObject    *object,
     case PROP_APPLET:
       g_value_set_object (value,priv->applet);
       break;
+    case PROP_IGNORE_WM_CLIENT_NAME:
+      g_value_set_boolean (value,priv->ignore_wm_client_name);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -98,7 +103,10 @@ task_item_set_property (GObject      *object,
   {
     case PROP_APPLET:
       priv->applet = g_value_get_object (value);
-      break;      
+      break;
+    case PROP_IGNORE_WM_CLIENT_NAME:
+      priv->ignore_wm_client_name = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -164,11 +172,28 @@ task_item_constructed (GObject *object)
 {
   TaskItemClass *klass;  
   klass = TASK_ITEM_GET_CLASS (object);  
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client;
+  TaskItemPrivate *priv = TASK_ITEM(object)->priv;
+  
   g_return_if_fail (klass->is_visible);
   
   if (G_OBJECT_CLASS (task_item_parent_class)->constructed)
   {
     G_OBJECT_CLASS (task_item_parent_class)->constructed (object);
+  }
+
+  g_assert (priv->applet);
+  client = awn_config_get_default_for_applet (priv->applet, &error);
+  desktop_agnostic_config_client_bind (client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "ignore_wm_client_name", object, "ignore_wm_client_name", 
+                                       TRUE,DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       &error);
+  if (error)
+  {
+    g_warning ("Could not bind property ignore_wm_client_name:%s",error->message);
+    g_error_free (error);
   }
 
   /* connect to signals */
@@ -235,15 +260,22 @@ task_item_class_init (TaskItemClass *klass)
 			      G_STRUCT_OFFSET (TaskItemClass, visible_changed),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__BOOLEAN, 
-			      G_TYPE_NONE, 
+			      G_TYPE_NONE,
+            1, G_TYPE_BOOLEAN);
 
-                  1, G_TYPE_BOOLEAN);
   pspec = g_param_spec_object ("applet",
                                "Applet",
                                "AwnApplet this item belongs to",
                                AWN_TYPE_APPLET,
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_APPLET, pspec);
+
+  pspec = g_param_spec_boolean ("ignore_wm_client_name",
+                               "Ignore WM_CLIENT_NAME",
+                               "Ignore WM_CLIENT_NAME for grouping purposes",
+                               FALSE,
+                               G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_IGNORE_WM_CLIENT_NAME, pspec);
 
   g_type_class_add_private (obj_class, sizeof (TaskItemPrivate));
 }

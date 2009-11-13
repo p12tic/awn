@@ -64,7 +64,8 @@ struct _TaskLauncherClass
 
 GType           task_launcher_get_type             (void) G_GNUC_CONST;
 
-TaskItem      * task_launcher_new_for_desktop_file (const gchar    *path);
+TaskItem      * task_launcher_new_for_desktop_file (AwnApplet * applet,
+                                                     const gchar    *path);
 
 const gchar   * task_launcher_get_desktop_path     (TaskLauncher   *launcher);
 

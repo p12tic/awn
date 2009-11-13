@@ -284,6 +284,9 @@ task_icon_get_property (GObject    *object,
 
   switch (prop_id)
   {
+    case PROP_APPLET:
+      g_value_set_object (value,priv->applet);
+      break;    
     case PROP_DRAGGABLE:
       g_value_set_boolean (value, priv->draggable); 
       break;
@@ -758,7 +761,7 @@ task_icon_class_init (TaskIconClass *klass)
                                "Applet",
                                "AwnApplet this icon belongs to",
                                AWN_TYPE_APPLET,
-                               G_PARAM_CONSTRUCT_ONLY | G_PARAM_WRITABLE);
+                               G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_APPLET, pspec);
 
   pspec = g_param_spec_boolean ("draggable",
@@ -2498,7 +2501,8 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
         if (TASK_IS_WINDOW (item))
         {
           GtkWidget * new_icon = task_icon_new (AWN_APPLET (priv->applet));
-          TaskItem * new_launcher = task_launcher_new_for_desktop_file ( task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)));
+          TaskItem * new_launcher = task_launcher_new_for_desktop_file ( priv->applet,
+                                                                        task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)));
 
           if (new_launcher)
           {
