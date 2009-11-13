@@ -1,3 +1,9 @@
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Do not try to copy a TaskLauncher on ungroup if there isn't one to
+	copy.
+
 2009-11-13  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/awn.defs:

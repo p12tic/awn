@@ -2501,9 +2501,13 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
         if (TASK_IS_WINDOW (item))
         {
           GtkWidget * new_icon = task_icon_new (AWN_APPLET (priv->applet));
-          TaskItem * new_launcher = task_launcher_new_for_desktop_file ( priv->applet,
-                                                                        task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)));
+          TaskItem * new_launcher = NULL;
 
+          if (launcher)
+          {
+            new_launcher = task_launcher_new_for_desktop_file ( priv->applet,
+                           task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)));
+          }
           if (new_launcher)
           {
             task_icon_append_ephemeral_item (TASK_ICON (new_icon), new_launcher);
