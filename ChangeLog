@@ -2,6 +2,13 @@
 
 	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/task-window.c:
+	Implemented the hidden list for visible.  Still buggy.  Some
+	aspects of behaviour need to be defined.
+
+2009-11-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
   	* applets/taskmanager/task-window.h:
   	* applets/taskmanager/xutils.c:
   	* applets/taskmanager/xutils.h:

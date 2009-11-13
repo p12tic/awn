@@ -88,6 +88,9 @@ struct _TaskManagerPrivate
   GtkWidget  *box;
   GSList     *icons;
   GSList     *windows;
+  /*list of window res_names that are to be hidden*/
+  GList      *hidden_list;
+  
   GHashTable *win_table;
   GHashTable *desktops_table;
 
@@ -575,6 +578,7 @@ task_manager_init (TaskManager *manager)
 
   priv->screen = wnck_screen_get_default ();
   priv->launcher_paths = NULL;
+  priv->hidden_list = NULL;
 
   wnck_set_client_type (WNCK_CLIENT_TYPE_PAGER);
 
@@ -1711,7 +1715,21 @@ process_window_opened (WnckWindow    *window,
        &&
        ( max_match_score > 99-priv->match_strength))
   {
+    gchar * res_name=NULL;
+    gchar * class_name=NULL;
+    task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);    
     task_icon_append_item (match, item);
+    /*see if the new window is on the hidden_list*/
+    for (GList *iter=priv->hidden_list;iter;iter=g_list_next(iter) )
+    {
+      if (  (g_strcmp0(iter->data,res_name)==0)||
+          (g_strcmp0(iter->data,class_name)==0) )
+      {
+        task_window_set_hidden (TASK_WINDOW(item),TRUE);
+      }
+    }
+    g_free (res_name);
+    g_free (class_name);
   }
   else
   {
@@ -1755,6 +1773,17 @@ process_window_opened (WnckWindow    *window,
       g_debug ("client name is %s",client_name);    
       g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
 #endif      
+
+    /*see if the new window is on the hidden_list*/
+    for (GList *iter=priv->hidden_list;iter;iter=g_list_next(iter) )
+    {
+      if ( (g_strcmp0(iter->data,res_name)==0)||
+          (g_strcmp0(iter->data,class_name)==0) )
+      {
+        task_window_set_hidden (TASK_WINDOW(item),TRUE);
+      }
+    }
+    
     id = get_special_id_from_window_data (cmd, res_name, class_name, wnck_window_get_name(window));
     found_desktop = search_desktop_cache (manager,TASK_ICON(icon),class_name,res_name,cmd_basename,id);
 /*
@@ -2473,7 +2502,7 @@ task_manager_get_capabilities (TaskManager *manager,
     "icon-file",
     "progress",
     "message",
-    //"visible", // FIXME: uncomment once it's implemented
+    "visible", // FIXME: uncomment once it's implemented
     NULL
   };
 
@@ -2932,7 +2961,7 @@ task_manager_update (TaskManager *manager,
 
     return FALSE;
   }
-
+  
   if (matched_window)
   {
     GHashTableIter iter;
@@ -3023,6 +3052,29 @@ task_manager_update (TaskManager *manager,
       {
         gboolean visible = g_value_get_boolean (value);
         g_debug ("%s: %d",__func__,visible);
+        if (G_VALUE_HOLDS_STRING (window))
+        {
+          GList * needle = g_list_find_custom (priv->hidden_list,
+                                               g_value_get_string(window),
+                                               (GCompareFunc)g_strcmp0);
+          g_debug ("%s:  needle = %p",__func__,needle);
+          if (visible)
+          {
+            if (needle)
+            {
+              g_free (needle->data);
+              priv->hidden_list = g_list_delete_link (priv->hidden_list,needle);
+            }
+          }
+          else
+          {
+            if (!needle)
+            {
+              g_debug ("%s:  appending %s",__func__,g_value_get_string(window));
+              priv->hidden_list = g_list_append (priv->hidden_list, g_value_dup_string(window));
+            }
+          }
+        }
         task_window_set_hidden (TASK_WINDOW(matched_window),!visible);
       }
       else
@@ -3035,12 +3087,50 @@ task_manager_update (TaskManager *manager,
   }
   else
   {
-    g_set_error (error,
+    GHashTableIter iter;
+    gpointer key, value;
+    gboolean null_op = TRUE;
+
+    g_hash_table_iter_init (&iter, hints);
+    while (g_hash_table_iter_next (&iter, &key, &value)) 
+    {
+      gchar *key_name = (gchar *)key;
+      if (strcmp ("visible", key_name) == 0)
+      {
+        gboolean visible = g_value_get_boolean (value);
+        null_op = FALSE;
+        if (G_VALUE_HOLDS_STRING (window))
+        {
+          GList * needle = g_list_find_custom (priv->hidden_list,
+                                               g_value_get_string(window),
+                                               (GCompareFunc)g_strcmp0);          
+          if (visible)
+          {
+            if (needle)
+            {
+              g_free (needle->data);
+              priv->hidden_list = g_list_delete_link (priv->hidden_list,needle);
+            }
+          }
+          else
+          {
+            if (!needle)
+            {
+              priv->hidden_list = g_list_append (priv->hidden_list, g_value_dup_string(window));
+            }
+          }
+        }
+      }
+    }
+    if (null_op)
+    {
+      g_set_error (error,
                  task_manager_error_quark (),
                  TASK_MANAGER_ERROR_NO_WINDOW_MATCH,
                  "No matching window found to update.");
-
-    return FALSE;
+      return FALSE;
+    }
+    return TRUE;
   }
 }
 
