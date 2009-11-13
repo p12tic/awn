@@ -476,12 +476,6 @@ awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
       applet = NULL;
 
       awn_applet_manager_refresh_applets (manager);
-
-      if (!priv->expands)
-      {
-        priv->expands = TRUE;
-        g_object_notify (G_OBJECT (manager), "expands");
-      }
     }
     if ((flags & AWN_APPLET_IS_SEPARATOR) && AWN_IS_APPLET_PROXY (applet))
     {
@@ -690,30 +684,58 @@ create_applet (AwnAppletManager *manager,
 {
   AwnAppletManagerPrivate *priv = manager->priv;
   GtkWidget               *applet;
-  GtkWidget               *notifier;
+  GtkWidget               *widget;
+  gboolean                 expand = FALSE;
+  gboolean                 fill = FALSE;
 
   /*FIXME: Exception cases, i.e. separators */
-  
-  applet = awn_applet_proxy_new (path, uid, priv->position,
-                                 priv->offset, priv->size);
-  g_signal_connect_swapped (applet, "plug-added",
-                            G_CALLBACK (_applet_plug_added), manager);
-  g_signal_connect_swapped (applet, "applet-crashed",
-                            G_CALLBACK (_applet_crashed), manager);
-  notifier = awn_applet_proxy_get_throbber (AWN_APPLET_PROXY (applet));
-
-  gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (manager), notifier, FALSE, FALSE, 0);
-  if (priv->docklet_mode == FALSE)
+  if (g_str_has_suffix (path, "/separator.desktop"))
   {
-    gtk_widget_show (notifier);
+    widget = applet = awn_separator_new_from_config_with_values (priv->client,
+        priv->position, priv->size, priv->offset);
+    fill = TRUE;
+  }
+  else if (g_str_has_suffix (path, "/expander.desktop"))
+  {
+    widget = applet = gtk_image_new ();
+
+    priv->expander_count++;
+
+    expand = TRUE;
+    fill = TRUE;
+  }
+  else
+  {
+    // standard applet
+    applet = awn_applet_proxy_new (path, uid, priv->position,
+                                   priv->offset, priv->size);
+    g_signal_connect_swapped (applet, "plug-added",
+                              G_CALLBACK (_applet_plug_added), manager);
+    g_signal_connect_swapped (applet, "applet-crashed",
+                              G_CALLBACK (_applet_crashed), manager);
+    widget = awn_applet_proxy_get_throbber (AWN_APPLET_PROXY (applet));
+
+    gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
+
+    awn_applet_proxy_schedule_execute (AWN_APPLET_PROXY (applet));
   }
 
-  g_object_set_qdata (G_OBJECT (applet), 
+  gtk_box_pack_start (GTK_BOX (manager), widget, expand, fill, 0);
+
+  if (priv->docklet_mode == FALSE)
+  {
+    gtk_widget_show (widget);
+  }
+  else
+  {
+    // set as visible when show_applets will be called
+    g_object_set_qdata (G_OBJECT (widget),
+                        priv->visibility_quark, GINT_TO_POINTER (1));
+  }
+
+  g_object_set_qdata (G_OBJECT (applet),
                       priv->touch_quark, GINT_TO_POINTER (0));
   g_hash_table_insert (priv->applets, g_strdup (uid), applet);
-
-  awn_applet_proxy_schedule_execute (AWN_APPLET_PROXY (applet));
 
   return applet;
 }
@@ -867,6 +889,12 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
 
   /* Delete applets that have been removed from the list */
   g_hash_table_foreach_remove (priv->applets, (GHRFunc)delete_applets, manager);
+
+  if (!priv->expands && priv->expander_count > 0)
+  {
+    priv->expands = TRUE;
+    g_object_notify (G_OBJECT (manager), "expands");
+  }
 }
 
 void
