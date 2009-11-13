@@ -36,6 +36,13 @@
   (gtype-id "AWN_TYPE_BOX")
 )
 
+(define-object DBusWatcher
+  (in-module "Awn")
+  (parent "GObject")
+  (c-name "AwnDBusWatcher")
+  (gtype-id "AWN_TYPE_DBUS_WATCHER")
+)
+
 (define-object Dialog
   (in-module "Awn")
   (parent "GtkWindow")
@@ -220,6 +227,14 @@
     '("desaturate" "AWN_EFFECT_DESATURATE")
   )
 )
+
+;; From awn-dbus-watcher.h
+
+(define-function dbus_watcher_get_default
+  (c-name "awn_dbus_watcher_get_default")
+  (return-type "AwnDBusWatcher*")
+)
+
 
 ;; From awn-dialog.h
 
