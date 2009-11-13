@@ -865,7 +865,6 @@ task_window_set_hidden (TaskWindow *window,gboolean hidden)
   g_return_if_fail (TASK_IS_WINDOW(window));
   priv=window->priv;
 
-  g_debug ("%s: %d %d, %p",__func__,hidden,priv->in_workspace,priv->workspace);
   priv->hidden = hidden;
   if (priv->in_workspace && !hidden)
   {

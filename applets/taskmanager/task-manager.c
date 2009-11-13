@@ -1599,6 +1599,29 @@ task_manager_add_icon(TaskManager *manager, TaskIcon * icon)
 }  
 
 static void
+task_manager_check_for_hidden (TaskManager * manager, TaskWindow * item)
+{
+  TaskManagerPrivate *priv;
+  priv = manager->priv;
+
+  /*see if the new window is on the hidden_list*/
+  gchar * res_name=NULL;
+  gchar * class_name=NULL;
+  task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);    
+  /*see if the new window is on the hidden_list*/
+  for (GList *iter=priv->hidden_list;iter;iter=g_list_next(iter) )
+  {
+    if (  (g_strcmp0(iter->data,res_name)==0)||
+        (g_strcmp0(iter->data,class_name)==0) )
+    {
+      task_window_set_hidden (TASK_WINDOW(item),TRUE);
+    }
+  }
+  g_free (res_name);
+  g_free (class_name);
+}
+
+static void
 process_window_opened (WnckWindow    *window,
                   TaskManager   *manager)
 {
@@ -1709,27 +1732,15 @@ process_window_opened (WnckWindow    *window,
    and 
    the matching meets the match strength
    */
+  task_manager_check_for_hidden (manager,TASK_WINDOW(item));
+
   if  (match
        &&
        (priv->grouping || ( (task_icon_count_items(match)==1) && (task_icon_contains_launcher (match)) ) ) 
        &&
        ( max_match_score > 99-priv->match_strength))
   {
-    gchar * res_name=NULL;
-    gchar * class_name=NULL;
-    task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);    
     task_icon_append_item (match, item);
-    /*see if the new window is on the hidden_list*/
-    for (GList *iter=priv->hidden_list;iter;iter=g_list_next(iter) )
-    {
-      if (  (g_strcmp0(iter->data,res_name)==0)||
-          (g_strcmp0(iter->data,class_name)==0) )
-      {
-        task_window_set_hidden (TASK_WINDOW(item),TRUE);
-      }
-    }
-    g_free (res_name);
-    g_free (class_name);
   }
   else
   {
@@ -1773,17 +1784,6 @@ process_window_opened (WnckWindow    *window,
       g_debug ("client name is %s",client_name);    
       g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
 #endif      
-
-    /*see if the new window is on the hidden_list*/
-    for (GList *iter=priv->hidden_list;iter;iter=g_list_next(iter) )
-    {
-      if ( (g_strcmp0(iter->data,res_name)==0)||
-          (g_strcmp0(iter->data,class_name)==0) )
-      {
-        task_window_set_hidden (TASK_WINDOW(item),TRUE);
-      }
-    }
-    
     id = get_special_id_from_window_data (cmd, res_name, class_name, wnck_window_get_name(window));
     found_desktop = search_desktop_cache (manager,TASK_ICON(icon),class_name,res_name,cmd_basename,id);
 /*
@@ -2931,6 +2931,32 @@ task_manager_error_get_type (void)
   return etype;
 }
 
+static void
+task_manager_set_windows_visibility (TaskManager *manager,const gchar * name,gboolean visible)
+{
+  GSList * iter;
+  TaskManagerPrivate *priv;
+
+  priv = manager->priv;
+  for (iter = priv->windows;iter; iter=iter->next)
+  {
+    gchar * res_name=NULL;
+    gchar * class_name=NULL;
+    TaskItem * item = iter->data;
+    
+    g_assert (TASK_IS_WINDOW(item));
+    task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);    
+
+    if (  (g_strcmp0(name,res_name)==0)||
+        (g_strcmp0(name,class_name)==0) )
+    {
+      task_window_set_hidden (TASK_WINDOW(item),!visible);
+    }
+    g_free (res_name);
+    g_free (class_name);
+  }
+}
+
 gboolean
 task_manager_update (TaskManager *manager,
                      GValue *window,
@@ -3057,7 +3083,6 @@ task_manager_update (TaskManager *manager,
           GList * needle = g_list_find_custom (priv->hidden_list,
                                                g_value_get_string(window),
                                                (GCompareFunc)g_strcmp0);
-          g_debug ("%s:  needle = %p",__func__,needle);
           if (visible)
           {
             if (needle)
@@ -3070,10 +3095,10 @@ task_manager_update (TaskManager *manager,
           {
             if (!needle)
             {
-              g_debug ("%s:  appending %s",__func__,g_value_get_string(window));
               priv->hidden_list = g_list_append (priv->hidden_list, g_value_dup_string(window));
             }
           }
+          task_manager_set_windows_visibility (manager,g_value_get_string(window),visible);
         }
         task_window_set_hidden (TASK_WINDOW(matched_window),!visible);
       }
@@ -3119,6 +3144,7 @@ task_manager_update (TaskManager *manager,
               priv->hidden_list = g_list_append (priv->hidden_list, g_value_dup_string(window));
             }
           }
+          task_manager_set_windows_visibility (manager,g_value_get_string(window),visible);          
         }
       }
     }

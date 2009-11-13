@@ -1055,10 +1055,9 @@ on_main_item_visible_changed (TaskItem  *item,
      the main TaskItem becomes visible only now,
      it indicates a bug. 
      FIXME: this is possible atm in TaskWindow */
-  if (visible) return;
-  awn_icon_set_tooltip_text (AWN_ICON (icon),task_item_get_name (priv->main_item));  
-
-//  task_icon_search_main_item (icon,item);
+  if (visible && priv->main_item && !TASK_IS_LAUNCHER(priv->main_item) ) return;
+  task_icon_search_main_item (icon,NULL);
+  awn_icon_set_tooltip_text (AWN_ICON (icon),task_item_get_name (priv->main_item));
 }
 
 static void
@@ -2231,6 +2230,14 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
   TaskItem        *main_item;
   priv = icon->priv;
 
+  /*
+   use of dbus visible may have left the main_item as a Launcher when there are
+   valid Windows available.  Look for a window before we continue*/
+  if ( TASK_IS_LAUNCHER(priv->main_item) || 
+      (TASK_IS_WINDOW(priv->main_item) && task_window_is_hidden (TASK_WINDOW(priv->main_item)) ))
+  {
+    task_icon_search_main_item (icon,NULL);
+  }
   /*If long press is enabled then we try to be smart about what we do on short clicks*/
   if (priv->enable_long_press)
   {
