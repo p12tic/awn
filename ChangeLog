@@ -8,12 +8,12 @@
   	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/task-window.c:
 	No longer group windows with different WM_CLIENT_NAME by default.
-	There is a config key.  I'm expecting this will break in certain 
+	There is a config key, as I'm expecting this will break in certain 
 	configurations.  The default will change if this occurs.
-	If no WM_CLIENT_NAME is available then using assume it's the local
-	hostname (gethostname()).
-	As consequence changed of this addition, constructor for TaskLauncher
-	was changed and the applet prop of TaskIcon was made readable.
+	If no WM_CLIENT_NAME is available then the local hostname is assumed
+	(gethostname()). As consequence change of these changes, the  
+	constructor for TaskLauncher was changed and the applet prop of 
+	TaskIcon was made readable.
 
 2009-11-12  Rodney Cryderman  <rcryderman@gmail.com>
 
