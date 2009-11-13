@@ -1,6 +1,11 @@
 2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Set the main_item on the the original ungrouped icon.
+
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
 	Disconnect a missed signal when ungrouping.
 	Removed some #if 0 'd code.

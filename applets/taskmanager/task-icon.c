@@ -2492,6 +2492,7 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
       {
         if (TASK_IS_WINDOW (iter->data))
         {
+          priv->main_item = iter->data;
           iter = iter->next;
           break;
         }
