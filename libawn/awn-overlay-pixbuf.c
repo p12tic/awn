@@ -141,6 +141,10 @@ awn_overlay_pixbuf_finalize (GObject *object)
   {
     g_object_unref (priv->pixbuf);
   }
+  if (priv->scaled_pixbuf)
+  {
+    g_object_unref (priv->scaled_pixbuf);
+  }  
   G_OBJECT_CLASS (awn_overlay_pixbuf_parent_class)->finalize (object);  
 }
 

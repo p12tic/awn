@@ -1,5 +1,10 @@
 2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-overlay-pixbuf.c:
+	Fix a leak.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Do not hide the Icon after the closing effect unless we're really done.
 
