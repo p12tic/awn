@@ -299,6 +299,7 @@ lookup_pixbuf (const gchar * scope, const gchar * theme_name,
   {
     pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);  
   }
+//  g_debug ("%s: cache size = %u",__func__,g_hash_table_size(pixbufs));  
   /*Conditional operator*/
   key = g_strdup_printf ("%s::%s::%s::%d",
                          scope?scope:"__NONE__",
@@ -403,7 +404,7 @@ awn_themed_icon_dispose (GObject *object)
     g_signal_handler_disconnect (priv->gtk_theme,priv->sig_id_for_gtk_theme);
     priv->sig_id_for_gtk_theme = 0; 
   }
-  
+
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->dispose (object);
 }
 
@@ -416,6 +417,13 @@ awn_themed_icon_finalize (GObject *object)
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
 
+  for (iter = priv->list; iter; iter = g_list_next (iter) )
+  {
+    AwnThemedIconItem * item = iter->data;
+    g_free (item->name);
+    g_free (item->state);
+    g_free (item->original_name);
+  }
   g_list_foreach (priv->list, (GFunc) g_free,NULL);
   g_list_free (priv->list);
   
@@ -426,12 +434,14 @@ awn_themed_icon_finalize (GObject *object)
   g_free (priv->icon_dir);               
   priv->icon_dir = NULL;
   g_free (priv->custom_icon_name);
+  
   for (iter = priv->preload_list; iter; iter = g_list_next (iter) )
   {
     AwnThemedIconPreloadItem * item = iter->data;
     g_source_remove (item->id);
     g_free (item->state);
     g_free (item);
+
   }
   if (priv->preload_list)
   {
@@ -574,6 +584,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   gchar                *scalable_dir;
   gchar                *index_src;
   gchar                *index_dest;
+  GdkPixbuf            *pbuf;
 
   priv = icon->priv = AWN_THEMED_ICON_GET_PRIVATE (icon);
 
@@ -594,7 +605,11 @@ awn_themed_icon_init (AwnThemedIcon *icon)
    to get a themed icon a GtkIconTheme is used that does not contain
    hicolor dirs. It shouldn't find a icon and even if it does... we don't
    care.*/
-  theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
+  pbuf = theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
+  if (pbuf)
+  {
+    g_object_unref (pbuf);
+  }
   
   /* 
    * Set-up our special theme. We need to check for all the dirs

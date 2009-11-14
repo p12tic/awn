@@ -153,7 +153,7 @@ task_item_finalize (GObject *object)
 {
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (object);
   GError  * err = NULL;
- 
+
   if (priv->applet)
   {
     desktop_agnostic_config_client_unbind_all_for_object (awn_config_get_default_for_applet (priv->applet, NULL), object, &err);

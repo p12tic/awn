@@ -429,6 +429,16 @@ task_icon_dispose (GObject *object)
     awn_overlayable_remove_overlay (AWN_OVERLAYABLE(object), AWN_OVERLAY(priv->overlay_app_icon));
     priv->overlay_app_icon = NULL;
   }
+  if (priv->icon)
+  {
+    g_object_unref (priv->icon);
+    priv->icon = NULL;
+  }
+  if (priv->menu)
+  {
+    gtk_widget_destroy (priv->menu);
+    priv->menu=NULL;
+  }
   G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  
 }
 
@@ -448,6 +458,8 @@ task_icon_finalize (GObject *object)
     g_source_remove (priv->update_geometry_id);
   }
 
+  g_free (priv->custom_name);
+  
   g_signal_handlers_disconnect_by_func (wnck_screen_get_default (),
                           G_CALLBACK (task_icon_active_window_changed), object);
   g_signal_handlers_disconnect_by_func (awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(object)),
@@ -1847,6 +1859,10 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   {
     g_object_unref (launcher_icon);
   }  
+  if (app_icon)
+  {
+    g_object_unref (app_icon);
+  }    
 }
 
 

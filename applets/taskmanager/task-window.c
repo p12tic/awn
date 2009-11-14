@@ -248,7 +248,6 @@ task_window_dispose (GObject *object)
 {
   TaskWindowPrivate *priv = TASK_WINDOW (object)->priv; 
   GError  * err = NULL;
-   
   /*TaskItem will also do this, so it shouldn't be necessary in TaskWindow.*/
   if (priv->applet)
   {
@@ -260,6 +259,17 @@ task_window_dispose (GObject *object)
     }
     priv->applet = NULL;
   }  
+  if (priv->menu)
+  {
+    gtk_widget_destroy (priv->menu);
+    priv->menu=NULL;
+  }
+
+  if (priv->box)
+  {
+    gtk_widget_destroy (priv->box);
+    priv->box=NULL;
+  }
   
   G_OBJECT_CLASS (task_window_parent_class)->dispose (object);
 }
@@ -269,11 +279,11 @@ static void
 task_window_finalize (GObject *object)
 {
   TaskWindowPrivate *priv = TASK_WINDOW (object)->priv; 
-  
   g_signal_handlers_disconnect_by_func(wnck_screen_get_default(), 
                                        G_CALLBACK (_active_window_changed), 
                                        object);
   g_free (priv->special_id);
+  g_free (priv->message);
   g_signal_handlers_disconnect_by_func (G_OBJECT(gtk_icon_theme_get_default()),
                           G_CALLBACK(theme_changed_cb),object);  
 

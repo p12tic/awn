@@ -62,7 +62,7 @@ struct _TaskLauncherPrivate
   DesktopAgnosticVFSFileMonitor* monitor_vfs;
   
   const gchar *name;
-  const gchar *exec;
+  gchar *exec;
   const gchar *icon_name;
   GPid   pid;
   glong timestamp;
@@ -147,6 +147,33 @@ task_launcher_set_property (GObject      *object,
 static void
 task_launcher_dispose (GObject *object)
 { 
+  TaskLauncherPrivate *priv = TASK_LAUNCHER_GET_PRIVATE (object);
+
+  if (priv->menu)
+  {
+    gtk_widget_destroy (priv->menu);
+    priv->menu = NULL;
+  }
+  if (priv->file_vfs)
+  {
+    g_object_unref (priv->file_vfs);
+    priv->file_vfs = NULL;
+  }
+  if (priv->monitor_vfs)
+  {
+    g_object_unref (priv->monitor_vfs);
+    priv->monitor_vfs=NULL;
+  }
+  if (priv->entry)
+  {
+    g_object_unref (priv->entry);
+    priv->entry = NULL;
+  }
+  if (priv->box)
+  {
+    gtk_widget_destroy (priv->box);
+    priv->box=NULL;
+  }
   G_OBJECT_CLASS (task_launcher_parent_class)->dispose (object);
 }
 
@@ -156,9 +183,8 @@ task_launcher_finalize (GObject *object)
   TaskLauncher *launcher = TASK_LAUNCHER (object);
   TaskLauncherPrivate *priv = TASK_LAUNCHER_GET_PRIVATE (launcher);
 
-  g_free (launcher->priv->special_id);
-  g_object_unref (priv->file_vfs);
-  g_object_unref (priv->monitor_vfs);
+  g_free (priv->special_id);
+  g_free (priv->path);
   
   G_OBJECT_CLASS (task_launcher_parent_class)->finalize (object);
 }
@@ -234,7 +260,7 @@ task_launcher_init (TaskLauncher *launcher)
   gtk_box_pack_start (GTK_BOX (priv->box), priv->name_label, TRUE, TRUE, 10);
   
   priv->launcher_image = GTK_WIDGET (awn_image_new ());  
-  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&icon_width,&icon_height);  
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&icon_width,&icon_height);
   /*repress annoying gtk icon theme spam*/
   launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),"gtk_knows_best",16,0,NULL);
   if (launcher_pbuf)
@@ -386,6 +412,10 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
   priv = launcher->priv;
 
+  if (priv->path)
+  {
+    g_free (priv->path);
+  }
   priv->path = g_strdup (path);
 
   file = desktop_agnostic_vfs_file_new_for_path (path, &error);
@@ -407,6 +437,10 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
     return;
   }
 
+  if (priv->entry)
+  {
+    g_object_unref (priv->entry);
+  }
   priv->entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, &error);
 
   if (error)
@@ -416,7 +450,11 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
     g_object_unref (file);    
     return;
   }
-  
+
+  if (priv->file_vfs)
+  {
+    g_object_unref (priv->file_vfs);
+  }
   priv->file_vfs = desktop_agnostic_vfs_file_new_for_path (path,&error);
 
   if (error)
@@ -426,6 +464,10 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   }
   else
   {
+    if (priv->monitor_vfs)
+    {
+      g_object_unref (priv->monitor_vfs);
+    }
     priv->monitor_vfs = desktop_agnostic_vfs_file_monitor (priv->file_vfs);
     g_signal_connect (G_OBJECT(priv->monitor_vfs),"changed", G_CALLBACK(_desktop_changed),launcher);
   }
@@ -441,6 +483,10 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
     return;
   }
 
+  if (priv->special_id)
+  {
+    g_free (priv->special_id);
+  }
   priv->special_id = get_special_id_from_desktop(priv->entry);
   priv->name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);
 
@@ -459,6 +505,10 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
           g_strstrip (exec_key);
   }
   g_strstrip (exec_key);
+  if (priv->exec)
+  {
+    g_free (priv->exec);
+  }
   priv->exec = exec_key;
   
   priv->icon_name = desktop_agnostic_fdo_desktop_entry_get_icon (priv->entry);
@@ -575,15 +625,16 @@ _match (TaskItem *item,
   gchar   *res_name_lower = NULL;
   gchar   *class_name_lower = NULL;  
   gint     pid;
-  glibtop_proc_args buf;
   gchar   *cmd = NULL;
   gchar   *full_cmd = NULL;
   gchar   *search_result= NULL;
+  gchar * id = NULL;
+  
+  glibtop_proc_args buf;
   glibtop_proc_uid buf_proc_uid;
   glibtop_proc_uid ppid_buf_proc_uid;  
   glong   timestamp;
   GTimeVal timeval;
-  gchar * id = NULL;
   gint    result = 0;
   gchar buffer[256];
   gchar * client_name = NULL;
@@ -817,7 +868,6 @@ _match (TaskItem *item,
   }
 
 finished:
-  
   g_free (res_name);
   g_free (class_name);
   g_free (res_name_lower);

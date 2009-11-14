@@ -1,9 +1,29 @@
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-item.c:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-window.c:
+	* libawn/awn-themed-icon.c:
+        Plug a variety of leaks, and potential leaks.
+        Still something rotten with TaskLauncher.
+
 2009-11-13  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:
 	* src/awn-applet-manager.c:
 	Don't run awn-applet binary for separator & expander, so we get rid of
 	throbber for them.
+
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-window.c:
+  	* libawn/awn-themed-icon.c:
+	Plug a variety of leaks, and potential leaks.
+	Still something rotten with TaskLauncher.
 
 2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
 
