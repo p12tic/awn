@@ -1,5 +1,12 @@
 2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	Optimize group.
+	Regroup non-launchers.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-overlay-pixbuf.c:
 	Fix a leak.
 

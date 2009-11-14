@@ -2576,6 +2576,11 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
     }
   }
   /*else we're regrouping which is orchestrated by TaskManager.*/
+  task_icon_search_main_item (icon,NULL);
+  if (priv->main_item)
+  {
+    awn_icon_set_tooltip_text (AWN_ICON (icon), task_item_get_name(priv->main_item));
+  }
   task_icon_refresh_visible (icon);
 }
   

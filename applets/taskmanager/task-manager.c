@@ -93,7 +93,10 @@ struct _TaskManagerPrivate
   
   GHashTable *win_table;
   GHashTable *desktops_table;
-
+  /*
+   Used during grouping configuration changes for optimization purposes
+   */
+  GList *grouping_list;
   /* Properties */
   GValueArray *launcher_paths;
   gboolean     show_all_windows;
@@ -2291,14 +2294,6 @@ task_manager_set_drag_and_drop (TaskManager *manager,
   }
 }
 
-/*
-static void
-task_manager_regroup_icon (TaskManager * manager,TaskIcon * icon)
-{
-
-}
-*/
-
 static void
 task_manager_regroup_launcher_icon (TaskManager * manager,TaskIcon * grouping_icon)
 {
@@ -2311,6 +2306,19 @@ task_manager_regroup_launcher_icon (TaskManager * manager,TaskIcon * grouping_ic
   GtkWidget * grouping_launcher = GTK_WIDGET(task_icon_get_launcher (grouping_icon));
 
   g_assert (grouping_launcher);
+  for (i=task_icon_get_items(grouping_icon);i; i=i->next)
+  {
+    TaskItem * item = i->data;
+    if (TASK_IS_LAUNCHER(item))
+    {
+      continue;
+    }
+    if (g_list_find (priv->grouping_list,item))
+    {
+      continue;
+    }
+    priv->grouping_list = g_list_prepend (priv->grouping_list,item);
+  }
   for (i=priv->icons; i; i=i->next)
   {
     GtkWidget * launcher;
@@ -2333,15 +2341,108 @@ task_manager_regroup_launcher_icon (TaskManager * manager,TaskIcon * grouping_ic
     if ( g_strcmp0 (task_launcher_get_desktop_path(TASK_LAUNCHER(grouping_launcher)),
                     task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)) )==0)
     {
-      for (j=task_icon_get_items(icon);j;j=j->next)
+      for (j=task_icon_get_items(icon);j; j?j=j->next:j)
       {
+
         TaskItem * item = j->data;
         if (TASK_IS_LAUNCHER(item))
         {
           continue;
         }
+        if (g_list_find (priv->grouping_list,item))
+        {
+          continue;
+        }
         task_icon_moving_item (grouping_icon,icon,item);
+        priv->grouping_list = g_list_prepend (priv->grouping_list,item);
         j = task_icon_get_items(icon);
+      }
+    }
+  }
+}
+
+static void
+task_manager_regroup_nonlauncher_icon (TaskManager * manager,TaskIcon * grouping_icon)
+{
+  g_assert (TASK_IS_ICON(grouping_icon));
+  g_assert (TASK_IS_MANAGER(manager));
+  
+  GSList * i;
+  GSList * j;
+  GSList * w; 
+  GSList * k;
+  TaskManagerPrivate * priv = manager->priv;
+  for (i=task_icon_get_items(grouping_icon);i; i=i->next)
+  {
+    TaskItem * item = i->data;
+    if (g_list_find (priv->grouping_list,item))
+    {
+      continue;
+    }
+    priv->grouping_list = g_list_prepend (priv->grouping_list,item);
+  }
+
+  for (i=priv->icons; i; i=i->next)
+  {
+    TaskIcon  * icon;
+    icon = i->data;    
+    if (icon == grouping_icon)
+    {
+      continue;
+    }
+    if (task_icon_contains_launcher (icon) )
+    {
+      continue;
+    }
+    for (j=task_icon_get_items(icon);j;j?j=j->next:j)
+    {
+      gint match_score = 0;
+      gint max_match_score = 0;
+      TaskIcon * match = NULL;
+      TaskItem * item = j->data;
+      if (g_list_find (priv->grouping_list,item))
+      {
+        continue;
+      }      
+      for (w = priv->icons; w; w = w->next)
+      {
+        TaskIcon *taskicon = w->data;
+        /*optimization....  if the icon we're checking against has a launcher
+         then the item would have been grouped with it on open if it could have 
+         been*/
+        if ( task_icon_contains_launcher (taskicon))
+        {
+          continue;
+        }
+        match_score = task_icon_match_item (taskicon, item);
+        if (match_score > max_match_score)
+        {
+          max_match_score = match_score;
+          match = taskicon;
+        }
+      }
+      if  (
+           match && (match==grouping_icon)
+           &&
+           (priv->grouping || ( (task_icon_count_items(match)==1) && (task_icon_contains_launcher (match)) ) ) 
+           &&
+           ( max_match_score > 99-priv->match_strength))
+      {
+        /*we have one match in this icon.  dump all the other items in also and
+         get the hell out of the inner loop.  3 nested loops nasty... short 
+         circuiting as much as possible*/
+        task_icon_moving_item (grouping_icon,icon,item);
+        priv->grouping_list = g_list_prepend (priv->grouping_list,item);
+        for (k=task_icon_get_items (icon);k;k=k->next)
+        {
+          if (g_list_find (priv->grouping_list,k->data))
+          {
+            continue;
+          }                
+          task_icon_moving_item (grouping_icon,icon,k->data);
+          priv->grouping_list = g_list_prepend (priv->grouping_list,k->data);
+        }
+        j = NULL;
       }
     }
   }
@@ -2353,7 +2454,6 @@ task_manager_regroup (TaskManager * manager)
   GSList * i;
 
   TaskManagerPrivate * priv = manager->priv;
-
   /*
    find the permanent Launchers and regroup them*/
   for (i=priv->icons; i; i=i->next)
@@ -2380,6 +2480,22 @@ task_manager_regroup (TaskManager * manager)
       task_manager_regroup_launcher_icon (manager,icon);      
     }
   }
+  /* Find the icons that do not have a launcher. */
+  for (i=priv->icons; i; i=i->next)
+  {
+    TaskIcon  * icon;
+    icon = i->data;
+    if ( !task_icon_contains_launcher (icon) )
+    {
+      GSList *items = task_icon_get_items(icon);
+      if (items)
+      {
+        task_manager_regroup_nonlauncher_icon (manager,icon);
+      }
+    }
+  }
+  g_list_free (priv->grouping_list);
+  priv->grouping_list = NULL;
 }
 
 static void
