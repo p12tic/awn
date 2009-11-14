@@ -1012,7 +1012,6 @@ on_icon_effects_ends (TaskIcon   *icon,
                       AwnEffects *instance)
 {  
   g_return_if_fail (TASK_IS_ICON (icon));
-
   if (effect == AWN_EFFECT_CLOSING)
   {
     gboolean destroy = FALSE;
@@ -1048,7 +1047,7 @@ on_icon_effects_ends (TaskIcon   *icon,
     }
     else
     {
-      gtk_widget_hide (GTK_WIDGET(icon));
+//      gtk_widget_hide (GTK_WIDGET(icon));
     }
   }
 }
@@ -1064,7 +1063,6 @@ window_closed (TaskManager *manager, GObject *old_item)
   TaskManagerPrivate *priv;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
-
   priv = manager->priv;
   priv->windows = g_slist_remove (priv->windows, old_item);
 }
@@ -1619,11 +1617,12 @@ task_manager_add_icon(TaskManager *manager, TaskIcon * icon)
   task_icon_refresh_icon (TASK_ICON(icon),awn_applet_get_size(AWN_APPLET(manager)));
 }  
 
-static void
+static gboolean
 task_manager_check_for_hidden (TaskManager * manager, TaskWindow * item)
 {
   TaskManagerPrivate *priv;
   priv = manager->priv;
+  gboolean hidden = FALSE;
 
   /*see if the new window is on the hidden_list*/
   gchar * res_name=NULL;
@@ -1636,10 +1635,13 @@ task_manager_check_for_hidden (TaskManager * manager, TaskWindow * item)
         (g_strcmp0(iter->data,class_name)==0) )
     {
       task_window_set_hidden (TASK_WINDOW(item),TRUE);
+      hidden = TRUE;
+      break;
     }
   }
   g_free (res_name);
   g_free (class_name);
+  return hidden;
 }
 
 static void
@@ -2996,7 +2998,6 @@ task_manager_update (TaskManager *manager,
       else if (strcmp ("visible", key_name) == 0)
       {
         gboolean visible = g_value_get_boolean (value);
-        g_debug ("%s: %d",__func__,visible);
         if (G_VALUE_HOLDS_STRING (window))
         {
           GList * needle = g_list_find_custom (priv->hidden_list,
