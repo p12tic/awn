@@ -715,8 +715,8 @@ theme_load_icon (GtkIconTheme *icon_theme,
                                      GtkIconLookupFlags flags,
                                      GError **error)
 {
-  return gtk_icon_theme_load_icon (icon_theme,icon_name,size,flags,error);
-  /*
+//  return gtk_icon_theme_load_icon (icon_theme,icon_name,size,flags,error);
+  
   const gchar * names[2]={NULL,NULL};
   names[0] = icon_name;
   GtkIconInfo*  info = gtk_icon_theme_choose_icon (icon_theme,
@@ -729,7 +729,7 @@ theme_load_icon (GtkIconTheme *icon_theme,
     gtk_icon_info_free( info);
     return pbuf;
   }
-  return NULL;*/
+  return NULL;
 }
 
 /*FIXME  Big function */
