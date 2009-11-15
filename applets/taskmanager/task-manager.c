@@ -1528,6 +1528,10 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
       return result;
     }
   }
+  else if (tokens)
+  {
+    g_strfreev (tokens);
+  }
   
   return NULL;
 //#undef DEBUG
@@ -1580,6 +1584,8 @@ search_desktop_cache (TaskManager * manager, TaskIcon * icon,gchar * class_name,
   key = g_strdup_printf("%s::%s::%s::%s",class_name,res_name,cmd,id);
   desktop_path = g_hash_table_lookup (priv->desktops_table,key);
 
+  g_free (key);
+  key = NULL;
   if (desktop_path)
   {
     launcher = get_launcher (manager,desktop_path);
@@ -1970,15 +1976,15 @@ on_window_opened (WnckScreen    *screen,
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (WNCK_IS_WINDOW (window));
   
-  win_timeout_data = g_malloc (sizeof (WindowOpenTimeoutData));
-  win_timeout_data->window = window;
-  win_timeout_data->manager = manager;
   _wnck_get_wmclass (wnck_window_get_xid (window),
                      &res_name, &class_name);
   if (get_special_wait_from_window_data (res_name, 
                                          class_name,
                                          wnck_window_get_name(window) ) )
   {
+    win_timeout_data = g_malloc (sizeof (WindowOpenTimeoutData));
+    win_timeout_data->window = window;
+    win_timeout_data->manager = manager;    
     g_signal_connect (window,"name-changed",G_CALLBACK(process_window_opened),manager);
     g_timeout_add (500,(GSourceFunc)_wait_for_name_change_timeout,win_timeout_data);
   }

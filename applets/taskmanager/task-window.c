@@ -1304,6 +1304,8 @@ _match (TaskItem *item,
   }
   if (full_cmd && g_strcmp0 (full_cmd, full_cmd_to_match) == 0)
   {
+    g_free (res_name_to_match);
+    g_free (class_name_to_match);
     g_free (full_cmd_to_match);
     g_free (full_cmd);
     g_free (id);    
@@ -1320,6 +1322,7 @@ _match (TaskItem *item,
 #endif 
   if ( pid && ( pid_to_match == pid ))
   {
+    g_free (full_cmd);    
     g_free (res_name_to_match);
     g_free (class_name_to_match);        
     return 94;
@@ -1347,15 +1350,14 @@ _match (TaskItem *item,
       {
         g_free (res_name);
         g_free (class_name);
-//        g_free (cmd);
         g_free (res_name_to_match);
         g_free (class_name_to_match);
-//        g_free (cmd_to_match);        
+        g_free (full_cmd);
         return 65;
       }
     }
   }
-
+  g_free (full_cmd);
   g_free (res_name);
   g_free (class_name);
   g_free (res_name_to_match);
