@@ -638,7 +638,7 @@ _match (TaskItem *item,
   gint    result = 0;
   gchar buffer[256];
   gchar * client_name = NULL;
-  gchar * client_name_to_match = NULL;
+  const gchar * client_name_to_match = NULL;
   gboolean ignore_wm_client_name;
     
   g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
@@ -662,7 +662,8 @@ _match (TaskItem *item,
     gethostname (buffer, sizeof(buffer));
     buffer [sizeof(buffer) - 1] = '\0';
     client_name = g_strdup (buffer);
-    task_window_get_wm_client(TASK_WINDOW (item_to_match), &client_name_to_match);
+
+    client_name_to_match = task_window_get_client_name (TASK_WINDOW(item_to_match));    
     if (!client_name_to_match)
     {
       /*
@@ -671,16 +672,13 @@ _match (TaskItem *item,
        */
       gethostname (buffer, sizeof(buffer));
       buffer [sizeof(buffer) - 1] = '\0';
-      client_name_to_match = g_strdup (buffer);
+      client_name_to_match = buffer;
     }
     if (g_strcmp0(client_name,client_name_to_match)!=0)
     {
-      g_debug ("%s: different client names: %s, %s",__func__,client_name,client_name_to_match);
-      g_free (client_name_to_match);
       g_free (client_name);      
       return 0;
     }
-    g_free (client_name_to_match);
     g_free (client_name);  
   }
   
