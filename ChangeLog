@@ -1,5 +1,10 @@
 2009-11-15  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-panel.c:
+	We shouldn't forget to unref the pixmaps.
+
+2009-11-15  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-utils.h:
 	Add a newline.
 

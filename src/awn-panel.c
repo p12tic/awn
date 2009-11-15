@@ -3130,6 +3130,7 @@ docklet_appear_cb (AwnPanel *panel)
 
   AwnPanelPrivate *priv = panel->priv;
 
+  gfloat old_alpha = 1 - priv->docklet_alpha;
   priv->docklet_alpha += 0.15;
 
   x = MIN (priv->snapshot_paint_size.x, priv->manager->allocation.x);
@@ -3139,13 +3140,24 @@ docklet_appear_cb (AwnPanel *panel)
   height = MAX (priv->snapshot_paint_size.height, 
                 priv->manager->allocation.height);
 
-  // let's change alpha of the pixmap here, no need to wait for expose
-  multiply_pixmap_alpha (priv->dock_snapshot,
-                         (GdkRectangle*)&priv->snapshot_paint_size, 0.7);
-
   gtk_widget_queue_draw_area (GTK_WIDGET (panel), x, y, width, height);
 
-  return priv->docklet_alpha < 1.0;
+  if (priv->docklet_alpha >= 1.0)
+  {
+    priv->docklet_appear_timer_id = 0;
+    g_object_unref (priv->dock_snapshot);
+    g_object_unref (priv->tmp_pixmap);
+    priv->dock_snapshot = NULL;
+    priv->tmp_pixmap = NULL;
+    return FALSE;
+  }
+
+  // let's change alpha of the pixmap here, no need to wait for expose
+  multiply_pixmap_alpha (priv->dock_snapshot,
+                         (GdkRectangle*)&priv->snapshot_paint_size,
+                         (1-priv->docklet_alpha) / old_alpha);
+
+  return TRUE;
 }
 
 static GdkPixmap*
@@ -3186,12 +3198,12 @@ docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
 
     priv->dock_snapshot = get_window_snapshot (drawable, width, height);
     priv->snapshot_paint_size = priv->manager->allocation;
+    priv->docklet_alpha = 0.2;
     multiply_pixmap_alpha (priv->dock_snapshot,
-                           (GdkRectangle*)&priv->snapshot_paint_size, 0.8);
+                           (GdkRectangle*)&priv->snapshot_paint_size,
+                           1 - priv->docklet_alpha);
 
     priv->tmp_pixmap = gdk_pixmap_new (drawable, width, height, -1);
-    
-    priv->docklet_alpha = 0.2;
     
     gtk_widget_queue_draw_area (GTK_WIDGET (panel),
                                 priv->snapshot_paint_size.x,
@@ -3257,12 +3269,12 @@ awn_panel_docklet_destroy (AwnPanel *panel)
     
     priv->dock_snapshot = get_window_snapshot (drawable, width, height);
     priv->snapshot_paint_size = priv->manager->allocation;
+    priv->docklet_alpha = 0.2;
     multiply_pixmap_alpha (priv->dock_snapshot,
-                           (GdkRectangle*)&priv->snapshot_paint_size, 0.8);
+                           (GdkRectangle*)&priv->snapshot_paint_size,
+                           1 - priv->docklet_alpha);
 
     priv->tmp_pixmap = gdk_pixmap_new (drawable, width, height, -1);
-    
-    priv->docklet_alpha = 0.2;
     
     gtk_widget_queue_draw_area (GTK_WIDGET (panel),
                                 priv->snapshot_paint_size.x,
