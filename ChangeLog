@@ -1,5 +1,11 @@
 2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-launcher.c:
+	Get rid of a couple static vars.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	Test modification.  Need to confirm if previous issues with use
 	of gtk_icon_theme_load_icon () are resolved.

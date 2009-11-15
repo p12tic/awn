@@ -969,14 +969,10 @@ _right_click (TaskItem *item, GdkEventButton *event)
   GtkWidget *menu_item;
   gint width,height;  
   
-  static GdkPixbuf * launcher_pbuf = NULL;
+  GdkPixbuf * launcher_pbuf = NULL;
   
   g_return_val_if_fail (TASK_IS_LAUNCHER (item),NULL);
   
-  if (launcher_pbuf)
-  {
-    g_object_unref (launcher_pbuf);
-  }
   gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
   launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
                                               "launcher-program",
@@ -1022,6 +1018,7 @@ _right_click (TaskItem *item, GdkEventButton *event)
   
   gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
                   NULL, NULL, event->button, event->time);
+  g_object_unref (launcher_pbuf);  
   return priv->menu;
 }
 

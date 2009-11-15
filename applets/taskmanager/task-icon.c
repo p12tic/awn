@@ -2667,28 +2667,23 @@ task_icon_button_press_event (GtkWidget      *widget,
   GtkWidget   *item;
   GSList *iter;
   TaskItem * launcher = NULL;
-  static GdkPixbuf * launcher_pbuf=NULL;
+  GdkPixbuf * launcher_pbuf=NULL;
   gint width,height;
   
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
   icon = TASK_ICON (widget);
   priv = icon->priv;
+        
+  if (event->button != 3) return FALSE;
 
-  if (launcher_pbuf)
-  {
-    g_object_unref (launcher_pbuf);
-  }
   gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
   launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
                                               "system-run",
                                               height,
                                               GTK_ICON_LOOKUP_FORCE_SIZE,
-                                              NULL);
-  
+                                              NULL);  
   launcher = task_icon_get_launcher (icon);  
-          
-  if (event->button != 3) return FALSE;
 
   if (priv->shown_items == 0)
   {
@@ -2854,8 +2849,10 @@ task_icon_button_press_event (GtkWidget      *widget,
       g_signal_connect_swapped (priv->menu,"deactivate", 
                                 G_CALLBACK(gtk_widget_hide),priv->dialog);      
     }
+    g_object_unref (launcher_pbuf);
     return TRUE;
   }
+  g_object_unref (launcher_pbuf);  
   return FALSE;  
 }
 
