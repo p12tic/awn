@@ -82,6 +82,8 @@ struct _TaskWindowPrivate
 
   /*number of application initiated icon changes*/
   guint     icon_changes;
+
+  gchar     *client_name;
 };
 
 enum
@@ -240,7 +242,7 @@ task_window_constructed (GObject *object)
   {
     return;
   }
-  
+  priv->client_name = NULL;
 }
 
 static void
@@ -282,6 +284,7 @@ task_window_finalize (GObject *object)
   g_signal_handlers_disconnect_by_func(wnck_screen_get_default(), 
                                        G_CALLBACK (_active_window_changed), 
                                        object);
+  g_free (priv->client_name);
   g_free (priv->special_id);
   g_free (priv->message);
   g_signal_handlers_disconnect_by_func (G_OBJECT(gtk_icon_theme_get_default()),
@@ -695,6 +698,22 @@ task_window_get_name (TaskWindow *window)
   
   return "";
 }
+
+const gchar *
+task_window_get_client_name (TaskWindow *window)
+{
+  TaskWindowPrivate *priv;
+  
+  g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
+  priv = window->priv;
+  
+  if (!priv->client_name)
+  {
+    task_window_get_wm_client(window, &priv->client_name);
+  }
+  return priv->client_name;
+}
+
 
 /*
  return the total number of icon changes 
@@ -1206,8 +1225,6 @@ _match (TaskItem *item,
   gchar   *full_cmd_to_match;
   gchar   *full_cmd = NULL;
   gchar   *id;
-  gchar   *client_name = NULL;
-  gchar   *client_name_to_match = NULL;
   gboolean ignore_wm_client_name;
   
   g_return_val_if_fail (TASK_IS_WINDOW(item), 0);
@@ -1223,44 +1240,47 @@ _match (TaskItem *item,
   g_object_get (item,
                 "ignore_wm_client_name",&ignore_wm_client_name,
                 NULL);
+  /*
+  TODO:
+   Stuff the client_names into TaskWindow....  call task_window_get_wm_client
+   once and save in a field
+   */
   if (!ignore_wm_client_name)
   {
+    gchar buffer[256];
+    gchar buffer_to_match[256];
+    const gchar   *client_name = NULL;
+    const gchar   *client_name_to_match = NULL;
+
     /*check the client names to begin with*/
-    task_window_get_wm_client(TASK_WINDOW (item), &client_name);
+    client_name=task_window_get_client_name (TASK_WINDOW(item));
     if (!client_name)
     {
       /*
        WM_CLIENT_NAME is not necessarily set... in those case we'll assume 
        that it's the host
        */
-      gchar buffer[256];
       gethostname (buffer, sizeof(buffer));
       buffer [sizeof(buffer) - 1] = '\0';
-      client_name = g_strdup (buffer);
+      client_name = buffer;
     }
-
-    task_window_get_wm_client(TASK_WINDOW (item_to_match), &client_name_to_match);
+    client_name_to_match = task_window_get_client_name (TASK_WINDOW(item_to_match));
     if (!client_name_to_match)
     {
       /*
        WM_CLIENT_NAME is not necessarily set... in those case we'll assume 
        that it's the host
        */
-      gchar buffer[256];
-      gethostname (buffer, sizeof(buffer));
-      buffer [sizeof(buffer) - 1] = '\0';
-      client_name_to_match = g_strdup (buffer);
+      gethostname (buffer_to_match, sizeof(buffer_to_match));
+      buffer_to_match [sizeof(buffer_to_match) - 1] = '\0';
+      client_name_to_match = buffer_to_match;
     }
 
     if (g_strcmp0(client_name,client_name_to_match)!=0)
     {
       g_debug ("%s: different client names: %s, %s",__func__,client_name,client_name_to_match);
-      g_free (client_name_to_match);
-      g_free (client_name);      
       return 0;
     }
-    g_free (client_name_to_match);
-    g_free (client_name);  
   }  
   window_to_match = TASK_WINDOW (item_to_match);
   pid = task_window_get_pid (window);

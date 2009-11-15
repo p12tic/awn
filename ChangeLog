@@ -1,5 +1,13 @@
 2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+  	* applets/taskmanager/xutils.c:
+	More plugging of leaks.  Also reducing the number of calls to X... 
+	Once the client machine name is retrieved it's save in TaskWindow.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/task-window.c:
 	Plug some more leaks.

@@ -126,13 +126,15 @@ _wnck_get_client_name (Window xwindow, char **client_name)
   if (!status)
   {
     *client_name = NULL;
+    if (text_prop.value)
+    {
+      XFree (text_prop.value);
+    }
     return;
   }
   if (text_prop.value)
   {
-    if (client_name)
-      *client_name = latin1_to_utf8 (text_prop.value);
-       
+    *client_name = latin1_to_utf8 (text_prop.value);       
     XFree (text_prop.value);
   }
 }
