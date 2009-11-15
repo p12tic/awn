@@ -3215,8 +3215,9 @@ docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
     {
       g_source_remove (priv->docklet_appear_timer_id);
     }
-    priv->docklet_appear_timer_id = g_timeout_add (40,
-        (GSourceFunc)docklet_appear_cb, panel);
+    priv->docklet_appear_timer_id =
+        g_timeout_add_full (GDK_PRIORITY_REDRAW + 10, 40,
+                            (GSourceFunc)docklet_appear_cb, panel, NULL);
   }
 
   awn_applet_manager_hide_applets (AWN_APPLET_MANAGER (priv->manager));
@@ -3286,8 +3287,9 @@ awn_panel_docklet_destroy (AwnPanel *panel)
     {
       g_source_remove (priv->docklet_appear_timer_id);
     }
-    priv->docklet_appear_timer_id = g_timeout_add (40, 
-        (GSourceFunc)docklet_appear_cb, panel);
+    priv->docklet_appear_timer_id =
+        g_timeout_add_full (GDK_PRIORITY_REDRAW + 10, 40,
+                            (GSourceFunc)docklet_appear_cb, panel, NULL);
   }
   
   awn_applet_manager_remove_widget (AWN_APPLET_MANAGER (priv->manager),

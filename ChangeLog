@@ -1,3 +1,9 @@
+2009-11-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Docklet animation timer needs to have lower priority than redraw
+	event, so we don't skip frames.
+
 2009-11-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:
