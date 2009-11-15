@@ -125,6 +125,13 @@ struct _AwnPanelPrivate
   gboolean clickthrough;
   gint clickthrough_type;
   gint last_clickthrough_type;
+
+  /* docklet animating stuff */
+  GdkPixmap *dock_snapshot;
+  GtkAllocation snapshot_paint_size;
+  GdkPixmap *tmp_pixmap;
+  gfloat docklet_alpha;
+  guint docklet_appear_timer_id;
 };
 
 typedef struct _AwnInhibitItem
@@ -1792,6 +1799,8 @@ awn_panel_init (AwnPanel *panel)
   priv->draw_width = 32;
   priv->draw_height = 32;
 
+  priv->docklet_alpha = 1.0;
+
   priv->inhibits = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                           NULL, free_inhibit_item);
 
@@ -2254,6 +2263,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     awn_panel_get_draw_rect (AWN_PANEL (widget), &area, 0, 0);
     awn_background_draw (priv->bg, cr, priv->position, &area);
   }
+
 #if 0 
   if (1)
   {
@@ -2309,23 +2319,67 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   if (priv->composited)
   {
-    GtkAllocation alloc;
+    GtkAllocation manager_alloc;
     GdkRegion *region;
+    cairo_t *window_cr = cr;
 
-    gtk_widget_get_allocation (child, &alloc);
+    // the applets must be always inside AppletManager, clipping to it's
+    // allocation should make us perform better
+    gtk_widget_get_allocation (priv->manager, &manager_alloc);
 
-    gdk_cairo_set_source_pixmap (cr,
-                                 gtk_widget_get_window (child),
-                                 alloc.x, alloc.y);
-
-    region = gdk_region_rectangle (&alloc);
+    // region is intersection of AppletManager allocation and event->region
+    region = gdk_region_rectangle (&manager_alloc);
     gdk_region_intersect (region, event->region);
+
+    if (priv->docklet_alpha < 1.0)
+    {
+      // redirect painting to offscreen pixmap, so we can change its alpha
+      cr = gdk_cairo_create (priv->tmp_pixmap);
+      gdk_cairo_region (cr, region);
+      cairo_clip (cr);
+      cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+      cairo_paint (cr);
+    }
+
+    gdk_cairo_set_source_pixmap (cr, gtk_widget_get_window (child),
+                                 child->allocation.x, child->allocation.y);
+
     gdk_cairo_region (cr, region);
     cairo_clip (cr);
-    gdk_region_destroy (region);
     
     cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     cairo_paint (cr);
+
+    if (window_cr != cr)
+    {
+      /* We need to be careful with clipping here - when painting dock_snapshot
+       * it can be larger than AppletManager's allocation.
+       */
+
+      // decrease the alpha in temp pixmap
+      cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OUT);
+      cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1 - priv->docklet_alpha);
+      gdk_cairo_region (cr, region);
+      cairo_fill (cr);
+      cairo_destroy (cr);
+
+      // copy back to window
+      cr = window_cr;
+      cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
+      cairo_save (cr);
+      gdk_cairo_rectangle (cr, &priv->snapshot_paint_size);
+      cairo_clip (cr);
+      gdk_cairo_set_source_pixmap (cr, priv->dock_snapshot, 0, 0);
+      cairo_paint (cr);
+      cairo_restore (cr);
+
+      gdk_cairo_region (cr, region);
+      cairo_clip (cr);
+      gdk_cairo_set_source_pixmap (cr, priv->tmp_pixmap, 0, 0);
+      cairo_paint (cr);
+    }
+    gdk_region_destroy (region);
   }
 
   cairo_destroy (cr);
@@ -3053,11 +3107,106 @@ docklet_size_request (GtkWidget *widget, GtkRequisition *req, gpointer data)
 }
 
 static void
+multiply_pixmap_alpha (GdkPixmap *pixmap, GdkRectangle *rect, gfloat mult)
+{
+  cairo_t *cr;
+
+  cr = gdk_cairo_create (pixmap);
+  gdk_cairo_rectangle (cr, rect);
+  cairo_clip (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OUT);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1-mult); // alpha multiplier
+  gdk_cairo_rectangle (cr, rect);
+  cairo_fill (cr);
+  cairo_destroy (cr);
+}
+
+static gboolean
+docklet_appear_cb (AwnPanel *panel)
+{
+  gint x, y, width, height;
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+
+  AwnPanelPrivate *priv = panel->priv;
+
+  priv->docklet_alpha += 0.15;
+
+  x = MIN (priv->snapshot_paint_size.x, priv->manager->allocation.x);
+  y = MIN (priv->snapshot_paint_size.y, priv->manager->allocation.y);
+  width = MAX (priv->snapshot_paint_size.width,
+               priv->manager->allocation.width);
+  height = MAX (priv->snapshot_paint_size.height, 
+                priv->manager->allocation.height);
+
+  // let's change alpha of the pixmap here, no need to wait for expose
+  multiply_pixmap_alpha (priv->dock_snapshot,
+                         (GdkRectangle*)&priv->snapshot_paint_size, 0.7);
+
+  gtk_widget_queue_draw_area (GTK_WIDGET (panel), x, y, width, height);
+
+  return priv->docklet_alpha < 1.0;
+}
+
+static GdkPixmap*
+get_window_snapshot (GdkDrawable *drawable, gint width, gint height)
+{
+  GdkPixmap *pixmap = gdk_pixmap_new (drawable, width, height, -1);
+  cairo_t *cr = gdk_cairo_create (pixmap);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+  gdk_cairo_set_source_pixmap (cr, drawable, 0, 0);
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_paint (cr);
+  cairo_destroy (cr);
+
+  return pixmap;
+}
+
+static void
 docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
 
-  // FIXME: an animation?!
+  if (priv->composited)
+  {
+    // copy a snapshot of the dock into a pixmap
+    GdkDrawable *drawable = gtk_widget_get_window (priv->eventbox);
+    gint width, height;
+
+    if (priv->dock_snapshot)
+    {
+      g_object_unref (priv->dock_snapshot);
+      g_object_unref (priv->tmp_pixmap);
+    }
+
+    width = priv->eventbox->allocation.width;
+    height = priv->eventbox->allocation.height;
+
+    priv->dock_snapshot = get_window_snapshot (drawable, width, height);
+    priv->snapshot_paint_size = priv->manager->allocation;
+    multiply_pixmap_alpha (priv->dock_snapshot,
+                           (GdkRectangle*)&priv->snapshot_paint_size, 0.8);
+
+    priv->tmp_pixmap = gdk_pixmap_new (drawable, width, height, -1);
+    
+    priv->docklet_alpha = 0.2;
+    
+    gtk_widget_queue_draw_area (GTK_WIDGET (panel),
+                                priv->snapshot_paint_size.x,
+                                priv->snapshot_paint_size.y,
+                                priv->snapshot_paint_size.width,
+                                priv->snapshot_paint_size.height);
+
+    if (priv->docklet_appear_timer_id != 0)
+    {
+      g_source_remove (priv->docklet_appear_timer_id);
+    }
+    priv->docklet_appear_timer_id = g_timeout_add (40,
+        (GSourceFunc)docklet_appear_cb, panel);
+  }
+
   awn_applet_manager_hide_applets (AWN_APPLET_MANAGER (priv->manager));
   gtk_widget_show (priv->docklet);
   gtk_widget_show (priv->docklet_closer);
@@ -3090,7 +3239,45 @@ awn_panel_docklet_destroy (AwnPanel *panel)
 
   if (priv->docklet == NULL) return;
 
-  // FIXME: an animation?! we could also optimize and not destroy the widget
+  // FIXME: we could optimize and not destroy the widget
+  if (priv->composited)
+  {
+    // copy a snapshot of the dock into a pixmap
+    GdkDrawable *drawable = gtk_widget_get_window (priv->eventbox);
+    gint width, height;
+
+    if (priv->dock_snapshot)
+    {
+      g_object_unref (priv->dock_snapshot);
+      g_object_unref (priv->tmp_pixmap);
+    }
+
+    width = priv->eventbox->allocation.width;
+    height = priv->eventbox->allocation.height;
+    
+    priv->dock_snapshot = get_window_snapshot (drawable, width, height);
+    priv->snapshot_paint_size = priv->manager->allocation;
+    multiply_pixmap_alpha (priv->dock_snapshot,
+                           (GdkRectangle*)&priv->snapshot_paint_size, 0.8);
+
+    priv->tmp_pixmap = gdk_pixmap_new (drawable, width, height, -1);
+    
+    priv->docklet_alpha = 0.2;
+    
+    gtk_widget_queue_draw_area (GTK_WIDGET (panel),
+                                priv->snapshot_paint_size.x,
+                                priv->snapshot_paint_size.y,
+                                priv->snapshot_paint_size.width,
+                                priv->snapshot_paint_size.height);
+
+    if (priv->docklet_appear_timer_id != 0)
+    {
+      g_source_remove (priv->docklet_appear_timer_id);
+    }
+    priv->docklet_appear_timer_id = g_timeout_add (40, 
+        (GSourceFunc)docklet_appear_cb, panel);
+  }
+  
   awn_applet_manager_remove_widget (AWN_APPLET_MANAGER (priv->manager),
                                     priv->docklet);
   awn_applet_manager_show_applets (AWN_APPLET_MANAGER (priv->manager));
