@@ -612,6 +612,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 		    (defs.PANEL, defs.ORIENT, 'int', style),
 		    (defs.PANEL, defs.SIZE, 'int', style),
 		    (defs.PANEL, defs.STYLE, 'int', style),
+		    (defs.PANEL, defs.EXPAND, 'bool', style),
 			(defs.THEME, defs.GSTEP1, 'str', color),              
 			(defs.THEME, defs.GSTEP2, 'str', color),                  
 			(defs.THEME, defs.GHISTEP1, 'str', color),                
@@ -655,6 +656,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 		fc.set_current_folder(os.path.expanduser('~'))
 		fc.set_default_response(gtk.RESPONSE_OK)
 		fc.set_current_name(filename+'.tgz')
+		fc.set_do_overwrite_confirmation(True)
 		filter = gtk.FileFilter()
 		filter.set_name('Awn Theme')
 		filter.add_pattern('*.tgz')
