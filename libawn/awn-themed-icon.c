@@ -271,9 +271,9 @@ add_pixbuf_to_cache (GdkPixbuf * pixbuf,const gchar * scope,
             gint  size)
 {
   gchar * key;
-   
+
   g_return_if_fail (GDK_IS_PIXBUF(pixbuf));
-  g_return_if_fail (icon_name);
+  g_return_if_fail (icon_name);  
   if (!pixbufs)
   {
     pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);  
@@ -715,6 +715,8 @@ theme_load_icon (GtkIconTheme *icon_theme,
                                      GtkIconLookupFlags flags,
                                      GError **error)
 {
+  return gtk_icon_theme_load_icon (icon_theme,icon_name,size,flags,error);
+  /*
   const gchar * names[2]={NULL,NULL};
   names[0] = icon_name;
   GtkIconInfo*  info = gtk_icon_theme_choose_icon (icon_theme,
@@ -727,7 +729,7 @@ theme_load_icon (GtkIconTheme *icon_theme,
     gtk_icon_info_free( info);
     return pbuf;
   }
-  return NULL;
+  return NULL;*/
 }
 
 /*FIXME  Big function */
