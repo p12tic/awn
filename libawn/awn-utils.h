@@ -89,3 +89,4 @@ GValueArray* awn_utils_gslist_to_gvaluearray (GSList *list);
 void awn_utils_show_menu_images (GtkMenu * menu);
 
 #endif
+
