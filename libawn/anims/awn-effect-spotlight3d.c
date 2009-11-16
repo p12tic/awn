@@ -475,6 +475,7 @@ spotlight3D_closing_effect(AwnEffectsAnimation * anim)
     priv->icon_depth = 0;
     priv->spotlight = FALSE;
     priv->clip = FALSE;
+    priv->flip = FALSE;
     priv->spotlight_alpha = 0.0;
     priv->glow_amount = 0.0;
     priv->alpha = 1.0;

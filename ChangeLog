@@ -1,3 +1,8 @@
+2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-spotlight3d.c:
+	Fix close effect cleanup for spotlight3d.
+
 2009-11-15  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:
