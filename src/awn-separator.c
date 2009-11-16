@@ -192,11 +192,15 @@ awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnSeparatorPrivate *priv = AWN_SEPARATOR (widget)->priv;
   cairo_t *cr;
+  cairo_path_t *path;
   GtkOrientation orient;
-  cairo_pattern_t *pat = NULL;
+  cairo_pattern_t *pat = NULL, *shadow_pat = NULL;
+  gdouble r, g, b, a;
 
   cr = gdk_cairo_create (widget->window);
   g_return_val_if_fail (cr, FALSE);
+
+  cairo_set_line_width (cr, 1.0);
 
   // translate to correct position
   switch (priv->position)
@@ -232,16 +236,20 @@ awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
   {
     pat = cairo_pattern_create_linear (0.0, 0.0, 
                                        priv->size + priv->offset / 2, 0.0);
+    shadow_pat = cairo_pattern_create_linear (0.0, 0.0,
+                                       priv->size + priv->offset / 2, 0.0);
 
-    cairo_move_to (cr, 0.0, widget->allocation.height / 2.);
+    cairo_move_to (cr, 0.0, widget->allocation.height / 2);
     cairo_rel_line_to (cr, priv->size + priv->offset, 0.0);
   }
   else
   {
     pat = cairo_pattern_create_linear (0.0, 0.0, 
                                        0.0, priv->size + priv->offset / 2);
+    shadow_pat = cairo_pattern_create_linear (0.0, 0.0,
+                                       0.0, priv->size + priv->offset / 2);
 
-    cairo_move_to (cr, widget->allocation.width / 2., 0.0);
+    cairo_move_to (cr, widget->allocation.width / 2, 0.0);
     cairo_rel_line_to (cr, 0.0, priv->size + priv->offset);
   }
 
@@ -254,9 +262,38 @@ awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
       pat, 1.0, priv->sep_color, 0.0);
   cairo_set_source (cr, pat);
 
+  path = cairo_copy_path (cr);
   cairo_stroke (cr);
 
+  desktop_agnostic_color_get_cairo_color (priv->sep_color, &r, &g, &b, &a);
+
+  #define INVERT_CHANNEL(x) x = x >= 0.5 ? x / 4 : 1.0 - x / 4;
+  INVERT_CHANNEL (r);
+  INVERT_CHANNEL (g);
+  INVERT_CHANNEL (b);
+  #undef INVERT_CHANNEL
+
+  cairo_pattern_add_color_stop_rgba (shadow_pat, 0.0, r, g, b, 0.0);
+  cairo_pattern_add_color_stop_rgba (shadow_pat, 0.4, r, g, b, a);
+  cairo_pattern_add_color_stop_rgba (shadow_pat, 0.6, r, g, b, a);
+  cairo_pattern_add_color_stop_rgba (shadow_pat, 1.0, r, g, b, 0.0);
+
+  cairo_set_source (cr, shadow_pat);
+
+  if (orient == GTK_ORIENTATION_HORIZONTAL)
+  {
+    cairo_translate (cr, 0.0, 1.0);
+  }
+  else
+  {
+    cairo_translate (cr, 1.0, 0.0);
+  }
+  cairo_append_path (cr, path);
+  cairo_stroke (cr);
+
+  cairo_pattern_destroy (shadow_pat);
   cairo_pattern_destroy (pat);
+  cairo_path_destroy (path);
   cairo_destroy (cr);
 
   return TRUE;

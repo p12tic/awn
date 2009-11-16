@@ -772,7 +772,7 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
   set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 100,
                       client, AWN_THEME_HILIGHT);
 
-  set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 128,
+  set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 164,
                       client, AWN_THEME_SEP_COLOR);
 
   /* Don't draw patterns */
