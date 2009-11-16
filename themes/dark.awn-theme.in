@@ -1,6 +1,6 @@
 [theme-info]
 Name=Dark Theme
-Icon=/usr/local/share/avant-window-navigator/themes/thumbnails/dark-thumb.png
+Icon=@PKGDATADIR@/themes/thumbnails/dark-thumb.png
 Author=Awn-core team
 Version=1.0
 
