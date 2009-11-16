@@ -1,6 +1,6 @@
 [theme-info]
-Name=Default Theme
-Icon=avant-window-navigator
+Name=Dark Theme
+Icon=/usr/local/share/avant-window-navigator/themes/thumbnails/dark-thumb.png
 Author=Awn-core team
 Version=1.0
 
@@ -11,14 +11,24 @@ orient=3
 size=48
 #The style of the bar, none=0, flat bar=1, 3d bar=2, curved bar=3
 style=1
+#Default offset
+offset=10
 
 [config/effects]
 #A bitmask which stores the type of effect for each event
 icon_effect=69905
+#Use triangles as arrows
+arrow_icon=__awn_internal_arrow1
+#Show reflections
+reflection_alpha_multiplier=0.3
+#No shadows
+show_shadows=false
 
 [config/theme]
 #Don't use gtk theme mode.
 gtk_theme_mode=false
+#But use gtk theme mode for dialog.
+dialog_gtk_mode=true
 #First gradient step color.
 gstep1=#454545454545c8c8
 #Second gradient step color.

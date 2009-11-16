@@ -1,8 +1,11 @@
 # desktop file
 
-desktopdir   = $(pkgdatadir)/themes
-desktop_DATA = default.awn-theme
+themedir   = $(pkgdatadir)/themes
+theme_DATA = dark.awn-theme
+
+thumb_themedir = $(themedir)/thumbnails
+thumb_theme_DATA = thumbnails/dark-thumb.png
 
 @INTLTOOL_DESKTOP_RULE@
 
-EXTRA_DIST = $(desktop_DATA)
+EXTRA_DIST = $(theme_DATA) $(thumb_theme_DATA)

@@ -1,5 +1,12 @@
 2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
 
+	* configure.in:
+	* themes/Makefile.am:
+	* themes/dark.awn-theme:
+	Add thumbnail for our default theme.
+
+2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
+
 	* data/avant-window-navigator.schema-ini.in.in:
 	* src/awn-background.c:
 	* src/awn-separator.c:
