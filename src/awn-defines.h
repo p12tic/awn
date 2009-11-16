@@ -44,6 +44,7 @@
 #define AWN_PANEL_MONITOR_HEIGHT   "monitor_height"
 #define AWN_PANEL_MONITOR_WIDTH    "monitor_width"
 #define AWN_PANEL_MONITOR_FORCE    "monitor_force"
+#define AWN_PANEL_MONITOR_NUM      "monitor_num"
 #define AWN_PANEL_MONITOR_X_OFFSET "monitor_x_offset"
 #define AWN_PANEL_MONITOR_Y_OFFSET "monitor_y_offset"
 #define AWN_PANEL_MONITOR_ALIGN    "monitor_align"

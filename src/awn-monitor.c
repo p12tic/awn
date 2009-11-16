@@ -47,6 +47,7 @@ struct _AwnMonitorPrivate
 
   gint config_width, config_height;
   gint config_x_offset, config_y_offset;
+  gint monitor_number;
 };
 
 enum 
@@ -59,7 +60,8 @@ enum
   PROP_WIDTH,
   PROP_X_OFFSET,
   PROP_Y_OFFSET,
-  PROP_ALIGN
+  PROP_ALIGN,
+  PROP_MONITOR_NUMBER
 };
 
 enum
@@ -74,6 +76,8 @@ static guint _monitor_signals[LAST_SIGNAL] = { 0 };
 static void awn_monitor_set_force_monitor (AwnMonitor *monitor,
                                            gboolean    force_monitor);
 
+static void awn_monitor_update_fields     (AwnMonitor *monitor);
+
 /* GObject stuff */
 static void
 awn_monitor_constructed (GObject *object)
@@ -82,8 +86,13 @@ awn_monitor_constructed (GObject *object)
   AwnMonitorPrivate *priv = monitor->priv;
 
   desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANEL, AWN_PANEL_MONITOR_NUM,
+                                       object, "monitor-number", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_MONITOR_FORCE,
-                                       object, "monitor-force", FALSE,
+                                       object, "monitor-force", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
@@ -98,17 +107,17 @@ awn_monitor_constructed (GObject *object)
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_MONITOR_X_OFFSET,
-                                       object, "monitor-x-offset", FALSE,
+                                       object, "monitor-x-offset", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_MONITOR_Y_OFFSET,
-                                       object, "monitor-y-offset", FALSE,
+                                       object, "monitor-y-offset", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_MONITOR_ALIGN,
-                                       object, "monitor-align", FALSE,
+                                       object, "monitor-align", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }
@@ -129,6 +138,9 @@ awn_monitor_get_property (GObject    *object,
   {
     case PROP_CLIENT:
       g_value_set_object (value, priv->client);
+      break;
+    case PROP_MONITOR_NUMBER:
+      g_value_set_int (value, priv->monitor_number);
       break;
     case PROP_FORCE_MONITOR:
       g_value_set_boolean (value, priv->force_monitor);
@@ -169,6 +181,10 @@ awn_monitor_set_property (GObject      *object,
   {
     case PROP_CLIENT:
       priv->client = g_value_get_object (value);
+      break;
+    case PROP_MONITOR_NUMBER:
+      priv->monitor_number = g_value_get_int (value);
+      if (!priv->force_monitor) awn_monitor_update_fields (monitor);
       break;
     case PROP_FORCE_MONITOR:
       priv->force_monitor = g_value_get_boolean (value);
@@ -236,6 +252,14 @@ awn_monitor_class_init (AwnMonitorClass *klass)
                          DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                          G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
+    PROP_MONITOR_NUMBER,
+    g_param_spec_int ("monitor-number",
+                      "Monitor Number",
+                      "Monitor number the panel is on",
+                      -1, G_MAXINT, -1,
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_FORCE_MONITOR,
@@ -327,7 +351,20 @@ awn_monitor_update_fields (AwnMonitor *monitor)
   AwnMonitorPrivate *priv = monitor->priv;
 
   GdkRectangle geometry;
-  gint monitor_number = gdk_screen_get_monitor_at_point (priv->screen, 0, 0);
+  gint monitor_number = priv->monitor_number;
+  gint n_monitors = gdk_screen_get_n_monitors (priv->screen);
+  // make sure there is monitor with this number, if not get last one
+  if (n_monitors <= monitor_number)
+  {
+    g_warning ("Unable to position Awn on monitor number %d,"
+               " using monitor %d instead", monitor_number, n_monitors-1);
+    monitor_number = n_monitors - 1;
+  }
+  // for monitor_number == -1, we'll get monitor with position [0, 0]
+  if (monitor_number < 0)
+  {
+    monitor_number = gdk_screen_get_monitor_at_point (priv->screen, 0, 0);
+  }
 
   gdk_screen_get_monitor_geometry (priv->screen, monitor_number, &geometry);
   monitor->width = geometry.width;

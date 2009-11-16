@@ -1,5 +1,13 @@
 2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
 
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/awn-defines.h:
+	* src/awn-monitor.c:
+	Add panel/monitor_num key, which should help when monitors are
+	hotplugged.
+
+2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
+
 	* configure.in:
 	* themes/Makefile.am:
 	* themes/dark.awn-theme:

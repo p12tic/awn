@@ -73,6 +73,11 @@ type = float
 default = 0.5
 _description=Alignment of a non-expanded panel on the monitor edge.
 
+[panel/monitor_num]
+type = integer
+default = -1
+_description=Monitor number where Awn is located (only takes effect when monitor_force is False, use -1 to automatically pick monitor).
+
 [panel/monitor_force]
 type = boolean
 default = false
@@ -83,6 +88,11 @@ type = integer
 default = 768
 _description=The forced monitor height. Only used if monitor_force is true.
 
+[panel/monitor_width]
+type = integer
+default = 1024
+_description=The forced monitor width. Only used if monitor_force is true.
+
 [panel/monitor_x_offset]
 type = integer
 default = 0
@@ -92,11 +102,6 @@ _description=An optional offset when you have more than 1 monitors.
 type = integer
 default = 0
 _description=An optional offset when you have more than 1 monitors.
-
-[panel/monitor_width]
-type = integer
-default = 1024
-_description=The forced monitor width. Only used if monitor_force is true.
 
 [panel/offset]
 type = integer
