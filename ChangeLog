@@ -1,3 +1,11 @@
+2009-11-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* libawn/awn-tooltip.c:
+	* src/awn-panel.c:
+	Change GetSnapshot method to return image with alpha channel instead
+	of the window below.
+
 2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/avant-window-navigator.schema-ini.in.in:

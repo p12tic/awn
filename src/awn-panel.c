@@ -3433,42 +3433,45 @@ gboolean
 awn_panel_get_snapshot (AwnPanel *panel, GValue *value, GError **error)
 {
   GdkRectangle rect;
-  gint x, y;
   g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
 
   awn_panel_get_draw_rect (panel, &rect, 0, 0);
 
   // get snapshot from root window, cause we'll loose alpha anyway
-  GdkWindow *window =
-    gdk_screen_get_root_window (gtk_widget_get_screen (GTK_WIDGET (panel)));
-
-  gdk_window_get_origin (gtk_widget_get_window (GTK_WIDGET (panel)), &x, &y);
+  GdkWindow *window = gtk_widget_get_window (GTK_WIDGET (panel));
 
   // FIXME: incorrect width/height for curved dock
-  GdkPixbuf *pixbuf = 
-    gdk_pixbuf_get_from_drawable (NULL, 
-                                  window,
-                                  gdk_drawable_get_colormap (window),
-                                  x + rect.x, y + rect.y, 0, 0,
-                                  rect.width, rect.height);
+  cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                                         rect.width,
+                                                         rect.height);
+  cairo_t *cr = cairo_create (surface);
+  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+  cairo_paint (cr);
+
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  gdk_cairo_set_source_pixmap (cr, window, -rect.x, -rect.y);
+  cairo_paint (cr);
+
+  cairo_destroy (cr);
+  cairo_surface_flush (surface);  
 
   // stuff the pixbuf to our out param
-  gint width = gdk_pixbuf_get_width (pixbuf);
-  gint height = gdk_pixbuf_get_height (pixbuf);
-  gint rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  gint n_channels = gdk_pixbuf_get_n_channels (pixbuf);
-  gint bits_per_sample = gdk_pixbuf_get_bits_per_sample (pixbuf);
+  gint width = rect.width;
+  gint height = rect.height;
+  gint rowstride = cairo_image_surface_get_stride (surface);
+  gint n_channels = 4;
+  gint bits_per_sample = 8;
   //gint image_len = (height - 1) * rowstride + width *
   //  ((n_channels * bits_per_sample + 7) / 8);
 
-  guchar *image = gdk_pixbuf_get_pixels (pixbuf);
+  guchar *image = cairo_image_surface_get_data (surface);
 
   GValueArray *image_struct = g_value_array_new (1);
 
   value_array_append_int (image_struct, width);
   value_array_append_int (image_struct, height);
   value_array_append_int (image_struct, rowstride);
-  value_array_append_bool (image_struct, gdk_pixbuf_get_has_alpha (pixbuf));
+  value_array_append_bool (image_struct, TRUE);
   value_array_append_int (image_struct, bits_per_sample);
   value_array_append_int (image_struct, n_channels);
   value_array_append_array (image_struct, image, height * rowstride);
@@ -3476,7 +3479,7 @@ awn_panel_get_snapshot (AwnPanel *panel, GValue *value, GError **error)
   g_value_init (value, G_TYPE_VALUE_ARRAY);
   g_value_take_boxed (value, image_struct);
 
-  g_object_unref (pixbuf);
+  cairo_surface_destroy (surface);
 
   return TRUE;
 }

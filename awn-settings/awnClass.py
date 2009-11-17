@@ -25,6 +25,8 @@ import os
 import socket
 import time
 import urllib
+import cairo
+import array
 from ConfigParser import ConfigParser
 try:
     from cStringIO import StringIO
@@ -1633,14 +1635,19 @@ class awnThemeCustomize(awnBzr):
         self.hide_export_dialog(None)
         
     def get_dock_image(self, themedir):
-		bus = dbus.SessionBus()
-		panel = bus.get_object('org.awnproject.Awn', '/org/awnproject/Awn/Panel1', 'org.awnproject.Awn.Panel')
-		data = panel.GetSnapshot(byte_arrays=True)
-		width, height, rowstride, has_alpha, bits_per_sample, n_channels, pixels = data
-		pixbuf = gtk.gdk.pixbuf_new_from_data(pixels, gtk.gdk.COLORSPACE_RGB, has_alpha, bits_per_sample, width, height, rowstride)
-		newpixbuf = gtk.gdk.Pixbuf(gtk.gdk.COLORSPACE_RGB, has_alpha, bits_per_sample, 150, height)
-		pixbuf.copy_area(0, 0, 150, height, newpixbuf, 0, 0)
-		newpixbuf.save(themedir+'/thumb.png', 'png')
+        bus = dbus.SessionBus()
+        panel = bus.get_object('org.awnproject.Awn', '/org/awnproject/Awn/Panel1', 'org.awnproject.Awn.Panel')
+        data = panel.GetSnapshot(byte_arrays=True)
+        width, height, rowstride, has_alpha, bits_per_sample, n_channels, pixels = data
+        pixels = array.array('c', pixels)
+        surface = cairo.ImageSurface.create_for_data(pixels, cairo.FORMAT_ARGB32, width, height, rowstride)
+        # get only a subimage
+        newsurface = surface.create_similar(cairo.CONTENT_COLOR_ALPHA, 150, height)
+        cr = cairo.Context(newsurface)
+        cr.set_operator(cairo.OPERATOR_SOURCE)
+        cr.set_source_surface(surface)
+        cr.paint()
+        newsurface.write_to_png(themedir+'/thumb.png')
             
     def install_theme(self, file):
         goodTheme = False

@@ -757,6 +757,7 @@ awn_tooltip_hide_timer(gpointer data)
   AwnTooltip *tooltip = (AwnTooltip*)data;
 
   tooltip->priv->hide_timer_id = 0;
+  if (!tooltip->priv->smart_behavior) return FALSE;
 
   gtk_widget_hide (GTK_WIDGET (tooltip));
 
