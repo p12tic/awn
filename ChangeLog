@@ -1,3 +1,11 @@
+2009-11-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+        Fix up code that only applies if a window goes from 
+        skip_tasklist = false to skip_tasklist = true...  which
+        is obviously a somewhat rare thing...  However, awn-settings
+        will do it if the prefs applet is running.
+
 2009-11-17  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnClass.py:

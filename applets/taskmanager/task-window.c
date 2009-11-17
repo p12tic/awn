@@ -587,19 +587,21 @@ on_window_state_changed (WnckWindow      *wnckwin,
                          TaskWindow      *window)
 {
   TaskWindowPrivate *priv;
-  gboolean           hidden = FALSE;
+  gboolean           visible = TRUE;
   gboolean           needs_attention = FALSE;
     
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   priv = window->priv;
 
-  if (state & WNCK_WINDOW_STATE_SKIP_TASKLIST)
-    hidden = TRUE;
-
-  if ( GTK_WIDGET_VISIBLE(window) != hidden)
+  if ( state & WNCK_WINDOW_STATE_SKIP_TASKLIST)
   {
-    if (hidden && !priv->hidden)
+    visible = FALSE;
+  }
+  
+  if ( GTK_WIDGET_VISIBLE(window) != visible )
+  {
+    if (!visible || priv->hidden)
     {
       gtk_widget_hide (GTK_WIDGET(window));
     }
@@ -608,7 +610,7 @@ on_window_state_changed (WnckWindow      *wnckwin,
       gtk_widget_show (GTK_WIDGET(window));
     }
 
-    if (priv->in_workspace && !hidden && GTK_WIDGET_VISIBLE(window))
+    if (priv->in_workspace && visible && GTK_WIDGET_VISIBLE(window) && !priv->hidden)
       task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
     else
       task_item_emit_visible_changed (TASK_ITEM (window), FALSE);      
@@ -1278,7 +1280,6 @@ _match (TaskItem *item,
 
     if (g_strcmp0(client_name,client_name_to_match)!=0)
     {
-      g_debug ("%s: different client names: %s, %s",__func__,client_name,client_name_to_match);
       return 0;
     }
   }  
