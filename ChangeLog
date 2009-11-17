@@ -1,3 +1,8 @@
+2009-11-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* themes/thumbnails/dark-thumb.png:
+	Add alpha channel to theme preview image.
+
 2009-11-16  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
