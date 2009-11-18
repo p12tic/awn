@@ -1,3 +1,13 @@
+2009-11-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-dbus-watcher.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel.c:
+	Make the DestroyApplet signal work.
+
 2009-11-18  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-window.c:

@@ -86,6 +86,7 @@ enum
 enum
 {
   APPLET_EMBEDDED,
+  APPLET_REMOVED,
   SHAPE_MASK_CHANGED,
 
   LAST_SIGNAL
@@ -377,6 +378,15 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                  G_OBJECT_CLASS_TYPE(obj_class),
                  G_SIGNAL_RUN_FIRST,
                  G_STRUCT_OFFSET(AwnAppletManagerClass, applet_embedded),
+                 NULL, NULL,
+                 g_cclosure_marshal_VOID__OBJECT,
+                 G_TYPE_NONE, 1, GTK_TYPE_WIDGET);
+ 
+  _applet_manager_signals[APPLET_REMOVED] =
+    g_signal_new("applet-removed",
+                 G_OBJECT_CLASS_TYPE(obj_class),
+                 G_SIGNAL_RUN_FIRST,
+                 G_STRUCT_OFFSET(AwnAppletManagerClass, applet_removed),
                  NULL, NULL,
                  g_cclosure_marshal_VOID__OBJECT,
                  G_TYPE_NONE, 1, GTK_TYPE_WIDGET);
@@ -688,7 +698,7 @@ create_applet (AwnAppletManager *manager,
   gboolean                 expand = FALSE;
   gboolean                 fill = FALSE;
 
-  /*FIXME: Exception cases, i.e. separators */
+  /* Exception cases, i.e. separators */
   if (g_str_has_suffix (path, "/separator.desktop"))
   {
     widget = applet = awn_separator_new_from_config_with_values (priv->client,
@@ -768,7 +778,8 @@ delete_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
     if (AWN_IS_APPLET_PROXY (applet))
     {
       g_object_get (applet, "uid", &uid, NULL);
-      /* FIXME: Let the applet know it's about to be deleted ? */
+      g_signal_emit (manager, _applet_manager_signals[APPLET_REMOVED],
+                     0, applet);
     }
     else if (GTK_IS_IMAGE (applet) && !AWN_IS_SEPARATOR (applet)) // expander
     {

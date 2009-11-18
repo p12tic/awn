@@ -80,7 +80,7 @@ awn_dbus_watcher_init (AwnDBusWatcher *watcher)
   watcher->priv = priv;
 
   priv->connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
-  if (priv->connection == NULL)
+  if (error != NULL)
   {
     g_warning ("Unable to make connection to the D-Bus session bus: %s",
                error->message);

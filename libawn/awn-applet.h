@@ -63,7 +63,7 @@ struct _AwnAppletClass
   void (*position_changed) (AwnApplet *applet, GtkPositionType position);
   void (*offset_changed)   (AwnApplet *applet, gint offset);
   void (*size_changed)     (AwnApplet *applet, gint size);
-  void (*deleted)          (AwnApplet *applet, const gchar *uid);
+  void (*deleted)          (AwnApplet *applet);
   void (*menu_creation)    (AwnApplet *applet, GtkMenu *menu);
   void (*flags_changed)    (AwnApplet *applet, AwnAppletFlags flags);
   void (*panel_configure)  (AwnApplet *applet, GdkEventConfigure *event);

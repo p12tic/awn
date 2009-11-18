@@ -198,7 +198,10 @@ on_destroy_applet (DBusGProxy *proxy, gchar *id, AwnApplet *applet)
   priv = applet->priv;
 
   if (strcmp (priv->uid, id) == 0)
+  {
+    g_signal_emit (applet, _applet_signals[DELETED], 0);
     on_delete_notify (NULL, applet);
+  }
 }
 
 static GdkFilterReturn
@@ -856,8 +859,8 @@ awn_applet_class_init (AwnAppletClass *klass)
                  G_SIGNAL_RUN_FIRST,
                  G_STRUCT_OFFSET (AwnAppletClass, deleted),
                  NULL, NULL,
-                 g_cclosure_marshal_VOID__STRING,
-                 G_TYPE_NONE, 1, G_TYPE_STRING);
+                 g_cclosure_marshal_VOID__VOID,
+                 G_TYPE_NONE, 0);
 
   _applet_signals[MENU_CREATION] =
     g_signal_new("menu-creation",

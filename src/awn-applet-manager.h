@@ -64,6 +64,7 @@ struct _AwnAppletManagerClass
 
   /*< signals >*/
   void (*applet_embedded)    (AwnAppletManager *manager, GtkWidget *applet);
+  void (*applet_removed)     (AwnAppletManager *manager, GtkWidget *applet);
   void (*shape_mask_changed) (AwnAppletManager *manager);
 };
 

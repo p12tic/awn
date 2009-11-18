@@ -245,6 +245,8 @@ static void     load_correct_colormap       (GtkWidget *panel);
 static void     on_composited_changed       (GtkWidget *widget, gpointer data);
 static void     on_applet_embedded          (AwnPanel  *panel,
                                              GtkWidget *applet);
+static void     on_applet_removed           (AwnPanel  *panel,
+                                             GtkWidget *applet);
 
 static gboolean on_mouse_over               (GtkWidget *widget,
                                              GdkEventCrossing *event);
@@ -545,6 +547,8 @@ awn_panel_constructed (GObject *object)
   priv->manager = awn_applet_manager_new_from_config (priv->client);
   g_signal_connect_swapped (priv->manager, "applet-embedded",
                             G_CALLBACK (on_applet_embedded), panel);
+  g_signal_connect_swapped (priv->manager, "applet-removed",
+                            G_CALLBACK (on_applet_removed), panel);
   g_signal_connect_swapped (priv->manager, "notify::expands",
                             G_CALLBACK (awn_panel_refresh_alignment), panel);
   g_signal_connect (priv->manager, "size-allocate",
@@ -2636,7 +2640,7 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
 }
 
 static void
-on_applet_embedded (AwnPanel  *panel, GtkWidget *applet)
+on_applet_embedded (AwnPanel *panel, GtkWidget *applet)
 {
   g_return_if_fail (AWN_IS_PANEL (panel) && GTK_IS_SOCKET (applet));
 
@@ -2668,6 +2672,20 @@ on_applet_embedded (AwnPanel  *panel, GtkWidget *applet)
 
     g_free (uid);
   }
+}
+
+static void
+on_applet_removed (AwnPanel *panel, GtkWidget *applet)
+{
+  g_return_if_fail (AWN_IS_PANEL (panel) && GTK_IS_SOCKET (applet));
+
+  // let the applet know it's about to be removed
+  char *uid = NULL;
+  g_object_get (applet, "uid", &uid, NULL);
+  g_return_if_fail (uid);
+
+  g_signal_emit (panel, _panel_signals[DESTROY_APPLET], 0, uid);
+  g_free (uid);
 }
 
 static void
@@ -3288,7 +3306,7 @@ awn_panel_docklet_destroy (AwnPanel *panel)
       g_source_remove (priv->docklet_appear_timer_id);
     }
     priv->docklet_appear_timer_id =
-        g_timeout_add_full (GDK_PRIORITY_REDRAW + 10, 40,
+        g_timeout_add_full (GDK_PRIORITY_REDRAW + 10, 50,
                             (GSourceFunc)docklet_appear_cb, panel, NULL);
   }
   
