@@ -885,7 +885,7 @@ task_window_is_hidden (TaskWindow    *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
 
-  return GTK_WIDGET_VISIBLE(window);
+  return !GTK_WIDGET_VISIBLE(window);
 }
 
 /*hidden should be a prop*/
