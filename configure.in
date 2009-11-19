@@ -186,6 +186,8 @@ Makefile
 applet-activation/Makefile
 applets/expander/Makefile
 applets/expander/expander.desktop.in
+applets/quick-prefs/Makefile
+applets/quick-prefs/quick-prefs.desktop.in
 applets/separator/Makefile
 applets/separator/separator.desktop.in
 applets/taskmanager/Makefile

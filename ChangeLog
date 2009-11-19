@@ -1,5 +1,16 @@
 2009-11-20  Michal Hruby  <michal.mhr@gmail.com>
 
+	* Makefile.am:
+	* applets/quick-prefs/Makefile.am:
+	* applets/quick-prefs/applet.vala:
+	* applets/quick-prefs/quick-prefs.desktop.in.in:
+	* bindings/vala/build.vapi:
+	* bindings/vala/libintl.vapi:
+	* configure.in:
+	Added Preferences applet.
+
+2009-11-20  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/anims/awn-effect-simple.c:
 	* libawn/anims/awn-effect-simple.h:
 	* libawn/awn-effects.c:
