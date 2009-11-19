@@ -556,6 +556,12 @@ task_launcher_get_icon_name (TaskItem *item)
   return TASK_LAUNCHER (item)->priv->icon_name;
 }
 
+const gchar * 
+task_launcher_get_exec (TaskItem *item)
+{
+  return TASK_LAUNCHER (item)->priv->icon_name;
+}
+
 static GdkPixbuf * 
 _get_icon (TaskItem *item)
 {
@@ -744,7 +750,7 @@ _match (TaskItem *item,
   
   /*
    Check the parent PID also
-   */
+   */ /*
 #ifdef DEBUG
   g_debug ("ppid of window pid = %d, launch pid = %d",buf_proc_uid.ppid,priv->pid);
 #endif    
@@ -755,7 +761,7 @@ _match (TaskItem *item,
       result = 92;
       goto finished;
     }
-  }
+   
 #ifdef DEBUG
   g_debug ("ppid of parent pid = %d, launch pid = %d",ppid_buf_proc_uid.ppid,priv->pid);
 #endif    
@@ -766,8 +772,8 @@ _match (TaskItem *item,
       result = 91;
       goto finished;
     }
-  }
-
+ 
+   */
   /*
    Does the command line of the process match exec exactly? 
    Not likely but damn likely to be the correct match if it does

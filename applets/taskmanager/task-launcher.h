@@ -74,6 +74,6 @@ void            task_launcher_launch_with_data     (TaskLauncher   *launcher,
 
 const gchar *   task_launcher_get_icon_name       (TaskItem *item);
 
-
+const gchar *   task_launcher_get_exec            (TaskItem *item);
 #endif /* _TASK_LAUNCHER_H_ */
 
