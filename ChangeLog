@@ -1,6 +1,12 @@
 2009-11-19  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:
+	Fix typo in previous commit and removed match checks involving
+	ppid, to determine if they're causing incorrect matches.
+
+2009-11-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
 	* applets/taskmanager/task-launcher.h:
 	Added task_launcher_get_exec().
 
