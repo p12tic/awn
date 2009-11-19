@@ -1,3 +1,11 @@
+2009-11-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-simple.c:
+	* libawn/anims/awn-effect-simple.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-label.c:
+	Added opening and closing simple effects.
+
 2009-11-19  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:

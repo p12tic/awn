@@ -509,8 +509,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
   klass->animations = g_ptr_array_sized_new(AWN_ANIMATIONS_PER_BUNDLE * 9); /* 5 animations per bundle, 9 effect bundles */
 
   awn_effects_register_effect_bundle(klass,
-    NULL,
-    NULL,
+    simple_opening_effect,
+    simple_closing_effect,
     simple_hover_effect,
     simple_attention_effect,
     simple_attention_effect
