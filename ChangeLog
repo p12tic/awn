@@ -1,3 +1,9 @@
+2009-11-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Do not show a fallback icon in the TaskIcon in any 
+	circumstance if there's a launcher icon available.
+
 2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/anims/awn-effect-spotlight3d.c:

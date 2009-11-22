@@ -1727,6 +1727,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   TaskItem * launcher;
   GdkPixbuf * launcher_icon = NULL;
   GdkPixbuf * app_icon = NULL;
+  gboolean fallback_used = TASK_IS_WINDOW (item) && task_window_get_icon_is_fallback (TASK_WINDOW(item));
   
   g_return_if_fail (TASK_IS_ICON (icon) );
   priv = icon->priv;  
@@ -1739,7 +1740,8 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
       !item ||
       ( priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))==USE_NEVER ) ||
       ( priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && ( task_window_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS?FALSE:(task_window_get_icon_changes(TASK_WINDOW(item))<2))) ||      
-      ( priv->icon_change_behavior==2)
+      ( priv->icon_change_behavior==2) ||
+      fallback_used
     )
   {
     if ( TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))!=USE_NEVER)
@@ -1796,7 +1798,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
       /* We have a TaskWindows _and_ a launcher icon*/
       if (TASK_IS_WINDOW(item) && launcher_icon)
       {
-        if (priv->overlay_application_icons_swap)
+        if ( (priv->overlay_application_icons_swap) && !fallback_used )
         {
           priv->icon = app_icon;
         }
@@ -1806,7 +1808,8 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
         }
         awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
         if (app_icon && 
-            utils_gdk_pixbuf_similar_to (launcher_icon, app_icon) == FALSE)
+            utils_gdk_pixbuf_similar_to (launcher_icon, app_icon) == FALSE &&
+            !fallback_used)
         {
           /*Conditional Operator*/
           g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
@@ -1840,7 +1843,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     }
     else
     {
-      if (TASK_IS_WINDOW (item) )
+      if (TASK_IS_WINDOW (item))
       {
         priv->icon = app_icon;
       }
