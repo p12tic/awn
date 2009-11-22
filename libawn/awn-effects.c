@@ -433,6 +433,7 @@ awn_effects_redraw(AwnEffects *fx)
     gint x, y, w, h;
     gint dx = 0, dy = 0;
     gint last_size = fx->priv->last_redraw_size;
+    gdouble icon_size;
     GtkAllocation alloc;
 
     gtk_widget_get_allocation (fx->widget, &alloc);
@@ -445,8 +446,12 @@ awn_effects_redraw(AwnEffects *fx)
     {
       case GTK_POS_TOP:
       case GTK_POS_BOTTOM:
+        icon_size = fx->is_active && fx->priv->height_mod <= 1.0 ?
+          fx->priv->icon_height :
+          fx->priv->icon_height * fx->priv->height_mod;
+        icon_size *= fx->make_shadow ? 1.0625 : 1.0;
         w = alloc.width;
-        h = ceil (fx->priv->icon_height * fx->priv->height_mod) +
+        h = ceil (icon_size) +
             fx->icon_offset + fx->priv->top_offset +
             AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
 
@@ -461,7 +466,11 @@ awn_effects_redraw(AwnEffects *fx)
 
       case GTK_POS_RIGHT:
       case GTK_POS_LEFT:
-        w = ceil (fx->priv->icon_width * fx->priv->width_mod) +
+        icon_size = fx->is_active && fx->priv->width_mod <= 1.0 ?
+          fx->priv->icon_width :
+          fx->priv->icon_width * fx->priv->width_mod;
+        icon_size *= fx->make_shadow ? 1.0625 : 1.0;
+        w = ceil (icon_size) +
             fx->icon_offset + fx->priv->top_offset +
             AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
         h = alloc.height;
