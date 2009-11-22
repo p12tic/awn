@@ -775,6 +775,11 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
   set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 164,
                       client, AWN_THEME_SEP_COLOR);
 
+  set_cfg_from_theme (&style->fg[GTK_STATE_NORMAL], 255,
+                      client, AWN_THEME_TEXT_COLOR);
+  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 255,
+                      client, AWN_THEME_OUTLINE_COLOR);
+
   /* Don't draw patterns */
   desktop_agnostic_config_client_set_bool (client,
                                            AWN_GROUP_THEME,

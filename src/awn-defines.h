@@ -58,6 +58,8 @@
 #define AWN_THEME_GHISTEP2         "ghistep2"
 #define AWN_THEME_BORDER           "border"
 #define AWN_THEME_HILIGHT          "hilight"
+#define AWN_THEME_TEXT_COLOR       "icon_text_color"
+#define AWN_THEME_OUTLINE_COLOR    "icon_text_outline_color"
 
 #define AWN_THEME_DLG_GTK_MODE     "dialog_gtk_mode"
 #define AWN_THEME_DLG_BG           "dialog_bg"
