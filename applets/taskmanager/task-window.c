@@ -701,6 +701,17 @@ task_window_get_name (TaskWindow *window)
   return "";
 }
 
+gboolean 
+task_window_get_icon_is_fallback(TaskWindow * window)
+{
+  TaskWindowPrivate *priv;
+  
+  g_return_val_if_fail (TASK_IS_WINDOW (window), TRUE);
+  priv = window->priv;
+  
+  return wnck_window_get_icon_is_fallback (priv->window);
+}
+
 const gchar *
 task_window_get_client_name (TaskWindow *window)
 {

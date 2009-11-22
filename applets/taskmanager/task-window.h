@@ -131,17 +131,19 @@ void            task_window_set_icon_geometry (TaskWindow     *window,
                                                gint            width,
                                                gint            height);
 
-gboolean        task_window_get_is_running    (TaskWindow     *window);
+gboolean        task_window_get_is_running      (TaskWindow     *window);
 
-WinIconUse      task_window_use_win_icon      (TaskWindow * item);
+WinIconUse      task_window_use_win_icon        (TaskWindow * item);
 
-WinIconUse      task_window_get_icon_changes (TaskWindow * window);
+WinIconUse      task_window_get_icon_changes    (TaskWindow * window);
 
-void            task_window_set_use_win_icon (TaskWindow * item, WinIconUse win_use);
+void            task_window_set_use_win_icon    (TaskWindow * item, WinIconUse win_use);
 
-void            task_window_set_hidden        (TaskWindow *window,gboolean hidden);
+void            task_window_set_hidden          (TaskWindow *window,gboolean hidden);
 
-const gchar *   task_window_get_client_name (TaskWindow *window);
+const gchar *   task_window_get_client_name     (TaskWindow *window);
+
+gboolean        task_window_get_icon_is_fallback  (TaskWindow * window);
 
 #endif /* _TASK_WINDOW_H_ */
 
