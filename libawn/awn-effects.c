@@ -430,7 +430,53 @@ awn_effects_redraw(AwnEffects *fx)
 {
   if (fx->widget && GTK_WIDGET_DRAWABLE (fx->widget))
   {
-    gtk_widget_queue_draw (fx->widget);
+    gint x, y, w, h;
+    gint dx = 0, dy = 0;
+    gint last_size = fx->priv->last_redraw_size;
+    GtkAllocation alloc;
+
+    gtk_widget_get_allocation (fx->widget, &alloc);
+    if (GTK_WIDGET_NO_WINDOW (fx->widget))
+    {
+      dx = alloc.x;
+      dy = alloc.y;
+    }
+    switch (fx->position)
+    {
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
+        w = alloc.width;
+        h = ceil (fx->priv->icon_height * fx->priv->height_mod) +
+            fx->icon_offset + fx->priv->top_offset +
+            AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
+
+        fx->priv->last_redraw_size = h;
+        h = MAX (h, last_size == 0 ? alloc.height : last_size);
+
+        x = dx;
+        y = fx->position == GTK_POS_TOP ? dy : alloc.height - h + dy;
+
+        gtk_widget_queue_draw_area (fx->widget, x, y, w, h);
+        break;
+
+      case GTK_POS_RIGHT:
+      case GTK_POS_LEFT:
+        w = ceil (fx->priv->icon_width * fx->priv->width_mod) +
+            fx->icon_offset + fx->priv->top_offset +
+            AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
+        h = alloc.height;
+
+        fx->priv->last_redraw_size = w;
+        w = MAX (w, last_size == 0 ? alloc.width : last_size);
+
+        x = fx->position == GTK_POS_LEFT ? dx : alloc.width - w + dx;
+        y = dy;
+
+        gtk_widget_queue_draw_area (fx->widget, x, y, w, h);
+        break;
+      default:
+        gtk_widget_queue_draw (fx->widget);
+    }
   }
 }
 
@@ -846,6 +892,7 @@ awn_effects_init(AwnEffects * fx)
 
   fx->priv->icon_width = 48;
   fx->priv->icon_height = 48;
+  fx->priv->last_redraw_size = 0;
 
   fx->priv->width_mod = 1.0;
   fx->priv->height_mod = 1.0;
@@ -1292,7 +1339,9 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
      * mentioned above if using cairo_xlib_surface_get_width/height)
      */
     if (!gtk_widget_get_has_window (fx->widget))
-      cairo_translate (cr, (double)(event->area.x), (double)(event->area.y));
+    {
+      cairo_translate (cr, (double)(alloc.x), (double)(alloc.y));
+    }
   }
 
   if (fx->priv->already_exposed == FALSE)

@@ -148,10 +148,6 @@ typedef struct _AwnInhibitItem
 
 #define CLICKTHROUGH_OPACITY 0.3
 
-// padding for active_rect, yea it really isn't nice but so far it seems to
-// be the only feasible solution
-#define ACTIVE_RECT_PADDING 3
-
 #define ROUND(x) (x < 0 ? x - 0.5 : x + 0.5)
 
 //#define DEBUG_DRAW_AREA
@@ -853,8 +849,10 @@ awn_panel_resize_timeout (gpointer data)
   GdkRectangle rect1, rect2;
 
   // this is the size we are resizing to
-  const gint target_width = priv->alignment->requisition.width;
-  const gint target_height = priv->alignment->requisition.height;
+  const gint target_width = MIN (priv->alignment->requisition.width,
+                                 priv->monitor->width);
+  const gint target_height = MIN (priv->alignment->requisition.height,
+                                  priv->monitor->height);
 
   awn_panel_get_draw_rect (panel, &rect1, 0, 0);
 
@@ -965,7 +963,7 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
   if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg))
   {
     gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment), 0, 0, 0, 0);
-    priv->extra_padding = ACTIVE_RECT_PADDING;
+    priv->extra_padding = AWN_EFFECTS_ACTIVE_RECT_PADDING;
 
     gtk_widget_queue_draw (GTK_WIDGET (panel));
     return;
@@ -997,7 +995,7 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
       break;
   }
 
-  priv->extra_padding += ACTIVE_RECT_PADDING;
+  priv->extra_padding += AWN_EFFECTS_ACTIVE_RECT_PADDING;
 
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment),
                              top, bottom, left, right);
@@ -1853,7 +1851,7 @@ awn_panel_new_from_config (DesktopAgnosticConfigClient *client)
                          "client", client,
                          NULL);
 #ifdef DEBUG_INVALIDATION
-  g_timeout_add (2000, debug_invalidating, NULL);
+  g_timeout_add (5000, debug_invalidating, NULL);
 #endif
   
   return window;
@@ -3158,7 +3156,9 @@ docklet_appear_cb (AwnPanel *panel)
   height = MAX (priv->snapshot_paint_size.height, 
                 priv->manager->allocation.height);
 
-  gtk_widget_queue_draw_area (GTK_WIDGET (panel), x, y, width, height);
+  GdkWindow *window = gtk_widget_get_window (GTK_WIDGET (panel));
+  GdkRectangle rect = {.x = x, .y = y, .width = width, .height = height};
+  gdk_window_invalidate_rect (window, &rect, FALSE);
 
   if (priv->docklet_alpha >= 1.0)
   {

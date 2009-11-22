@@ -1,5 +1,16 @@
 2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-background-edgy.c:
+	* src/awn-panel.c:
+	Optimize drawing on a couple of places.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-defines.h:
 	* src/awn-background.c:
 	Set text & outline color when gtk_theme_mode is on.

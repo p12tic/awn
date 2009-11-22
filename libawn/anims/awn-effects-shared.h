@@ -51,6 +51,7 @@ struct _AwnEffectsPrivate
 
   gint icon_width, icon_height;
   gint window_width, window_height;
+  gint last_redraw_size;
 
   /* EFFECT VARIABLES */
   gboolean effect_lock;

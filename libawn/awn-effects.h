@@ -72,6 +72,10 @@ typedef gboolean(* AwnEffectsOpfn )(AwnEffects * fx,
                                      GtkAllocation * alloc,
                                      gpointer user_data);
 
+// padding for active_rect, yea it really isn't nice but so far
+// it seems to be the only feasible solution
+#define AWN_EFFECTS_ACTIVE_RECT_PADDING 3
+
 typedef struct
 {
   AwnEffectsOpfn      fn;

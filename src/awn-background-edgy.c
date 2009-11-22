@@ -390,10 +390,10 @@ awn_background_edgy_get_strut_offsets (AwnBackground *bg,
   AwnBackgroundEdgy *edgy = AWN_BACKGROUND_EDGY (bg);
 
   /* FIXME: magic constant!
-   *   it's ACTIVE_RECT_PADDING (defined in awn-panel.c)
-   *   + flat bg top padding (for bottom position)
+   *   it's flat bg top padding (for bottom position)
    */
-  *strut = edgy->priv->radius - edgy->priv->top_pad + 5;
+  *strut = edgy->priv->radius - edgy->priv->top_pad +
+    AWN_EFFECTS_ACTIVE_RECT_PADDING + 2;
 }
 
 static void
