@@ -144,9 +144,21 @@ default = 1
 _description=The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3, edgy=4, floaty=5)
 
 [panels/panel_list]
-type = list-string
+type = list-integer
 default = 1
-_description=The list of panels.
+_description=The list of panel instances.
+per_instance = false
+
+[panels/hide_delay]
+type = integer
+default = 1000
+_description=Delay between mouse leaving the panel and it hiding.
+per_instance = false
+
+[panels/mouse_poll_delay]
+type = integer
+default = 500
+_description=Delay for mouse position polling.
 per_instance = false
 
 [shared/dialog_focus_loss_behavior]

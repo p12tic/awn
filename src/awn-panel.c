@@ -111,6 +111,9 @@ struct _AwnPanelPrivate
   guint mouse_poll_timer_id;
 
   /* autohide stuff */
+  gint autohide_hide_delay;
+  gint autohide_mouse_poll_delay;
+
   gint hide_counter;
   guint hiding_timer_id;
   guint withdraw_timer_id;
@@ -142,10 +145,6 @@ typedef struct _AwnInhibitItem
   guint cookie;
 } AwnInhibitItem;
 
-/* FIXME: this timeout should be configurable I guess */
-#define AUTOHIDE_DELAY 1000
-#define MOUSE_POLL_TIMER_DELAY 500
-
 #define CLICKTHROUGH_OPACITY 0.3
 
 #define ROUND(x) (x < 0 ? x - 0.5 : x + 0.5)
@@ -169,6 +168,8 @@ enum
   PROP_SIZE,
   PROP_MAX_SIZE,
   PROP_AUTOHIDE_TYPE,
+  PROP_AUTOHIDE_HIDE_DELAY,
+  PROP_AUTOHIDE_POLL_DELAY,
   PROP_STYLE,
   PROP_CLICKTHROUGH
 };
@@ -585,6 +586,16 @@ awn_panel_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANELS, AWN_PANELS_HIDE_DELAY,
+                                       object, "autohide-hide-delay", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANELS, AWN_PANELS_POLL_DELAY,
+                                       object, "autohide-poll-delay", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_STYLE,
                                        object, "style", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
@@ -703,6 +714,12 @@ awn_panel_get_property (GObject    *object,
     case PROP_AUTOHIDE_TYPE:
       g_value_set_int (value, priv->autohide_type);
       break;
+    case PROP_AUTOHIDE_HIDE_DELAY:
+      g_value_set_int (value, priv->autohide_hide_delay);
+      break;
+    case PROP_AUTOHIDE_POLL_DELAY:
+      g_value_set_int (value, priv->autohide_mouse_poll_delay);
+      break;
     case PROP_STYLE:
       g_value_set_int (value, priv->style);
       break;
@@ -748,6 +765,12 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_AUTOHIDE_TYPE:
       awn_panel_set_autohide_type (panel, g_value_get_int (value));
+      break;
+    case PROP_AUTOHIDE_HIDE_DELAY:
+      priv->autohide_hide_delay = g_value_get_int (value);
+      break;
+    case PROP_AUTOHIDE_POLL_DELAY:
+      priv->autohide_mouse_poll_delay = g_value_get_int (value);
       break;
     case PROP_STYLE:
       awn_panel_set_style (panel, g_value_get_int (value));
@@ -1412,7 +1435,8 @@ poll_mouse_position (gpointer data)
       {
         /* the timeout will emit autohide-start */
         priv->autohide_start_timer_id =
-          g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
+          g_timeout_add (priv->autohide_hide_delay,
+                         autohide_start_timeout, panel);
       }
     }
   }
@@ -1682,7 +1706,25 @@ awn_panel_class_init (AwnPanelClass *klass)
                       0, AUTOHIDE_TYPE_LAST - 1, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                       G_PARAM_STATIC_STRINGS));
- 
+
+  g_object_class_install_property (obj_class,
+    PROP_AUTOHIDE_HIDE_DELAY,
+    g_param_spec_int ("autohide-hide-delay",
+                      "Autohide Hide Delay",
+                      "Delay between mouse leaving the panel and it hiding",
+                      50, 10000, 1000,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
+    PROP_AUTOHIDE_POLL_DELAY,
+    g_param_spec_int ("autohide-poll-delay",
+                      "Autohide Poll Delay",
+                      "Delay for mouse position polling",
+                      40, 5000, 500,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
   g_object_class_install_property (obj_class,
     PROP_STYLE,
     g_param_spec_int ("style",
@@ -2545,8 +2587,9 @@ on_mouse_over (GtkWidget *widget, GdkEventCrossing *event)
 
   if (priv->mouse_poll_timer_id == 0 && poll_mouse_position (panel))
   {
-    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY,
-                                               poll_mouse_position, panel);
+    priv->mouse_poll_timer_id =
+      g_timeout_add (priv->autohide_mouse_poll_delay,
+                     poll_mouse_position, panel);
   }
 
   return FALSE;
@@ -2562,7 +2605,8 @@ on_mouse_out (GtkWidget *widget, GdkEventCrossing *event)
   {
     /* the timeout will emit autohide-start */
     priv->autohide_start_timer_id =
-      g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
+      g_timeout_add (priv->autohide_hide_delay,
+                     autohide_start_timeout, panel);
   }
 
   return FALSE;
@@ -2591,8 +2635,11 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
 
   if (priv->autohide_type != AUTOHIDE_TYPE_NONE
       && priv->mouse_poll_timer_id == 0)
-    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY,
-                                               poll_mouse_position, panel);
+  {
+    priv->mouse_poll_timer_id = 
+      g_timeout_add (priv->autohide_mouse_poll_delay,
+                     poll_mouse_position, panel);
+  }
 
   static gulong start_handler_id = 0;
   static gulong end_handler_id = 0;
@@ -2808,8 +2855,11 @@ awn_panel_set_clickthrough_type(AwnPanel *panel, gint type)
 
   if (priv->clickthrough_type != CLICKTHROUGH_NEVER
       && priv->mouse_poll_timer_id == 0 )
-    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY,
-                                               poll_mouse_position, panel);
+  {
+    priv->mouse_poll_timer_id =
+      g_timeout_add (priv->autohide_mouse_poll_delay,
+                     poll_mouse_position, panel);
+  }
 
   if (priv->clickthrough_type == CLICKTHROUGH_NEVER && priv->clickthrough)
   {

@@ -1,5 +1,12 @@
 2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
 
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Added config keys for autohide delays.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-effects.c:
 	Fix minor redraw issue when shadows are on.
 

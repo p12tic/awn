@@ -31,6 +31,10 @@
 #define AWN_DBUS_MANAGER_PATH AWN_DBUS_PATH"/UA"
 
 /* FIXME: Move some of these out into libawn when we can */
+#define AWN_GROUP_PANELS           "panels"
+#define AWN_PANELS_HIDE_DELAY      "hide_delay"
+#define AWN_PANELS_POLL_DELAY      "mouse_poll_delay"
+
 #define AWN_GROUP_PANEL            "panel"
 #define AWN_PANEL_PANEL_MODE       "panel_mode"
 #define AWN_PANEL_EXPAND           "expand"
