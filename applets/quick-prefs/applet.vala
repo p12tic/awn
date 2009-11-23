@@ -67,7 +67,8 @@ public class PrefsApplet : AppletSimple
 
     this.panel_client = Awn.Config.get_default (this.panel_id);
 
-    this.set_icon_name ("awn-settings");
+    this.set_icon_info ({"main-icon", "about"}, {"awn-settings", "gtk-about"});
+    this.set_icon_state ("main-icon");
 
     unowned Awn.Icon icon = this.get_icon ();
     icon.clicked.connect (this.on_clicked);

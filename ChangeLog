@@ -1,5 +1,13 @@
 2009-11-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/quick-prefs/applet.vala:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Fixes to Vala bindings.
+
+2009-11-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-effects.c:
 	* libawn/awn-effects.h:
 	* src/awn-throbber.c:
