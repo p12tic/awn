@@ -757,7 +757,7 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
   g_debug ("Updating gtk theme colours");
 
   /* main colours */
-  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 155,
+  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 224,
                       client, AWN_THEME_GSTEP1);
   set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 200,
                       client, AWN_THEME_GSTEP2);

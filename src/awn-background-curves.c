@@ -110,8 +110,7 @@ draw_rect_path (AwnBackground  *bg,
                 gdouble         x,
                 gdouble         y,
                 gint            width,
-                gint            height,
-                gint            padding)
+                gint            height)
 {
   cairo_save (cr);
 
@@ -145,6 +144,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                             gint            height)
 {
   cairo_pattern_t *pat;
+  cairo_matrix_t matrix;
   gdouble curves_height;
 
   /* Basic set-up */
@@ -157,31 +157,58 @@ draw_top_bottom_background (AwnBackground  *bg,
     curves_height = height*bg->curviness;
 
   /* Drawing outer ellips */
-  pat = cairo_pattern_create_linear (0, height-curves_height, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  // we need pat_xscale for scaling the spherical gradient to ellipse...
+  // why * 1.5 ? because it looks better :)
+  const gdouble pat_xscale = curves_height / width * 1.5;
 
-  draw_rect_path (bg, cr, 0, height-curves_height, width, curves_height, 0.5);
+  pat = cairo_pattern_create_radial (width / 2.0 * pat_xscale, height,
+                                     0.01,
+                                     width / 2.0 * pat_xscale, height,
+                                     curves_height);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_2);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_1);
+
+  // scale to ellipse
+  cairo_matrix_init_scale (&matrix, pat_xscale, 1.0);
+  cairo_pattern_set_matrix (pat, &matrix);
+
+  draw_rect_path (bg, cr, 0, height-curves_height, width, curves_height);
   cairo_set_source (cr, pat);
   cairo_fill (cr);
   cairo_pattern_destroy (pat);
 
+  /* Internal border */
+  awn_cairo_set_source_color (cr, bg->hilight_color);
+  draw_rect_path (bg, cr, 1.0, height-curves_height + 2.0,
+                  width-2.0, curves_height-2.0);
+  cairo_stroke (cr);
+
   /* External border */
   awn_cairo_set_source_color (cr, bg->border_color);
-  draw_rect_path (bg, cr, 0, height-curves_height,  width, curves_height, 0.5);
+  draw_rect_path (bg, cr, 0.0, height-curves_height, width, curves_height);
   cairo_stroke (cr);
 
   /* Drawing inner ellips */
   gint width_inner = width * 3 / 4;
-  pat = cairo_pattern_create_linear (0, height-curves_height/2.0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-
+  const gdouble inner_pat_xscale = curves_height/2.0 / width_inner * 1.5;
+  
   gdouble x_pos = (width-width_inner);
   gdouble min = x_pos / 6;
   x_pos = x_pos - min * 2;
   x_pos = x_pos * (bg->curves_symmetry) + min;
-  draw_rect_path (bg, cr, x_pos, height-curves_height/2.0,  width_inner, curves_height/2.0, 0.5);
+
+  pat = cairo_pattern_create_radial (
+    (x_pos + width_inner/2.0) * inner_pat_xscale, height, 0.01,
+    (x_pos + width_inner/2.0) * inner_pat_xscale, height, curves_height/2.0
+  );
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
+
+  // scale to ellipse
+  cairo_matrix_init_scale (&matrix, inner_pat_xscale, 1.0);
+  cairo_pattern_set_matrix (pat, &matrix);
+
+  draw_rect_path (bg, cr, x_pos, height-curves_height/2.0,  width_inner, curves_height/2.0);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr); 

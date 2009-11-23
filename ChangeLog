@@ -1,3 +1,10 @@
+2009-11-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-curves.c:
+	* src/awn-background.c:
+	Use radial gradients in curved background. 
+	Increase the default alpha when using gtk_theme_mode.
+
 2009-11-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/quick-prefs/applet.vala:
