@@ -425,6 +425,13 @@ awn_effects_prop_changed(GObject *object, GParamSpec *pspec)
   awn_effects_redraw (fx);
 }
 
+/**
+ * awn_effects_redraw:
+ * @fx: #AwnEffects instance.
+ *
+ * Schedules redraw of the managed widget. Contrary to #gtk_widget_queue_draw, 
+ * this function tries to minimize the area that needs to be redrawn.
+ */
 void
 awn_effects_redraw(AwnEffects *fx)
 {
@@ -456,7 +463,7 @@ awn_effects_redraw(AwnEffects *fx)
             AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
 
         fx->priv->last_redraw_size = h;
-        h = MAX (h, last_size == 0 ? alloc.height : last_size);
+        h = MAX (h, last_size == 0 ? fx->priv->icon_height : last_size);
 
         x = dx;
         y = fx->position == GTK_POS_TOP ? dy : alloc.height - h + dy;
@@ -476,7 +483,7 @@ awn_effects_redraw(AwnEffects *fx)
         h = alloc.height;
 
         fx->priv->last_redraw_size = w;
-        w = MAX (w, last_size == 0 ? alloc.width : last_size);
+        w = MAX (w, last_size == 0 ? fx->priv->icon_width : last_size);
 
         x = fx->position == GTK_POS_LEFT ? dx : alloc.width - w + dx;
         y = dy;

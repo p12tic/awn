@@ -1,3 +1,10 @@
+2009-11-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-throbber.c:
+	Couple more optimizations.
+
 2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/avant-window-navigator.schema-ini.in.in:

@@ -153,9 +153,9 @@ void awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay);
 
 GList* awn_effects_get_overlays (AwnEffects *fx);
 
+void awn_effects_redraw (AwnEffects *fx);
 
 /* Move this somewhere else eventually, these are used only internally */
-void awn_effects_redraw(AwnEffects *fx);
 void awn_effects_main_effect_loop(AwnEffects * fx);
 void awn_effects_emit_anim_start(AwnEffects *fx, AwnEffect effect);
 void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect);

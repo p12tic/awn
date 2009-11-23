@@ -218,11 +218,12 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
 static gboolean
 awn_throbber_timeout (gpointer user_data)
 {
-  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE(user_data);
+  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE (user_data);
 
   priv->counter = (priv->counter - 1) % 8 + 8;
 
-  gtk_widget_queue_draw (GTK_WIDGET (user_data));
+  AwnOverlayable *overlayable = AWN_OVERLAYABLE (user_data);
+  awn_effects_redraw (awn_overlayable_get_effects (overlayable));
 
   return TRUE;
 }
@@ -336,7 +337,9 @@ awn_throbber_set_type (AwnThrobber *throbber, AwnThrobberType type)
   }
 
   if (needs_redraw)
+  {
     gtk_widget_queue_draw (GTK_WIDGET (throbber));
+  }
 }
 
 void
