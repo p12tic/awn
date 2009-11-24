@@ -1101,7 +1101,8 @@ awn_themed_icon_set_size (AwnThemedIcon *icon,
   priv = icon->priv;
   if (priv->current_size != size)
   {
-    priv->current_size = size;  
+    priv->current_size = size;
+    invalidate_pixbuf_cache ();
     ensure_icon (icon);
     awn_themed_icon_preload_all ( icon);    
   }    

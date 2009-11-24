@@ -1,3 +1,10 @@
+2009-11-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Invalidate the pixbuf cache on size changes.  This is not
+	future proof but it works fine at the moment.  The pixbuf
+	cache is slated for some work post 0.4.
+
 2009-11-24  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:
