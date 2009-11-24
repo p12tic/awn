@@ -1,5 +1,10 @@
 2009-11-24  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-panel.c:
+	Reflect changes to panels/mouse_poll_delay immediately.
+
+2009-11-24  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-background-curves.c:
 	* src/awn-background.c:
 	Use radial gradients in curved background. 

@@ -771,6 +771,13 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_AUTOHIDE_POLL_DELAY:
       priv->autohide_mouse_poll_delay = g_value_get_int (value);
+      if (priv->mouse_poll_timer_id != 0)
+      {
+        g_source_remove (priv->mouse_poll_timer_id);
+        priv->mouse_poll_timer_id =
+          g_timeout_add (priv->autohide_mouse_poll_delay,
+                         poll_mouse_position, panel);
+      }
       break;
     case PROP_STYLE:
       awn_panel_set_style (panel, g_value_get_int (value));
