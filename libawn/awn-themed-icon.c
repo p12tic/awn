@@ -715,7 +715,6 @@ theme_load_icon (GtkIconTheme *icon_theme,
                                      GtkIconLookupFlags flags,
                                      GError **error)
 {
-  g_debug ("%s:  %s, %d ",__func__,icon_name,size);
   g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme),NULL);
   g_return_val_if_fail (icon_name,NULL);
   g_return_val_if_fail (size>0,NULL);
