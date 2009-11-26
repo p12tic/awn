@@ -1646,7 +1646,32 @@ task_icon_get_launcher (TaskIcon      *icon)
   return NULL;
 }
 
+guint
+task_icon_count_tasklist_windows (TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+  GSList *w;
+  guint count = 0;
 
+  g_return_val_if_fail (TASK_IS_ICON (icon), 0);
+
+  priv = icon->priv;
+
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
+
+    if (TASK_IS_LAUNCHER (item))
+    {
+      continue;
+    }
+    if (! wnck_window_is_skip_tasklist (task_window_get_window (TASK_WINDOW(item)) ))
+    {
+      count++;
+    }
+  }
+  return count;
+}
 
 guint
 task_icon_count_ephemeral_items (TaskIcon * icon)

@@ -1,3 +1,14 @@
+2009-11-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-manager.c:
+	Play closing animations for windows that become 
+	skip tasklist and minimized (seems it's common to
+	do something along these lines when minimizing to 
+	systray... the window is not closed according to
+	wnck)
+
 2009-11-25  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
