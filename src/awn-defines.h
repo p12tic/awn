@@ -34,6 +34,7 @@
 #define AWN_GROUP_PANELS           "panels"
 #define AWN_PANELS_HIDE_DELAY      "hide_delay"
 #define AWN_PANELS_POLL_DELAY      "mouse_poll_delay"
+#define AWN_PANELS_IDS             "panel_list"
 
 #define AWN_GROUP_PANEL            "panel"
 #define AWN_PANEL_PANEL_MODE       "panel_mode"

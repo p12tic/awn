@@ -59,6 +59,7 @@ G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)
 
 struct _AwnPanelPrivate
 {
+  gint panel_id;
   DesktopAgnosticConfigClient *client;
   AwnMonitor *monitor;
 
@@ -156,6 +157,7 @@ enum
 {
   PROP_0,
 
+  PROP_PANEL_ID,
   PROP_CLIENT,
   PROP_MONITOR,
   PROP_APPLET_MANAGER,
@@ -663,6 +665,9 @@ awn_panel_get_property (GObject    *object,
 
   switch (prop_id)
   {
+    case PROP_PANEL_ID:
+      g_value_set_int (value, priv->panel_id);
+      break;
     case PROP_CLIENT:
       g_value_set_object (value, priv->client);
       break;
@@ -745,8 +750,11 @@ awn_panel_set_property (GObject      *object,
 
   switch (prop_id)
   {
+    case PROP_PANEL_ID:
+      priv->panel_id = g_value_get_int (value);
+      break;
     case PROP_CLIENT:
-      priv->client =  g_value_get_object (value);
+      priv->client = g_value_get_object (value);
       break;
     case PROP_PANEL_MODE:
       awn_panel_set_panel_mode (panel, g_value_get_boolean (value));
@@ -1616,6 +1624,15 @@ awn_panel_class_init (AwnPanelClass *klass)
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
+    PROP_PANEL_ID,
+    g_param_spec_int ("panel-id",
+                      "Panel ID",
+                      "The panel ID",
+                      1, G_MAXINT, 1,
+                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
     PROP_CLIENT,
     g_param_spec_object ("client",
                          "Client",
@@ -1893,11 +1910,19 @@ GtkWidget *
 awn_panel_new_from_config (DesktopAgnosticConfigClient *client)
 {
   GtkWidget *window;
+  gint panel_id = AWN_PANEL_ID_DEFAULT;
+
+  const char *instance_id =
+    desktop_agnostic_config_client_get_instance_id (client);
+
+  sscanf (instance_id, "panel-%d", &panel_id);
+  g_debug ("%s, id: %d", instance_id, panel_id);
 
   window = g_object_new (AWN_TYPE_PANEL,
                          "type", GTK_WINDOW_TOPLEVEL,
                          "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
                          "client", client,
+                         "panel-id", panel_id,
                          NULL);
 #ifdef DEBUG_INVALIDATION
   g_timeout_add (5000, debug_invalidating, NULL);

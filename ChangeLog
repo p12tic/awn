@@ -1,5 +1,14 @@
 2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-config.c:
+	* src/awn-app.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Let's be better prepared for multiple panels.
+
+2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-panel.c:
 	Try to do everything needed on composited-change.
 
