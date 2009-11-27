@@ -2032,6 +2032,10 @@ on_composited_changed (GtkWidget *widget, gpointer data)
   gdk_window_set_composited (win, priv->composited);
 
   awn_panel_refresh_padding (AWN_PANEL (widget), NULL);
+
+  awn_panel_reset_autohide (AWN_PANEL (widget));
+
+  position_window (AWN_PANEL (widget));
 }
 
 /*
