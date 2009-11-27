@@ -1,5 +1,12 @@
 2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-app.c:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Change parameter for AwnPanel constructor.
+
+2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-config.c:
 	* src/awn-app.c:
 	* src/awn-applet-proxy.c:

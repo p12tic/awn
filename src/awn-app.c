@@ -138,13 +138,11 @@ awn_app_init (AwnApp *app)
   for (guint i=0; i < panels->n_values; i++)
   {
     GtkWidget *panel;
-    DesktopAgnosticConfigClient *panel_client;
 
     GValue *value = g_value_array_get_nth (panels, i);
 
     gint panel_id = g_value_get_int (value);
-    panel_client = awn_config_get_default (panel_id, &error);
-    panel = awn_panel_new_from_config (panel_client);
+    panel = awn_panel_new_with_panel_id (panel_id);
 
     gchar *object_path = g_strdup_printf (AWN_DBUS_PANEL_PATH "%d", panel_id);
 
@@ -155,6 +153,8 @@ awn_app_init (AwnApp *app)
 
     gtk_widget_show (panel);
   }
+
+  g_value_array_free (panels);
 }
 
 gboolean

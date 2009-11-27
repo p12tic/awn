@@ -1907,22 +1907,27 @@ static gboolean debug_invalidating (gpointer data)
 #endif
 
 GtkWidget *
-awn_panel_new_from_config (DesktopAgnosticConfigClient *client)
+awn_panel_new_with_panel_id (gint panel_id)
 {
   GtkWidget *window;
-  gint panel_id = AWN_PANEL_ID_DEFAULT;
+  DesktopAgnosticConfigClient *client;
+  GError *error = NULL;
 
-  const char *instance_id =
-    desktop_agnostic_config_client_get_instance_id (client);
+  client = awn_config_get_default (panel_id, &error);
 
-  sscanf (instance_id, "panel-%d", &panel_id);
-  g_debug ("%s, id: %d", instance_id, panel_id);
+  if (error)
+  {
+    g_warning ("Unable to retrieve the configuration client: %s",
+               error->message);
+    g_error_free (error);
+    return NULL;
+  }
 
   window = g_object_new (AWN_TYPE_PANEL,
                          "type", GTK_WINDOW_TOPLEVEL,
                          "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
-                         "client", client,
                          "panel-id", panel_id,
+                         "client", client,
                          NULL);
 #ifdef DEBUG_INVALIDATION
   g_timeout_add (5000, debug_invalidating, NULL);
