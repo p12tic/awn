@@ -1,6 +1,12 @@
 2009-11-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Code to use the "awn-window-fallback" icon once it
+	gets committed.
+
+2009-11-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-window.c:
   	* applets/taskmanager/task-window.h:
 	Provide a visual indication of the active item.

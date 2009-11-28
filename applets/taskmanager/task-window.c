@@ -1216,13 +1216,43 @@ _get_name (TaskItem    *item)
 static GdkPixbuf * 
 _get_icon (TaskItem    *item)
 {
+  /*
+   TODO:
+   Once the pixbuf lookups and caching get moved into a separate object in
+   AwnThemedIcon then this static can be replaced by use of that new object
+   */
+  static GdkPixbuf * fallback=NULL;
   TaskSettings *s = task_settings_get_default (NULL);
   TaskWindow *window = TASK_WINDOW (item);
+  TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;
 
   if (WNCK_IS_WINDOW (window->priv->window))
+  {
+    if (wnck_window_get_icon_is_fallback (priv->window))
+    {
+      if (fallback && (gdk_pixbuf_get_height (fallback) != s->panel_size))
+      {
+        g_object_unref (fallback);
+        fallback = NULL;        
+      }
+      if (!fallback)
+      {
+        fallback = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                             "awn-window-fallback",
+                                             s->panel_size,
+                                             GTK_ICON_LOOKUP_FORCE_SIZE,
+                                             NULL);
+      }
+      if (fallback)
+      {
+        g_object_ref (fallback);
+        return fallback;
+      }
+      g_warning ("%s: Failed to load awn fallback.  Falling back to wnck fallback.",__func__);
+    }
     return _wnck_get_icon_at_size (window->priv->window, 
-                                   s->panel_size, s->panel_size);
-
+                                 s->panel_size, s->panel_size);
+  }
   return NULL;
 }
 
