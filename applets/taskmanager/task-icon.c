@@ -46,6 +46,7 @@
 #include "task-settings.h"
 #include "task-manager.h"
 
+#include "config.h"
 //#define DEBUG 1
 
 enum{
@@ -98,6 +99,8 @@ struct _TaskIconPrivate
   GtkWidget * menu;
   GValueArray *menu_context_tasks;
   GValueArray *menu_context_launcher_only;
+
+  gchar * menu_filename;
 
   gboolean draggable;
   gboolean gets_dragged;
@@ -158,7 +161,8 @@ enum
   PROP_OVERLAY_APPLICATION_ICONS_SCALE,
   PROP_OVERLAY_APPLICATION_ICONS_SWAP,
   PROP_MENU_CONTEXT_TASKS,
-  PROP_MENU_CONTEXT_LAUNCHER_ONLY
+  PROP_MENU_CONTEXT_LAUNCHER_ONLY,
+  PROP_MENU_FILENAME
 };
 
 enum
@@ -331,6 +335,9 @@ task_icon_get_property (GObject    *object,
     case PROP_MENU_CONTEXT_LAUNCHER_ONLY:
       g_value_set_boxed (value, priv->menu_context_launcher_only);
       break;
+    case PROP_MENU_FILENAME:
+      g_value_set_string (value, priv->menu_filename);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -423,6 +430,13 @@ task_icon_set_property (GObject      *object,
       }
       priv->menu_context_launcher_only = (GValueArray*)g_value_dup_boxed (value);      
       break;
+    case PROP_MENU_FILENAME:
+      if (priv->menu_filename)
+      {
+        g_free (priv->menu_filename);
+      }
+      priv->menu_filename = g_value_dup_string (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -480,6 +494,11 @@ task_icon_finalize (GObject *object)
    TODO post 0.4.  TaskItems should take a reference on TaskIcon.
    */
   g_assert (!priv->items);
+
+  if (priv->menu_filename)
+  {
+    g_free (priv->menu_filename);
+  }
   
   if (priv->update_geometry_id)
   {
@@ -608,14 +627,12 @@ task_icon_constructed (GObject *object)
     return;
   }
 
-  if (!do_bind_property (priv->client, "desktop_copy", object,
-                         "desktop_copy"))
+  if (!do_bind_property (priv->client, "desktop_copy", object, "desktop_copy"))
   {
     return;
   }
 
-  if (!do_bind_property (priv->client, "drag_and_drop", object,
-                         "draggable"))
+  if (!do_bind_property (priv->client, "drag_and_drop", object, "draggable"))
   {
     return;
   }
@@ -643,18 +660,10 @@ task_icon_constructed (GObject *object)
   {
     return;
   }
-  desktop_agnostic_config_client_bind (priv->client,
-                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
-                                       "menu_context_tasks",
-                                       object, "menu_context_tasks", FALSE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
-  desktop_agnostic_config_client_bind (priv->client,
-                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
-                                       "menu_context_launcher_only",
-                                       object, "menu_context_launcher_only", FALSE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
+  if (!do_bind_property (priv->client, "menu_filename", object,"menu_filename"))
+  {
+    return;
+  }
 
 }
 
@@ -908,19 +917,12 @@ task_icon_class_init (TaskIconClass *klass)
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_OVERLAY_APPLICATION_ICONS_SWAP, pspec);
 
-  pspec = g_param_spec_boxed ("menu_context_tasks",
-                              "menu_context_tasks",
-                              "Tasks context menu defined",
-                              G_TYPE_VALUE_ARRAY,
-                              G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_MENU_CONTEXT_TASKS, pspec);
-
-  pspec = g_param_spec_boxed ("menu_context_launcher_only",
-                              "menu_context_launcher_only",
-                              "Launcher context menu defined",
-                              G_TYPE_VALUE_ARRAY,
-                              G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_MENU_CONTEXT_LAUNCHER_ONLY, pspec);
+  pspec = g_param_spec_string ("menu_filename",
+                                "Menu Filename",
+                                "Menu Filename",
+                                "default.xml",
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_MENU_FILENAME, pspec);
 
   /* Install signals */
   _icon_signals[VISIBLE_CHANGED] =
@@ -2857,6 +2859,7 @@ _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
   }
 }
 
+#if 1
 #define menu_item_type tokens[0]
 #define menu_item_name tokens[1]
 #define menu_item_cmd tokens[1]
@@ -3139,6 +3142,51 @@ task_icon_fill_context_menu (TaskIcon *icon, GtkWidget *menu,const gchar * menu_
   }
 
 }
+#endif
+
+static void
+menu_parse_start_element (GMarkupParseContext *context,
+                                      const gchar         *element_name,
+                                      const gchar        **attribute_names,
+                                      const gchar        **attribute_values,
+                                      gpointer             user_data,
+                                      GError             **error)
+{
+  g_debug ("%s:",__func__);
+}
+
+  /* Called for close tags </foo> */
+static void
+menu_parse_end_element (GMarkupParseContext *context,
+                          const gchar         *element_name,
+                          gpointer             user_data,
+                          GError             **error)
+{
+  g_debug ("%s:",__func__);
+}
+
+  /* Called for character data */
+  /* text is not nul-terminated */
+static void
+menu_parse_text (GMarkupParseContext *context,
+                      const gchar         *text,
+                      gsize                text_len,  
+                      gpointer             user_data,
+                      GError             **error)
+{
+  g_debug ("%s:",__func__);
+}
+
+/* Called on error, including one set by other
+   * methods in the vtable. The GError should not be freed.
+   */
+static void menu_parse_error (GMarkupParseContext *context,
+                              GError              *error,
+                              gpointer             user_data)
+{
+  g_debug ("%s:",__func__);
+}
+
 /**
  * Whenever there is a press event on the TaskIcon it will do the proper actions.
  * right click: - show the context menu 
@@ -3150,8 +3198,18 @@ task_icon_fill_context_menu (TaskIcon *icon, GtkWidget *menu,const gchar * menu_
 static gboolean  
 task_icon_button_press_event (GtkWidget *widget,GdkEventButton *event)
 {
+  GError * err=NULL;
+  gchar * contents=NULL;
   TaskIconPrivate *priv;
   TaskIcon *icon;
+  gchar * menu_filename = NULL;
+  GMarkupParseContext * markup_parser_context = NULL;
+  GMarkupParser markup_parser = {menu_parse_start_element,
+                                 menu_parse_end_element,
+                                 menu_parse_text,
+                                 NULL,
+                                 menu_parse_error};
+                                 
   
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
 
@@ -3169,8 +3227,34 @@ task_icon_button_press_event (GtkWidget *widget,GdkEventButton *event)
 
   priv->menu = gtk_menu_new();
   gtk_widget_show_all (priv->menu);
-
-  task_icon_fill_context_menu (icon,priv->menu,"TOP_LEVEL");
+  if (g_path_is_absolute (priv->menu_filename) )
+  {
+    menu_filename = g_strdup (priv->menu_filename);
+  }
+  else
+  {
+    /* FIXME  FIXME  FIXME  FIXME  FIXME  FIXME  FIXME  FIXME  FIXME */
+//    menu_filename = g_strdup_printf ("%s/taskmanager/menus/%s",APPLETDATADIR,priv->menu_filename);
+    menu_filename = g_strdup_printf ("/usr/local/share/avant-window-navigator/applets/taskmanager/menus/%s",priv->menu_filename);
+  }
+  if ( g_file_get_contents (menu_filename,&contents,NULL,&err))
+  {
+    markup_parser_context = g_markup_parse_context_new (&markup_parser,0,NULL,(GDestroyNotify) g_free);
+  }
+  if (err)
+  {
+    g_message ("%s: error loading menu file %s.  %s",__func__,menu_filename,err->message);
+    g_error_free (err);
+  }
+  if (markup_parser_context)
+  {
+    g_markup_parse_context_free (markup_parser_context);
+  }
+  if (FALSE)
+  {
+    task_icon_fill_context_menu (icon,priv->menu,"TOP_LEVEL");
+  }
+  g_free (menu_filename);
 #if GTK_CHECK_VERSION (2,16,0)	
   /* null op if GTK+ < 2.16.0*/
   awn_utils_show_menu_images (GTK_MENU(priv->menu));

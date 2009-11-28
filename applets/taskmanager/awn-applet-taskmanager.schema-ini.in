@@ -128,4 +128,9 @@ type = integer
 default = 4
 _description=The threshold at which text count begins to be displayed. valid range 1..
 
+[DEFAULT/menu_filename]
+type = string
+default = default.xml
+_description=Context menu definition.
+
 # vim: set ft=cfg :
