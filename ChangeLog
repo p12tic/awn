@@ -1,5 +1,10 @@
 2009-11-29  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/quick-prefs/applet.vala:
+	Quick-prefs - show docklet after clicking on the icon.
+
+2009-11-29  Michal Hruby  <michal.mhr@gmail.com>
+
 	* bindings/vala/awn.gi:
 	* bindings/vala/awn.vapi:
 	* libawn/awn-defines.h:
