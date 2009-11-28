@@ -937,11 +937,19 @@ awn_panel_resize_timeout (gpointer data)
   awn_panel_get_draw_rect (panel, &rect2, 0, 0);
 
   // invalidate only the background draw region
-  gtk_widget_queue_draw_area (GTK_WIDGET (panel),
-                              MIN (rect1.x, rect2.x),
-                              MIN (rect1.y, rect2.y),
-                              MAX (rect1.width, rect2.width),
-                              MAX (rect1.height, rect2.height));
+  gint end_x = MAX (rect1.x + rect1.width, rect2.x + rect2.width);
+  gint end_y = MAX (rect1.y + rect1.height, rect2.y + rect2.height);
+  GdkRectangle invalid_rect =
+  {
+    .x = MIN (rect1.x, rect2.x),
+    .y = MIN (rect1.y, rect2.y),
+    .width = end_x - MIN (rect1.x, rect2.x),
+    .height = end_y - MIN (rect1.y, rect2.y)
+  };
+  gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (panel)),
+                              &invalid_rect, FALSE);
+  // without this there are some artifacts on sad face & throbbers
+  awn_applet_manager_redraw_throbbers (AWN_APPLET_MANAGER (priv->manager));
 
   // FIXME: should this really be done on every animation step?
   awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
