@@ -77,3 +77,66 @@ simple_attention_effect(AwnEffectsAnimation * anim)
 
   return repeat;
 }
+
+gboolean
+simple_opening_effect (AwnEffectsAnimation *anim)
+{
+  AwnEffectsPrivate *priv = anim->effects->priv;
+
+  AWN_ANIMATION_INIT (anim)
+  {
+    priv->count = 0;
+  }
+
+  const gint PERIOD = 10;
+
+  gdouble sinus = sin(priv->count++ * M_PI/2 / PERIOD);
+  priv->alpha = sinus * sinus;
+
+  /* repaint widget */
+  awn_effects_redraw (anim->effects);
+
+  gboolean repeat = TRUE;
+
+  if (priv->count >= PERIOD)
+  {
+    priv->count = 0;
+    priv->alpha = 1.0;
+    /* check for repeating */
+    repeat = awn_effect_handle_repeating (anim);
+  }
+
+  return repeat;
+}
+
+gboolean
+simple_closing_effect (AwnEffectsAnimation *anim)
+{
+  AwnEffectsPrivate *priv = anim->effects->priv;
+
+  AWN_ANIMATION_INIT (anim)
+  {
+    priv->count = 0;
+  }
+
+  const gint PERIOD = 10;
+
+  gdouble cosin = cos(priv->count++ * M_PI/2 / PERIOD);
+  priv->alpha = cosin * cosin;
+
+  /* repaint widget */
+  awn_effects_redraw (anim->effects);
+
+  gboolean repeat = TRUE;
+
+  if (priv->count >= PERIOD)
+  {
+    priv->count = 0;
+    priv->alpha = 1.0;
+    /* check for repeating */
+    repeat = awn_effect_handle_repeating (anim);
+  }
+
+  return repeat;
+}
+

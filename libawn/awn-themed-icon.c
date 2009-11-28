@@ -715,8 +715,10 @@ theme_load_icon (GtkIconTheme *icon_theme,
                                      GtkIconLookupFlags flags,
                                      GError **error)
 {
-//  return gtk_icon_theme_load_icon (icon_theme,icon_name,size,flags,error);
-  
+  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme),NULL);
+  g_return_val_if_fail (icon_name,NULL);
+  g_return_val_if_fail (size>0,NULL);
+                    
   const gchar * names[2]={NULL,NULL};
   names[0] = icon_name;
   GtkIconInfo*  info = gtk_icon_theme_choose_icon (icon_theme,
@@ -1101,7 +1103,8 @@ awn_themed_icon_set_size (AwnThemedIcon *icon,
   priv = icon->priv;
   if (priv->current_size != size)
   {
-    priv->current_size = size;  
+    priv->current_size = size;
+    invalidate_pixbuf_cache ();
     ensure_icon (icon);
     awn_themed_icon_preload_all ( icon);    
   }    
@@ -1377,22 +1380,28 @@ awn_themed_icon_set_applet_info (AwnThemedIcon  *icon,
                                  const gchar    *uid)
 {
   AwnThemedIconPrivate *priv;
+  g_return_if_fail (AWN_IS_THEMED_ICON(icon));
   priv = icon->priv;
-
   g_free (priv->uid);
-  priv->uid = g_strdup (uid);
+  if (uid)
+  {
+    priv->uid = g_strdup (uid);
+  }
+  else
+  {
+    priv->uid = NULL;
+  }
 
   /* Finally set-up the applet name & theme information */
   if (priv->applet_name && strcmp (priv->applet_name, applet_name) == 0)
   {
     /* Already appended the search path to the GtkIconTheme, so we skip this */
   }
-  else
+  else if (applet_name)
   {
     gchar *search_dir;
 
     g_free (priv->applet_name);
-    priv->applet_name = g_strdup (applet_name);
 
     /* Add the applet's system-wide icon dir first */
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
@@ -1512,7 +1521,7 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
 
 GdkPixbuf * 
 awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
-                                  guint          size,
+                                  gint          size,
                                   const gchar   *state)
 {
   AwnThemedIconPrivate *priv;

@@ -257,7 +257,7 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
                                    gpointer user_data
                                    )
 {
-  #define PADDING 3
+  const int PADDING = AWN_EFFECTS_ACTIVE_RECT_PADDING;
   AwnEffectsPrivate *priv = fx->priv;
 
   if (fx->is_active || priv->simple_rect) {

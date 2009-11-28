@@ -275,6 +275,7 @@ static void on_main_item_visible_changed (TaskItem  *item,gboolean visible,
 
 static void grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon);
 
+static void task_icon_set_highlighted_item (TaskIcon * icon);
 
 /* GObject stuff */
 static void
@@ -1361,6 +1362,7 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     g_signal_handlers_disconnect_by_func(priv->main_item, 
                                          G_CALLBACK (on_main_item_visible_changed), icon);
     priv->main_item = NULL;
+    task_icon_set_highlighted_item (icon);
   }
 
   /*
@@ -1371,7 +1373,8 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     /*
      Set the TaskIcon to the Icon associated with the main_item.
      */
-    priv->main_item = main_item;
+    priv->main_item = main_item;    
+    task_icon_set_highlighted_item (icon);
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif
@@ -1700,7 +1703,32 @@ task_icon_get_launcher (TaskIcon      *icon)
   return NULL;
 }
 
+guint
+task_icon_count_tasklist_windows (TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+  GSList *w;
+  guint count = 0;
 
+  g_return_val_if_fail (TASK_IS_ICON (icon), 0);
+
+  priv = icon->priv;
+
+  for (w = priv->items; w; w = w->next)
+  {
+    TaskItem *item = w->data;
+
+    if (TASK_IS_LAUNCHER (item))
+    {
+      continue;
+    }
+    if (! wnck_window_is_skip_tasklist (task_window_get_window (TASK_WINDOW(item)) ))
+    {
+      count++;
+    }
+  }
+  return count;
+}
 
 guint
 task_icon_count_ephemeral_items (TaskIcon * icon)
@@ -1781,6 +1809,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   TaskItem * launcher;
   GdkPixbuf * launcher_icon = NULL;
   GdkPixbuf * app_icon = NULL;
+  gboolean fallback_used = TASK_IS_WINDOW (item) && task_window_get_icon_is_fallback (TASK_WINDOW(item));
   
   g_return_if_fail (TASK_IS_ICON (icon) );
   priv = icon->priv;  
@@ -1793,7 +1822,8 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
       !item ||
       ( priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))==USE_NEVER ) ||
       ( priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && ( task_window_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS?FALSE:(task_window_get_icon_changes(TASK_WINDOW(item))<2))) ||      
-      ( priv->icon_change_behavior==2)
+      ( priv->icon_change_behavior==2) ||
+      fallback_used
     )
   {
     if ( TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))!=USE_NEVER)
@@ -1850,7 +1880,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
       /* We have a TaskWindows _and_ a launcher icon*/
       if (TASK_IS_WINDOW(item) && launcher_icon)
       {
-        if (priv->overlay_application_icons_swap)
+        if ( (priv->overlay_application_icons_swap) && !fallback_used )
         {
           priv->icon = app_icon;
         }
@@ -1860,7 +1890,8 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
         }
         awn_icon_set_from_pixbuf (AWN_ICON (icon),priv->icon);
         if (app_icon && 
-            utils_gdk_pixbuf_similar_to (launcher_icon, app_icon) == FALSE)
+            utils_gdk_pixbuf_similar_to (launcher_icon, app_icon) == FALSE &&
+            !fallback_used)
         {
           /*Conditional Operator*/
           g_object_set (G_OBJECT (icon->priv->overlay_app_icon),
@@ -1894,7 +1925,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
     }
     else
     {
-      if (TASK_IS_WINDOW (item) )
+      if (TASK_IS_WINDOW (item))
       {
         priv->icon = app_icon;
       }
@@ -2232,6 +2263,32 @@ task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
   task_window_activate (window,timestamp);
 }
 
+static void
+task_icon_set_highlighted_item (TaskIcon * icon)
+{
+  GSList * i;
+  TaskIconPrivate *priv;
+  g_return_if_fail (TASK_IS_ICON (icon));
+  
+  priv = icon->priv;
+  
+  for (i = priv->items; i; i = i->next)
+  {
+    if (!TASK_IS_WINDOW(i->data))
+    {
+      continue;
+    }
+    if (i->data == priv->main_item)
+    {
+      task_window_set_highlighted (i->data, TRUE);
+    }
+    else
+    {
+      task_window_set_highlighted (i->data, FALSE);
+    }
+  }
+}
+
 void            
 task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val)
 {
@@ -2563,6 +2620,7 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
         if (TASK_IS_WINDOW (iter->data))
         {
           priv->main_item = iter->data;
+          task_icon_set_highlighted_item (icon);          
           iter = iter->next;
           break;
         }

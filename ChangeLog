@@ -1,3 +1,155 @@
+2009-11-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Code to use the "awn-window-fallback" icon once it
+	gets committed.
+
+2009-11-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Provide a visual indication of the active item.
+
+2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-app.c:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Change parameter for AwnPanel constructor.
+
+2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-config.c:
+	* src/awn-app.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Let's be better prepared for multiple panels.
+
+2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Try to do everything needed on composited-change.
+
+2009-11-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-manager.c:
+	Play closing animations for windows that become 
+	skip tasklist and minimized (seems it's common to
+	do something along these lines when minimizing to 
+	systray... the window is not closed according to
+	wnck)
+
+2009-11-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Remove a debug.
+
+2009-11-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+  	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Type of size arg should be gint not guint.
+	Do some additional checks on values of arguments.
+
+2009-11-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Invalidate the pixbuf cache on size changes.  This is not
+	future proof but it works fine at the moment.  The pixbuf
+	cache is slated for some work post 0.4.
+
+2009-11-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Reflect changes to panels/mouse_poll_delay immediately.
+
+2009-11-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-curves.c:
+	* src/awn-background.c:
+	Use radial gradients in curved background. 
+	Increase the default alpha when using gtk_theme_mode.
+
+2009-11-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Fixes to Vala bindings.
+
+2009-11-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-throbber.c:
+	Couple more optimizations.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Added config keys for autohide delays.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix minor redraw issue when shadows are on.
+
+2009-11-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Do not show a fallback icon in the TaskIcon in any 
+	circumstance if there's a launcher icon available.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-background-edgy.c:
+	* src/awn-panel.c:
+	Optimize drawing on a couple of places.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-defines.h:
+	* src/awn-background.c:
+	Set text & outline color when gtk_theme_mode is on.
+
+2009-11-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-window.h:
+	Added task_window_get_icon_is_fallback().
+
+2009-11-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* Makefile.am:
+	* applets/quick-prefs/Makefile.am:
+	* applets/quick-prefs/applet.vala:
+	* applets/quick-prefs/quick-prefs.desktop.in.in:
+	* bindings/vala/build.vapi:
+	* bindings/vala/libintl.vapi:
+	* configure.in:
+	Added Preferences applet.
+
+2009-11-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-simple.c:
+	* libawn/anims/awn-effect-simple.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-label.c:
+	Added opening and closing simple effects.
+
 2009-11-19  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:

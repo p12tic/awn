@@ -413,7 +413,6 @@
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="object" type="AwnApplet*"/>
-					<parameter name="p0" type="char*"/>
 				</parameters>
 			</signal>
 			<signal name="flags-changed" when="FIRST">
@@ -469,7 +468,6 @@
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="applet" type="AwnApplet*"/>
-					<parameter name="uid" type="gchar*"/>
 				</parameters>
 			</vfunc>
 			<vfunc name="panel_configure">
@@ -1556,6 +1554,7 @@
 				</parameters>
 			</vfunc>
 		</interface>
+		<constant name="AWN_EFFECTS_ACTIVE_RECT_PADDING" type="int" value="3"/>
 		<constant name="AWN_MAX_HEIGHT" type="int" value="100"/>
 		<constant name="AWN_MIN_HEIGHT" type="int" value="12"/>
 		<constant name="AWN_PANEL_ID_DEFAULT" type="int" value="1"/>

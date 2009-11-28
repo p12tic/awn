@@ -89,14 +89,14 @@ static void
 awn_app_init (AwnApp *app)
 {
   AwnAppPrivate *priv;
-  GtkWidget *panel;
   GError *error = NULL;
+  GValueArray *panels = NULL;
     
   priv = app->priv = AWN_APP_GET_PRIVATE (app);
 
   priv->panels = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-  priv->client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+  priv->client = awn_config_get_default (0, &error);
 
   if (error)
   {
@@ -118,17 +118,43 @@ awn_app_init (AwnApp *app)
     gtk_main_quit ();
   }
 
-  panel = awn_panel_new_from_config (priv->client);
+  panels = desktop_agnostic_config_client_get_list (priv->client,
+                                                    AWN_GROUP_PANELS,
+                                                    AWN_PANELS_IDS,
+                                                    &error);
 
-  gchar *object_path = g_strdup_printf (AWN_DBUS_PANEL_PATH "%u",
-                                        g_hash_table_size (priv->panels) + 1);
+  if (error)
+  {
+    g_warning ("Unable to retrieve panels config value: %s",
+               error->message);
+    g_error_free (error);
+    gtk_main_quit ();
+    return;
+  }
 
-  dbus_g_connection_register_g_object (priv->connection, 
-                                       object_path, G_OBJECT (panel));
+  // FIXME: we could check here if there are any values in the panel_list
+  //   and show a "Restart gconfd-2? dialog" if there aren't
 
-  g_hash_table_insert (priv->panels, object_path, panel);
+  for (guint i=0; i < panels->n_values; i++)
+  {
+    GtkWidget *panel;
 
-  gtk_widget_show (panel);
+    GValue *value = g_value_array_get_nth (panels, i);
+
+    gint panel_id = g_value_get_int (value);
+    panel = awn_panel_new_with_panel_id (panel_id);
+
+    gchar *object_path = g_strdup_printf (AWN_DBUS_PANEL_PATH "%d", panel_id);
+
+    dbus_g_connection_register_g_object (priv->connection, 
+                                         object_path, G_OBJECT (panel));
+
+    g_hash_table_insert (priv->panels, object_path, panel);
+
+    gtk_widget_show (panel);
+  }
+
+  g_value_array_free (panels);
 }
 
 gboolean
@@ -171,10 +197,11 @@ AwnApp*
 awn_app_get_default (void)
 {
   static AwnApp *app = NULL;
-  
+
   if (app == NULL)
-    app = g_object_new (AWN_TYPE_APP, 
-                         NULL);
+  {
+    app = g_object_new (AWN_TYPE_APP, NULL);
+  }
 
   return app;
 }

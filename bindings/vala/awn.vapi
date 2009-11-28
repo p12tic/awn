@@ -64,7 +64,7 @@ namespace Awn {
 		public unowned Gtk.Widget create_default_menu ();
 		public static unowned Gtk.Widget create_pref_item ();
 		[NoWrapper]
-		public virtual void deleted (string uid);
+		public virtual void deleted ();
 		public Gdk.NativeWindow docklet_request (int min_size, bool shrink, bool expand);
 		public Awn.AppletFlags get_behavior ();
 		public unowned string get_canonical_name ();
@@ -105,7 +105,7 @@ namespace Awn {
 		public bool show_all_on_embed { get; set; }
 		public int size { get; set; }
 		public string uid { get; set construct; }
-		public virtual signal void applet_deleted (string p0);
+		public virtual signal void applet_deleted ();
 		public virtual signal void flags_changed (int flags);
 		public virtual signal void menu_creation (Gtk.Menu menu);
 		public virtual signal void offset_changed (int offset);
@@ -124,7 +124,7 @@ namespace Awn {
 		public unowned string get_tooltip_text ();
 		public void set_effect (Awn.Effect effect);
 		public void set_icon_context (Cairo.Context cr);
-		public void set_icon_info (string[] states, string[] icon_names);
+		public void set_icon_info ([CCode (array_length = false)] string[] states, [CCode (array_length = false)] string[] icon_names);
 		public void set_icon_name (string icon_name);
 		public void set_icon_pixbuf (Gdk.Pixbuf pixbuf);
 		public void set_icon_state (string state);
@@ -475,7 +475,7 @@ namespace Awn {
 		public void override_gtk_theme (string theme_name);
 		public void preload_icon (string state, int size);
 		public void set_applet_info (string applet_name, string uid);
-		public void set_info (string applet_name, string uid, string[] states, string[] icon_names);
+		public void set_info (string applet_name, string uid, [CCode (array_length = false)] string[] states, [CCode (array_length = false)] string[] icon_names);
 		public void set_info_append (string state, string icon_name);
 		public void set_info_simple (string applet_name, string uid, string icon_name);
 		public void set_size (int size);
@@ -581,6 +581,8 @@ namespace Awn {
 	public delegate unowned Awn.Applet AppletInitPFunc (string canonical_name, string uid, int panel_id);
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public delegate bool EffectsOpfn (Awn.Effects fx, Gtk.Allocation alloc);
+	[CCode (cheader_filename = "libawn/libawn.h")]
+	public const int EFFECTS_ACTIVE_RECT_PADDING;
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public const int MAX_HEIGHT;
 	[CCode (cheader_filename = "libawn/libawn.h")]

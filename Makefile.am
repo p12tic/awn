@@ -21,6 +21,10 @@ SUBDIRS = \
 	themes \
 	$(NULL)
 
+if HAVE_VALA
+SUBDIRS += applets/quick-prefs
+endif
+
 ACLOCAL_AMFLAGS = -I m4
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 

@@ -936,6 +936,9 @@ on_workspace_changed (TaskManager *manager) /*... has more arguments*/
  * TASK_ICON CALLBACKS
  */
 
+/*
+ TODO:  needs some cleanup.
+ */
 static void
 update_icon_visible (TaskManager *manager, TaskIcon *icon)
 {
@@ -966,7 +969,7 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
   }
   else
   {
-    if (task_icon_count_items (icon) <= task_icon_count_ephemeral_items (icon))
+    if ( !task_icon_count_tasklist_windows (icon))
     {
       do_hide_animation = TRUE;
     }
@@ -980,17 +983,17 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
                         AWN_EFFECT_OPENING, 1, FALSE, FALSE);
   }
 
-  if (!visible && gtk_widget_get_visible (GTK_WIDGET(icon)))
+  if (!visible )
   {
-    if (!do_hide_animation)
-    {
-      gtk_widget_hide (GTK_WIDGET(icon));
-    }
-    else
+    if (do_hide_animation)
     {
       awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                           AWN_EFFECT_CLOSING, 1, FALSE, TRUE);
-    } 
+    }
+    else
+    {
+      gtk_widget_hide (GTK_WIDGET(icon));
+    }
   }
 }
 
@@ -1048,9 +1051,9 @@ on_icon_effects_ends (TaskIcon   *icon,
       gtk_widget_hide (GTK_WIDGET(icon));
       g_idle_add ((GSourceFunc)_destroy_icon_cb,icon);
     }
-    else
+    else if (!task_icon_is_visible (icon))
     {
-//      gtk_widget_hide (GTK_WIDGET(icon));
+      gtk_widget_hide (GTK_WIDGET(icon));
     }
   }
 }

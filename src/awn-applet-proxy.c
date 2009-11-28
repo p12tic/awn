@@ -481,6 +481,7 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   AwnAppletProxyPrivate *priv;
   GdkScreen             *screen;
   GError                *error = NULL;
+  gint                   panel_id = AWN_PANEL_ID_DEFAULT;
   gchar                 *exec;
   gchar                **argv = NULL;
   GPid                   pid;
@@ -497,19 +498,22 @@ awn_applet_proxy_execute (AwnAppletProxy *proxy)
   screen = gtk_widget_get_screen (GTK_WIDGET (proxy));
   gint64 socket_id = (gint64) gtk_socket_get_id (GTK_SOCKET (proxy));
 
-  // FIXME: panel_id instead of '1'
+  g_object_get (G_OBJECT (gtk_widget_get_toplevel (GTK_WIDGET (proxy))),
+                "panel-id", &panel_id, NULL);
+
   if (g_getenv ("AWN_APPLET_GDB"))
   {
     exec = g_strdup_printf (DEBUG_APPLET_EXEC, priv->path, priv->uid,
-                            socket_id, 1);
+                            socket_id, panel_id);
   }
   else
   {
-    exec = g_strdup_printf (APPLET_EXEC, priv->path, priv->uid, socket_id, 1);
+    exec = g_strdup_printf (APPLET_EXEC, priv->path, priv->uid, 
+                            socket_id, panel_id);
   }
-  
-  g_shell_parse_argv(exec, NULL, &argv, &error);
-  g_warn_if_fail(error == NULL);
+
+  g_shell_parse_argv (exec, NULL, &argv, &error);
+  g_warn_if_fail (error == NULL);
 
   if (gdk_spawn_on_screen (
         screen, NULL, argv, NULL, flags, NULL, NULL, &pid, &error))

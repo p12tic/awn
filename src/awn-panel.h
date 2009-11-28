@@ -79,7 +79,7 @@ struct _AwnPanelClass
 
 GType       awn_panel_get_type            (void) G_GNUC_CONST;
 
-GtkWidget * awn_panel_new_from_config     (DesktopAgnosticConfigClient *client);
+GtkWidget * awn_panel_new_with_panel_id   (gint panel_id);
 
 gboolean    awn_panel_add_applet          (AwnPanel        *panel,
                                            gchar           *desktop_file,

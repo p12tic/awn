@@ -81,9 +81,17 @@ awn_config_get_default (gint panel_id, GError** error)
     char *schema_filename;
 
     schema_filename = g_build_filename (SCHEMADIR, "avant-window-navigator.schema-ini", NULL);
-    client = desktop_agnostic_config_client_new_for_instance (schema_filename,
-                                                              instance_id,
-                                                              error);
+    if (panel_id != 0)
+    {
+      client =
+        desktop_agnostic_config_client_new_for_instance (schema_filename,
+                                                         instance_id,
+                                                         error);
+    }
+    else
+    {
+      client = desktop_agnostic_config_client_new (schema_filename);
+    }
     g_free (schema_filename);
     if (error && *error != NULL)
     {

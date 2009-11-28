@@ -59,6 +59,7 @@ G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)
 
 struct _AwnPanelPrivate
 {
+  gint panel_id;
   DesktopAgnosticConfigClient *client;
   AwnMonitor *monitor;
 
@@ -111,6 +112,9 @@ struct _AwnPanelPrivate
   guint mouse_poll_timer_id;
 
   /* autohide stuff */
+  gint autohide_hide_delay;
+  gint autohide_mouse_poll_delay;
+
   gint hide_counter;
   guint hiding_timer_id;
   guint withdraw_timer_id;
@@ -142,15 +146,7 @@ typedef struct _AwnInhibitItem
   guint cookie;
 } AwnInhibitItem;
 
-/* FIXME: this timeout should be configurable I guess */
-#define AUTOHIDE_DELAY 1000
-#define MOUSE_POLL_TIMER_DELAY 500
-
 #define CLICKTHROUGH_OPACITY 0.3
-
-// padding for active_rect, yea it really isn't nice but so far it seems to
-// be the only feasible solution
-#define ACTIVE_RECT_PADDING 3
 
 #define ROUND(x) (x < 0 ? x - 0.5 : x + 0.5)
 
@@ -161,6 +157,7 @@ enum
 {
   PROP_0,
 
+  PROP_PANEL_ID,
   PROP_CLIENT,
   PROP_MONITOR,
   PROP_APPLET_MANAGER,
@@ -173,6 +170,8 @@ enum
   PROP_SIZE,
   PROP_MAX_SIZE,
   PROP_AUTOHIDE_TYPE,
+  PROP_AUTOHIDE_HIDE_DELAY,
+  PROP_AUTOHIDE_POLL_DELAY,
   PROP_STYLE,
   PROP_CLICKTHROUGH
 };
@@ -589,6 +588,16 @@ awn_panel_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANELS, AWN_PANELS_HIDE_DELAY,
+                                       object, "autohide-hide-delay", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_PANELS, AWN_PANELS_POLL_DELAY,
+                                       object, "autohide-poll-delay", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
                                        AWN_GROUP_PANEL, AWN_PANEL_STYLE,
                                        object, "style", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
@@ -656,6 +665,9 @@ awn_panel_get_property (GObject    *object,
 
   switch (prop_id)
   {
+    case PROP_PANEL_ID:
+      g_value_set_int (value, priv->panel_id);
+      break;
     case PROP_CLIENT:
       g_value_set_object (value, priv->client);
       break;
@@ -707,6 +719,12 @@ awn_panel_get_property (GObject    *object,
     case PROP_AUTOHIDE_TYPE:
       g_value_set_int (value, priv->autohide_type);
       break;
+    case PROP_AUTOHIDE_HIDE_DELAY:
+      g_value_set_int (value, priv->autohide_hide_delay);
+      break;
+    case PROP_AUTOHIDE_POLL_DELAY:
+      g_value_set_int (value, priv->autohide_mouse_poll_delay);
+      break;
     case PROP_STYLE:
       g_value_set_int (value, priv->style);
       break;
@@ -732,8 +750,11 @@ awn_panel_set_property (GObject      *object,
 
   switch (prop_id)
   {
+    case PROP_PANEL_ID:
+      priv->panel_id = g_value_get_int (value);
+      break;
     case PROP_CLIENT:
-      priv->client =  g_value_get_object (value);
+      priv->client = g_value_get_object (value);
       break;
     case PROP_PANEL_MODE:
       awn_panel_set_panel_mode (panel, g_value_get_boolean (value));
@@ -752,6 +773,19 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_AUTOHIDE_TYPE:
       awn_panel_set_autohide_type (panel, g_value_get_int (value));
+      break;
+    case PROP_AUTOHIDE_HIDE_DELAY:
+      priv->autohide_hide_delay = g_value_get_int (value);
+      break;
+    case PROP_AUTOHIDE_POLL_DELAY:
+      priv->autohide_mouse_poll_delay = g_value_get_int (value);
+      if (priv->mouse_poll_timer_id != 0)
+      {
+        g_source_remove (priv->mouse_poll_timer_id);
+        priv->mouse_poll_timer_id =
+          g_timeout_add (priv->autohide_mouse_poll_delay,
+                         poll_mouse_position, panel);
+      }
       break;
     case PROP_STYLE:
       awn_panel_set_style (panel, g_value_get_int (value));
@@ -853,8 +887,10 @@ awn_panel_resize_timeout (gpointer data)
   GdkRectangle rect1, rect2;
 
   // this is the size we are resizing to
-  const gint target_width = priv->alignment->requisition.width;
-  const gint target_height = priv->alignment->requisition.height;
+  const gint target_width = MIN (priv->alignment->requisition.width,
+                                 priv->monitor->width);
+  const gint target_height = MIN (priv->alignment->requisition.height,
+                                  priv->monitor->height);
 
   awn_panel_get_draw_rect (panel, &rect1, 0, 0);
 
@@ -965,7 +1001,7 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
   if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg))
   {
     gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment), 0, 0, 0, 0);
-    priv->extra_padding = ACTIVE_RECT_PADDING;
+    priv->extra_padding = AWN_EFFECTS_ACTIVE_RECT_PADDING;
 
     gtk_widget_queue_draw (GTK_WIDGET (panel));
     return;
@@ -997,7 +1033,7 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
       break;
   }
 
-  priv->extra_padding += ACTIVE_RECT_PADDING;
+  priv->extra_padding += AWN_EFFECTS_ACTIVE_RECT_PADDING;
 
   gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment),
                              top, bottom, left, right);
@@ -1414,7 +1450,8 @@ poll_mouse_position (gpointer data)
       {
         /* the timeout will emit autohide-start */
         priv->autohide_start_timer_id =
-          g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
+          g_timeout_add (priv->autohide_hide_delay,
+                         autohide_start_timeout, panel);
       }
     }
   }
@@ -1587,6 +1624,15 @@ awn_panel_class_init (AwnPanelClass *klass)
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
+    PROP_PANEL_ID,
+    g_param_spec_int ("panel-id",
+                      "Panel ID",
+                      "The panel ID",
+                      1, G_MAXINT, 1,
+                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
     PROP_CLIENT,
     g_param_spec_object ("client",
                          "Client",
@@ -1684,7 +1730,25 @@ awn_panel_class_init (AwnPanelClass *klass)
                       0, AUTOHIDE_TYPE_LAST - 1, 0,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                       G_PARAM_STATIC_STRINGS));
- 
+
+  g_object_class_install_property (obj_class,
+    PROP_AUTOHIDE_HIDE_DELAY,
+    g_param_spec_int ("autohide-hide-delay",
+                      "Autohide Hide Delay",
+                      "Delay between mouse leaving the panel and it hiding",
+                      50, 10000, 1000,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
+    PROP_AUTOHIDE_POLL_DELAY,
+    g_param_spec_int ("autohide-poll-delay",
+                      "Autohide Poll Delay",
+                      "Delay for mouse position polling",
+                      40, 5000, 500,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
   g_object_class_install_property (obj_class,
     PROP_STYLE,
     g_param_spec_int ("style",
@@ -1843,17 +1907,30 @@ static gboolean debug_invalidating (gpointer data)
 #endif
 
 GtkWidget *
-awn_panel_new_from_config (DesktopAgnosticConfigClient *client)
+awn_panel_new_with_panel_id (gint panel_id)
 {
   GtkWidget *window;
+  DesktopAgnosticConfigClient *client;
+  GError *error = NULL;
+
+  client = awn_config_get_default (panel_id, &error);
+
+  if (error)
+  {
+    g_warning ("Unable to retrieve the configuration client: %s",
+               error->message);
+    g_error_free (error);
+    return NULL;
+  }
 
   window = g_object_new (AWN_TYPE_PANEL,
                          "type", GTK_WINDOW_TOPLEVEL,
                          "type-hint", GDK_WINDOW_TYPE_HINT_DOCK,
+                         "panel-id", panel_id,
                          "client", client,
                          NULL);
 #ifdef DEBUG_INVALIDATION
-  g_timeout_add (2000, debug_invalidating, NULL);
+  g_timeout_add (5000, debug_invalidating, NULL);
 #endif
   
   return window;
@@ -1985,6 +2062,10 @@ on_composited_changed (GtkWidget *widget, gpointer data)
   gdk_window_set_composited (win, priv->composited);
 
   awn_panel_refresh_padding (AWN_PANEL (widget), NULL);
+
+  awn_panel_reset_autohide (AWN_PANEL (widget));
+
+  position_window (AWN_PANEL (widget));
 }
 
 /*
@@ -2547,8 +2628,9 @@ on_mouse_over (GtkWidget *widget, GdkEventCrossing *event)
 
   if (priv->mouse_poll_timer_id == 0 && poll_mouse_position (panel))
   {
-    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY,
-                                               poll_mouse_position, panel);
+    priv->mouse_poll_timer_id =
+      g_timeout_add (priv->autohide_mouse_poll_delay,
+                     poll_mouse_position, panel);
   }
 
   return FALSE;
@@ -2564,7 +2646,8 @@ on_mouse_out (GtkWidget *widget, GdkEventCrossing *event)
   {
     /* the timeout will emit autohide-start */
     priv->autohide_start_timer_id =
-      g_timeout_add (AUTOHIDE_DELAY, autohide_start_timeout, panel);
+      g_timeout_add (priv->autohide_hide_delay,
+                     autohide_start_timeout, panel);
   }
 
   return FALSE;
@@ -2593,8 +2676,11 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
 
   if (priv->autohide_type != AUTOHIDE_TYPE_NONE
       && priv->mouse_poll_timer_id == 0)
-    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY,
-                                               poll_mouse_position, panel);
+  {
+    priv->mouse_poll_timer_id = 
+      g_timeout_add (priv->autohide_mouse_poll_delay,
+                     poll_mouse_position, panel);
+  }
 
   static gulong start_handler_id = 0;
   static gulong end_handler_id = 0;
@@ -2810,8 +2896,11 @@ awn_panel_set_clickthrough_type(AwnPanel *panel, gint type)
 
   if (priv->clickthrough_type != CLICKTHROUGH_NEVER
       && priv->mouse_poll_timer_id == 0 )
-    priv->mouse_poll_timer_id = g_timeout_add (MOUSE_POLL_TIMER_DELAY,
-                                               poll_mouse_position, panel);
+  {
+    priv->mouse_poll_timer_id =
+      g_timeout_add (priv->autohide_mouse_poll_delay,
+                     poll_mouse_position, panel);
+  }
 
   if (priv->clickthrough_type == CLICKTHROUGH_NEVER && priv->clickthrough)
   {
@@ -3158,7 +3247,9 @@ docklet_appear_cb (AwnPanel *panel)
   height = MAX (priv->snapshot_paint_size.height, 
                 priv->manager->allocation.height);
 
-  gtk_widget_queue_draw_area (GTK_WIDGET (panel), x, y, width, height);
+  GdkWindow *window = gtk_widget_get_window (GTK_WIDGET (panel));
+  GdkRectangle rect = {.x = x, .y = y, .width = width, .height = height};
+  gdk_window_invalidate_rect (window, &rect, FALSE);
 
   if (priv->docklet_alpha >= 1.0)
   {

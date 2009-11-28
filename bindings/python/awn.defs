@@ -1308,7 +1308,7 @@
   (return-type "GdkPixbuf*")
   (caller-owns-return #t)
   (parameters
-    '("guint" "size")
+    '("gint" "size")
     '("const-gchar*" "state" (default "NULL") (null-ok))
   )
 )

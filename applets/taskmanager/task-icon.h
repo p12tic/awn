@@ -82,6 +82,8 @@ TaskItem  *     task_icon_get_launcher      (TaskIcon      *icon);
 
 guint           task_icon_count_items       (TaskIcon      *icon);
 guint           task_icon_count_ephemeral_items (TaskIcon * icon);
+guint           task_icon_count_tasklist_windows (TaskIcon * icon);
+
 void            task_icon_increment_ephemeral_count (TaskIcon *icon);
 
 

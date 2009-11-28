@@ -267,6 +267,9 @@ awn_label_expose (GtkWidget *widget, GdkEventExpose *event)
 
   g_return_val_if_fail (cr, FALSE);
 
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
   cairo_set_line_width (cr, priv->text_outline_width);
 
   PangoContext *context = pango_layout_get_context (layout);
