@@ -1,0 +1,18 @@
+<menu>
+  <menuitem type="Internal-Dock-Prefs"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>
+  <menuitem type="Internal-Customize-Icon"></menuitem>
+  <menuitem type="Internal-Remove-Customized-Icon"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>  
+  <menu display="Window List">
+    <menuitem type="Internal-Inline-Action-Menu-Active"></menuitem>
+    <menuitem type="Internal-Submenu-Action-Menu-Inactives"></menuitem>
+    <menuitem type="Internal-Closeall"></menuitem>
+  </menu>
+  <menuitem type="Internal-Placeholder-Inline-Plugins"></menuitem>
+  <menuitem type="Internal-Launch"></menuitem>
+  <menuitem type="Internal-Close-Active"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>  
+  <menuitem type="Internal-About"></menuitem>
+</menu>
+

@@ -1,0 +1,9 @@
+<menu>
+  <menuitem type="Internal-Dock-Prefs"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>
+  <menuitem type="Internal-Placeholder-Inline-Plugins"></menuitem>
+  <menuitem type="Internal-Launch"></menuitem>
+  <menuitem type="Internal-Close-Active"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>  
+  <menuitem type="Internal-About"></menuitem>
+</menu>
