@@ -271,6 +271,7 @@ static void on_main_item_visible_changed (TaskItem  *item,gboolean visible,
 
 static void grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon);
 
+static void task_icon_set_highlighted_item (TaskIcon * icon);
 
 /* GObject stuff */
 static void
@@ -1307,6 +1308,7 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     g_signal_handlers_disconnect_by_func(priv->main_item, 
                                          G_CALLBACK (on_main_item_visible_changed), icon);
     priv->main_item = NULL;
+    task_icon_set_highlighted_item (icon);
   }
 
   /*
@@ -1317,7 +1319,8 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
     /*
      Set the TaskIcon to the Icon associated with the main_item.
      */
-    priv->main_item = main_item;
+    priv->main_item = main_item;    
+    task_icon_set_highlighted_item (icon);
 #ifdef DEBUG
     g_debug ("%s, icon width g_sig= %d, height = %d",__func__,gdk_pixbuf_get_width(priv->icon), gdk_pixbuf_get_height(priv->icon));
 #endif
@@ -2206,6 +2209,32 @@ task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
   task_window_activate (window,timestamp);
 }
 
+static void
+task_icon_set_highlighted_item (TaskIcon * icon)
+{
+  GSList * i;
+  TaskIconPrivate *priv;
+  g_return_if_fail (TASK_IS_ICON (icon));
+  
+  priv = icon->priv;
+  
+  for (i = priv->items; i; i = i->next)
+  {
+    if (!TASK_IS_WINDOW(i->data))
+    {
+      continue;
+    }
+    if (i->data == priv->main_item)
+    {
+      task_window_set_highlighted (i->data, TRUE);
+    }
+    else
+    {
+      task_window_set_highlighted (i->data, FALSE);
+    }
+  }
+}
+
 void            
 task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val)
 {
@@ -2537,6 +2566,7 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
         if (TASK_IS_WINDOW (iter->data))
         {
           priv->main_item = iter->data;
+          task_icon_set_highlighted_item (icon);          
           iter = iter->next;
           break;
         }

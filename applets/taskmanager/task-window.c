@@ -68,6 +68,8 @@ struct _TaskWindowPrivate
   gboolean hidden;
   gboolean needs_attention;
   gboolean is_active;
+  gboolean highlighted;
+  
   gint     use_win_icon;
   
   gint     activate_behavior;
@@ -91,7 +93,8 @@ enum
   PROP_0,
   PROP_WINDOW,
   PROP_ACTIVATE_BEHAVIOR,
-  PROP_USE_WIN_ICON
+  PROP_USE_WIN_ICON,
+  PROP_HIGHLIGHTED
 };
 
 enum
@@ -158,6 +161,10 @@ task_window_get_property (GObject    *object,
     case PROP_USE_WIN_ICON:
       g_value_set_int (value, taskwin->priv->use_win_icon); 
       break;
+
+    case PROP_HIGHLIGHTED:
+      g_value_set_boolean (value, taskwin->priv->highlighted); 
+      break;
     
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -186,6 +193,10 @@ task_window_set_property (GObject      *object,
 
     case PROP_USE_WIN_ICON:
       priv->use_win_icon = g_value_get_int (value);
+      break;
+
+    case PROP_HIGHLIGHTED:
+      task_window_set_highlighted (taskwin,g_value_get_boolean (value));
       break;
 
     default:
@@ -404,6 +415,13 @@ task_window_class_init (TaskWindowClass *klass)
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_USE_WIN_ICON, pspec);  
 
+  pspec = g_param_spec_boolean ("highlighted",
+                               "Highlight",
+                               "Highlight the item",
+                                FALSE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_HIGHLIGHTED, pspec);  
+
   g_type_class_add_private (obj_class, sizeof (TaskWindowPrivate));
 }
 
@@ -506,7 +524,14 @@ on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
   priv = window->priv;
 
   name = wnck_window_get_name (wnckwin);
-  markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+  if (priv->highlighted)
+  {
+    markup = g_markup_printf_escaped ("<span font_style=\"italic\" font_weight=\"heavy\" font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+  }
+  else
+  {
+    markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+  }
   gtk_label_set_markup (GTK_LABEL (priv->name), markup);
   g_free (markup);  
   task_item_emit_name_changed (TASK_ITEM (window), name);  
@@ -671,8 +696,14 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
   g_signal_connect (wnckwin, "state-changed", 
                     G_CALLBACK (on_window_state_changed), window);
 
-  
-  markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
+  if (priv->highlighted)
+  {
+    markup = g_markup_printf_escaped ("<span font_style=\"italic\" font_weight=\"heavy\" font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
+  }
+  else
+  {
+    markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
+  }
   task_item_emit_name_changed (TASK_ITEM (window), markup);
   on_window_name_changed (wnckwin,window);
   on_window_icon_changed (wnckwin,window);
@@ -686,6 +717,34 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
 /*
  * Public functions
  */
+
+void
+task_window_set_highlighted (TaskWindow *window, gboolean highlight_state)
+{
+  TaskWindowPrivate *priv;
+  
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = window->priv;
+
+  if (highlight_state != priv->highlighted)
+  {
+    const gchar * name;
+    gchar * markup;
+    
+    priv->highlighted = highlight_state;
+    name = wnck_window_get_name (priv->window);
+    if (priv->highlighted)
+    {
+      markup = g_markup_printf_escaped ("<span font_style=\"italic\" font_weight=\"heavy\" font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+    }
+    else
+    {
+      markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+    }
+    gtk_label_set_markup (GTK_LABEL (priv->name), markup);
+    g_free (markup);
+  }
+}
 
 /**
  * Returns the name of the WnckWindow.

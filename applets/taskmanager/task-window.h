@@ -141,6 +141,8 @@ void            task_window_set_use_win_icon    (TaskWindow * item, WinIconUse w
 
 void            task_window_set_hidden          (TaskWindow *window,gboolean hidden);
 
+void            task_window_set_highlighted   (TaskWindow *window, gboolean highlight_state);
+
 const gchar *   task_window_get_client_name     (TaskWindow *window);
 
 gboolean        task_window_get_icon_is_fallback  (TaskWindow * window);
