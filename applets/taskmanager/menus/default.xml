@@ -10,6 +10,7 @@
     <menuitem type="Internal-Closeall"></menuitem>
   </menu>
   <menuitem type="Internal-Placeholder-Inline-Plugins"></menuitem>
+  <menuitem type="Internal-Add-To-Launcher-List"></menuitem>
   <menuitem type="Internal-Launch"></menuitem>
   <menuitem type="Internal-Close-Active"></menuitem>
   <menuitem type="Internal-Separator"></menuitem>  

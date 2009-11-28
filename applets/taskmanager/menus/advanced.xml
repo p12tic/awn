@@ -9,6 +9,7 @@
     <menuitem type="External-Command" cmd="xkill" args="" icon="xkill">XKill</menuitem>
     <menuitem type="External-Desktop" desktop="xkill.desktop" args=""></menuitem>
   </menu>
+  <menuitem type="Internal-Add-To-Launcher-List"></menuitem>  
   <menuitem type="Internal-Launch"></menuitem>
   <menuitem type="Internal-Close-Active"></menuitem>
   <menuitem type="Internal-About"></menuitem>
