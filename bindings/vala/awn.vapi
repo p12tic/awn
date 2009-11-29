@@ -469,7 +469,7 @@ namespace Awn {
 		public static void drag_data_received (Gtk.Widget widget, Gdk.DragContext context, int x, int y, Gtk.SelectionData selection_data, uint info, uint evt_time);
 		public unowned Gtk.IconTheme get_awn_theme ();
 		public unowned string get_default_theme_name ();
-		public Gdk.Pixbuf get_icon_at_size (uint size, string state);
+		public Gdk.Pixbuf get_icon_at_size (int size, string state);
 		public int get_size ();
 		public unowned string get_state ();
 		public void override_gtk_theme (string theme_name);
@@ -531,7 +531,9 @@ namespace Awn {
 		EXPAND_MAJOR,
 		IS_EXPANDER,
 		IS_SEPARATOR,
-		HAS_SHAPE_MASK
+		HAS_SHAPE_MASK,
+		DOCKLET_HANDLES_POSITION_CHANGE,
+		DOCKLET_CLOSE_ON_MOUSE_OUT
 	}
 	[CCode (cprefix = "AWN_APPLET_LICENSE_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
 	public enum AppletLicense {

@@ -167,6 +167,8 @@
 			<member name="AWN_APPLET_IS_EXPANDER" value="4"/>
 			<member name="AWN_APPLET_IS_SEPARATOR" value="8"/>
 			<member name="AWN_APPLET_HAS_SHAPE_MASK" value="16"/>
+			<member name="AWN_APPLET_DOCKLET_HANDLES_POSITION_CHANGE" value="1024"/>
+			<member name="AWN_APPLET_DOCKLET_CLOSE_ON_MOUSE_OUT" value="2048"/>
 		</enum>
 		<enum name="AwnAppletLicense">
 			<member name="AWN_APPLET_LICENSE_GPLV2" value="10"/>
@@ -1345,7 +1347,7 @@
 				<return-type type="GdkPixbuf*"/>
 				<parameters>
 					<parameter name="icon" type="AwnThemedIcon*"/>
-					<parameter name="size" type="guint"/>
+					<parameter name="size" type="gint"/>
 					<parameter name="state" type="gchar*"/>
 				</parameters>
 			</method>

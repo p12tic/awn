@@ -73,6 +73,8 @@ struct _AwnPanelPrivate
   GtkWidget *docklet;
   GtkWidget *docklet_closer;
   gint docklet_minsize;
+  gboolean docklet_close_on_pos_change;
+  gboolean docklet_close_on_mouse_out;
   GtkWidget *menu;
 
   gboolean composited;
@@ -380,6 +382,7 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
 
     if (GDK_WINDOW_XID (it_window) == panel_xid || window != NULL)
     {
+      // FIXME: will crash with multiple panels!
       g_object_unref (it_window);
       continue;
     }
@@ -934,11 +937,19 @@ awn_panel_resize_timeout (gpointer data)
   awn_panel_get_draw_rect (panel, &rect2, 0, 0);
 
   // invalidate only the background draw region
-  gtk_widget_queue_draw_area (GTK_WIDGET (panel),
-                              MIN (rect1.x, rect2.x),
-                              MIN (rect1.y, rect2.y),
-                              MAX (rect1.width, rect2.width),
-                              MAX (rect1.height, rect2.height));
+  gint end_x = MAX (rect1.x + rect1.width, rect2.x + rect2.width);
+  gint end_y = MAX (rect1.y + rect1.height, rect2.y + rect2.height);
+  GdkRectangle invalid_rect =
+  {
+    .x = MIN (rect1.x, rect2.x),
+    .y = MIN (rect1.y, rect2.y),
+    .width = end_x - MIN (rect1.x, rect2.x),
+    .height = end_y - MIN (rect1.y, rect2.y)
+  };
+  gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (panel)),
+                              &invalid_rect, FALSE);
+  // without this there are some artifacts on sad face & throbbers
+  awn_applet_manager_redraw_throbbers (AWN_APPLET_MANAGER (priv->manager));
 
   // FIXME: should this really be done on every animation step?
   awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
@@ -1425,7 +1436,7 @@ poll_mouse_position (gpointer data)
 
   /* Auto-Hide stuff */
   if (priv->autohide_type != AUTOHIDE_TYPE_NONE)
-  { 
+  {
     if (awn_panel_check_mouse_pos (panel,
           !priv->autohide_started || priv->autohide_always_visible ?
           MOUSE_CHECK_ACTIVE_MASK : MOUSE_CHECK_EDGE_ONLY))
@@ -1453,6 +1464,15 @@ poll_mouse_position (gpointer data)
           g_timeout_add (priv->autohide_hide_delay,
                          autohide_start_timeout, panel);
       }
+    }
+  }
+
+  /* Docklet close on mouse-out */
+  if (priv->docklet && priv->docklet_close_on_mouse_out)
+  {
+    if (!awn_panel_check_mouse_pos (panel, MOUSE_CHECK_ACTIVE_MASK))
+    {
+      awn_panel_docklet_destroy (panel);
     }
   }
 
@@ -1524,6 +1544,10 @@ poll_mouse_position (gpointer data)
    */
   if (awn_panel_check_mouse_pos (panel, MOUSE_CHECK_ACTIVE_MASK) &&
       priv->clickthrough_type == CLICKTHROUGH_ON_CTRL)
+    return TRUE;
+
+  /* Keep on polling if we're in docklet mode and we need to close it */
+  if (priv->docklet && priv->docklet_close_on_mouse_out)
     return TRUE;
 
   /* In other cases, the polling may end */
@@ -1868,6 +1892,7 @@ awn_panel_init (AwnPanel *panel)
   priv->draw_height = 32;
 
   priv->docklet_alpha = 1.0;
+  priv->docklet_close_on_pos_change = TRUE;
 
   priv->inhibits = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                           NULL, free_inhibit_item);
@@ -2580,7 +2605,14 @@ awn_panel_set_pos_type (AwnPanel *panel, GtkPositionType position)
   if (!GTK_WIDGET_REALIZED (panel))
     return;
 
-  if (priv->docklet) awn_panel_docklet_destroy (panel);
+  if (priv->docklet && priv->docklet_close_on_pos_change)
+  {
+    awn_panel_docklet_destroy (panel);
+  }
+  if (priv->docklet_closer)
+  {
+    awn_icon_set_pos_type (AWN_ICON (priv->docklet_closer), position);
+  }
 
   awn_panel_reset_autohide (panel);
 
@@ -2604,6 +2636,13 @@ awn_panel_set_size (AwnPanel *panel, gint size)
   g_signal_emit (panel, _panel_signals[SIZE_CHANGED], 0, priv->size);
 
   position_window (panel);
+
+  if (priv->docklet_closer)
+  {
+    awn_throbber_set_size (AWN_THROBBER (priv->docklet_closer), size / 2);
+    awn_icon_set_offset (AWN_ICON (priv->docklet_closer), size / 2 +
+                                                          priv->offset);
+  }
 
   gtk_widget_queue_resize (GTK_WIDGET (panel));
 }
@@ -3071,11 +3110,31 @@ awn_panel_set_applet_flags (AwnPanel         *panel,
     g_print ("Separator ");
   if (flags & AWN_APPLET_HAS_SHAPE_MASK)
     g_print ("ShapeMask ");
+  if (flags & AWN_APPLET_DOCKLET_HANDLES_POSITION_CHANGE)
+    g_print ("DockletHandlesPositionChange ");
+  if (flags & AWN_APPLET_DOCKLET_CLOSE_ON_MOUSE_OUT)
+    g_print ("DockletCloseOnMouseOut ");
 
   g_print ("\n");
 
-  awn_applet_manager_set_applet_flags (AWN_APPLET_MANAGER (priv->manager),
-                                       uid, flags);
+  // we'll handle docklet flags ourselves, 
+  //   other flags are handled by AppletManager
+  if ((flags & (AWN_APPLET_DOCKLET_HANDLES_POSITION_CHANGE |
+               AWN_APPLET_DOCKLET_CLOSE_ON_MOUSE_OUT)) != 0)
+  {
+    if (flags & AWN_APPLET_DOCKLET_HANDLES_POSITION_CHANGE)
+    {
+      priv->docklet_close_on_pos_change = FALSE;
+    }
+    priv->docklet_close_on_mouse_out = 
+      (flags & AWN_APPLET_DOCKLET_CLOSE_ON_MOUSE_OUT) != 0;
+    // FIXME: start mouse polling if not doing so...
+  }
+  else
+  {
+    awn_applet_manager_set_applet_flags (AWN_APPLET_MANAGER (priv->manager),
+                                         uid, flags);
+  }
 
   return TRUE;
 }
@@ -3450,8 +3509,10 @@ awn_panel_docklet_request (AwnPanel *panel,
 
     gtk_widget_get_allocation (priv->manager, &alloc);
 
-    // if expand param is false the docklet will be restricted to this size
     priv->docklet = gtk_socket_new ();
+    priv->docklet_close_on_pos_change = TRUE;
+    priv->docklet_close_on_mouse_out = FALSE;
+    // if expand param is false the docklet will be restricted to this size
     switch (priv->position)
     {
       case GTK_POS_LEFT:

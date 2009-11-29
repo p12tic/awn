@@ -95,6 +95,8 @@ void        awn_applet_manager_add_docklet       (AwnAppletManager *manager,
                                                   GtkWidget *docklet);
 gboolean    awn_applet_manager_get_docklet_mode  (AwnAppletManager *manager);
 
+void        awn_applet_manager_redraw_throbbers  (AwnAppletManager *manager);
+
 GdkRegion*  awn_applet_manager_get_mask          (AwnAppletManager *manager,
                                                   AwnPathType path_type,
                                                   gfloat offset_modifier);

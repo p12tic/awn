@@ -1173,6 +1173,24 @@ awn_applet_manager_add_docklet (AwnAppletManager *manager,
                              TRUE, TRUE, 0, GTK_PACK_START);
 }
 
+void
+awn_applet_manager_redraw_throbbers (AwnAppletManager *manager)
+{
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
+  //AwnAppletManagerPrivate *priv = manager->priv;
+  GList *list = gtk_container_get_children (GTK_CONTAINER (manager));
+
+  for (GList *it = list; it != NULL; it = it->next)
+  {
+    if (AWN_IS_THROBBER (it->data) && GTK_WIDGET_VISIBLE (it->data))
+    {
+      gtk_widget_queue_draw (GTK_WIDGET (it->data));
+    }
+  }
+
+  g_list_free (list);
+}
+
 GdkRegion*
 awn_applet_manager_get_mask (AwnAppletManager *manager,
                              AwnPathType path_type,
