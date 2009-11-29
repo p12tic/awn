@@ -20,6 +20,8 @@ taskmanager_la_SOURCES = \
 	task-drag-indicator.h \
 	task-icon.c \
 	task-icon.h \
+	task-icon-build-context-menus.c \
+	task-icon-build-context-menus.h \
 	task-item.c \
 	task-item.h \
 	task-launcher.c \

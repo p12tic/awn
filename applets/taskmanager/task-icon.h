@@ -113,5 +113,10 @@ void            task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val);
 void            task_icon_schedule_geometry_refresh (TaskIcon *icon);
 
 void            task_icon_moving_item       (TaskIcon *dest, TaskIcon * src, TaskItem *item);
+
+const TaskItem *task_icon_get_main_item (TaskIcon * icon);
+
+const gchar *   task_icon_get_custom_name (TaskIcon * icon);
+
 #endif /* _TASK_ICON_H_ */
 
