@@ -1,5 +1,9 @@
 /*
  * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com>
+ * Copyright (C) 2001 Havoc Pennington
+ *
+ * Parts of action menu derived from the wnck action menu code in 
+ * the window-action-menu.c file in libwnck sources.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as 
@@ -54,6 +58,77 @@ static void menu_parse_start_element (GMarkupParseContext *context,
                                       gpointer            user_data,
                                       GError             **error);
 
+static char *
+get_workspace_name_with_accel (WnckWindow *window, int idx)
+{
+  const char *name;
+  int number;
+ 
+  name = wnck_workspace_get_name (wnck_screen_get_workspace (wnck_window_get_screen (window),idx));
+
+  g_assert (name != NULL);
+
+  /*
+   * If the name is of the form "Workspace x" where x is an unsigned
+   * integer, insert a '_' before the number if it is less than 10 and
+   * return it
+   */
+  number = 0;
+  if (sscanf (name, _("Workspace %d"), &number) == 1) 
+  {
+      char *new_name;
+
+      /*
+       * Above name is a pointer into the Workspace struct. Here we make
+       * a copy copy so we can have our wicked way with it.
+       */
+      if (number == 10)
+        new_name = g_strdup_printf (_("Workspace 1_0"));
+      else
+        new_name = g_strdup_printf (_("Workspace %s%d"),
+                                    number < 10 ? "_" : "",
+                                    number);
+      return new_name;
+  }
+  else {
+      /*
+       * Otherwise this is just a normal name. Escape any _ characters so that
+       * the user's workspace names do not get mangled.  If the number is less
+       * than 10 we provide an accelerator.
+       */
+      char *new_name;
+      const char *source;
+      char *dest;
+
+      /*
+       * Assume the worst case, that every character is a _.  We also
+       * provide memory for " (_#)"
+       */
+      new_name = g_malloc0 (strlen (name) * 2 + 6 + 1);
+
+      /*
+       * Now iterate down the strings, adding '_' to escape as we go
+       */
+      dest = new_name;
+      source = name;
+      while (*source != '\0') {
+          if (*source == '_')
+            *dest++ = '_';
+          *dest++ = *source++;
+      }
+
+      /* People don't start at workstation 0, but workstation 1 */
+      if (idx< 9) {
+          g_snprintf (dest, 6, " (_%d)", idx + 1);
+      }
+      else if (idx == 9) {
+          g_snprintf (dest, 6, " (_0)");
+      }
+
+      return new_name;
+  }
+}
+
 static void
 add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
 {
@@ -72,6 +147,59 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
     task_manager_append_launcher (TASK_MANAGER(applet),
                                   task_launcher_get_desktop_path(launcher));
   }
+}
+
+
+static void
+_move_window_left_cb (GtkMenuItem *menuitem, WnckWindow * win)
+{
+  WnckWorkspace *workspace;
+  workspace = wnck_screen_get_workspace_neighbor (wnck_window_get_screen (win),
+                                                  wnck_window_get_workspace (win), 
+                                                  WNCK_MOTION_LEFT);
+  wnck_window_move_to_workspace (win, workspace);
+}
+
+static void
+_move_window_right_cb (GtkMenuItem *menuitem, WnckWindow * win)
+{
+  WnckWorkspace *workspace;
+  workspace = wnck_screen_get_workspace_neighbor (wnck_window_get_screen ( win),
+                                                  wnck_window_get_workspace (win),
+                                                  WNCK_MOTION_RIGHT);
+  wnck_window_move_to_workspace (win, workspace);
+}
+
+static void
+_move_window_up_cb (GtkMenuItem *menuitem, WnckWindow * win)
+{
+  WnckWorkspace *workspace;
+  workspace = wnck_screen_get_workspace_neighbor (wnck_window_get_screen (win),
+                                                  wnck_window_get_workspace (win),
+                                                  WNCK_MOTION_UP);
+  wnck_window_move_to_workspace (win, workspace);
+}
+
+static void
+_move_window_down_cb (GtkMenuItem *menuitem, WnckWindow * win)
+{
+  WnckWorkspace *workspace;
+  workspace = wnck_screen_get_workspace_neighbor (wnck_window_get_screen (win),
+                                                  wnck_window_get_workspace (win),
+                                                  WNCK_MOTION_DOWN);
+  wnck_window_move_to_workspace (win, workspace);
+}
+
+static void
+_move_window_to_index (GtkMenuItem *menuitem, WnckWindow * win)
+{
+  int workspace_index;
+  workspace_index =  GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT(menuitem), g_quark_from_static_string("WORKSPACE")));  
+//  workspace_index = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menuitem), "workspace"));
+
+  wnck_window_move_to_workspace (win,
+                                 wnck_screen_get_workspace (wnck_window_get_screen (win),
+                                 workspace_index));
 }
 
 static void
@@ -532,6 +660,117 @@ task_icon_get_menu_item_submenu_action_menu_inactives (TaskIcon * icon,GtkMenu *
   }
 }
 
+
+static void
+task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWindow * win)
+{
+  WnckWorkspace * workspace = wnck_window_get_workspace (win);
+  gint num_workspaces;
+  gint present_workspace;
+  gint i;
+  GtkWidget *submenu;
+  GtkWidget *separator;
+  GtkWidget * menuitem =NULL;
+  WnckWorkspaceLayout layout;
+
+  num_workspaces = wnck_screen_get_workspace_count (wnck_window_get_screen (win));
+  if (num_workspaces == 1)
+  {
+    return;
+  }
+
+  if (workspace)
+  {
+    present_workspace = wnck_workspace_get_number (workspace);
+  }
+  else
+  {
+    present_workspace = -1;
+  }
+
+  wnck_screen_calc_workspace_layout (wnck_window_get_screen (win),
+                                     num_workspaces,
+                                     present_workspace,
+                                     &layout);
+
+  separator = gtk_separator_menu_item_new ();
+  gtk_widget_show (separator);          
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu),separator);
+  
+  if (!wnck_window_is_pinned (win))
+    {
+      if (layout.current_col > 0)
+        {
+          menuitem = gtk_menu_item_new_with_mnemonic (_("Move to Workspace _Left"));
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu),menuitem);
+          g_signal_connect (G_OBJECT (menuitem), "activate",
+                          G_CALLBACK (_move_window_left_cb),
+                          win);
+          gtk_widget_show (menuitem);          
+        }
+
+      if ((layout.current_col < layout.cols - 1) && (layout.current_row * layout.cols + (layout.current_col + 1) < num_workspaces ))
+        {
+          menuitem = gtk_menu_item_new_with_mnemonic (_("Move to Workspace _Right"));
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu),menuitem);
+          g_signal_connect (G_OBJECT (menuitem), "activate",
+                          G_CALLBACK (_move_window_right_cb),
+                          win);
+          gtk_widget_show (menuitem);          
+        }
+       
+      if (layout.current_row > 0)
+        {
+          menuitem = gtk_menu_item_new_with_mnemonic (_("Move to Workspace _Up"));
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu),menuitem);
+          g_signal_connect (G_OBJECT (menuitem), "activate",
+                          G_CALLBACK (_move_window_up_cb),
+                          win);
+          gtk_widget_show (menuitem);          
+        }
+
+      if ((layout.current_row < layout.rows - 1) && ((layout.current_row + 1) * layout.cols + layout.current_col) < num_workspaces)
+        {
+          menuitem = gtk_menu_item_new_with_mnemonic (_("Move to Workspace _Down"));
+          gtk_menu_shell_append (GTK_MENU_SHELL (menu),menuitem);
+          g_signal_connect (G_OBJECT (menuitem), "activate",
+                          G_CALLBACK (_move_window_down_cb),
+                          win);
+          gtk_widget_show (menuitem);          
+        }
+    }
+
+  menuitem = gtk_menu_item_new_with_mnemonic (_("Move to Another _Workspace")); 
+  gtk_widget_show (menuitem);
+
+  submenu = gtk_menu_new ();
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menuitem), submenu);
+
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu),menuitem);
+
+  for (i = 0; i < num_workspaces; i++)
+    {
+      char *name, *label;
+      GtkWidget *item;
+	
+      name = get_workspace_name_with_accel (win, i);
+      label = g_strdup_printf ("%s", name);
+
+      item = gtk_menu_item_new_with_label (label);
+//      g_object_set_data (G_OBJECT (item), "workspace", GINT_TO_POINTER (i));
+      g_object_set_qdata (G_OBJECT (item), g_quark_from_static_string("WORKSPACE"), GINT_TO_POINTER (i));
+      if (i == present_workspace)
+        gtk_widget_set_sensitive (item, FALSE);
+      g_signal_connect (G_OBJECT (item), "activate",
+                      G_CALLBACK (_move_window_to_index),
+                      win);
+      gtk_widget_show (item);
+      gtk_menu_shell_append (GTK_MENU_SHELL (submenu), item);
+      g_free (name);
+      g_free (label);	
+    }
+}
+
 static void
 task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
 {
@@ -580,6 +819,8 @@ task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
       gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
   }
 
+  task_icon_inline_menu_move_to_workspace (icon,menu,win);
+  
   menuitem = gtk_separator_menu_item_new ();
   gtk_widget_show (menuitem);
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
@@ -590,7 +831,7 @@ task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
 }
 
 static void
-task_icon_get_menu_item_submenu_inline_action_menu_active (TaskIcon * icon,GtkMenu * menu)
+task_icon_inline_action_menu_active (TaskIcon * icon,GtkMenu * menu)
 {
 /* TODO As I feared reparenting the action menu items is unstable.
    minimize,unmaximize,move,resize,always on top,always on visible workspace,
@@ -806,7 +1047,7 @@ menu_parse_start_element (GMarkupParseContext *context,
       g_markup_parse_context_push (context,&sub_markup_parser,submenu);
       break;
     case INTERNAL_INLINE_ACTION_MENU_ACTIVE:
-      task_icon_get_menu_item_submenu_inline_action_menu_active (icon,GTK_MENU(menu));
+      task_icon_inline_action_menu_active (icon,GTK_MENU(menu));
       break;
     case INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES:
       task_icon_get_menu_item_submenu_action_menu_inactives (icon,GTK_MENU(menu));
