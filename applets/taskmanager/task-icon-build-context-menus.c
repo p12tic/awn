@@ -89,62 +89,47 @@ _close_window_cb (GtkMenuItem *menuitem, TaskIcon * icon)
   }
   gdk_event_free ((GdkEvent*)event);
 }
-#if 0
+
 static void
-_minimize_window_cb (GtkMenuItem *menuitem, TaskIcon * icon)
+_minimize_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
 {
   /*
    This might actually be a key event?  but it doesn't matter... the time
    field is in the same place*/
   GdkEventButton * event = (GdkEventButton*)gtk_get_current_event ();
   g_return_if_fail (event);
-  if (TASK_IS_WINDOW (task_icon_get_main_item (icon)))
-  {
-    if (wnck_window_is_minimized (task_window_get_window (TASK_WINDOW(task_icon_get_main_item (icon)))))
-      wnck_window_unminimize (task_window_get_window (TASK_WINDOW(task_icon_get_main_item (icon))),event->time);
-    else
-      wnck_window_minimize (task_window_get_window (TASK_WINDOW(task_icon_get_main_item (icon))));
-  }
+  if (wnck_window_is_minimized (win))
+    wnck_window_unminimize (win,event->time);
+  else
+    wnck_window_minimize (win);
 }
 
 static void
-_maximize_window_cb (GtkMenuItem *menuitem, TaskIcon * icon)
+_maximize_window_cb (GtkMenuItem *menuitem, WnckWindow *win)
 {
-  const TaskItem * main_item = task_icon_get_main_item (icon);
-  if (TASK_IS_WINDOW (main_item))
-  {  
-    if (wnck_window_is_maximized (task_window_get_window (TASK_WINDOW(main_item))))
-      wnck_window_unmaximize (task_window_get_window (TASK_WINDOW(main_item)));
-    else
-      wnck_window_maximize (task_window_get_window (TASK_WINDOW(main_item)));
-  }
+  if (wnck_window_is_maximized (win))
+    wnck_window_unmaximize (win);
+  else
+    wnck_window_maximize (win);
 }
-static void
-_shade_window_cb (GtkMenuItem *menuitem, TaskIcon * icon)
+/*static void
+_shade_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
 {
-  const TaskItem * main_item = task_icon_get_main_item (icon);
-  if (TASK_IS_WINDOW (main_item))
-  {
-    if (wnck_window_is_shaded (task_window_get_window (TASK_WINDOW(main_item))))
-      wnck_window_unshade (task_window_get_window (TASK_WINDOW(main_item)));
-    else
-      wnck_window_shade (task_window_get_window (TASK_WINDOW(main_item)));
-  }
+  if (wnck_window_is_shaded (win))
+    wnck_window_unshade (win);
+  else
+    wnck_window_shade (win);
+}
+*/
+static void
+_pin_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
+{
+  if (wnck_window_is_pinned (win))
+    wnck_window_unpin (win);
+  else
+    wnck_window_pin (win);
 }
 
-static void
-_pin_window_cb (GtkMenuItem *menuitem, TaskIcon * icon)
-{
-  const TaskItem * main_item = task_icon_get_main_item (icon);
-  if (TASK_IS_WINDOW (main_item))
-  {
-    if (wnck_window_is_pinned (task_window_get_window (TASK_WINDOW(main_item))))
-      wnck_window_unpin (task_window_get_window (TASK_WINDOW(main_item)));
-    else
-      wnck_window_pin (task_window_get_window (TASK_WINDOW(main_item)));
-  }
-}
-#endif
 #if 0
 static void
 _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
@@ -548,23 +533,75 @@ task_icon_get_menu_item_submenu_action_menu_inactives (TaskIcon * icon,GtkMenu *
 }
 
 static void
+task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
+{
+
+  GtkWidget * menuitem;
+  
+  if (! wnck_window_is_maximized(win))
+  {
+    menuitem = gtk_menu_item_new_with_label (_("Maximize"));
+    gtk_widget_show (menuitem);
+    g_signal_connect (menuitem,"activate",
+                  G_CALLBACK(_maximize_window_cb),
+                  win);
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+  }
+  if (! wnck_window_is_minimized(win))
+  {  
+    menuitem = gtk_menu_item_new_with_label (_("Minimize"));
+    gtk_widget_show (menuitem);
+    g_signal_connect (menuitem,"activate",
+                  G_CALLBACK(_minimize_window_cb),
+                  win);
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+  }
+
+  menuitem = gtk_separator_menu_item_new ();
+  gtk_widget_show (menuitem);
+  gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
+  if (! wnck_window_is_pinned(win))
+  {  
+      menuitem = gtk_menu_item_new_with_label (_("Always on Visible Workspace"));
+      gtk_widget_show (menuitem);
+      g_signal_connect (menuitem,"activate",
+                    G_CALLBACK(_pin_window_cb),
+                    win);
+      gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+  }
+  if (wnck_window_is_pinned(win))
+  {  
+      menuitem = gtk_menu_item_new_with_label (_("Only on This Workspace"));
+      gtk_widget_show (menuitem);
+      g_signal_connect (menuitem,"activate",
+                    G_CALLBACK(_pin_window_cb),
+                    win);
+      gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+  }
+
+  menuitem = gtk_separator_menu_item_new ();
+  gtk_widget_show (menuitem);
+  gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+  
+  menuitem = task_icon_get_menu_item_close_active (icon);
+  gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+
+}
+
+static void
 task_icon_get_menu_item_submenu_inline_action_menu_active (TaskIcon * icon,GtkMenu * menu)
 {
+/* TODO As I feared reparenting the action menu items is unstable.
+   minimize,unmaximize,move,resize,always on top,always on visible workspace,
+   only on this workspace,move to ws right/left, move to ws up/down,move to another workspace,
+   close
+*/
   const TaskItem * main_item = task_icon_get_main_item (icon);
   if (main_item && TASK_IS_WINDOW(main_item))
-  {
-    GtkWidget * action_menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(main_item)));
-    GList * children = gtk_container_get_children (GTK_CONTAINER(action_menu));
-    GList * iter;
-    for (iter = children; iter; )
-    {
-      GList * next = g_list_next (iter);
-      g_object_ref (iter->data);
-      gtk_container_remove (GTK_CONTAINER(action_menu),iter->data);
-      gtk_menu_shell_append (GTK_MENU_SHELL(menu),iter->data);
-      g_object_unref (iter->data);
-      iter = next;
-    }
+  {  
+    WnckWindow *win = task_window_get_window (TASK_WINDOW(main_item));
+    task_icon_inline_action_menu (icon,menu,win);
   }
 }
 
