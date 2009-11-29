@@ -2,7 +2,7 @@
   <menuitem type="Internal-Dock-Prefs"></menuitem>
   <menu display="Window List">
     <menuitem type="Internal-Submenu-Active"></menuitem>
-    <menuitem type="Internal-Submenu-Inactive"></menuitem>
+    <menuitem type="Internal-Inline-Submenus-Action-Menu-Inactive"></menuitem>
     <menuitem type="Internal-Closeall"></menuitem>
   </menu>
   <menu display="Advanced">

@@ -4,11 +4,11 @@
   <menuitem type="Internal-Customize-Icon"></menuitem>
   <menuitem type="Internal-Remove-Customized-Icon"></menuitem>
   <menuitem type="Internal-Separator"></menuitem>  
-  <menu display="Window List">
+  <submenu display="Window List">
     <menuitem type="Internal-Inline-Action-Menu-Active"></menuitem>
-    <menuitem type="Internal-Submenu-Action-Menu-Inactives"></menuitem>
+    <menuitem type="Internal-Inline-Submenus-Action-Menu-Inactives"></menuitem>
     <menuitem type="Internal-Closeall"></menuitem>
-  </menu>
+  </submenu>
   <menuitem type="Internal-Placeholder-Inline-Plugins"></menuitem>
   <menuitem type="Internal-Add-To-Launcher-List"></menuitem>
   <menuitem type="Internal-Launch"></menuitem>
