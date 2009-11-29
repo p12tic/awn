@@ -140,7 +140,7 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
   if (launcher)
   {
     TaskManager * applet;
-    g_object_get (applet,
+    g_object_get (icon,
                   "applet",&applet,
                   NULL);
     task_manager_remove_task_icon (TASK_MANAGER(applet), GTK_WIDGET(icon));               
@@ -565,6 +565,8 @@ static GtkWidget *
 task_icon_get_menu_item_add_to_launcher_list (TaskIcon * icon)
 {
   GtkWidget * item;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon),NULL);  
   TaskItem * launcher = task_icon_get_launcher (icon);
   if (!launcher || !task_icon_count_ephemeral_items (icon) )
   {
