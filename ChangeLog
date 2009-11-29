@@ -1,6 +1,11 @@
 2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* src/awn-panel.c:
+	Forgot to press save...  Remove two debugs.
+
+2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-panel.c:
 	Attempt to resolve remaining issues with struts and multiple 
 	monitors.
 

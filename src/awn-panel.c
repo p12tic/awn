@@ -3026,7 +3026,6 @@ awn_panel_set_strut (AwnPanel *panel)
                                          monitor_geom.width + monitor_geom.x +1,
                                          monitor_geom.y + monitor_geom.width / 2))
         {
-          g_debug ("R: forcing adjust to 0");
           adjust =0;
         }
         strut = strut +  adjust;
@@ -3044,7 +3043,6 @@ awn_panel_set_strut (AwnPanel *panel)
                                          monitor_geom.x + monitor_geom.height/2,
                                          monitor_geom.y + monitor_geom.height+1))
         {
-          g_debug ("B: forcing adjust to 0");
           adjust =0;
         }
         strut = strut +  adjust;
