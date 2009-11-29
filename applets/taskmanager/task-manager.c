@@ -442,13 +442,13 @@ task_manager_constructed (GObject *object)
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "attention_autohide_timer",
-                                       object, "attention_autohide_timer", FALSE,
+                                       object, "attention_autohide_timer", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "attention_required_reminder",
-                                       object, "attention_required_reminder", FALSE,
+                                       object, "attention_required_reminder", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 
@@ -539,7 +539,7 @@ task_manager_class_init (TaskManagerClass *klass)
                             "Number of seconds to inhibit autohide when a window requests attention",
                             0,
                             9999,
-                            10,
+                            4,
                             G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ATTENTION_AUTOHIDE_TIMER, pspec);
 
@@ -548,7 +548,7 @@ task_manager_class_init (TaskManagerClass *klass)
                             "Attention Required Reminder Timer",
                             -1,
                             9999,
-                            120,
+                            60,
                             G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ATTENTION_REQUIRED_REMINDER, pspec);
 
@@ -1757,9 +1757,11 @@ process_window_opened (WnckWindow    *window,
       match = taskicon;
     }
   }
+#define DEBUG 1
 #ifdef DEBUG
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
 #endif  
+#undef DEBUG
   /*
    if match is not 0
    and 
