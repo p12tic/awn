@@ -1,5 +1,11 @@
 2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* src/awn-panel.c:
+	Attempt to resolve remaining issues with struts and multiple 
+	monitors.
+
+2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Keep a couple properties from being set on startup.
 	Enable a bit of debug spam.

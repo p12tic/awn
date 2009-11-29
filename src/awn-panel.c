@@ -2974,10 +2974,21 @@ awn_panel_set_strut (AwnPanel *panel)
   gint strut, strut_start, strut_end;
   GdkWindow *win;
   GdkRectangle area;
+  GdkScreen * screen = gtk_widget_get_screen (GTK_WIDGET(panel));
   gint root_x, root_y;
-
+  gint screen_width, screen_height;
+  GtkAllocation panel_alloc;
+  gint monitor_number;
+  GdkRectangle monitor_geom;
+  gint adjust = 0;  /*adjustment used for monitors of different sizes*/
+  gboolean on_shared_edge = FALSE;
+  
+  monitor_number = gdk_screen_get_monitor_at_window (screen,GTK_WIDGET(panel)->window);
+  gdk_screen_get_monitor_geometry (screen,monitor_number,&monitor_geom);
+  gtk_widget_get_allocation (GTK_WIDGET(panel), &panel_alloc);
+  screen_width = gdk_screen_get_width (screen);
+  screen_height = gdk_screen_get_height (screen);
   gtk_window_get_position (GTK_WINDOW (panel), &root_x, &root_y);
-
   if (priv->expand)
   {
     area.x = root_x;
@@ -2995,29 +3006,69 @@ awn_panel_set_strut (AwnPanel *panel)
     area.height = manager_alloc.height;
   }
 
+  strut = priv->offset + priv->size + priv->extra_padding;
   switch (priv->position)
   {
     case GTK_POS_TOP:
+      on_shared_edge = (root_y != 0);
       strut_start = area.x;
       strut_end = area.x + area.width - 1;
       break;
     case GTK_POS_RIGHT:
+      /*possible monitors of different size
+       This could alsbe a situation of being on the smaller of multiple monitors*/
+      if (monitor_geom.x + monitor_geom.width < screen_width)
+      {
+        adjust = screen_width - (monitor_geom.width + monitor_geom.x) ;
+        /*might actually be on a shared edge in which case... reset adjust
+         See if a point to the right of this monitor is "on" this monitor*/
+        if ( monitor_number != gdk_screen_get_monitor_at_point(screen,
+                                         monitor_geom.width + monitor_geom.x +1,
+                                         monitor_geom.y + monitor_geom.width / 2))
+        {
+          g_debug ("R: forcing adjust to 0");
+          adjust =0;
+        }
+        strut = strut +  adjust;
+      }      
+      on_shared_edge = (root_x + panel_alloc.width + adjust < screen_width);      
+      /*different sized monitors... */
       strut_start = area.y;
       strut_end = area.y + area.height - 1;
       break;
     case GTK_POS_BOTTOM:
+      if (monitor_geom.height + monitor_geom.y < screen_height)
+      {
+        adjust = screen_height - (monitor_geom.height + monitor_geom.y);
+        if ( monitor_number != gdk_screen_get_monitor_at_point(screen,
+                                         monitor_geom.x + monitor_geom.height/2,
+                                         monitor_geom.y + monitor_geom.height+1))
+        {
+          g_debug ("B: forcing adjust to 0");
+          adjust =0;
+        }
+        strut = strut +  adjust;
+      }
+      on_shared_edge = (root_y + panel_alloc.height + adjust< screen_height);
+      /*different sized monitors... */
       strut_start = area.x;
       strut_end = area.x + area.width - 1;
       break;
     case GTK_POS_LEFT:
+      on_shared_edge = (root_x >0);
       strut_start = area.y;
       strut_end = area.y + area.height - 1;
       break;
     default:
       g_assert_not_reached ();
   }
-  strut = priv->offset + priv->size + priv->extra_padding;
 
+  if (on_shared_edge)
+  {
+    awn_panel_remove_strut (panel);
+    return;
+  }
+ 
   /* allow AwnBackground to change the strut */
   if (priv->bg != NULL)
     awn_background_get_strut_offsets (priv->bg, priv->position, &area,
