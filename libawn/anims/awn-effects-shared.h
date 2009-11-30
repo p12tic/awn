@@ -53,6 +53,9 @@ struct _AwnEffectsPrivate
   gint window_width, window_height;
   gint last_redraw_size;
 
+  DesktopAgnosticColor *active_rect_color;
+  DesktopAgnosticColor *dot_color;
+
   /* EFFECT VARIABLES */
   gboolean effect_lock;
   AwnEffect current_effect;

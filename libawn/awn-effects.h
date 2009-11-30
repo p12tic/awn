@@ -24,6 +24,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 #include "awn-defines.h"
 #include "awn-overlay.h"

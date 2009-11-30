@@ -297,7 +297,11 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
       }
       else
       {
-        if (style)
+        if (priv->active_rect_color)
+        {
+          awn_cairo_set_source_color (cr, priv->active_rect_color);
+        }
+        else if (style)
         {
           DesktopAgnosticColor *color;
           
@@ -307,7 +311,9 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
           g_object_unref (color);
         }
         else
+        {
           cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+        }
       }
       awn_cairo_rounded_rect (cr, x-PADDING, y-PADDING,
                               priv->icon_width+(2*PADDING),
@@ -427,18 +433,23 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
           const double DOT_RADIUS = 9.0;
           double r = 1.0, g = 1.0, b = 1.0;
 
-          if (fx->widget)
+          if (priv->dot_color)
+          {
+            desktop_agnostic_color_get_cairo_color (priv->dot_color,
+                                                    &r, &g, &b, NULL);
+          }
+          else if (fx->widget)
           {
             GdkColor c = gtk_widget_get_style (fx->widget)
                            ->light[GTK_STATE_SELECTED];
             r = c.red / 65535.0; g = c.green / 65535.0; b = c.blue / 65535.0;
-
-            if (priv->glow_amount > 0.0)
-            {
-              r = lighten_component (r * 255, priv->glow_amount, FALSE) / 255.0;
-              g = lighten_component (g * 255, priv->glow_amount, FALSE) / 255.0;
-              b = lighten_component (b * 255, priv->glow_amount, FALSE) / 255.0;
-            }
+          }
+          // lighten a bit if necessary
+          if (priv->glow_amount > 0.0)
+          {
+            r = lighten_component (r * 255, priv->glow_amount, FALSE) / 255.0;
+            g = lighten_component (g * 255, priv->glow_amount, FALSE) / 255.0;
+            b = lighten_component (b * 255, priv->glow_amount, FALSE) / 255.0;
           }
           paint_arrow_dot (cr, DOT_RADIUS, arrows_count, r, g ,b);
           break;

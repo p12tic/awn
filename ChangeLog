@@ -1,3 +1,15 @@
+2009-11-30  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon.c:
+	* src/awn-background.c:
+	* src/awn-defines.h:
+	Make glowing dot and active rectangle color configurable.
+
 2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
 
 	* src/awn-panel.c:
