@@ -266,9 +266,13 @@ public class PrefsApplet : AppletSimple
     {
       this.panel_client.set_bool ("panel", "monitor_force", false);
       // set monitor number if necessary
-      if (default_mon != monitor_num && n_monitors > 1)
+      if (n_monitors > 1)
       {
-        this.panel_client.set_int ("panel", "monitor_num", monitor_num);
+        int config_mon = this.panel_client.get_int ("panel", "monitor_num");
+        if (default_mon != monitor_num || monitor_num != config_mon)
+        {
+          this.panel_client.set_int ("panel", "monitor_num", monitor_num);
+        }
       }
       // finally set panel orientation
       this.panel_client.set_int ("panel", "orient", (int)pos);
