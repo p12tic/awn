@@ -1,5 +1,10 @@
 2009-11-29  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* configure.in:
+	Remove obsolete check for gtk.glade.
+
+2009-11-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/taskmanager/task-window.c:
 	Fix build for GTK+ 2.12.
 
