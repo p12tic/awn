@@ -2,12 +2,10 @@
  * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com>
  * Copyright (C) 2001 Havoc Pennington
  *
- * Parts of action menu derived from the wnck action menu code in 
- * the window-action-menu.c file in libwnck sources.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as 
- * published by the Free Software Foundation.
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,7 +13,8 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
  *
  * Authored by Rodney Cryderman <rcryderman@gmail.com>
  *
@@ -242,6 +241,30 @@ _maximize_window_cb (GtkMenuItem *menuitem, WnckWindow *win)
   else
     wnck_window_maximize (win);
 }
+
+static void
+_keep_above_cb (GtkMenuItem *menuitem, WnckWindow *win)
+{
+  if (WNCK_WINDOW_STATE_ABOVE & wnck_window_get_state (win))
+  {
+    wnck_window_unmake_above (win);
+  }
+  else
+  {
+    wnck_window_make_above (win);
+  }
+}
+
+/*
+static void
+_keep_below_cb (GtkMenuItem *menuitem, WnckWindow *win)
+{
+  if (WNCK_WINDOW_STATE_ABOVE & wnck_window_get_state (win))
+    wnck_window_make_above (win);
+  else
+    wnck_window_unmake_above (win);
+}
+*/
 /*static void
 _shade_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
 {
@@ -260,7 +283,6 @@ _pin_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
     wnck_window_pin (win);
 }
 
-#if 0
 static void
 _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
 {
@@ -281,8 +303,6 @@ _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
     g_message ("%s: error spawning '%s'",__func__,cmd_and_envs[0]);
   }
 }
-#endif
-
 
 #if 0
 #define menu_item_type tokens[0]
@@ -620,6 +640,34 @@ task_icon_get_menu_item_maximize (TaskIcon * icon,WnckWindow *win)
 }
 
 static GtkWidget *
+task_icon_get_menu_keep_above (TaskIcon * icon,WnckWindow *win)
+{
+  GtkWidget * menuitem = NULL;
+
+  if (WNCK_WINDOW_STATE_BELOW & wnck_window_get_state (win) )
+  {
+    return NULL;
+  }
+  if (! wnck_window_is_minimized(win))
+  {
+    menuitem = gtk_check_menu_item_new_with_label (_("Keep Above"));    
+    gtk_widget_show (menuitem);
+    if (WNCK_WINDOW_STATE_ABOVE & wnck_window_get_state (win) )
+    {
+      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(menuitem),TRUE);
+    }
+    else
+    {
+      gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(menuitem),FALSE);
+    }
+    g_signal_connect (menuitem,"activate",
+                G_CALLBACK(_keep_above_cb),
+                win);
+  } 
+  return menuitem;
+}
+
+static GtkWidget *
 task_icon_get_menu_item_minimize (TaskIcon * icon,WnckWindow *win)
 {
   GtkWidget * menuitem = NULL;
@@ -849,7 +897,12 @@ task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
   {
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);  
   }
+  if ( ( menuitem = task_icon_get_menu_keep_above (icon,win)))
+  {
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);  
+  }
 
+  
   task_icon_inline_menu_move_to_workspace (icon,menu,win);
   
   menuitem = gtk_separator_menu_item_new ();
@@ -904,6 +957,7 @@ typedef enum{
       INTERNAL_SUBMENU,
       INTERNAL_INLINE_ACTION_MENU_ACTIVE,
       INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,
+      EXTERNAL_COMMAND,
       UNKNOWN
 }MenuType;
 
@@ -968,8 +1022,14 @@ menu_parse_start_element (GMarkupParseContext *context,
   MenuType item_type = UNKNOWN;
   const gchar * type_value = NULL;
   const gchar * display_value = NULL;
+  const gchar * cmd_value = NULL;
+  const gchar * icon_value = NULL;
+  const gchar * args_value = NULL;
+  const gchar * text_value = NULL;
   GtkWidget *submenu = NULL;
   AwnApplet * applet = NULL;
+  gint height;
+  gint width;
   
   g_return_if_fail (GTK_IS_MENU(menu));
   icon =  g_object_get_qdata (G_OBJECT(menu), g_quark_from_static_string("ICON"));  
@@ -978,6 +1038,7 @@ menu_parse_start_element (GMarkupParseContext *context,
                 "applet",&applet,
                 NULL);
   priv = icon->priv;
+  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
   if (g_strcmp0 (element_name,"menuitem")==0)
   {
     for (;*name_iter && *value_iter;name_iter++,value_iter++)
@@ -987,7 +1048,11 @@ menu_parse_start_element (GMarkupParseContext *context,
   //    g_debug ("%s: %s -> %s ",__func__,*name_iter,*value_iter);
       if (g_strcmp0 (name,"type")==0)
       {
-        if (g_strcmp0 (value,"Internal-About")==0)
+        if (g_strcmp0 (value,"External-Command")==0)
+        {
+          item_type = EXTERNAL_COMMAND;
+        }
+        else if (g_strcmp0 (value,"Internal-About")==0)
         {
           item_type = INTERNAL_ABOUT;
         }
@@ -1035,6 +1100,22 @@ menu_parse_start_element (GMarkupParseContext *context,
           item_type = UNKNOWN;
         }
       }
+      else if (g_strcmp0 (name,"args")==0)
+      {
+        args_value = value;
+      }
+      else if (g_strcmp0 (name,"icon")==0)
+      {
+        icon_value = value;
+      }
+      else if (g_strcmp0 (name,"cmd")==0)
+      {
+        cmd_value = value;
+      }
+      else if (g_strcmp0 (name,"text")==0)
+      {
+        text_value = value;
+      }
     }
   }
   else if (g_strcmp0 (element_name,"submenu")==0)
@@ -1054,6 +1135,45 @@ menu_parse_start_element (GMarkupParseContext *context,
   menuitem = NULL;
   switch (item_type)
   {
+    case EXTERNAL_COMMAND:
+      {
+        const TaskItem * mainitem = task_icon_get_main_item (icon);
+        TaskItem * launcher = task_icon_get_launcher (icon);
+        if (!TASK_IS_WINDOW (mainitem))
+        {
+          break;
+        }     
+        GtkWidget * image;
+        gchar ** cmd_and_envs = g_malloc ( sizeof(gchar *) * 6);
+        gchar * cmd_copy = g_strdup (cmd_value);
+        menuitem = gtk_image_menu_item_new_with_label (text_value);
+        image = gtk_image_new_from_icon_name (icon_value,height);
+        if (image)
+        {
+          gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(menuitem),image);
+        }
+        gtk_widget_show (menuitem);
+        g_signal_connect (menuitem,"activate",
+                      G_CALLBACK(_spawn_menu_cmd_cb),
+                      cmd_and_envs);
+        cmd_and_envs[0] = cmd_copy;
+        cmd_and_envs[1] = g_strdup_printf("%u",task_window_get_pid (TASK_WINDOW(mainitem)));
+        cmd_and_envs[2] = g_strdup_printf("%lx",task_window_get_xid (TASK_WINDOW(mainitem)));
+        if (launcher)
+        {
+          cmd_and_envs[3] = g_strdup(task_launcher_get_exec(launcher));
+          cmd_and_envs[4] = g_strdup(task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)));
+        }
+        else
+        {
+          cmd_and_envs[3] = g_strdup("");
+          cmd_and_envs[4] = g_strdup("");
+        }
+        cmd_and_envs[5] = NULL;
+        g_object_weak_ref (G_OBJECT(menuitem),(GWeakNotify)g_strfreev,cmd_and_envs);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+      }
+      break;
     case INTERNAL_ABOUT:
       menuitem = awn_applet_create_about_item (applet,
          "Copyright 2008,2009 Neil Jagdish Patel <njpatel@gmail.com>\n"

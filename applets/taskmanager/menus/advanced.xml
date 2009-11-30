@@ -6,7 +6,7 @@
     <menuitem type="Internal-Closeall"></menuitem>
   </menu>
   <menu display="Advanced">
-    <menuitem type="External-Command" cmd="xkill" args="" icon="xkill">XKill</menuitem>
+    <menuitem type="External-Command" cmd="xkill" args="" icon="xkill" text="xkill"></menuitem>
     <menuitem type="External-Desktop" desktop="xkill.desktop" args=""></menuitem>
   </menu>
   <menuitem type="Internal-Add-To-Launcher-List"></menuitem>  
