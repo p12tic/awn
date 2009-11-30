@@ -58,6 +58,8 @@ static void menu_parse_start_element (GMarkupParseContext *context,
                                       gpointer            user_data,
                                       GError             **error);
 
+static GtkWidget *task_icon_get_submenu_action_menu (TaskIcon * icon, WnckWindow * win);
+
 static char *
 get_workspace_name_with_accel (WnckWindow *window, int idx)
 {
@@ -598,6 +600,47 @@ task_icon_get_menu_item_close_active (TaskIcon * icon)
 }
 
 static GtkWidget *
+task_icon_get_menu_item_maximize (TaskIcon * icon,WnckWindow *win)
+{
+  GtkWidget * menuitem = NULL;
+  if (! wnck_window_is_maximized(win))
+  {
+    menuitem = gtk_menu_item_new_with_label (_("Maximize"));
+  }
+  else if (! wnck_window_is_minimized(win))
+  {
+    menuitem = gtk_menu_item_new_with_label (_("UnMaximize"));
+  }
+  gtk_widget_show (menuitem);
+  g_signal_connect (menuitem,"activate",
+                G_CALLBACK(_maximize_window_cb),
+                win);
+    
+  return menuitem;
+}
+
+static GtkWidget *
+task_icon_get_menu_item_minimize (TaskIcon * icon,WnckWindow *win)
+{
+  GtkWidget * menuitem = NULL;
+  if (! wnck_window_is_minimized(win))
+  {
+    menuitem = gtk_menu_item_new_with_label (_("Minimize"));
+  }
+  else
+  {
+    menuitem = gtk_menu_item_new_with_label (_("UnMinimize"));
+  }
+
+  gtk_widget_show (menuitem);
+  g_signal_connect (menuitem,"activate",
+                G_CALLBACK(_minimize_window_cb),
+                win);
+  
+  return menuitem;
+}
+
+static GtkWidget *
 task_icon_get_menu_item_launch (TaskIcon * icon)
 {
   GtkWidget * item;
@@ -631,6 +674,25 @@ task_icon_get_menu_item_launch (TaskIcon * icon)
   return item;
 }
 
+static GtkWidget *
+task_icon_get_menu_item_pinned (TaskIcon * icon,WnckWindow * win)
+{
+  GtkWidget * menuitem = NULL;
+  if (! wnck_window_is_pinned(win))
+  {  
+      menuitem = gtk_menu_item_new_with_label (_("Always on Visible Workspace"));
+  }
+  if (wnck_window_is_pinned(win))
+  {  
+      menuitem = gtk_menu_item_new_with_label (_("Only on This Workspace"));
+  }
+  gtk_widget_show (menuitem);
+  g_signal_connect (menuitem,"activate",
+                G_CALLBACK(_pin_window_cb),
+                win);
+  return menuitem;
+}
+
 static void
 task_icon_get_menu_item_submenu_action_menu_inactives (TaskIcon * icon,GtkMenu * menu)
 {
@@ -642,7 +704,6 @@ task_icon_get_menu_item_submenu_action_menu_inactives (TaskIcon * icon,GtkMenu *
   
   for (iter = items; iter; iter=iter->next)
   {
-    GtkWidget   *sub_menu;
     if ( TASK_IS_LAUNCHER (iter->data) )
     {
       continue;
@@ -653,12 +714,8 @@ task_icon_get_menu_item_submenu_action_menu_inactives (TaskIcon * icon,GtkMenu *
     }
     if ( iter->data == main_item)
       continue;
-    menuitem = gtk_menu_item_new_with_label (task_window_get_name (TASK_WINDOW(iter->data)));
-    sub_menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(iter->data)));          
-    gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuitem),sub_menu);
+    menuitem = task_icon_get_submenu_action_menu (icon, task_window_get_window(iter->data));
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-    gtk_widget_show (menuitem);
-    gtk_widget_show (sub_menu);
   }
 }
 
@@ -671,7 +728,6 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
   gint present_workspace;
   gint i;
   GtkWidget *submenu;
-  GtkWidget *separator;
   GtkWidget * menuitem =NULL;
   WnckWorkspaceLayout layout;
 
@@ -694,10 +750,6 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
                                      num_workspaces,
                                      present_workspace,
                                      &layout);
-
-  separator = gtk_separator_menu_item_new ();
-  gtk_widget_show (separator);          
-  gtk_menu_shell_append (GTK_MENU_SHELL (menu),separator);
   
   if (!wnck_window_is_pinned (win))
     {
@@ -778,23 +830,14 @@ task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
 {
 
   GtkWidget * menuitem;
-  
-  if (! wnck_window_is_maximized(win))
+
+  if ((menuitem = task_icon_get_menu_item_maximize (icon,win)))
   {
-    menuitem = gtk_menu_item_new_with_label (_("Maximize"));
-    gtk_widget_show (menuitem);
-    g_signal_connect (menuitem,"activate",
-                  G_CALLBACK(_maximize_window_cb),
-                  win);
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
   }
-  if (! wnck_window_is_minimized(win))
-  {  
-    menuitem = gtk_menu_item_new_with_label (_("Minimize"));
-    gtk_widget_show (menuitem);
-    g_signal_connect (menuitem,"activate",
-                  G_CALLBACK(_minimize_window_cb),
-                  win);
+
+  if ((menuitem = task_icon_get_menu_item_minimize (icon,win)))
+  {
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
   }
 
@@ -802,23 +845,9 @@ task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
   gtk_widget_show (menuitem);
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
-  if (! wnck_window_is_pinned(win))
-  {  
-      menuitem = gtk_menu_item_new_with_label (_("Always on Visible Workspace"));
-      gtk_widget_show (menuitem);
-      g_signal_connect (menuitem,"activate",
-                    G_CALLBACK(_pin_window_cb),
-                    win);
-      gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-  }
-  if (wnck_window_is_pinned(win))
-  {  
-      menuitem = gtk_menu_item_new_with_label (_("Only on This Workspace"));
-      gtk_widget_show (menuitem);
-      g_signal_connect (menuitem,"activate",
-                    G_CALLBACK(_pin_window_cb),
-                    win);
-      gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+  if ( ( menuitem = task_icon_get_menu_item_pinned (icon,win)))
+  {
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);  
   }
 
   task_icon_inline_menu_move_to_workspace (icon,menu,win);
@@ -830,6 +859,21 @@ task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
   menuitem = task_icon_get_menu_item_close_active (icon);
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
+}
+
+static GtkWidget *
+task_icon_get_submenu_action_menu (TaskIcon * icon, WnckWindow * win)
+{
+  GtkWidget * submenu;
+  GtkWidget * menuitem;
+
+  menuitem = gtk_menu_item_new_with_label ( wnck_window_get_name(win));
+  submenu = gtk_menu_new ();
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuitem),submenu);
+
+  task_icon_inline_action_menu (icon, GTK_MENU(submenu),win);
+  gtk_widget_show_all (menuitem);
+  return menuitem;
 }
 
 static void
