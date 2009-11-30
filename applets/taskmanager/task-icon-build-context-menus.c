@@ -1180,7 +1180,7 @@ menu_parse_start_element (GMarkupParseContext *context,
          "          2009 Hannes Verschore <hv1989@gmail.com>\n"
          "          2009 Rodney Cryderman <rcryderman@gmail.com>",
          AWN_APPLET_LICENSE_GPLV2,
-         NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+         VERSION,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
       break;
     case INTERNAL_ADD_TO_LAUNCHER_LIST:
       menuitem = task_icon_get_menu_item_add_to_launcher_list (icon);
