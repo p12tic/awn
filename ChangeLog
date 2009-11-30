@@ -1,5 +1,10 @@
 2009-11-29  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* README:
+	Note that GNU Make is required.
+
+2009-11-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* configure.in:
 	Remove obsolete check for gtk.glade.
 
