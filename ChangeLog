@@ -1,3 +1,28 @@
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/applet.c:
+  	* applets/taskmanager/task-drag-indicator.c:
+  	* applets/taskmanager/task-drag-indicator.h:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-item.h:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-launcher.h:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-manager.h:
+  	* applets/taskmanager/task-settings.c:
+  	* applets/taskmanager/task-settings.h:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Changed Taskmanager source from GPLv3 to 
+	GPLv2 with the agreement of:
+	Hannes Verschore <hv1989@gmail.com>,
+	Rodney Cryderman  <rcryderman@gmail.com>,
+	Michal Hruby  <michal.mhr@gmail.com>,
+	Neil Jagdish Patel <njpatel@gmail.com>
+
 2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
