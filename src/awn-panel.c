@@ -2965,6 +2965,29 @@ on_manager_size_alloc (GtkWidget *manager, GtkAllocation *alloc,
   awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
 }
 
+static gboolean
+check_monitor_intersects_area (GdkScreen * screen, gint x,gint y,gint width,gint height)
+{
+  gint num_monitors =  gdk_screen_get_n_monitors (screen);
+  int i;
+  GdkRectangle intersection;
+  GdkRectangle search_area;
+  search_area.x = x;
+  search_area.y = y;
+  search_area.width = width;
+  search_area.height = height;
+  
+  for (i = 0; i<num_monitors; i++)
+  {
+    GdkRectangle monitor_geom;
+    gdk_screen_get_monitor_geometry (screen,i,&monitor_geom);
+    if ( gdk_rectangle_intersect (&search_area,&monitor_geom,&intersection) )
+    {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
 
 static void
 awn_panel_set_strut (AwnPanel *panel)
@@ -3010,7 +3033,27 @@ awn_panel_set_strut (AwnPanel *panel)
   switch (priv->position)
   {
     case GTK_POS_TOP:
-      on_shared_edge = (root_y != 0);
+      if (root_y > 0)
+      {
+        if (check_monitor_intersects_area (screen,
+                                           monitor_geom.x,
+                                           0,
+                                           monitor_geom.width,
+                                           monitor_geom.y-1))
+        {
+          on_shared_edge = TRUE;
+        }
+        else
+        {
+          on_shared_edge = FALSE;
+          adjust = root_y;
+        }
+        strut = strut +  adjust;
+      }
+      else
+      {
+        on_shared_edge = FALSE;
+      }
       strut_start = area.x;
       strut_end = area.x + area.width - 1;
       break;
@@ -3019,14 +3062,19 @@ awn_panel_set_strut (AwnPanel *panel)
        This could alsbe a situation of being on the smaller of multiple monitors*/
       if (monitor_geom.x + monitor_geom.width < screen_width)
       {
-        adjust = screen_width - (monitor_geom.width + monitor_geom.x) ;
         /*might actually be on a shared edge in which case... reset adjust
-         See if a point to the right of this monitor is "on" this monitor*/
-        if ( monitor_number != gdk_screen_get_monitor_at_point(screen,
-                                         monitor_geom.width + monitor_geom.x +1,
-                                         monitor_geom.y + monitor_geom.width / 2))
+         see if there is any monitor existing anywhere to the right*/
+        if (check_monitor_intersects_area (screen,
+                                           monitor_geom.width + monitor_geom.x +1,
+                                           monitor_geom.y,
+                                           screen_width - (monitor_geom.width + monitor_geom.x),
+                                           monitor_geom.height))
         {
           adjust =0;
+        }
+        else
+        {
+          adjust = screen_width - (monitor_geom.width + monitor_geom.x);
         }
         strut = strut +  adjust;
       }      
@@ -3038,12 +3086,17 @@ awn_panel_set_strut (AwnPanel *panel)
     case GTK_POS_BOTTOM:
       if (monitor_geom.height + monitor_geom.y < screen_height)
       {
-        adjust = screen_height - (monitor_geom.height + monitor_geom.y);
-        if ( monitor_number != gdk_screen_get_monitor_at_point(screen,
-                                         monitor_geom.x + monitor_geom.width/2,
-                                         monitor_geom.y + monitor_geom.height+1))
+        if (check_monitor_intersects_area (screen,
+                                           monitor_geom.x,
+                                           monitor_geom.y+monitor_geom.height+1,
+                                           monitor_geom.width,
+                                           screen_height - ( monitor_geom.height + monitor_geom.y)))
         {
           adjust =0;
+        }
+        else
+        {
+          adjust = screen_height - (monitor_geom.height + monitor_geom.y);
         }
         strut = strut +  adjust;
       }
@@ -3053,6 +3106,28 @@ awn_panel_set_strut (AwnPanel *panel)
       strut_end = area.x + area.width - 1;
       break;
     case GTK_POS_LEFT:
+      if (root_x > 0)
+      {
+        if (check_monitor_intersects_area (screen,
+                                           monitor_geom.x,
+                                           0,
+                                           monitor_geom.width,
+                                           monitor_geom.y-1))
+
+        {
+          on_shared_edge = TRUE;
+        }
+        else
+        {
+          on_shared_edge = FALSE;
+          adjust = root_x;
+        }
+        strut = strut +  adjust;
+      }
+      else
+      {
+        on_shared_edge = FALSE;
+      }
       on_shared_edge = (root_x >0);
       strut_start = area.y;
       strut_end = area.y + area.height - 1;

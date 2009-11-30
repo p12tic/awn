@@ -1,3 +1,9 @@
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-panel.c:
+	X is insanely configurable...  This, I hope, fixes the strut
+	issues in all multiple monitor cases.
+
 2009-11-30  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/Makefile.am:
