@@ -45,6 +45,7 @@
 #include "task-launcher.h"
 #include "task-settings.h"
 #include "task-manager.h"
+#include "config.h"
 
 //#define DEBUG 1
 
@@ -2895,7 +2896,7 @@ task_icon_button_press_event (GtkWidget      *widget,
            "          2009 Hannes Verschore <hv1989@gmail.com>\n"
            "          2009 Rodney Cryderman <rcryderman@gmail.com>",
            AWN_APPLET_LICENSE_GPLV2,
-           NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+           VERSION,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
     gtk_menu_shell_append(GTK_MENU_SHELL(priv->menu), item);
 
 #if GTK_CHECK_VERSION (2,16,0)	
