@@ -141,12 +141,19 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
   if (launcher)
   {
     TaskManager * applet;
+    gboolean grouping;
     g_object_get (icon,
                   "applet",&applet,
                   NULL);
-    task_manager_remove_task_icon (TASK_MANAGER(applet), GTK_WIDGET(icon));               
+    g_object_get (applet,
+                  "grouping",&grouping,
+                  NULL);
+
     task_manager_append_launcher (TASK_MANAGER(applet),
                                   task_launcher_get_desktop_path(launcher));
+    g_object_set (applet,
+                  "grouping",grouping,
+                  NULL);
   }
 }
 

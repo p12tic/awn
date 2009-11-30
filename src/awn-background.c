@@ -727,6 +727,7 @@ static void
 set_cfg_from_theme (GdkColor                    *color,
                     gushort                      alpha,
                     DesktopAgnosticConfigClient *client,
+                    const gchar                 *group,
                     const gchar                 *key)
 {
   DesktopAgnosticColor *da_color;
@@ -736,7 +737,7 @@ set_cfg_from_theme (GdkColor                    *color,
   g_value_init (&val, DESKTOP_AGNOSTIC_TYPE_COLOR);
   g_value_set_object (&val, da_color);
   desktop_agnostic_config_client_set_value (client,
-                                            AWN_GROUP_THEME, key,
+                                            group, key,
                                             &val, NULL);
   g_value_unset (&val);
   g_object_unref (da_color);
@@ -758,27 +759,33 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 
   /* main colours */
   set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 224,
-                      client, AWN_THEME_GSTEP1);
+                      client, AWN_GROUP_THEME, AWN_THEME_GSTEP1);
   set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 200,
-                      client, AWN_THEME_GSTEP2);
+                      client, AWN_GROUP_THEME, AWN_THEME_GSTEP2);
 
   set_cfg_from_theme (&style->bg[GTK_STATE_ACTIVE], 180,
-                      client, AWN_THEME_GHISTEP1);
+                      client, AWN_GROUP_THEME, AWN_THEME_GHISTEP1);
   set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 32,
-                      client, AWN_THEME_GHISTEP2);
+                      client, AWN_GROUP_THEME, AWN_THEME_GHISTEP2);
 
   set_cfg_from_theme (&style->dark[GTK_STATE_ACTIVE], 200,
-                      client, AWN_THEME_BORDER);
+                      client, AWN_GROUP_THEME, AWN_THEME_BORDER);
   set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 100,
-                      client, AWN_THEME_HILIGHT);
+                      client, AWN_GROUP_THEME, AWN_THEME_HILIGHT);
 
   set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 164,
-                      client, AWN_THEME_SEP_COLOR);
+                      client, AWN_GROUP_THEME, AWN_THEME_SEP_COLOR);
 
   set_cfg_from_theme (&style->fg[GTK_STATE_NORMAL], 255,
-                      client, AWN_THEME_TEXT_COLOR);
+                      client, AWN_GROUP_THEME, AWN_THEME_TEXT_COLOR);
   set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 255,
-                      client, AWN_THEME_OUTLINE_COLOR);
+                      client, AWN_GROUP_THEME, AWN_THEME_OUTLINE_COLOR);
+
+  /* now colors from standard (non-panel) theme */
+  style = gtk_widget_get_style (widget);
+
+  set_cfg_from_theme (&style->light[GTK_STATE_SELECTED], 255,
+                      client, AWN_GROUP_EFFECTS, AWN_EFFECTS_DOT_COLOR);
 
   /* Don't draw patterns */
   desktop_agnostic_config_client_set_bool (client,
@@ -807,9 +814,9 @@ load_dlg_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 
   /* Set colors for AwnDialog */
   set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 255,
-                      client, AWN_THEME_DLG_BG);
+                      client, AWN_GROUP_THEME, AWN_THEME_DLG_BG);
   set_cfg_from_theme (&style->bg[GTK_STATE_PRELIGHT], 255,
-                      client, AWN_THEME_DLG_TITLE_BG);
+                      client, AWN_GROUP_THEME, AWN_THEME_DLG_TITLE_BG);
 }
 
 static void

@@ -18,6 +18,7 @@ The following packages are required to build Awn from source. Note that in most
 distributions, you need both the library and development/header packages
 installed in order for the build process to work correctly.
 
+* GNU Make
 * libdesktop-agnostic [1]_
 * libwnck 2.22 or later
 * libX11

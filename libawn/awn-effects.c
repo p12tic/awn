@@ -95,6 +95,8 @@ enum {
   PROP_PROGRESS,
   PROP_BORDER_CLIP,
   PROP_SPOTLIGHT_ICON,
+  PROP_ACTIVE_RECT_COLOR,
+  PROP_DOT_COLOR,
   PROP_ARROW_ICON,
   PROP_ARROWS_COUNT,
   PROP_CUSTOM_ACTIVE_ICON
@@ -267,7 +269,7 @@ awn_effects_get_property (GObject      *object,
                           GValue *value,
                           GParamSpec   *pspec)
 {
-  AwnEffects *fx = AWN_EFFECTS(object);
+  AwnEffects *fx = AWN_EFFECTS (object);
 
   switch (prop_id) {
     case PROP_WIDGET:
@@ -327,6 +329,12 @@ awn_effects_get_property (GObject      *object,
     case PROP_CUSTOM_ACTIVE_ICON:
       g_value_set_string(value, g_quark_to_string(fx->custom_active_icon));
       break;
+    case PROP_ACTIVE_RECT_COLOR:
+      g_value_set_object (value, fx->priv->active_rect_color);
+      break;
+    case PROP_DOT_COLOR:
+      g_value_set_object (value, fx->priv->dot_color);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -339,7 +347,8 @@ awn_effects_set_property (GObject      *object,
                           const GValue *value,
                           GParamSpec   *pspec)
 {
-  AwnEffects *fx = AWN_EFFECTS(object);
+  AwnEffects *fx = AWN_EFFECTS (object);
+  AwnEffectsPrivate *priv = AWN_EFFECTS_GET_PRIVATE (object);
 
   switch (prop_id) {
     case PROP_WIDGET:
@@ -409,6 +418,22 @@ awn_effects_set_property (GObject      *object,
     case PROP_CUSTOM_ACTIVE_ICON:
       fx->custom_active_icon = 
         awn_effects_set_custom_icon (fx, g_value_get_string (value));
+      break;
+    case PROP_ACTIVE_RECT_COLOR:
+      if (priv->active_rect_color)
+      {
+        g_object_unref (priv->active_rect_color);
+        priv->active_rect_color = NULL;
+      }
+      priv->active_rect_color = g_value_dup_object (value);
+      break;
+    case PROP_DOT_COLOR:
+      if (priv->dot_color)
+      {
+        g_object_unref (priv->dot_color);
+        priv->dot_color = NULL;
+      }
+      priv->dot_color = g_value_dup_object (value);
       break;
 
     default:
@@ -799,6 +824,23 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property(
+    obj_class, PROP_ACTIVE_RECT_COLOR,
+    g_param_spec_object ("active-rect-color",
+                         "Active Rectangle Color",
+                         "Color used for painting active rectangle",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property(
+    obj_class, PROP_DOT_COLOR,
+    g_param_spec_object ("dot-color",
+                         "Glowing Dot Color",
+                         "Color used for painting glowing dot",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
   /**
    * AwnEffects:depressed:
    *

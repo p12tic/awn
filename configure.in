@@ -80,7 +80,6 @@ AC_ARG_ENABLE(pymod_checks,
               enable_pymod_checks=yes)
               
 if test x${enable_pymod_checks} = xyes; then
-  AM_CHECK_PYMOD(gtk.glade,,,AC_MSG_ERROR([pygtk's gtk.glade module is needed for awn-manager's user interface]))
   AM_CHECK_PYMOD(xdg,,,AC_MSG_ERROR([The xdg python module is required (pyxdg or python-xdg)]))
 fi
 

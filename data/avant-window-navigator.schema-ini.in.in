@@ -12,10 +12,22 @@ default =
 _description=Path to the png containing the active icon background.
 per_instance = false
 
+[effects/active_rect_color]
+type = color
+default = #90877966
+_description=Color of the active rectangle.
+per_instance = false
+
 [effects/arrow_icon]
 type = string
 default = __awn_internal_arrow1
 _description=Path to the png containing the arrow icon.
+per_instance = false
+
+[effects/dot_color]
+type = color
+default = #71BDF6FF
+_description=Color of the glowing dot.
 per_instance = false
 
 [effects/icon_alpha]

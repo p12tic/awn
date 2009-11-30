@@ -266,9 +266,13 @@ public class PrefsApplet : AppletSimple
     {
       this.panel_client.set_bool ("panel", "monitor_force", false);
       // set monitor number if necessary
-      if (default_mon != monitor_num && n_monitors > 1)
+      if (n_monitors > 1)
       {
-        this.panel_client.set_int ("panel", "monitor_num", monitor_num);
+        int config_mon = this.panel_client.get_int ("panel", "monitor_num");
+        if (default_mon != monitor_num || monitor_num != config_mon)
+        {
+          this.panel_client.set_int ("panel", "monitor_num", monitor_num);
+        }
       }
       // finally set panel orientation
       this.panel_client.set_int ("panel", "orient", (int)pos);
@@ -284,7 +288,6 @@ public class PrefsApplet : AppletSimple
   on_drag_begin (DragContext context)
   {
     this.in_drag = true;
-    this.set_behavior (AppletFlags.DOCKLET_HANDLES_POSITION_CHANGE);
 
     this.set_tooltip_text (_ ("Drag to change panel orientation"));
     unowned Awn.Tooltip tooltip = this.get_icon ().get_tooltip ();
@@ -323,8 +326,6 @@ public class PrefsApplet : AppletSimple
     tooltip.toggle_on_click = true;
 
     this.in_drag = false;
-    this.set_behavior (AppletFlags.DOCKLET_HANDLES_POSITION_CHANGE |
-                       AppletFlags.DOCKLET_CLOSE_ON_MOUSE_OUT);
   }
 
   private bool
@@ -413,8 +414,7 @@ public class PrefsApplet : AppletSimple
     this.docklet_icons = new List<unowned Gtk.Widget> ();
     this.docklet = new Applet ("quick-prefs", "docklet", this.panel_id);
     this.docklet.quit_on_delete = false;
-    this.set_behavior (AppletFlags.DOCKLET_HANDLES_POSITION_CHANGE |
-                       AppletFlags.DOCKLET_CLOSE_ON_MOUSE_OUT);
+    this.set_behavior (AppletFlags.DOCKLET_HANDLES_POSITION_CHANGE);
 
     this.docklet.destroy.connect ((w) =>
     {
@@ -466,6 +466,7 @@ public class PrefsApplet : AppletSimple
     icon.set_from_pixbuf (icon_loader.get_icon_at_size (icon_size,
                                                         "main-icon"));
     icon.set_tooltip_text (_ ("Drag to change panel orientation"));
+    icon.clicked.connect ((w) => { this.docklet.destroy (); });
     icon.drag_begin.connect (this.on_drag_begin);
     icon.drag_end.connect (this.on_drag_end);
     icon.drag_failed.connect (this.on_drag_failed);
@@ -514,7 +515,11 @@ public class PrefsApplet : AppletSimple
     icon.set_data ("icon-name", (void*) "prefs");
     icon.set_from_pixbuf (icon_loader.get_icon_at_size (icon_size, "prefs"));
     icon.set_tooltip_text (_ ("Dock Preferences"));
-    icon.clicked.connect ((w) => { this.run_preferences (false); });
+    icon.clicked.connect ((w) =>
+    {
+      this.run_preferences (false);
+      this.docklet.destroy ();
+    });
     this.docklet_icons.append (icon);
     box.add (icon);
 
@@ -522,7 +527,11 @@ public class PrefsApplet : AppletSimple
     icon.set_data ("icon-name", (void*) "about");
     icon.set_from_pixbuf (icon_loader.get_icon_at_size (icon_size, "about"));
     icon.set_tooltip_text (_ ("About Awn"));
-    icon.clicked.connect ((w) => { this.run_preferences (true); });
+    icon.clicked.connect ((w) =>
+    {
+      this.run_preferences (true);
+      this.docklet.destroy ();
+    });
     this.docklet_icons.append (icon);
     box.add (icon);
 

@@ -348,6 +348,14 @@ awn_icon_constructed (GObject *object)
                                        fx, "reflection-offset", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "active_rect_color",
+                                       fx, "active-rect-color", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "dot_color",
+                                       fx, "dot-color", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
   desktop_agnostic_config_client_bind (client, "effects", "show_shadows",
                                        fx, "make-shadow", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
