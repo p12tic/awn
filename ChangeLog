@@ -1,3 +1,8 @@
+2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+        Regroup under the new icon when "Add to Launcher List".
+
 2009-11-29  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* README:
@@ -12,6 +17,11 @@
 
 	* applets/taskmanager/task-window.c:
 	Fix build for GTK+ 2.12.
+
+2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Regroup under the new icon when "Add to Launcher List".
 
 2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
 

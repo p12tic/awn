@@ -2705,10 +2705,14 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
   if (launcher)
   {
     TaskManager * applet = TASK_MANAGER(priv->applet);
-    task_manager_remove_task_icon (TASK_MANAGER(applet), GTK_WIDGET(icon));               
+    gboolean grouping;
+    g_object_get (applet,
+                  "grouping",&grouping,
+                  NULL);
     task_manager_append_launcher (TASK_MANAGER(applet),
                                   task_launcher_get_desktop_path(launcher));
-  }
+    grouping_changed_cb (applet,grouping,icon);
+  }                  
 }
 /**
  * Whenever there is a press event on the TaskIcon it will do the proper actions.
