@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2009-10-30 05:12+0000\n"
-"Last-Translator: Fakhrul Rijal <frijal@gmail.com>\n"
+"PO-Revision-Date: 2009-11-29 16:41+0000\n"
+"Last-Translator: Hertatijanto Hartono <dvertx@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-11-07 04:42+0000\n"
+"X-Launchpad-Export-Date: 2009-11-30 04:39+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -138,7 +138,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Kelola preferensi, peluncur, aplet, dan tema Awn"
 
 #: ../awn-settings/awnClass.py:264
 msgid "Error, a sources.list already exist"
@@ -157,7 +157,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
 #: ../awn-settings/awnSettings.py.in:144
 msgid "None"
-msgstr ""
+msgstr "Kosong"
 
 #: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
 msgid "Simple"
@@ -165,19 +165,19 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:825 ../awn-settings/awnClass.py:886
 msgid "Classic"
-msgstr ""
+msgstr "Klasik"
 
 #: ../awn-settings/awnClass.py:826 ../awn-settings/awnClass.py:887
 msgid "Fade"
-msgstr ""
+msgstr "Pudar"
 
 #: ../awn-settings/awnClass.py:827 ../awn-settings/awnClass.py:888
 msgid "Spotlight"
-msgstr ""
+msgstr "Lampu sorot"
 
 #: ../awn-settings/awnClass.py:828 ../awn-settings/awnClass.py:889
 msgid "Zoom"
-msgstr ""
+msgstr "Zum"
 
 #: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
 msgid "Squish"
@@ -185,19 +185,19 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
 msgid "3D Turn"
-msgstr ""
+msgstr "Putar 3D"
 
 #: ../awn-settings/awnClass.py:831 ../awn-settings/awnClass.py:892
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Efek putar lampu sorot 3D"
 
 #: ../awn-settings/awnClass.py:832 ../awn-settings/awnClass.py:893
 msgid "Glow"
-msgstr ""
+msgstr "Berpendar"
 
 #: ../awn-settings/awnClass.py:894 ../awn-settings/awnSettings.py.in:152
 msgid "Custom"
-msgstr ""
+msgstr "Penyesuaian"
 
 #: ../awn-settings/awnClass.py:974
 #, python-format
@@ -205,16 +205,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Pembuatan otomatis gagal. Silakan buat direktori secara manual:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:984
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Konfirmasikan pembuatan direktori"
 
 #: ../awn-settings/awnClass.py:985
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Belum ada direktori autostart untuk akun pengguna anda.\n"
+"Apakah ingin dibuatkan secara otomatis?"
 
 #: ../awn-settings/awnClass.py:1040
 #, python-format
@@ -228,16 +232,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1069
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN sudah dimuat ulang dengan sukses"
 
 #: ../awn-settings/awnClass.py:1075
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1093
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Pengatur jendela untuk GNOME yang benar-benar dapat dikostumisasi"
 
 #: ../awn-settings/awnClass.py:1095
 msgid ""
@@ -246,6 +250,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Program ini adalah perangkat lunak bebas, Anda dapat mendistribusikannya "
+"dan/atau memodifikasinya dibawah ketentuan GNU General Public License "
+"sebagaimana dipublikasikan oleh Free Software Foundation; baik Lisensi versi "
+"2, atau (sesuai pilihan anda) versi berikutnya."
 
 #: ../awn-settings/awnClass.py:1097
 msgid ""
@@ -254,6 +262,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Program ini didistribusikan dengan harapan akan berguna bagi anda, namun "
+"TANPA JAMINAN APAPUN; bahkan tanpa implikasi jaminan DAPAT DIPERDAGANGKAN "
+"atau SESUAI BAGI KEPERLUAN TERTENTU. Lihat lisensi GNU General Public "
+"License untuk lebih jelasnya."
 
 #: ../awn-settings/awnClass.py:1099
 msgid ""
@@ -261,6 +273,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Anda seharusnya telah menerima sebuah salinan GNU General Public License "
+"bersamaan dengan program ini; jika tidak, layangkan surat ke Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:69
 msgid "Awn Settings can't be run as root."
@@ -358,7 +373,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Navigator window berjangkar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -591,7 +606,7 @@ msgstr ""
 
 #: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:592
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Preferensi Jangkar"
 
 #: ../libawn/awn-themed-icon.c:1931
 msgid "Icons"
