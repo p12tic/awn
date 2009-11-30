@@ -1,5 +1,10 @@
 2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
 
+	* src/awn-panel.c:
+	Fixed a small mistake, Replaced height with width.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/applet.c:
   	* applets/taskmanager/task-drag-indicator.c:
   	* applets/taskmanager/task-drag-indicator.h:

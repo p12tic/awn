@@ -3040,7 +3040,7 @@ awn_panel_set_strut (AwnPanel *panel)
       {
         adjust = screen_height - (monitor_geom.height + monitor_geom.y);
         if ( monitor_number != gdk_screen_get_monitor_at_point(screen,
-                                         monitor_geom.x + monitor_geom.height/2,
+                                         monitor_geom.x + monitor_geom.width/2,
                                          monitor_geom.y + monitor_geom.height+1))
         {
           adjust =0;
