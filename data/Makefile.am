@@ -37,24 +37,6 @@ dist_pkg_DATA = \
 
 pkgdir = $(pkgdatadir)
 
-# active subdirectory
-
-active_DATA = \
-	active/spotlight1.png \
-	active/spotlight2.png \
-	active/glow.png \
-	active/glow2.png \
-	active/glow3.png \
-	active/glow4.png \
-	active/glow5.png \
-	active/glow6.png \
-	active/glow7.png \
-	active/glow8.png \
-	active/glow9.png \
-	$(NULL)
-
-activedir = $(pkgdatadir)/active
-
 # config-related
 
 schema_in_files = avant-window-navigator.schema-ini.in
@@ -74,7 +56,6 @@ EXTRA_DIST += \
 	$(text_DATA) \
 	$(desktop_DATA).in \
 	$(schema_in_files:.schema-ini.in=.schema-ini.in.in) \
-	$(active_DATA) \
 	active/spotlight_png_inline.c \
 	$(NULL)
 
