@@ -1,6 +1,12 @@
 2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Do a less intensive search when we're searching for desktop file
+	due to a name change.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Minor correction to previous commit.
 	
 2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
