@@ -1,3 +1,8 @@
+2009-12-01  Hannes Verschore <hv1989@gmail.com>
+
+	* src/awn-background-3d.c:
+	Enable pattern support for 3D background
+
 2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background-curves.c:
