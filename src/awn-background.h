@@ -74,7 +74,8 @@ struct _AwnBackground
   /* Pattern options */
   gboolean   enable_pattern;
   gfloat     pattern_alpha;
-  GdkPixbuf *pattern;
+  GdkPixbuf *pattern_original;
+  cairo_surface_t *pattern;
 
   /* FIXME:
    * These two should ultimately go somewhere else (once we do multiple panels)

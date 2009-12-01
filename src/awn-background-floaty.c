@@ -165,9 +165,17 @@ draw_top_bottom_background (AwnBackground  *bg,
   }
 
   /* Draw the background */
-  pat = cairo_pattern_create_linear (0, 0, 0, bg_size);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  if (bg->enable_pattern && bg->pattern)
+  {
+    pat = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
+  }
+  else
+  {
+    pat = cairo_pattern_create_linear (0, 0, 0, bg_size);
+    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
+    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  }
   draw_rect (bg, cr, position, 1, 1, width-3, bg_size-2, TRUE);
 
   cairo_set_source (cr, pat);

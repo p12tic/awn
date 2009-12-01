@@ -284,10 +284,18 @@ draw_top_bottom_background (AwnBackground  *bg,
    */
 
   /* Draw the background */
-  pat = cairo_pattern_create_radial (bottom_left ? 0 : width, height, 1,
-                                     bottom_left ? 0 : width, height, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_2);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_1);
+  if (bg->enable_pattern && bg->pattern)
+  {
+    pat = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
+  }
+  else
+  {
+    pat = cairo_pattern_create_radial (bottom_left ? 0 : width, height, 1,
+        bottom_left ? 0 : width, height, height);
+    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_2);
+    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_1);
+  }
   draw_path(cr, height - 1.0, width, height, bottom_left);
   cairo_line_to (cr, bottom_left ? 0.0 : width, height);
 

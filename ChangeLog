@@ -1,3 +1,13 @@
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-curves.c:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Enable pattern support for backgrounds expect 3D.
+
 2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
