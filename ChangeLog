@@ -1,6 +1,12 @@
 2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Make sure that if a launcher is added to the dialog after a 
+	window that the launcher is still placed at the top of the dialog.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Really commit the changes mentioned in the previous two commit
 	messages.
 

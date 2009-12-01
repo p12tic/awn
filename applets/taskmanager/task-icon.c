@@ -2014,8 +2014,15 @@ task_icon_append_item (TaskIcon      *icon,
 
   priv->items = g_slist_append (priv->items, item);
   gtk_widget_show_all (GTK_WIDGET (item));
-  gtk_container_add (GTK_CONTAINER (priv->dialog), GTK_WIDGET (item));
 
+  gtk_container_add (GTK_CONTAINER (priv->dialog), GTK_WIDGET (item));
+  /*if we have a launcher move it to the top of the list*/
+  if (TASK_IS_LAUNCHER(item))
+  {
+    gtk_box_reorder_child (GTK_BOX(awn_dialog_get_content_area(AWN_DIALOG(priv->dialog))),
+                           GTK_WIDGET(item),0);    
+  }
+  
   g_object_weak_ref (G_OBJECT (item), (GWeakNotify)_destroyed_task_item, icon);
 
   task_item_set_task_icon (item, icon);
