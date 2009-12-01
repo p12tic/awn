@@ -1,3 +1,14 @@
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Sometimes it's just not possible to initially determine a
+	proper desktop file unless one also has the title (OO). 
+	Unfortuntely some apps (OO) do not provide the necessary info in the
+	Title in some circumstance until long after the window has 
+	opened.  So if a desktop lookup fails, then connect to the name
+	change signal and try to match up whenever the window titles 
+	change.
+	
 2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet-simple.c:
