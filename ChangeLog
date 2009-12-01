@@ -1,3 +1,8 @@
+2009-12-01 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Some comments.  Notes regarding post 0.4 code.
+
 2009-12-01  Hannes Verschore <hv1989@gmail.com>
 
 	* src/awn-background-3d.c:

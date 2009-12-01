@@ -41,7 +41,13 @@
       Tool to analyze and special case windows by advanced users ala xprop 
       (point and click) and analyze.
 
-      For 0.6 start making use of WM_WINDOW_ROLE when it is available
+      For 0.6:
+
+        start making use of WM_WINDOW_ROLE when it is available
+        Make use of _NET_WM_ICON_NAME
+        Make use of _NET_WM_NAME
+ 
+ 
  */
 
 static gchar * generate_id_from_cmd(gchar *cmd,gchar *res_name,
