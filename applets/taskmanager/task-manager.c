@@ -1684,7 +1684,7 @@ task_manager_find_window (TaskManager * manager, WnckWindow * window)
 
 
 static gchar *
-search_for_desktop (TaskIcon * icon,TaskItem *item)
+search_for_desktop (TaskIcon * icon,TaskItem *item,gboolean thorough)
 {
   /* grab the class name.
    look through the various freedesktop system/user dirs for the 
@@ -1769,42 +1769,45 @@ search_for_desktop (TaskIcon * icon,TaskItem *item)
     {
       found_desktop = find_desktop (TASK_ICON(icon), class_name);
     }    
-    /*This _may_ result in unacceptable false positives.  Testing.*/
-    if (!found_desktop && full_cmd && strlen (full_cmd))
+    if (thorough)
     {
-      #ifdef DEBUG
-      g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
-      #endif
-      found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
-    }
-    if (!found_desktop && cmd && strlen (cmd))
-    {
-      #ifdef DEBUG
-      g_debug ("%s:  cmd = '%s'",__func__,cmd);
-      #endif
-      found_desktop = find_desktop (TASK_ICON(icon), cmd);
-    }
-    
-    if (!found_desktop && full_cmd && strlen (full_cmd) )
-    {
-      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
-    }
-    if (!found_desktop && cmd && strlen (cmd))
-    {
-      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
-    }
-    if (!found_desktop && full_cmd && strlen (full_cmd) )
-    {
-      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, full_cmd);
-    }
-    if (!found_desktop && cmd && strlen (cmd))
-    {
-      found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, cmd);
-    }
-    
-    if (!found_desktop && cmd_basename && strlen (cmd_basename) )
-    {
-      found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
+      /*This _may_ result in unacceptable false positives.  Testing.*/
+      if (!found_desktop && full_cmd && strlen (full_cmd))
+      {
+        #ifdef DEBUG
+        g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
+        #endif
+        found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
+      }
+      if (!found_desktop && cmd && strlen (cmd))
+      {
+        #ifdef DEBUG
+        g_debug ("%s:  cmd = '%s'",__func__,cmd);
+        #endif
+        found_desktop = find_desktop (TASK_ICON(icon), cmd);
+      }
+      
+      if (!found_desktop && full_cmd && strlen (full_cmd) )
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
+      }
+      if (!found_desktop && cmd && strlen (cmd))
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
+      }
+      if (!found_desktop && full_cmd && strlen (full_cmd) )
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, full_cmd);
+      }
+      if (!found_desktop && cmd && strlen (cmd))
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, cmd);
+      }
+      
+      if (!found_desktop && cmd_basename && strlen (cmd_basename) )
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
+      }
     }
     
     if (!found_desktop)
@@ -1851,7 +1854,7 @@ window_name_changed_cb  (TaskWindow *item,const gchar *name, TaskIcon * icon)
 {
   g_return_if_fail (TASK_IS_WINDOW(item));
   g_return_if_fail (TASK_IS_ICON(icon));
-  if (search_for_desktop (TASK_ICON(icon),TASK_ITEM(item)) )
+  if (search_for_desktop (TASK_ICON(icon),TASK_ITEM(item),FALSE))
   {
     g_signal_handlers_disconnect_by_func(item, window_name_changed_cb, icon);
   }
@@ -1890,11 +1893,7 @@ process_window_opened (WnckWindow    *window,
   containing_icon = task_manager_find_window (manager,window);
   if ( containing_icon )
   {
-    if ( task_icon_get_launcher (containing_icon) )
-    {
-      return;
-    }
-    gtk_widget_destroy (GTK_WIDGET(containing_icon));
+    return;
   }
     
   /*
@@ -1999,7 +1998,7 @@ process_window_opened (WnckWindow    *window,
 
     icon = task_icon_new (AWN_APPLET (manager));
 
-    found_desktop = search_for_desktop (TASK_ICON(icon),item);
+    found_desktop = search_for_desktop (TASK_ICON(icon),item,TRUE);
       
     if ( !found_desktop)
     {
