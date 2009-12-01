@@ -610,10 +610,10 @@ awn_background_refresh_pattern (AwnBackground *bg)
     w = gdk_pixbuf_get_width (bg->pattern_original);
     h = gdk_pixbuf_get_height (bg->pattern_original);
 
-    if (bg->panel && GTK_WIDGET (bg->panel)->window)
+    if (FALSE) //if (bg->panel && GTK_WIDGET (bg->panel)->window)
     {
-      // use server-side pixmap if window is already realized
-      // TODO: does it really improve performance?
+      // mhr3: using server-side pixmap seems to slow things down quite a lot
+      // (especially on 3d and curved) - nvidia-only issue???
       GdkWindow *window = gtk_widget_get_window (GTK_WIDGET (bg->panel));
 
       cairo_t *temp_cr = gdk_cairo_create (window);
