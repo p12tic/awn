@@ -1,6 +1,11 @@
 2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
+	Minor correction to previous commit.
+	
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
 	Sometimes it's just not possible to initially determine a
 	proper desktop file unless one also has the title (OO). 
 	Unfortuntely some apps (OO) do not provide the necessary info in the
