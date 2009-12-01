@@ -296,11 +296,17 @@ draw_top_bottom_background (AwnBackground  *bg,
     awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_2);
     awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_1);
   }
+
+  cairo_save (cr);
+
   draw_path(cr, height - 1.0, width, height, bottom_left);
   cairo_line_to (cr, bottom_left ? 0.0 : width, height);
-
+  cairo_clip (cr);
   cairo_set_source (cr, pat);
-  cairo_fill (cr);
+  cairo_paint (cr);
+
+  cairo_restore (cr);
+
   cairo_pattern_destroy (pat);
 
   /* Draw the hi-light */

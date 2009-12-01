@@ -182,9 +182,15 @@ draw_top_bottom_background (AwnBackground  *bg,
     cairo_pattern_set_matrix (pat, &matrix);
   }
 
+  cairo_save (cr);
+
   draw_rect_path (bg, cr, 0, height-curves_height, width, curves_height);
+  cairo_clip (cr);
   cairo_set_source (cr, pat);
-  cairo_fill (cr);
+  cairo_paint (cr);
+
+  cairo_restore (cr);
+
   cairo_pattern_destroy (pat);
 
   /* Internal border */

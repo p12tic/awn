@@ -364,10 +364,16 @@ draw_top_bottom_background (AwnBackground  *bg,
     awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
     awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
   }
-  draw_rect_path (bg, cr, 0, 0, width, height, 0.5);
 
+  cairo_save (cr);
+
+  draw_rect_path (bg, cr, 0, 0, width, height, 0.5);
+  cairo_clip (cr);
   cairo_set_source (cr, pat);
-  cairo_fill (cr);
+  cairo_paint (cr);
+
+  cairo_restore (cr);
+
   cairo_pattern_destroy (pat);
 
 #if DEBUG_DRAW_HIGHLIGHT

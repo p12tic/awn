@@ -1,3 +1,15 @@
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-3d.c:
+	* src/awn-background-curves.c:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	* src/awn-background.c:
+	Changes to rendering which speed up things when using patterns.
+	Helped a lot with flat, edgy & floaty, but not that much
+	with 3d and curved.
+
 2009-12-01 Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:

@@ -218,10 +218,18 @@ draw_top_bottom_background (AwnBackground  *bg,
     awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
     awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
   }
-  draw_rect (bg, cr, position, 1, 1, width-3, height-1, align, expand);
 
+  // we're painting like this (clip + paint) because it has much better
+  // performance as opposed to cairo_fill
+  cairo_save (cr);
+
+  draw_rect (bg, cr, position, 1, 1, width-3, height-1, align, expand);
+  cairo_clip (cr);
   cairo_set_source (cr, pat);
-  cairo_fill (cr);
+  cairo_paint (cr);
+
+  cairo_restore (cr);
+
   cairo_pattern_destroy (pat);
 
   /* Draw the hi-light */
