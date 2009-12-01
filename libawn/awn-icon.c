@@ -218,11 +218,19 @@ awn_icon_long_press_timeout (gpointer data)
                                 priv->press_start_x, priv->press_start_y, 
                                 current_x, current_y) == FALSE)
   {
-    g_signal_emit (icon, _icon_signals[LONG_PRESS], 0);
+    if (g_signal_has_handler_pending (icon, 
+                                      _icon_signals[LONG_PRESS], 0, TRUE))
+    {
+      g_signal_emit (icon, _icon_signals[LONG_PRESS], 0);
+      priv->long_press_emitted = TRUE;
+    }
+  }
+  else
+  {
+    // if we're in drag we won't emit clicked either
+    priv->long_press_emitted = TRUE;
   }
 
-  // if we're in drag we won't emit clicked either
-  priv->long_press_emitted = TRUE;
   priv->long_press_timer = 0;
 
   return FALSE;

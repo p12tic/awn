@@ -1,3 +1,12 @@
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon.c:
+	Removed long-press signal from AppletSimple, this simplifies the
+	behavior for all applets - if applet doesn't connect to long-press
+	via AwnIcon, it will still emit standard clicked-signal.
+
 2009-11-30  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/avant-window-navigator.schema-ini.in.in:
