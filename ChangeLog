@@ -1,3 +1,8 @@
+2009-12-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Use idle callback to set the strut. Fixes bug #491229.
+
 2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background.c:
