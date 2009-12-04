@@ -1022,7 +1022,8 @@ class awnPreferences(awnBzr):
             # create the autostart entry
             starter_item = DesktopEntry(autostart_file)
             starter_item.set('Name', 'Avant Window Navigator')
-            starter_item.set('Exec', 'avant-window-navigator')
+            starter_item.set('Exec', 'avant-window-navigator --startup')
+            starter_item.set('Icon', 'avant-window-navigator')
             starter_item.set('X-GNOME-Autostart-enabled', 'true')
             starter_item.write()
 
