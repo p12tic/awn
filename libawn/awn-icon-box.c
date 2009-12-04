@@ -19,6 +19,8 @@
 
 #include "awn-icon-box.h"
 #include "awn-icon.h"
+#include "awn-overlayable.h"
+#include "awn-alignment.h"
 #include "awn-utils.h"
 #include "gseal-transition.h"
 
@@ -54,32 +56,54 @@ awn_icon_box_child_size_allocate (GtkWidget *widget,
 {
   AwnIconBoxPrivate *priv = AWN_ICON_BOX (box)->priv;
 
-  g_return_if_fail (AWN_IS_ICON (widget));
+  g_return_if_fail (AWN_IS_OVERLAYABLE (widget) || AWN_IS_ALIGNMENT (widget));
 
   if (priv->applet == NULL) return;
 
   gint x = alloc->x + alloc->width / 2;
   gint y = alloc->y + alloc->height / 2;
   gint offset = awn_applet_get_offset_at (priv->applet, x, y);
-  awn_icon_set_offset (AWN_ICON (widget), offset);
+  if (AWN_IS_ICON (widget))
+  {
+    awn_icon_set_offset (AWN_ICON (widget), offset);
+  }
+  else if (AWN_IS_OVERLAYABLE (widget))
+  {
+    AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (widget));
+    g_object_set (fx, "icon-offset", priv->offset, NULL);
+  }
 }
 
 static void
 awn_icon_box_add (GtkContainer *container, GtkWidget *child)
 {
-  if (!AWN_IS_ICON (child))
+  AwnIconBoxPrivate *priv;
+  g_return_if_fail (AWN_IS_ICON_BOX (container));
+
+  // we'll accept AwnIcon, AwnAlignment or any AwnOverlayable
+  if (!AWN_IS_ICON (child) && !AWN_IS_ALIGNMENT (child) && 
+      !AWN_IS_OVERLAYABLE (child))
   {
-    // FIXME: do we really need this? we could accept also non-AwnIcons
     g_warning ("AwnIconBox only accepts AwnIcons as children");
     return;
   }
 
+  priv = AWN_ICON_BOX (container)->priv;
+
   gtk_box_set_child_packing (GTK_BOX (container), child, FALSE, FALSE, 0,
                               GTK_PACK_START);
-  awn_icon_set_offset      (AWN_ICON (child),
-                            AWN_ICON_BOX (container)->priv->offset);
-  awn_icon_set_pos_type (AWN_ICON (child), 
-                         AWN_ICON_BOX (container)->priv->position);
+  if (AWN_IS_ICON (child))
+  {
+    awn_icon_set_offset (AWN_ICON (child), priv->offset);
+    awn_icon_set_pos_type (AWN_ICON (child), priv->position);
+  }
+  else if (AWN_IS_OVERLAYABLE (child))
+  {
+    AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (child));
+    g_object_set (fx, "position", priv->position, 
+                  "icon-offset", priv->offset, NULL);
+  }
+
   g_signal_connect (child, "size-allocate",
                     G_CALLBACK (awn_icon_box_child_size_allocate), container);
 }
@@ -129,10 +153,17 @@ awn_icon_box_orientation_notify (AwnIconBox *icon_box)
   children = gtk_container_get_children (GTK_CONTAINER (icon_box));
   for (c = children; c; c = c->next)
   {
-    AwnIcon *icon = c->data;
+    GtkWidget *icon = c->data;
 
     if (AWN_IS_ICON (icon))
-      awn_icon_set_pos_type (icon, priv->position);
+    {
+      awn_icon_set_pos_type (AWN_ICON (icon), priv->position);
+    }
+    else if (AWN_IS_OVERLAYABLE (icon))
+    {
+      AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (icon));
+      g_object_set (fx, "position", priv->position, NULL);
+    }
   }
   g_list_free (children);
 }
@@ -195,6 +226,7 @@ static void
 on_applet_size_changed (AwnApplet *applet, gint size, AwnIconBox *box)
 {
   // FIXME: why doesn't this set size of the icons?
+  //   because AwnIcon doesn't allow setting size (only ThemedIcon does)
 }
 
 static void
@@ -277,19 +309,24 @@ awn_icon_box_set_offset (AwnIconBox *icon_box,
   children = gtk_container_get_children (GTK_CONTAINER (icon_box));
   for (c = children; c; c = c->next)
   {
-    AwnIcon *icon = c->data;
+    GtkWidget *icon = c->data;
 
-    if (AWN_IS_ICON (icon))
+    if (priv->applet)
     {
-      if (priv->applet)
+      GtkAllocation alloc;
+      gtk_widget_get_allocation (icon, &alloc);
+      gint x = alloc.x + alloc.width / 2;
+      gint y = alloc.y + alloc.height / 2;
+      offset = awn_applet_get_offset_at (priv->applet, x, y);
+      if (AWN_IS_ICON (icon))
       {
-        GtkAllocation alloc;
-        gtk_widget_get_allocation (GTK_WIDGET (icon), &alloc);
-        gint x = alloc.x + alloc.width / 2;
-        gint y = alloc.y + alloc.height / 2;
-        offset = awn_applet_get_offset_at (priv->applet, x, y);
+        awn_icon_set_offset (AWN_ICON (icon), offset);
       }
-      awn_icon_set_offset (icon, offset);
+      else if (AWN_IS_OVERLAYABLE (icon))
+      {
+        AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (icon));
+        g_object_set (fx, "icon-offset", offset, NULL);
+      }
     }
   }
   g_list_free (children);

@@ -42,6 +42,7 @@ struct _AwnAlignmentPrivate
 
   GtkPositionType position;
   gint offset_modifier;
+  gfloat offset_multiplier;
   gint last_offset;
   gfloat scale;
 
@@ -55,7 +56,8 @@ enum
 
   PROP_APPLET,
   PROP_SCALE,
-  PROP_OFFSET_MOD
+  PROP_OFFSET_MOD,
+  PROP_OFFSET_MULT
 };
 
 /* Forwards */
@@ -87,6 +89,9 @@ awn_alignment_get_property (GObject    *object,
     case PROP_OFFSET_MOD:
       g_value_set_int (value, priv->offset_modifier);
       break;
+    case PROP_OFFSET_MULT:
+      g_value_set_float (value, priv->offset_multiplier);
+      break;
     case PROP_SCALE:
       g_value_set_float (value, priv->scale);
       break;
@@ -116,6 +121,10 @@ awn_alignment_set_property (GObject      *object,
     case PROP_OFFSET_MOD:
       awn_alignment_set_offset_modifier (AWN_ALIGNMENT (object),
                                          g_value_get_int (value));
+      break;
+    case PROP_OFFSET_MULT:
+      priv->offset_multiplier = g_value_get_float (value);
+      ensure_alignment (AWN_ALIGNMENT (object));
       break;
     case PROP_SCALE:
       priv->scale = g_value_get_float (value);
@@ -179,6 +188,14 @@ awn_alignment_class_init (AwnAlignmentClass *klass)
                       G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
+    PROP_OFFSET_MULT,
+    g_param_spec_float ("offset-multiplier",
+                        "Offset multiplier",
+                        "Offset multiplier",
+                        0.0, 1.0, 1.0,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
     PROP_SCALE,
     g_param_spec_float ("scale",
                         "Scale",
@@ -200,6 +217,7 @@ awn_alignment_init (AwnAlignment *alignment)
 
   priv->last_offset = 0;
   priv->scale = 1.0;
+  priv->offset_multiplier = 1.0;
 
   g_signal_connect (alignment, "size-allocate",
                     G_CALLBACK (ensure_alignment), NULL);
@@ -302,7 +320,7 @@ awn_alignment_set_offset_modifier (AwnAlignment *alignment, gint modifier)
 
   priv->offset_modifier = modifier;
 
-  if (priv->applet) ensure_alignment (alignment);
+  ensure_alignment (alignment);
 }
 
 static void
@@ -316,13 +334,17 @@ ensure_alignment (AwnAlignment *alignment)
   g_return_if_fail (AWN_IS_ALIGNMENT (alignment));
 
   priv = alignment->priv;
+
+  if (priv->applet == NULL) return;
+
   align = GTK_ALIGNMENT (alignment);
   gtk_widget_get_allocation (GTK_WIDGET (alignment), &alloc);
 
   x = alloc.x + alloc.width / 2;
   y = alloc.y + alloc.height / 2;
-  offset = awn_applet_get_offset_at (priv->applet, x, y)
-             + priv->offset_modifier;
+
+  offset = (awn_applet_get_offset_at (priv->applet, x, y) *
+            priv->offset_multiplier) + priv->offset_modifier;
   if (offset < 0) offset = 0;
 
   /* 

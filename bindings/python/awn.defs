@@ -262,6 +262,7 @@
   (return-type "GtkWidget*")
   (properties
     '("applet" (argname "applet"))
+    '("scale" (optional) (argname "scale"))
   )
 )
 
