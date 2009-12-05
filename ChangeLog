@@ -1,5 +1,11 @@
 2009-12-05  Michal Hruby  <michal.mhr@gmail.com>
 
+	* configure.in:
+	* libawn/awn-applet.c:
+	Use DBus' GetAll method if one has dbus-glib-1 >= 0.80.
+
+2009-12-05  Michal Hruby  <michal.mhr@gmail.com>
+
 	* bindings/python/awn.defs:
 	* libawn/awn-alignment.c:
 	* libawn/awn-icon-box.c:
