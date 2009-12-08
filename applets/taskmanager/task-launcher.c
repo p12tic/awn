@@ -308,7 +308,7 @@ task_launcher_new_for_desktop_file (AwnApplet * applet, const gchar *path)
 }
 
 const gchar   * 
-task_launcher_get_desktop_path     (TaskLauncher *launcher)
+task_launcher_get_desktop_path (TaskLauncher *launcher)
 {
   g_return_val_if_fail (TASK_IS_LAUNCHER (launcher), NULL);
 
@@ -349,8 +349,9 @@ _desktop_changed (DesktopAgnosticVFSFileMonitor* monitor,
     g_error_free (error);
     return;
   }
-  if (!desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,"Exec"))
+  if (!usable_desktop_entry (entry) )
   {
+    g_critical ("%s: Invalid desktop file, retaining existing valid entries until applet shutdown",__func__);
     return;
   }
 
@@ -444,12 +445,20 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
     g_object_unref (priv->entry);
   }
   priv->entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, &error);
-
+  
   if (error)
   {
     g_critical ("Error when trying to load the launcher: %s", error->message);
     g_error_free (error);
     g_object_unref (file);    
+    return;
+  }
+
+  if (!usable_desktop_entry (priv->entry) )
+  {
+    g_critical ("%s: Invalid desktop file for %s",__func__,path);
+    g_object_unref (priv->entry);
+    priv->entry = NULL;
     return;
   }
 
@@ -476,11 +485,6 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   
   g_object_unref (file);  
   if (priv->entry == NULL)
-  {
-    return;
-  }
-
-  if (!desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,"Exec"))
   {
     return;
   }

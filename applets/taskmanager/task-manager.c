@@ -1422,7 +1422,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
           // TODO handle GErrors.  Do we really want to handle them?
           DesktopAgnosticVFSFile *file = desktop_agnostic_vfs_file_new_for_path (full_path, NULL);
           DesktopAgnosticFDODesktopEntry * desktop = desktop_agnostic_fdo_desktop_entry_new_for_file (file, NULL);
-          if (desktop)
+          if (desktop && usable_desktop_entry (desktop) )
           {
             const gchar * fdo_options[] = {"%f","%F","%u","%U","%d","%D","%n","%N","%i","%c","%k","%v","%m",NULL};
             const gchar ** i;
@@ -1508,6 +1508,10 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
             cmd_base = NULL;
             g_free (exec_regex_escaped);
             exec_regex_escaped = NULL;
+          }
+          else if (desktop)
+          {
+            g_object_unref (desktop);
           }
           g_object_unref (file);
           g_free (full_path);
@@ -2253,32 +2257,34 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       TaskItem  *launcher = NULL;
       GtkWidget *icon;
 
-      launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),path);
-      
-      if (launcher)
+      if (usable_desktop_file_from_path (path) )
       {
-        icon = task_icon_new (AWN_APPLET (manager));
-        task_icon_append_item (TASK_ICON (icon), launcher);
-        gtk_container_add (GTK_CONTAINER (priv->box), icon);
-        gtk_box_reorder_child (GTK_BOX (priv->box), icon, idx);
-        priv->icons = g_slist_insert (priv->icons, icon, idx);
-
-        g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-        g_signal_connect_swapped (icon,
-                                  "visible-changed",
-                                  G_CALLBACK (on_icon_visible_changed),
-                                  manager);
-        g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
-                                  "animation-end",
-                                  G_CALLBACK (on_icon_effects_ends),
-                                  icon);
-
-        update_icon_visible (manager, TASK_ICON (icon));
-
-        /* reordening through D&D */
-        if (priv->drag_and_drop)
+        launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),path);
+        if (launcher)
         {
-          _drag_add_signals(manager, icon);
+          icon = task_icon_new (AWN_APPLET (manager));
+          task_icon_append_item (TASK_ICON (icon), launcher);
+          gtk_container_add (GTK_CONTAINER (priv->box), icon);
+          gtk_box_reorder_child (GTK_BOX (priv->box), icon, idx);
+          priv->icons = g_slist_insert (priv->icons, icon, idx);
+
+          g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+          g_signal_connect_swapped (icon,
+                                    "visible-changed",
+                                    G_CALLBACK (on_icon_visible_changed),
+                                    manager);
+          g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
+                                    "animation-end",
+                                    G_CALLBACK (on_icon_effects_ends),
+                                    icon);
+
+          update_icon_visible (manager, TASK_ICON (icon));
+
+          /* reordening through D&D */
+          if (priv->drag_and_drop)
+          {
+            _drag_add_signals(manager, icon);
+          }
         }
       }
       else
