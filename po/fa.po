@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2009-10-30 05:11+0000\n"
-"Last-Translator: Soroosh Radpoor <soroosh@zeerak.ir>\n"
+"PO-Revision-Date: 2009-12-14 22:33+0000\n"
+"Last-Translator: refdoc <refdoc@gmx.net>\n"
 "Language-Team: Persian <fa@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-11-07 04:43+0000\n"
+"X-Launchpad-Export-Date: 2009-12-15 05:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -157,7 +157,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
 #: ../awn-settings/awnSettings.py.in:144
 msgid "None"
-msgstr ""
+msgstr "هيچ"
 
 #: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
 msgid "Simple"
@@ -165,11 +165,11 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:825 ../awn-settings/awnClass.py:886
 msgid "Classic"
-msgstr ""
+msgstr "کلاسیک"
 
 #: ../awn-settings/awnClass.py:826 ../awn-settings/awnClass.py:887
 msgid "Fade"
-msgstr ""
+msgstr "محو کن"
 
 #: ../awn-settings/awnClass.py:827 ../awn-settings/awnClass.py:888
 msgid "Spotlight"
@@ -177,11 +177,11 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:828 ../awn-settings/awnClass.py:889
 msgid "Zoom"
-msgstr ""
+msgstr "بزرگ ‌نمایي"
 
 #: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
 msgid "Squish"
-msgstr ""
+msgstr "له کن"
 
 #: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
 msgid "3D Turn"
@@ -193,7 +193,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:832 ../awn-settings/awnClass.py:893
 msgid "Glow"
-msgstr ""
+msgstr "تابش"
 
 #: ../awn-settings/awnClass.py:894 ../awn-settings/awnSettings.py.in:152
 msgid "Custom"
