@@ -965,7 +965,31 @@ awn_dialog_finalize (GObject *object)
     g_source_remove (priv->unfocus_timer_id);
     priv->unfocus_timer_id = 0;
   }
+  
+  if (priv->dialog_bg)
+  {
+    g_object_unref (priv->dialog_bg);
+    priv->dialog_bg = NULL;
+  }
 
+  if (priv->title_bg)
+  {
+    g_object_unref (priv->title_bg);
+    priv->title_bg = NULL;
+  }
+
+  if (priv->border_color)
+  {
+    g_object_unref (priv->border_color);
+    priv->border_color = NULL;
+  }
+
+  if (priv->hilight_color)
+  {
+    g_object_unref (priv->hilight_color);
+    priv->hilight_color = NULL;
+  }
+  
   G_OBJECT_CLASS (awn_dialog_parent_class)->finalize (object);
 }
 

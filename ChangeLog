@@ -1,5 +1,10 @@
 2009-12-08 Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-dialog.c:
+	Free some lda color objects.
+
+2009-12-08 Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher.c:
   	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/util.c:
