@@ -1,4 +1,9 @@
-2009-12-08 Rodney Cryderman  <rcryderman@gmail.com>
+2009-12-15 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Suppress some unnecessary pixbuf cache invalidates.
+
+2009-12-14 Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-dialog.c:
 	Free some lda color objects.

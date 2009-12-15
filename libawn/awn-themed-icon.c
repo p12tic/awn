@@ -139,6 +139,7 @@ struct _AwnThemedIconPrivate
   gulong  sig_id_for_awn_theme;  
   
   gboolean drag_and_drop;
+  gchar * old_theme_name;
   
   /*used in management of "Remove Custom Icon" menu items */
   gboolean    awn_theme_hit;  
@@ -434,6 +435,7 @@ awn_themed_icon_finalize (GObject *object)
   g_free (priv->icon_dir);               
   priv->icon_dir = NULL;
   g_free (priv->custom_icon_name);
+  g_free (priv->old_theme_name);
   
   for (iter = priv->preload_list; iter; iter = g_list_next (iter) )
   {
@@ -592,12 +594,13 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->uid = NULL;
   priv->list = NULL;
   priv->current_item = NULL;
-  priv->current_size = 48;
+  priv->current_size = -1;
   priv->custom_icon_name = NULL;
   priv->preload_list = NULL;
-  
+
   /* Set-up the gtk-theme */
   priv->gtk_theme = gtk_icon_theme_get_default ();
+  priv->old_theme_name = g_strdup(priv->gtk_theme->priv->current_theme);
   priv->sig_id_for_gtk_theme = g_signal_connect (priv->gtk_theme, "changed", 
                     G_CALLBACK (on_icon_theme_changed), icon);
   /*Calling this with the default icon theme (which contains hicolor dirs)
@@ -745,6 +748,10 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 
   priv = icon->priv;
 
+  if (size<=0)
+  {
+    return NULL;
+  }
   /* Find the index of the current state in states */
   g_return_val_if_fail(priv-> list,NULL);	
   for (iter = priv->list; iter; iter=g_list_next (iter))
@@ -994,7 +1001,7 @@ ensure_icon (AwnThemedIcon *icon)
 
   priv = icon->priv;
 
-  if (!priv->list || !priv->current_item || !priv->current_size)
+  if (!priv->list || !priv->current_item || (priv->current_size<=0))
   {
     /* We're not ready yet */
     return;
@@ -1103,8 +1110,11 @@ awn_themed_icon_set_size (AwnThemedIcon *icon,
   priv = icon->priv;
   if (priv->current_size != size)
   {
+    if (priv->current_size >0)
+    {
+      invalidate_pixbuf_cache ();
+    }
     priv->current_size = size;
-    invalidate_pixbuf_cache ();
     ensure_icon (icon);
     awn_themed_icon_preload_all ( icon);    
   }    
@@ -1704,8 +1714,15 @@ on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
 
   priv = icon->priv;
-  invalidate_pixbuf_cache ();
-  ensure_icon (icon);
+  /*Don't invalidate if the theme name hasn't really changed.  The most 
+   annoying instance of this occuring is when an new AwnThemedIcon is created.*/
+  if (g_strcmp0 (priv->old_theme_name,priv->gtk_theme->priv->current_theme) != 0)
+  {
+    invalidate_pixbuf_cache ();  
+    ensure_icon (icon);
+    g_free (priv->old_theme_name);
+    priv->old_theme_name = g_strdup (priv->gtk_theme->priv->current_theme);
+  }
 }
 
 static gboolean
