@@ -53,4 +53,8 @@ WinIconUse get_win_icon_use           (gchar * cmd,
 
 gboolean utils_gdk_pixbuf_similar_to (GdkPixbuf *i1, GdkPixbuf *i2);
 
+gboolean usable_desktop_entry (  DesktopAgnosticFDODesktopEntry * entry);
+
+gboolean usable_desktop_file_from_path ( const gchar * path);
+
 #endif

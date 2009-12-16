@@ -75,6 +75,8 @@ static void awn_background_set_gtk_theme_mode (AwnBackground *bg,
 static void awn_background_set_dialog_gtk_mode (AwnBackground *bg, 
                                                 gboolean       gtk_mode);
 
+static void awn_background_refresh_pattern (AwnBackground *bg);
+
 static void awn_background_padding_zero (AwnBackground *bg,
                                          GtkPositionType position,
                                          guint *padding_top,
@@ -223,6 +225,7 @@ awn_background_set_property (GObject      *object,
                          GParamSpec   *pspec)
 {
   AwnBackground *bg = AWN_BACKGROUND (object);
+  GError *error = NULL;
 
   g_return_if_fail (AWN_IS_BACKGROUND (object));
 
@@ -293,11 +296,28 @@ awn_background_set_property (GObject      *object,
       break;
     case PROP_PATTERN_ALPHA:
       bg->pattern_alpha = g_value_get_float (value);
+      awn_background_refresh_pattern (bg);
       break;
     case PROP_PATTERN_FILENAME:
-      if (GDK_IS_PIXBUF (bg->pattern)) g_object_unref (bg->pattern);
-      bg->pattern = gdk_pixbuf_new_from_file (
-                               g_value_get_string (value), NULL);
+      if (bg->pattern_original != NULL)
+      {
+        g_object_unref  (bg->pattern_original);
+        bg->pattern_original = NULL;
+      }
+      bg->pattern_original = gdk_pixbuf_new_from_file (
+          g_value_get_string (value), &error);
+
+      if (error != NULL)
+      {
+        if (bg->enable_pattern)
+        {
+          g_warning ("Unable to load \"%s\". Error: %s.",
+                     g_value_get_string (value), error->message);
+        }
+        bg->pattern_original = NULL;
+        g_error_free (error);
+      }
+      awn_background_refresh_pattern (bg);
       break;
 
     case PROP_GTK_THEME_MODE:
@@ -347,6 +367,9 @@ awn_background_finalize (GObject *object)
   {
     g_signal_handler_disconnect (bg->panel, bg->changed);
   }
+
+  if (bg->pattern_original) g_object_unref (bg->pattern_original);
+  if (bg->pattern) cairo_surface_destroy (bg->pattern);
 
   if (bg->g_step_1) g_object_unref (bg->g_step_1);
   if (bg->g_step_2) g_object_unref (bg->g_step_2);
@@ -489,8 +512,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "Pattern filename",
                          "Pattern Filename",
                          "",
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                         G_PARAM_STATIC_STRINGS));
+                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_GTK_THEME_MODE,
@@ -573,6 +595,49 @@ awn_background_class_init (AwnBackgroundClass *klass)
                   G_TYPE_NONE, 0);
 }
 
+static void
+awn_background_refresh_pattern (AwnBackground *bg)
+{
+  if (bg->pattern != NULL)
+  {
+    cairo_surface_destroy (bg->pattern);
+    bg->pattern = NULL;
+  }
+
+  if (bg->pattern_original)
+  {
+    gint w, h;
+    w = gdk_pixbuf_get_width (bg->pattern_original);
+    h = gdk_pixbuf_get_height (bg->pattern_original);
+
+    if (FALSE) //if (bg->panel && GTK_WIDGET (bg->panel)->window)
+    {
+      // mhr3: using server-side pixmap seems to slow things down quite a lot
+      // (especially on 3d and curved) - nvidia-only issue???
+      GdkWindow *window = gtk_widget_get_window (GTK_WIDGET (bg->panel));
+
+      cairo_t *temp_cr = gdk_cairo_create (window);
+
+      bg->pattern = cairo_surface_create_similar (cairo_get_target (temp_cr),
+                                                  CAIRO_CONTENT_COLOR_ALPHA,
+                                                  w, h);
+
+      cairo_destroy (temp_cr);
+    }
+    else
+    {
+      bg->pattern = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, w, h);
+    }
+    // copy the pixbuf to cairo surface
+    cairo_t *cr = cairo_create (bg->pattern);
+
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    gdk_cairo_set_source_pixbuf (cr, bg->pattern_original, 0.0, 0.0);
+    cairo_paint_with_alpha (cr, bg->pattern_alpha);
+
+    cairo_destroy (cr);
+  }
+}
 
 static void
 awn_background_init (AwnBackground *bg)

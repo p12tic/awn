@@ -61,7 +61,6 @@ enum
 {
   CLICKED,
   MIDDLE_CLICKED,
-  LONG_PRESS,
   MENU_POPUP,
 
   LAST_SIGNAL
@@ -129,12 +128,6 @@ on_icon_middle_clicked (AwnAppletSimple *simple, AwnIcon *icon)
 }
 
 static void
-on_icon_long_press (AwnAppletSimple *simple, AwnIcon *icon)
-{
-  g_signal_emit (simple, _simple_signals[LONG_PRESS], 0);
-}
-
-static void
 on_icon_menu_popup (AwnAppletSimple *simple, GdkEventButton *event, 
                     AwnIcon *icon)
 {
@@ -198,8 +191,6 @@ awn_applet_simple_constructed (GObject *object)
                             G_CALLBACK (on_icon_clicked), object);
   g_signal_connect_swapped (priv->icon, "middle-clicked", 
                             G_CALLBACK (on_icon_middle_clicked), object);
-  g_signal_connect_swapped (priv->icon, "long-press", 
-                            G_CALLBACK (on_icon_long_press), object);
   g_signal_connect_swapped (priv->icon, "context-menu-popup", 
                             G_CALLBACK (on_icon_menu_popup), object);
   gtk_container_add (GTK_CONTAINER (applet), priv->icon);
@@ -247,15 +238,6 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
       G_OBJECT_CLASS_TYPE (obj_class),
       G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
       G_STRUCT_OFFSET (AwnAppletSimpleClass, middle_clicked),
-      NULL, NULL,
-      g_cclosure_marshal_VOID__VOID,
-      G_TYPE_NONE, 0);
-
-  _simple_signals[LONG_PRESS] =
-    g_signal_new ("long-press",
-      G_OBJECT_CLASS_TYPE (obj_class),
-      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-      G_STRUCT_OFFSET (AwnAppletSimpleClass, long_press),
       NULL, NULL,
       g_cclosure_marshal_VOID__VOID,
       G_TYPE_NONE, 0);

@@ -1422,7 +1422,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
           // TODO handle GErrors.  Do we really want to handle them?
           DesktopAgnosticVFSFile *file = desktop_agnostic_vfs_file_new_for_path (full_path, NULL);
           DesktopAgnosticFDODesktopEntry * desktop = desktop_agnostic_fdo_desktop_entry_new_for_file (file, NULL);
-          if (desktop)
+          if (desktop && usable_desktop_entry (desktop) )
           {
             const gchar * fdo_options[] = {"%f","%F","%u","%U","%d","%D","%n","%N","%i","%c","%k","%v","%m",NULL};
             const gchar ** i;
@@ -1508,6 +1508,10 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
             cmd_base = NULL;
             g_free (exec_regex_escaped);
             exec_regex_escaped = NULL;
+          }
+          else if (desktop)
+          {
+            g_object_unref (desktop);
           }
           g_object_unref (file);
           g_free (full_path);
@@ -1658,6 +1662,208 @@ task_manager_check_for_hidden (TaskManager * manager, TaskWindow * item)
   return hidden;
 }
 
+
+static TaskIcon *
+task_manager_find_window (TaskManager * manager, WnckWindow * window)
+{
+  TaskManagerPrivate *priv;
+  priv = manager->priv;
+    
+  for (GSList *icon_iter = priv->icons; icon_iter ;icon_iter = icon_iter->next)
+  {
+    TaskIcon *icon = icon_iter->data;
+    GSList *items = task_icon_get_items (icon);
+    for (GSList *item_iter = items;item_iter != NULL;item_iter = item_iter->next)
+    {
+      TaskItem *item = item_iter->data;
+      
+      if (TASK_IS_WINDOW (item) && window==task_window_get_window(TASK_WINDOW(item)) )
+      {
+        return icon;
+      }
+    }
+  }
+  return NULL;
+}
+
+
+static gchar *
+search_for_desktop (TaskIcon * icon,TaskItem *item,gboolean thorough)
+{
+  /* grab the class name.
+   look through the various freedesktop system/user dirs for the 
+   associated desktop file.  If we find it then dump the associated 
+   launcher into the the dialog.
+  */
+  gchar   *res_name = NULL;
+  gchar   *class_name = NULL;
+  gchar   *client_name = NULL;
+  gchar   *cmd;
+  gchar   *full_cmd;
+  gchar   *cmd_basename = NULL;
+  gchar * id = NULL;
+  glibtop_proc_args buf;
+  gchar * found_desktop = NULL;
+  TaskManager * manager;
+  TaskManagerPrivate *priv;
+  
+  g_return_val_if_fail (TASK_IS_WINDOW(item),NULL);
+  g_return_val_if_fail (TASK_IS_ICON(icon),NULL);
+
+  g_object_get (icon,"applet",&manager,NULL);
+  priv = manager->priv;
+  
+  cmd = glibtop_get_proc_args (&buf,task_window_get_pid (TASK_WINDOW(item)),1024);    
+  full_cmd = get_full_cmd_from_pid (task_window_get_pid (TASK_WINDOW(item)));
+  if (cmd)
+  {
+    cmd_basename = g_path_get_basename (cmd);
+  }
+  
+  task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);
+  task_window_get_wm_client(TASK_WINDOW (item), &client_name);
+  if (!client_name)
+  {
+    /*
+     WM_CLIENT_NAME is not necessarily set... in those case we'll assume 
+     that it's the host
+     */
+    gchar buffer[256];
+    gethostname (buffer, sizeof(buffer));
+    buffer [sizeof(buffer) - 1] = '\0';
+    client_name = g_strdup (buffer);
+  }
+  g_free (client_name);
+#ifdef DEBUG
+    g_debug ("client name is %s",client_name);    
+    g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
+#endif      
+  id = get_special_id_from_window_data (cmd, res_name, class_name, task_window_get_name(TASK_WINDOW(item)));
+  found_desktop = search_desktop_cache (manager,TASK_ICON(icon),class_name,res_name,cmd_basename,id);
+/*
+   Possible TODO:
+   Check for saved signature.
+   If we save a signature,desktopfile pair when we successfully discover a
+   desktop file then we don't need to search through a bunch of directories
+   for an app multiple times...
+   Question: How bad is the performance hit atm?
+   
+   TODO Note:  Desktop file lookup is important if we want to be able to offer
+   a favourite apps options (automatically show the top 4 apps in the bar for 
+   example).   
+   
+   We may as well implement both the signature/desktop caching along with 
+   stats for favourite app usage in a unified manner.
+*/
+
+  /*
+   Various permutations on finding a desktop file for the app.
+   
+   Class name may eventually be shown to give a false positive for something.
+   
+   */
+  if (!found_desktop)
+  {
+    if (res_name && strlen (res_name))
+    {
+      found_desktop = find_desktop (TASK_ICON(icon), res_name);
+    }
+
+    if (!found_desktop && class_name && strlen (class_name))
+    {
+      found_desktop = find_desktop (TASK_ICON(icon), class_name);
+    }    
+    if (thorough)
+    {
+      /*This _may_ result in unacceptable false positives.  Testing.*/
+      if (!found_desktop && full_cmd && strlen (full_cmd))
+      {
+        #ifdef DEBUG
+        g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
+        #endif
+        found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
+      }
+      if (!found_desktop && cmd && strlen (cmd))
+      {
+        #ifdef DEBUG
+        g_debug ("%s:  cmd = '%s'",__func__,cmd);
+        #endif
+        found_desktop = find_desktop (TASK_ICON(icon), cmd);
+      }
+      
+      if (!found_desktop && full_cmd && strlen (full_cmd) )
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
+      }
+      if (!found_desktop && cmd && strlen (cmd))
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
+      }
+      if (!found_desktop && full_cmd && strlen (full_cmd) )
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, full_cmd);
+      }
+      if (!found_desktop && cmd && strlen (cmd))
+      {
+        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, cmd);
+      }
+      
+      if (!found_desktop && cmd_basename && strlen (cmd_basename) )
+      {
+        found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
+      }
+    }
+    
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_special_case (TASK_ICON(icon),full_cmd,res_name,
+                                                 class_name,
+                                                 task_window_get_name (TASK_WINDOW(item)));
+    }
+    if (!found_desktop)
+    {
+      found_desktop = find_desktop_special_case (TASK_ICON(icon),cmd,res_name,
+                                                 class_name,
+                                                 task_window_get_name (TASK_WINDOW(item)));
+    }
+    if (found_desktop)
+    {
+      gchar * key = g_strdup_printf("%s::%s::%s::%s",class_name,res_name,cmd_basename,id);
+      
+      g_hash_table_insert (priv->desktops_table, key,found_desktop);
+    }
+  }
+/*
+   Possible TODO
+   if found and signature has not already been saved then save it.
+*/
+  if (TASK_IS_WINDOW(item))
+  {
+    task_window_set_use_win_icon (TASK_WINDOW(item),get_win_icon_use (full_cmd,
+                                                                    res_name,
+                                                                    class_name,
+                                                                    task_window_get_name (TASK_WINDOW(item))));
+  }
+  g_free (id);    
+  g_free (full_cmd);
+  g_free (cmd);     
+  g_free (class_name);
+  g_free (res_name);
+  g_free (cmd_basename);
+  return found_desktop;
+}
+
+static void
+window_name_changed_cb  (TaskWindow *item,const gchar *name, TaskIcon * icon)
+{
+  g_return_if_fail (TASK_IS_WINDOW(item));
+  g_return_if_fail (TASK_IS_ICON(icon));
+  if (search_for_desktop (TASK_ICON(icon),TASK_ITEM(item),FALSE))
+  {
+    g_signal_handlers_disconnect_by_func(item, window_name_changed_cb, icon);
+  }
+}
+
 static void
 process_window_opened (WnckWindow    *window,
                   TaskManager   *manager)
@@ -1674,6 +1880,7 @@ process_window_opened (WnckWindow    *window,
   gint match_score     = 0;
   gint max_match_score = 0;
   gchar*             found_desktop = FALSE;
+  TaskIcon            *containing_icon = NULL;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (WNCK_IS_WINDOW (window));
@@ -1682,6 +1889,16 @@ process_window_opened (WnckWindow    *window,
   
   priv = manager->priv;
   type = wnck_window_get_window_type (window);
+
+  /*Due to the insanity of oo it might already be in the icon list...
+   I'm sure another app will come along some day so it won't just be 
+   OpenOffice but till then the blame lies there.
+   */
+  containing_icon = task_manager_find_window (manager,window);
+  if ( containing_icon )
+  {
+    return;
+  }
     
   /*
    For Intellihide.  It may be ok to connect this after we the switch (where
@@ -1704,7 +1921,6 @@ process_window_opened (WnckWindow    *window,
     default:
       break;
   }
-
 #ifdef DEBUG  
   g_debug ("%s: Window opened: %s",__func__,wnck_window_get_name (window));  
   g_debug ("xid = %lu, pid = %d",wnck_window_get_xid (window),wnck_window_get_pid (window));
@@ -1759,7 +1975,7 @@ process_window_opened (WnckWindow    *window,
       match = taskicon;
     }
   }
-#define DEBUG 1
+#define DEBUG
 #ifdef DEBUG
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
 #endif  
@@ -1783,155 +1999,15 @@ process_window_opened (WnckWindow    *window,
   }
   else
   {
-    /* grab the class name.
-     look through the various freedesktop system/user dirs for the 
-     associated desktop file.  If we find it then dump the associated 
-     launcher into the the dialog.
-    */
-    gchar   *res_name = NULL;
-    gchar   *class_name = NULL;
-    gchar   *client_name = NULL;
-    gchar   *cmd;
-    gchar   *full_cmd;
-    gchar   *cmd_basename = NULL;
-    gchar * id = NULL;
-    glibtop_proc_args buf;
-    
-    cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (window),1024);    
-    full_cmd = get_full_cmd_from_pid (wnck_window_get_pid (window));
-    if (cmd)
-    {
-      cmd_basename = g_path_get_basename (cmd);
-    }
-    
+
     icon = task_icon_new (AWN_APPLET (manager));
-    task_window_get_wm_class(TASK_WINDOW (item), &res_name, &class_name);
-    task_window_get_wm_client(TASK_WINDOW (item), &client_name);
-    if (!client_name)
-    {
-      /*
-       WM_CLIENT_NAME is not necessarily set... in those case we'll assume 
-       that it's the host
-       */
-      gchar buffer[256];
-      gethostname (buffer, sizeof(buffer));
-      buffer [sizeof(buffer) - 1] = '\0';
-      client_name = g_strdup (buffer);
-    }
-    g_free (client_name);
-#ifdef DEBUG
-      g_debug ("client name is %s",client_name);    
-      g_debug ("%s: class name  = %s, res name = %s",__func__,class_name,res_name);
-#endif      
-    id = get_special_id_from_window_data (cmd, res_name, class_name, wnck_window_get_name(window));
-    found_desktop = search_desktop_cache (manager,TASK_ICON(icon),class_name,res_name,cmd_basename,id);
-/*
-     Possible TODO:
-     Check for saved signature.
-     If we save a signature,desktopfile pair when we successfully discover a
-     desktop file then we don't need to search through a bunch of directories
-     for an app multiple times...
-     Question: How bad is the performance hit atm?
-     
-     TODO Note:  Desktop file lookup is important if we want to be able to offer
-     a favourite apps options (automatically show the top 4 apps in the bar for 
-     example).   
-     
-     We may as well implement both the signature/desktop caching along with 
-     stats for favourite app usage in a unified manner.
-*/
 
-    /*
-     Various permutations on finding a desktop file for the app.
-     
-     Class name may eventually be shown to give a false positive for something.
-     
-     */
-    if (!found_desktop)
+    found_desktop = search_for_desktop (TASK_ICON(icon),item,TRUE);
+      
+    if ( !found_desktop)
     {
-      if (res_name && strlen (res_name))
-      {
-        found_desktop = find_desktop (TASK_ICON(icon), res_name);
-      }
-
-      if (!found_desktop && class_name && strlen (class_name))
-      {
-        found_desktop = find_desktop (TASK_ICON(icon), class_name);
-      }    
-      /*This _may_ result in unacceptable false positives.  Testing.*/
-      if (!found_desktop && full_cmd && strlen (full_cmd))
-      {
-        #ifdef DEBUG
-        g_debug ("%s:  full cmd = '%s'",__func__,full_cmd);
-        #endif
-        found_desktop = find_desktop (TASK_ICON(icon), full_cmd);
-      }
-      if (!found_desktop && cmd && strlen (cmd))
-      {
-        #ifdef DEBUG
-        g_debug ("%s:  cmd = '%s'",__func__,cmd);
-        #endif
-        found_desktop = find_desktop (TASK_ICON(icon), cmd);
-      }
-      
-      if (!found_desktop && full_cmd && strlen (full_cmd) )
-      {
-        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, full_cmd);
-      }
-      if (!found_desktop && cmd && strlen (cmd))
-      {
-        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),class_name, cmd);
-      }
-      if (!found_desktop && full_cmd && strlen (full_cmd) )
-      {
-        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, full_cmd);
-      }
-      if (!found_desktop && cmd && strlen (cmd))
-      {
-        found_desktop = find_desktop_fuzzy (TASK_ICON(icon),res_name, cmd);
-      }
-      
-      if (!found_desktop && cmd_basename && strlen (cmd_basename) )
-      {
-        found_desktop = find_desktop (TASK_ICON(icon), cmd_basename);
-      }
-      
-      if (!found_desktop)
-      {
-        found_desktop = find_desktop_special_case (TASK_ICON(icon),full_cmd,res_name,
-                                                   class_name,
-                                                   wnck_window_get_name (window));
-      }
-      if (!found_desktop)
-      {
-        found_desktop = find_desktop_special_case (TASK_ICON(icon),cmd,res_name,
-                                                   class_name,
-                                                   wnck_window_get_name (window));
-      }
-      if (found_desktop)
-      {
-        gchar * key = g_strdup_printf("%s::%s::%s::%s",class_name,res_name,cmd_basename,id);
-        
-        g_hash_table_insert (priv->desktops_table, key,found_desktop);
-      }
+      g_signal_connect (item,"name-changed",G_CALLBACK(window_name_changed_cb), icon);
     }
-/*
-     Possible TODO
-     if found and signature has not already been saved then save it.
-*/
-    if (TASK_IS_WINDOW(item))
-    {
-      task_window_set_use_win_icon (TASK_WINDOW(item),get_win_icon_use (full_cmd,
-                                                                      res_name,
-                                                                      class_name,
-                                                                      wnck_window_get_name (window)));
-    }
-    g_free (id);    
-    g_free (full_cmd);
-    g_free (cmd);     
-    g_free (class_name);
-    g_free (res_name);
-    g_free (cmd_basename);
     task_icon_append_item (TASK_ICON (icon), item);
     task_manager_add_icon (manager,TASK_ICON (icon));    
   }
@@ -1982,7 +2058,7 @@ on_window_opened (WnckScreen    *screen,
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (WNCK_IS_WINDOW (window));
-  
+
   _wnck_get_wmclass (wnck_window_get_xid (window),
                      &res_name, &class_name);
   if (get_special_wait_from_window_data (res_name, 
@@ -2181,32 +2257,34 @@ task_manager_refresh_launcher_paths (TaskManager *manager,
       TaskItem  *launcher = NULL;
       GtkWidget *icon;
 
-      launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),path);
-      
-      if (launcher)
+      if (usable_desktop_file_from_path (path) )
       {
-        icon = task_icon_new (AWN_APPLET (manager));
-        task_icon_append_item (TASK_ICON (icon), launcher);
-        gtk_container_add (GTK_CONTAINER (priv->box), icon);
-        gtk_box_reorder_child (GTK_BOX (priv->box), icon, idx);
-        priv->icons = g_slist_insert (priv->icons, icon, idx);
-
-        g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
-        g_signal_connect_swapped (icon,
-                                  "visible-changed",
-                                  G_CALLBACK (on_icon_visible_changed),
-                                  manager);
-        g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
-                                  "animation-end",
-                                  G_CALLBACK (on_icon_effects_ends),
-                                  icon);
-
-        update_icon_visible (manager, TASK_ICON (icon));
-
-        /* reordening through D&D */
-        if (priv->drag_and_drop)
+        launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),path);
+        if (launcher)
         {
-          _drag_add_signals(manager, icon);
+          icon = task_icon_new (AWN_APPLET (manager));
+          task_icon_append_item (TASK_ICON (icon), launcher);
+          gtk_container_add (GTK_CONTAINER (priv->box), icon);
+          gtk_box_reorder_child (GTK_BOX (priv->box), icon, idx);
+          priv->icons = g_slist_insert (priv->icons, icon, idx);
+
+          g_object_weak_ref (G_OBJECT (icon), (GWeakNotify)icon_closed, manager);
+          g_signal_connect_swapped (icon,
+                                    "visible-changed",
+                                    G_CALLBACK (on_icon_visible_changed),
+                                    manager);
+          g_signal_connect_swapped (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)),
+                                    "animation-end",
+                                    G_CALLBACK (on_icon_effects_ends),
+                                    icon);
+
+          update_icon_visible (manager, TASK_ICON (icon));
+
+          /* reordening through D&D */
+          if (priv->drag_and_drop)
+          {
+            _drag_add_signals(manager, icon);
+          }
         }
       }
       else

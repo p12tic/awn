@@ -62,7 +62,6 @@ struct _AwnAppletSimpleClass
   /* signals */
   void (*clicked)            (AwnAppletSimple *simple);
   void (*middle_clicked)     (AwnAppletSimple *simple);
-  void (*long_press)         (AwnAppletSimple *simple);
   void (*context_menu_popup) (AwnAppletSimple *simple, GdkEventButton *event);
 
   /* padding */

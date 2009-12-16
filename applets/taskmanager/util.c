@@ -41,7 +41,13 @@
       Tool to analyze and special case windows by advanced users ala xprop 
       (point and click) and analyze.
 
-      For 0.6 start making use of WM_WINDOW_ROLE when it is available
+      For 0.6:
+
+        start making use of WM_WINDOW_ROLE when it is available
+        Make use of _NET_WM_ICON_NAME
+        Make use of _NET_WM_NAME
+ 
+ 
  */
 
 static gchar * generate_id_from_cmd(gchar *cmd,gchar *res_name,
@@ -684,3 +690,63 @@ utils_gdk_pixbuf_similar_to (GdkPixbuf *i1, GdkPixbuf *i2)
 #endif
   return PSNR >= 11;
 }
+
+gboolean
+usable_desktop_entry (  DesktopAgnosticFDODesktopEntry * entry)
+{
+  if (  !desktop_agnostic_fdo_desktop_entry_key_exists (entry, "Icon")
+      ||
+        !desktop_agnostic_fdo_desktop_entry_key_exists (entry, "Name")
+      ||
+        !desktop_agnostic_fdo_desktop_entry_key_exists (entry, "Exec") )
+  {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+gboolean
+usable_desktop_file_from_path ( const gchar * path)
+{
+  DesktopAgnosticVFSFile *file;
+  GError *error = NULL;
+  DesktopAgnosticFDODesktopEntry * entry;
+  
+  file = desktop_agnostic_vfs_file_new_for_path (path, &error);
+
+  if (error)
+  {
+    g_critical ("Error when trying to load the launcher: %s", error->message);
+    g_error_free (error);
+    return FALSE;
+  }
+
+  if (file == NULL || !desktop_agnostic_vfs_file_exists (file))
+  {
+    if (file)
+    {
+      g_object_unref (file);
+    }
+    g_critical ("File not found: '%s'", path);
+    return FALSE;
+  }
+
+  entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, &error);
+  
+  if (error)
+  {
+    g_critical ("Error when trying to load the launcher: %s", error->message);
+    g_error_free (error);
+    g_object_unref (file);    
+    return FALSE;
+  }
+
+  if (!usable_desktop_entry (entry) )
+  {
+    g_object_unref (entry);
+    return FALSE;
+  }
+  g_object_unref (entry);
+  return TRUE;
+}
+

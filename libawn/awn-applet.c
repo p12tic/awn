@@ -475,6 +475,53 @@ awn_applet_constructed (GObject *obj)
     }
 
     GError *error = NULL;
+
+#if HAVE_DBUS_GLIB_080
+    GHashTable *all_props = NULL;
+
+    // doing GetAll reduces DBus lag significantly
+    dbus_g_proxy_call (prop_proxy, "GetAll", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_INVALID,
+                       dbus_g_type_get_map ("GHashTable", G_TYPE_STRING, 
+                                            G_TYPE_VALUE), &all_props,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
+    GHashTableIter iter;
+    gpointer key, value;
+
+    g_hash_table_iter_init (&iter, all_props);
+    while (g_hash_table_iter_next (&iter, &key, &value))
+    {
+      if (strcmp (key, "PanelXid") == 0)
+      {
+        priv->panel_xid = g_value_get_int64 (value);
+      }
+      else if (strcmp (key, "MaxSize") == 0)
+      {
+        g_object_set_property (obj, "max-size", value);
+      }
+      else if (strcmp (key, "Position") == 0)
+      {
+        g_object_set_property (obj, "position", value);
+      }
+      else if (strcmp (key, "Size") == 0)
+      {
+        g_object_set_property (obj, "size", value);
+      }
+      else if (strcmp (key, "Offset") == 0)
+      {
+        g_object_set_property (obj, "offset", value);
+      }
+      else
+      {
+        g_warning ("Unknown property: \"%s\"", (char*)key);
+      }
+    }
+
+#else
     GValue position = {0,}, size = {0,}, max_size = {0,}, offset = {0,};
     GValue panel_xid = {0,};
 
@@ -522,7 +569,7 @@ awn_applet_constructed (GObject *obj)
                        G_TYPE_INVALID);
 
     if (error) goto crap_out;
-    
+
     g_object_set_property (obj, "position", &position);
     g_object_set_property (obj, "size", &size);
     g_object_set_property (obj, "offset", &offset);
@@ -537,7 +584,9 @@ awn_applet_constructed (GObject *obj)
     g_value_unset (&size);
     g_value_unset (&max_size);
     g_value_unset (&offset);
+    g_value_unset (&panel_xid);
 
+#endif
     if (prop_proxy) g_object_unref (prop_proxy);
 
     g_free (object_path);
@@ -547,7 +596,7 @@ awn_applet_constructed (GObject *obj)
 
     g_warning ("%s", error->message);
     g_error_free (error);
-    gtk_main_quit ();
+    g_assert_not_reached ();
   }
 }
 

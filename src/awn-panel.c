@@ -99,6 +99,7 @@ struct _AwnPanelPrivate
   /* for strut updating */
   gint old_x;
   gint old_y;
+  guint strut_update_id;
 
   /* animated resizing */
   gint draw_width;
@@ -326,6 +327,8 @@ static void     awn_panel_update_masks      (GtkWidget *panel,
                                              gint real_height);
 
 static void     awn_panel_docklet_destroy   (AwnPanel *panel);
+
+static void     awn_panel_queue_strut_update(AwnPanel *panel);
 
 static void     awn_panel_set_strut         (AwnPanel *panel);
 
@@ -2266,7 +2269,7 @@ on_window_configure (GtkWidget          *panel,
 
     /* Update the strut if the panel_mode is set */
     if (priv->panel_mode)
-      awn_panel_set_strut (AWN_PANEL (panel));
+      awn_panel_queue_strut_update (AWN_PANEL (panel));
 
     return TRUE;
   }
@@ -2277,7 +2280,7 @@ on_window_configure (GtkWidget          *panel,
 
     /* Update the strut if the panel_mode is set */
     if (priv->panel_mode)
-      awn_panel_set_strut (AWN_PANEL (panel));
+      awn_panel_queue_strut_update (AWN_PANEL (panel));
 
     return FALSE;
   }
@@ -2901,7 +2904,7 @@ awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
      * If it's not, the strut will get set when the position and dimension get set. 
      */
     if (GTK_WIDGET_REALIZED (panel))
-      awn_panel_set_strut (panel);
+      awn_panel_queue_strut_update (panel);
   }
   else
   {
@@ -2960,7 +2963,7 @@ on_manager_size_alloc (GtkWidget *manager, GtkAllocation *alloc,
 
   if (priv->panel_mode && priv->animated_resize && !priv->expand)
   {
-    awn_panel_set_strut (panel);
+    awn_panel_queue_strut_update (panel);
   }
   awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
 }
@@ -2987,6 +2990,34 @@ check_monitor_intersects_area (GdkScreen * screen, gint x,gint y,gint width,gint
     }
   }
   return FALSE;
+}
+
+static gboolean
+strut_update_scheduler (AwnPanel *panel)
+{
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+
+  AwnPanelPrivate *priv = panel->priv;
+
+  priv->strut_update_id = 0;
+  if (priv->panel_mode)
+  {
+    awn_panel_set_strut (panel);
+  }
+
+  return FALSE;
+}
+
+static void
+awn_panel_queue_strut_update (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->strut_update_id == 0)
+  {
+    priv->strut_update_id = g_idle_add ((GSourceFunc)strut_update_scheduler,
+                                        panel);
+  }
 }
 
 static void

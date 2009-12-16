@@ -1,3 +1,126 @@
+2009-12-15 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Suppress some unnecessary pixbuf cache invalidates.
+
+2009-12-14 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Free some lda color objects.
+
+2009-12-08 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Bad Desktop Files!  Bad!
+
+2009-12-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	* libawn/awn-applet.c:
+	Use DBus' GetAll method if one has dbus-glib-1 >= 0.80.
+
+2009-12-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-alignment.c:
+	* libawn/awn-icon-box.c:
+	Add offset-multiplier property to AwnAlignment.
+	Allow stuffing AwnImage and AwnAlignment to AwnIconBox.
+
+2009-12-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Minor changes to Awn autostart desktop file.
+
+2009-12-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Use idle callback to set the strut. Fixes bug #491229.
+
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	Using server-side pixmap wasn't a good idea, that seems to slow 3d and
+	curved background rendering with patterns quite a lot.
+
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-3d.c:
+	* src/awn-background-curves.c:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	* src/awn-background.c:
+	Changes to rendering which speed up things when using patterns.
+	Helped a lot with flat, edgy & floaty, but not that much
+	with 3d and curved.
+
+2009-12-01 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Some comments.  Notes regarding post 0.4 code.
+
+2009-12-01  Hannes Verschore <hv1989@gmail.com>
+
+	* src/awn-background-3d.c:
+	Enable pattern support for 3D background
+
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-curves.c:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Enable pattern support for backgrounds expect 3D.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make sure that if a launcher is added to the dialog after a 
+	window that the launcher is still placed at the top of the dialog.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Really commit the changes mentioned in the previous two commit
+	messages.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Do a less intensive search when we're searching for desktop file
+	due to a name change.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Minor correction to previous commit.
+	
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Sometimes it's just not possible to initially determine a
+	proper desktop file unless one also has the title (OO). 
+	Unfortuntely some apps (OO) do not provide the necessary info in the
+	Title in some circumstance until long after the window has 
+	opened.  So if a desktop lookup fails, then connect to the name
+	change signal and try to match up whenever the window titles 
+	change.
+	
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon.c:
+	Removed long-press signal from AppletSimple, this simplifies the
+	behavior for all applets - if applet doesn't connect to long-press
+	via AwnIcon, it will still emit standard clicked-signal.
+
 2009-11-30  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/avant-window-navigator.schema-ini.in.in:
