@@ -211,6 +211,31 @@ _move_window_to_index (GtkMenuItem *menuitem, WnckWindow * win)
 }
 
 static void
+_close_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
+{
+  /*
+   This might actually be a key event?  but it doesn't matter... the time
+   field is in the same place*/
+  GSList * list;
+  GSList * i;
+  GdkEventButton * event = (GdkEventButton*)gtk_get_current_event ();
+
+  g_return_if_fail (event);
+  list = task_icon_get_items (icon);
+  for (i = list; i ; i=i->next)
+  {
+    if ( !TASK_IS_WINDOW (i->data) )
+    {
+      continue;
+    }
+    
+    wnck_window_close (task_window_get_window (TASK_WINDOW(i->data)),event->time);
+  }
+  gdk_event_free ((GdkEvent*)event);
+
+}
+
+static void
 _close_window_cb (GtkMenuItem *menuitem, TaskIcon * icon)
 {
   /*
@@ -344,6 +369,33 @@ task_icon_get_menu_item_close_active (TaskIcon * icon)
   gtk_widget_show (item);
   g_signal_connect (item,"activate",
                 G_CALLBACK(_close_window_cb),
+                icon);
+  return item;
+}
+
+static GtkWidget *
+task_icon_get_menu_item_close_all (TaskIcon * icon, int height)
+{
+  GtkWidget * item;
+  GtkWidget * image;
+  const TaskItem * main_item = task_icon_get_main_item (icon);
+  if (task_icon_count_tasklist_windows (icon) <=1)
+  {
+    return NULL;
+  }
+  if (!main_item || !TASK_IS_WINDOW (main_item) )
+  {
+    return NULL;
+  }  
+  item = gtk_image_menu_item_new_with_mnemonic ("_Close All");
+  image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, height);
+  if (image)
+  {
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),image);
+  }
+  gtk_widget_show (item);
+  g_signal_connect (item,"activate",
+                G_CALLBACK(_close_all_cb),
                 icon);
   return item;
 }
@@ -903,6 +955,9 @@ menu_parse_start_element (GMarkupParseContext *context,
       break;
     case INTERNAL_CLOSE_ACTIVE:
       menuitem = task_icon_get_menu_item_close_active (icon);
+      break;
+    case INTERNAL_CLOSE_ALL:
+      menuitem = task_icon_get_menu_item_close_all (icon, height);
       break;
     case INTERNAL_CUSTOMIZE_ICON:
       menuitem = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),task_icon_get_custom_name(icon));
