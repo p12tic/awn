@@ -51,6 +51,10 @@
 
 #include "config.h"
 
+#define STOCK_DELETE "wnck-stock-delete"
+#define STOCK_MAXIMIZE "wnck-stock-maximize"
+#define STOCK_MINIMIZE "wnck-stock-minimize"
+
 static void menu_parse_start_element (GMarkupParseContext *context,
                                       const gchar         *element_name,
                                       const gchar        **attribute_names,
@@ -361,11 +365,18 @@ task_icon_get_menu_item_close_active (TaskIcon * icon)
 {
   GtkWidget * item;
   const TaskItem * main_item = task_icon_get_main_item (icon);
+  GtkWidget * image;
   if (!main_item || !TASK_IS_WINDOW (main_item) )
   {
     return NULL;
   }  
-  item = gtk_image_menu_item_new_from_stock (GTK_STOCK_CLOSE,NULL);
+  item = gtk_image_menu_item_new_with_mnemonic (_("_Close"));
+  image = gtk_image_new_from_stock (STOCK_DELETE,GTK_ICON_SIZE_MENU);
+
+  if (image)
+  {
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(item),image);
+  }
   gtk_widget_show (item);
   g_signal_connect (item,"activate",
                 G_CALLBACK(_close_window_cb),
@@ -388,7 +399,12 @@ task_icon_get_menu_item_close_all (TaskIcon * icon)
     return NULL;
   }  
   item = gtk_image_menu_item_new_with_mnemonic (_("_Close All"));
-  image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
+  image = gtk_image_new_from_stock (STOCK_DELETE,GTK_ICON_SIZE_MENU);
+  if (image)
+  {
+    g_debug ("setting image");
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(item),image);
+  }
 
   if (image)
   {
@@ -405,14 +421,21 @@ static GtkWidget *
 task_icon_get_menu_item_maximize (TaskIcon * icon,WnckWindow *win)
 {
   GtkWidget * menuitem = NULL;
+  GtkWidget * image = NULL;
   if (! wnck_window_is_maximized(win))
   {
-    menuitem = gtk_menu_item_new_with_mnemonic (_("Ma_ximize"));
+    menuitem = gtk_image_menu_item_new_with_mnemonic (_("Ma_ximize"));
+    image = gtk_image_new_from_stock (STOCK_MAXIMIZE,GTK_ICON_SIZE_MENU);
   }
   else if (! wnck_window_is_minimized(win))
   {
-    menuitem = gtk_menu_item_new_with_mnemonic (_("UnMa_ximize"));
+    menuitem = gtk_image_menu_item_new_with_mnemonic (_("UnMa_ximize"));
   }
+  if (image)
+  {
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(menuitem),image);
+  }
+  
   gtk_widget_show (menuitem);
   g_signal_connect (menuitem,"activate",
                 G_CALLBACK(_maximize_window_cb),
@@ -453,15 +476,20 @@ static GtkWidget *
 task_icon_get_menu_item_minimize (TaskIcon * icon,WnckWindow *win)
 {
   GtkWidget * menuitem = NULL;
+  GtkWidget * image = NULL;
   if (! wnck_window_is_minimized(win))
   {
-    menuitem = gtk_menu_item_new_with_mnemonic (_("Mi_nimize"));
+    menuitem = gtk_image_menu_item_new_with_mnemonic (_("Mi_nimize"));
+    image = gtk_image_new_from_stock (STOCK_MINIMIZE,GTK_ICON_SIZE_MENU);    
   }
   else
   {
     menuitem = gtk_menu_item_new_with_mnemonic (_("UnMi_nimize"));
   }
-
+  if (image)
+  {
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (menuitem),image);
+  }
   gtk_widget_show (menuitem);
   g_signal_connect (menuitem,"activate",
                 G_CALLBACK(_minimize_window_cb),
@@ -1170,7 +1198,8 @@ GtkWidget *
 task_icon_build_context_menu(TaskIcon * icon)
 {
   GError * err=NULL;
-  gchar * contents=NULL;  
+  gchar * contents=NULL;
+  static gboolean done_once = FALSE;
   GMarkupParseContext * markup_parser_context = NULL;
   GMarkupParser markup_parser = {menu_parse_start_element,
                                  menu_parse_end_element,
@@ -1180,6 +1209,22 @@ task_icon_build_context_menu(TaskIcon * icon)
   gchar * base_menu_filename = NULL;  
   gchar * menu_filename = NULL;
   GtkWidget * menu = gtk_menu_new();
+
+  if (!done_once)
+  {
+    /*
+     get wnck to prim the icon factory with it's stock icons
+     Use for now.. maybe replace min,max.close with custom icons.
+     */
+    WnckWindow *win = wnck_screen_get_active_window (wnck_screen_get_default() );
+    if (win)
+    {
+      GtkWidget * wnck_menu = wnck_action_menu_new ( win);
+      gtk_widget_destroy (wnck_menu);
+      done_once = TRUE;
+    }
+  }
+  
   g_object_set_qdata (G_OBJECT(menu), g_quark_from_static_string("ICON"),icon);
   
   gtk_widget_show_all (menu);
