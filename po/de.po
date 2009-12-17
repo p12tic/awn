@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2009-10-30 05:10+0000\n"
-"Last-Translator: Huber Florian <itshorty@gmail.com>\n"
+"PO-Revision-Date: 2009-12-16 17:04+0000\n"
+"Last-Translator: MixCool <lars.thoms@mixcool.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-11-07 04:42+0000\n"
+"X-Launchpad-Export-Date: 2009-12-17 04:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -31,6 +31,9 @@ msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Das Verhalten, wenn ein Fenster auf einer anderen Arbeitsfläche fokussiert "
+"wird. (0 für Standard, 1 - wechsele zur anderen Arbeitsfläche, 2 - bewege "
+"Fenster auf aktive Arbeitsfläche)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid "Delay before activating a window when dragging over an icon."
@@ -52,11 +55,11 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Erlaube das Verändern der Anordnung per Drag'n'Drop "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Erlaube das Gruppieren von Prozessen."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
