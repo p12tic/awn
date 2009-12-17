@@ -387,8 +387,19 @@ task_icon_get_menu_item_close_all (TaskIcon * icon, int height)
   {
     return NULL;
   }  
-  item = gtk_image_menu_item_new_with_mnemonic ("_Close All");
+  item = gtk_image_menu_item_new_with_mnemonic (_("_Close All"));
   image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, height);
+
+  if (image && gdk_pixbuf_get_height (gtk_image_get_pixbuf(image)) != height)
+  {
+    GdkPixbuf *scaled;
+    scaled = gdk_pixbuf_scale_simple (gtk_image_get_pixbuf(image), height, height, GDK_INTERP_BILINEAR);
+    if (scaled)
+    {
+      gtk_image_set_from_pixbuf (GTK_IMAGE(image),pbuf);
+      g_object_unref (scaled);      
+    }    
+  }
   if (image)
   {
     gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),image);
@@ -406,11 +417,11 @@ task_icon_get_menu_item_maximize (TaskIcon * icon,WnckWindow *win)
   GtkWidget * menuitem = NULL;
   if (! wnck_window_is_maximized(win))
   {
-    menuitem = gtk_menu_item_new_with_label (_("Maximize"));
+    menuitem = gtk_menu_item_new_with_mnemonic (_("Ma_ximize"));
   }
   else if (! wnck_window_is_minimized(win))
   {
-    menuitem = gtk_menu_item_new_with_label (_("UnMaximize"));
+    menuitem = gtk_menu_item_new_with_mnemonic (_("UnMa_ximize"));
   }
   gtk_widget_show (menuitem);
   g_signal_connect (menuitem,"activate",
@@ -431,7 +442,7 @@ task_icon_get_menu_keep_above (TaskIcon * icon,WnckWindow *win)
   }
   if (! wnck_window_is_minimized(win))
   {
-    menuitem = gtk_check_menu_item_new_with_label (_("Keep Above"));    
+    menuitem = gtk_check_menu_item_new_with_label (_("Always on _Top"));    
     gtk_widget_show (menuitem);
     if (WNCK_WINDOW_STATE_ABOVE & wnck_window_get_state (win) )
     {
@@ -454,11 +465,11 @@ task_icon_get_menu_item_minimize (TaskIcon * icon,WnckWindow *win)
   GtkWidget * menuitem = NULL;
   if (! wnck_window_is_minimized(win))
   {
-    menuitem = gtk_menu_item_new_with_label (_("Minimize"));
+    menuitem = gtk_menu_item_new_with_mnemonic (_("Mi_nimize"));
   }
   else
   {
-    menuitem = gtk_menu_item_new_with_label (_("UnMinimize"));
+    menuitem = gtk_menu_item_new_with_mnemonic (_("UnMi_nimize"));
   }
 
   gtk_widget_show (menuitem);
@@ -654,6 +665,45 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
 }
 
 static void
+task_icon_inline_action_simple_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
+{
+
+  GtkWidget * menuitem;
+
+  if ((menuitem = task_icon_get_menu_item_maximize (icon,win)))
+  {
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+    gtk_widget_show (menuitem);
+  }
+
+  if ((menuitem = task_icon_get_menu_item_minimize (icon,win)))
+  {
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+    gtk_widget_show (menuitem);
+  }
+  
+  menuitem = task_icon_get_menu_item_close_active (icon);
+  gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+  gtk_widget_show (menuitem);
+}
+
+static GtkWidget *
+task_icon_get_submenu_action_simple_menu (TaskIcon * icon, WnckWindow * win)
+{
+  GtkWidget * submenu;
+  GtkWidget * menuitem;
+
+  menuitem = gtk_menu_item_new_with_label ( wnck_window_get_name(win));
+  submenu = gtk_menu_new ();
+  gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuitem),submenu);
+  task_icon_inline_action_simple_menu (icon, GTK_MENU(submenu),win);
+  gtk_widget_show_all (submenu);  
+  gtk_widget_show_all (menuitem);
+  return menuitem;
+}
+
+
+static void
 task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
 {
 
@@ -737,6 +787,7 @@ typedef enum{
       INTERNAL_REMOVE_CUSTOMIZED_ICON,
       INTERNAL_SEPARATOR,
       INTERNAL_SMART_WNCK_MENU,
+      INTERNAL_SMART_WNCK_SIMPLE_MENU,
       INTERNAL_SUBMENU,
       INTERNAL_INLINE_ACTION_MENU_ACTIVE,
       INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,
@@ -762,6 +813,7 @@ const ContextMenuItemType context_menu_item_type_list[] = {
         { INTERNAL_REMOVE_CUSTOMIZED_ICON,"Internal-Remove-Customized-Icon"},
         { INTERNAL_SEPARATOR,"Internal-Separator"},
         { INTERNAL_SMART_WNCK_MENU,"Internal-Smart-Wnck-Menu"},
+        { INTERNAL_SMART_WNCK_SIMPLE_MENU,"Internal-Smart-Wnck-Simple-Menu"},
         { INTERNAL_SUBMENU, "Internal-Submenu"},
         { INTERNAL_INLINE_ACTION_MENU_ACTIVE,"Internal-Inline-Action-Menu-Active"},
         { INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,"Internal-Inline-Submenus-Action-Menu-Inactives"},
@@ -1063,6 +1115,42 @@ menu_parse_start_element (GMarkupParseContext *context,
           gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
         }
       }
+      break;
+    case INTERNAL_SMART_WNCK_SIMPLE_MENU:
+      /*TODO move into a function.*/
+      if (task_icon_count_tasklist_windows (icon) == 1 && TASK_IS_WINDOW(priv->main_item))
+      {
+        task_icon_inline_action_simple_menu (icon, GTK_MENU(menu), task_window_get_window (TASK_WINDOW(priv->main_item)));
+      }
+      else if (task_icon_count_tasklist_windows (icon) > 1)
+      {
+        GtkWidget * main_item = GTK_WIDGET(priv->main_item);
+        GSList * item_list = task_icon_get_items (icon);
+        GtkWidget * sub;
+        GSList * i;
+        if (main_item && TASK_IS_WINDOW (main_item))
+        {
+          sub = task_icon_get_submenu_action_simple_menu (icon, task_window_get_window (TASK_WINDOW(main_item)));
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), sub);
+        }
+        for (i=item_list;i;i=i->next)
+        {
+          if ( !i->data )
+          {
+            continue;
+          }
+          if ( !TASK_IS_WINDOW (i->data) )
+          {
+            continue;
+          }
+          if (i->data == main_item)
+          {
+            continue;
+          }
+          sub = task_icon_get_submenu_action_simple_menu (TASK_ICON(icon), task_window_get_window (TASK_WINDOW(i->data)));
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), sub);
+        }
+      }        
       break;
     case INTERNAL_SUBMENU:
       menuitem = gtk_image_menu_item_new_with_label ( display_value?display_value:"");
