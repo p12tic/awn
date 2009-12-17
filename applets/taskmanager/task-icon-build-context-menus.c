@@ -374,7 +374,7 @@ task_icon_get_menu_item_close_active (TaskIcon * icon)
 }
 
 static GtkWidget *
-task_icon_get_menu_item_close_all (TaskIcon * icon, int height)
+task_icon_get_menu_item_close_all (TaskIcon * icon)
 {
   GtkWidget * item;
   GtkWidget * image;
@@ -388,18 +388,8 @@ task_icon_get_menu_item_close_all (TaskIcon * icon, int height)
     return NULL;
   }  
   item = gtk_image_menu_item_new_with_mnemonic (_("_Close All"));
-  image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, height);
+  image = gtk_image_new_from_stock (GTK_STOCK_CLOSE, GTK_ICON_SIZE_MENU);
 
-  if (image && gdk_pixbuf_get_height (gtk_image_get_pixbuf(image)) != height)
-  {
-    GdkPixbuf *scaled;
-    scaled = gdk_pixbuf_scale_simple (gtk_image_get_pixbuf(image), height, height, GDK_INTERP_BILINEAR);
-    if (scaled)
-    {
-      gtk_image_set_from_pixbuf (GTK_IMAGE(image),pbuf);
-      g_object_unref (scaled);      
-    }    
-  }
   if (image)
   {
     gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),image);
@@ -1009,7 +999,7 @@ menu_parse_start_element (GMarkupParseContext *context,
       menuitem = task_icon_get_menu_item_close_active (icon);
       break;
     case INTERNAL_CLOSE_ALL:
-      menuitem = task_icon_get_menu_item_close_all (icon, height);
+      menuitem = task_icon_get_menu_item_close_all (icon);
       break;
     case INTERNAL_CUSTOMIZE_ICON:
       menuitem = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),task_icon_get_custom_name(icon));
