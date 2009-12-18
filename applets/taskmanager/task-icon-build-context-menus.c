@@ -324,7 +324,7 @@ static void
 _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
 {
   g_debug ("%s:  cmd_env_env = %p",__func__,cmd_and_envs);
-  for (int i=0; i<5;i++)
+  for (int i=0; i<6;i++)
   {
     g_debug ("%s: [%d] = %s",__func__,i,cmd_and_envs[i]);
   }
@@ -333,7 +333,7 @@ _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
   g_setenv ("AWN_TASK_XID",cmd_and_envs[2],TRUE);
   g_setenv ("AWN_TASK_EXEC",cmd_and_envs[3],TRUE);
   g_setenv ("AWN_TASK_DESKTOP",cmd_and_envs[4],TRUE);
-
+  g_setenv ("AWN_TASK_DEBUG_TASKMAN_PID",cmd_and_envs[5],TRUE);
   //Want access to shell variables...
   if (system (cmd_and_envs[0]) ==-1)
   {
@@ -352,7 +352,7 @@ task_icon_get_menu_item_add_to_launcher_list (TaskIcon * icon)
   {
     return NULL;
   }
-  item = gtk_menu_item_new_with_label (_("Add to Launcher List"));
+  item = gtk_menu_item_new_with_label (_("Add as Launcher"));
   gtk_widget_show (item);
   g_signal_connect (item,"activate",
                     G_CALLBACK(add_to_launcher_list_cb),
@@ -977,20 +977,19 @@ menu_parse_start_element (GMarkupParseContext *context,
       {
         const TaskItem * mainitem = task_icon_get_main_item (icon);
         TaskItem * launcher = task_icon_get_launcher (icon);
-        if (!TASK_IS_WINDOW (mainitem))
+        if (!mainitem || !TASK_IS_WINDOW (mainitem))
         {
           break;
         }     
         GtkWidget * image;
-        gchar ** cmd_and_envs = g_malloc ( sizeof(gchar *) * 6);
+        gchar ** cmd_and_envs = g_malloc ( sizeof(gchar *) * 7);
         gchar * cmd_copy = g_strdup (cmd_value);
         menuitem = gtk_image_menu_item_new_with_label (text_value);
-        image = gtk_image_new_from_icon_name (icon_value,height);
+        image = gtk_image_new_from_icon_name (icon_value,GTK_ICON_SIZE_MENU);
         if (image)
         {
           gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(menuitem),image);
         }
-        gtk_widget_show (menuitem);
         g_signal_connect (menuitem,"activate",
                       G_CALLBACK(_spawn_menu_cmd_cb),
                       cmd_and_envs);
@@ -1007,10 +1006,11 @@ menu_parse_start_element (GMarkupParseContext *context,
           cmd_and_envs[3] = g_strdup("");
           cmd_and_envs[4] = g_strdup("");
         }
-        cmd_and_envs[5] = NULL;
+        cmd_and_envs[5] = g_strdup_printf("%u",getpid());
+        cmd_and_envs[6] = NULL;
         g_object_weak_ref (G_OBJECT(menuitem),(GWeakNotify)g_strfreev,cmd_and_envs);
-        gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
       }
+      gtk_widget_show_all (menuitem);
       break;
     case INTERNAL_ABOUT:
       menuitem = awn_applet_create_about_item (applet,
@@ -1062,7 +1062,7 @@ menu_parse_start_element (GMarkupParseContext *context,
           g_object_unref (iter->data);
           iter = prev;
         }
-        g_object_unref (old_menu);
+        gtk_widget_destroy (old_menu);
         g_object_set_qdata (G_OBJECT(menu), g_quark_from_static_string("ICON"),icon);  
         *pmenu = menu;
       }
