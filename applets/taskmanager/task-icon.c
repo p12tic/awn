@@ -82,8 +82,6 @@ enum
   PROP_OVERLAY_APPLICATION_ICONS_ALPHA,
   PROP_OVERLAY_APPLICATION_ICONS_SCALE,
   PROP_OVERLAY_APPLICATION_ICONS_SWAP,
-  PROP_MENU_CONTEXT_TASKS,
-  PROP_MENU_CONTEXT_LAUNCHER_ONLY,
   PROP_MENU_FILENAME
 };
 
@@ -251,12 +249,6 @@ task_icon_get_property (GObject    *object,
     case PROP_DESKTOP_COPY:
       g_value_set_int (value, priv->desktop_copy);
       break;
-    case PROP_MENU_CONTEXT_TASKS:
-      g_value_set_boxed (value, priv->menu_context_tasks);
-      break;
-    case PROP_MENU_CONTEXT_LAUNCHER_ONLY:
-      g_value_set_boxed (value, priv->menu_context_launcher_only);
-      break;
     case PROP_MENU_FILENAME:
       g_value_set_string (value, priv->menu_filename);
       break;
@@ -335,22 +327,6 @@ task_icon_set_property (GObject      *object,
     case PROP_OVERLAY_APPLICATION_ICONS_SWAP:
       priv->overlay_application_icons_swap = g_value_get_boolean (value);
       task_icon_set_icon_pixbuf (icon,priv->main_item);     
-      break;
-    case PROP_MENU_CONTEXT_TASKS:
-      if (priv->menu_context_tasks)
-      {
-        g_value_array_free (priv->menu_context_tasks);
-        priv->menu_context_tasks = NULL;
-      }
-      priv->menu_context_tasks = (GValueArray*)g_value_dup_boxed (value);
-      break;
-    case PROP_MENU_CONTEXT_LAUNCHER_ONLY:
-      if (priv->menu_context_launcher_only)
-      {
-        g_value_array_free (priv->menu_context_launcher_only);
-        priv->menu_context_launcher_only = NULL;
-      }
-      priv->menu_context_launcher_only = (GValueArray*)g_value_dup_boxed (value);      
       break;
     case PROP_MENU_FILENAME:
       if (priv->menu_filename)

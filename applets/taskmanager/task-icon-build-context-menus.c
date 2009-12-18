@@ -336,7 +336,7 @@ _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
   g_setenv ("AWN_TASK_DEBUG_TASKMAN_PID",cmd_and_envs[5],TRUE);
   //Want access to shell variables...
   if (system (cmd_and_envs[0]) ==-1)
-  {
+  {     
     g_message ("%s: error spawning '%s'",__func__,cmd_and_envs[0]);
   }
 }

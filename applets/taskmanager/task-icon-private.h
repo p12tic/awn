@@ -58,9 +58,6 @@ struct _TaskIconPrivate
 
   /*context menu*/
   GtkWidget * menu;
-  GValueArray *menu_context_tasks;
-  GValueArray *menu_context_launcher_only;
-
   gchar * menu_filename;
 
   gboolean draggable;

@@ -83,16 +83,6 @@ type = integer
 default = 3
 _description=Maximum number of task indicators to show under icons. Valid range is 0..3.
 
-[DEFAULT/menu_context_tasks]
-type = list-string
-default = Internal::DOCK_PREFS::TOP_LEVEL::<>::<>::<>::<>;Internal::SEPARATOR::TOP_LEVEL::<>::<>::<>::<>;Internal::CUSTOMIZE_ICON::TOP_LEVEL::<>::<>::<>::<>;Internal::REMOVE_CUSTOMIZED_ICON::TOP_LEVEL::<>::<>::<>::<>;Internal::ADD_LAUNCHER::TOP_LEVEL::<>::<>::<>::<>;Internal::SEPARATOR::TOP_LEVEL::<>::<>::<>::<>;Internal::WINDOW_LIST::TOP_LEVEL::<>::SUBMENU_WINDOW_LIST::<>::<>;Internal::LAUNCH::TOP_LEVEL::<>::<>::<>::<>;Internal::CLOSE::TOP_LEVEL::<>::<>::<>::<>;Internal::SEPARATOR::TOP_LEVEL::<>::<>::<>::<>;Internal::ABOUT::TOP_LEVEL::<>::<>::<>::<>;Internal::WNCK_ACTION_SUBMENU_ACTIVE::SUBMENU_WINDOW_LIST::<>::<>::<>::<>;Internal::WNCK_ACTION_MENU_INACTIVES::SUBMENU_WINDOW_LIST::<>::<>::<>::<>;Internal::CLOSEALL::SUBMENU_WINDOW_LIST::<>::<>::<>::<>;
-_description=Defines the context menu when tasks are being managed by an icon.
-
-[DEFAULT/menu_context_launcher_only]
-type = list-string
-default = Internal::DOCK_PREFS::TOP_LEVEL::<>::<>::<>::<>;Internal::SEPARATOR::TOP_LEVEL::<>::<>::<>::<>;Internal::CUSTOMIZE_ICON::TOP_LEVEL::<>::<>::<>::<>;Internal::REMOVE_CUSTOMIZED_ICON::TOP_LEVEL::<>::<>::<>::<>;Internal::SEPARATOR::TOP_LEVEL::<>::<>::<>::<>;Internal::LAUNCH::TOP_LEVEL::<>::<>::<>::<>;Internal::SEPARATOR::TOP_LEVEL::<>::<>::<>::<>;Internal::ABOUT::TOP_LEVEL::<>::<>::<>::<>;
-_description=Defines the context menu for a launcher without tasks.
-
 [DEFAULT/only_show_launchers]
 type = boolean
 default = false
