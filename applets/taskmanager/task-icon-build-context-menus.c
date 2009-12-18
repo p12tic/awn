@@ -455,7 +455,7 @@ task_icon_get_menu_keep_above (TaskIcon * icon,WnckWindow *win)
   }
   if (! wnck_window_is_minimized(win))
   {
-    menuitem = gtk_check_menu_item_new_with_label (_("Always on _Top"));    
+    menuitem = gtk_check_menu_item_new_with_mnemonic (_("Always on _Top"));    
     gtk_widget_show (menuitem);
     if (WNCK_WINDOW_STATE_ABOVE & wnck_window_get_state (win) )
     {
@@ -727,29 +727,31 @@ task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
 
   GtkWidget * menuitem;
 
-  if ((menuitem = task_icon_get_menu_item_maximize (icon,win)))
-  {
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-  }
-
   if ((menuitem = task_icon_get_menu_item_minimize (icon,win)))
   {
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
   }
 
+  if ((menuitem = task_icon_get_menu_item_maximize (icon,win)))
+  {
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
+  }
+
+  //move
+  //resize
   menuitem = gtk_separator_menu_item_new ();
   gtk_widget_show (menuitem);
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
-  if ( ( menuitem = task_icon_get_menu_item_pinned (icon,win)))
-  {
-    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);  
-  }
   if ( ( menuitem = task_icon_get_menu_keep_above (icon,win)))
   {
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);  
   }
-
+  
+  if ( ( menuitem = task_icon_get_menu_item_pinned (icon,win)))
+  {
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);  
+  }
   
   task_icon_inline_menu_move_to_workspace (icon,menu,win);
   
@@ -767,8 +769,28 @@ task_icon_get_submenu_action_menu (TaskIcon * icon, WnckWindow * win)
 {
   GtkWidget * submenu;
   GtkWidget * menuitem;
+  GdkPixbuf * pbuf;
+  GtkWidget * image = NULL;
+  gint width;
+  gint height;
 
-  menuitem = gtk_menu_item_new_with_label ( wnck_window_get_name(win));
+  menuitem = gtk_image_menu_item_new_with_label ( wnck_window_get_name(win));
+  gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
+  pbuf = wnck_window_get_icon (win);
+  g_object_ref (pbuf);
+  if (pbuf)
+  {
+    if (gdk_pixbuf_get_height (pbuf) != height)
+    {
+      GdkPixbuf *scaled;
+      scaled = gdk_pixbuf_scale_simple (pbuf, height, height, GDK_INTERP_BILINEAR);
+      g_object_unref (pbuf);
+      pbuf = scaled;
+    }
+    image = gtk_image_new_from_pixbuf (pbuf);
+    g_object_unref (pbuf);
+    gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(menuitem),image);
+  }
   submenu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuitem),submenu);
 
@@ -1042,62 +1064,30 @@ menu_parse_start_element (GMarkupParseContext *context,
       menuitem = awn_themed_icon_create_remove_custom_icon_item (AWN_THEMED_ICON(icon),task_icon_get_custom_name(icon));
       break;
     case INTERNAL_SEPARATOR:
-      menuitem = gtk_separator_menu_item_new();
-      gtk_widget_show(menuitem);
+      {
+        GList * children = gtk_container_get_children (GTK_CONTAINER(menu));
+        if (!GTK_IS_SEPARATOR_MENU_ITEM(g_list_last(children)->data))
+        {
+          menuitem = gtk_separator_menu_item_new();
+          gtk_widget_show(menuitem);
+        }
+      }
       break;
     case INTERNAL_SMART_WNCK_MENU:
       /*TODO move into a function.*/
       if (task_icon_count_tasklist_windows (icon) == 1)
       {
-        GtkWidget * old_menu = menu;
-        GList * children = gtk_container_get_children (GTK_CONTAINER(old_menu));
-        GList * iter;
-        menu = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(priv->main_item)));
-        for (iter = g_list_last(children); iter; )
-        {
-          GList * prev = g_list_previous (iter);
-          g_object_ref (iter->data);
-          gtk_container_remove (GTK_CONTAINER(old_menu),iter->data);
-          gtk_menu_shell_prepend (GTK_MENU_SHELL(menu),iter->data);
-          g_object_unref (iter->data);
-          iter = prev;
-        }
-        gtk_widget_destroy (old_menu);
-        g_object_set_qdata (G_OBJECT(menu), g_quark_from_static_string("ICON"),icon);  
-        *pmenu = menu;
+        task_icon_inline_action_menu_active (icon,GTK_MENU(menu));
       }
       else if (task_icon_count_tasklist_windows (icon) > 1)
       {
         GtkWidget * main_item = GTK_WIDGET(priv->main_item);
         GSList * item_list = task_icon_get_items (icon);
-        GdkPixbuf * pbuf=NULL;
-        GtkWidget * image=NULL;
-        GtkWidget * sub;
         GtkWidget * item;
         GSList * i;
-        GdkPixbuf * scaled;
-        if (main_item && TASK_IS_WINDOW (main_item))
-        {
-          image = gtk_image_new ();
-          item = gtk_image_menu_item_new_with_label ( task_window_get_name (TASK_WINDOW(main_item)));
-          pbuf = task_item_get_icon (TASK_ITEM(main_item));
-          if (pbuf)
-          {
-            if (gdk_pixbuf_get_height (pbuf) != height)
-            {
-              scaled = gdk_pixbuf_scale_simple (pbuf, height, height, GDK_INTERP_BILINEAR);
-              g_object_unref (pbuf);
-              pbuf = scaled;
-            }
-            gtk_image_set_from_pixbuf (GTK_IMAGE(image),pbuf);
-            g_object_unref (pbuf);
-            gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(item),image);
-          }
-          sub = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(main_item)));
-          gtk_menu_item_set_submenu (GTK_MENU_ITEM (item),sub);
-          gtk_widget_show_all (GTK_WIDGET(item));
-          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-        }
+
+        item = task_icon_get_submenu_action_menu (icon,task_window_get_window (TASK_WINDOW(main_item)));
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
         for (i=item_list;i;i=i->next)
         {
           if ( !i->data )
@@ -1112,24 +1102,7 @@ menu_parse_start_element (GMarkupParseContext *context,
           {
             continue;
           }
-          image = gtk_image_new ();
-          item = gtk_image_menu_item_new_with_label ( task_window_get_name (TASK_WINDOW(i->data)));
-          pbuf = task_item_get_icon (TASK_ITEM(i->data));
-          if (pbuf)
-          {
-            if (gdk_pixbuf_get_height (pbuf) != height)
-            {
-              scaled = gdk_pixbuf_scale_simple (pbuf, height, height, GDK_INTERP_BILINEAR);
-              g_object_unref (pbuf);
-              pbuf = scaled;
-            }            
-            gtk_image_set_from_pixbuf (GTK_IMAGE(image),pbuf);
-            g_object_unref (pbuf);
-            gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(item),image);
-          }
-          sub = wnck_action_menu_new (task_window_get_window (TASK_WINDOW(i->data)));
-          gtk_menu_item_set_submenu (GTK_MENU_ITEM (item),sub);
-          gtk_widget_show_all (GTK_WIDGET(item));
+          item = task_icon_get_submenu_action_menu (icon, task_window_get_window (TASK_WINDOW(i->data)));
           gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
         }
       }
@@ -1266,5 +1239,15 @@ task_icon_build_context_menu(TaskIcon * icon)
   }
   
   g_free (menu_filename);
+
+  GList * children = gtk_container_get_children (GTK_CONTAINER(menu));
+  if (GTK_IS_SEPARATOR_MENU_ITEM(g_list_last(children)->data))
+  {
+    gtk_widget_hide (GTK_WIDGET(g_list_last(children)->data));
+  }
+  if (GTK_IS_SEPARATOR_MENU_ITEM(g_list_first(children)->data))
+  {
+    gtk_widget_hide (GTK_WIDGET(g_list_first(children)->data));
+  }  
   return menu;
 }
