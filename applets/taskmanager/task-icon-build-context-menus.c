@@ -1211,8 +1211,8 @@ task_icon_build_context_menu(TaskIcon * icon)
   else
   {
     /* FIXME  FIXME  FIXME  FIXME  FIXME  FIXME  FIXME  FIXME  FIXME */
-//    menu_filename = g_strdup_printf ("%s/taskmanager/menus/%s",APPLETDATADIR,priv->menu_filename);
-    menu_filename = g_strdup_printf ("/usr/local/share/avant-window-navigator/applets/taskmanager/menus/%s",base_menu_filename);
+    menu_filename = g_strdup_printf ("%s/taskmanager/menus/%s",APPLETDATADIR,base_menu_filename);
+//    menu_filename = g_strdup_printf ("/usr/local/share/avant-window-navigator/applets/taskmanager/menus/%s",base_menu_filename);
   }
   g_free (base_menu_filename);
   if ( g_file_get_contents (menu_filename,&contents,NULL,&err))
@@ -1221,11 +1221,23 @@ task_icon_build_context_menu(TaskIcon * icon)
   }
   if (err)
   {
-    g_message ("%s: error loading menu file %s.  %s",__func__,menu_filename,err->message);
+    g_warning ("%s: error loading menu file %s.  %s",__func__,menu_filename,err->message);
     g_error_free (err);
     err=NULL;
+    g_warning ("%s: Attempting to load standard.xml",__func__);
+    menu_filename = g_strdup_printf ("%s/taskmanager/menus/standard.xml",APPLETDATADIR);
+    if ( g_file_get_contents (menu_filename,&contents,NULL,&err))
+    {
+      markup_parser_context = g_markup_parse_context_new (&markup_parser,0,&menu,(GDestroyNotify) NULL);
+    }
+    if (err)
+    {
+      g_warning ("%s: error loading menu file %s.  %s",__func__,menu_filename,err->message);
+      g_error_free (err);
+      err=NULL;
+      return menu; //return empty menu.
+    }
   }
-
   if (markup_parser_context)
   {
     g_markup_parse_context_parse (markup_parser_context,contents,strlen (contents),&err);
