@@ -324,7 +324,7 @@ static void
 _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
 {
   g_debug ("%s:  cmd_env_env = %p",__func__,cmd_and_envs);
-  for (int i=0; i<6;i++)
+  for (int i=0; i<7;i++)
   {
     g_debug ("%s: [%d] = %s",__func__,i,cmd_and_envs[i]);
   }
@@ -334,6 +334,7 @@ _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
   g_setenv ("AWN_TASK_EXEC",cmd_and_envs[3],TRUE);
   g_setenv ("AWN_TASK_DESKTOP",cmd_and_envs[4],TRUE);
   g_setenv ("AWN_TASK_DEBUG_TASKMAN_PID",cmd_and_envs[5],TRUE);
+  g_setenv ("AWN_TASK_LEADER_XID",cmd_and_envs[6],TRUE);
   //Want access to shell variables...
   if (system (cmd_and_envs[0]) ==-1)
   {     
@@ -828,9 +829,9 @@ typedef enum{
       INTERNAL_SEPARATOR,
       INTERNAL_SMART_WNCK_MENU,
       INTERNAL_SMART_WNCK_SIMPLE_MENU,
-      INTERNAL_SUBMENU,
       INTERNAL_INLINE_ACTION_MENU_ACTIVE,
       INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,
+      SUBMENU,
       UNKNOWN_ITEM_TYPE
 }MenuType;
 
@@ -854,7 +855,6 @@ const ContextMenuItemType context_menu_item_type_list[] = {
         { INTERNAL_SEPARATOR,"Internal-Separator"},
         { INTERNAL_SMART_WNCK_MENU,"Internal-Smart-Wnck-Menu"},
         { INTERNAL_SMART_WNCK_SIMPLE_MENU,"Internal-Smart-Wnck-Simple-Menu"},
-        { INTERNAL_SUBMENU, "Internal-Submenu"},
         { INTERNAL_INLINE_ACTION_MENU_ACTIVE,"Internal-Inline-Action-Menu-Active"},
         { INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,"Internal-Inline-Submenus-Action-Menu-Inactives"},
         { UNKNOWN_ITEM_TYPE,NULL}
@@ -914,14 +914,11 @@ menu_parse_start_element (GMarkupParseContext *context,
   const gchar ** name_iter = attribute_names;
   const gchar ** value_iter = attribute_values;
   GtkWidget * menuitem = NULL;
-  GtkWidget ** pmenu = user_data;
-  g_return_if_fail (*pmenu);
-  GtkWidget * menu = *pmenu;
+  GtkWidget * menu = user_data;
   TaskIcon * icon = NULL;
   TaskIconPrivate * priv = NULL;
   MenuType item_type = UNKNOWN_ITEM_TYPE;
   const gchar * type_value = NULL;
-  const gchar * display_value = NULL;
   const gchar * cmd_value = NULL;
   const gchar * icon_value = NULL;
   const gchar * args_value = NULL;
@@ -980,14 +977,18 @@ menu_parse_start_element (GMarkupParseContext *context,
   }
   else if (g_strcmp0 (element_name,"submenu")==0)
   {
-    item_type = INTERNAL_SUBMENU;
+    item_type = SUBMENU;
     for (;*name_iter && *value_iter;name_iter++,value_iter++)
     {
       const gchar * name = *name_iter;
       const gchar * value = *value_iter;
-      if (g_strcmp0 (name,"display")==0)
+      if (g_strcmp0 (name,"icon")==0)
       {
-        display_value = value;
+        icon_value = value;
+      }
+      else if (g_strcmp0 (name,"text")==0)
+      {
+        text_value = value;
       }
     }
   }
@@ -1143,13 +1144,13 @@ menu_parse_start_element (GMarkupParseContext *context,
         }
       }        
       break;
-    case INTERNAL_SUBMENU:
-      menuitem = gtk_image_menu_item_new_with_label ( display_value?display_value:"");
+    case SUBMENU:
+      menuitem = gtk_image_menu_item_new_with_label ( text_value?text_value:"");
       submenu = gtk_menu_new ();
       g_object_set_qdata (G_OBJECT(submenu), g_quark_from_static_string("ICON"),icon);  
       gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuitem),submenu);
       gtk_widget_show_all (menuitem);
-      g_markup_parse_context_push (context,&sub_markup_parser,&submenu);
+      g_markup_parse_context_push (context,&sub_markup_parser,submenu);
       break;
     case INTERNAL_INLINE_ACTION_MENU_ACTIVE:
       task_icon_inline_action_menu_active (icon,GTK_MENU(menu));
@@ -1163,6 +1164,15 @@ menu_parse_start_element (GMarkupParseContext *context,
   }
   if (menuitem && GTK_IS_WIDGET(menuitem))
   {
+    if (icon_value)
+    {
+      GtkWidget * image;
+      image = gtk_image_new_from_icon_name (icon_value,GTK_ICON_SIZE_MENU);
+      if (image)
+      {
+        gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(menuitem),image);
+      }
+    }
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
   }
 }
@@ -1217,7 +1227,7 @@ task_icon_build_context_menu(TaskIcon * icon)
   g_free (base_menu_filename);
   if ( g_file_get_contents (menu_filename,&contents,NULL,&err))
   {
-    markup_parser_context = g_markup_parse_context_new (&markup_parser,0,&menu,(GDestroyNotify) NULL);
+    markup_parser_context = g_markup_parse_context_new (&markup_parser,0,menu,(GDestroyNotify) NULL);
   }
   if (err)
   {
@@ -1228,7 +1238,7 @@ task_icon_build_context_menu(TaskIcon * icon)
     menu_filename = g_strdup_printf ("%s/taskmanager/menus/standard.xml",APPLETDATADIR);
     if ( g_file_get_contents (menu_filename,&contents,NULL,&err))
     {
-      markup_parser_context = g_markup_parse_context_new (&markup_parser,0,&menu,(GDestroyNotify) NULL);
+      markup_parser_context = g_markup_parse_context_new (&markup_parser,0,menu,(GDestroyNotify) NULL);
     }
     if (err)
     {
