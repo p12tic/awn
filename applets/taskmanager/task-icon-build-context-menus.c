@@ -323,6 +323,9 @@ _pin_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
 static void
 _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
 {
+  gchar * shell_value = g_object_get_qdata (G_OBJECT (menuitem),g_quark_from_static_string("shell_value"));
+  GError * err = NULL;
+  
   g_debug ("%s:  cmd_env_env = %p",__func__,cmd_and_envs);
   for (int i=0; i<7;i++)
   {
@@ -336,10 +339,24 @@ _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
   g_setenv ("AWN_TASK_DEBUG_TASKMAN_PID",cmd_and_envs[5],TRUE);
   g_setenv ("AWN_TASK_LEADER_XID",cmd_and_envs[6],TRUE);
   //Want access to shell variables...
-  if (system (cmd_and_envs[0]) ==-1)
-  {     
-    g_message ("%s: error spawning '%s'",__func__,cmd_and_envs[0]);
+  g_debug ("shell value = %s",shell_value);
+  if (g_strcmp0 (shell_value, "yes")==0 || g_strcmp0 (shell_value, "true")==0)
+  {
+    if (system (cmd_and_envs[0]) ==-1)
+    {     
+      g_message ("%s: system() error '%s'",__func__,cmd_and_envs[0]);
+    }
   }
+  else
+  {
+    if (!g_spawn_command_line_async (cmd_and_envs[0],&err) )
+    {
+      g_message ("%s: spawn() error '%s'",__func__,err->message);
+      g_error_free (err);
+      err = NULL;
+    }
+  }
+      
 }
 
 static GtkWidget *
@@ -923,6 +940,7 @@ menu_parse_start_element (GMarkupParseContext *context,
   const gchar * icon_value = NULL;
   const gchar * args_value = NULL;
   const gchar * text_value = NULL;
+  const gchar * shell_value = NULL;
   GtkWidget *submenu = NULL;
   AwnApplet * applet = NULL;
   gint height;
@@ -973,6 +991,10 @@ menu_parse_start_element (GMarkupParseContext *context,
       {
         text_value = value;
       }
+      else if (g_strcmp0 (name,"shell")==0)
+      {
+        shell_value = value;
+      }
     }
   }
   else if (g_strcmp0 (element_name,"submenu")==0)
@@ -1007,7 +1029,10 @@ menu_parse_start_element (GMarkupParseContext *context,
         GtkWidget * image;
         gchar ** cmd_and_envs = g_malloc ( sizeof(gchar *) * 7);
         gchar * cmd_copy = g_strdup (cmd_value);
+        gchar * sh = g_strdup (shell_value?shell_value:"true");
+
         menuitem = gtk_image_menu_item_new_with_label (text_value);
+        g_object_set_qdata (G_OBJECT (menuitem),g_quark_from_static_string("shell_value"),sh);
         image = gtk_image_new_from_icon_name (icon_value,GTK_ICON_SIZE_MENU);
         if (image)
         {
@@ -1032,6 +1057,7 @@ menu_parse_start_element (GMarkupParseContext *context,
         cmd_and_envs[5] = g_strdup_printf("%u",getpid());
         cmd_and_envs[6] = NULL;
         g_object_weak_ref (G_OBJECT(menuitem),(GWeakNotify)g_strfreev,cmd_and_envs);
+        g_object_weak_ref (G_OBJECT(menuitem),(GWeakNotify)g_free,sh);
       }
       gtk_widget_show_all (menuitem);
       break;
