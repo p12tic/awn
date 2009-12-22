@@ -8,30 +8,33 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2009-12-17 15:42+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2009-12-21 17:54+0000\n"
+"Last-Translator: Cadan ap Tomos <cadz123@googlemail.com>\n"
 "Language-Team: Welsh <cy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 0 : n==2 ? 1 : (n != 8 || n != 11) ? "
 "2 : 3;\n"
-"X-Launchpad-Export-Date: 2009-12-18 04:33+0000\n"
+"X-Launchpad-Export-Date: 2009-12-22 04:36+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Ehangydd"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Llenwi'r gofod ar y panel yn y dull ehangu"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Ymddygiad pan bo ffenestr ar fwlch gwaith gwahanol yn cael ei actifadu. (0 "
+"am y rhagosodiedig, 1 - newid bwlch gwaith gweithredol, 2 - symud i'r bwlch "
+"gwaith cyfredol)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid "Delay before activating a window when dragging over an icon."
