@@ -172,7 +172,9 @@ enum
 
 static const GtkTargetEntry drop_types[] =
 {
-  { (gchar*)"text/uri-list", 0, 0}
+  { (gchar*)"STRING", GTK_TARGET_OTHER_APP, 0 },
+  { (gchar*)"text/plain", GTK_TARGET_OTHER_APP, 0},
+  { (gchar*)"text/uri-list", GTK_TARGET_OTHER_APP, 0 }
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 
@@ -1279,9 +1281,9 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
       if (g_strstr_len (item->state,-1, "::no_drop::") !=  item->state)
       {
         gtk_drag_dest_set (GTK_WIDGET (icon),
-                       GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
-                       drop_types, n_drop_types,
-                       GDK_ACTION_COPY | GDK_ACTION_ASK);
+                           GTK_DEST_DEFAULT_ALL,
+                           drop_types, n_drop_types,
+                           GDK_ACTION_COPY | GDK_ACTION_ASK | GDK_ACTION_MOVE);        
         break;
       }
     }
