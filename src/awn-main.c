@@ -37,6 +37,7 @@
 #include "awn-defines.h"
 
 static gboolean version = FALSE;
+static gboolean is_startup = FALSE;
 
 GOptionEntry entries[] = 
 {
@@ -45,6 +46,12 @@ GOptionEntry entries[] =
     0, G_OPTION_ARG_NONE, 
     &version, 
     "Prints the version number", NULL 
+  },
+  {
+    "startup", 0,
+    0, G_OPTION_ARG_NONE,
+    &is_startup,
+    "Hint the panel that this is start of the session", NULL
   },
   { 
     NULL 
@@ -124,6 +131,8 @@ main (gint argc, gchar *argv[])
     dbus_g_connection_unref (connection);
     return EXIT_SUCCESS;
   }
+
+  if (is_startup) sleep (5);
 
   /* Launch Awn */
   app = awn_app_get_default ();

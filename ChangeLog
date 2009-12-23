@@ -1,3 +1,9 @@
+2009-12-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-main.c:
+	* src/awn-panel.c:
+	Automatically inhibit autohide for a couple of seconds during startup.
+
 2009-12-22  h4writer <hv1989@gmail.com>
 
 	* src/awn-background-3d.c:
