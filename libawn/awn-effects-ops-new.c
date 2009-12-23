@@ -524,19 +524,18 @@ gboolean awn_effects_post_op_saturate(AwnEffects * fx,
 }
 
 gboolean awn_effects_post_op_glow(AwnEffects * fx,
-                               cairo_t * cr,
-                               GtkAllocation * ds,
-                               gpointer user_data
-                              )
+                                  cairo_t * cr,
+                                  GtkAllocation * ds,
+                                  gpointer user_data)
 {
   AwnEffectsPrivate *priv = fx->priv;
 
   if (priv->glow_amount > 0 || fx->depressed)
   {
-    gfloat amount = fx->depressed ? 30 : priv->glow_amount;
-    lighten_surface(cairo_get_target(cr),
-                    priv->window_width, priv->window_height,
-                    amount, fx->depressed);
+    gfloat amount = fx->depressed ? 1 : priv->glow_amount;
+    lighten_surface (cairo_get_target (cr),
+                     priv->window_width, priv->window_height,
+                     amount);
     return TRUE;
   }
   return FALSE;
@@ -619,18 +618,18 @@ gboolean awn_effects_post_op_shadow(AwnEffects * fx,
                                              CAIRO_CONTENT_COLOR_ALPHA,
                                              w,
                                              h);
-    blur_ctx = cairo_create(blur_srfc);
+    blur_ctx = cairo_create (blur_srfc);
 
     cairo_set_operator(blur_ctx, CAIRO_OPERATOR_SOURCE);
     cairo_set_source_surface(blur_ctx, cairo_get_target(cr), 0, 0);
     cairo_paint(blur_ctx);
 
-    darken_surface (blur_srfc, priv->window_width, priv->window_height);
+    darken_surface (blur_ctx, priv->window_width, priv->window_height);
     blur_surface_shadow (blur_srfc, priv->window_width, priv->window_height, 4);
 
     cairo_save(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_DEST_OVER);
-    const double SHADOW_SCALE = 1.0625;
+    const double SHADOW_SCALE = 1.0234375;
     cairo_scale(cr, SHADOW_SCALE, SHADOW_SCALE);
     cairo_set_source_surface(cr, blur_srfc, (w - w*SHADOW_SCALE)/2, (h - h*SHADOW_SCALE)/2);
     cairo_paint_with_alpha(cr, 0.5);

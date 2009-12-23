@@ -1,5 +1,13 @@
 2009-12-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-helpers.h:
+	* libawn/awn-effects-ops-new.c:
+	Reimplement a couple of effect helpers to use different compositing
+	operators instead of image surfaces.
+
+2009-12-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-main.c:
 	* src/awn-panel.c:
 	Automatically inhibit autohide for a couple of seconds during startup.
