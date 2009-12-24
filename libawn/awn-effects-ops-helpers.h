@@ -43,10 +43,10 @@ lighten_component (const guchar cur_value, const gfloat amount,
 void
 lighten_surface (cairo_surface_t *src, 
                  gint surface_width, gint surface_height,
-                 const gfloat amount, gboolean absolute);
+                 const gfloat amount);
 
 void
-darken_surface (cairo_surface_t *src, gint surface_width, gint surface_height);
+darken_surface (cairo_t *cr, gint surface_width, gint surface_height);
 
 void
 blur_surface_shadow (cairo_surface_t *src,

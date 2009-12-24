@@ -64,6 +64,7 @@ struct _AwnPanelPrivate
   AwnMonitor *monitor;
 
   GHashTable *inhibits;
+  guint startup_inhibit_cookie;
 
   AwnBackground *bg;
 
@@ -299,6 +300,10 @@ static void     awn_panel_set_expand_mode   (AwnPanel *panel,
 static void     awn_panel_set_clickthrough_type(AwnPanel *panel,
                                              gint      type);
 
+static guint    awn_panel_disable_autohide  (AwnPanel *panel,
+                                             const gchar *app_name,
+                                             const gchar *reason);
+
 static void     awn_panel_reset_autohide    (AwnPanel *panel);
 
 static void     on_geometry_changed         (AwnMonitor    *monitor,
@@ -483,6 +488,16 @@ awn_panel_drag_motion (GtkWidget *widget, GdkDragContext *context,
   return TRUE;
 }
 
+static gboolean
+on_startup_complete (AwnPanel *panel)
+{
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+
+  awn_panel_uninhibit_autohide (panel, panel->priv->startup_inhibit_cookie);
+
+  return FALSE;
+}
+
 static void
 on_prefs_activated (GtkMenuItem *item, AwnPanel *panel)
 {
@@ -535,6 +550,12 @@ awn_panel_constructed (GObject *object)
 
   g_signal_connect_swapped (priv->monitor, "notify::monitor-align",
                             G_CALLBACK (awn_panel_refresh_alignment), panel);
+
+  /* Inhibit autohide, so we cannot unmap the widget when there are composited
+     state switches during startup. */
+  priv->startup_inhibit_cookie =
+    awn_panel_disable_autohide (AWN_PANEL (panel), "internal", "Panel spawn");
+  g_timeout_add (10000, (GSourceFunc)on_startup_complete, panel);
 
   /* Composited checks/setup */
   screen = gtk_widget_get_screen (panel);
@@ -615,7 +636,7 @@ awn_panel_constructed (GObject *object)
                                        NULL);
 
   /* Background drawing */
-  awn_panel_set_style(AWN_PANEL (panel), priv->style);
+  awn_panel_set_style (AWN_PANEL (panel), priv->style);
 
   /* Size and position */
   g_signal_connect (panel, "configure-event",
@@ -625,6 +646,7 @@ awn_panel_constructed (GObject *object)
 
   gtk_drag_dest_set (panel, 0, drop_types, n_drop_types, GDK_ACTION_COPY);
 
+  /* Prefs/Quit/About menu */
   GtkWidget *item;
 
   priv->menu = gtk_menu_new ();
