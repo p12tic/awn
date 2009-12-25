@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2009-10-30 05:16+0000\n"
-"Last-Translator: lancetw <lancetw@gmail.com>\n"
+"PO-Revision-Date: 2009-12-24 06:06+0000\n"
+"Last-Translator: Launchpad Translations Administrators "
+"<rosetta@launchpad.net>\n"
 "Language-Team: Traditional Chinese <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-11-07 04:43+0000\n"
+"X-Launchpad-Export-Date: 2009-12-25 04:42+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -241,7 +242,7 @@ msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1093
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "這是為 GNOME 桌面環境設計的，一個可完全自訂、dock 類型的視窗導覽工具。"
 
 #: ../awn-settings/awnClass.py:1095
 msgid ""
@@ -250,6 +251,8 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"這個程式是自由軟體，您可以遵照自由軟體基金會 (Free Software Foundation) 出版的 GNU 通用公共許可證條款 (GNU "
+"General Public License) 第二版來修改和重新發佈這一程式，或者自由選擇使用任何更新的版本。"
 
 #: ../awn-settings/awnClass.py:1097
 msgid ""
@@ -257,7 +260,7 @@ msgid ""
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
-msgstr ""
+msgstr "發佈這一程式的目的是希望它有用，但沒有任何擔保。甚至沒有適合特定目的而隱含的擔保。更詳細的情況請參閱 GNU 通用公共許可證。"
 
 #: ../awn-settings/awnClass.py:1099
 msgid ""
