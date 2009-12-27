@@ -18,6 +18,7 @@
  *
  */
 
+#include <string.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
@@ -169,4 +170,38 @@ awn_dbus_watcher_get_default (void)
 
   return singleton_instance;
 }
+
+
+gboolean 
+awn_dbus_watcher_has_name (AwnDBusWatcher* self, const gchar* name)
+{
+  AwnDBusWatcherPrivate *priv = AWN_DBUS_WATCHER_GET_PRIVATE (self);
+  GError *error = NULL;
+  gboolean success;
+  gchar **names;
+  int i;
+  
+  success = dbus_g_proxy_call (priv->proxy, "ListNames", &error, G_TYPE_INVALID, G_TYPE_STRV, &names, G_TYPE_INVALID);
+  
+  if (!success) 
+  {
+    g_warning ("Unable to make get dbus connections: %s",
+               error->message);
+    g_error_free (error);
+    return FALSE;
+  }
+  
+  for (i=0; names[i] != NULL; i++) {
+    if (strcmp (name, names[i]) == 0) {
+      g_strfreev (names);
+      return TRUE;
+    }
+  }
+  
+  g_strfreev (names);
+  return FALSE;  
+}
+
+
+
 
