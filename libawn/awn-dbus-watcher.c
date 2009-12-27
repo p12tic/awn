@@ -177,11 +177,9 @@ awn_dbus_watcher_has_name (AwnDBusWatcher* self, const gchar* name)
 {
   AwnDBusWatcherPrivate *priv = AWN_DBUS_WATCHER_GET_PRIVATE (self);
   GError *error = NULL;
-  gboolean success;
-  gchar **names;
-  int i;
+  gboolean success, hasOwner;
   
-  success = dbus_g_proxy_call (priv->proxy, "ListNames", &error, G_TYPE_INVALID, G_TYPE_STRV, &names, G_TYPE_INVALID);
+  success = dbus_g_proxy_call (priv->proxy, "NameHasOwner", &error, G_TYPE_STRING, name, G_TYPE_INVALID, G_TYPE_BOOLEAN, &hasOwner, G_TYPE_INVALID);
   
   if (!success) 
   {
@@ -191,15 +189,7 @@ awn_dbus_watcher_has_name (AwnDBusWatcher* self, const gchar* name)
     return FALSE;
   }
   
-  for (i=0; names[i] != NULL; i++) {
-    if (strcmp (name, names[i]) == 0) {
-      g_strfreev (names);
-      return TRUE;
-    }
-  }
-  
-  g_strfreev (names);
-  return FALSE;  
+  return hasOwner;  
 }
 
 
