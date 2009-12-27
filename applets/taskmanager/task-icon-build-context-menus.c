@@ -858,6 +858,7 @@ typedef struct
   const gchar     * value;
 }ContextMenuItemType;
 
+static GtkWidget * lastitem = NULL;
 
 const ContextMenuItemType context_menu_item_type_list[] = {
         { EXTERNAL_COMMAND,"External-Command"},
@@ -900,7 +901,18 @@ menu_parse_text (GMarkupParseContext *context,
                       gpointer             user_data,
                       GError             **error)
 {
-//  g_debug ("%s: text = %s",__func__,text);
+  g_debug ("%s: text = %s, text_len = %lu, lastitme = %p",__func__,text,text_len,lastitem);
+  if (text && text_len && lastitem)
+  {
+    gchar * s = g_strdup (text);
+    s = g_strstrip (s);
+    if ( (strlen(s)))
+    {
+      gtk_menu_item_set_label (GTK_MENU_ITEM (lastitem), text);
+    }
+    g_debug ("Setting label");
+//    gtk_menu_item_set_label (GTK_MENU_ITEM (lastitem), text);
+  }
 }
 
 /* Called on error, including one set by other
@@ -949,6 +961,8 @@ menu_parse_start_element (GMarkupParseContext *context,
   g_return_if_fail (GTK_IS_MENU(menu));
   icon =  g_object_get_qdata (G_OBJECT(menu), g_quark_from_static_string("ICON"));  
   g_assert (TASK_IS_ICON(icon));
+
+  lastitem = NULL;
   g_object_get (icon,
                 "applet",&applet,
                 NULL);
@@ -1201,6 +1215,7 @@ menu_parse_start_element (GMarkupParseContext *context,
     }
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
   }
+  lastitem = menuitem;  
 }
 
 GtkWidget *

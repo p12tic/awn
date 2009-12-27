@@ -5,14 +5,14 @@
   <menuitem type="Internal-Add-To-Launcher-List"></menuitem>  
   <menuitem type="Internal-Separator"></menuitem>
   <submenu text="Processes" icon="process-stop">
-    <menuitem type="External-Command" cmd="xterm -e 'pmap -d $AWN_TASK_PID; read' &amp;" text="pmap"></menuitem>
-    <menuitem type="External-Command" cmd="xterm -e 'xprop -id $AWN_TASK_XID; read' &amp;" text="xprop"></menuitem>
-    <menuitem type="External-Command" cmd="xterm -e 'gdb program $AWN_TASK_PID' &amp;" text="Debug Process"></menuitem>
-    <menuitem type="External-Command" cmd="kill -9 $AWN_TASK_PID &amp;" text="Force Quit" icon="force-exit"></menuitem>
+    <menuitem type="External-Command" cmd="xterm -e 'pmap -d $AWN_TASK_PID; read' &amp;">pmap</menuitem>
+    <menuitem type="External-Command" cmd="xterm -e 'xprop -id $AWN_TASK_XID; read' &amp;">xprop</menuitem>
+    <menuitem type="External-Command" cmd="xterm -e 'gdb program $AWN_TASK_PID' &amp;">Debug Process</menuitem>
+    <menuitem type="External-Command" cmd="kill -9 $AWN_TASK_PID &amp;" icon="force-exit">Force Quit</menuitem>
   </submenu>
   <submenu text="Debug">
-    <menuitem type="External-Command" cmd="xterm -e 'gdb program $AWN_TASK_DEBUG_TASKMAN_PID' &amp;" text="Debug Taskman"></menuitem>
-    <menuitem type="External-Command" cmd="kill $AWN_TASK_DEBUG_TASKMAN_PID &amp;" text="Exit Taskman" icon="exit"></menuitem>
+    <menuitem type="External-Command" cmd="xterm -e 'gdb program $AWN_TASK_DEBUG_TASKMAN_PID' &amp;">Debug Taskman</menuitem>
+    <menuitem type="External-Command" cmd="kill $AWN_TASK_DEBUG_TASKMAN_PID &amp;" icon="exit">Exit Taskman</menuitem>
   </submenu>
   <menuitem type="Internal-Separator"></menuitem>
   <menuitem type="Internal-Placeholder-Inline-Plugins"></menuitem>
