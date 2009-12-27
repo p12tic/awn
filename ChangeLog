@@ -1,5 +1,16 @@
 2009-12-27  Michal Hruby  <michal.mhr@gmail.com>
 
+	reviewed by: mhr3
+	patch by: dolfje
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-dbus-watcher.c:
+	* libawn/awn-dbus-watcher.h:
+	Added AwnDBusWatcher.has_name method. (thanks to dolfje)
+
+2009-12-27  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-panel.c:
 	A couple of fixes for multiple panels.
 

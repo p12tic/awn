@@ -72,6 +72,7 @@ struct _AwnDBusWatcherClass
 GType    awn_dbus_watcher_get_type    (void) G_GNUC_CONST;
 
 AwnDBusWatcher * awn_dbus_watcher_get_default (void);
+gboolean awn_dbus_watcher_has_name (AwnDBusWatcher* self, const gchar* name);
 
 G_END_DECLS
 
