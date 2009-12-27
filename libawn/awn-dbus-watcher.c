@@ -18,7 +18,6 @@
  *
  */
 
-#include <string.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 
@@ -177,9 +176,9 @@ awn_dbus_watcher_has_name (AwnDBusWatcher* self, const gchar* name)
 {
   AwnDBusWatcherPrivate *priv = AWN_DBUS_WATCHER_GET_PRIVATE (self);
   GError *error = NULL;
-  gboolean success, hasOwner;
+  gboolean success, has_owner;
   
-  success = dbus_g_proxy_call (priv->proxy, "NameHasOwner", &error, G_TYPE_STRING, name, G_TYPE_INVALID, G_TYPE_BOOLEAN, &hasOwner, G_TYPE_INVALID);
+  success = dbus_g_proxy_call (priv->proxy, "NameHasOwner", &error, G_TYPE_STRING, name, G_TYPE_INVALID, G_TYPE_BOOLEAN, &has_owner, G_TYPE_INVALID);
   
   if (!success) 
   {
@@ -189,7 +188,7 @@ awn_dbus_watcher_has_name (AwnDBusWatcher* self, const gchar* name)
     return FALSE;
   }
   
-  return hasOwner;  
+  return has_owner;  
 }
 
 
