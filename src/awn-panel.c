@@ -119,6 +119,9 @@ struct _AwnPanelPrivate
   gint autohide_hide_delay;
   gint autohide_mouse_poll_delay;
 
+  gulong autohide_start_handler_id;
+  gulong autohide_end_handler_id;
+
   gint hide_counter;
   guint hiding_timer_id;
   guint withdraw_timer_id;
@@ -376,6 +379,7 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
 
 #if 1
   GdkScreen *screen;
+  gboolean panel_skipped = FALSE;
   gint mouse_x, mouse_y;
   gdk_display_get_pointer (display, &screen, &mouse_x, &mouse_y, NULL);
   GList *windows = gdk_screen_get_window_stack (screen);
@@ -390,7 +394,16 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
 
     if (GDK_WINDOW_XID (it_window) == panel_xid || window != NULL)
     {
-      // FIXME: will crash with multiple panels!
+      panel_skipped = TRUE;
+      g_object_unref (it_window);
+      continue;
+    }
+
+    // this does screw up d&d when using multiple panels, but at least it
+    //   won't crash
+    if (panel_skipped &&
+        gdk_window_get_window_type (it_window) == GDK_WINDOW_TOPLEVEL)
+    {
       g_object_unref (it_window);
       continue;
     }
@@ -2746,17 +2759,15 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
                      poll_mouse_position, panel);
   }
 
-  static gulong start_handler_id = 0;
-  static gulong end_handler_id = 0;
-  if (start_handler_id)
+  if (priv->autohide_start_handler_id)
   {
-    g_signal_handler_disconnect (panel, start_handler_id);
-    start_handler_id = 0;
+    g_signal_handler_disconnect (panel, priv->autohide_start_handler_id);
+    priv->autohide_start_handler_id = 0;
   }
-  if (end_handler_id)
+  if (priv->autohide_end_handler_id)
   {
-    g_signal_handler_disconnect (panel, end_handler_id);
-    end_handler_id = 0;
+    g_signal_handler_disconnect (panel, priv->autohide_end_handler_id);
+    priv->autohide_end_handler_id = 0;
   }
 
   /* for all autohide types, just connect to autohide-start & end signals
@@ -2767,21 +2778,21 @@ awn_panel_set_autohide_type (AwnPanel *panel, gint type)
   switch (priv->autohide_type)
   {
     case AUTOHIDE_TYPE_KEEP_BELOW:
-      start_handler_id = g_signal_connect (
+      priv->autohide_start_handler_id = g_signal_connect (
         panel, "autohide-start", G_CALLBACK (keep_below_start), NULL);
-      end_handler_id = g_signal_connect (
+      priv->autohide_end_handler_id = g_signal_connect (
         panel, "autohide-end", G_CALLBACK (keep_below_end), NULL);
       break;
     case AUTOHIDE_TYPE_FADE_OUT:
-      start_handler_id = g_signal_connect (
+      priv->autohide_start_handler_id = g_signal_connect (
         panel, "autohide-start", G_CALLBACK (alpha_blend_start), NULL);
-      end_handler_id = g_signal_connect (
+      priv->autohide_end_handler_id = g_signal_connect (
         panel, "autohide-end", G_CALLBACK (alpha_blend_end), NULL);
       break;
     case AUTOHIDE_TYPE_TRANSPARENTIZE:
-      start_handler_id = g_signal_connect (
+      priv->autohide_start_handler_id = g_signal_connect (
         panel, "autohide-start", G_CALLBACK (transparentize_start), NULL);
-      end_handler_id = g_signal_connect (
+      priv->autohide_end_handler_id = g_signal_connect (
         panel, "autohide-end", G_CALLBACK (transparentize_end), NULL);
       break;
     default:
