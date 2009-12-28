@@ -236,6 +236,10 @@ _close_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
     {
       continue;
     }
+    if ( !task_item_is_visible (i->data))
+    {
+      continue;
+    }
     
     wnck_window_close (task_window_get_window (TASK_WINDOW(i->data)),event->time);
   }
@@ -322,6 +326,128 @@ _pin_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
     wnck_window_unpin (win);
   else
     wnck_window_pin (win);
+}
+
+static void
+_minimize_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
+{
+  TaskIconPrivate * priv = NULL;
+
+  g_return_if_fail (TASK_IS_ICON(icon));
+  
+  GSList * items = task_icon_get_items (icon);
+  GSList * iter;
+  
+  priv = icon->priv;
+
+  for (iter = items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      continue;
+    }
+    if ( !task_item_is_visible (iter->data))
+    {
+      continue;
+    }
+    if ( wnck_window_is_minimized ( task_window_get_window (TASK_WINDOW(iter->data))))
+    {
+      continue;
+    }
+    wnck_window_minimize (task_window_get_window (TASK_WINDOW(iter->data)));
+  }
+}
+
+static void
+_unminimize_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
+{
+  TaskIconPrivate * priv = NULL;
+
+  g_return_if_fail (TASK_IS_ICON(icon));
+  
+  GSList * items = task_icon_get_items (icon);
+  GSList * iter;
+  GdkEventButton * event = (GdkEventButton*)gtk_get_current_event ();
+  g_return_if_fail (event);
+  
+  priv = icon->priv;
+
+  for (iter = items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      continue;
+    }
+    if ( !task_item_is_visible (iter->data))
+    {
+      continue;
+    }
+    if ( !wnck_window_is_minimized ( task_window_get_window (TASK_WINDOW(iter->data))))
+    {
+      continue;
+    }
+    wnck_window_unminimize (task_window_get_window (TASK_WINDOW(iter->data)),event->time);
+  }
+}
+
+static void
+_maximize_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
+{
+  TaskIconPrivate * priv = NULL;
+
+  g_return_if_fail (TASK_IS_ICON(icon));
+  
+  GSList * items = task_icon_get_items (icon);
+  GSList * iter;
+  
+  priv = icon->priv;
+
+  for (iter = items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      continue;
+    }
+    if ( !task_item_is_visible (iter->data))
+    {
+      continue;
+    }
+    if ( wnck_window_is_maximized ( task_window_get_window (TASK_WINDOW(iter->data))))
+    {
+      continue;
+    }
+    wnck_window_maximize (task_window_get_window (TASK_WINDOW(iter->data)));
+  }
+}
+
+static void
+_unmaximize_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
+{
+  TaskIconPrivate * priv = NULL;
+
+  g_return_if_fail (TASK_IS_ICON(icon));
+  
+  GSList * items = task_icon_get_items (icon);
+  GSList * iter;
+  
+  priv = icon->priv;
+
+  for (iter = items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      continue;
+    }
+    if ( !task_item_is_visible (iter->data))
+    {
+      continue;
+    }
+    if ( !wnck_window_is_maximized ( task_window_get_window (TASK_WINDOW(iter->data))))
+    {
+      continue;
+    }
+    wnck_window_unmaximize (task_window_get_window (TASK_WINDOW(iter->data)));
+  }
 }
 
 static void
@@ -436,6 +562,130 @@ task_icon_get_menu_item_close_all (TaskIcon * icon)
                 G_CALLBACK(_close_all_cb),
                 icon);
   return item;
+}
+
+static GtkWidget *
+task_icon_get_minimize_all (TaskIcon * icon)
+{
+  TaskIconPrivate * priv = NULL;
+  GSList * items = task_icon_get_items (icon);
+  GSList * iter;
+  GtkWidget * menuitem = NULL;
+  
+  priv = icon->priv;
+
+  for (iter = items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      continue;
+    }
+    if ( !task_item_is_visible (iter->data))
+    {
+      continue;
+    }
+    if ( wnck_window_is_minimized ( task_window_get_window (TASK_WINDOW(iter->data))))
+    {
+      continue;
+    }
+    menuitem = gtk_image_menu_item_new_with_label ("Minimize all");
+    gtk_widget_show (menuitem);
+    g_signal_connect (menuitem,"activate",G_CALLBACK(_minimize_all_cb),icon);
+  }
+  return menuitem;
+}
+
+static GtkWidget *
+task_icon_get_unminimize_all (TaskIcon * icon)
+{
+  TaskIconPrivate * priv = NULL;
+  GSList * items = task_icon_get_items (icon);
+  GSList * iter;
+  GtkWidget * menuitem = NULL;
+  
+  priv = icon->priv;
+
+  for (iter = items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      continue;
+    }
+    if ( !task_item_is_visible (iter->data))
+    {
+      continue;
+    }
+    if ( !wnck_window_is_minimized ( task_window_get_window (TASK_WINDOW(iter->data))))
+    {
+      continue;
+    }
+    menuitem = gtk_image_menu_item_new_with_label ("UnMinimize all");
+    gtk_widget_show (menuitem);
+    g_signal_connect (menuitem,"activate",G_CALLBACK(_unminimize_all_cb),icon);
+  }
+  return menuitem;
+}
+
+static GtkWidget *
+task_icon_get_maximize_all (TaskIcon * icon)
+{
+  TaskIconPrivate * priv = NULL;
+  GSList * items = task_icon_get_items (icon);
+  GSList * iter;
+  GtkWidget * menuitem = NULL;
+  
+  priv = icon->priv;
+
+  for (iter = items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      continue;
+    }
+    if ( !task_item_is_visible (iter->data))
+    {
+      continue;
+    }
+    if ( wnck_window_is_maximized ( task_window_get_window (TASK_WINDOW(iter->data))))
+    {
+      continue;
+    }
+    menuitem = gtk_image_menu_item_new_with_label ("Maximize all");
+    gtk_widget_show (menuitem);
+    g_signal_connect (menuitem,"activate",G_CALLBACK(_maximize_all_cb),icon);
+  }
+  return menuitem;
+}
+
+static GtkWidget *
+task_icon_get_unmaximize_all (TaskIcon * icon)
+{
+  TaskIconPrivate * priv = NULL;
+  GSList * items = task_icon_get_items (icon);
+  GSList * iter;
+  GtkWidget * menuitem = NULL;
+  
+  priv = icon->priv;
+
+  for (iter = items; iter; iter=iter->next)
+  {
+    if ( TASK_IS_LAUNCHER (iter->data) )
+    {
+      continue;
+    }
+    if ( !task_item_is_visible (iter->data))
+    {
+      continue;
+    }
+    if ( !wnck_window_is_maximized ( task_window_get_window (TASK_WINDOW(iter->data))))
+    {
+      continue;
+    }
+    menuitem = gtk_image_menu_item_new_with_label ("Unmaximize all");
+    gtk_widget_show (menuitem);
+    g_signal_connect (menuitem,"activate",G_CALLBACK(_unmaximize_all_cb),icon);
+  }
+  return menuitem;
 }
 
 static GtkWidget *
@@ -1156,6 +1406,26 @@ menu_parse_start_element (GMarkupParseContext *context,
             continue;
           }
           item = task_icon_get_submenu_action_menu (icon, task_window_get_window (TASK_WINDOW(i->data)));
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        }
+        item = task_icon_get_minimize_all (icon);
+        if (item)
+        {
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        }
+        item = task_icon_get_unminimize_all (icon);
+        if (item)
+        {
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        }
+        item = task_icon_get_maximize_all (icon);
+        if (item)
+        {
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        }
+        item = task_icon_get_unmaximize_all (icon);
+        if (item)
+        {
           gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
         }
       }
