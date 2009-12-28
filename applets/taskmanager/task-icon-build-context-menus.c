@@ -51,6 +51,9 @@
 
 #include "config.h"
 
+/*
+ Use these for now, might replace with awn specific icons at some point
+ */
 #define STOCK_DELETE "wnck-stock-delete"
 #define STOCK_MAXIMIZE "wnck-stock-maximize"
 #define STOCK_MINIMIZE "wnck-stock-minimize"
@@ -156,6 +159,7 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
 
     task_manager_append_launcher (TASK_MANAGER(applet),
                                   task_launcher_get_desktop_path(launcher));
+    task_icon_decrement_ephemeral_count (TASK_ICON(icon));
     g_object_set (applet,
                   "grouping",grouping,
                   NULL);

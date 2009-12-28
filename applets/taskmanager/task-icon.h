@@ -87,7 +87,7 @@ guint           task_icon_count_ephemeral_items (TaskIcon * icon);
 guint           task_icon_count_tasklist_windows (TaskIcon * icon);
 
 void            task_icon_increment_ephemeral_count (TaskIcon *icon);
-
+void            task_icon_decrement_ephemeral_count (TaskIcon *icon);
 
 void            task_icon_append_item       (TaskIcon      *icon,
                                              TaskItem      *item);
