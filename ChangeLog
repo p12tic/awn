@@ -1,3 +1,8 @@
+2009-12-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-background.c:
+	Fix build for GTK+ 2.12.
+
 2009-12-27  Michal Hruby  <michal.mhr@gmail.com>
 
 	reviewed by: mhr3
