@@ -832,6 +832,7 @@ task_icon_inline_action_menu_active (TaskIcon * icon,GtkMenu * menu)
 }
 
 typedef enum{
+      DBUS_SIGNAL,
       EXTERNAL_COMMAND,
       INTERNAL_ABOUT,
       INTERNAL_ADD_TO_LAUNCHER_LIST,
@@ -845,7 +846,9 @@ typedef enum{
       INTERNAL_SMART_WNCK_MENU,
       INTERNAL_SMART_WNCK_SIMPLE_MENU,
       INTERNAL_INLINE_ACTION_MENU_ACTIVE,
+      INTERNAL_INLINE_PLUGINS,
       INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,
+      MENU,
       SUBMENU,
       UNKNOWN_ITEM_TYPE
 }MenuType;
@@ -859,6 +862,7 @@ typedef struct
 static GtkWidget * lastitem = NULL;
 
 const ContextMenuItemType context_menu_item_type_list[] = {
+        { DBUS_SIGNAL,"Dbus-Signal"},
         { EXTERNAL_COMMAND,"External-Command"},
         { INTERNAL_ABOUT,"Internal-About"},
         { INTERNAL_ADD_TO_LAUNCHER_LIST,"Internal-Add-To-Launcher-List"},
@@ -873,6 +877,7 @@ const ContextMenuItemType context_menu_item_type_list[] = {
         { INTERNAL_SMART_WNCK_SIMPLE_MENU,"Internal-Smart-Wnck-Simple-Menu"},
         { INTERNAL_INLINE_ACTION_MENU_ACTIVE,"Internal-Inline-Action-Menu-Active"},
         { INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,"Internal-Inline-Submenus-Action-Menu-Inactives"},
+        { INTERNAL_INLINE_PLUGINS,"Internal-Inline-Plugins"},
         { UNKNOWN_ITEM_TYPE,NULL}
 };
 
@@ -940,7 +945,6 @@ menu_parse_start_element (GMarkupParseContext *context,
   TaskIcon * icon = NULL;
   TaskIconPrivate * priv = NULL;
   MenuType item_type = UNKNOWN_ITEM_TYPE;
-  const gchar * type_value = NULL;
   const gchar * cmd_value = NULL;
   const gchar * icon_value = NULL;
   const gchar * args_value = NULL;
@@ -1020,10 +1024,17 @@ menu_parse_start_element (GMarkupParseContext *context,
       }
     }
   }
-
+  else if (g_strcmp0 (element_name,"menu")==0)
+  {
+    item_type = MENU;
+  }
+  
   menuitem = NULL;
   switch (item_type)
   {
+    case DBUS_SIGNAL:
+      g_warning ("%s: stub... plugin support not present",__func__);
+      break;
     case EXTERNAL_COMMAND:
       {
         const TaskItem * mainitem = task_icon_get_main_item (icon);
@@ -1089,6 +1100,15 @@ menu_parse_start_element (GMarkupParseContext *context,
       break;
     case INTERNAL_DOCK_PREFS:
       menuitem = awn_applet_create_pref_item();
+      break;
+    case INTERNAL_INLINE_ACTION_MENU_ACTIVE:
+      task_icon_inline_action_menu_active (icon,GTK_MENU(menu));
+      break;
+    case INTERNAL_INLINE_PLUGINS:
+      g_warning ("%s: stub... plugin support not present",__func__);
+      break;
+    case INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES:
+      task_icon_get_menu_item_submenu_action_menu_inactives (icon,GTK_MENU(menu));
       break;
     case INTERNAL_LAUNCH:
       menuitem = task_icon_get_menu_item_launch(icon);
@@ -1176,6 +1196,8 @@ menu_parse_start_element (GMarkupParseContext *context,
         }
       }        
       break;
+    case MENU:
+      break;
     case SUBMENU:
       menuitem = gtk_image_menu_item_new_with_label ( text_value?text_value:"");
       submenu = gtk_menu_new ();
@@ -1184,14 +1206,16 @@ menu_parse_start_element (GMarkupParseContext *context,
       gtk_widget_show_all (menuitem);
       g_markup_parse_context_push (context,&sub_markup_parser,submenu);
       break;
-    case INTERNAL_INLINE_ACTION_MENU_ACTIVE:
-      task_icon_inline_action_menu_active (icon,GTK_MENU(menu));
-      break;
-    case INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES:
-      task_icon_get_menu_item_submenu_action_menu_inactives (icon,GTK_MENU(menu));
-      break;
     case UNKNOWN_ITEM_TYPE:
-      g_debug ("%s: Unknown type value of %s",__func__,type_value);
+      {
+        gint line_number;
+        gint char_number;
+        g_markup_parse_context_get_position (context,&line_number,&char_number);
+        g_debug ("%s: Unknown item type, element_name = %s, line = %d",__func__, element_name,line_number);
+      }
+      break;
+    default:
+      g_assert_not_reached();
       break;
   }
   if (menuitem && GTK_IS_WIDGET(menuitem))
