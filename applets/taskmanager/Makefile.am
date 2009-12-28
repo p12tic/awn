@@ -12,6 +12,7 @@ AM_CPPFLAGS = \
 	$(NULL)
 
 appletdir = $(APPLETDIR)/taskmanager
+applet_datadir = $(APPLETDATADIR)/taskmanager
 applet_LTLIBRARIES = taskmanager.la
 taskmanager_la_SOURCES = \
 	applet.c \
@@ -19,6 +20,9 @@ taskmanager_la_SOURCES = \
 	task-drag-indicator.h \
 	task-icon.c \
 	task-icon.h \
+	task-icon-build-context-menus.c \
+	task-icon-build-context-menus.h \
+	task-icon-private.h \
 	task-item.c \
 	task-item.h \
 	task-launcher.c \
@@ -73,3 +77,8 @@ BUILT_SOURCES = \
 
 EXTRA_DIST = $(desktop_DATA).in.in $(schema_in_files) $(DBUS_XML)
 CLEANFILES = $(desktop_DATA) $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
+
+taskmanager_menusdir = $(applet_datadir)/menus
+dist_taskmanager_menus_DATA =	\
+	$(wildcard menus/*.xml) \
+	$(NULL)
