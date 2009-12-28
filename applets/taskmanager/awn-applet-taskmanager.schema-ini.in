@@ -120,7 +120,7 @@ _description=The threshold at which text count begins to be displayed. valid ran
 
 [DEFAULT/menu_filename]
 type = string
-default = default.xml
+default = standard.xml
 _description=Context menu definition.
 
 # vim: set ft=cfg :
