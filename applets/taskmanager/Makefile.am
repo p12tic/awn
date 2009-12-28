@@ -22,6 +22,7 @@ taskmanager_la_SOURCES = \
 	task-icon.h \
 	task-icon-build-context-menus.c \
 	task-icon-build-context-menus.h \
+	task-icon-private.h \
 	task-item.c \
 	task-item.h \
 	task-launcher.c \

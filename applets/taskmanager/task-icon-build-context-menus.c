@@ -574,6 +574,11 @@ task_icon_get_minimize_all (TaskIcon * icon)
   
   priv = icon->priv;
 
+  if (task_icon_count_tasklist_windows (icon) <=1)
+  {
+    return NULL;
+  }
+
   for (iter = items; iter; iter=iter->next)
   {
     if ( TASK_IS_LAUNCHER (iter->data) )
@@ -604,6 +609,11 @@ task_icon_get_unminimize_all (TaskIcon * icon)
   GtkWidget * menuitem = NULL;
   
   priv = icon->priv;
+
+  if (task_icon_count_tasklist_windows (icon) <=1)
+  {
+    return NULL;
+  }
 
   for (iter = items; iter; iter=iter->next)
   {
@@ -636,6 +646,11 @@ task_icon_get_maximize_all (TaskIcon * icon)
   
   priv = icon->priv;
 
+  if (task_icon_count_tasklist_windows (icon) <=1)
+  {
+    return NULL;
+  }
+
   for (iter = items; iter; iter=iter->next)
   {
     if ( TASK_IS_LAUNCHER (iter->data) )
@@ -666,6 +681,11 @@ task_icon_get_unmaximize_all (TaskIcon * icon)
   GtkWidget * menuitem = NULL;
   
   priv = icon->priv;
+
+  if (task_icon_count_tasklist_windows (icon) <=1)
+  {
+    return NULL;
+  }
 
   for (iter = items; iter; iter=iter->next)
   {
@@ -1090,14 +1110,18 @@ typedef enum{
       INTERNAL_CLOSE_ALL,
       INTERNAL_CUSTOMIZE_ICON,
       INTERNAL_DOCK_PREFS,
+      INTERNAL_INLINE_ACTION_MENU_ACTIVE,
+      INTERNAL_INLINE_PLUGINS,
+      INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,
       INTERNAL_LAUNCH,
+      INTERNAL_MAXIMIZE_ALL,
+      INTERNAL_MINIMIZE_ALL,
       INTERNAL_REMOVE_CUSTOMIZED_ICON,
       INTERNAL_SEPARATOR,
       INTERNAL_SMART_WNCK_MENU,
       INTERNAL_SMART_WNCK_SIMPLE_MENU,
-      INTERNAL_INLINE_ACTION_MENU_ACTIVE,
-      INTERNAL_INLINE_PLUGINS,
-      INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,
+      INTERNAL_UNMAXIMIZE_ALL,
+      INTERNAL_UNMINIMIZE_ALL,
       MENU,
       SUBMENU,
       UNKNOWN_ITEM_TYPE
@@ -1120,14 +1144,18 @@ const ContextMenuItemType context_menu_item_type_list[] = {
         { INTERNAL_CLOSE_ALL,"Internal-Close-All"},
         { INTERNAL_CUSTOMIZE_ICON,"Internal-Customize-Icon"},
         { INTERNAL_DOCK_PREFS,"Internal-Dock-Prefs"},
+        { INTERNAL_INLINE_ACTION_MENU_ACTIVE,"Internal-Inline-Action-Menu-Active"},
+        { INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,"Internal-Inline-Submenus-Action-Menu-Inactives"},
+        { INTERNAL_INLINE_PLUGINS,"Internal-Inline-Plugins"},
         { INTERNAL_LAUNCH,"Internal-Launch"},
+        { INTERNAL_MAXIMIZE_ALL,"Internal-Maximize-All"},
+        { INTERNAL_MINIMIZE_ALL,"Internal-Minimize-All"},
         { INTERNAL_REMOVE_CUSTOMIZED_ICON,"Internal-Remove-Customized-Icon"},
         { INTERNAL_SEPARATOR,"Internal-Separator"},
         { INTERNAL_SMART_WNCK_MENU,"Internal-Smart-Wnck-Menu"},
         { INTERNAL_SMART_WNCK_SIMPLE_MENU,"Internal-Smart-Wnck-Simple-Menu"},
-        { INTERNAL_INLINE_ACTION_MENU_ACTIVE,"Internal-Inline-Action-Menu-Active"},
-        { INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES,"Internal-Inline-Submenus-Action-Menu-Inactives"},
-        { INTERNAL_INLINE_PLUGINS,"Internal-Inline-Plugins"},
+        { INTERNAL_UNMAXIMIZE_ALL,"Internal-Unmaximize-All"},
+        { INTERNAL_UNMINIMIZE_ALL,"Internal-Unminimize-All"},
         { UNKNOWN_ITEM_TYPE,NULL}
 };
 
@@ -1363,6 +1391,12 @@ menu_parse_start_element (GMarkupParseContext *context,
     case INTERNAL_LAUNCH:
       menuitem = task_icon_get_menu_item_launch(icon);
       break;
+    case INTERNAL_MAXIMIZE_ALL:
+      menuitem = task_icon_get_maximize_all (icon);
+      break;
+    case INTERNAL_MINIMIZE_ALL:
+      menuitem = task_icon_get_minimize_all (icon);
+      break;
     case INTERNAL_REMOVE_CUSTOMIZED_ICON:
       menuitem = awn_themed_icon_create_remove_custom_icon_item (AWN_THEMED_ICON(icon),task_icon_get_custom_name(icon));
       break;
@@ -1408,26 +1442,6 @@ menu_parse_start_element (GMarkupParseContext *context,
           item = task_icon_get_submenu_action_menu (icon, task_window_get_window (TASK_WINDOW(i->data)));
           gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
         }
-        item = task_icon_get_minimize_all (icon);
-        if (item)
-        {
-          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-        }
-        item = task_icon_get_unminimize_all (icon);
-        if (item)
-        {
-          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-        }
-        item = task_icon_get_maximize_all (icon);
-        if (item)
-        {
-          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-        }
-        item = task_icon_get_unmaximize_all (icon);
-        if (item)
-        {
-          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
-        }
       }
       break;
     case INTERNAL_SMART_WNCK_SIMPLE_MENU:
@@ -1465,6 +1479,12 @@ menu_parse_start_element (GMarkupParseContext *context,
           gtk_menu_shell_append(GTK_MENU_SHELL(menu), sub);
         }
       }        
+      break;
+    case INTERNAL_UNMAXIMIZE_ALL:
+      menuitem = task_icon_get_unmaximize_all (icon);
+      break;
+    case INTERNAL_UNMINIMIZE_ALL:
+      menuitem = task_icon_get_unminimize_all (icon);
       break;
     case MENU:
       break;
