@@ -1,5 +1,12 @@
 2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/menus/advanced.xml
+	* applets/taskmanager/menus/standard.xml
+	Add a separator in standard and remove a (redundant)
+	separator in advanced.
+
+2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/menus/standard.xml
 	Added a speparator before Close all.
 	
