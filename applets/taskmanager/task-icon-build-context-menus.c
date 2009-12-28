@@ -424,7 +424,6 @@ task_icon_get_menu_item_close_all (TaskIcon * icon)
   image = gtk_image_new_from_stock (STOCK_DELETE,GTK_ICON_SIZE_MENU);
   if (image)
   {
-    g_debug ("setting image");
     gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(item),image);
   }
 
@@ -824,11 +823,6 @@ task_icon_get_submenu_action_menu (TaskIcon * icon, WnckWindow * win)
 static void
 task_icon_inline_action_menu_active (TaskIcon * icon,GtkMenu * menu)
 {
-/* TODO As I feared reparenting the action menu items is unstable.
-   minimize,unmaximize,move,resize,always on top,always on visible workspace,
-   only on this workspace,move to ws right/left, move to ws up/down,move to another workspace,
-   close
-*/
   const TaskItem * main_item = task_icon_get_main_item (icon);
   if (main_item && TASK_IS_WINDOW(main_item))
   {  
@@ -889,7 +883,6 @@ menu_parse_end_element (GMarkupParseContext *context,
                           gpointer             user_data,
                           GError             **error)
 {
-//  g_debug ("%s: %s",__func__,element_name);
   if (g_strcmp0 (element_name,"submenu")==0)
   {
     g_markup_parse_context_pop (context);
@@ -905,7 +898,6 @@ menu_parse_text (GMarkupParseContext *context,
                       gpointer             user_data,
                       GError             **error)
 {
-  g_debug ("%s: text = %s, text_len = %lu, lastitme = %p",__func__,text,text_len,lastitem);
   if (text && text_len && lastitem)
   {
     gchar * s = g_strdup (text);
@@ -914,8 +906,6 @@ menu_parse_text (GMarkupParseContext *context,
     {
       gtk_menu_item_set_label (GTK_MENU_ITEM (lastitem), text);
     }
-    g_debug ("Setting label");
-//    gtk_menu_item_set_label (GTK_MENU_ITEM (lastitem), text);
   }
 }
 
@@ -943,7 +933,6 @@ menu_parse_start_element (GMarkupParseContext *context,
                                       gpointer            user_data,
                                       GError             **error)
 {
-//  g_debug ("%s: element name = %s",__func__,element_name);
   const gchar ** name_iter = attribute_names;
   const gchar ** value_iter = attribute_values;
   GtkWidget * menuitem = NULL;
@@ -978,7 +967,6 @@ menu_parse_start_element (GMarkupParseContext *context,
     {
       const gchar * name = *name_iter;
       const gchar * value = *value_iter;
-  //    g_debug ("%s: %s -> %s ",__func__,*name_iter,*value_iter);
       if (g_strcmp0 (name,"type")==0)
       {
         guint i;
