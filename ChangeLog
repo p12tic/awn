@@ -1,21 +1,26 @@
 2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/menus/standard.xml
+	Added a speparator before Close all.
+	
+2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
+
 Added:
-* applets/taskmanager/menus/
-* applets/taskmanager/menus/advanced.xml
-* applets/taskmanager/menus/custom-example.xml
-* applets/taskmanager/menus/simple.xml
-* applets/taskmanager/menus/standard.xml
-* applets/taskmanager/task-icon-build-context-menus.c
-* applets/taskmanager/task-icon-build-context-menus.h
-* applets/taskmanager/task-icon-private.h
+	* applets/taskmanager/menus/
+	* applets/taskmanager/menus/advanced.xml
+	* applets/taskmanager/menus/custom-example.xml
+	* applets/taskmanager/menus/simple.xml
+	* applets/taskmanager/menus/standard.xml
+	* applets/taskmanager/task-icon-build-context-menus.c
+	* applets/taskmanager/task-icon-build-context-menus.h
+	* applets/taskmanager/task-icon-private.h
 
 Modified:
-* applets/taskmanager/Makefile.am
-* applets/taskmanager/awn-applet-taskmanager.schema-ini.in
-* applets/taskmanager/task-icon.c
-* applets/taskmanager/task-icon.h
-* configure.in
+	* applets/taskmanager/Makefile.am
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in
+	* applets/taskmanager/task-icon.c
+	* applets/taskmanager/task-icon.h
+	* configure.in
 
 	Merged bzr+ssh://bazaar.launchpad.net/~rcryderman/awn/awn-taskman-editable-context-menus/
 	Allows definition of taskmanager context menus using xml (GMarkup) files.
