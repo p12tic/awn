@@ -1501,6 +1501,7 @@ find_desktop_fuzzy (TaskIcon *icon, gchar * class_name, gchar *cmd)
                 g_free (exec_regex_escaped);
                 g_free (lower);
                 g_free (cmd_base);
+                g_dir_close (dir);
                 return full_path;
               }
             }

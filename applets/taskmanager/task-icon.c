@@ -1791,7 +1791,6 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
   
   if (item && TASK_IS_WINDOW(item))
   {
-    /* Gets a Pixbuf without a reference for the caller */
     app_icon = task_item_get_icon (item);
   }
 
