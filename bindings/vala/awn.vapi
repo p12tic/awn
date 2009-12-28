@@ -53,6 +53,8 @@ namespace Awn {
 		public Awn.Applet applet { owned get; set; }
 		public int offset_modifier { get; set construct; }
 		[NoAccessorMethod]
+		public float offset_multiplier { get; set; }
+		[NoAccessorMethod]
 		public float scale { get; set; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
@@ -134,7 +136,6 @@ namespace Awn {
 		public void set_tooltip_text (string text);
 		public virtual signal void clicked ();
 		public virtual signal void context_menu_popup (Gdk.EventButton event);
-		public virtual signal void long_press ();
 		public virtual signal void middle_clicked ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
@@ -143,12 +144,11 @@ namespace Awn {
 		public Box (Gtk.Orientation orient);
 		public void set_orientation (Gtk.Orientation orient);
 		public void set_orientation_from_pos_type (Gtk.PositionType pos_type);
-		[NoAccessorMethod]
-		public Gtk.Orientation orientation { get; set; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class DBusWatcher : GLib.Object {
 		public static unowned Awn.DBusWatcher get_default ();
+		public bool has_name (string name);
 		public virtual signal void name_appeared (string name);
 		public virtual signal void name_disappeared (string name);
 	}
@@ -221,6 +221,8 @@ namespace Awn {
 		[NoAccessorMethod]
 		public bool active { get; set construct; }
 		[NoAccessorMethod]
+		public DesktopAgnostic.Color active_rect_color { owned get; set; }
+		[NoAccessorMethod]
 		public string arrow_png { owned get; set construct; }
 		[NoAccessorMethod]
 		public int arrows_count { get; set construct; }
@@ -230,6 +232,8 @@ namespace Awn {
 		public string custom_active_png { owned get; set construct; }
 		[NoAccessorMethod]
 		public bool depressed { get; set construct; }
+		[NoAccessorMethod]
+		public DesktopAgnostic.Color dot_color { owned get; set; }
 		[NoAccessorMethod]
 		public int effects { get; set construct; }
 		[NoAccessorMethod]

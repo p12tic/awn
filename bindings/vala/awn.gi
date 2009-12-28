@@ -233,6 +233,7 @@
 			</method>
 			<property name="applet" type="AwnApplet*" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="offset-modifier" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="offset-multiplier" type="gfloat" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="scale" type="gfloat" readable="1" writable="1" construct="0" construct-only="0"/>
 		</object>
 		<object name="AwnApplet" parent="GtkPlug" type-name="AwnApplet" get-type="awn_applet_get_type">
@@ -602,12 +603,6 @@
 					<parameter name="event" type="GdkEvent*"/>
 				</parameters>
 			</signal>
-			<signal name="long-press" when="FIRST">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="simple" type="AwnAppletSimple*"/>
-				</parameters>
-			</signal>
 			<signal name="middle-clicked" when="FIRST">
 				<return-type type="void"/>
 				<parameters>
@@ -641,11 +636,17 @@
 					<parameter name="pos_type" type="GtkPositionType"/>
 				</parameters>
 			</method>
-			<property name="orientation" type="GtkOrientation" readable="1" writable="1" construct="0" construct-only="0"/>
 		</object>
 		<object name="AwnDBusWatcher" parent="GObject" type-name="AwnDBusWatcher" get-type="awn_dbus_watcher_get_type">
 			<method name="get_default" symbol="awn_dbus_watcher_get_default">
 				<return-type type="AwnDBusWatcher*"/>
+			</method>
+			<method name="has_name" symbol="awn_dbus_watcher_has_name">
+				<return-type type="gboolean"/>
+				<parameters>
+					<parameter name="self" type="AwnDBusWatcher*"/>
+					<parameter name="name" type="gchar*"/>
+				</parameters>
 			</method>
 			<signal name="name-appeared" when="FIRST">
 				<return-type type="void"/>
@@ -816,11 +817,13 @@
 				</parameters>
 			</method>
 			<property name="active" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="active-rect-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="arrow-png" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="arrows-count" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="border-clip" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="custom-active-png" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="depressed" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="dot-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="effects" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="icon-alpha" type="gfloat" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="icon-offset" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>

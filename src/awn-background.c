@@ -27,6 +27,7 @@
 #include "awn-background.h"
 
 #include "awn-defines.h"
+#include "libawn/gseal-transition.h"
 
 G_DEFINE_ABSTRACT_TYPE (AwnBackground, awn_background, G_TYPE_OBJECT)
 
