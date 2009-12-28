@@ -121,6 +121,6 @@ _description=The threshold at which text count begins to be displayed. valid ran
 [DEFAULT/menu_filename]
 type = string
 default = standard.xml
-_description=Context menu definition.
+_description=Context menu definition.  Will look in the awn menu installation directory unless a absolutely path is provided.
 
 # vim: set ft=cfg :

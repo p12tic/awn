@@ -1,5 +1,11 @@
 2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Amended descrition of menu_filename key to indicate that 
+	an absolute path can be provided (for custom menus).
+
+2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/menus/advanced.xml
 	* applets/taskmanager/menus/standard.xml
 	Add a separator in standard and remove a (redundant)
