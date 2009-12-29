@@ -959,7 +959,6 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
       label = g_strdup_printf ("%s", name);
 
       item = gtk_menu_item_new_with_label (label);
-//      g_object_set_data (G_OBJECT (item), "workspace", GINT_TO_POINTER (i));
       g_object_set_qdata (G_OBJECT (item), g_quark_from_static_string("WORKSPACE"), GINT_TO_POINTER (i));
       if (i == present_workspace)
         gtk_widget_set_sensitive (item, FALSE);
@@ -1327,7 +1326,10 @@ menu_parse_start_element (GMarkupParseContext *context,
         gchar * sh = g_strdup (shell_value?shell_value:"true");
 
         menuitem = gtk_image_menu_item_new_with_label (text_value);
-        g_object_set_qdata (G_OBJECT (menuitem),g_quark_from_static_string("shell_value"),sh);
+        g_object_set_qdata_full (G_OBJECT (menuitem),
+                                 g_quark_from_static_string("shell_value"),
+                                 sh,
+                                 (GDestroyNotify) g_free);
         image = gtk_image_new_from_icon_name (icon_value,GTK_ICON_SIZE_MENU);
         if (image)
         {
@@ -1352,7 +1354,6 @@ menu_parse_start_element (GMarkupParseContext *context,
         cmd_and_envs[5] = g_strdup_printf("%u",getpid());
         cmd_and_envs[6] = NULL;
         g_object_weak_ref (G_OBJECT(menuitem),(GWeakNotify)g_strfreev,cmd_and_envs);
-        g_object_weak_ref (G_OBJECT(menuitem),(GWeakNotify)g_free,sh);
       }
       gtk_widget_show_all (menuitem);
       break;

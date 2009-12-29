@@ -1,5 +1,10 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	A correctness fix.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-pixbuf-cache.c:
         * libawn/awn-pixbuf-cache.h:
 	Added awn_pixbuf_cache_insert_simple_key() and 
