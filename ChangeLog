@@ -1,5 +1,11 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Added awn_utils_get_gtk_icon_theme_name().
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon-build-context-menus.c:
 	A correctness fix.
 

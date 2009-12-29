@@ -88,5 +88,6 @@ GValueArray* awn_utils_gslist_to_gvaluearray (GSList *list);
  */
 void awn_utils_show_menu_images (GtkMenu * menu);
 
+const gchar *awn_utils_get_gtk_icon_theme_name (GtkIconTheme * theme);
 #endif
 
