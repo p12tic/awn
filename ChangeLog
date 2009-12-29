@@ -1,5 +1,11 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	libawn/awn-themed-icon.c:
+	Small optimizations for the caching and no longer ref after
+	doing a lookup.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-pixbuf-cache.c:
 	Give a references in awn_pixbuf_cache_lookup*().
 

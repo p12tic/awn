@@ -301,7 +301,6 @@ awn_themed_icon_lookup_pixbuf (AwnThemedIcon * icon,const gchar * scope,
                                     &null_result);
   if (pixbuf)
   {
-    g_object_ref (pixbuf);
     return pixbuf;
   }
 
@@ -611,7 +610,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   gchar                *scalable_dir;
   gchar                *index_src;
   gchar                *index_dest;
-  GdkPixbuf            *pbuf;
+  GdkPixbuf            *pbuf = NULL;
 
   priv = icon->priv = AWN_THEMED_ICON_GET_PRIVATE (icon);
 
@@ -635,7 +634,10 @@ awn_themed_icon_init (AwnThemedIcon *icon)
    to get a themed icon a GtkIconTheme is used that does not contain
    hicolor dirs. It shouldn't find a icon and even if it does... we don't
    care.*/
-  pbuf = theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
+//  pbuf = theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
+  pbuf = awn_pixbuf_cache_lookup (priv->pixbufs,NULL,
+                                  priv->gtk_theme->priv->current_theme,
+                                  "gtk-knows-best",-1,16,NULL);
   if (pbuf)
   {
     g_object_unref (pbuf);
@@ -844,7 +846,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 
           case SCOPE_GTK_THEME:
             pixbuf = awn_themed_icon_lookup_pixbuf (icon,
-                                                    "scope_gtk_theme",
+                                                    NULL,
                                                     priv->gtk_theme,
                                                     icon_name,
                                                     size);            
@@ -855,7 +857,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             if (priv->current_item->original_name)
             {
               pixbuf = awn_themed_icon_lookup_pixbuf (icon,
-                                                      "scope_filename",
+                                                      NULL,
                                                       NULL,
                                                       icon_name,
                                                       size);              
@@ -864,7 +866,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 
           case SCOPE_FALLBACK_STOP:
             pixbuf = awn_themed_icon_lookup_pixbuf (icon,
-                                                    "scope_fallback_stop",
+                                                    NULL,
                                                     priv->gtk_theme,
                                                     GTK_STOCK_MISSING_IMAGE,
                                                     size);            
