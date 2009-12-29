@@ -476,3 +476,4 @@ awn_pixbuf_cache_invalidate (AwnPixbufCache* pixbuf_cache)
 	priv->num_pixbufs = 0;
 	g_get_current_time (&priv->last_prune);
 }
+

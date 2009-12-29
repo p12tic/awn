@@ -1,5 +1,10 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-pixbuf-cache.c:
+	Added a newline.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon-build-context-menus.c:
 	Workaround for glib <2.18.0.  Only level of submenus are supported
 	in this case.
