@@ -1,5 +1,10 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Should fix build error on older GTK+s.  Needs testing.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher.c:
 	Remove code that appear to be no longer needed (will cause
 	GtkIconTheme to complain if I'm wrong).

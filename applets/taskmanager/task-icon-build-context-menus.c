@@ -1185,8 +1185,15 @@ menu_parse_text (GMarkupParseContext *context,
     gchar * s = g_strdup (text);
     s = g_strstrip (s);
     if ( (strlen(s)))
-    {
+    {      
+#if GTK_CHECK_VERSION (2,16,0)
       gtk_menu_item_set_label (GTK_MENU_ITEM (lastitem), text);
+#else
+    GtkWidget *menu_label = gtk_bin_get_child(GTK_BIN(lastitem));
+    gtk_label_set_text(GTK_LABEL(menu_label), text); 
+#endif
+     
+
     }
   }
 }
