@@ -1,5 +1,10 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Set max pixbuf cache size to 32.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon-build-context-menus.c:
 	Should fix build error on older GTK+s.  Needs testing.
 

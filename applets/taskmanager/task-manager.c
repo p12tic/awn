@@ -395,7 +395,7 @@ task_manager_constructed (GObject *object)
    FIXME: ? possible config option.
    */
   g_object_set(awn_pixbuf_cache_get_default (),
-               "max-cache-size",120,
+               "max-cache-size",32,
                NULL);
 
   priv->desktops_table = g_hash_table_new_full (g_str_hash,g_str_equal,g_free,g_free);
