@@ -1,5 +1,13 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-pixbuf-cache.c:
+        * libawn/awn-pixbuf-cache.h:
+	Added awn_pixbuf_cache_insert_simple_key() and 
+	awn_pixbuf_cache_lookup_simple_key() for generic pixbuf 
+	caching purposes.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Taskmanager needs a significantly larger pixbuf cache than 
 	a standard applet.

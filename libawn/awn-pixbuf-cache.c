@@ -260,20 +260,12 @@ awn_pixbuf_cache_check(AwnPixbufCache * pixbuf_cache,GdkPixbuf * pbuf)
 		priv->num_pixbufs++;
 	}
 	priv->accessed = g_list_prepend (priv->accessed,pbuf);
-//	g_debug ("%s: cache size = %d",__func__,priv->num_pixbufs);	
 	if (priv->num_pixbufs > priv->max_cache_size)
 	{
 		awn_pixbuf_cache_prune (pixbuf_cache);
 	}
 	g_assert (priv->num_pixbufs == g_list_length (priv->accessed));
 }
-
-/*static void
-_pbuf_dies (gpointer data, GObject *where_the_object_was)
-{
-	g_message ("pbuf dies %p ",where_the_object_was);
-}
-*/
 
 /**
  * awn_pixbuf_cache_insert_pixbuf:
@@ -324,7 +316,28 @@ awn_pixbuf_cache_insert_pixbuf (AwnPixbufCache * pixbuf_cache,
   g_hash_table_insert ( priv->pixbufs, key, pbuf);
   g_object_ref (pbuf);
 	awn_pixbuf_cache_check (pixbuf_cache,pbuf);
-//	g_object_weak_ref (G_OBJECT(pbuf), (GWeakNotify) _pbuf_dies, NULL);
+}
+
+/**
+ * awn_pixbuf_cache_insert_pixbuf_simple_key:
+ * @pixbuf_cache: A pointer to an #AwnPixbufCache object.
+ * @pbuf: A #GdkPixbuf to be added to the cache.
+ * @simple_key: A single string as a key
+ *
+ * Inserts the pixbuf into the icon cache using simple_key as the key.  Use
+ * in conjunction with awn_pixbuf_cache_lookup_simple_key.  It's normally best 
+ * to use awn_pixbuf_cache_insert_pixbuf() instead.
+ */
+
+void
+awn_pixbuf_cache_insert_pixbuf_simple_key (AwnPixbufCache * pixbuf_cache,
+                              GdkPixbuf * pbuf,
+                              const gchar * simple_key)
+{
+	AwnPixbufCachePrivate * priv = GET_PRIVATE(pixbuf_cache);
+
+  g_hash_table_insert ( priv->pixbufs, g_strdup(simple_key), pbuf);
+  g_object_ref (pbuf);
 }
 
 /**
@@ -360,6 +373,32 @@ awn_pixbuf_cache_insert_null_result (AwnPixbufCache * pixbuf_cache,
   g_hash_table_insert ( priv->pixbufs, key, NULL);
 
 }
+
+/**
+ * awn_pixbuf_cache_lookup_simple_key:
+ * @pixbuf_cache: A pointer to an #AwnPixbufCache object.
+ * @simple_key: A single string to use as the lookup key.
+ * @width: Width of the desired pixbuf.  A value of -1 should be used if the width value is to be ignored.
+ * @height: Height of the desired pixbuf.  A value of -1 should be used if the height value is to be ignored.
+ *
+ * Attempts to lookup an matching pixbuf in the pixbuf cache using simple_key.  
+ * It is best to use awn_pixbuf_cache_lookup() in most cases.
+ * Returns: a pointer to a matching pixbuf in the cache or NULL.
+ */
+
+GdkPixbuf *
+awn_pixbuf_cache_lookup_simple_key (AwnPixbufCache * pixbuf_cache,
+                              const gchar * simple_key,
+                       				gint width,
+                       				gint height)
+{
+	gpointer pixbuf = NULL;
+	AwnPixbufCachePrivate * priv = GET_PRIVATE(pixbuf_cache);
+
+	pixbuf = g_hash_table_lookup (priv->pixbufs,simple_key);
+	return pixbuf;
+}
+
 
 /**
  * awn_pixbuf_cache_lookup:
