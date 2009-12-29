@@ -1158,6 +1158,11 @@ const ContextMenuItemType context_menu_item_type_list[] = {
         { UNKNOWN_ITEM_TYPE,NULL}
 };
 
+
+#if !GLIB_CHECK_VERSION (2,18,0)
+  GtkWidget *_smenu = NULL;
+#endif
+
   /* Called for close tags </foo> */
 static void
 menu_parse_end_element (GMarkupParseContext *context,
@@ -1167,7 +1172,11 @@ menu_parse_end_element (GMarkupParseContext *context,
 {
   if (g_strcmp0 (element_name,"submenu")==0)
   {
+#if GLIB_CHECK_VERSION (2,18,0)
     g_markup_parse_context_pop (context);
+#else
+    _smenu = NULL;
+#endif
   }
 }
 
@@ -1238,7 +1247,13 @@ menu_parse_start_element (GMarkupParseContext *context,
   AwnApplet * applet = NULL;
   gint height;
   gint width;
-  
+
+#if !GLIB_CHECK_VERSION (2,18,0)
+  if (_smenu)
+  {
+    menu = _smenu;
+  }
+#endif
   g_return_if_fail (GTK_IS_MENU(menu));
   icon =  g_object_get_qdata (G_OBJECT(menu), g_quark_from_static_string("ICON"));  
   g_assert (TASK_IS_ICON(icon));
@@ -1497,12 +1512,25 @@ menu_parse_start_element (GMarkupParseContext *context,
     case MENU:
       break;
     case SUBMENU:
+#if GLIB_CHECK_VERSION (2,18,0)
       menuitem = gtk_image_menu_item_new_with_label ( text_value?text_value:"");
       submenu = gtk_menu_new ();
       g_object_set_qdata (G_OBJECT(submenu), g_quark_from_static_string("ICON"),icon);  
       gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuitem),submenu);
       gtk_widget_show_all (menuitem);
       g_markup_parse_context_push (context,&sub_markup_parser,submenu);
+#else
+      if (_smenu)
+      {
+        g_critical ("%s: Error parsing context menu xml. Only one submenu level is allowed with GLIB < 2.18.0",__func__);
+      }
+      menuitem = gtk_image_menu_item_new_with_label ( text_value?text_value:"");
+      submenu = gtk_menu_new ();
+      g_object_set_qdata (G_OBJECT(submenu), g_quark_from_static_string("ICON"),icon);  
+      gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuitem),submenu);
+      gtk_widget_show_all (menuitem);
+      _smenu = submenu;
+#endif
       break;
     case UNKNOWN_ITEM_TYPE:
       {
