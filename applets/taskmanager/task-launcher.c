@@ -265,13 +265,7 @@ task_launcher_init (TaskLauncher *launcher)
   priv->launcher_image = GTK_WIDGET (awn_image_new ());  
   gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&icon_width,&icon_height);
   /*repress annoying gtk icon theme spam*/
-/*  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),"gtk_knows_best",16,0,NULL);
-  
-  if (launcher_pbuf)
-  {
-    g_object_unref (launcher_pbuf);
-  }
-  */
+
   theme = awn_themed_icon_get_awn_theme (NULL);
   launcher_pbuf = awn_pixbuf_cache_lookup (awn_pixbuf_cache_get_default(),
                                       NULL,
@@ -314,8 +308,7 @@ task_launcher_init (TaskLauncher *launcher)
                                       NULL,
                                       awn_utils_get_gtk_icon_theme_name(theme),
                                       "launcher-program");
-    }
-    
+    }  
   }
   
   if (launcher_pbuf)

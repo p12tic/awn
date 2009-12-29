@@ -1,6 +1,12 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:
+	Remove code that appear to be no longer needed (will cause
+	GtkIconTheme to complain if I'm wrong).
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
 	Make use of AwnPixbufCache where possible.
 
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
