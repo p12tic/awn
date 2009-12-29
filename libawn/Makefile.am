@@ -38,6 +38,7 @@ public_headers = \
 	awn-effects.h \
 	awn-icon.h \
 	awn-icon-box.h \
+	awn-pixbuf-cache.h \
 	awn-image.h \
 	awn-label.h \
 	awn-overlay.h \
@@ -118,6 +119,7 @@ source_c = \
 	awn-overlay-themed-icon.c \
 	awn-overlay-text.c \
 	awn-overlay-throbber.c \
+	awn-pixbuf-cache.c \
 	awn-themed-icon.c \
 	awn-tooltip.c \
 	awn-utils.c \

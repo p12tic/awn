@@ -1,5 +1,10 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/Makefile.am:
+	Build system modifications for AwnPixbufCache.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-pixbuf-cache.c:
 	* libawn/awn-pixbuf-cache.h:
 	Added AwnPixbufCache.
