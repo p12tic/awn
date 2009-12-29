@@ -1,5 +1,10 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-pixbuf-cache.c:
+	Give a references in awn_pixbuf_cache_lookup*().
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-utils.c:
 	* libawn/awn-utils.h:
 	Added awn_utils_get_gtk_icon_theme_name().

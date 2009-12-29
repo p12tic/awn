@@ -396,6 +396,10 @@ awn_pixbuf_cache_lookup_simple_key (AwnPixbufCache * pixbuf_cache,
 	AwnPixbufCachePrivate * priv = GET_PRIVATE(pixbuf_cache);
 
 	pixbuf = g_hash_table_lookup (priv->pixbufs,simple_key);
+	if (pixbuf)
+	{
+		g_object_ref (pixbuf);
+	}
 	return pixbuf;
 }
 
@@ -435,6 +439,10 @@ awn_pixbuf_cache_lookup (AwnPixbufCache * pixbuf_cache,
 	gboolean success;
 
 	success = g_hash_table_lookup_extended (priv->pixbufs,key,NULL,&pixbuf);
+	if (pixbuf)
+	{
+		g_object_ref (pixbuf);
+	}
 	if (null_result && !pixbuf)
 	{
 		*null_result = success;
