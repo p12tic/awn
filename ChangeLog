@@ -1,3 +1,8 @@
+2009-12-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Fix build for GTK+ 2.12.
+
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-pixbuf-cache.c:

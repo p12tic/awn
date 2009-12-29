@@ -51,6 +51,10 @@
 
 #include "config.h"
 
+#if !GTK_CHECK_VERSION(2,14,0)
+#define GTK_ICON_LOOKUP_FORCE_SIZE 0
+#endif
+
 /*
  Use these for now, might replace with awn specific icons at some point
  */
