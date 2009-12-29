@@ -38,6 +38,7 @@
 #include <unistd.h>
 #include <libawn/libawn.h>
 #include <libawn/awn-utils.h>
+#include <libawn/awn-pixbuf-cache.h>
 
 #include "task-launcher.h"
 #include "task-window.h"
@@ -232,7 +233,7 @@ task_launcher_init (TaskLauncher *launcher)
   GdkPixbuf           *launcher_pbuf;
   gint                icon_height;
   gint                icon_width;
-  	
+  GtkIconTheme        *theme;	
   priv = launcher->priv = TASK_LAUNCHER_GET_PRIVATE (launcher);
   
   priv->path = NULL;
@@ -264,24 +265,59 @@ task_launcher_init (TaskLauncher *launcher)
   priv->launcher_image = GTK_WIDGET (awn_image_new ());  
   gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&icon_width,&icon_height);
   /*repress annoying gtk icon theme spam*/
-  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),"gtk_knows_best",16,0,NULL);
+/*  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),"gtk_knows_best",16,0,NULL);
+  
   if (launcher_pbuf)
   {
     g_object_unref (launcher_pbuf);
   }
-  launcher_pbuf = gtk_icon_theme_load_icon (awn_themed_icon_get_awn_theme (NULL),
-                                            "launcher-program",
-                                            icon_height,
-                                            GTK_ICON_LOOKUP_FORCE_SIZE,
-                                            NULL);
+  */
+  theme = awn_themed_icon_get_awn_theme (NULL);
+  launcher_pbuf = awn_pixbuf_cache_lookup (awn_pixbuf_cache_get_default(),
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(theme),
+                                      "launcher-program",
+                                      -1,
+                                      icon_height,
+                                      NULL);
   if (!launcher_pbuf)
   {
-    launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
+    launcher_pbuf = gtk_icon_theme_load_icon (theme,
                                             "launcher-program",
                                             icon_height,
                                             GTK_ICON_LOOKUP_FORCE_SIZE,
-                                            NULL);
+                                              NULL);
+    if (launcher_pbuf)
+    {
+      awn_pixbuf_cache_insert_pixbuf (awn_pixbuf_cache_get_default(),
+                                      launcher_pbuf,
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(theme),
+                                      "launcher-program");
+    }
   }
+  
+  if (!launcher_pbuf)
+  {
+    theme = gtk_icon_theme_get_default();
+    launcher_pbuf = awn_pixbuf_cache_lookup (awn_pixbuf_cache_get_default(),
+                                        NULL,
+                                        awn_utils_get_gtk_icon_theme_name(theme),
+                                        "launcher-program",
+                                        -1,
+                                        icon_height,
+                                        NULL);
+    if (launcher_pbuf)
+    {
+      awn_pixbuf_cache_insert_pixbuf (awn_pixbuf_cache_get_default(),
+                                      launcher_pbuf,
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(theme),
+                                      "launcher-program");
+    }
+    
+  }
+  
   if (launcher_pbuf)
   {
     gtk_image_set_from_pixbuf (GTK_IMAGE (priv->launcher_image), launcher_pbuf);
@@ -594,9 +630,26 @@ _get_icon (TaskItem *item)
   if (pixbuf == NULL)
   {
     GtkIconTheme *icon_theme = gtk_icon_theme_get_default ();
-
-    pixbuf = gtk_icon_theme_load_icon (icon_theme, priv->icon_name,
-                                       s->panel_size, 0, &error);
+    pixbuf = awn_pixbuf_cache_lookup (awn_pixbuf_cache_get_default(),
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(icon_theme),
+                                      priv->icon_name,
+                                      -1,
+                                      s->panel_size,
+                                      NULL);
+    if (!pixbuf)
+    {
+      pixbuf = gtk_icon_theme_load_icon (icon_theme, priv->icon_name,
+                                   s->panel_size, 0, &error);
+      if (pixbuf)
+      {
+        awn_pixbuf_cache_insert_pixbuf (awn_pixbuf_cache_get_default(),
+                                        pixbuf,
+                                        NULL,
+                                        awn_utils_get_gtk_icon_theme_name(icon_theme),
+                                        priv->icon_name);
+      }
+    }
   }
   if (error)
   {
@@ -988,12 +1041,31 @@ _right_click (TaskItem *item, GdkEventButton *event)
   g_return_val_if_fail (TASK_IS_LAUNCHER (item),NULL);
   
   gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
-  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
-                                              "launcher-program",
-                                              height,
-                                              GTK_ICON_LOOKUP_FORCE_SIZE,
-                                              NULL);
-  
+
+  launcher_pbuf = awn_pixbuf_cache_lookup (awn_pixbuf_cache_get_default(),
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(gtk_icon_theme_get_default()),
+                                      "launcher-program",
+                                      -1,
+                                      height,
+                                      NULL);
+  if (!launcher_pbuf)
+  {
+    launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
+                                            "launcher-program",
+                                            height,
+                                            GTK_ICON_LOOKUP_FORCE_SIZE,
+                                            NULL);
+    if (launcher_pbuf)
+    {
+      awn_pixbuf_cache_insert_pixbuf (awn_pixbuf_cache_get_default(),
+                                      launcher_pbuf,
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(gtk_icon_theme_get_default()),
+                                      "launcher-program");
+    }
+  }
+
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 

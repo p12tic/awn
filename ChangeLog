@@ -1,6 +1,11 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
-	libawn/awn-themed-icon.c:
+	* applets/taskmanager/task-launcher.c:
+	Make use of AwnPixbufCache where possible.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
 	Small optimizations for the caching and no longer ref after
 	doing a lookup.
 
