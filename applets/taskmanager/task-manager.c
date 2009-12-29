@@ -43,6 +43,7 @@
 #include <glibtop/procargs.h>
 
 #include "libawn/gseal-transition.h"
+#include "libawn/awn-pixbuf-cache.h"
 
 #include "task-manager.h"
 #include "task-manager-glue.h"
@@ -387,6 +388,15 @@ task_manager_constructed (GObject *object)
   
   priv = TASK_MANAGER_GET_PRIVATE (object);
   widget = GTK_WIDGET (object);
+
+  /*
+   Set the cache size of our AwnPixbufCache to something a bit bigger.
+
+   FIXME: ? possible config option.
+   */
+  g_object_set(awn_pixbuf_cache_get_default (),
+               "max-cache-size",120,
+               NULL);
 
   priv->desktops_table = g_hash_table_new_full (g_str_hash,g_str_equal,g_free,g_free);
 

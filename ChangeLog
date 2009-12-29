@@ -1,5 +1,11 @@
 2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Taskmanager needs a significantly larger pixbuf cache than 
+	a standard applet.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	Modify AwnThemedIcon to use AwnPixbufCache.
 
