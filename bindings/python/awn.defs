@@ -1111,7 +1111,7 @@
 ;; From awn-pixbuf-cache.h
 
 (define-function awn_pixbuf_cache_new
-  (c-name "awn_tooltip_new")
+  (c-name "awn_pixbuf_cache_new")
   (is-constructor-of "AwnPixbufCache")
   (return-type "AwnPixbufCache*")
 )

@@ -1,6 +1,11 @@
 2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
+	Provide the proper function name for the constructor.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
 	Fix the syntax for pixbufs for the AwnPixbufCache 
 	python bindings.
 
