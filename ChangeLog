@@ -1,3 +1,8 @@
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/libawn.h
+	Add awn-pixbuf-cache.h to libawn.h
+
 2009-12-30  Julien Lavergne  <gilir@ubuntu.com>
 
 	* debian/avant-window-navigator-trunk.install:

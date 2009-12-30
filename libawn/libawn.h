@@ -46,6 +46,7 @@
 #include <libawn/awn-overlay-themed-icon.h>
 #include <libawn/awn-overlay-text.h>
 #include <libawn/awn-overlay-throbber.h>
+#include <libawn/awn-pixbuf-cache.h>
 #include <libawn/awn-themed-icon.h>
 #include <libawn/awn-tooltip.h>
 #include <libawn/awn-utils.h>
