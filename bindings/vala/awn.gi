@@ -99,6 +99,12 @@
 				<parameter name="widget" type="GtkWidget*"/>
 			</parameters>
 		</function>
+		<function name="utils_get_gtk_icon_theme_name" symbol="awn_utils_get_gtk_icon_theme_name">
+			<return-type type="gchar*"/>
+			<parameters>
+				<parameter name="theme" type="GtkIconTheme*"/>
+			</parameters>
+		</function>
 		<function name="utils_get_offset_modifier_by_path_type" symbol="awn_utils_get_offset_modifier_by_path_type">
 			<return-type type="gfloat"/>
 			<parameters>
@@ -1288,6 +1294,71 @@
 			<property name="icon" type="GtkWidget*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="scale" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="timeout" type="guint" readable="1" writable="1" construct="1" construct-only="0"/>
+		</object>
+		<object name="AwnPixbufCache" parent="GObject" type-name="AwnPixbufCache" get-type="awn_pixbuf_cache_get_type">
+			<method name="get_default" symbol="awn_pixbuf_cache_get_default">
+				<return-type type="AwnPixbufCache*"/>
+			</method>
+			<method name="insert_null_result" symbol="awn_pixbuf_cache_insert_null_result">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="pixbuf_cache" type="AwnPixbufCache*"/>
+					<parameter name="scope" type="gchar*"/>
+					<parameter name="theme_name" type="gchar*"/>
+					<parameter name="icon_name" type="gchar*"/>
+					<parameter name="width" type="gint"/>
+					<parameter name="height" type="gint"/>
+				</parameters>
+			</method>
+			<method name="insert_pixbuf" symbol="awn_pixbuf_cache_insert_pixbuf">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="pixbuf_cache" type="AwnPixbufCache*"/>
+					<parameter name="pbuf" type="GdkPixbuf*"/>
+					<parameter name="scope" type="gchar*"/>
+					<parameter name="theme_name" type="gchar*"/>
+					<parameter name="icon_name" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="insert_pixbuf_simple_key" symbol="awn_pixbuf_cache_insert_pixbuf_simple_key">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="pixbuf_cache" type="AwnPixbufCache*"/>
+					<parameter name="pbuf" type="GdkPixbuf*"/>
+					<parameter name="simple_key" type="gchar*"/>
+				</parameters>
+			</method>
+			<method name="invalidate" symbol="awn_pixbuf_cache_invalidate">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="pixbuf_cache" type="AwnPixbufCache*"/>
+				</parameters>
+			</method>
+			<method name="lookup" symbol="awn_pixbuf_cache_lookup">
+				<return-type type="GdkPixbuf*"/>
+				<parameters>
+					<parameter name="pixbuf_cache" type="AwnPixbufCache*"/>
+					<parameter name="scope" type="gchar*"/>
+					<parameter name="theme_name" type="gchar*"/>
+					<parameter name="icon_name" type="gchar*"/>
+					<parameter name="width" type="gint"/>
+					<parameter name="height" type="gint"/>
+					<parameter name="null_result" type="gboolean*"/>
+				</parameters>
+			</method>
+			<method name="lookup_simple_key" symbol="awn_pixbuf_cache_lookup_simple_key">
+				<return-type type="GdkPixbuf*"/>
+				<parameters>
+					<parameter name="pixbuf_cache" type="AwnPixbufCache*"/>
+					<parameter name="simple_key" type="gchar*"/>
+					<parameter name="width" type="gint"/>
+					<parameter name="height" type="gint"/>
+				</parameters>
+			</method>
+			<constructor name="new" symbol="awn_pixbuf_cache_new">
+				<return-type type="AwnPixbufCache*"/>
+			</constructor>
+			<property name="max-cache-size" type="guint" readable="1" writable="1" construct="1" construct-only="0"/>
 		</object>
 		<object name="AwnThemedIcon" parent="AwnIcon" type-name="AwnThemedIcon" get-type="awn_themed_icon_get_type">
 			<implements>

@@ -463,6 +463,20 @@ namespace Awn {
 		public uint timeout { get; set construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
+	public class PixbufCache : GLib.Object {
+		[CCode (has_construct_function = false)]
+		public PixbufCache ();
+		public static unowned Awn.PixbufCache get_default ();
+		public void insert_null_result (string scope, string theme_name, string icon_name, int width, int height);
+		public void insert_pixbuf (Gdk.Pixbuf pbuf, string scope, string theme_name, string icon_name);
+		public void insert_pixbuf_simple_key (Gdk.Pixbuf pbuf, string simple_key);
+		public void invalidate ();
+		public unowned Gdk.Pixbuf lookup (string scope, string theme_name, string icon_name, int width, int height, bool null_result);
+		public unowned Gdk.Pixbuf lookup_simple_key (string simple_key, int width, int height);
+		[NoAccessorMethod]
+		public uint max_cache_size { get; set construct; }
+	}
+	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class ThemedIcon : Awn.Icon, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public ThemedIcon ();
@@ -595,4 +609,6 @@ namespace Awn {
 	public const int MIN_HEIGHT;
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public const int PANEL_ID_DEFAULT;
+	[CCode (cheader_filename = "libawn/libawn.h")]
+	public static unowned string utils_get_gtk_icon_theme_name (Gtk.IconTheme theme);
 }
