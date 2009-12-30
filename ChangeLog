@@ -1,5 +1,11 @@
 2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Invalidate the pixbuf cache any time there are 
+	modifications to the awn-theme dir.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* bindings/vala/awn.gi:
   	* bindings/vala/awn.vapi:
 	Update vala bindings.

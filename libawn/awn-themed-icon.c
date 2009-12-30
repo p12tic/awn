@@ -33,7 +33,7 @@
 #include <libdesktop-agnostic/vfs.h>
 
 #include "awn-themed-icon.h"
-#include "awn-pixbuf-cache.h"
+#include "libawn.h"
 
 #include "gseal-transition.h"
 
@@ -214,6 +214,7 @@ awn_theme_dir_changed (DesktopAgnosticVFSFileMonitor* self,
                        DesktopAgnosticVFSFile* other, 
                        DesktopAgnosticVFSFileMonitorEvent event)
 {
+  awn_pixbuf_cache_invalidate (awn_pixbuf_cache_get_default());
   gtk_icon_theme_set_custom_theme (get_awn_theme(), NULL);
   gtk_icon_theme_set_custom_theme (get_awn_theme(), AWN_ICON_THEME_NAME);
 }
@@ -1657,8 +1658,10 @@ on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
 
   priv = icon->priv;
-  /*Don't invalidate if the theme name hasn't really changed.  The most 
-   annoying instance of this occuring is when an new AwnThemedIcon is created.*/
+  /*
+   Don't invalidate if the theme name hasn't really changed.  The most 
+   annoying instance of this occuring is when an new AwnThemedIcon is created.
+   */
   if (g_strcmp0 (priv->old_theme_name,priv->gtk_theme->priv->current_theme) != 0)
   {
     awn_themed_icon_invalidate_pixbuf_cache (icon);  
