@@ -1,6 +1,12 @@
 2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/python/awn.defs:
+	Fix the syntax for pixbufs for the AwnPixbufCache 
+	python bindings.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
         Some fixes for the AwnPixbufCache python bindings.
 
 2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>

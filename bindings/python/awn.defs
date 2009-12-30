@@ -1132,7 +1132,7 @@
   (c-name "awn_pixbuf_cache_insert_pixbuf")
   (return-type "none")
   (parameters
-    '("GdkPixbuf *" "pbuf")
+    '("GdkPixbuf*" "pbuf")
     '("const-gchar*" "scope")
     '("const-gchar*" "theme_name")
     '("const-gchar*" "icon_name")
@@ -1144,7 +1144,7 @@
   (c-name "awn_pixbuf_cache_insert_pixbuf_simple_key")
   (return-type "none")
   (parameters
-    '("GdkPixbuf *" "pbuf")
+    '("GdkPixbuf*" "pbuf")
     '("const-gchar*" "simple_key")
   )
 )
