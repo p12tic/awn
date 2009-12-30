@@ -1133,9 +1133,9 @@
   (return-type "none")
   (parameters
     '("GdkPixbuf *" "pbuf")
-    '("const gchar *" "scope")
-    '("const gchar *" "theme_name")
-    '("const gchar *" "icon_name")
+    '("const-gchar*" "scope")
+    '("const-gchar*" "theme_name")
+    '("const-gchar*" "icon_name")
   )
 )
 
@@ -1145,7 +1145,7 @@
   (return-type "none")
   (parameters
     '("GdkPixbuf *" "pbuf")
-    '("const gchar *" "simple_key")
+    '("const-gchar*" "simple_key")
   )
 )
 
@@ -1154,9 +1154,9 @@
   (c-name "awn_pixbuf_cache_insert_null_result")
   (return-type "none")
   (parameters
-    '("const gchar *" "scope")
-    '("const gchar *" "theme_name")
-    '("const gchar *" "icon_name")
+    '("const-gchar*" "scope")
+    '("const-gchar*" "theme_name")
+    '("const-gchar*" "icon_name")
     '("gint" "width")
     '("gint" "height")
   )
@@ -1168,12 +1168,12 @@
   (return-type "GdkPixbuf*")
   (caller-owns-return #t)
   (parameters
-    '("const gchar *" "scope")
-    '("const gchar *" "theme_name")
-    '("const gchar *" "icon_name")
+    '("const-gchar*" "scope")
+    '("const-gchar*" "theme_name")
+    '("const-gchar*" "icon_name")
     '("gint" "width")
     '("gint" "height")
-    '("gboolean *" "null_result")
+    '("gboolean*" "null_result")
   )
 )
 
@@ -1183,7 +1183,7 @@
   (return-type "GdkPixbuf*")
   (caller-owns-return #t)
   (parameters
-    '("const gchar *" "simple_key")
+    '("const-gchar*" "simple_key")
     '("gint" "width")
     '("gint" "height")
   )
