@@ -1,3 +1,8 @@
+2009-12-30  Julien Lavergne  <gilir@ubuntu.com>
+
+	* debian/avant-window-navigator-trunk.install:
+	Include xml files for taskmanager.
+
 2009-12-29  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* applets/taskmanager/task-icon-build-context-menus.c:
