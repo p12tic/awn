@@ -1,5 +1,10 @@
 2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* bindings/python/awn.defs:
+	Python bindings for AwnPixbufCache.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/libawn.h
 	Add awn-pixbuf-cache.h to libawn.h
 

@@ -150,6 +150,13 @@
   (gtype-id "AWN_TYPE_OVERLAY_PROGRESS_CIRCLE")
 )
 
+(define-object PixbufCache
+  (in-module "Awn")
+  (parent "GObject")
+  (c-name "AwnPixbufCache")
+  (gtype-id "AWN_TYPE_PIXBUF_CACHE")
+)
+
 (define-object Tooltip
   (in-module "Awn")
   (parent "GtkWindow")
@@ -1099,6 +1106,87 @@
   (c-name "awn_overlay_progress_circle_new")
   (is-constructor-of "AwnOverlayProgressCircle")
   (return-type "AwnOverlayProgressCircle*")
+)
+
+;; From awn-pixbuf-cache.h
+
+(define-function awn_pixbuf_cache_new
+  (c-name "awn_tooltip_new")
+  (is-constructor-of "AwnPixbufCache")
+  (return-type "AwnPixbufCache*")
+)
+
+(define-function pixbuf_cache_get_default
+  (c-name "awn_pixbuf_cache_get_default")
+  (return-type "AwnPixbufCache*")
+)
+
+(define-method invalidate
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_invalidate")
+  (return-type "none")
+)
+
+(define-method insert_pixbuf
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_insert_pixbuf")
+  (return-type "none")
+  (parameters
+    '("GdkPixbuf *" "pbuf")
+    '("const gchar *" "scope")
+    '("const gchar *" "theme_name")
+    '("const gchar *" "icon_name")
+  )
+)
+
+(define-method insert_pixbuf_simple_key
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_insert_pixbuf_simple_key")
+  (return-type "none")
+  (parameters
+    '("GdkPixbuf *" "pbuf")
+    '("const gchar *" "simple_key")
+  )
+)
+
+(define-method insert_null_result
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_insert_null_result")
+  (return-type "none")
+  (parameters
+    '("const gchar *" "scope")
+    '("const gchar *" "theme_name")
+    '("const gchar *" "icon_name")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method lookup
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_lookup")
+  (return-type "GdkPixbuf*")
+  (caller-owns-return #t)
+  (parameters
+    '("const gchar *" "scope")
+    '("const gchar *" "theme_name")
+    '("const gchar *" "icon_name")
+    '("gint" "width")
+    '("gint" "height")
+    '("gboolean *" "null_result")
+  )
+)
+
+(define-method lookup_simple_key
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_lookup_simple_key")
+  (return-type "GdkPixbuf*")
+  (caller-owns-return #t)
+  (parameters
+    '("const gchar *" "simple_key")
+    '("gint" "width")
+    '("gint" "height")
+  )
 )
 
 ;; From awn-tooltip.h
