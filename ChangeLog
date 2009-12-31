@@ -1,5 +1,10 @@
 2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/menus/custom-example.xml:
+	Some additions to custom-example.xml
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	Invalidate the pixbuf cache any time there are 
 	modifications to the awn-theme dir.
