@@ -6,12 +6,13 @@
   <menuitem type="Internal-Separator"></menuitem>
   <submenu text="Processes" icon="process-stop">
     <menuitem type="External-Command" cmd="xterm -e 'pmap -d $AWN_TASK_PID; read' &amp;">pmap</menuitem>
-    <menuitem type="External-Command" cmd="xterm -e 'xprop -id $AWN_TASK_XID; read' &amp;">xprop</menuitem>
+    <menuitem type="External-Command" cmd="xterm -e 'xprop -id $AWN_TASK_LEADER_XID; read' &amp;">xprop</menuitem>
     <menuitem type="External-Command" cmd="xterm -e 'gdb program $AWN_TASK_PID' &amp;">Debug Process</menuitem>
     <menuitem type="External-Command" cmd="xterm -e 'xrestop -b | grep -A 15 $AWN_TASK_PID' &amp;">Xrestop Process</menuitem>    
     <menuitem type="External-Command" cmd="kill -9 $AWN_TASK_PID &amp;" icon="force-exit">Force Quit</menuitem>
   </submenu>
   <submenu text="Debug">
+    <menuitem type="External-Command" cmd="xterm -e 'pmap -d $AWN_TASK_DEBUG_TASKMAN_PID; read' &amp;">pmap Taskman</menuitem>
     <menuitem type="External-Command" cmd="xterm -e 'gdb program $AWN_TASK_DEBUG_TASKMAN_PID' &amp;">Debug Taskman</menuitem>
     <menuitem type="External-Command" cmd="xterm -e 'xrestop -b | grep -A 15 $AWN_TASK_DEBUG_TASKMAN_PID' &amp;">Xrestop Taskman</menuitem>        
     <menuitem type="External-Command" cmd="kill $AWN_TASK_DEBUG_TASKMAN_PID &amp;" icon="exit">Exit Taskman</menuitem>

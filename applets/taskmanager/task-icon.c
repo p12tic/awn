@@ -976,7 +976,7 @@ on_main_item_icon_changed (TaskItem   *item,
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
-  if ( (priv->icon_change_behavior==0 && task_window_use_win_icon(TASK_WINDOW(item))!=USE_NEVER) || 
+  if ( (priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))!=USE_NEVER) || 
       (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && (priv->icon || task_window_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS)))
   {
     task_icon_set_icon_pixbuf (TASK_ICON(icon),priv->main_item);    

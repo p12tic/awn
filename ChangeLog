@@ -1,6 +1,13 @@
 2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/menus/custom-example.xml:
+  	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-icon.c:
+	A couple minor fixes.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/custom-example.xml:
 	Some additions to custom-example.xml
 
 2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>

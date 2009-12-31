@@ -1347,7 +1347,7 @@ menu_parse_start_element (GMarkupParseContext *context,
           break;
         }     
         GtkWidget * image;
-        gchar ** cmd_and_envs = g_malloc ( sizeof(gchar *) * 7);
+        gchar ** cmd_and_envs = g_malloc ( sizeof(gchar *) * 8);
         gchar * cmd_copy = g_strdup (cmd_value);
         gchar * sh = g_strdup (shell_value?shell_value:"true");
 
@@ -1378,7 +1378,8 @@ menu_parse_start_element (GMarkupParseContext *context,
           cmd_and_envs[4] = g_strdup("");
         }
         cmd_and_envs[5] = g_strdup_printf("%u",getpid());
-        cmd_and_envs[6] = NULL;
+        cmd_and_envs[6] = g_strdup_printf("%lx", wnck_window_get_group_leader (task_window_get_window(TASK_WINDOW(mainitem))));
+        cmd_and_envs[7] = NULL;
         g_object_weak_ref (G_OBJECT(menuitem),(GWeakNotify)g_strfreev,cmd_and_envs);
       }
       gtk_widget_show_all (menuitem);
