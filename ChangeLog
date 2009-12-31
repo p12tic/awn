@@ -1,3 +1,9 @@
+2009-12-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Ellipsize the context menu task names.  Currently set to 
+	55 chars and middle.
+
 2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/menus/custom-example.xml:

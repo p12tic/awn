@@ -61,6 +61,7 @@
 #define STOCK_DELETE "wnck-stock-delete"
 #define STOCK_MAXIMIZE "wnck-stock-maximize"
 #define STOCK_MINIMIZE "wnck-stock-minimize"
+#define MAX_MENU_ITEM_CHARS 55
 
 static void menu_parse_start_element (GMarkupParseContext *context,
                                       const gchar         *element_name,
@@ -1004,8 +1005,12 @@ task_icon_get_submenu_action_simple_menu (TaskIcon * icon, WnckWindow * win)
 {
   GtkWidget * submenu;
   GtkWidget * menuitem;
+  GtkWidget *menu_label;
 
   menuitem = gtk_menu_item_new_with_label ( wnck_window_get_name(win));
+  menu_label = gtk_bin_get_child(GTK_BIN(menuitem));
+  gtk_label_set_max_width_chars (GTK_LABEL(menu_label),MAX_MENU_ITEM_CHARS);
+  gtk_label_set_ellipsize (GTK_LABEL(menu_label),PANGO_ELLIPSIZE_MIDDLE);
   submenu = gtk_menu_new ();
   gtk_menu_item_set_submenu (GTK_MENU_ITEM(menuitem),submenu);
   task_icon_inline_action_simple_menu (icon, GTK_MENU(submenu),win);
@@ -1065,10 +1070,14 @@ task_icon_get_submenu_action_menu (TaskIcon * icon, WnckWindow * win)
   GtkWidget * menuitem;
   GdkPixbuf * pbuf;
   GtkWidget * image = NULL;
+  GtkWidget * menu_label;
   gint width;
   gint height;
 
   menuitem = gtk_image_menu_item_new_with_label ( wnck_window_get_name(win));
+  menu_label = gtk_bin_get_child(GTK_BIN(menuitem));
+  gtk_label_set_max_width_chars (GTK_LABEL(menu_label),MAX_MENU_ITEM_CHARS);
+  gtk_label_set_ellipsize (GTK_LABEL(menu_label),PANGO_ELLIPSIZE_MIDDLE);
   gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
   pbuf = wnck_window_get_icon (win);
   g_object_ref (pbuf);
