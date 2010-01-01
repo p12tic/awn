@@ -74,6 +74,8 @@
     <property name="MaxSize" type="i" access="read" />
     <property name="Position" type="i" access="read" />
     <property name="Offset" type="i" access="read" />
+    <property name="PathType" type="i" access="read" />
+    <property name="OffsetModifier" type="d" access="read" />
     <property name="PanelXid" type="x" access="read" />
 
   </interface>

@@ -1,3 +1,13 @@
+2010-01-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/libawn-marshal.list:
+	* src/awn-marshal.list:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Add OffsetModifier and PathType to exported panel properties.
+
 2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:

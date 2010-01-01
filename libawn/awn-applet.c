@@ -135,17 +135,14 @@ on_size_changed (DBusGProxy *proxy, gint size, AwnApplet *applet)
 }
 
 static void
-on_prop_changed (DBusGProxy *proxy, const gchar *uid, const gchar *prop_name,
+on_prop_changed (DBusGProxy *proxy, const gchar *prop_name,
                  GValue *value, AwnApplet *applet)
 {
   AwnAppletPrivate *priv;
-  g_return_if_fail (AWN_IS_APPLET (applet) && uid);
+  g_return_if_fail (AWN_IS_APPLET (applet));
   priv = applet->priv;
 
-  if (strcmp (priv->uid, uid) == 0 || uid[0] == '\0')
-  {
-    g_object_set_property (G_OBJECT (applet), prop_name, value);
-  }
+  g_object_set_property (G_OBJECT (applet), prop_name, value);
 }
 
 static void
@@ -422,8 +419,8 @@ awn_applet_constructed (GObject *obj)
     }
 
     dbus_g_object_register_marshaller (
-      libawn_marshal_VOID__STRING_STRING_BOXED,
-      G_TYPE_NONE, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_VALUE,
+      libawn_marshal_VOID__STRING_BOXED,
+      G_TYPE_NONE, G_TYPE_STRING, G_TYPE_VALUE,
       G_TYPE_INVALID
     );
 
@@ -434,8 +431,7 @@ awn_applet_constructed (GObject *obj)
     dbus_g_proxy_add_signal (priv->proxy, "SizeChanged",
                              G_TYPE_INT, G_TYPE_INVALID);
     dbus_g_proxy_add_signal (priv->proxy, "PropertyChanged",
-                             G_TYPE_STRING, G_TYPE_STRING,
-                             G_TYPE_VALUE, G_TYPE_INVALID);
+                             G_TYPE_STRING, G_TYPE_VALUE, G_TYPE_INVALID);
     dbus_g_proxy_add_signal (priv->proxy, "DestroyNotify",
                              G_TYPE_INVALID);
     dbus_g_proxy_add_signal (priv->proxy, "DestroyApplet",
@@ -476,7 +472,7 @@ awn_applet_constructed (GObject *obj)
 
     GError *error = NULL;
 
-#if HAVE_DBUS_GLIB_080
+#if 0 && HAVE_DBUS_GLIB_080
     GHashTable *all_props = NULL;
 
     // doing GetAll reduces DBus lag significantly
@@ -515,6 +511,14 @@ awn_applet_constructed (GObject *obj)
       {
         g_object_set_property (obj, "offset", value);
       }
+      else if (strcmp (key, "OffsetModifier") == 0)
+      {
+        g_object_set_property (obj, "offset-modifier", value);
+      }
+      else if (strcmp (key, "PathType") == 0)
+      {
+        g_object_set_property (obj, "path-type", value);
+      }
       else
       {
         g_warning ("Unknown property: \"%s\"", (char*)key);
@@ -523,7 +527,7 @@ awn_applet_constructed (GObject *obj)
 
 #else
     GValue position = {0,}, size = {0,}, max_size = {0,}, offset = {0,};
-    GValue panel_xid = {0,};
+    GValue panel_xid = {0,}, path_type = {0,}, offset_mod = {0,};
 
     dbus_g_proxy_call (prop_proxy, "Get", &error, 
                        G_TYPE_STRING, "org.awnproject.Awn.Panel",
@@ -570,10 +574,30 @@ awn_applet_constructed (GObject *obj)
 
     if (error) goto crap_out;
 
+    dbus_g_proxy_call (prop_proxy, "Get", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "OffsetModifier",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &offset_mod,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
+    dbus_g_proxy_call (prop_proxy, "Get", &error,
+                       G_TYPE_STRING, "org.awnproject.Awn.Panel",
+                       G_TYPE_STRING, "PathType",
+                       G_TYPE_INVALID,
+                       G_TYPE_VALUE, &path_type,
+                       G_TYPE_INVALID);
+
+    if (error) goto crap_out;
+
     g_object_set_property (obj, "position", &position);
     g_object_set_property (obj, "size", &size);
     g_object_set_property (obj, "offset", &offset);
     g_object_set_property (obj, "max-size", &max_size);
+    g_object_set_property (obj, "offset-modifier", &offset_mod);
+    g_object_set_property (obj, "path-type", &path_type);
 
     if (G_VALUE_HOLDS_INT64 (&panel_xid))
     {
@@ -585,6 +609,8 @@ awn_applet_constructed (GObject *obj)
     g_value_unset (&max_size);
     g_value_unset (&offset);
     g_value_unset (&panel_xid);
+    g_value_unset (&offset_mod);
+    g_value_unset (&path_type);
 
 #endif
     if (prop_proxy) g_object_unref (prop_proxy);

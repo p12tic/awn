@@ -68,7 +68,7 @@ struct _AwnPanelClass
   void (*size_changed)     (AwnPanel *panel, gint size);
   void (*position_changed) (AwnPanel *panel, GtkPositionType position);
   void (*offset_changed)   (AwnPanel *panel, gint offset);
-  void (*property_changed) (AwnPanel *panel, const gchar *uid,
+  void (*property_changed) (AwnPanel *panel,
                             const gchar *prop_name, GValue *value);
   void (*destroy_notify)   (AwnPanel *panel);
   void (*destroy_applet)   (AwnPanel *panel, const gchar *uid);

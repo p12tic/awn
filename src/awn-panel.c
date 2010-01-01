@@ -176,6 +176,8 @@ enum
   PROP_POSITION,
   PROP_SIZE,
   PROP_MAX_SIZE,
+  PROP_PATH_TYPE,
+  PROP_OFFSET_MODIFIER,
   PROP_AUTOHIDE_TYPE,
   PROP_AUTOHIDE_HIDE_DELAY,
   PROP_AUTOHIDE_POLL_DELAY,
@@ -757,6 +759,12 @@ awn_panel_get_property (GObject    *object,
       }
       break;
     }
+    case PROP_PATH_TYPE:
+      g_value_set_int (value, priv->path_type);
+      break;
+    case PROP_OFFSET_MODIFIER:
+      g_value_set_float (value, priv->offset_mod);
+      break;
     case PROP_AUTOHIDE_TYPE:
       g_value_set_int (value, priv->autohide_type);
       break;
@@ -811,6 +819,12 @@ awn_panel_set_property (GObject      *object,
       break;
     case PROP_SIZE:
       awn_panel_set_size (panel, g_value_get_int (value));
+      break;
+    case PROP_PATH_TYPE:
+      priv->path_type = g_value_get_int (value);
+      break;
+    case PROP_OFFSET_MODIFIER:
+      priv->offset_mod = g_value_get_float (value);
       break;
     case PROP_AUTOHIDE_TYPE:
       awn_panel_set_autohide_type (panel, g_value_get_int (value));
@@ -1785,6 +1799,24 @@ awn_panel_class_init (AwnPanelClass *klass)
                       G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
+    PROP_PATH_TYPE,
+    g_param_spec_int ("path-type",
+                      "Path Type",
+                      "Path type used by the panel background",
+                      0, AWN_PATH_LAST-1, AWN_PATH_LINEAR,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
+    PROP_OFFSET_MODIFIER,
+    g_param_spec_float ("offset-modifier",
+                        "Offset Modifier",
+                        "Offset modifier used by current path type",
+                        -G_MAXFLOAT, G_MAXFLOAT, 1.0,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
     PROP_AUTOHIDE_TYPE,
     g_param_spec_int ("autohide-type",
                       "Autohide type",
@@ -1866,9 +1898,9 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (AwnPanelClass, property_changed),
 			      NULL, NULL,
-			      awn_marshal_VOID__STRING_STRING_BOXED,
+			      awn_marshal_VOID__STRING_BOXED,
 			      G_TYPE_NONE,
-			      3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_VALUE);
+			      2, G_TYPE_STRING, G_TYPE_VALUE);
 
   _panel_signals[DESTROY_NOTIFY] =
 		g_signal_new ("destroy_notify",
@@ -1922,9 +1954,6 @@ awn_panel_init (AwnPanel *panel)
   AwnPanelPrivate *priv;
 
   priv = panel->priv = AWN_PANEL_GET_PRIVATE (panel);
-
-  priv->path_type = AWN_PATH_LINEAR;
-  priv->offset_mod = 1.0;
 
   priv->draw_width = 32;
   priv->draw_height = 32;
@@ -2804,35 +2833,6 @@ static void
 on_applet_embedded (AwnPanel *panel, GtkWidget *applet)
 {
   g_return_if_fail (AWN_IS_PANEL (panel) && GTK_IS_SOCKET (applet));
-
-  AwnPanelPrivate *priv = panel->priv;
-
-  if (priv->path_type != AWN_PATH_LINEAR)
-  {
-    /* the applet is most likely AwnAppletProxy - get uid */
-    gchar *uid = NULL;
-    g_object_get (applet, "uid", &uid, NULL);
-
-    g_return_if_fail (uid);
-
-    /* update applet's offset-modifier */
-    GValue mod_value = {0};
-    g_value_init (&mod_value, G_TYPE_FLOAT);
-    g_value_set_float (&mod_value, priv->offset_mod);
-    
-    g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, uid,
-                   "offset-modifier", &mod_value);
-
-    /* update applet's path-type */
-    GValue value = {0};
-    g_value_init (&value, G_TYPE_INT);
-
-    g_value_set_int (&value, priv->path_type);
-    g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, uid,
-                   "path-type", &value);
-
-    g_free (uid);
-  }
 }
 
 static void
@@ -2909,8 +2909,8 @@ awn_panel_set_style (AwnPanel *panel, gint style)
     g_value_set_float (&mod_value, offset_mod);
 
     priv->offset_mod = offset_mod;
-    
-    g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, "",
+
+    g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0,
                    "offset-modifier", &mod_value);
   }
 
@@ -2921,7 +2921,7 @@ awn_panel_set_style (AwnPanel *panel, gint style)
 
   priv->path_type = path;
 
-  g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0, "",
+  g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0,
                  "path-type", &value);
 }
 
