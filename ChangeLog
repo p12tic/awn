@@ -1,5 +1,10 @@
 2010-01-01  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/quick-prefs/applet.vala:
+	Minor cleanup.
+
+2010-01-01  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-applet.c:
 	* libawn/libawn-marshal.list:
 	* src/awn-marshal.list:

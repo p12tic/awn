@@ -143,15 +143,12 @@ public class PrefsApplet : AppletSimple
                                 "/org/awnproject/Applet/Taskmanager",
                                 "org.awnproject.Applet.Taskmanager");
 
-      Value window = Value (typeof (string));
-      window.set_string ("awn-settings");
-
-      HashTable<string, Value?> hints;
-      hints = new HashTable<string, Value?> (str_hash, str_equal);
-      Value val = Value (typeof (bool));
-      val.set_boolean (visible);
+      HashTable<string, unowned Value?> hints;
+      hints = new HashTable<string, unowned Value?> (str_hash, str_equal);
+      Value val = visible;
       hints.insert ("visible", val);
 
+      Value window = "awn-settings";
       taskman.Update(window, hints);
     }
     catch (DBus.Error err)
@@ -507,7 +504,7 @@ public class PrefsApplet : AppletSimple
     label = new Awn.Label ();
     main_box.pack_start (label, true, false, 0);
 
-    // icons to run awn-settings and show about dialog
+    // icons to run awn-settings
     box = new Awn.IconBox.for_applet (this.docklet);
     main_box.add (box);
 
@@ -523,6 +520,7 @@ public class PrefsApplet : AppletSimple
     this.docklet_icons.append (icon);
     box.add (icon);
 
+    // icon to show about dialog
     icon = PrefsApplet.new_unbound_icon ();
     icon.set_data ("icon-name", (void*) "about");
     icon.set_from_pixbuf (icon_loader.get_icon_at_size (icon_size, "about"));
@@ -535,6 +533,7 @@ public class PrefsApplet : AppletSimple
     this.docklet_icons.append (icon);
     box.add (icon);
 
+    // we're done initializing, show the docklet
     this.docklet.@construct (window_id);
   }
 
