@@ -562,6 +562,10 @@ task_icon_constructed (GObject *object)
   {
     return;
   }
+  gtk_drag_dest_set (GTK_WIDGET (object), 
+                     GTK_DEST_DEFAULT_DROP,
+                     drop_types, n_drop_types,
+                     GDK_ACTION_COPY | GDK_ACTION_MOVE);
 
 }
 
