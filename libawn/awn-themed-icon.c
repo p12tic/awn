@@ -586,7 +586,6 @@ copy_over_error:
 static void 
 check_dest_or_copy (const gchar *src, const gchar *dest)
 {
-
   if (g_file_test (dest, G_FILE_TEST_EXISTS))
     return;
   copy_over (src,dest);
@@ -794,6 +793,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       const gchar *applet_name;
       const gchar *icon_name;
       const gchar *uid;
+      gchar * base = NULL;
       gint         i;
       
       applet_name = priv->applet_name;
@@ -807,7 +807,9 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
         switch (i)
         {
           case SCOPE_UID:
-            name = g_strdup_printf ("%s-%s-%s", icon_name, applet_name, uid);
+            base = g_path_get_basename (icon_name);
+            name = g_strdup_printf ("%s-%s-%s", base, applet_name, uid);
+            g_free (base);
             pixbuf = awn_themed_icon_lookup_pixbuf (icon,
                                                     "scope_uid",
                                                     priv->awn_theme,
@@ -816,7 +818,9 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             break;
 
           case SCOPE_APPLET:
-            name = g_strdup_printf ("%s-%s", icon_name, applet_name);
+            base = g_path_get_basename (icon_name);
+            name = g_strdup_printf ("%s-%s", base, applet_name);
+            g_free (base);
             pixbuf = awn_themed_icon_lookup_pixbuf (icon,
                                                     "scope_applet",
                                                     priv->awn_theme,
@@ -825,11 +829,13 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             break;
 
           case SCOPE_AWN_THEME:
+            base = g_path_get_basename (icon_name);
             pixbuf = awn_themed_icon_lookup_pixbuf (icon,
                                                     "scope_awn_theme",
                                                     priv->awn_theme,
-                                                    icon_name,
-                                                    size);            
+                                                    base,
+                                                    size);
+            g_free (base);
             break;
 
           case SCOPE_OVERRIDE_THEME:
@@ -1850,14 +1856,13 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                  priv->current_item->name,
                                  suffix);
   }
-
   dest_filename = g_build_filename (priv->icon_dir,
                                     "awn-theme", "scalable",
                                     base_name, NULL);
 
   /* Make sure we don't have any conflicting icons */
   awn_themed_icon_clear_icons (icon, scope);
-  
+  awn_pixbuf_cache_invalidate (awn_pixbuf_cache_get_default());
   if (svg)
     check_dest_or_copy (sdata, dest_filename);
   else
@@ -1930,7 +1935,7 @@ _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 {
   GtkWidget * dialog, *preview;
   GtkFileFilter * filter = gtk_file_filter_new ();
-  
+
   gtk_file_filter_add_pattern (filter, "*.png");
   gtk_file_filter_add_pattern (filter, "*.svg");
   gtk_file_filter_set_name (filter, _("Icons"));
@@ -1955,8 +1960,9 @@ _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
     gchar * dest_filename=NULL;
     gchar  ** tokens;
     gchar ** last;
+
+    awn_pixbuf_cache_invalidate (awn_pixbuf_cache_get_default());
     
-    g_debug ("copy and save the file");
     src_filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
     /*
      TODO check that src file is an icon
@@ -2051,6 +2057,7 @@ _remove_icon (GtkMenuItem *menuitem,AwnThemedIcon * icon)
   {
     return;
   }
+  awn_pixbuf_cache_invalidate (awn_pixbuf_cache_get_default());
   gchar * dest_filename_minus_ext = g_build_filename (priv->icon_dir,
                                                       "awn-theme", "scalable",
                                                       priv->custom_icon_name, NULL);
@@ -2060,7 +2067,7 @@ _remove_icon (GtkMenuItem *menuitem,AwnThemedIcon * icon)
   del_file = g_strdup_printf("%s.svg",dest_filename_minus_ext);
   g_unlink (del_file);
   g_free (del_file);      
-  
+
   gtk_icon_theme_set_custom_theme (get_awn_theme(), NULL);
   gtk_icon_theme_set_custom_theme (get_awn_theme(), AWN_ICON_THEME_NAME);  
   g_free( dest_filename_minus_ext);

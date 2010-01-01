@@ -1,3 +1,8 @@
+2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Fix some of the fallout of the more agressive caching.
+
 2009-12-31  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
