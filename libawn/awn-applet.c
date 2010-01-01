@@ -472,7 +472,7 @@ awn_applet_constructed (GObject *obj)
 
     GError *error = NULL;
 
-#if 0 && HAVE_DBUS_GLIB_080
+#if HAVE_DBUS_GLIB_080
     GHashTable *all_props = NULL;
 
     // doing GetAll reduces DBus lag significantly
