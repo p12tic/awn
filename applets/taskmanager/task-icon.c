@@ -2235,6 +2235,10 @@ task_icon_scroll_event (GtkWidget *widget, GdkEventScroll *event, TaskIcon *icon
   priv = icon->priv;
   if (event->type == GDK_SCROLL)
   {
+    if (!priv->main_item || !TASK_IS_WINDOW (priv->main_item))
+    {
+      task_icon_search_main_item (icon, NULL);
+    }
     if (priv->main_item && TASK_IS_WINDOW (priv->main_item))
     {
       GSList *cur_item = NULL;
