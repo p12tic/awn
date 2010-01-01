@@ -1,5 +1,11 @@
 2009-12-31  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Quiet the gtk icon them spam.  ensure icons every time
+	there's a theme change signal 
+
+2009-12-31  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon-build-context-menus.c:
 	Ellipsize the context menu task names.  Currently set to 
 	55 chars and middle.

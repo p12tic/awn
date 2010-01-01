@@ -635,7 +635,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
    to get a themed icon a GtkIconTheme is used that does not contain
    hicolor dirs. It shouldn't find a icon and even if it does... we don't
    care.*/
-//  pbuf = theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
+  pbuf = theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
   pbuf = awn_pixbuf_cache_lookup (priv->pixbufs,NULL,
                                   priv->gtk_theme->priv->current_theme,
                                   "gtk-knows-best",-1,16,NULL);
@@ -1665,10 +1665,10 @@ on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
   if (g_strcmp0 (priv->old_theme_name,priv->gtk_theme->priv->current_theme) != 0)
   {
     awn_themed_icon_invalidate_pixbuf_cache (icon);  
-    ensure_icon (icon);
     g_free (priv->old_theme_name);
     priv->old_theme_name = g_strdup (priv->gtk_theme->priv->current_theme);
   }
+  ensure_icon (icon);
 }
 
 static gboolean
