@@ -358,6 +358,12 @@ on_plug_removed (AwnAppletProxy *proxy, gpointer user_data)
   g_return_val_if_fail (AWN_IS_APPLET_PROXY (proxy), FALSE);
   priv = proxy->priv;
 
+  /* reset our old position */
+  priv->old_x = 0;
+  priv->old_y = 0;
+  priv->old_w = 0;
+  priv->old_h = 0;
+
   /* indicate that the applet crashed and allow restart */
   priv->running = FALSE;
   priv->crashed = TRUE;

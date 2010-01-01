@@ -2909,6 +2909,7 @@ awn_panel_set_style (AwnPanel *panel, gint style)
     g_value_set_float (&mod_value, offset_mod);
 
     priv->offset_mod = offset_mod;
+    g_object_notify (G_OBJECT (panel), "offset-modifier");
 
     g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0,
                    "offset-modifier", &mod_value);
@@ -2920,6 +2921,7 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   g_value_set_int (&value, path);
 
   priv->path_type = path;
+  g_object_notify (G_OBJECT (panel), "path-type");
 
   g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0,
                  "path-type", &value);

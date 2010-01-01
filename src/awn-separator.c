@@ -90,6 +90,7 @@ awn_separator_set_property (GObject      *object,
                             GParamSpec   *pspec)
 {
   AwnSeparatorPrivate *priv;
+  gint temp;
 
   g_return_if_fail (AWN_IS_SEPARATOR (object));
   priv = AWN_SEPARATOR (object)->priv;
@@ -100,15 +101,21 @@ awn_separator_set_property (GObject      *object,
       priv->client = g_value_get_object (value);
       break;
     case PROP_POSITION:
-      priv->position = g_value_get_int (value);
+      temp = g_value_get_int (value);
+      if ((GtkPositionType)temp == priv->position) break;
+      priv->position = temp;
       gtk_widget_queue_resize (GTK_WIDGET (object));
       break;
     case PROP_OFFSET:
-      priv->offset = g_value_get_int (value);
-      gtk_widget_queue_resize (GTK_WIDGET (object));
+      temp = g_value_get_int (value);
+      if (temp == priv->offset) break;
+      priv->offset = temp;
+      gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_SIZE:
-      priv->size = g_value_get_int (value);
+      temp = g_value_get_int (value);
+      if (temp == priv->size) break;
+      priv->size = temp;
       gtk_widget_queue_resize (GTK_WIDGET (object));
       break;
     case PROP_SEP_COLOR:

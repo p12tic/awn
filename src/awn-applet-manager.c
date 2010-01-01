@@ -102,6 +102,9 @@ static void awn_applet_manager_set_pos_type (AwnAppletManager *manager,
                                              GtkPositionType   position);
 static void awn_applet_manager_set_offset   (AwnAppletManager *manager,
                                              gint              offset);
+static void on_icon_size_alloc              (GtkWidget *widget,
+                                             GtkAllocation *alloc,
+                                             AwnAppletManager *manager);
 static void free_list                       (GSList **list);
 
 /*
@@ -703,6 +706,8 @@ create_applet (AwnAppletManager *manager,
   {
     widget = applet = awn_separator_new_from_config_with_values (priv->client,
         priv->position, priv->size, priv->offset);
+    g_signal_connect (widget, "size-allocate", 
+                      G_CALLBACK (on_icon_size_alloc), manager);
     fill = TRUE;
   }
   else if (g_str_has_suffix (path, "/expander.desktop"))
@@ -724,6 +729,8 @@ create_applet (AwnAppletManager *manager,
     g_signal_connect_swapped (applet, "applet-crashed",
                               G_CALLBACK (_applet_crashed), manager);
     widget = awn_applet_proxy_get_throbber (AWN_APPLET_PROXY (applet));
+    g_signal_connect (widget, "size-allocate", 
+                      G_CALLBACK (on_icon_size_alloc), manager);
 
     gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
 
@@ -935,6 +942,45 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
   if (g_hash_table_remove (priv->extra_widgets, widget))
   {
     gtk_container_remove (GTK_CONTAINER (manager), widget);
+  }
+}
+
+static void
+on_icon_size_alloc (GtkWidget *widget, GtkAllocation *alloc,
+                    AwnAppletManager *manager)
+{
+  AwnAppletManagerPrivate *priv;
+  GtkAllocation manager_alloc;
+  AwnPathType path_type;
+  gfloat offset_modifier;
+
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
+
+  priv = manager->priv;
+
+  if (!AWN_IS_SEPARATOR (widget) && !AWN_IS_ICON (widget)) return;
+
+  gtk_widget_get_allocation (GTK_WIDGET (manager), &manager_alloc);
+  g_object_get (gtk_widget_get_toplevel (GTK_WIDGET (manager)),
+                "path-type", &path_type, "offset-modifier", &offset_modifier,
+                NULL);
+
+  // get curve offset
+  gfloat temp = awn_utils_get_offset_modifier_by_path_type (path_type,
+             priv->position, priv->offset, offset_modifier,
+             alloc->x + alloc->width / 2 - manager_alloc.x,
+             alloc->y + alloc->height / 2 - manager_alloc.y,
+             manager_alloc.width,
+             manager_alloc.height);
+  gint offset = round (temp);
+
+  if (AWN_IS_ICON (widget))
+  {
+    awn_icon_set_offset (AWN_ICON (widget), offset);
+  }
+  else if (AWN_IS_SEPARATOR (widget))
+  {
+    g_object_set (widget, "offset", offset, NULL);
   }
 }
 
