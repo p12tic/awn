@@ -1,3 +1,13 @@
+2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Slight adjustment due to previous commit.
+
+2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Make use of "drag-and-drop" = FALSE a bit less magical.
+
 2010-01-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-applet-manager.c:

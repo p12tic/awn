@@ -400,6 +400,10 @@ awn_themed_icon_set_property (GObject *object, guint property_id,
       break;
     case PROP_DRAG_AND_DROP:
       priv->drag_and_drop = g_value_get_boolean (value);
+      if (!priv->drag_and_drop)
+      {
+        gtk_drag_dest_unset (GTK_WIDGET(object));
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -1205,7 +1209,6 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
     g_free (search_dir);
 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", applet_name);
-    
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
     priv->cache_sentinel--; /*unprotect the pixbuf cache*/    
     g_free (search_dir); 
@@ -1753,7 +1756,10 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
     return;
   }
   priv = icon->priv;
-
+  if (!priv->drag_and_drop)
+  {
+    return;
+  }
   /* First check we have valid data */
   if (selection_data == NULL ||
       gtk_selection_data_get_length (selection_data) == 0)
