@@ -1,5 +1,16 @@
 2010-01-02  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/menus/advanced.xml:
+  	* applets/taskmanager/menus/custom-example.xml:
+  	* applets/taskmanager/menus/simple.xml:
+  	* applets/taskmanager/menus/standard.xml:
+  	* applets/taskmanager/task-icon-build-context-menus.c:
+	Adjust the smart wnck menu items to be more consistent in layout
+	between grouped and single task situations.  Adjusted the menus
+	for such.
+
+2010-01-02  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/menus/standard.xml:
 	Display a separator consistently after Launch item with grouped
 	and single task items.

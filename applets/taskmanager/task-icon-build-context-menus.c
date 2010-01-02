@@ -634,7 +634,7 @@ task_icon_get_unminimize_all (TaskIcon * icon)
     {
       continue;
     }
-    menuitem = gtk_image_menu_item_new_with_label ("UnMinimize all");
+    menuitem = gtk_image_menu_item_new_with_label ("Unminimize all");
     gtk_widget_show (menuitem);
     g_signal_connect (menuitem,"activate",G_CALLBACK(_unminimize_all_cb),icon);
   }
@@ -725,7 +725,7 @@ task_icon_get_menu_item_maximize (TaskIcon * icon,WnckWindow *win)
   }
   else if (! wnck_window_is_minimized(win))
   {
-    menuitem = gtk_image_menu_item_new_with_mnemonic (_("UnMa_ximize"));
+    menuitem = gtk_image_menu_item_new_with_mnemonic (_("Unma_ximize"));
   }
   if (image)
   {
@@ -780,7 +780,7 @@ task_icon_get_menu_item_minimize (TaskIcon * icon,WnckWindow *win)
   }
   else
   {
-    menuitem = gtk_menu_item_new_with_mnemonic (_("UnMi_nimize"));
+    menuitem = gtk_menu_item_new_with_mnemonic (_("Unmi_nimize"));
   }
   if (image)
   {
@@ -983,13 +983,14 @@ task_icon_inline_action_simple_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow
 
   GtkWidget * menuitem;
 
-  if ((menuitem = task_icon_get_menu_item_maximize (icon,win)))
+
+  if ((menuitem = task_icon_get_menu_item_minimize (icon,win)))
   {
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
     gtk_widget_show (menuitem);
   }
 
-  if ((menuitem = task_icon_get_menu_item_minimize (icon,win)))
+  if ((menuitem = task_icon_get_menu_item_maximize (icon,win)))
   {
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
     gtk_widget_show (menuitem);
@@ -1460,6 +1461,19 @@ menu_parse_start_element (GMarkupParseContext *context,
         GtkWidget * item;
         GSList * i;
 
+        item = task_icon_get_minimize_all (icon);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        item = task_icon_get_unminimize_all (icon);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        item = task_icon_get_maximize_all (icon);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        item = task_icon_get_unmaximize_all (icon);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+
+        item = gtk_separator_menu_item_new();
+        gtk_widget_show(item);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+
         item = task_icon_get_submenu_action_menu (icon,task_window_get_window (TASK_WINDOW(main_item)));
         gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
         for (i=item_list;i;i=i->next)
@@ -1479,6 +1493,11 @@ menu_parse_start_element (GMarkupParseContext *context,
           item = task_icon_get_submenu_action_menu (icon, task_window_get_window (TASK_WINDOW(i->data)));
           gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
         }
+        item = gtk_separator_menu_item_new();
+        gtk_widget_show(item);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        item = task_icon_get_menu_item_close_all (icon);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
       }
       break;
     case INTERNAL_SMART_WNCK_SIMPLE_MENU:
@@ -1493,6 +1512,14 @@ menu_parse_start_element (GMarkupParseContext *context,
         GSList * item_list = task_icon_get_items (icon);
         GtkWidget * sub;
         GSList * i;
+        main_item = task_icon_get_minimize_all (icon);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), main_item);
+        main_item = task_icon_get_maximize_all (icon);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), main_item);
+        main_item = gtk_separator_menu_item_new();
+        gtk_widget_show(main_item);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), main_item);
+        
         if (main_item && TASK_IS_WINDOW (main_item))
         {
           sub = task_icon_get_submenu_action_simple_menu (icon, task_window_get_window (TASK_WINDOW(main_item)));
@@ -1515,6 +1542,11 @@ menu_parse_start_element (GMarkupParseContext *context,
           sub = task_icon_get_submenu_action_simple_menu (TASK_ICON(icon), task_window_get_window (TASK_WINDOW(i->data)));
           gtk_menu_shell_append(GTK_MENU_SHELL(menu), sub);
         }
+        main_item = gtk_separator_menu_item_new();
+        gtk_widget_show(main_item);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), main_item);
+        main_item = task_icon_get_menu_item_close_all (icon);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu), main_item);
       }        
       break;
     case INTERNAL_UNMAXIMIZE_ALL:
