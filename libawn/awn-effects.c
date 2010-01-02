@@ -264,6 +264,16 @@ awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
 }
 
 static void
+awn_effects_widget_hidden (AwnEffects *fx)
+{
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+
+  AwnEffectsPrivate *priv = AWN_EFFECTS_GET_PRIVATE (fx);
+
+  priv->already_exposed = FALSE;
+}
+
+static void
 awn_effects_get_property (GObject      *object,
                           guint         prop_id,
                           GValue *value,
@@ -359,6 +369,8 @@ awn_effects_set_property (GObject      *object,
       }
       fx->widget = g_value_get_object (value);
       g_object_add_weak_pointer ((GObject*)fx->widget, (gpointer*)&fx->widget);
+      g_signal_connect_swapped ((GObject*)fx->widget, "hide",
+                                G_CALLBACK (awn_effects_widget_hidden), fx);
       break;
     case PROP_NO_CLEAR:
       fx->no_clear = g_value_get_boolean(value);
