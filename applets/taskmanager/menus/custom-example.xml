@@ -19,6 +19,7 @@
   </submenu>
   <menuitem type="Internal-Separator"></menuitem>
   <menuitem type="Internal-Inline-Plugins"></menuitem>
+  <menuitem type="External-Command" icon="gksu-debian" cmd="gksudo $AWN_TASK_EXEC &amp;">Launch as root</menuitem>
   <menuitem type="Internal-Launch"></menuitem>
   <menuitem type="Internal-Minimize-All"></menuitem>
   <menuitem type="Internal-Unminimize-All"></menuitem>
