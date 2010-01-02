@@ -6,6 +6,7 @@
   <menuitem type="Internal-Separator"></menuitem>
   <menuitem type="Internal-Inline-Plugins"></menuitem>
   <menuitem type="Internal-Launch"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>  
   <menuitem type="Internal-Minimize-All"></menuitem>
   <menuitem type="Internal-Unminimize-All"></menuitem>
   <menuitem type="Internal-Maximize-All"></menuitem>

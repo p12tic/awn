@@ -1,3 +1,9 @@
+2010-01-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/standard.xml:
+	Display a separator consistently after Launch item with grouped
+	and single task items.
+
 2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/menus/custom-example.xml:
