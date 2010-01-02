@@ -1,5 +1,10 @@
 2010-01-02  Julien Lavergne <gilir@ubuntu.com>
 
+	* debian/control:
+	Remove not needed gir build depends.
+
+2010-01-02  Julien Lavergne <gilir@ubuntu.com>
+
 	* debian/changelog:
 	* debian/control:
 	Update to new lda packages name.

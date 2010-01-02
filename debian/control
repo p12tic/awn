@@ -24,7 +24,6 @@ Build-Depends: 	debhelper (>= 7),
 		libdesktop-agnostic-bin,
 		python-desktop-agnostic | python-libdesktop-agnostic,
 		vala-desktop-agnostic | vala-libdesktop-agnostic,
-		gir1.0-desktopagnostic-1.0,
 		lsb-release,
 		bzr,
 		libssl-dev
