@@ -1,3 +1,9 @@
+2010-01-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	There might not be a main item after a workspace change if
+	show_all_windows = False.
+
 2010-01-02  Julien Lavergne <gilir@ubuntu.com>
 
 	* debian/control:

@@ -1031,7 +1031,10 @@ on_main_item_visible_changed (TaskItem  *item,
      FIXME: this is possible atm in TaskWindow */
   if (visible && priv->main_item && !TASK_IS_LAUNCHER(priv->main_item) ) return;
   task_icon_search_main_item (icon,NULL);
-  awn_icon_set_tooltip_text (AWN_ICON (icon),task_item_get_name (priv->main_item));
+  if (priv->main_item)
+  {
+    awn_icon_set_tooltip_text (AWN_ICON (icon),task_item_get_name (priv->main_item));
+  }
 }
 
 static void
