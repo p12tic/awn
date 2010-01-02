@@ -583,6 +583,8 @@ awn_panel_constructed (GObject *object)
                     G_CALLBACK (on_composited_changed), NULL);
   g_signal_connect (panel, "window-state-event",
                     G_CALLBACK (on_window_state_event), NULL);
+  g_signal_connect (panel, "delete-event",
+                    G_CALLBACK (gtk_true), NULL);
   
   /* Contents */
   priv->manager = awn_applet_manager_new_from_config (priv->client);
@@ -649,9 +651,6 @@ awn_panel_constructed (GObject *object)
                                        object, "clickthrough_type", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
-
-  /* Background drawing */
-  awn_panel_set_style (AWN_PANEL (panel), priv->style);
 
   /* Size and position */
   g_signal_connect (panel, "configure-event",

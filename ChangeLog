@@ -1,3 +1,8 @@
+2010-01-02  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Don't destroy the panel on delete-event - fixes bug #257689.
+
 2010-01-02  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/menus/advanced.xml:
