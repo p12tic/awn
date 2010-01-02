@@ -22,8 +22,9 @@ Build-Depends: 	debhelper (>= 7),
 		automake,
 		libdesktop-agnostic-dev,
 		libdesktop-agnostic-bin,
-		python-libdesktop-agnostic,
-		vala-libdesktop-agnostic,
+		python-desktop-agnostic | python-libdesktop-agnostic,
+		vala-desktop-agnostic | vala-libdesktop-agnostic,
+		gir1.0-desktopagnostic-1.0,
 		lsb-release,
 		bzr,
 		libssl-dev
@@ -124,7 +125,7 @@ Depends:	libawn1-trunk (= ${binary:Version}),
 		${shlibs:Depends},
 		${misc:Depends},
 		${python:Depends},
-		python-libdesktop-agnostic
+		python-desktop-agnostic | python-libdesktop-agnostic
 Provides: ${python:Provides}
 Conflicts: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
 Replaces: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
@@ -139,7 +140,7 @@ Architecture: all
 Depends: 	libawn1-trunk (>= ${source:Version}),
 		${shlibs:Depends}, 
 		${misc:Depends},
-		vala-libdesktop-agnostic
+		vala-desktop-agnostic | vala-libdesktop-agnostic 
 Conflicts: vala-awn-testing, vala-awn
 Replaces: vala-awn-testing, vala-awn
 Description: Vala bindings for avant-window-navigator library 

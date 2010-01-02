@@ -1,3 +1,9 @@
+2010-01-02  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/changelog:
+	* debian/control:
+	Update to new lda packages name.
+
 2010-01-02  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:
