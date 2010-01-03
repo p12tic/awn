@@ -550,13 +550,14 @@ awn_tooltip_new_for_widget (GtkWidget *widget)
 {
   GtkWidget *tooltip;
 
-  tooltip = g_object_new(AWN_TYPE_TOOLTIP,
-                         "type", GTK_WINDOW_POPUP,
-                         "decorated", FALSE,
-                         "skip-pager-hint", TRUE,
-                         "skip-taskbar-hint", TRUE,
-                         "focus-widget", widget,
-                         NULL);
+  tooltip = g_object_new (AWN_TYPE_TOOLTIP,
+                          "type", GTK_WINDOW_POPUP,
+                          "type-hint", GDK_WINDOW_TYPE_HINT_TOOLTIP,
+                          "decorated", FALSE,
+                          "skip-pager-hint", TRUE,
+                          "skip-taskbar-hint", TRUE,
+                          "focus-widget", widget,
+                          NULL);
 
   return tooltip;
 }
