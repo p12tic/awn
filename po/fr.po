@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2009-12-31 16:13+0000\n"
-"Last-Translator: Malaria <Unknown>\n"
+"PO-Revision-Date: 2010-01-03 11:33+0000\n"
+"Last-Translator: Nicolas Delvaux <Unknown>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-01-01 05:03+0000\n"
+"X-Launchpad-Export-Date: 2010-01-04 04:38+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -240,7 +240,7 @@ msgstr "Impossible de localiser l'icône suivante : %s\n"
 
 #: ../awn-settings/awnClass.py:1069
 msgid "AWN has been successfully refreshed"
-msgstr "AWN a été rafraichi avec succès."
+msgstr "AWN a été réactualisé avec succès."
 
 #: ../awn-settings/awnClass.py:1075
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -376,6 +376,17 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Le module Python suivant n'a pas été trouvé : %s.  Il y a plusieurs "
+"explications possible à cela :\n"
+"\n"
+"1. Ce module n'est pas installés. Dans ce cas vous devriez visiter la "
+"section « applet » du wiki AWN pour déterminer le nom du paquet qui le "
+"fournis dans votre distribution.\n"
+"\n"
+"2. Le module est installé à un emplacement non standard. C'est généralement "
+"le cas lorsque vous avez installé le paquet manuellement, c'est à dire sans "
+"passer par le gestionnaire de paquet de votre distribution. Ce cas de figure "
+"est détaillé dans la section « FAQ » du wiki AWN.\n"
 
 #: ../bindings/python/__init__.py:132
 msgid "Awn Wiki"
@@ -407,13 +418,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
+msgstr "Un réglage optionnel lorsque vous utilisez plus d'un écran."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"Toute valeur supérieure à 0 dessinera une barre avec des coins. Plus la "
+"valeur est grande, plus les angles sont aigus."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog's title."
@@ -459,7 +472,7 @@ msgstr "Nom de la police des infobulles"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "Force monitor geometry."
-msgstr ""
+msgstr "Forcer la géométrie de l'écran."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "Icon text color.  Leave empty to use gtk theme color."
@@ -621,7 +634,7 @@ msgstr ""
 
 #: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:592
 msgid "Dock Preferences"
-msgstr "Préférences du Dock"
+msgstr "Préférences du dock"
 
 #: ../libawn/awn-themed-icon.c:1931
 msgid "Icons"
