@@ -49,7 +49,6 @@ typedef struct _AwnOverlayThrobberPrivate AwnOverlayThrobberPrivate;
 
 struct _AwnOverlayThrobberPrivate 
 {
-  GtkWidget  *icon;
   gint        counter;
   guint       timer_id;  
   guint       timeout;
@@ -59,7 +58,6 @@ struct _AwnOverlayThrobberPrivate
 enum
 {
   PROP_0,
-  PROP_ICON,
   PROP_TIMEOUT,
   PROP_SCALE
 };
@@ -78,9 +76,6 @@ awn_overlay_throbber_get_property (GObject *object, guint property_id,
   AwnOverlayThrobberPrivate *priv = AWN_OVERLAY_THROBBER_GET_PRIVATE(object);
   switch (property_id) 
   {
-    case PROP_ICON:
-      g_value_set_object (value,priv->icon);
-      break;    
     case PROP_TIMEOUT:
       g_value_set_uint (value,priv->timeout);
       break;
@@ -98,13 +93,6 @@ awn_overlay_throbber_set_property (GObject *object, guint property_id,
 {
   AwnOverlayThrobberPrivate *priv = AWN_OVERLAY_THROBBER_GET_PRIVATE(object);  
   switch (property_id) {
-    case PROP_ICON:
-      if (priv->icon)
-      {
-        g_object_unref (priv->icon);
-      }
-      priv->icon = g_value_dup_object (value);
-      break;    
     case PROP_TIMEOUT:
       priv->timeout = g_value_get_uint (value);
       break;
@@ -127,11 +115,6 @@ awn_overlay_throbber_dispose (GObject *object)
     priv->timer_id = 0;
   }
 
-  if (priv->icon)
-  {
-    g_object_unref (priv->icon);
-    priv->icon = NULL;
-  }
   G_OBJECT_CLASS (awn_overlay_throbber_parent_class)->dispose (object);
 }
 
@@ -147,9 +130,7 @@ _awn_overlay_throbber_timeout (gpointer overlay)
   AwnOverlayThrobberPrivate *priv = AWN_OVERLAY_THROBBER_GET_PRIVATE(overlay);
 
   priv->counter = (priv->counter - 1) % 8 + 8;
-
-  gtk_widget_queue_draw (priv->icon);
-
+  g_object_notify (overlay, "active");
   return TRUE;
 }
 
@@ -232,21 +213,6 @@ awn_overlay_throbber_class_init (AwnOverlayThrobberClass *klass)
   object_class->constructed = awn_overlay_throbber_constructed;
   
   AWN_OVERLAY_CLASS(klass)->render = _awn_overlay_throbber_render;
-  
-/**
- * AwnOverlayThrobber:icon:
- *
- * #AwnOverlaidIcon on which the throbber is displayed.
- */
-
-  g_object_class_install_property (object_class,
-    PROP_ICON,
-    g_param_spec_object ("icon",
-                         "Icon",
-                         "Icon",
-                         GTK_TYPE_WIDGET,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                         G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnOverlayThrobber:timeout:
@@ -299,10 +265,9 @@ awn_overlay_throbber_init (AwnOverlayThrobber *self)
  * Returns: an instance of #AwnOverlayThrobber.
  */
 GtkWidget*
-awn_overlay_throbber_new (GtkWidget *icon)
+awn_overlay_throbber_new (void)
 {
   return g_object_new (AWN_TYPE_OVERLAY_THROBBER,
-                       "icon", icon,
                        "active", FALSE,
                        NULL);
 }

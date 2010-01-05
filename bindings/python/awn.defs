@@ -1071,9 +1071,6 @@
   (c-name "awn_overlay_throbber_new")
   (is-constructor-of "AwnOverlayThrobber")
   (return-type "AwnOverlayThrobber*")
-  (properties
-    '("icon" (argname "icon"))
-  )
 )
 
 ;; From awn-overlay-pixbuf.h
