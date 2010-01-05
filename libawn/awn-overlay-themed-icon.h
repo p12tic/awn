@@ -55,9 +55,7 @@ typedef struct {
 
 GType awn_overlay_themed_icon_get_type (void);
 
-AwnOverlayThemedIcon* awn_overlay_themed_icon_new (AwnThemedIcon * icon,
-                                                   const gchar * icon_name,
-                                                   const gchar * state);
+AwnOverlayThemedIcon* awn_overlay_themed_icon_new (const gchar * icon_name);
 
 G_END_DECLS
 

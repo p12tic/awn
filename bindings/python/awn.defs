@@ -1061,9 +1061,7 @@
   (c-name "awn_overlay_themed_icon_new")
   (is-constructor-of "AwnOverlayThemedIcon")
   (properties
-    '("icon" (argname "icon"))
     '("icon-name"   (argname "icon_name"))
-    '("icon-state"  (argname "icon_state"))
   )
 )
 

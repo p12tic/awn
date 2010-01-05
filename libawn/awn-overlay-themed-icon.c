@@ -43,8 +43,13 @@
  the caching of pixbufs may be a bit excessive if scale,width,height are going crazy.
  
  */
-
+#include "libawn/libawn.h"
 #include "awn-overlay-themed-icon.h"
+
+
+#if !GTK_CHECK_VERSION(2,14,0)
+#define GTK_ICON_LOOKUP_FORCE_SIZE 0
+#endif
 
 G_DEFINE_TYPE (AwnOverlayThemedIcon, awn_overlay_themed_icon, AWN_TYPE_OVERLAY)
 
@@ -55,13 +60,10 @@ typedef struct _AwnOverlayThemedIconPrivate AwnOverlayThemedIconPrivate;
 
 struct _AwnOverlayThemedIconPrivate 
 {
-    AwnThemedIcon *themed_icon;
     gdouble alpha;
     gchar * icon_name;
-    gchar * icon_state;
     gdouble scale;
-
-    GHashTable *pixbufs;
+    AwnPixbufCache *pixbufs;
 };
 
 enum
@@ -69,9 +71,7 @@ enum
   PROP_0,
   PROP_ALPHA,
   PROP_ICON_NAME,
-  PROP_ICON_STATE,
-  PROP_SCALE,
-  PROP_ICON
+  PROP_SCALE
 };
 
 static void 
@@ -102,12 +102,6 @@ awn_overlay_themed_icon_get_property (GObject *object, guint property_id,
     case PROP_ICON_NAME:
       g_value_set_string (value,priv->icon_name);
       break;
-    case PROP_ICON_STATE:      
-      g_value_set_string (value,priv->icon_state);
-      break;      
-    case PROP_ICON:
-      g_value_set_object (value,priv->themed_icon);
-      break;            
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -132,17 +126,6 @@ awn_overlay_themed_icon_set_property (GObject *object, guint property_id,
       g_free(priv->icon_name);
       priv->icon_name = g_value_dup_string (value);
       break;
-    case PROP_ICON_STATE:      
-      g_free(priv->icon_state);
-      priv->icon_state = g_value_dup_string (value);      
-      if ( ! priv->icon_state )
-      {
-        priv->icon_state = g_strdup_printf ("::no_drop::__AWN_OVERLAY_THEMED_ICON_STATE_NAME_FOR_%s",priv->icon_name);        
-      }
-      break;      
-    case PROP_ICON:
-      priv->themed_icon = g_value_get_object (value);
-      break;            
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -154,9 +137,7 @@ awn_overlay_themed_icon_dispose (GObject *object)
   AwnOverlayThemedIconPrivate * priv;
   priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (object);
   
-  G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->dispose (object);
-  
-
+  G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->dispose (object);  
 }
 
 static void
@@ -167,8 +148,6 @@ awn_overlay_themed_icon_finalize (GObject *object)
   priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (object);
 
   g_free (priv->icon_name);
-  g_free (priv->icon_state);
-  g_hash_table_destroy (priv->pixbufs);  
   g_signal_handlers_disconnect_by_func (gtk_icon_theme_get_default(),
                                         _awn_overlay_themed_icon_theme_change,
                                         object);
@@ -206,13 +185,6 @@ awn_overlay_themed_icon_constructed (GObject *object)
     G_OBJECT_CLASS (awn_overlay_themed_icon_parent_class)->constructed (object);
   }
 
-  awn_themed_icon_set_info_append (priv->themed_icon, priv->icon_state, priv->icon_name);
-
-
-  /*FIXME need to clear the hash table on theme changes also */
-  g_signal_connect_swapped (object, "notify::icon-name",
-                            G_CALLBACK (g_hash_table_remove_all),
-                            priv->pixbufs);
   g_signal_connect_swapped (gtk_icon_theme_get_default(), "changed",
                     G_CALLBACK (_awn_overlay_themed_icon_theme_change),
                     object);
@@ -277,31 +249,6 @@ awn_overlay_themed_icon_class_init (AwnOverlayThemedIconClass *klass)
                          "",
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                          G_PARAM_STATIC_STRINGS));
-
-/**
- * AwnOverlayThemedIcon:icon-state:
- *
- * The icon-state to be associated with the themed icon for access through
- * #AwnThemedIcon.  Or NULL if it will not need to be directly accessed.
- */        
-  
-  g_object_class_install_property (object_class,
-    PROP_ICON_STATE,
-    g_param_spec_string ("icon-state",
-                         "Icon state",
-                         "Icon state",
-                         "",
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                         G_PARAM_STATIC_STRINGS));
-
-  g_object_class_install_property (object_class, 
-    PROP_ICON,
-    g_param_spec_object ("icon",
-                         "Icon",
-                         "Icon",
-                         AWN_TYPE_THEMED_ICON,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                         G_PARAM_STATIC_STRINGS));
   
   g_type_class_add_private (klass, sizeof (AwnOverlayThemedIconPrivate));  
 }
@@ -312,7 +259,7 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
   AwnOverlayThemedIconPrivate * priv;
   priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (self);
 
-  priv->pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);
+  priv->pixbufs = awn_pixbuf_cache_get_default ();
 }
 
 /**
@@ -325,20 +272,15 @@ awn_overlay_themed_icon_init (AwnOverlayThemedIcon *self)
  */
 
 AwnOverlayThemedIcon*
-awn_overlay_themed_icon_new (AwnThemedIcon * icon,
-                             const gchar *icon_name, const gchar *state)
+awn_overlay_themed_icon_new (const gchar *icon_name)
 {
   AwnOverlayThemedIcon * ret;
   
   g_return_val_if_fail (icon_name,NULL);
-  g_return_val_if_fail (icon,NULL);
-  g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
   
   ret = g_object_new (AWN_TYPE_OVERLAY_THEMED_ICON, 
                       "icon-name", icon_name,
-                      "icon-state", state,
                       "gravity", GDK_GRAVITY_SOUTH_EAST,
-                      "icon", icon,
                       NULL);
   return ret;
 }
@@ -354,25 +296,60 @@ _awn_overlay_themed_icon_render (AwnOverlay* _overlay,
   AwnOverlayThemedIconPrivate *priv;
   AwnOverlayCoord coord;
   GdkPixbuf * pixbuf = NULL;
+  GtkIconTheme * gtk_theme = gtk_icon_theme_get_default ();
+  GError * err = NULL;
+  gint size;
   
   priv =  AWN_OVERLAY_THEMED_ICON_GET_PRIVATE (overlay); 
-  
-  gchar * key = g_strdup_printf ("%dx%d@%lf",width,height,priv->scale);
+
+  size = width > height ? width : height * priv->scale;
+  /*
+    TODO:  Add support of awn theme
+   */
+  pixbuf = awn_pixbuf_cache_lookup (priv->pixbufs,
+                                    NULL,
+                                    awn_utils_get_gtk_icon_theme_name ( gtk_theme ),
+                                    priv->icon_name,
+                                    -1,
+                                    size,
+                                    NULL);
  
-  pixbuf = g_hash_table_lookup (priv->pixbufs,key);
-  
   if (! pixbuf)
   {
-    pixbuf = awn_themed_icon_get_icon_at_size (priv->themed_icon,
-                                               width > height ?
-                                                 width : height * priv->scale,
-                                               priv->icon_state);
-    g_hash_table_insert (priv->pixbufs, key, pixbuf);
+    pixbuf = gtk_icon_theme_load_icon ( gtk_theme,
+                                       priv->icon_name,
+                                       size,
+                                       GTK_ICON_LOOKUP_FORCE_SIZE ,
+                                       &err);
+    if (err)
+    {
+      g_warning ("%s: error loading icon %s, %s",__func__,priv->icon_name,err->message);
+      g_error_free (err);
+      err = NULL;
+    }
+
+    if (!pixbuf)
+    {
+      g_warning ("%s: Failed to load icon %s.  Falling back to %s",__func__,priv->icon_name,GTK_STOCK_MISSING_IMAGE);
+      pixbuf = gtk_icon_theme_load_icon ( gtk_theme,
+                                       GTK_STOCK_MISSING_IMAGE,
+                                       size,
+                                       GTK_ICON_LOOKUP_FORCE_SIZE ,
+                                       NULL);
+    }
+    if (!pixbuf )
+    {
+      g_warning ("%s: Failed to load %s",__func__,GTK_STOCK_MISSING_IMAGE);
+      pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, TRUE, 8, size, size);
+      gdk_pixbuf_fill (pixbuf, 0xee221100);
+    }
+    awn_pixbuf_cache_insert_pixbuf (priv->pixbufs,
+                                    pixbuf,
+                                    NULL,
+                                    awn_utils_get_gtk_icon_theme_name (gtk_theme),
+                                    priv->icon_name);
   }
-  else
-  {
-    g_free (key);
-  }
+                                       
   awn_overlay_move_to (AWN_OVERLAY(overlay),cr,width,height,width *priv->scale,height *priv->scale,&coord);  
   gdk_cairo_set_source_pixbuf (cr,pixbuf,coord.x,coord.y);  
   cairo_paint_with_alpha (cr,priv->alpha);

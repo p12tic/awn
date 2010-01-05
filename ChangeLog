@@ -1,3 +1,11 @@
+2010-01-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+  	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay-themed-icon.h:
+	Modified awn_overlay_themed_icon_new ().  Removed a couple
+	props.
+
 2010-01-03  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
