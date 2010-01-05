@@ -2145,6 +2145,12 @@ task_icon_minimize_group(TaskIcon * icon,TaskWindow * window)
       for (i = icon->priv->items; i; i=i->next)
       {
         if (!TASK_IS_WINDOW (i->data) ) continue;
+        if (!task_item_is_visible(i->data)) continue;
+        if (!wnck_window_is_on_workspace (task_window_get_window (i->data),
+                                                 wnck_screen_get_active_workspace (wnck_screen_get_default()) ))
+        {
+          continue;
+        }
         if ( iter->data == task_window_get_window(i->data))
         {
           if (!wnck_window_is_minimized(iter->data) )
@@ -2167,7 +2173,6 @@ task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
 {
   g_return_if_fail (TASK_IS_WINDOW(window));
   g_return_if_fail (TASK_IS_ICON(icon));
-
   gulong group_leader = wnck_window_get_group_leader (task_window_get_window(window));
   WnckApplication* application=wnck_application_get (group_leader);
   if (application)
@@ -2181,7 +2186,12 @@ task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
       {
         if (!TASK_IS_WINDOW (i->data) ) continue;
         if (i->data == window) continue;
-        
+        if (!task_item_is_visible(i->data)) continue;
+        if (!wnck_window_is_on_workspace (task_window_get_window (i->data),
+                                                 wnck_screen_get_active_workspace (wnck_screen_get_default()) ))
+        {
+          continue;
+        }
         if ( iter->data == task_window_get_window(i->data))
         {
           if (wnck_window_is_minimized(iter->data) )
@@ -2347,7 +2357,6 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
 
     if (main_item) 
     {
-      /*if we have a main item then pass the click on to that */
       if (!TASK_IS_WINDOW(main_item))
       {
         /*it's a launcher*/
