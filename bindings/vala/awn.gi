@@ -1273,15 +1273,11 @@
 			<constructor name="new" symbol="awn_overlay_themed_icon_new">
 				<return-type type="AwnOverlayThemedIcon*"/>
 				<parameters>
-					<parameter name="icon" type="AwnThemedIcon*"/>
 					<parameter name="icon_name" type="gchar*"/>
-					<parameter name="state" type="gchar*"/>
 				</parameters>
 			</constructor>
 			<property name="alpha" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="icon" type="AwnThemedIcon*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="icon-name" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
-			<property name="icon-state" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="scale" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
 		</object>
 		<object name="AwnOverlayThrobber" parent="AwnOverlay" type-name="AwnOverlayThrobber" get-type="awn_overlay_throbber_get_type">

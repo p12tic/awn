@@ -439,15 +439,11 @@ namespace Awn {
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class OverlayThemedIcon : Awn.Overlay {
 		[CCode (has_construct_function = false)]
-		public OverlayThemedIcon (Awn.ThemedIcon icon, string icon_name, string state);
+		public OverlayThemedIcon (string icon_name);
 		[NoAccessorMethod]
 		public double alpha { get; set construct; }
 		[NoAccessorMethod]
-		public Awn.ThemedIcon icon { owned get; set construct; }
-		[NoAccessorMethod]
 		public string icon_name { owned get; set construct; }
-		[NoAccessorMethod]
-		public string icon_state { owned get; set construct; }
 		[NoAccessorMethod]
 		public double scale { get; set construct; }
 	}
