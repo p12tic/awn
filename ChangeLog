@@ -1,5 +1,11 @@
 2010-01-05  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* bindings/vala/awn.gi:
+  	* bindings/vala/awn.vapi:
+	Update bindings.
+
+2010-01-05  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* bindings/python/awn.defs:
   	* libawn/awn-overlay-throbber.c:
   	* libawn/awn-overlay-throbber.h:

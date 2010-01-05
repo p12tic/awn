@@ -1283,11 +1283,7 @@
 		<object name="AwnOverlayThrobber" parent="AwnOverlay" type-name="AwnOverlayThrobber" get-type="awn_overlay_throbber_get_type">
 			<constructor name="new" symbol="awn_overlay_throbber_new">
 				<return-type type="GtkWidget*"/>
-				<parameters>
-					<parameter name="icon" type="GtkWidget*"/>
-				</parameters>
 			</constructor>
-			<property name="icon" type="GtkWidget*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="scale" type="gdouble" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="timeout" type="guint" readable="1" writable="1" construct="1" construct-only="0"/>
 		</object>

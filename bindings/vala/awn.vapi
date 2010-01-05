@@ -450,9 +450,7 @@ namespace Awn {
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class OverlayThrobber : Awn.Overlay {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
-		public OverlayThrobber (Gtk.Widget icon);
-		[NoAccessorMethod]
-		public Gtk.Widget icon { owned get; set construct; }
+		public OverlayThrobber ();
 		[NoAccessorMethod]
 		public double scale { get; set construct; }
 		[NoAccessorMethod]
