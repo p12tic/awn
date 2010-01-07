@@ -3332,13 +3332,13 @@ awn_panel_set_strut (AwnPanel *panel)
   }
   else
   {
-    GtkAllocation manager_alloc;
+    GtkAllocation box_alloc;
 
-    gtk_widget_get_allocation (priv->manager, &manager_alloc);
-    area.x = manager_alloc.x + root_x;
-    area.y = manager_alloc.y + root_y;
-    area.width = manager_alloc.width;
-    area.height = manager_alloc.height;
+    gtk_widget_get_allocation (priv->box, &box_alloc);
+    area.x = box_alloc.x + root_x;
+    area.y = box_alloc.y + root_y;
+    area.width = box_alloc.width;
+    area.height = box_alloc.height;
   }
 
   strut = priv->offset + priv->size + priv->extra_padding;
