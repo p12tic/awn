@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
+ *                2009-2010 Michal Hruby <michal.mhr@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -70,7 +71,11 @@ struct _AwnPanelPrivate
 
   GtkWidget *alignment;
   GtkWidget *eventbox;
+  GtkWidget *box;
+  GtkWidget *arrow1;
+  GtkWidget *arrow2;
   GtkWidget *manager;
+  GtkWidget *viewport;
   GtkWidget *docklet;
   GtkWidget *docklet_closer;
   gint docklet_minsize;
@@ -114,6 +119,9 @@ struct _AwnPanelPrivate
 
   guint dnd_mouse_poll_timer_id;
   guint mouse_poll_timer_id;
+
+  /* scrolling */
+  guint scroll_timer_id;
 
   /* autohide stuff */
   gint autohide_hide_delay;
@@ -1267,6 +1275,49 @@ static void free_inhibit_item (gpointer data)
   g_free (item);
 }
 
+static GdkRegion*
+awn_panel_get_mask (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv;
+  GtkAllocation viewport_alloc;
+  GdkRegion *region, *viewport_region;
+  gdouble viewport_offset_x, viewport_offset_y;
+
+  priv = panel->priv;
+
+  region = awn_applet_manager_get_mask (AWN_APPLET_MANAGER (priv->manager),
+                                        priv->path_type, priv->offset_mod);
+  /* the applets are in viewport */
+  viewport_offset_x = 
+    gtk_adjustment_get_value (
+        gtk_viewport_get_hadjustment (GTK_VIEWPORT (priv->viewport)));
+  viewport_offset_y = 
+    gtk_adjustment_get_value (
+        gtk_viewport_get_vadjustment (GTK_VIEWPORT (priv->viewport)));
+  gtk_widget_get_allocation (priv->viewport, &viewport_alloc);
+  gdk_region_offset (region, viewport_alloc.x - viewport_offset_x,
+                     viewport_alloc.y - viewport_offset_y);
+
+  /* intersect with viewport */
+  viewport_region = gdk_region_rectangle ((GdkRectangle*)&viewport_alloc);
+  gdk_region_intersect (region, viewport_region);
+  gdk_region_destroy (viewport_region);
+
+  if (GTK_WIDGET_VISIBLE (priv->arrow1))
+  {
+    // FIXME: not exactly correct!
+    GtkAllocation arrow_alloc;
+
+    gtk_widget_get_allocation (priv->arrow1, &arrow_alloc);
+    gdk_region_union_with_rect (region, (GdkRectangle*)&arrow_alloc);
+
+    gtk_widget_get_allocation (priv->arrow2, &arrow_alloc);
+    gdk_region_union_with_rect (region, (GdkRectangle*)&arrow_alloc);
+  }
+
+  return region;
+}
+
 static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
                                            MouseCheckType check_type)
 {
@@ -1318,9 +1369,7 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
       //   but we can't do it because the checks are happening also while
       //   in clickthrough mode
       //   solution could be to save the mask which is created in update_masks
-      GdkRegion *region;
-      region = awn_applet_manager_get_mask (AWN_APPLET_MANAGER (priv->manager),
-                                            priv->path_type, priv->offset_mod);
+      GdkRegion *region = awn_panel_get_mask (panel);
       gdk_region_offset (region, window_x, window_y);
       gboolean inside_mask = gdk_region_point_in (region, x, y);
       gdk_region_destroy (region);
@@ -1947,6 +1996,148 @@ awn_panel_class_init (AwnPanelClass *klass)
                                    &dbus_glib_awn_panel_object_info);
 }
 
+static gboolean
+viewport_expose (GtkWidget *widget, GdkEventExpose *event, gpointer data)
+{
+  gpointer bin_class = g_type_class_peek (GTK_TYPE_BIN);
+  GTK_WIDGET_CLASS (bin_class)->expose_event (widget, event);
+
+  return TRUE;
+}
+
+static void
+viewport_size_req (GtkWidget *widget, GtkRequisition *req, gpointer data)
+{
+  AwnPanel *panel = AWN_PANEL (data);
+  AwnPanelPrivate *priv = panel->priv;
+
+  guint t, b, l, r;
+  gboolean arrows_visible = FALSE;
+  GtkRequisition arrow_req;
+  gtk_widget_size_request (priv->arrow1, &arrow_req);
+  awn_background_padding_request (priv->bg, priv->position, &t, &b, &l, &r);
+
+  switch (priv->position)
+  {
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
+      if (req->width > priv->monitor->width - (gint)l - (gint)r)
+      {
+        arrows_visible = TRUE;
+        req->width = priv->monitor->width - l - r - 2*arrow_req.width;
+      }
+      break;
+    default:
+      if (req->height > priv->monitor->height - (gint)t - (gint)b)
+      {
+        arrows_visible = TRUE;
+        req->height = priv->monitor->height - t - b - 2*arrow_req.height;
+      }
+      break;
+  }
+
+  if (arrows_visible)
+  {
+    if (!GTK_WIDGET_VISIBLE (priv->arrow1))
+    {
+      gtk_widget_show (priv->arrow1);
+      gtk_widget_show (priv->arrow2);
+    }
+    gtk_container_set_resize_mode (GTK_CONTAINER (priv->viewport),
+                                   GTK_RESIZE_QUEUE);
+  }
+  else
+  {
+    if (GTK_WIDGET_VISIBLE (priv->arrow1))
+    {
+      gtk_widget_hide (priv->arrow1);
+      gtk_widget_hide (priv->arrow2);
+    }
+    gtk_container_set_resize_mode (GTK_CONTAINER (priv->viewport),
+                                   GTK_RESIZE_PARENT);
+  }
+}
+
+static gboolean
+awn_panel_scroll_timer (AwnPanel *panel)
+{
+  gdouble max, value;
+  GtkAllocation alloc;
+  GtkAdjustment *adj;
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (panel);
+
+  gpointer data = g_object_get_data (G_OBJECT (panel), "scrolled-icon");
+
+  if (data == NULL)
+  {
+    priv->scroll_timer_id = 0;
+    return FALSE;
+  }
+
+  gboolean inc = data != priv->arrow1;
+  gint mult = inc ? 1 : -1;
+
+  gtk_widget_get_allocation (priv->viewport, &alloc);
+
+  switch (priv->position)
+  {
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
+      adj = gtk_viewport_get_hadjustment (GTK_VIEWPORT (priv->viewport));
+      max = gtk_adjustment_get_upper (adj) - alloc.width;
+      break;
+    default:
+      adj = gtk_viewport_get_vadjustment (GTK_VIEWPORT (priv->viewport));
+      max = gtk_adjustment_get_upper (adj) - alloc.height;
+      break;
+  }
+  value = CLAMP (gtk_adjustment_get_value (adj) + 8 * mult, 0.0, max);
+  gtk_adjustment_set_value (adj, value);
+
+  // without this there'll be artifacts
+  awn_applet_manager_redraw_throbbers (AWN_APPLET_MANAGER (priv->manager));
+
+  if ((inc && value >= max) || (!inc && value <= 0.0))
+  {
+    priv->scroll_timer_id = 0;
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+static gboolean
+awn_panel_arrow_over (AwnPanel *panel, GdkEventCrossing *event,
+                      GtkWidget *icon)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  g_object_set_data (G_OBJECT (panel), "scrolled-icon", icon);
+  if (priv->scroll_timer_id == 0)
+  {
+    priv->scroll_timer_id =
+      g_timeout_add (40, (GSourceFunc)awn_panel_scroll_timer, panel);
+  }
+
+  return FALSE;
+}
+
+static gboolean
+awn_panel_arrow_out (AwnPanel *panel, GdkEventCrossing *event,
+                     GtkWidget *icon)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->scroll_timer_id != 0)
+  {
+    g_source_remove (priv->scroll_timer_id);
+    priv->scroll_timer_id = 0;
+  }
+
+  return FALSE;
+}
+
 static void
 awn_panel_init (AwnPanel *panel)
 {
@@ -1965,6 +2156,18 @@ awn_panel_init (AwnPanel *panel)
 
   gtk_widget_set_app_paintable (GTK_WIDGET (panel), TRUE);
 
+  /*
+   * Create the window hierarchy:
+   *
+   * - AwnPanel
+   *   - GtkEventBox                (priv->eventbox)
+   *     - GtkAlignment             (priv->alignment)
+   *       - AwnBox                 (priv->box)
+   *         - AwnThrobber          (priv->arrow1)
+   *         - GtkViewport          (priv->viewport)
+   *           - AwnAppletManager   (priv->manager)
+   *         - AwnThrobber          (priv->arrow2)
+   */
   priv->eventbox = gtk_event_box_new ();
   gtk_widget_set_app_paintable (priv->eventbox, TRUE);
   GTK_CONTAINER_CLASS (awn_panel_parent_class)->add (GTK_CONTAINER (panel),
@@ -1974,6 +2177,40 @@ awn_panel_init (AwnPanel *panel)
   priv->alignment = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
   gtk_container_add (GTK_CONTAINER (priv->eventbox), priv->alignment);
   gtk_widget_show (priv->alignment);
+
+  priv->box = awn_box_new (GTK_ORIENTATION_HORIZONTAL);
+  gtk_container_add (GTK_CONTAINER (priv->alignment), priv->box);
+
+  priv->arrow1 = awn_throbber_new ();
+  awn_throbber_set_type (AWN_THROBBER (priv->arrow1),
+                         AWN_THROBBER_TYPE_ARROW_1);
+  g_signal_connect_swapped (priv->arrow1, "enter-notify-event",
+                            G_CALLBACK (awn_panel_arrow_over), panel);
+  g_signal_connect_swapped (priv->arrow1, "leave-notify-event",
+                            G_CALLBACK (awn_panel_arrow_out), panel);
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->arrow1, FALSE, TRUE, 0);
+
+  priv->arrow2 = awn_throbber_new ();
+  awn_throbber_set_type (AWN_THROBBER (priv->arrow2),
+                         AWN_THROBBER_TYPE_ARROW_2);
+  g_signal_connect_swapped (priv->arrow2, "enter-notify-event",
+                            G_CALLBACK (awn_panel_arrow_over), panel);
+  g_signal_connect_swapped (priv->arrow2, "leave-notify-event",
+                            G_CALLBACK (awn_panel_arrow_out), panel);
+  gtk_box_pack_end (GTK_BOX (priv->box), priv->arrow2, FALSE, TRUE, 0);
+
+  gtk_widget_show (priv->box);
+
+  priv->viewport = gtk_viewport_new (NULL, NULL);
+  g_signal_connect (priv->viewport, "expose-event",
+                    G_CALLBACK (viewport_expose), NULL);
+  gtk_viewport_set_shadow_type (GTK_VIEWPORT (priv->viewport),
+                                GTK_SHADOW_NONE);
+  g_signal_connect (priv->viewport, "size-request", 
+                    G_CALLBACK (viewport_size_req), panel);
+  gtk_box_pack_start (GTK_BOX (priv->box), priv->viewport, TRUE, TRUE, 0);
+  awn_utils_ensure_transparent_bg (priv->viewport);
+  gtk_widget_show (priv->viewport);
 
   g_signal_connect (priv->eventbox, "expose-event",
                     G_CALLBACK (on_eb_expose), panel);
@@ -2023,7 +2260,7 @@ awn_panel_new_with_panel_id (gint panel_id)
 #ifdef DEBUG_INVALIDATION
   g_timeout_add (5000, debug_invalidating, NULL);
 #endif
-  
+
   return window;
 }
 
@@ -2031,7 +2268,7 @@ awn_panel_new_with_panel_id (gint panel_id)
  * COMPOSITED STATE CODE
  */
 
-  static void
+static void
 load_correct_colormap (GtkWidget *panel)
 {
   AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (panel);
@@ -2067,11 +2304,11 @@ awn_panel_schedule_redraw (gpointer user_data)
   AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (widget);
 
   gint x, y;
-  gtk_widget_translate_coordinates (priv->manager, widget, 
+  gtk_widget_translate_coordinates (priv->viewport, widget, 
                                     0, 0, &x, &y);
   gtk_widget_queue_draw_area (widget, x, y, 
-                              priv->manager->allocation.width,
-                              priv->manager->allocation.height);
+                              priv->viewport->allocation.width,
+                              priv->viewport->allocation.height);
 
   // increase the timer in every step
   switch (priv->withdraw_redraw_timer)
@@ -2227,9 +2464,7 @@ awn_panel_update_masks (GtkWidget *panel,
     cairo_set_operator (cr, CAIRO_OPERATOR_ADD);
     cairo_set_source_rgb (cr, 1.0f, 1.0f, 1.0f);
 
-    GdkRegion *region;
-    region = awn_applet_manager_get_mask (AWN_APPLET_MANAGER (priv->manager),
-                                          priv->path_type, priv->offset_mod);
+    GdkRegion *region = awn_panel_get_mask (AWN_PANEL (panel));
     gdk_cairo_region (cr, region);
     cairo_fill (cr);
     gdk_region_destroy (region);
@@ -2440,7 +2675,7 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     awn_background_draw (priv->bg, cr, priv->position, &area);
   }
 
-#if 0 
+#if 0
   if (1)
   {
     // enable to paint the input shape masks of individual applets
@@ -2495,16 +2730,16 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
 
   if (priv->composited)
   {
-    GtkAllocation manager_alloc;
+    GtkAllocation box_alloc;
     GdkRegion *region;
     cairo_t *window_cr = cr;
 
     // the applets must be always inside AppletManager, clipping to it's
     // allocation should make us perform better
-    gtk_widget_get_allocation (priv->manager, &manager_alloc);
+    gtk_widget_get_allocation (priv->box, &box_alloc);
 
     // region is intersection of AppletManager allocation and event->region
-    region = gdk_region_rectangle (&manager_alloc);
+    region = gdk_region_rectangle (&box_alloc);
     gdk_region_intersect (region, event->region);
 
     if (priv->docklet_alpha < 1.0)
@@ -2620,7 +2855,7 @@ awn_panel_add (GtkContainer *window, GtkWidget *widget)
   priv = AWN_PANEL_GET_PRIVATE (window);
 
   /* Add the widget to the internal alignment */
-  gtk_container_add (GTK_CONTAINER (priv->alignment), widget);
+  gtk_container_add (GTK_CONTAINER (priv->viewport), widget);
   
   /* Set up the eventbox for compositing (if necessary) */
   gtk_widget_realize (priv->eventbox);
@@ -2651,6 +2886,8 @@ awn_panel_set_offset  (AwnPanel *panel,
   priv->offset = offset;
 
   //awn_panel_refresh_padding (panel, NULL);
+  awn_icon_set_offset (AWN_ICON (priv->arrow1), offset);
+  awn_icon_set_offset (AWN_ICON (priv->arrow2), offset);
 
   g_signal_emit (panel, _panel_signals[OFFSET_CHANGED], 0, priv->offset);
 
@@ -2663,6 +2900,8 @@ awn_panel_set_pos_type (AwnPanel *panel, GtkPositionType position)
   AwnPanelPrivate *priv = panel->priv;
 
   priv->position = position;
+
+  awn_box_set_orientation_from_pos_type (AWN_BOX (priv->box), position);
 
   awn_panel_refresh_alignment (panel);
 
@@ -2679,6 +2918,11 @@ awn_panel_set_pos_type (AwnPanel *panel, GtkPositionType position)
   {
     awn_icon_set_pos_type (AWN_ICON (priv->docklet_closer), position);
   }
+
+  awn_icon_set_pos_type (AWN_ICON (priv->arrow1), position);
+  awn_icon_set_pos_type (AWN_ICON (priv->arrow2), position);
+  awn_throbber_set_size (AWN_THROBBER (priv->arrow1), priv->size);
+  awn_throbber_set_size (AWN_THROBBER (priv->arrow2), priv->size);
 
   awn_panel_reset_autohide (panel);
 
@@ -2705,10 +2949,13 @@ awn_panel_set_size (AwnPanel *panel, gint size)
 
   if (priv->docklet_closer)
   {
-    awn_throbber_set_size (AWN_THROBBER (priv->docklet_closer), size / 2);
+    awn_throbber_set_size (AWN_THROBBER (priv->docklet_closer), size);
     awn_icon_set_offset (AWN_ICON (priv->docklet_closer), size / 2 +
                                                           priv->offset);
   }
+
+  awn_throbber_set_size (AWN_THROBBER (priv->arrow1), size);
+  awn_throbber_set_size (AWN_THROBBER (priv->arrow2), size);
 
   gtk_widget_queue_resize (GTK_WIDGET (panel));
 }
@@ -3488,12 +3735,12 @@ docklet_appear_cb (AwnPanel *panel)
   gfloat old_alpha = 1 - priv->docklet_alpha;
   priv->docklet_alpha += 0.15;
 
-  x = MIN (priv->snapshot_paint_size.x, priv->manager->allocation.x);
-  y = MIN (priv->snapshot_paint_size.y, priv->manager->allocation.y);
+  x = MIN (priv->snapshot_paint_size.x, priv->box->allocation.x);
+  y = MIN (priv->snapshot_paint_size.y, priv->box->allocation.y);
   width = MAX (priv->snapshot_paint_size.width,
-               priv->manager->allocation.width);
+               priv->box->allocation.width);
   height = MAX (priv->snapshot_paint_size.height, 
-                priv->manager->allocation.height);
+                priv->box->allocation.height);
 
   GdkWindow *window = gtk_widget_get_window (GTK_WIDGET (panel));
   GdkRectangle rect = {.x = x, .y = y, .width = width, .height = height};
@@ -3534,7 +3781,7 @@ get_window_snapshot (GdkDrawable *drawable, gint width, gint height)
 }
 
 static void
-docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
+awn_panel_prepare_crossfade (AwnPanel *panel, gint time_step)
 {
   AwnPanelPrivate *priv = panel->priv;
 
@@ -3554,7 +3801,7 @@ docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
     height = priv->eventbox->allocation.height;
 
     priv->dock_snapshot = get_window_snapshot (drawable, width, height);
-    priv->snapshot_paint_size = priv->manager->allocation;
+    priv->snapshot_paint_size = priv->box->allocation;
     priv->docklet_alpha = 0.2;
     multiply_pixmap_alpha (priv->dock_snapshot,
                            (GdkRectangle*)&priv->snapshot_paint_size,
@@ -3573,9 +3820,17 @@ docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
       g_source_remove (priv->docklet_appear_timer_id);
     }
     priv->docklet_appear_timer_id =
-        g_timeout_add_full (GDK_PRIORITY_REDRAW + 10, 40,
+        g_timeout_add_full (GDK_PRIORITY_REDRAW + 10, time_step,
                             (GSourceFunc)docklet_appear_cb, panel, NULL);
   }
+}
+
+static void
+docklet_plug_added (GtkSocket *socket, AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  awn_panel_prepare_crossfade (panel, 40);
 
   awn_applet_manager_hide_applets (AWN_APPLET_MANAGER (priv->manager));
   gtk_widget_show (priv->docklet);
@@ -3610,44 +3865,7 @@ awn_panel_docklet_destroy (AwnPanel *panel)
   if (priv->docklet == NULL) return;
 
   // FIXME: we could optimize and not destroy the widget
-  if (priv->composited)
-  {
-    // copy a snapshot of the dock into a pixmap
-    GdkDrawable *drawable = gtk_widget_get_window (priv->eventbox);
-    gint width, height;
-
-    if (priv->dock_snapshot)
-    {
-      g_object_unref (priv->dock_snapshot);
-      g_object_unref (priv->tmp_pixmap);
-    }
-
-    width = priv->eventbox->allocation.width;
-    height = priv->eventbox->allocation.height;
-    
-    priv->dock_snapshot = get_window_snapshot (drawable, width, height);
-    priv->snapshot_paint_size = priv->manager->allocation;
-    priv->docklet_alpha = 0.2;
-    multiply_pixmap_alpha (priv->dock_snapshot,
-                           (GdkRectangle*)&priv->snapshot_paint_size,
-                           1 - priv->docklet_alpha);
-
-    priv->tmp_pixmap = gdk_pixmap_new (drawable, width, height, -1);
-    
-    gtk_widget_queue_draw_area (GTK_WIDGET (panel),
-                                priv->snapshot_paint_size.x,
-                                priv->snapshot_paint_size.y,
-                                priv->snapshot_paint_size.width,
-                                priv->snapshot_paint_size.height);
-
-    if (priv->docklet_appear_timer_id != 0)
-    {
-      g_source_remove (priv->docklet_appear_timer_id);
-    }
-    priv->docklet_appear_timer_id =
-        g_timeout_add_full (GDK_PRIORITY_REDRAW + 10, 50,
-                            (GSourceFunc)docklet_appear_cb, panel, NULL);
-  }
+  awn_panel_prepare_crossfade (panel, 50);
   
   awn_applet_manager_remove_widget (AWN_APPLET_MANAGER (priv->manager),
                                     priv->docklet);
@@ -3689,14 +3907,14 @@ awn_panel_docklet_request (AwnPanel *panel,
   {
     AwnThrobber *closer = AWN_THROBBER (priv->docklet_closer);
 
-    awn_throbber_set_size (closer, priv->size / 2);
+    awn_throbber_set_size (closer, priv->size);
     awn_icon_set_pos_type (AWN_ICON (closer), priv->position);
     awn_icon_set_offset (AWN_ICON (closer), priv->size / 2 + priv->offset);
 
     GtkRequisition closer_req;
     gtk_widget_size_request (priv->docklet_closer, &closer_req);
 
-    gtk_widget_get_allocation (priv->manager, &alloc);
+    gtk_widget_get_allocation (priv->box, &alloc);
 
     priv->docklet = gtk_socket_new ();
     priv->docklet_close_on_pos_change = TRUE;

@@ -1,3 +1,13 @@
+2010-01-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-utils.c:
+	* src/awn-applet-manager.c:
+	* src/awn-background.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	Added viewport to deal with too many icons on the panel.
+
 2010-01-05  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* bindings/vala/awn.gi:

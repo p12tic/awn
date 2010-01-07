@@ -678,13 +678,23 @@ awn_background_padding_request (AwnBackground *bg,
 {
   AwnBackgroundClass *klass;
 
-  g_return_if_fail (AWN_IS_BACKGROUND (bg));
-  
-  klass = AWN_BACKGROUND_GET_CLASS (bg);
-  g_return_if_fail (klass->padding_request != NULL);
+  g_return_if_fail (AWN_IS_BACKGROUND (bg) || bg == NULL);
 
-  klass->padding_request (bg, position, padding_top, padding_bottom,
-                          padding_left, padding_right);
+  if (bg)
+  {
+    klass = AWN_BACKGROUND_GET_CLASS (bg);
+    g_return_if_fail (klass->padding_request != NULL);
+
+    klass->padding_request (bg, position, padding_top, padding_bottom,
+                            padding_left, padding_right);
+  }
+  else
+  {
+    *padding_top = 0;
+    *padding_bottom = 0;
+    *padding_right = 0;
+    *padding_left = 0;
+  }
 }
 
 void 
