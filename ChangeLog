@@ -1,8 +1,32 @@
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+        * applets/taskmanager/awn-desktop-lookup-cached.h:
+        * applets/taskmanager/awn-desktop-lookup-gnome3.c:
+        * applets/taskmanager/awn-desktop-lookup-gnome3.h:
+        * applets/taskmanager/awn-desktop-lookup.c:
+        * applets/taskmanager/awn-desktop-lookup.h:
+        * libawn/awn-desktop-lookup-client.c:
+        * libawn/awn-desktop-lookup-client.h:
+        Add license/copyright info.
+
 2010-01-08  Julien Lavergne <gilir@ubuntu.com>
 
 	* po/POTFILES.in:
 	* po/POTFILES.skip:
 	Move desktop.in to POTFILES.skip.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+  	* applets/taskmanager/awn-desktop-lookup-cached.h:
+  	* applets/taskmanager/awn-desktop-lookup-gnome3.c:
+  	* applets/taskmanager/awn-desktop-lookup-gnome3.h:
+  	* applets/taskmanager/awn-desktop-lookup.c:
+  	* applets/taskmanager/awn-desktop-lookup.h:
+  	* libawn/awn-desktop-lookup-client.c:
+  	* libawn/awn-desktop-lookup-client.h:
+	Add license/copyright info.
 
 2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
 
