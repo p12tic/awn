@@ -80,10 +80,9 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
   dir = g_dir_open (applications_dir,0,NULL);
   while ( (fname = g_dir_read_name (dir)))
   {
-    gchar * new_path = g_strdup_printf ("%s%s",applications_dir,fname);      
+    gchar * new_path = g_strdup_printf ("%s%s",applications_dir,fname);
     if ( g_file_test (new_path,G_FILE_TEST_IS_DIR) )
     {
-      g_debug (" a dir ");
       awn_desktop_lookup_cached_add_dir (lookup,new_path);
     }
     else
@@ -124,7 +123,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
 //              g_warning ("%s: Name (%s) collision between %s and %s",__func__,name,search,new_path);
               g_free (name);
               g_free (exec);
-              continue;
+              goto NAME_COLLSION;
             }
 
             if ( (search = g_hash_table_lookup (priv->exec_hash,exec)))
@@ -132,7 +131,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
 //              g_warning ("%s: Exec Name (%s) collision between %s and %s",__func__,exec,search,new_path);
               g_free (name);
               g_free (exec);
-              continue;
+              goto NAME_COLLSION;
             }
 
             if (desktop_agnostic_fdo_desktop_entry_key_exists (entry,"StartupWMClass"))
@@ -144,7 +143,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
                 g_free (name);
                 g_free (exec);
                 g_free (startup_wm);
-                continue;
+                goto NAME_COLLSION;
               }
             }
             copy_path = g_strdup (new_path);
@@ -160,7 +159,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
             node->exec = exec;
             priv->desktop_list = g_slist_prepend (priv->desktop_list,node);
           }
-
+NAME_COLLSION:
           if (entry)
           {
             g_object_unref (entry);
@@ -191,6 +190,7 @@ awn_desktop_lookup_cached_constructed (GObject *object)
   for (iter = (GStrv)system_dirs; *iter; iter++)
   {
     gchar * applications_dir = g_strdup_printf ("%s/applications/",*iter);
+    g_debug ("Adding %s",applications_dir);
     awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),
                                        applications_dir);
     g_free (applications_dir);
@@ -254,7 +254,6 @@ _search_exec (DesktopNode *a, gchar * b)
   }
   int a_len = strlen (a->exec);
   int b_len = strlen (b);
-//  g_debug ("a = %s, b = %s",a->exec,b);
   if (a_len <3 || b_len<3)
   {
     return -1;
@@ -269,7 +268,6 @@ _search_path (DesktopNode *a, gchar * b)
   {
     return -1;
   }
-  g_debug ("a = %s, b = %s",a->path,b);
   int a_len = strlen (a->path);
   int b_len = strlen (b);
   if (a_len <3 || b_len<3)
@@ -278,7 +276,6 @@ _search_path (DesktopNode *a, gchar * b)
   }
   if (g_strstr_len (a->path,-1,b) )
   {
-    g_debug ("%s: found %s at %s",__func__,b,a->path);
     return 0;
   }
   return -1;                 
