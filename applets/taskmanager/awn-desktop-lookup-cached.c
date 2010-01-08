@@ -150,6 +150,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
             g_hash_table_insert (priv->exec_hash,exec,copy_path);
             if (startup_wm)
             {
+              g_debug ("startup %s for %s",startup_wm,copy_path);
               g_hash_table_insert (priv->startup_wm_hash,startup_wm,copy_path);
             }
             node = g_malloc (sizeof(DesktopNode));
@@ -323,6 +324,13 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (class_name)
     {
       result = g_hash_table_lookup (priv->startup_wm_hash,class_name);
+    }
+  }
+  if (res_name)
+  {
+    if (res_name)
+    {
+      result = g_hash_table_lookup (priv->startup_wm_hash,res_name);
     }
   }
   if (!result)
