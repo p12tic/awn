@@ -16,6 +16,12 @@ applet_datadir = $(APPLETDATADIR)/taskmanager
 applet_LTLIBRARIES = taskmanager.la
 taskmanager_la_SOURCES = \
 	applet.c \
+	awn-desktop-lookup.h \
+	awn-desktop-lookup-cached.h \
+	awn-desktop-lookup-gnome3.h \
+	awn-desktop-lookup.c \
+	awn-desktop-lookup-cached.c \
+	awn-desktop-lookup-gnome3.c \
 	task-drag-indicator.c \
 	task-drag-indicator.h \
 	task-icon.c \

@@ -5,6 +5,7 @@
 
 #include "awn-desktop-lookup.h"
 #include <glib-object.h>
+#include <libwnck/libwnck.h>
 
 G_BEGIN_DECLS
 
@@ -36,6 +37,8 @@ typedef struct {
 GType awn_desktop_lookup_cached_get_type (void);
 
 AwnDesktopLookupCached* awn_desktop_lookup_cached_new (void);
+
+const gchar *awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckWindow * win);
 
 G_END_DECLS
 

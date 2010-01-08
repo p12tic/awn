@@ -1228,7 +1228,8 @@ awn_applet_manager_redraw_throbbers (AwnAppletManager *manager)
 
   for (GList *it = list; it != NULL; it = it->next)
   {
-    if (AWN_IS_THROBBER (it->data) && GTK_WIDGET_VISIBLE (it->data))
+    if ((AWN_IS_THROBBER (it->data) || AWN_IS_SEPARATOR (it->data))
+        && GTK_WIDGET_VISIBLE (it->data))
     {
       gtk_widget_queue_draw (GTK_WIDGET (it->data));
     }

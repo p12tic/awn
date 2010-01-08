@@ -10,9 +10,7 @@ G_DEFINE_TYPE (AwnDesktopLookup, awn_desktop_lookup, G_TYPE_OBJECT)
 typedef struct _AwnDesktopLookupPrivate AwnDesktopLookupPrivate;
 
 struct _AwnDesktopLookupPrivate {
-
-  GHashTable * desktop_lookup_cache;
-  
+  int dummy;
 };
 
 static void
@@ -73,36 +71,13 @@ awn_desktop_lookup_class_init (AwnDesktopLookupClass *klass)
 static void
 awn_desktop_lookup_init (AwnDesktopLookup *self)
 {
-  AwnDesktopLookupPrivate * priv = GET_PRIVATE(self);
-  priv->desktop_lookup_cache = g_hash_table_new_full (g_str_hash,
-                                                      (GEqualFunc)g_strcmp0,
-                                                      g_free,
-                                                      g_free);
+//  AwnDesktopLookupPrivate * priv = GET_PRIVATE(self);
 }
 
 AwnDesktopLookup*
 awn_desktop_lookup_new (void)
 {
   return g_object_new (AWN_TYPE_DESKTOP_LOOKUP, NULL);
-}
-
-gchar *
-awn_desktop_lookup_search_cache (AwnDesktopLookup* * self,
-                                 gchar * class_name,
-                                 gchar * res_name,
-                                 gchar * cmd, 
-                                 gchar *id)
-{
-  AwnDesktopLookupPrivate * priv = GET_PRIVATE(self);
-  gchar * key;
-  gchar * desktop_path;
-
-  key = g_strdup_printf("%s::%s::%s::%s",class_name,res_name,cmd,id);
-  desktop_path = g_hash_table_lookup (priv->desktop_lookup_cache,key);
-
-  g_free (key);
-  key = NULL;
-  return desktop_path;
 }
 
 /*
@@ -121,7 +96,6 @@ awn_desktop_lookup_special_case (gchar * cmd,
   gchar * result = NULL;
   return result;
 }
-
 
 gchar *
 awn_desktop_lookup_search_for_desktop (gulong xid)

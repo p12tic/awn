@@ -73,13 +73,13 @@ awn_utils_make_transparent_bg (GtkWidget *widget)
 
   win = gtk_widget_get_window (widget);
 
-  /* This can happen on Window manager restarts/changes*/
+  /* This can happen on Window manager restarts/changes */
   if (!win)
   {
     return;
   }
 
-  if (gtk_widget_is_composited(widget))
+  if (gtk_widget_is_composited (widget))
   {
     if (pixmap == NULL)
     {
@@ -90,6 +90,12 @@ awn_utils_make_transparent_bg (GtkWidget *widget)
       cairo_destroy(cr);
     }
     gdk_window_set_back_pixmap (win, pixmap, FALSE);
+
+    if (GTK_IS_VIEWPORT (widget))
+    {
+      win = GTK_VIEWPORT (widget)->bin_window;
+      gdk_window_set_back_pixmap (win, pixmap, FALSE);
+    }
   }
 }
 
