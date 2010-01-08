@@ -1,3 +1,8 @@
+2010-01-08  Julien Lavergne <gilir@ubuntu.com>
+
+	* po/POTFILES.in:
+	Update with new files.
+
 2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-desktop-lookup-cached.c:

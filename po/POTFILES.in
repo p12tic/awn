@@ -3,6 +3,12 @@ applets/expander/expander.desktop.in.in
 applets/taskmanager/task-launcher.c
 applets/taskmanager/task-icon.c
 applets/taskmanager/taskmanager.desktop.in.in
+applets/quick-prefs/applet.c
+applets/quick-prefs/quick-prefs.desktop.in
+applets/quick-prefs/quick-prefs.desktop.in.in
+applets/separator/separator.desktop.in
+applets/separator/separator.desktop.in.in
+applets/taskmanager/task-icon-build-context-menus.c
 awn-settings/awn-settings.desktop.in
 awn-settings/awn-settings.ui
 awn-settings/awnClass.py
