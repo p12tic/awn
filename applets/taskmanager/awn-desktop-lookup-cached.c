@@ -264,6 +264,9 @@ awn_desktop_lookup_cached_constructed (GObject *object)
   g_message ("Adding %s",applications_dir);
   awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),applications_dir);
   g_free (applications_dir);
+
+  awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),"/var/lib/menu-xdg/applications/");
+
   /*
    entries originally prepended in order found.  Reversing on the premise that
    data dirs early in the list are more likely to have the desktop file we
@@ -391,6 +394,7 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
   gulong xid = wnck_window_get_xid (win);
   GSList *l = NULL;
   const gchar * title;
+  gint  hit_method = 0;
 
   title = wnck_window_get_name (win);
   _wnck_get_wmclass (xid,&res_name, &class_name);
@@ -413,171 +417,7 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     cmd_basename = g_path_get_basename (cmd);
   }
   g_debug ("cmd = %s, full_cmd = %s, cmd_basename = %s",cmd,full_cmd,cmd_basename);
-
-//  g_debug ("%s: res_name = '%s', class_name = '%s'",__func__,res_name,class_name);
-
-  if (!result)
-  {
-    if (full_cmd)
-    {
-      result = g_hash_table_lookup (priv->exec_hash,full_cmd);
-    }
-  }
-
-  if (!result)
-  {
-    if (class_name)
-    {
-      result = g_hash_table_lookup (priv->startup_wm_hash,class_name);
-    }
-  }
-  if (!result)
-  {
-    if (res_name)
-    {
-      result = g_hash_table_lookup (priv->startup_wm_hash,res_name);
-    }
-  }
-  if (!result)
-  {
-    if (cmd)
-    {
-      result = g_hash_table_lookup (priv->name_hash,cmd);
-    }
-  }
-
-  if (!result)
-  {
-    if (res_name)
-    {
-      gchar * tmp = g_strdup_printf ("%s.desktop",res_name);
-      result = g_hash_table_lookup (priv->name_hash,tmp);
-      g_free (tmp);
-    }
-  }
-  if (!result)
-  {
-    if (res_name_lwr)
-    {
-      gchar * tmp = g_strdup_printf ("%s.desktop",res_name_lwr);
-      result = g_hash_table_lookup (priv->name_hash,tmp);
-      g_free (tmp);
-    }
-  }
-
-  if (!result)
-  {
-    if (res_name)
-    {
-      result = g_hash_table_lookup (priv->exec_hash,res_name);
-    }
-  }
-  if (!result)
-  {
-    if (res_name_lwr)
-    {
-      result = g_hash_table_lookup (priv->exec_hash,res_name_lwr);
-    }
-  }
-  if (!result)
-  {
-    if (res_name_lwr)
-    {
-      result = g_hash_table_lookup (priv->exec_hash,res_name_lwr);
-    }
-  }
-  if (!result)
-  {
-    if (cmd)
-    {
-      result = g_hash_table_lookup (priv->exec_hash,cmd);
-    }
-  }
-  if (!result)
-  {
-    if (cmd_basename)
-    {
-      result = g_hash_table_lookup (priv->exec_hash,cmd_basename);
-    }
-  }
-  if (!result)
-  {
-    if (res_name)
-    {
-      result = g_hash_table_lookup (priv->name_hash,res_name);
-    }
-  }
-  if (!result)
-  {
-    if (res_name_lwr)
-    {
-      result = g_hash_table_lookup (priv->name_hash,res_name_lwr);
-    }
-  }
-  if (!result)
-  {
-    if (full_cmd)
-    {
-      l = g_slist_find_custom (priv->desktop_list,
-                                    full_cmd,
-                                    (GCompareFunc)_search_exec);
-      if (l)
-      {
-        result = ((DesktopNode*) (l->data))->path;
-      }
-    }
-  }
-
-  if (!result)
-  {
-    if (full_cmd)
-    {
-      l = g_slist_find_custom (priv->desktop_list,full_cmd,(GCompareFunc)_search_exec_sub);
-      while (l)
-      {
-        if (g_strstr_len (title,-1,((DesktopNode*) (l->data))->name))
-        {
-          result = ((DesktopNode*) (l->data))->path;
-        }
-        l = l->next;
-        if (l)
-        {
-          l = g_slist_find_custom (l,full_cmd,(GCompareFunc)_search_exec_sub);
-        }
-      }
-    }
-  }
-
-  if (!result)
-  {
-    if (full_cmd)
-    {
-      l = g_slist_find_custom (priv->desktop_list,
-                                    full_cmd,
-                                    (GCompareFunc)_search_exec_sub);
-      if (l)
-      {
-        result = ((DesktopNode*) (l->data))->path;
-      }
-    }
-  }
-
-  if (!result)
-  {
-    if (cmd)
-    {
-      gchar * d_filename = g_strdup_printf ("%s.desktop",cmd);
-      g_debug ("Search for %s",d_filename);
-      l = g_slist_find_custom (priv->desktop_list,
-                                    d_filename,
-                                    (GCompareFunc)_search_path);
-      g_free (d_filename);
-      if (l)
-      {
-        result = ((DesktopNode*) (l->data))->path;
-      }
-    }
-  }
+  g_debug ("%s: res_name = '%s', class_name = '%s'",__func__,res_name,class_name);
 
   if (!result)
   {
@@ -600,8 +440,9 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
       }
       g_slist_free (desktops);
     }
+    hit_method ++;
   }
-
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
   if (!result)
   {
     GSList * desktops = get_special_desktop_from_window_data (cmd,
@@ -623,8 +464,211 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
       }
       g_slist_free (desktops);
     }
+    hit_method ++;
   }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (full_cmd)
+    {
+      result = g_hash_table_lookup (priv->exec_hash,full_cmd);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (class_name)
+    {
+      result = g_hash_table_lookup (priv->startup_wm_hash,class_name);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (res_name)
+    {
+      result = g_hash_table_lookup (priv->startup_wm_hash,res_name);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (res_name)
+    {
+      gchar * tmp = g_strdup_printf ("%s.desktop",res_name);
+      result = g_hash_table_lookup (priv->name_hash,tmp);
+      g_free (tmp);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (res_name_lwr)
+    {
+      gchar * tmp = g_strdup_printf ("%s.desktop",res_name_lwr);
+      result = g_hash_table_lookup (priv->name_hash,tmp);
+      g_free (tmp);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
 
+  if (!result)
+  {
+    if (cmd)
+    {
+      result = g_hash_table_lookup (priv->exec_hash,cmd);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (cmd_basename)
+    {
+      result = g_hash_table_lookup (priv->exec_hash,cmd_basename);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (full_cmd)
+    {
+      l = g_slist_find_custom (priv->desktop_list,
+                                    full_cmd,
+                                    (GCompareFunc)_search_exec);
+      if (l)
+      {
+        result = ((DesktopNode*) (l->data))->path;
+      }
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (full_cmd)
+    {
+      l = g_slist_find_custom (priv->desktop_list,full_cmd,(GCompareFunc)_search_exec_sub);
+      while (l)
+      {
+        if (g_strstr_len (title,-1,((DesktopNode*) (l->data))->name))
+        {
+          result = ((DesktopNode*) (l->data))->path;
+        }
+        l = l->next;
+        if (l)
+        {
+          l = g_slist_find_custom (l,full_cmd,(GCompareFunc)_search_exec_sub);
+        }
+      }
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (full_cmd)
+    {
+      l = g_slist_find_custom (priv->desktop_list,
+                                    full_cmd,
+                                    (GCompareFunc)_search_exec_sub);
+      if (l)
+      {
+        result = ((DesktopNode*) (l->data))->path;
+      }
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (cmd)
+    {
+      gchar * d_filename = g_strdup_printf ("%s.desktop",cmd);
+      g_debug ("Search for %s",d_filename);
+      l = g_slist_find_custom (priv->desktop_list,
+                                    d_filename,
+                                    (GCompareFunc)_search_path);
+      g_free (d_filename);
+      if (l)
+      {
+        result = ((DesktopNode*) (l->data))->path;
+      }
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (cmd)
+    {
+      result = g_hash_table_lookup (priv->name_hash,cmd);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (res_name)
+    {
+      result = g_hash_table_lookup (priv->exec_hash,res_name);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (res_name_lwr)
+    {
+      result = g_hash_table_lookup (priv->exec_hash,res_name_lwr);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (res_name)
+    {
+      result = g_hash_table_lookup (priv->name_hash,res_name);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (!result)
+  {
+    if (res_name_lwr)
+    {
+      result = g_hash_table_lookup (priv->name_hash,res_name_lwr);
+    }
+    hit_method ++;
+  }
+  result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
+  
+  if (hit_method)
+  {
+    g_message ("%s: Hit method = %d",__func__,hit_method);
+  }
   g_free (full_cmd);
   g_free (cmd);
   g_free (cmd_basename);
