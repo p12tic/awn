@@ -1,5 +1,11 @@
 2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Ignore files that do not container ".desktop" in their name.
+	Ignore the existence of /var/lib/menu-xdg/applications/ on Debian.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	Added:
 	* applets/taskmanager/awn-desktop-lookup-cached.c:
   	* applets/taskmanager/awn-desktop-lookup-cached.h:

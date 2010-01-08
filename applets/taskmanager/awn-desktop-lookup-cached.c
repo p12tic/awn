@@ -94,7 +94,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
       file = desktop_agnostic_vfs_file_new_for_path (new_path, NULL);
       if (file)
       {
-        if (desktop_agnostic_vfs_file_exists (file) )
+        if (desktop_agnostic_vfs_file_exists (file) && g_strstr_len (new_path,-1,".desktop") )
         {
           entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, NULL);
           if (entry && desktop_agnostic_fdo_desktop_entry_key_exists (entry,"NoDisplay"))
@@ -265,7 +265,7 @@ awn_desktop_lookup_cached_constructed (GObject *object)
   awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),applications_dir);
   g_free (applications_dir);
 
-  awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),"/var/lib/menu-xdg/applications/");
+//  awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),"/var/lib/menu-xdg/applications/");
 
   /*
    entries originally prepended in order found.  Reversing on the premise that
