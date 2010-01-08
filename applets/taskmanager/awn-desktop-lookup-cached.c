@@ -27,6 +27,7 @@ typedef struct
 struct _AwnDesktopLookupCachedPrivate {
   GHashTable * name_hash;
   GHashTable * exec_hash;
+  GHashTable * desktops_hash;    /*desktop file names, without paths*/
   GHashTable * startup_wm_hash;
 
   GSList * desktop_list;  /*For when the fast lookups don't work*/
@@ -80,9 +81,10 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
   dir = g_dir_open (applications_dir,0,NULL);
   while ( (fname = g_dir_read_name (dir)))
   {
-    gchar * new_path = g_strdup_printf ("%s%s",applications_dir,fname);
+    gchar * new_path = g_strdup_printf ("%s/%s",applications_dir,fname);
     if ( g_file_test (new_path,G_FILE_TEST_IS_DIR) )
     {
+      g_message ("Adding %s",new_path);
       awn_desktop_lookup_cached_add_dir (lookup,new_path);
     }
     else
@@ -113,51 +115,74 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
             gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
             gchar * copy_path = NULL;
             gchar * search = NULL;
-            gchar * tmp;
+            gchar * name_lwr = g_utf8_strdown (name,-1);
             gchar * startup_wm = NULL;
+            gchar * desktop_name = g_strdup (fname);
             DesktopNode * node;
-            
-            tmp =  g_utf8_strdown (name,-1);
-            g_free (name);
-            name = tmp;
-            
+                        
             g_strdelimit (exec,"%",'\0');
             g_strstrip (exec);
-            
-            if ( (search = g_hash_table_lookup (priv->name_hash,name) ))
+
+            if ( (search = g_hash_table_lookup (priv->name_hash,name_lwr) ))
             {
 //              g_warning ("%s: Name (%s) collision between %s and %s",__func__,name,search,new_path);
-              g_free (name);
-              g_free (exec);
-              goto NAME_COLLSION;
+              g_free (name_lwr);
+              name_lwr = NULL;
             }
 
             if ( (search = g_hash_table_lookup (priv->exec_hash,exec)))
             {
+              /* This gets hit when we refresh the list due to an new installations etc.
+               If we hit this then it's more or less a duplicate of an existing desktop
+               or we have a refresh for some reason.  Either way we ignore it.*/
 //              g_warning ("%s: Exec Name (%s) collision between %s and %s",__func__,exec,search,new_path);
               g_free (name);
+              g_free (name_lwr);
               g_free (exec);
+              g_free (desktop_name);
               goto NAME_COLLSION;
+            }
+
+            if ( (search = g_hash_table_lookup (priv->desktops_hash,desktop_name)))
+            {
+              /*Happens often enough (ex.  "Terminal" ).  Not a big deal, we're 
+               relatively conservative in using name for matching purposes*/
+              g_free (desktop_name);
+              desktop_name = NULL;
             }
 
             if (desktop_agnostic_fdo_desktop_entry_key_exists (entry,"StartupWMClass"))
             {
               startup_wm = desktop_agnostic_fdo_desktop_entry_get_string (entry, "StartupWMClass");
-              if ((search = g_hash_table_lookup (priv->startup_wm_hash,startup_wm) ))
+              search = g_hash_table_lookup (priv->startup_wm_hash,startup_wm);
+              if ( g_strcmp0 (startup_wm,"Wine")==0)
               {
-//                g_warning ("%s: StartuWM Name (%s) collision between %s and %s",__func__,startup_wm,search,new_path);
-                g_free (name);
-                g_free (exec);
                 g_free (startup_wm);
-                goto NAME_COLLSION;
+                startup_wm = NULL;
+              }
+              else if (search)
+              {
+                /*if we hit this then I'm interested in knowing about it*/
+                g_warning ("%s: StartuWM Name (%s) collision between %s and %s",__func__,startup_wm,search,new_path);
+                g_free (startup_wm);
+                startup_wm = NULL;
               }
             }
             copy_path = g_strdup (new_path);
-            g_hash_table_insert (priv->name_hash,name,copy_path);
-            g_hash_table_insert (priv->exec_hash,exec,copy_path);
+            if (name_lwr)
+            {
+              g_hash_table_insert (priv->name_hash,name_lwr,copy_path);
+            }
+            if (exec)
+            {
+              g_hash_table_insert (priv->exec_hash,exec,copy_path);
+            }
+            if (desktop_name)
+            {
+              g_hash_table_insert (priv->desktops_hash,desktop_name,copy_path);
+            }
             if (startup_wm)
             {
-              g_debug ("startup %s for %s",startup_wm,copy_path);
               g_hash_table_insert (priv->startup_wm_hash,startup_wm,copy_path);
             }
             node = g_malloc (sizeof(DesktopNode));
@@ -183,11 +208,27 @@ NAME_COLLSION:
 }
 
 static void
+_data_dir_changed (DesktopAgnosticVFSFileMonitor* monitor, 
+                       DesktopAgnosticVFSFile* self,                  
+                       DesktopAgnosticVFSFile* other, 
+                       DesktopAgnosticVFSFileMonitorEvent event,
+                       AwnDesktopLookupCached * lookup
+                  )
+{
+  gchar * path = desktop_agnostic_vfs_file_get_path (self);
+  if ( g_file_test (path,G_FILE_TEST_IS_DIR))
+  {
+    awn_desktop_lookup_cached_add_dir (lookup, path);
+  }
+}
+
+static void
 awn_desktop_lookup_cached_constructed (GObject *object)
 {
   const gchar* const * system_dirs = NULL;
   GStrv iter = NULL;
   AwnDesktopLookupCachedPrivate * priv = GET_PRIVATE (object);
+  gchar * applications_dir;
   
   if ( G_OBJECT_CLASS (awn_desktop_lookup_cached_parent_class)->constructed)
   {
@@ -197,13 +238,32 @@ awn_desktop_lookup_cached_constructed (GObject *object)
   system_dirs = g_get_system_data_dirs ();
   for (iter = (GStrv)system_dirs; *iter; iter++)
   {
-    gchar * applications_dir = g_strdup_printf ("%s/applications/",*iter);
+    GError * error = NULL;
+    DesktopAgnosticVFSFileMonitor* monitor_vfs;
+    DesktopAgnosticVFSFile* file_vfs;
+    applications_dir = g_strdup_printf ("%s/applications/",*iter);
+
+    g_message ("Adding %s",applications_dir);
     awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),
                                        applications_dir);
+
+    file_vfs = desktop_agnostic_vfs_file_new_for_path (applications_dir,&error);
+    if (error)
+    {
+      g_warning ("%s: Error with file monitor.  %s",__func__,error->message);
+      g_error_free (error);
+      error = NULL;
+    }
+    monitor_vfs = desktop_agnostic_vfs_file_monitor (file_vfs);
+    g_signal_connect (G_OBJECT(monitor_vfs),"changed", G_CALLBACK(_data_dir_changed),object);
+    g_object_weak_ref (object,(GWeakNotify)g_object_unref,file_vfs);
+    g_object_weak_ref (object,(GWeakNotify)g_object_unref,monitor_vfs);
     g_free (applications_dir);
   }
-  awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),
-                                     g_get_user_data_dir ());
+  applications_dir = g_strdup_printf ("%s/applications/",g_get_user_data_dir ());
+  g_message ("Adding %s",applications_dir);
+  awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),applications_dir);
+  g_free (applications_dir);
   /*
    entries originally prepended in order found.  Reversing on the premise that
    data dirs early in the list are more likely to have the desktop file we
@@ -239,6 +299,10 @@ awn_desktop_lookup_cached_init (AwnDesktopLookupCached *self)
                                            g_str_equal,
                                            g_free,
                                            NULL);
+  priv->desktops_hash = g_hash_table_new_full (g_str_hash,
+                                           g_str_equal,
+                                           g_free,
+                                           NULL);
   priv->startup_wm_hash = g_hash_table_new_full (g_str_hash,
                                            g_str_equal,
                                            g_free,
@@ -267,7 +331,28 @@ _search_exec (DesktopNode *a, gchar * b)
   }
   return strncmp (a->exec,b, a_len>b_len?b_len:a_len);
 }
-  
+
+static int
+_search_exec_sub (DesktopNode *a, gchar * b)
+{
+  if (!a->exec)
+  {
+    return -1;
+  }
+  int a_len = strlen (a->exec);
+  int b_len = strlen (b);
+  if (a_len <3 || b_len<3)
+  {
+    return -1;
+  }
+//  g_debug ("matching %s, %s",a->exec,b);
+  if (g_strstr_len (a->exec,-1,b) )
+  {
+    return 0;
+  }
+  return -1;                 
+}
+
 static int
 _search_path (DesktopNode *a, gchar * b)
 {
@@ -319,40 +404,38 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
   }
   cmd = glibtop_get_proc_args (&buf,wnck_window_get_pid (win),1024);    
   full_cmd = get_full_cmd_from_pid ( wnck_window_get_pid (win));
+  if (full_cmd)
+  {
+    g_strstrip (full_cmd);
+  }
   if (cmd)
   {
     cmd_basename = g_path_get_basename (cmd);
   }
-//  g_debug ("cmd = %s, full_cmd = %s, cmd_basename = %s",cmd,full_cmd,cmd_basename);
+  g_debug ("cmd = %s, full_cmd = %s, cmd_basename = %s",cmd,full_cmd,cmd_basename);
 
 //  g_debug ("%s: res_name = '%s', class_name = '%s'",__func__,res_name,class_name);
 
-  if (class_name)
+  if (!result)
+  {
+    if (full_cmd)
+    {
+      result = g_hash_table_lookup (priv->exec_hash,full_cmd);
+    }
+  }
+
+  if (!result)
   {
     if (class_name)
     {
       result = g_hash_table_lookup (priv->startup_wm_hash,class_name);
     }
   }
-  if (res_name)
+  if (!result)
   {
     if (res_name)
     {
       result = g_hash_table_lookup (priv->startup_wm_hash,res_name);
-    }
-  }
-  if (!result)
-  {
-    if (res_name)
-    {
-      result = g_hash_table_lookup (priv->name_hash,res_name);
-    }
-  }
-  if (!result)
-  {
-    if (res_name_lwr)
-    {
-      result = g_hash_table_lookup (priv->name_hash,res_name_lwr);
     }
   }
   if (!result)
@@ -362,7 +445,26 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
       result = g_hash_table_lookup (priv->name_hash,cmd);
     }
   }
-  
+
+  if (!result)
+  {
+    if (res_name)
+    {
+      gchar * tmp = g_strdup_printf ("%s.desktop",res_name);
+      result = g_hash_table_lookup (priv->name_hash,tmp);
+      g_free (tmp);
+    }
+  }
+  if (!result)
+  {
+    if (res_name_lwr)
+    {
+      gchar * tmp = g_strdup_printf ("%s.desktop",res_name_lwr);
+      result = g_hash_table_lookup (priv->name_hash,tmp);
+      g_free (tmp);
+    }
+  }
+
   if (!result)
   {
     if (res_name)
@@ -400,9 +502,16 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
   }
   if (!result)
   {
-    if (full_cmd)
+    if (res_name)
     {
-      result = g_hash_table_lookup (priv->exec_hash,full_cmd);
+      result = g_hash_table_lookup (priv->name_hash,res_name);
+    }
+  }
+  if (!result)
+  {
+    if (res_name_lwr)
+    {
+      result = g_hash_table_lookup (priv->name_hash,res_name_lwr);
     }
   }
   if (!result)
@@ -414,7 +523,58 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
                                     (GCompareFunc)_search_exec);
       if (l)
       {
-        result = l->data;
+        result = ((DesktopNode*) (l->data))->path;
+      }
+    }
+  }
+
+  if (!result)
+  {
+    if (full_cmd)
+    {
+      l = g_slist_find_custom (priv->desktop_list,full_cmd,(GCompareFunc)_search_exec_sub);
+      while (l)
+      {
+        if (g_strstr_len (title,-1,((DesktopNode*) (l->data))->name))
+        {
+          result = ((DesktopNode*) (l->data))->path;
+        }
+        l = l->next;
+        if (l)
+        {
+          l = g_slist_find_custom (l,full_cmd,(GCompareFunc)_search_exec_sub);
+        }
+      }
+    }
+  }
+
+  if (!result)
+  {
+    if (full_cmd)
+    {
+      l = g_slist_find_custom (priv->desktop_list,
+                                    full_cmd,
+                                    (GCompareFunc)_search_exec_sub);
+      if (l)
+      {
+        result = ((DesktopNode*) (l->data))->path;
+      }
+    }
+  }
+
+  if (!result)
+  {
+    if (cmd)
+    {
+      gchar * d_filename = g_strdup_printf ("%s.desktop",cmd);
+      g_debug ("Search for %s",d_filename);
+      l = g_slist_find_custom (priv->desktop_list,
+                                    d_filename,
+                                    (GCompareFunc)_search_path);
+      g_free (d_filename);
+      if (l)
+      {
+        result = ((DesktopNode*) (l->data))->path;
       }
     }
   }
@@ -458,7 +618,7 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
                                     (GCompareFunc)_search_path);
         if (l)
         {
-          result = l->data;
+          result = ((DesktopNode*) (l->data))->path;
         }
       }
       g_slist_free (desktops);
