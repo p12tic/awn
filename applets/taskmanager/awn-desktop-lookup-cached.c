@@ -95,6 +95,13 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
         if (desktop_agnostic_vfs_file_exists (file) )
         {
           entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, NULL);
+          if (entry && desktop_agnostic_fdo_desktop_entry_key_exists (entry,"NoDisplay"))
+          {
+            if (desktop_agnostic_fdo_desktop_entry_get_boolean (entry,"NoDisplay"))
+            {
+              goto NO_DISPLAY;
+            }
+          }
           if (entry && desktop_agnostic_fdo_desktop_entry_key_exists (entry,"Name")
               &&
               desktop_agnostic_fdo_desktop_entry_key_exists (entry,"Exec"))
@@ -159,6 +166,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
             node->exec = exec;
             priv->desktop_list = g_slist_prepend (priv->desktop_list,node);
           }
+NO_DISPLAY:
 NAME_COLLSION:
           if (entry)
           {
