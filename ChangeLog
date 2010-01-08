@@ -1,3 +1,24 @@
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	Added:
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+  	* applets/taskmanager/awn-desktop-lookup-cached.h:
+  	* applets/taskmanager/awn-desktop-lookup-gnome3.c:
+  	* applets/taskmanager/awn-desktop-lookup-gnome3.h:
+  	* applets/taskmanager/awn-desktop-lookup.c:
+  	* applets/taskmanager/awn-desktop-lookup.h:
+  	* libawn/awn-desktop-lookup-client.c:
+  	* libawn/awn-desktop-lookup-client.h:
+	Modified:
+  	* applets/taskmanager/Makefile.am:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+  	* libawn/Makefile.am:
+	Merged in first significant bit of the desktop lookup work.
+	Faster, cleaner code.  Largely disentangled from task-manager.c
+	now.  Needs to be tested in preparation for the dbus 
+	client/server side of things.
+
 2010-01-07  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:

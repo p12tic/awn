@@ -34,6 +34,7 @@ public_headers = \
 	awn-cairo-utils.h \
 	awn-config.h \
 	awn-dbus-watcher.h \
+	awn-desktop-lookup-client.h \
 	awn-dialog.h \
 	awn-effects.h \
 	awn-icon.h \
@@ -102,6 +103,7 @@ source_c = \
 	awn-cairo-utils.c \
 	awn-config.c \
 	awn-dbus-watcher.c \
+	awn-desktop-lookup-client.c \
 	awn-dialog.c \
 	awn-effects.c \
 	awn-effects-ops-new.c \

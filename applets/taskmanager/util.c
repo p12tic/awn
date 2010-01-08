@@ -217,8 +217,6 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","amsn"},
   {NULL,"Chatwindow","container.*",".*Untitled.*window.*","amsn"},  
   {".*linuxdcpp","Linuxdcpp","linuxdcpp","LinuxDC\\+\\+","dc++"},    
-  {".*thunderbird-bin","Thunderbird-bin","gecko",".*Thunderbird.*","thunderbird"},
-  {".*thunderbird.*","Thunderbird-bin","gecko",".*Thunderbird.*","mozilla-thunderbird"},  
   {NULL,"tvtime","TVWindow","^tvtime","net-tvtime"},
   {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox-ose"},
   {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox"},
@@ -461,7 +459,7 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
 #ifdef DEBUG    
     g_debug ("%s:  Special cased desktop: '%s'",__func__,iter->desktop);
 #endif
-    result = g_slist_append (result, g_strdup (iter->desktop));
+    result = g_slist_append (result, (gchar*)iter->desktop);
   }
   return result;
 }
