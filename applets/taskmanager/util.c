@@ -692,9 +692,7 @@ utils_gdk_pixbuf_similar_to (GdkPixbuf *i1, GdkPixbuf *i2)
 gboolean
 usable_desktop_entry (  DesktopAgnosticFDODesktopEntry * entry)
 {
-  if (  !desktop_agnostic_fdo_desktop_entry_key_exists (entry, "Icon")
-      ||
-        !desktop_agnostic_fdo_desktop_entry_key_exists (entry, "Name")
+  if (  !desktop_agnostic_fdo_desktop_entry_key_exists (entry, "Name")
       ||
         !desktop_agnostic_fdo_desktop_entry_key_exists (entry, "Exec") )
   {

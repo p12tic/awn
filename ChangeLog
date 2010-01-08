@@ -1,7 +1,17 @@
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c
+        Accept a desktop file with no Icon field.
+
 2010-01-08  Julien Lavergne <gilir@ubuntu.com>
 
 	* po/POTFILES.in:
 	Update with new files.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c
+	Accept a desktop file with no Icon field.
 
 2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
 
