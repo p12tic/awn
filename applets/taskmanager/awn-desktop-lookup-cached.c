@@ -84,7 +84,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
     gchar * new_path = g_strdup_printf ("%s/%s",applications_dir,fname);
     if ( g_file_test (new_path,G_FILE_TEST_IS_DIR) )
     {
-      g_message ("Adding %s",new_path);
+//      g_message ("Adding %s",new_path);
       awn_desktop_lookup_cached_add_dir (lookup,new_path);
     }
     else
@@ -243,7 +243,7 @@ awn_desktop_lookup_cached_constructed (GObject *object)
     DesktopAgnosticVFSFile* file_vfs;
     applications_dir = g_strdup_printf ("%s/applications/",*iter);
 
-    g_message ("Adding %s",applications_dir);
+//    g_message ("Adding %s",applications_dir);
     awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),
                                        applications_dir);
 
@@ -261,7 +261,7 @@ awn_desktop_lookup_cached_constructed (GObject *object)
     g_free (applications_dir);
   }
   applications_dir = g_strdup_printf ("%s/applications/",g_get_user_data_dir ());
-  g_message ("Adding %s",applications_dir);
+//  g_message ("Adding %s",applications_dir);
   awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),applications_dir);
   g_free (applications_dir);
 
@@ -416,8 +416,8 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
   {
     cmd_basename = g_path_get_basename (cmd);
   }
-  g_debug ("cmd = %s, full_cmd = %s, cmd_basename = %s",cmd,full_cmd,cmd_basename);
-  g_debug ("%s: res_name = '%s', class_name = '%s'",__func__,res_name,class_name);
+//  g_debug ("cmd = %s, full_cmd = %s, cmd_basename = %s",cmd,full_cmd,cmd_basename);
+//  g_debug ("%s: res_name = '%s', class_name = '%s'",__func__,res_name,class_name);
 
   if (!result)
   {
@@ -601,7 +601,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (cmd)
     {
       gchar * d_filename = g_strdup_printf ("%s.desktop",cmd);
-      g_debug ("Search for %s",d_filename);
       l = g_slist_find_custom (priv->desktop_list,
                                     d_filename,
                                     (GCompareFunc)_search_path);
