@@ -104,7 +104,6 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
              */
             gchar * name = desktop_agnostic_fdo_desktop_entry_get_name (entry);
             gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
-            g_debug ("name = %s, exec = %s",name,exec);
             gchar * copy_path = NULL;
             gchar * search = NULL;
             gchar * tmp;
@@ -190,7 +189,6 @@ awn_desktop_lookup_cached_constructed (GObject *object)
   for (iter = (GStrv)system_dirs; *iter; iter++)
   {
     gchar * applications_dir = g_strdup_printf ("%s/applications/",*iter);
-    g_debug ("Adding %s",applications_dir);
     awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),
                                        applications_dir);
     g_free (applications_dir);
@@ -325,7 +323,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (class_name)
     {
       result = g_hash_table_lookup (priv->startup_wm_hash,class_name);
-      g_debug ("1 %s",result);
     }
   }
   if (!result)
@@ -333,7 +330,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (res_name)
     {
       result = g_hash_table_lookup (priv->name_hash,res_name);
-      g_debug ("2 %s",result);
     }
   }
   if (!result)
@@ -341,7 +337,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (res_name_lwr)
     {
       result = g_hash_table_lookup (priv->name_hash,res_name_lwr);
-      g_debug ("3 %s",result);
     }
   }
   if (!result)
@@ -349,7 +344,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (cmd)
     {
       result = g_hash_table_lookup (priv->name_hash,cmd);
-      g_debug ("4 %s",result);
     }
   }
   
@@ -358,7 +352,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (res_name)
     {
       result = g_hash_table_lookup (priv->exec_hash,res_name);
-      g_debug ("5 %s",result);
     }
   }
   if (!result)
@@ -366,7 +359,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (res_name_lwr)
     {
       result = g_hash_table_lookup (priv->exec_hash,res_name_lwr);
-      g_debug ("6 %s",result);
     }
   }
   if (!result)
@@ -374,7 +366,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (res_name_lwr)
     {
       result = g_hash_table_lookup (priv->exec_hash,res_name_lwr);
-      g_debug ("7 %s",result);
     }
   }
   if (!result)
@@ -382,7 +373,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (cmd)
     {
       result = g_hash_table_lookup (priv->exec_hash,cmd);
-      g_debug ("8 %s",result);
     }
   }
   if (!result)
@@ -390,7 +380,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (cmd_basename)
     {
       result = g_hash_table_lookup (priv->exec_hash,cmd_basename);
-      g_debug ("9 %s",result);
     }
   }
   if (!result)
@@ -398,7 +387,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     if (full_cmd)
     {
       result = g_hash_table_lookup (priv->exec_hash,full_cmd);
-      g_debug ("10 %s",result);
     }
   }
   if (!result)
@@ -413,7 +401,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
         result = l->data;
       }
     }
-    g_debug ("11 %s",result);
   }
 
   if (!result)
@@ -422,7 +409,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
                                                               res_name,
                                                               class_name,
                                                               title);
-    g_debug ("desktops = %p",desktops);
     if (desktops)
     {
       GSList * iter;
@@ -433,7 +419,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
                                     (GCompareFunc)_search_path);
         if (l)
         {
-          g_debug ("found !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
           result = ((DesktopNode*) (l->data))->path;
         }
       }
@@ -447,7 +432,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
                                                               res_name,
                                                               class_name,
                                                               title);
-    g_debug ("desktops = %p",desktops);
     if (desktops)
     {
       GSList * iter;
@@ -464,7 +448,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
       g_slist_free (desktops);
     }
   }
-  g_debug ("result = %s",result);
 
   g_free (full_cmd);
   g_free (cmd);
