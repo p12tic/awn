@@ -1,5 +1,11 @@
 2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	When ungrouped, do not show "Add as Launcher" in the
+	launcher list when the launcher is already in the list.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/awn-desktop-lookup-cached.c:
 	Don't proceed with trying to add contents of a dir if
 	it's not one.
