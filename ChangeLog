@@ -1,5 +1,11 @@
 2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	When a special case is found a desktop filename must be 
+	an exact match.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-themed-icon.c:
 	Drag and drop fix for applets that disable AwnThemedIcon
 	drag and drop but chain to its handler in some situations.

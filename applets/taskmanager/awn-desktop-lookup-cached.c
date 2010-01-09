@@ -402,6 +402,25 @@ _search_path (DesktopNode *a, gchar * b)
   return -1;                 
 }
 
+static int
+_search_path_base_cmp (DesktopNode *a, gchar * b)
+{
+  int result = -1;
+  if (!a->path)
+  {
+    return result;
+  }
+  gchar * bname = g_path_get_basename (a->path);
+  int a_len = strlen (a->path);
+  int b_len = strlen (b);
+  if (a_len >2 && b_len>2)
+  {
+    result = g_strcmp0 (bname,b );
+  }
+  g_free (bname);
+  return result;
+}
+
 const gchar *
 awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckWindow * win)
 {
@@ -456,12 +475,15 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
       GSList * iter;
       for (iter = desktops; iter; iter = iter->next)
       {
+        gchar * build_name = g_strdup_printf ("%s.desktop",(gchar *)iter->data);
         l = g_slist_find_custom (priv->desktop_list,
-                                    iter->data,
-                                    (GCompareFunc)_search_path);
+                                    build_name,
+                                    (GCompareFunc)_search_path_base_cmp);
+        g_free (build_name);
         if (l)
         {
           result = ((DesktopNode*) (l->data))->path;
+          break;
         }
       }
       g_slist_free (desktops);
@@ -480,12 +502,15 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
       GSList * iter;
       for (iter = desktops; iter; iter = iter->next)
       {
+        gchar * build_name = g_strdup_printf ("%s.desktop",(gchar *)iter->data);
         l = g_slist_find_custom (priv->desktop_list,
-                                    iter->data,
-                                    (GCompareFunc)_search_path);
+                                    build_name,
+                                    (GCompareFunc)_search_path_base_cmp);
+        g_free (build_name);
         if (l)
         {
           result = ((DesktopNode*) (l->data))->path;
+          break;
         }
       }
       g_slist_free (desktops);
