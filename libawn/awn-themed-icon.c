@@ -201,6 +201,15 @@ static void awn_themed_icon_preload_all (AwnThemedIcon * icon);
 static GtkIconTheme* get_awn_theme(void);
 
 static GdkPixbuf * try_and_load_image_from_disk (const gchar *filename, gint size);
+
+void    awn_themed_icon_drag_data_received_internal (GtkWidget        *widget, 
+                                    GdkDragContext   *context,
+                                    gint              x, 
+                                    gint              y, 
+                                    GtkSelectionData *selection_data,
+                                    guint             info,
+                                    guint             evt_time);
+
 enum
 {
   PROP_0,
@@ -493,7 +502,7 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
   obj_class->dispose = awn_themed_icon_dispose;
   obj_class->finalize = awn_themed_icon_finalize;  
   
-  wid_class->drag_data_received = awn_themed_icon_drag_data_received;
+  wid_class->drag_data_received = awn_themed_icon_drag_data_received_internal;
 
 /**
  * AwnThemedIcon:rotate:
@@ -1756,10 +1765,6 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
     return;
   }
   priv = icon->priv;
-  if (!priv->drag_and_drop)
-  {
-    return;
-  }
   /* First check we have valid data */
   if (selection_data == NULL ||
       gtk_selection_data_get_length (selection_data) == 0)
@@ -1906,7 +1911,30 @@ drag_out:
     ensure_icon (icon);
 }
 
+void 
+awn_themed_icon_drag_data_received_internal (GtkWidget        *widget, 
+                                    GdkDragContext   *context,
+                                    gint              x, 
+                                    gint              y, 
+                                    GtkSelectionData *selection_data,
+                                    guint             info,
+                                    guint             evt_time)
+{
+  AwnThemedIcon        *icon = AWN_THEMED_ICON (widget);
+  AwnThemedIconPrivate *priv;
 
+  if (!AWN_IS_THEMED_ICON (icon))
+  {
+    gtk_drag_finish (context, FALSE, FALSE, evt_time);
+    return;
+  }
+  priv = icon->priv;
+  if (!priv->drag_and_drop)
+  {
+    return;
+  }
+  awn_themed_icon_drag_data_received (widget,context,x,y,selection_data,info,evt_time);
+}
 static void
 _update_preview (GtkFileChooser *file_chooser, GtkWidget *preview)
 {
