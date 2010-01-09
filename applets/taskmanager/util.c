@@ -220,7 +220,8 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {NULL,"tvtime","TVWindow","^tvtime","net-tvtime"},
   {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox-ose"},
   {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox"},
-  {NULL,"Nautilus","nautilus",".*File.*Browser.*","nautilus-browser"},    
+  {NULL,"Nautilus","nautilus",".*File.*Browser.*","nautilus-browser"},
+  {NULL,"Nautilus","nautilus",".*File.*Browser.*","nautilus-home"},
   {NULL,NULL,NULL,NULL,NULL}
 };
 

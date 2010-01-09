@@ -1,5 +1,12 @@
 2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	wtf... Ubuntu is marking nautilus-browser.desktop with
+	NoDisplay = true???  Use nautilus-home.desktop if 
+	nautilus-browser.desktop is not available.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/awn-desktop-lookup-cached.c:
 	When a special case is found a desktop filename must be 
 	an exact match.
