@@ -751,8 +751,11 @@ task_icon_get_menu_item_maximize (TaskIcon * icon,WnckWindow *win)
   {
     gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM(menuitem),image);
   }
-  
-  gtk_widget_show (menuitem);
+
+  if (menuitem)
+  {
+    gtk_widget_show (menuitem);
+  }
   g_signal_connect (menuitem,"activate",
                 G_CALLBACK(_maximize_window_cb),
                 win);
@@ -1441,7 +1444,7 @@ menu_parse_start_element (GMarkupParseContext *context,
       task_icon_inline_action_menu_active (icon,GTK_MENU(menu));
       break;
     case INTERNAL_INLINE_PLUGINS:
-      g_warning ("%s: stub... plugin support not present",__func__);
+      g_message ("%s: stub... plugin support not present",__func__);
       break;
     case INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES:
       task_icon_get_menu_item_submenu_action_menu_inactives (icon,GTK_MENU(menu));
@@ -1482,13 +1485,25 @@ menu_parse_start_element (GMarkupParseContext *context,
         GSList * i;
 
         item = task_icon_get_minimize_all (icon);
-        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        if (item)
+        {
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        }
         item = task_icon_get_unminimize_all (icon);
-        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        if (item)
+        {
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        }
         item = task_icon_get_maximize_all (icon);
-        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        if (item)
+        {
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        }
         item = task_icon_get_unmaximize_all (icon);
-        gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        if (item)
+        {
+          gtk_menu_shell_append(GTK_MENU_SHELL(menu), item);
+        }
 
         item = gtk_separator_menu_item_new();
         gtk_widget_show(item);

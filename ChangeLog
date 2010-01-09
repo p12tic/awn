@@ -1,5 +1,10 @@
 2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Check some widgets and make sure they're not NULL.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher.c:
 	Suppress one of those annoying GtkIconTheme spams.
 
