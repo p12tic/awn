@@ -144,14 +144,14 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
             g_strdelimit (exec,"%",'\0');
             g_strstrip (exec);
 
-            if ( (search = g_hash_table_lookup (priv->name_hash,name_lwr) ))
+            if ( name_lwr && (search = g_hash_table_lookup (priv->name_hash,name_lwr) ))
             {
 //              g_warning ("%s: Name (%s) collision between %s and %s",__func__,name,search,new_path);
               g_free (name_lwr);
               name_lwr = NULL;
             }
 
-            if ( (search = g_hash_table_lookup (priv->exec_hash,exec)))
+            if ( exec && (search = g_hash_table_lookup (priv->exec_hash,exec)))
             {
               /* This gets hit when we refresh the list due to an new installations etc.
                If we hit this then it's more or less a duplicate of an existing desktop
@@ -164,7 +164,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
               goto NAME_COLLSION;
             }
 
-            if ( (search = g_hash_table_lookup (priv->desktops_hash,desktop_name)))
+            if ( desktop_name && (search = g_hash_table_lookup (priv->desktops_hash,desktop_name)))
             {
               /*Happens often enough (ex.  "Terminal" ).  Not a big deal, we're 
                relatively conservative in using name for matching purposes*/

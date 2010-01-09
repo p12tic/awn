@@ -1,6 +1,11 @@
 2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	GHashTable does not like NULL keys.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
         * applets/taskmanager/awn-desktop-lookup-cached.h:
         * applets/taskmanager/awn-desktop-lookup-gnome3.c:
         * applets/taskmanager/awn-desktop-lookup-gnome3.h:
