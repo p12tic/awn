@@ -1,6 +1,12 @@
 2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Don't proceed with trying to add contents of a dir if
+	it's not one.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
 	GHashTable does not like NULL keys.
 
 2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>

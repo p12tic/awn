@@ -237,6 +237,7 @@ _data_dir_changed (DesktopAgnosticVFSFileMonitor* monitor,
                   )
 {
   gchar * path = desktop_agnostic_vfs_file_get_path (self);
+  g_debug ("%s: refresh %s",__func__,path);
   if ( g_file_test (path,G_FILE_TEST_IS_DIR))
   {
     awn_desktop_lookup_cached_add_dir (lookup, path);
@@ -255,7 +256,7 @@ awn_desktop_lookup_cached_constructed (GObject *object)
   {
     G_OBJECT_CLASS (awn_desktop_lookup_cached_parent_class)->constructed (object);
   }
-  
+
   system_dirs = g_get_system_data_dirs ();
   for (iter = (GStrv)system_dirs; *iter; iter++)
   {
@@ -264,9 +265,13 @@ awn_desktop_lookup_cached_constructed (GObject *object)
     DesktopAgnosticVFSFile* file_vfs;
     applications_dir = g_strdup_printf ("%s/applications/",*iter);
 
-//    g_message ("Adding %s",applications_dir);
-    awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),
-                                       applications_dir);
+    if (! g_file_test (applications_dir,G_FILE_TEST_IS_DIR ))
+    {
+      g_free (applications_dir);
+      continue;
+    }
+    g_message ("Adding %s",applications_dir);
+    awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),applications_dir);
 
     file_vfs = desktop_agnostic_vfs_file_new_for_path (applications_dir,&error);
     if (error)
