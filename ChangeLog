@@ -1,5 +1,10 @@
 2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-dialog.c:
+	Revert change mistakenly committed in rev 1881.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/util.c:
 	wtf... Ubuntu is marking nautilus-browser.desktop with
 	NoDisplay = true???  Use nautilus-home.desktop if 

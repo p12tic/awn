@@ -411,14 +411,6 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
   path = cairo_copy_path (cr);
   cairo_fill (cr);
 
-  /* Propagate the signal */
-  child = gtk_bin_get_child (GTK_BIN (widget));
-
-  if (child)
-    gtk_container_propagate_expose (GTK_CONTAINER (widget),
-                                    child, expose);
-
-  return TRUE; 
   cairo_save (cr);
 
   /* inner border, which is 2 pixels smaller */
