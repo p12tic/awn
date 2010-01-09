@@ -706,6 +706,8 @@ _match (TaskItem *item,
   gchar buffer[256];
   gchar * client_name = NULL;
   const gchar * client_name_to_match = NULL;
+  gchar * startup_wm_class = NULL;
+  
   gboolean ignore_wm_client_name;
     
   g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
@@ -839,6 +841,18 @@ _match (TaskItem *item,
     }
   }
    */
+
+  if (desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,"StartupWMClass"))
+  {
+    startup_wm_class = desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "StartupWMClass");
+    if ( (g_strcmp0 (startup_wm_class,res_name)==0) || (g_strcmp0(startup_wm_class,class_name)==0))
+    {
+      g_free (startup_wm_class);
+      return 94;
+    }
+    g_free (startup_wm_class);
+  }
+  
   /*
    Does the command line of the process match exec exactly? 
    Not likely but damn likely to be the correct match if it does
