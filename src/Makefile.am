@@ -81,6 +81,7 @@ CLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = \
 	awn-app-dbus.xml \
 	awn-panel-dbus.xml \
+	awn-marshal.list \
 	$(NULL)
 
 # vim: set ts=8 sts=8 sw=8 :

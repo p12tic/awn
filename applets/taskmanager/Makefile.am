@@ -81,7 +81,7 @@ BUILT_SOURCES = \
 	$(MARSHALFILES) \
 	$(NULL)
 
-EXTRA_DIST = $(desktop_DATA).in.in $(schema_in_files) $(DBUS_XML)
+EXTRA_DIST = $(desktop_DATA).in.in $(schema_in_files) $(DBUS_XML) taskmanager-marshal.list
 CLEANFILES = $(desktop_DATA) $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
 
 taskmanager_menusdir = $(applet_datadir)/menus

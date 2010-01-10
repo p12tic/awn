@@ -1,5 +1,13 @@
 2010-01-10  Julien Lavergne <gilir@ubuntu.com>
 
+	* applets/taskmanager/Makefile.am:
+	* bindings/vala/Makefile.am:
+	* libawn/Makefile.am:
+	* src/Makefile.am:
+	Adding missing EXTRA_DIST.
+
+2010-01-10  Julien Lavergne <gilir@ubuntu.com>
+
 	* COPYING.GPL3:
 	* libawn/anims/awn-effect-bounce.c:
 	* libawn/anims/awn-effect-bounce.h:

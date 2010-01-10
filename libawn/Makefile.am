@@ -158,6 +158,12 @@ awn-enum-types.c: awn-enum-types.h
 	cp xgen-cetc awn-enum-types.c && \
 	rm -f xgen-cetc
 
+EXTRA_DIST =				\
+	awn-enum-types.c.in		\
+	awn-enum-types.h.in		\
+	libawn-marshal.list		\
+	$(NULL)
+
 CLEANFILES = $(STAMPFILES) $(BUILT_SOURCES)
 
 # vim: set ts=8 sts=8 sw=8 :
