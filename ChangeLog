@@ -1,3 +1,102 @@
+2010-01-10  Julien Lavergne <gilir@ubuntu.com>
+
+	* COPYING.GPL3:
+	* libawn/anims/awn-effect-bounce.c:
+	* libawn/anims/awn-effect-bounce.h:
+	* libawn/anims/awn-effect-desaturate.c:
+	* libawn/anims/awn-effect-desaturate.h:
+	* libawn/anims/awn-effect-fade.c:
+	* libawn/anims/awn-effect-fade.h:
+	* libawn/anims/awn-effect-glow.c:
+	* libawn/anims/awn-effect-glow.h:
+	* libawn/anims/awn-effect-simple.c:
+	* libawn/anims/awn-effect-simple.h:
+	* libawn/anims/awn-effect-spotlight.c:
+	* libawn/anims/awn-effect-spotlight.h:
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effect-spotlight3d.h:
+	* libawn/anims/awn-effect-squish.c:
+	* libawn/anims/awn-effect-squish.h:
+	* libawn/anims/awn-effect-turn.c:
+	* libawn/anims/awn-effect-turn.h:
+	* libawn/anims/awn-effect-zoom.c:
+	* libawn/anims/awn-effect-zoom.h:
+	* libawn/anims/awn-effects-shared.c:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-alignment.c:
+	* libawn/awn-alignment.h:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-box.c:
+	* libawn/awn-box.h:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-config.c:
+	* libawn/awn-config.h:
+	* libawn/awn-dbus-watcher.c:
+	* libawn/awn-dbus-watcher.h:
+	* libawn/awn-defines.h:
+	* libawn/awn-desktop-lookup-client.c:
+	* libawn/awn-desktop-lookup-client.h:
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-helpers.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects-ops-new.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon-box.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* libawn/awn-image.c:
+	* libawn/awn-image.h:
+	* libawn/awn-label.c:
+	* libawn/awn-label.h:
+	* libawn/awn-overlay-pixbuf-file.c:
+	* libawn/awn-overlay-pixbuf-file.h:
+	* libawn/awn-overlay-pixbuf.c:
+	* libawn/awn-overlay-pixbuf.h:
+	* libawn/awn-overlay-progress-circle.c:
+	* libawn/awn-overlay-progress-circle.h:
+	* libawn/awn-overlay-progress.c:
+	* libawn/awn-overlay-progress.h:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay-text.h:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.h:
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay-throbber.h:
+	* libawn/awn-overlay.c:
+	* libawn/awn-overlay.h:
+	* libawn/awn-overlayable.c:
+	* libawn/awn-overlayable.h:
+	* libawn/awn-pixbuf-cache.c:
+	* libawn/awn-pixbuf-cache.h:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-themed-icon.h:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-tooltip.h:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	* libawn/gseal-transition.h:
+	* libawn/libawn.h:
+	* tests/test-awn-dialog.py:
+	* tests/test-awn-tooltip.py:
+	* tests/test-effects-scaling.py:
+	* tests/test-effects.py:
+	* tests/test-overlays.py:
+	* tests/test-taskmanager-dnd.py:
+	* tests/test-taskmanager-windows.py:
+	Add GPL v3 complete license
+	Reformat licence header of libawn, so licensecheck will correctly
+	identify the LGPL license.
+	Relicense libawn file to LGPL 
+	Complete copyright missing with bzr log.
+
 2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-dialog.c:
