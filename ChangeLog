@@ -1,3 +1,10 @@
+2010-01-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Don't check title for nautilus windows when doing special
+	casing.  Othere cases of title matching need to be reviewed
+	and removed where possible due to localization.
+
 2010-01-12  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background.c:
