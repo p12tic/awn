@@ -33,8 +33,20 @@ test_taskmanager_LDADD = \
 test_themed_icon_SOURCES = test-themed-icon.c
 test_themed_icon_LDADD = $(top_builddir)/libawn/libawn.la
 
+EXTRA_DIST = 	test-awn-dialog.py 	\
+		test-awn-tooltip.py	\
+		test-effects.py		\
+		test-effects-scaling.py	\
+		test-overlays.py	\
+		test-taskmanager-dnd.py	\
+		test-taskmanager-windows.py
+
 if HAVE_VALA
 noinst_PROGRAMS += test-vala-awn-dialog
+
+VALA_FILES = \
+	test-vala-awn-dialog.vala \
+	$(NULL)
 
 test_vala_awn_dialog_SOURCES = test-vala-awn-dialog.c
 test_vala_awn_dialog_CFLAGS = -Wall -Wno-redundant-decls
@@ -44,5 +56,6 @@ test_vala_awn_dialog_LDADD = $(top_builddir)/libawn/libawn.la
 	$(QUIET_GEN)$(VALAC) -C $< --vapidir=$(top_srcdir)/bindings/vala \
 		--vapidir=$(LDA_VAPIDIR) --pkg=awn
 
+EXTRA_DIST += $(VALA_FILES)
 CLEANFILES = test-vala-awn-dialog.c
 endif

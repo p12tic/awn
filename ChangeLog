@@ -1,3 +1,8 @@
+2010-01-11  Julien Lavergne <gilir@ubuntu.com>
+
+	* tests/Makefile.am:
+	Add missing EXTRA_DIST.
+
 2010-01-10  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* libawn/gseal-transition.h:
