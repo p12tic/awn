@@ -1,3 +1,8 @@
+2010-01-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	Make theming of AwnDialog via gtkrc possible.
+
 2010-01-11  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/avant-window-navigator.schema-ini.in.in:

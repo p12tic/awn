@@ -884,7 +884,10 @@ load_dlg_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
   DesktopAgnosticConfigClient *client = bg->client;
   GtkStyle        *style;
 
-  style = gtk_widget_get_style (widget);
+  GtkSettings *settings = gtk_settings_get_default ();
+  style = gtk_rc_get_style_by_paths (settings, "AwnDialog", "", G_TYPE_NONE);
+
+  if (style == NULL) style = gtk_widget_get_style (widget);
 
   g_debug ("Updating dialog colours");
 
