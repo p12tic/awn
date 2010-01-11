@@ -1,3 +1,8 @@
+2010-01-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/gseal-transition.h:
+	Fix build for GTK+ 2.12.
+
 2010-01-10  Julien Lavergne <gilir@ubuntu.com>
 
 	* applets/taskmanager/Makefile.am:
