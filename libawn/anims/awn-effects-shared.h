@@ -52,6 +52,7 @@ struct _AwnEffectsPrivate
   gint last_redraw_size;
 
   DesktopAgnosticColor *active_rect_color;
+  DesktopAgnosticColor *active_rect_outline;
   DesktopAgnosticColor *dot_color;
 
   /* EFFECT VARIABLES */

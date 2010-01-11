@@ -1,3 +1,13 @@
+2010-01-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* src/awn-panel.c:
+	Added ability to specify outline color for the active rectangle.
+
 2010-01-11  Julien Lavergne <gilir@ubuntu.com>
 
 	* tests/Makefile.am:

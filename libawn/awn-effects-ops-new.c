@@ -317,7 +317,18 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
                               priv->icon_width+(2*PADDING),
                               priv->icon_height+(2*PADDING),
                               priv->icon_width / 8.0, ROUND_ALL);
-      cairo_fill (cr);
+      cairo_fill_preserve (cr);
+
+      cairo_set_line_width (cr, 1.0);
+      if (priv->active_rect_outline)
+      {
+        awn_cairo_set_source_color (cr, priv->active_rect_outline);
+      }
+      else
+      {
+        cairo_set_source_rgba (cr, 0, 0, 0, 0);
+      }
+      cairo_stroke (cr);
     }
     else
     {

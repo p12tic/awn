@@ -18,6 +18,12 @@ default = #90877966
 _description=Color of the active rectangle.
 per_instance = false
 
+[effects/active_rect_outline]
+type = color
+default = #00000000
+_description=Color of the outline of active rectangle.
+per_instance = false
+
 [effects/arrow_icon]
 type = string
 default = __awn_internal_arrow1

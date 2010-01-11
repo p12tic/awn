@@ -389,7 +389,6 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
 
 #if 1
   GdkScreen *screen;
-  gboolean panel_skipped = FALSE;
   gint mouse_x, mouse_y;
   gdk_display_get_pointer (display, &screen, &mouse_x, &mouse_y, NULL);
   GList *windows = gdk_screen_get_window_stack (screen);
@@ -404,15 +403,13 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
 
     if (GDK_WINDOW_XID (it_window) == panel_xid || window != NULL)
     {
-      panel_skipped = TRUE;
       g_object_unref (it_window);
       continue;
     }
 
     // this does screw up d&d when using multiple panels, but at least it
     //   won't crash
-    if (panel_skipped &&
-        gdk_window_get_window_type (it_window) == GDK_WINDOW_TOPLEVEL)
+    if (gdk_window_get_window_type (it_window) == GDK_WINDOW_TOPLEVEL)
     {
       g_object_unref (it_window);
       continue;

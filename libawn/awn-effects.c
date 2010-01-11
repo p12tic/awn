@@ -94,6 +94,7 @@ enum {
   PROP_BORDER_CLIP,
   PROP_SPOTLIGHT_ICON,
   PROP_ACTIVE_RECT_COLOR,
+  PROP_ACTIVE_RECT_OUTLINE,
   PROP_DOT_COLOR,
   PROP_ARROW_ICON,
   PROP_ARROWS_COUNT,
@@ -340,6 +341,9 @@ awn_effects_get_property (GObject      *object,
     case PROP_ACTIVE_RECT_COLOR:
       g_value_set_object (value, fx->priv->active_rect_color);
       break;
+    case PROP_ACTIVE_RECT_OUTLINE:
+      g_value_set_object (value, fx->priv->active_rect_outline);
+      break;
     case PROP_DOT_COLOR:
       g_value_set_object (value, fx->priv->dot_color);
       break;
@@ -436,6 +440,14 @@ awn_effects_set_property (GObject      *object,
         priv->active_rect_color = NULL;
       }
       priv->active_rect_color = g_value_dup_object (value);
+      break;
+    case PROP_ACTIVE_RECT_OUTLINE:
+      if (priv->active_rect_outline)
+      {
+        g_object_unref (priv->active_rect_outline);
+        priv->active_rect_outline = NULL;
+      }
+      priv->active_rect_outline = g_value_dup_object (value);
       break;
     case PROP_DOT_COLOR:
       if (priv->dot_color)
@@ -840,6 +852,14 @@ awn_effects_class_init(AwnEffectsClass *klass)
     g_param_spec_object ("active-rect-color",
                          "Active Rectangle Color",
                          "Color used for painting active rectangle",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property(
+    obj_class, PROP_ACTIVE_RECT_OUTLINE,
+    g_param_spec_object ("active-rect-outline",
+                         "Active Rectangle Outline Color",
+                         "Color used for painting outline of active rectangle",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 

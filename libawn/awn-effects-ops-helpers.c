@@ -13,8 +13,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
  */
 
 #include "awn-effects-ops-helpers.h"
@@ -231,12 +233,13 @@ lighten_surface (cairo_surface_t * src,
   cairo_set_source_surface (temp_ctx, src, 0, 0);
   cairo_paint (temp_ctx);
 
+/*
   cairo_set_source_rgba (temp_ctx, 1.0, 1.0, 1.0, 
                          CLAMP (amount * 0.1825, 0.0, 1.0));
   cairo_set_operator (temp_ctx, CAIRO_OPERATOR_DEST_IN);
   cairo_rectangle (temp_ctx, 0.0, 0.0, surface_width, surface_height);
   cairo_fill (temp_ctx);
-
+*/
   cairo_destroy (temp_ctx);
   
   temp_ctx = cairo_create (src);
@@ -244,7 +247,7 @@ lighten_surface (cairo_surface_t * src,
   cairo_set_operator (temp_ctx, CAIRO_OPERATOR_ADD);
   cairo_set_source_surface (temp_ctx, temp_srfc, 0.0, 0.0);
 
-  cairo_paint (temp_ctx);
+  cairo_paint_with_alpha (temp_ctx, CLAMP (amount * 0.1825, 0.0, 1.0));
 
   cairo_destroy (temp_ctx);
   cairo_surface_destroy (temp_srfc);
