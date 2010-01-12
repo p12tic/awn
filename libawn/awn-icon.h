@@ -117,6 +117,8 @@ gint            awn_icon_get_indicator_count (AwnIcon *icon);
 gboolean        awn_icon_get_hover_effects   (AwnIcon *icon);
 void            awn_icon_set_hover_effects   (AwnIcon *icon, gboolean enable);
 
+GdkRegion*      awn_icon_get_input_mask      (AwnIcon *icon);
+
 void            awn_icon_clicked             (AwnIcon *icon);
 void            awn_icon_middle_clicked      (AwnIcon *icon);
 

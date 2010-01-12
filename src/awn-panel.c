@@ -1302,14 +1302,16 @@ awn_panel_get_mask (AwnPanel *panel)
 
   if (GTK_WIDGET_VISIBLE (priv->arrow1))
   {
-    // FIXME: not exactly correct!
-    GtkAllocation arrow_alloc;
+    GdkRegion *icon_mask1, *icon_mask2;
 
-    gtk_widget_get_allocation (priv->arrow1, &arrow_alloc);
-    gdk_region_union_with_rect (region, (GdkRectangle*)&arrow_alloc);
+    icon_mask1 = awn_icon_get_input_mask (AWN_ICON (priv->arrow1));
+    gdk_region_union (region, icon_mask1);
 
-    gtk_widget_get_allocation (priv->arrow2, &arrow_alloc);
-    gdk_region_union_with_rect (region, (GdkRectangle*)&arrow_alloc);
+    icon_mask2 = awn_icon_get_input_mask (AWN_ICON (priv->arrow2));
+    gdk_region_union (region, icon_mask2);
+
+    gdk_region_destroy (icon_mask1);
+    gdk_region_destroy (icon_mask2);
   }
 
   return region;

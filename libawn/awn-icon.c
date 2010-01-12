@@ -361,6 +361,10 @@ awn_icon_constructed (GObject *object)
                                        fx, "active-rect-color", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "active_rect_outline",
+                                       fx, "active-rect-outline", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
   desktop_agnostic_config_client_bind (client, "effects", "dot_color",
                                        fx, "dot-color", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
@@ -1054,6 +1058,47 @@ awn_icon_get_tooltip_text (AwnIcon *icon)
   g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
 
   return awn_tooltip_get_text (AWN_TOOLTIP (icon->priv->tooltip));
+}
+
+/**
+ * awn_icon_get_input_mask:
+ * @icon: an #AwnIcon.
+ *
+ * Gets the standard input shape mask which should be used for the widget. The
+ * called is responsible to destroying the newly created #GdkRegion.
+ *
+ * Returns: #GdkRegion with input shape mask of the widget (already offset by
+ * the widget allocation).
+ */
+GdkRegion*
+awn_icon_get_input_mask (AwnIcon *icon)
+{
+  AwnIconPrivate *priv;
+  GtkAllocation alloc;
+
+  g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
+
+  priv = icon->priv;
+
+  gtk_widget_get_allocation (GTK_WIDGET (icon), &alloc);
+  switch (priv->position)
+  {
+    case GTK_POS_BOTTOM:
+      alloc.y = alloc.height - priv->icon_height - priv->offset;
+    case GTK_POS_TOP:
+      alloc.height = priv->icon_height + priv->offset;
+      break;
+    case GTK_POS_RIGHT:
+      alloc.x = alloc.width - priv->icon_width - priv->offset;
+    case GTK_POS_LEFT:
+      alloc.width = priv->icon_width + priv->offset;
+      break;
+    default:
+      g_assert_not_reached ();
+      break;
+  }
+
+  return gdk_region_rectangle (&alloc);
 }
 
 /*

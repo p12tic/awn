@@ -1,3 +1,10 @@
+2010-01-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* src/awn-panel.c:
+	Fixed input shape mask on the scroll arrows.
+
 2010-01-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:
