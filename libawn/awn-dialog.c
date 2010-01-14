@@ -340,7 +340,7 @@ _real_show (GtkWidget *widget)
   if (priv->anchor_applet && priv->inhibit_cookie == 0)
   {
     priv->inhibit_cookie = 
-      awn_applet_inhibit_autohide (priv->anchor_applet,
+      awn_panel_connector_inhibit_autohide (AWN_PANEL_CONNECTOR (priv->anchor_applet),
                                    "AwnDialog being displayed");
   }
 
@@ -363,7 +363,7 @@ _real_hide (GtkWidget *widget)
 
   if (priv->anchor_applet && priv->inhibit_cookie)
   {
-    awn_applet_uninhibit_autohide (priv->anchor_applet, priv->inhibit_cookie);
+    awn_panel_connector_uninhibit_autohide (AWN_PANEL_CONNECTOR (priv->anchor_applet), priv->inhibit_cookie);
     priv->inhibit_cookie = 0;
   }
 }
@@ -1531,7 +1531,7 @@ awn_dialog_set_offset (AwnDialog *dialog, gint offset)
         GTK_WIDGET (priv->anchor_applet)))
   {
     // there's an extra space above AwnApplet, lets compensate it
-    priv->window_offset += awn_applet_get_size (priv->anchor_applet) * -1;
+    priv->window_offset += awn_panel_connector_get_size (AWN_PANEL_CONNECTOR (priv->anchor_applet)) * -1;
   }
 
   awn_dialog_refresh_position (dialog, 0, 0);

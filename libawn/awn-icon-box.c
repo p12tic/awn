@@ -276,7 +276,7 @@ awn_icon_box_set_applet (AwnIconBox *box, AwnApplet *applet)
     awn_icon_box_set_pos_type (AWN_ICON_BOX (box), 
                                awn_applet_get_pos_type (applet));
     awn_icon_box_set_offset (AWN_ICON_BOX (box),
-                             awn_applet_get_offset (applet));
+                             awn_panel_connector_get_offset (AWN_PANEL_CONNECTOR (applet)));
   }
 }
 

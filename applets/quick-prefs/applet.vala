@@ -534,7 +534,7 @@ public class PrefsApplet : AppletSimple
     box.add (icon);
 
     // we're done initializing, show the docklet
-    this.docklet.@construct (window_id);
+    (this.docklet as Gtk.Plug).@construct (window_id);
   }
 
   private void

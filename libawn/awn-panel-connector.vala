@@ -6,20 +6,36 @@ namespace Awn
     {
       if (this.panel_id > 0)
       {
-        string object_path = 
-          "/org/awnproject/Awn/Panel%d".printf (this.panel_id);
-        
-        dynamic DBus.Object panel = con.get_object ("org.awnproject.Awn",
-                                                    object_path,
-                                                    "org.awnproject.Awn.Panel");
+        dynamic DBus.Object panel =
+          con.get_object ("org.awnproject.Awn",
+                          "/org/awnproject/Awn/Panel%d".printf (this.panel_id),
+                          "org.awnproject.Awn.Panel");
 
         panel.PositionChanged += this.on_position_changed;
         panel.OffsetChanged += this.on_offset_changed;
         panel.SizeChanged += this.on_size_changed;
+        panel.PropertyChanged += this.on_property_changed;
         panel.DestroyApplet += this.on_applet_destroy;
 
-        //proxy.destroy.connect (this.on_proxy_destroyed);
-        proxy = panel;
+        proxy = (owned)panel;
+        proxy.destroy.connect (this.on_proxy_destroyed);
+
+        // initialize properties
+        dynamic DBus.Object props =
+          con.get_object (proxy.get_bus_name (),
+                          proxy.get_path (),
+                          "org.freedesktop.DBus.Properties");
+
+        HashTable<string, Value?> table = 
+          props.GetAll ("org.awnproject.Awn.Panel");
+        HashTableIter<string, Value?> iter = 
+          HashTableIter<string, Value?>(table);
+        unowned string key;
+        unowned Value? value;
+        while (iter.next (out key, out value))
+        {
+          this.property_changed (key, value);
+        }
       }
       else
       {
@@ -27,34 +43,43 @@ namespace Awn
       }
     }
 
-    protected void on_position_changed (int new_position)
+    private void on_position_changed (dynamic DBus.Object proxy,
+                                      int new_position)
     {
       if (this.position != new_position)
       {
         this.position = (Gtk.PositionType)new_position;
-        this.position_changed ((Gtk.PositionType)new_position);
       }
     }
 
-    protected void on_offset_changed (int new_offset)
+    private void on_offset_changed (dynamic DBus.Object proxy,
+                                    int new_offset)
     {
       if (this.offset != new_offset)
       {
         this.offset = new_offset;
-        this.offset_changed (new_offset);
       }
     }
 
-    protected void on_size_changed (int new_size)
+    private void on_size_changed (dynamic DBus.Object proxy,
+                                  int new_size)
     {
       if (this.size != new_size)
       {
         this.size = new_size;
-        this.size_changed (new_size);
       }
     }
 
-    protected void on_applet_destroy (string uid)
+    public abstract void property_changed (string prop_name, Value value);
+
+    private void on_property_changed (dynamic DBus.Object proxy,
+                                      string prop_name, Value value)
+    {
+      this.property_changed (prop_name, value);
+    }
+
+    private void on_applet_destroy (dynamic DBus.Object proxy,
+                                    string uid)
     {
       if (this.uid == uid)
       {
@@ -62,28 +87,53 @@ namespace Awn
       }
     }
 
-    public virtual uint inhibit_autohide (string reason)
+    public virtual void on_proxy_destroyed ()
+    {
+      Gtk.main_quit ();
+    }
+
+    public uint inhibit_autohide (string reason)
     {
       string app_name = "%s:%d".printf (Environment.get_prgname (),
                                         Posix.getpid ());
-      dynamic DBus.Object panel = this.panel_proxy;
+      dynamic unowned DBus.Object panel = this.panel_proxy;
       return panel.InhibitAutohide (app_name, reason);
     }
 
-    public abstract int panel_id { get;  construct; }
-    public abstract DBus.Object panel_proxy { get; construct; }
-    public abstract string uid { get; set; construct; }
+    public void uninhibit_autohide (uint cookie)
+    {
+      dynamic unowned DBus.Object panel = this.panel_proxy;
+      panel.UninhibitAutohide (cookie);
+    }
+
+    public int64 bus_docklet_request (int min_size, bool shrink, bool expand)
+    {
+      int64 window_id;
+      dynamic unowned DBus.Object panel = this.panel_proxy;
+
+      try
+      {
+        window_id = panel.DockletRequest (min_size, shrink, expand);
+      }
+      catch
+      {
+        window_id = 0;
+      }
+
+      return window_id;
+    }
+
+    public abstract int panel_id { get; set construct; }
+    public abstract DBus.Object panel_proxy { get; }
+    public abstract string uid { get; set construct; }
     public abstract int64 panel_xid { get; }
     public abstract Gtk.PositionType position { get; set; }
     public abstract int offset { get; set; }
     public abstract int size { get; set; }
     public abstract int max_size { get; set; }
-    public abstract int path_type { get; set; }
+    public abstract PathType path_type { get; set; }
     public abstract float offset_modifier { get; set; }
 
-    public signal void position_changed (Gtk.PositionType pos_type);
-    public signal void offset_changed (int offset);
-    public signal void size_changed (int size);
     public signal void applet_deleted ();
   }
 }

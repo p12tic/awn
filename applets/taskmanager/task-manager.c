@@ -344,12 +344,12 @@ task_manager_set_property (GObject      *object,
       manager->priv->intellihide = g_value_get_boolean (value);
       if (!manager->priv->intellihide && manager->priv->autohide_cookie)
       {     
-        awn_applet_uninhibit_autohide (AWN_APPLET(manager), manager->priv->autohide_cookie);
+        awn_panel_connector_uninhibit_autohide (AWN_PANEL_CONNECTOR(manager), manager->priv->autohide_cookie);
         manager->priv->autohide_cookie = 0;
       }
       if (manager->priv->intellihide && !manager->priv->autohide_cookie)
       {     
-        manager->priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager),"Intellihide" );
+        manager->priv->autohide_cookie = awn_panel_connector_inhibit_autohide (AWN_PANEL_CONNECTOR(manager),"Intellihide" );
       }      
       break;
 
@@ -482,15 +482,11 @@ task_manager_class_init (TaskManagerClass *klass)
 {
   GParamSpec     *pspec;
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
-  AwnAppletClass *app_class = AWN_APPLET_CLASS (klass);
 
   obj_class->constructed = task_manager_constructed;
   obj_class->set_property = task_manager_set_property;
   obj_class->get_property = task_manager_get_property;
   obj_class->dispose = task_manager_dispose;
-
-  app_class->position_changed = task_manager_position_changed;
-  app_class->size_changed   = task_manager_size_changed;
 
   /* Install properties first */
   pspec = g_param_spec_boolean ("show_all_windows",
@@ -632,6 +628,11 @@ task_manager_init (TaskManager *manager)
   /* connect to our origin-changed signal for updating icon geometry */
   g_signal_connect (manager, "origin-changed",
                     G_CALLBACK (task_manager_origin_changed), NULL);
+
+  g_signal_connect (manager, "position-changed",
+                    G_CALLBACK (task_manager_position_changed), NULL);
+  g_signal_connect (manager, "size-changed",
+                    G_CALLBACK (task_manager_size_changed), NULL);
 }
 
 AwnApplet *
@@ -729,7 +730,7 @@ task_manager_dispose (GObject *object)
                                                         NULL);
   if (priv->autohide_cookie)
   {     
-    awn_applet_uninhibit_autohide (AWN_APPLET(object), priv->autohide_cookie);
+    awn_panel_connector_uninhibit_autohide (AWN_PANEL_CONNECTOR(object), priv->autohide_cookie);
     priv->autohide_cookie = 0;
   }
   if (priv->awn_gdk_window)
@@ -808,7 +809,7 @@ uninhibit_timer (gpointer manager)
   g_return_val_if_fail (TASK_IS_MANAGER (manager),FALSE);
   priv = TASK_MANAGER(manager)->priv;
 
-  awn_applet_uninhibit_autohide (AWN_APPLET(manager),priv->attention_cookie);
+  awn_panel_connector_uninhibit_autohide (AWN_PANEL_CONNECTOR(manager),priv->attention_cookie);
   priv->attention_cookie = 0;
   priv->attention_source = 0;
   /* This will reset the nag timer*/
@@ -841,7 +842,7 @@ _attention_required_reminder_cb (TaskManager * manager)
         }
         else
         {
-          priv->attention_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager),
+          priv->attention_cookie = awn_panel_connector_inhibit_autohide (AWN_PANEL_CONNECTOR(manager),
                                                                 "Attention" );      
         }
         priv->attention_source = g_timeout_add_seconds (priv->attention_autohide_timer,
@@ -879,7 +880,7 @@ check_attention_requested (WnckWindow      *window,
       }
       else
       {
-        priv->attention_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager),
+        priv->attention_cookie = awn_panel_connector_inhibit_autohide (AWN_PANEL_CONNECTOR(manager),
                                                               "Attention" );      
       }
       priv->attention_source = g_timeout_add_seconds (priv->attention_autohide_timer,
@@ -1172,7 +1173,7 @@ task_manager_add_icon(TaskManager *manager, TaskIcon * icon)
                             G_CALLBACK (on_icon_effects_ends), 
                             icon);
   update_icon_visible (manager, TASK_ICON (icon));
-  task_icon_refresh_icon (TASK_ICON(icon),awn_applet_get_size(AWN_APPLET(manager)));
+  task_icon_refresh_icon (TASK_ICON(icon),awn_panel_connector_get_size(AWN_PANEL_CONNECTOR(manager)));
 }  
 
 static gboolean
@@ -2288,7 +2289,7 @@ task_manager_check_for_intersection (TaskManager * manager,
    */
   if (intersect && priv->autohide_cookie)
   {     
-    awn_applet_uninhibit_autohide (AWN_APPLET(manager), priv->autohide_cookie);
+    awn_panel_connector_uninhibit_autohide (AWN_PANEL_CONNECTOR(manager), priv->autohide_cookie);
 #ifdef DEBUG
     g_debug ("me eat cookie: %u",priv->autohide_cookie);
 #endif
@@ -2300,7 +2301,7 @@ task_manager_check_for_intersection (TaskManager * manager,
    */
   if (!intersect && !priv->autohide_cookie)
   {
-    priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
+    priv->autohide_cookie = awn_panel_connector_inhibit_autohide (AWN_PANEL_CONNECTOR(manager), "Intellihide");
 #ifdef DEBUG    
     g_debug ("cookie is %u",priv->autohide_cookie);
 #endif
@@ -2342,7 +2343,7 @@ task_manager_active_window_changed_cb (WnckScreen *screen,
      */
     if (!priv->autohide_cookie)
     {
-      priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
+      priv->autohide_cookie = awn_panel_connector_inhibit_autohide (AWN_PANEL_CONNECTOR(manager), "Intellihide");
 #ifdef DEBUG    
       g_debug ("%s: cookie is %u",__func__,priv->autohide_cookie);
 #endif
@@ -2379,7 +2380,7 @@ task_manager_active_workspace_changed_cb (WnckScreen    *screen,
   {
     if (!priv->autohide_cookie)
     {
-      priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
+      priv->autohide_cookie = awn_panel_connector_inhibit_autohide (AWN_PANEL_CONNECTOR(manager), "Intellihide");
 #ifdef DEBUG    
       g_debug ("%s: cookie is %u",__func__,priv->autohide_cookie);
 #endif
@@ -2745,7 +2746,7 @@ _drag_dest_motion(TaskManager *manager, gint x, gint y, GtkWidget *icon)
   }
 
   position = awn_applet_get_pos_type (AWN_APPLET(manager));
-  size = awn_applet_get_size (AWN_APPLET(manager));
+  size = awn_panel_connector_get_size (AWN_PANEL_CONNECTOR(manager));
   childs = gtk_container_get_children (GTK_CONTAINER(priv->box));
   move_to = g_list_index (childs, GTK_WIDGET(icon));
   moved = g_list_index (childs, GTK_WIDGET(priv->drag_indicator));

@@ -345,3 +345,18 @@ _wrap_gtk_image_menu_item_new_with_label (PyObject *self, PyObject *args, PyObje
     return NULL;
   }
 }
+%%
+override awn_panel_connector_get_size kwargs
+#ifndef AWN_PANEL_CONNECTOR_GET_SIZE_GUARD
+#define AWN_PANEL_CONNECTOR_GET_SIZE_GUARD
+static PyObject *
+_wrap_awn_panel_connector_get_size(PyGObject *self)
+{
+    int ret;
+
+    ret = awn_panel_connector_get_size(AWN_PANEL_CONNECTOR(self->obj));
+
+    return PyInt_FromLong(ret);
+}
+#endif
+

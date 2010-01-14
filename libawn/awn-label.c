@@ -30,6 +30,7 @@
 #include "awn-label.h"
 #include "awn-cairo-utils.h"
 #include "awn-config.h"
+#include "awn-defines.h"
 
 G_DEFINE_TYPE (AwnLabel, awn_label, GTK_TYPE_LABEL)
 

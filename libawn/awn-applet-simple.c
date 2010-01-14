@@ -157,11 +157,13 @@ awn_applet_simple_get_effects (AwnOverlayable *simple)
   return NULL;
 }
 
+/*
 static void
 awn_applet_simple_menu_creation (AwnApplet *applet, GtkMenu *menu)
 {
-  /* FIXME: If last_icon_type == ICON_THEMED_*, add "Clear custom icons" */
+  // FIXME: If last_icon_type == ICON_THEMED_*, add "Clear custom icons"
 }
+*/
 
 static void
 awn_applet_simple_constructed (GObject *object)
@@ -184,7 +186,7 @@ awn_applet_simple_constructed (GObject *object)
   awn_icon_set_pos_type (AWN_ICON (priv->icon), 
                          awn_applet_get_pos_type (AWN_APPLET (object)));
   awn_icon_set_offset (AWN_ICON (priv->icon),
-                       awn_applet_get_offset (AWN_APPLET (object)));
+                       awn_panel_connector_get_offset (AWN_PANEL_CONNECTOR (object)));
   g_signal_connect_swapped (priv->icon, "clicked", 
                             G_CALLBACK (on_icon_clicked), object);
   g_signal_connect_swapped (priv->icon, "middle-clicked", 
@@ -212,15 +214,16 @@ static void
 awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
-  AwnAppletClass *app_class = AWN_APPLET_CLASS (klass);
+  //AwnAppletClass *app_class = AWN_APPLET_CLASS (klass);
       
   obj_class->dispose     = awn_applet_simple_dispose;
   obj_class->constructed = awn_applet_simple_constructed;
 
-  app_class->position_changed = awn_applet_simple_position_changed;
+
+  /*app_class->position_changed = awn_applet_simple_position_changed;
   app_class->offset_changed = awn_applet_simple_offset_changed;
   app_class->size_changed   = awn_applet_simple_size_changed;
-  app_class->menu_creation  = awn_applet_simple_menu_creation;
+  app_class->menu_creation  = awn_applet_simple_menu_creation;*/
 
   _simple_signals[CLICKED] =
     g_signal_new ("clicked",
@@ -272,6 +275,13 @@ awn_applet_simple_init (AwnAppletSimple *simple)
 
   g_signal_connect (simple, "size-allocate",
                     G_CALLBACK (awn_applet_simple_size_allocate), NULL);
+
+  g_signal_connect (simple, "offset-changed",
+                    G_CALLBACK (awn_applet_simple_offset_changed), NULL);
+  g_signal_connect (simple, "size-changed",
+                    G_CALLBACK (awn_applet_simple_size_changed), NULL);
+  g_signal_connect (simple, "position-changed",
+                    G_CALLBACK (awn_applet_simple_position_changed), NULL);
 }
 
 /**
@@ -380,10 +390,10 @@ awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
 
   applet->priv->last_set_icon = ICON_THEMED_SIMPLE;
   awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet)));  
+                            awn_panel_connector_get_size (AWN_PANEL_CONNECTOR (applet)));  
   awn_themed_icon_set_info_simple (AWN_THEMED_ICON (applet->priv->icon),
                                    applet_name,
-                                   awn_applet_get_uid (AWN_APPLET (applet)),
+                                   awn_panel_connector_get_uid (AWN_PANEL_CONNECTOR (applet)),
                                    icon_name);
   g_free (applet_name);
 }
@@ -405,10 +415,10 @@ awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
                 NULL);  
   applet->priv->last_set_icon = ICON_THEMED_MANY;
   awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet)));
+                            awn_panel_connector_get_size (AWN_PANEL_CONNECTOR (applet)));
   awn_themed_icon_set_info (AWN_THEMED_ICON (applet->priv->icon),
                             applet_name,
-                            awn_applet_get_uid (AWN_APPLET (applet)),
+                            awn_panel_connector_get_uid (AWN_PANEL_CONNECTOR (applet)),
                             states,
                             icon_names);
   g_free (applet_name);

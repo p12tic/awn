@@ -51,6 +51,7 @@ public_headers = \
 	awn-overlay-themed-icon.h \
 	awn-overlay-text.h \
 	awn-overlay-throbber.h \
+	awn-panel-connector.h \
 	awn-themed-icon.h \
 	awn-tooltip.h \
 	awn-utils.h \
@@ -121,6 +122,7 @@ source_c = \
 	awn-overlay-themed-icon.c \
 	awn-overlay-text.c \
 	awn-overlay-throbber.c \
+	awn-panel-connector.c \
 	awn-pixbuf-cache.c \
 	awn-themed-icon.c \
 	awn-tooltip.c \

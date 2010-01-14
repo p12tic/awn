@@ -7,11 +7,18 @@
   (gtype-id "AWN_TYPE_OVERLAYABLE")
 )
 
+(define-interface PanelConnector
+  (in-module "Awn")
+  (c-name "AwnPanelConnector")
+  (gtype-id "AWN_TYPE_PANEL_CONNECTOR")
+)
+
 (define-object Applet
   (in-module "Awn")
   (parent "GtkPlug")
   (c-name "AwnApplet")
   (gtype-id "AWN_TYPE_APPLET")
+  (implements "AwnPanelConnector")
 )
 
 (define-object AppletSimple
@@ -325,9 +332,9 @@
   )
 )
 
-(define-method get_offset
+(define-method get_size
   (of-object "AwnApplet")
-  (c-name "awn_applet_get_offset")
+  (c-name "awn_panel_connector_get_size")
   (return-type "gint")
 )
 
@@ -341,18 +348,6 @@
   (return-type "gint")
 )
 
-(define-method get_size
-  (of-object "AwnApplet")
-  (c-name "awn_applet_get_size")
-  (return-type "guint")
-)
-
-(define-method get_uid
-  (of-object "AwnApplet")
-  (c-name "awn_applet_get_uid")
-  (return-type "const-gchar*")
-)
-
 (define-method get_behavior
   (of-object "AwnApplet")
   (c-name "awn_applet_get_behavior")
@@ -364,23 +359,6 @@
   (c-name "awn_applet_set_behavior")
   (parameters
     '("AwnAppletFlags" "flags")
-  )
-)
-
-(define-method inhibit_autohide
-  (of-object "AwnApplet")
-  (c-name "awn_applet_inhibit_autohide")
-  (return-type "guint")
-  (parameters
-    '("const-gchar*" "reason")
-  )
-)
-
-(define-method uninhibit_autohide
-  (of-object "AwnApplet")
-  (c-name "awn_applet_uninhibit_autohide")
-  (parameters
-    '("guint" "cookie")
   )
 )
 
@@ -1040,6 +1018,44 @@
   (return-type "none")
   (parameters
     '("AwnOverlay*" "overlay")
+  )
+)
+
+
+;; From awn-overlayable.h
+
+(define-method get_offset
+  (of-object "AwnPanelConnector")
+  (c-name "awn_panel_connector_get_offset")
+  (return-type "gint")
+)
+
+(define-method get_size
+  (of-object "AwnPanelConnector")
+  (c-name "awn_panel_connector_get_size")
+  (return-type "int")
+)
+
+(define-method get_uid
+  (of-object "AwnPanelConnector")
+  (c-name "awn_panel_connector_get_uid")
+  (return-type "const-gchar*")
+)
+
+(define-method inhibit_autohide
+  (of-object "AwnPanelConnector")
+  (c-name "awn_panel_connector_inhibit_autohide")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "reason")
+  )
+)
+
+(define-method uninhibit_autohide
+  (of-object "AwnPanelConnector")
+  (c-name "awn_panel_connector_uninhibit_autohide")
+  (parameters
+    '("guint" "cookie")
   )
 )
 

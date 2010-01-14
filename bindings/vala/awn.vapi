@@ -58,66 +58,39 @@ namespace Awn {
 		public float scale { get; set; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Applet : Gtk.Plug, Atk.Implementor, Gtk.Buildable {
+	public class Applet : Gtk.Plug, Awn.PanelConnector, Atk.Implementor, Gtk.Buildable {
 		[CCode (has_construct_function = false)]
 		public Applet (string canonical_name, string uid, int panel_id);
-		public unowned Gtk.Widget create_about_item (string copyright, Awn.AppletLicense license, string version, string? comments, string? website, string? website_label, string? icon_name, string? translator_credits, [CCode (array_length = false)] string[]? authors, [CCode (array_length = false)] string[]? artists, [CCode (array_length = false)] string[]? documenters);
-		public unowned Gtk.Widget create_about_item_simple (string copyright, Awn.AppletLicense license, string version);
+		public static unowned Awn.Applet @construct (GLib.Type object_type, string canonical_name, string uid, int panel_id);
+		public unowned Gtk.Widget create_about_item (string copyright, int license, string version, string? comments, string? website, string? website_label, string? icon_name, string? translator_credits, [CCode (array_length = false)] string[]? authors, [CCode (array_length = false)] string[]? artists, [CCode (array_length = false)] string[]? documenters);
+		public unowned Gtk.Widget create_about_item_simple (string copyright, int license, string version);
 		public unowned Gtk.Widget create_default_menu ();
 		public static unowned Gtk.Widget create_pref_item ();
-		[NoWrapper]
-		public virtual void deleted ();
 		public Gdk.NativeWindow docklet_request (int min_size, bool shrink, bool expand);
-		public Awn.AppletFlags get_behavior ();
+		public int get_behavior ();
 		public unowned string get_canonical_name ();
-		public int get_offset ();
+		public unowned string get_display_name ();
 		public int get_offset_at (int x, int y);
-		public Awn.PathType get_path_type ();
 		public Gtk.PositionType get_pos_type ();
-		public int get_size ();
-		public unowned string get_uid ();
-		public uint inhibit_autohide (string reason);
-		[NoWrapper]
-		public virtual void panel_configure (Gdk.EventConfigure event);
-		public void set_behavior (Awn.AppletFlags flags);
-		public void set_offset (int offset);
-		public void set_path_type (Awn.PathType path);
-		public void set_pos_type (Gtk.PositionType position);
-		public void set_size (int size);
-		public void set_uid (string uid);
-		public void uninhibit_autohide (uint cookie);
+		public bool get_quit_on_delete ();
+		public bool get_show_all_on_embed ();
+		public void set_behavior (Awn.AppletFlags behavior);
+		public void set_display_name (string value);
+		public void set_pos_type (Gtk.PositionType pos_type);
+		public void set_quit_on_delete (bool value);
+		public void set_show_all_on_embed (bool value);
 		public string canonical_name { get; construct; }
-		[NoAccessorMethod]
-		public string display_name { owned get; set; }
-		[NoAccessorMethod]
-		public int max_size { get; set; }
-		public int offset { get; set; }
-		[NoAccessorMethod]
-		public float offset_modifier { get; set; }
-		[NoAccessorMethod]
-		public int panel_id { get; construct; }
-		[NoAccessorMethod]
-		public int64 panel_xid { get; }
-		public int path_type { get; set construct; }
-		[NoAccessorMethod]
-		public Gtk.PositionType position { get; set; }
-		[NoAccessorMethod]
+		public string display_name { get; set; }
 		public bool quit_on_delete { get; set; }
-		[NoAccessorMethod]
 		public bool show_all_on_embed { get; set; }
-		public int size { get; set; }
-		public string uid { get; set construct; }
-		public virtual signal void applet_deleted ();
-		public virtual signal void flags_changed (int flags);
-		public virtual signal void menu_creation (Gtk.Menu menu);
-		public virtual signal void offset_changed (int offset);
-		public virtual signal void origin_changed (Gdk.Rectangle rect);
-		public virtual signal void panel_configure_event (Gdk.Event p0);
-		public virtual signal void position_changed (Gtk.PositionType position);
-		public virtual signal void size_changed (int size);
+		public virtual signal void flags_changed (int p0);
+		public virtual signal void offset_changed (int p0);
+		public virtual signal void origin_changed (Gdk.Rectangle p0);
+		public virtual signal void position_changed (Gtk.PositionType p0);
+		public virtual signal void size_changed (int p0);
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class AppletSimple : Awn.Applet, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
+	public class AppletSimple : Awn.Applet, Awn.PanelConnector, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public AppletSimple (string canonical_name, string uid, int panel_id);
 		public unowned Awn.Icon get_icon ();
@@ -151,6 +124,11 @@ namespace Awn {
 		public bool has_name (string name);
 		public virtual signal void name_appeared (string name);
 		public virtual signal void name_disappeared (string name);
+	}
+	[CCode (cheader_filename = "libawn/libawn.h")]
+	public class DesktopLookupClient : GLib.Object {
+		[CCode (has_construct_function = false)]
+		public DesktopLookupClient ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Dialog : Gtk.Window, Atk.Implementor, Gtk.Buildable {
@@ -223,6 +201,8 @@ namespace Awn {
 		[NoAccessorMethod]
 		public DesktopAgnostic.Color active_rect_color { owned get; set; }
 		[NoAccessorMethod]
+		public DesktopAgnostic.Color active_rect_outline { owned get; set; }
+		[NoAccessorMethod]
 		public string arrow_png { owned get; set construct; }
 		[NoAccessorMethod]
 		public int arrows_count { get; set construct; }
@@ -275,6 +255,7 @@ namespace Awn {
 		public Icon ();
 		public bool get_hover_effects ();
 		public int get_indicator_count ();
+		public unowned Gdk.Region get_input_mask ();
 		public bool get_is_active ();
 		public int get_offset ();
 		public Gtk.PositionType get_pos_type ();
@@ -536,6 +517,44 @@ namespace Awn {
 		public unowned GLib.List get_overlays ();
 		public void remove_overlay (Awn.Overlay overlay);
 	}
+	[CCode (cheader_filename = "libawn/libawn.h")]
+	public interface PanelConnector : GLib.Object {
+		public int64 bus_docklet_request (int min_size, bool shrink, bool expand);
+		public void connect (DBus.Connection con, out unowned DBus.Object proxy) throws GLib.Error;
+		public abstract int get_max_size ();
+		public abstract int get_offset ();
+		public abstract float get_offset_modifier ();
+		public abstract int get_panel_id ();
+		public abstract unowned DBus.Object get_panel_proxy ();
+		public abstract int64 get_panel_xid ();
+		public abstract Awn.PathType get_path_type ();
+		public abstract Gtk.PositionType get_position ();
+		public abstract int get_size ();
+		public abstract unowned string get_uid ();
+		public uint inhibit_autohide (string reason);
+		public abstract void on_proxy_destroyed ();
+		public abstract void property_changed (string prop_name, GLib.Value value);
+		public abstract void set_max_size (int value);
+		public abstract void set_offset (int value);
+		public abstract void set_offset_modifier (float value);
+		public abstract void set_panel_id (int value);
+		public abstract void set_path_type (Awn.PathType value);
+		public abstract void set_position (Gtk.PositionType value);
+		public abstract void set_size (int value);
+		public abstract void set_uid (string value);
+		public void uninhibit_autohide (uint cookie);
+		public int max_size { get; set; }
+		public int offset { get; set; }
+		public float offset_modifier { get; set; }
+		public int panel_id { get; set construct; }
+		public DBus.Object panel_proxy { get; }
+		public int64 panel_xid { get; }
+		public int path_type { get; set; }
+		public Gtk.PositionType position { get; set; }
+		public int size { get; set; }
+		public string uid { get; set construct; }
+		public signal void applet_deleted ();
+	}
 	[CCode (cprefix = "AWN_APPLET_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
 	public enum AppletFlags {
 		FLAGS_NONE,
@@ -589,10 +608,6 @@ namespace Awn {
 		ELLIPSE,
 		LAST
 	}
-	[CCode (cheader_filename = "libawn/libawn.h", has_target = false)]
-	public delegate bool AppletInitFunc (Awn.Applet applet);
-	[CCode (cheader_filename = "libawn/libawn.h", has_target = false)]
-	public delegate unowned Awn.Applet AppletInitPFunc (string canonical_name, string uid, int panel_id);
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public delegate bool EffectsOpfn (Awn.Effects fx, Gtk.Allocation alloc);
 	[CCode (cheader_filename = "libawn/libawn.h")]
