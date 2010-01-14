@@ -1,3 +1,10 @@
+2010-01-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-manager.c:
+	Add icon_grouping.  If grouping is disabled we now spawn new
+	icons grouped together with those containing the same desktop.
+
 2010-01-12  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-icon.c:
