@@ -1,5 +1,9 @@
 namespace Awn
 {
+  // entry-point prototypes
+  public static delegate bool AppletInitFunc (Awn.Applet applet);
+  public static delegate unowned Awn.Applet AppletInitPFunc (string canonical_name, string uid, int panel_id);
+          
   public class Applet: Gtk.Plug, PanelConnector
   {
     private const string AWN_SETTINGS_APP = "awn-settings";
