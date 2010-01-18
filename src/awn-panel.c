@@ -3157,7 +3157,7 @@ awn_panel_set_style (AwnPanel *panel, gint style)
     g_object_notify (G_OBJECT (panel), "offset-modifier");
 
     g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0,
-                   "offset-modifier", &mod_value);
+                   "OffsetModifier", &mod_value);
   }
 
   GValue value = {0};
@@ -3169,7 +3169,7 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   g_object_notify (G_OBJECT (panel), "path-type");
 
   g_signal_emit (panel, _panel_signals[PROPERTY_CHANGED], 0,
-                 "path-type", &value);
+                 "PathType", &value);
 }
 
 static void

@@ -30,12 +30,12 @@ namespace Awn
 
     private DBus.Connection _connection;
 
-    private int origin_x;
-    private int origin_y;
-    private int pos_x;
-    private int pos_y;
-    private int panel_width;
-    private int panel_height;
+    private int origin_x = 0;
+    private int origin_y = 0;
+    private int pos_x = 0;
+    private int pos_y = 0;
+    private int panel_width = 0;
+    private int panel_height = 0;
     private AppletFlags behavior_flags;
 
     private string _canonical_name;
@@ -70,7 +70,7 @@ namespace Awn
     private int64 _panel_xid;
     public int64 panel_xid { get { return this._panel_xid; } }
 
-    private Gtk.PositionType _position;
+    private Gtk.PositionType _position = Gtk.PositionType.BOTTOM;
     public new Gtk.PositionType position
     {
       get
@@ -95,7 +95,7 @@ namespace Awn
       this.position = pos_type;
     }
 
-    private int _offset;
+    private int _offset = 0;
     public int offset
     {
       get
@@ -114,9 +114,9 @@ namespace Awn
 
     public int get_offset_at (int x, int y)
     {
-      float temp = Utils.get_offset_modifier_by_path_type (this.path_type,
-                                                           this.position,
-                                                           this.offset,
+      float temp = Utils.get_offset_modifier_by_path_type (this._path_type,
+                                                           this._position,
+                                                           this._offset,
                                                            this.offset_modifier,
                                                            this.pos_x + x,
                                                            this.pos_y + y,
@@ -125,7 +125,7 @@ namespace Awn
       return (int)temp;
     }
 
-    private int _size;
+    private int _size = 48;
     public int size
     {
       get
@@ -141,9 +141,25 @@ namespace Awn
 
     public int max_size { get; set; }
 
-    public PathType path_type { get; set; }
+    private PathType _path_type = PathType.LINEAR;
+    public PathType path_type
+    {
+      get
+      {
+        return this._path_type;
+      }
+      set
+      {
+        if (this._path_type != value)
+        {
+          this._path_type = value;
+          this.offset_changed (this._offset);
+        }
+      }
+    }
 
-    public float offset_modifier { get; set; }
+
+    public float offset_modifier { get; set; default = 1.0f; }
 
     public void set_behavior (AppletFlags behavior)
     {
@@ -162,7 +178,6 @@ namespace Awn
     public signal void offset_changed (int offset);
     public signal void size_changed (int size);
     public signal void origin_changed (Gdk.Rectangle rect);
-    public signal void flags_changed (int flags);
 
     public Applet (string canonical_name, string uid, int panel_id)
     {
