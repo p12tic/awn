@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2010 Michal Hruby <michal.mhr@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authored by Michal Hruby <michal.mhr@gmail.com>
+ *
+ */
+
 namespace Awn
 {
   // entry-point prototypes
@@ -94,8 +114,15 @@ namespace Awn
 
     public int get_offset_at (int x, int y)
     {
-      // FIXME!
-      return this._offset;
+      float temp = Utils.get_offset_modifier_by_path_type (this.path_type,
+                                                           this.position,
+                                                           this.offset,
+                                                           this.offset_modifier,
+                                                           this.pos_x + x,
+                                                           this.pos_y + y,
+                                                           this.panel_width,
+                                                           this.panel_height);
+      return (int)temp;
     }
 
     private int _size;
@@ -120,7 +147,9 @@ namespace Awn
 
     public void set_behavior (AppletFlags behavior)
     {
-      // FIXME!
+      this.behavior_flags = behavior;
+
+      this.bus_set_behavior (behavior);
     }
 
     public int get_behavior ()
@@ -165,8 +194,68 @@ namespace Awn
       this.set_colormap (colormap);
 
       Signal.connect (this, "embedded", (Callback) this.on_embedded, null);
+      this.delete_event.connect ( (w) =>
+      {
+        if (this.quit_on_delete)
+        {
+          Gtk.main_quit ();
+          return true;
+        }
+        return false;
+      });
 
       Utils.ensure_transparent_bg (this);
+
+      Gdk.Atom atom = Gdk.Atom.intern_static_string ("_AWN_APPLET_POS_CHANGE");
+      Gdk.add_client_message_filter (atom, this.on_client_message);
+    }
+
+    private Gdk.FilterReturn on_client_message (Gdk.XEvent gdk_xevent,
+                                                Gdk.Event event)
+    {
+      unowned Gdk.Window? window = this.get_window ();
+
+      if (window == null) return Gdk.FilterReturn.CONTINUE;
+
+      // casting Gdk.Event to X.Event requires these incantations
+      Gdk.Event* xe_ptr = &gdk_xevent;
+      X.Event* xe = (X.Event*)xe_ptr;
+
+      int pos_x = (int)xe->xclient.data.l[0];
+      int pos_y = (int)xe->xclient.data.l[1];
+      int panel_w = (int)xe->xclient.data.l[2];
+      int panel_h = (int)xe->xclient.data.l[3];
+
+      if (this.pos_x != pos_x || this.pos_y != pos_y ||
+          this.panel_width != panel_w || this.panel_height != panel_h)
+      {
+        this.pos_x = pos_x;
+        this.pos_y = pos_y;
+        this.panel_width = panel_w;
+        this.panel_height = panel_h;
+
+        if (this.path_type != PathType.LINEAR)
+        {
+          this.offset_changed (this._offset);
+        }
+      }
+
+      int x, y;
+      window.get_origin (out x, out y);
+
+      if (this.origin_x != x || this.origin_y != y)
+      {
+        this.origin_x = x;
+        this.origin_y = y;
+
+        Gdk.Rectangle rect = Gdk.Rectangle ();
+        rect.x = x;
+        rect.y = y;
+
+        this.origin_changed (rect);
+      }
+
+      return Gdk.FilterReturn.REMOVE;
     }
 
     public void property_changed (string prop_name, Value value)

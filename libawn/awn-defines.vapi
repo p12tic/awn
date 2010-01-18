@@ -7,7 +7,7 @@ namespace Awn {
 		[CCode (cheader_filename = "awn-utils.h")]
 		public static void ensure_transparent_bg (Gtk.Widget widget);
 		[CCode (cheader_filename = "awn-utils.h")]
-		public static float get_offset_modifier_by_path_type (Awn.PathType path_type, Gtk.PositionType position, float offset_modifier, int pos_x, int pos_y, int width, int height);
+		public static float get_offset_modifier_by_path_type (Awn.PathType path_type, Gtk.PositionType position, int offset, float offset_modifier, int pos_x, int pos_y, int width, int height);
 		[CCode (cheader_filename = "awn-utils.h")]
 		public static GLib.ValueArray gslist_to_gvaluearray (GLib.SList list);
 		[CCode (cheader_filename = "awn-utils.h")]

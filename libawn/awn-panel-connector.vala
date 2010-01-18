@@ -1,3 +1,23 @@
+/*
+ * Copyright (C) 2010 Michal Hruby <michal.mhr@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authored by Michal Hruby <michal.mhr@gmail.com>
+ *
+ */
+
 namespace Awn
 {
   public interface PanelConnector: Object
@@ -123,16 +143,19 @@ namespace Awn
       return window_id;
     }
 
+    public void bus_set_behavior (AppletFlags behavior)
+    {
+      dynamic unowned DBus.Object panel = this.panel_proxy;
+
+      panel.SetAppletFlags (this.uid, (int)behavior);
+    }
+
     public abstract int panel_id { get; set construct; }
     public abstract DBus.Object panel_proxy { get; }
     public abstract string uid { get; set construct; }
-    public abstract int64 panel_xid { get; }
     public abstract Gtk.PositionType position { get; set; }
     public abstract int offset { get; set; }
     public abstract int size { get; set; }
-    public abstract int max_size { get; set; }
-    public abstract PathType path_type { get; set; }
-    public abstract float offset_modifier { get; set; }
 
     public signal void applet_deleted ();
   }
