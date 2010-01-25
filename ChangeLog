@@ -1,3 +1,8 @@
+2010-01-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fixed assertion spam.  TaskLaunchers don't have a WnckWindow.
+
 2010-01-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
