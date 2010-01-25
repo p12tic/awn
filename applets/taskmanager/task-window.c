@@ -1093,7 +1093,7 @@ task_window_activate (TaskWindow    *window,
         window_workspace = wnck_window_get_workspace (priv->window);
 
         if (active_workspace && window_workspace &&
-              !wnck_window_is_on_workspace(priv->window, active_workspace))
+              !wnck_window_is_in_viewport(priv->window, active_workspace))
         {
           wnck_workspace_activate(window_workspace, timestamp);
         }

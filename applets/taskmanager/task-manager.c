@@ -108,6 +108,7 @@ struct _TaskManagerPrivate
   gboolean     drag_and_drop;
   gboolean     grouping;
   gboolean     intellihide;
+  gboolean     icon_grouping;
   gint         intellihide_mode;
   gint         match_strength;
   gint         attention_autohide_timer;
@@ -140,6 +141,7 @@ enum
   PROP_LAUNCHER_PATHS,
   PROP_DRAG_AND_DROP,
   PROP_GROUPING,
+  PROP_ICON_GROUPING,
   PROP_MATCH_STRENGTH,
   PROP_INTELLIHIDE,
   PROP_INTELLIHIDE_MODE,
@@ -208,6 +210,8 @@ static void task_manager_win_state_changed_cb (WnckWindow * window,
                                                WnckWindowState changed_mask,
                                                WnckWindowState new_state,
                                                TaskManager * manager);
+static TaskIcon * task_manager_find_icon_containing_desktop (TaskManager * manager,
+                                                             const gchar * desktop);
 
 static gboolean _attention_required_reminder_cb (TaskManager * manager);
 
@@ -270,6 +274,10 @@ task_manager_get_property (GObject    *object,
       g_value_set_boolean (value, manager->priv->grouping);
       break;
 
+    case PROP_ICON_GROUPING:
+      g_value_set_boolean (value, manager->priv->icon_grouping);
+      break;
+
     case PROP_INTELLIHIDE:
       g_value_set_boolean (value, manager->priv->intellihide);
       break;
@@ -325,18 +333,19 @@ task_manager_set_property (GObject      *object,
                                            manager->priv->launcher_paths);
       break;
     case PROP_DRAG_AND_DROP:
-      task_manager_set_drag_and_drop (manager, 
-                                      g_value_get_boolean (value));
+      task_manager_set_drag_and_drop (manager, g_value_get_boolean (value));
       break;
 
     case PROP_MATCH_STRENGTH:
-      task_manager_set_match_strength (manager, 
-                                       g_value_get_int (value));
+      task_manager_set_match_strength (manager,g_value_get_int (value));
       break;
 
     case PROP_GROUPING:
-      task_manager_set_grouping (manager,
-                                 g_value_get_boolean (value));
+      task_manager_set_grouping (manager,g_value_get_boolean (value));
+      break;
+      
+    case PROP_ICON_GROUPING:
+      manager->priv->icon_grouping = g_value_get_boolean (value);
       break;
       
     case PROP_INTELLIHIDE:
@@ -438,6 +447,12 @@ task_manager_constructed (GObject *object)
                                        NULL);
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "icon_grouping",
+                                       object, "icon_grouping", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "intellihide",
                                        object, "intellihide", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
@@ -523,6 +538,13 @@ task_manager_class_init (TaskManagerClass *klass)
                                 TRUE,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_GROUPING, pspec);
+
+  pspec = g_param_spec_boolean ("icon_grouping",
+                                "icon_grouping",
+                                "Icon Grouping",
+                                TRUE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_ICON_GROUPING, pspec);
 
   pspec = g_param_spec_boolean ("intellihide",
                                 "intellihide",
@@ -1139,14 +1161,6 @@ get_launcher(TaskManager * manager, const gchar * desktop)
   }
   return launcher;
 }
-/*
-See note in util.c
- 
- The desktop matching code will be refactored and put into its own object
- early in the 0.6 dev cycle.
- 
- */
-
 
 void
 task_manager_add_icon(TaskManager *manager, TaskIcon * icon)
@@ -1155,7 +1169,28 @@ task_manager_add_icon(TaskManager *manager, TaskIcon * icon)
   
   priv = manager->priv;  
   priv->icons = g_slist_append (priv->icons, icon);
+
   gtk_container_add (GTK_CONTAINER (priv->box), GTK_WIDGET(icon));
+  if (priv->icon_grouping)
+  {
+    TaskItem * launcher = task_icon_get_launcher (icon);
+    if (launcher)
+    {
+      const gchar * desktop = task_launcher_get_desktop_path (TASK_LAUNCHER (launcher));
+      TaskIcon * first_match = task_manager_find_icon_containing_desktop (manager,desktop);
+      if (first_match)
+      {
+        GList * l = gtk_container_get_children (GTK_CONTAINER (priv->box));
+        gint pos = g_list_index (l,first_match);
+        if (pos != -1)
+        {
+          pos++;
+          gtk_box_reorder_child ( GTK_BOX (priv->box),GTK_WIDGET (icon),pos++);
+        }
+        g_list_free (l);
+      }
+    }
+  }
   
   /* reordening through D&D */
   if(priv->drag_and_drop)
@@ -1203,7 +1238,38 @@ task_manager_check_for_hidden (TaskManager * manager, TaskWindow * item)
   return hidden;
 }
 
+/*
+ Finds last icon in the first matching sequence of desktops. 
+ */
+static TaskIcon *
+task_manager_find_icon_containing_desktop (TaskManager * manager,const gchar * desktop)
+{
+  TaskManagerPrivate *priv;
+  priv = manager->priv;
+  TaskIcon * res = NULL;
+  GList * icons = gtk_container_get_children (GTK_CONTAINER(priv->box));
 
+  for (GList *icon_iter = icons; icon_iter ;icon_iter = icon_iter->next)
+  {
+    if (!TASK_IS_ICON(icon_iter->data))
+    {
+      continue;
+    }
+    TaskItem * launcher = task_icon_get_launcher (icon_iter->data);
+    if (launcher)
+    {
+      if (g_strcmp0 (desktop, task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)))==0)
+      {
+        res = icon_iter->data;
+      }
+      else if (res)
+      {
+        return res;
+      }
+    }
+  }
+  return res;
+}
 static TaskIcon *
 task_manager_find_window (TaskManager * manager, WnckWindow * window)
 {
@@ -1439,7 +1505,7 @@ process_window_opened (WnckWindow    *window,
       g_signal_connect (item,"name-changed",G_CALLBACK(window_name_changed_cb), icon);
     }
     task_icon_append_item (TASK_ICON (icon), item);
-    task_manager_add_icon (manager,TASK_ICON (icon));    
+    task_manager_add_icon (manager,TASK_ICON (icon));
   }
 }
   
