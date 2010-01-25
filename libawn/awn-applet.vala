@@ -26,7 +26,7 @@ namespace Awn
           
   public class Applet: Gtk.Plug, PanelConnector
   {
-    private const string AWN_SETTINGS_APP = "awn-settings";
+    private const string SETTINGS_APP = "awn-settings";
 
     private DBus.Connection _connection;
 
@@ -54,7 +54,7 @@ namespace Awn
       }
     }
     
-    public string display_name { get; set; }
+    public string display_name { get; set; default = null; }
 
     public bool show_all_on_embed { get; set; default = true; }
 
@@ -306,24 +306,145 @@ namespace Awn
 
     public static Gtk.Widget create_pref_item ()
     {
-      Gtk.Widget item = new Gtk.ImageMenuItem.with_label ("Dock Preferences");
+      Gtk.ImageMenuItem item;
+      item = new Gtk.ImageMenuItem.with_label ("Dock Preferences"); // FIXME: i18n
+
+      item.always_show_image = true;
+      item.set_image (new Gtk.Image.from_icon_name ("avant-window-navigator",
+                                                    Gtk.IconSize.MENU));
+      item.show ();
+      item.activate.connect ( (w) =>
+      {
+        Process.spawn_command_line_async (SETTINGS_APP);
+      });
 
       return item;
     }
 
-    public Gtk.Widget create_about_item (
-      string copyright, int license, string version, string? comments,
-      string? website, string? website_label, string? icon_name,
-      string? translator_credits, [CCode (array_length = false, array_null_terminated = true)] string[]? authors, [CCode (array_length = false, array_null_terminated = true)] string[]? artists, [CCode (array_length = false, array_null_terminated = true)] string[]? documenters)
+    public Gtk.Widget? create_about_item (
+      string copyright, AppletLicense license, string version,
+      string? comments, string? website, string? website_label,
+      string? icon_name, string? translator_credits, [CCode (array_length = false, array_null_terminated = true)] string[]? authors, [CCode (array_length = false, array_null_terminated = true)] string[]? artists, [CCode (array_length = false, array_null_terminated = true)] string[]? documenters)
     {
+      return_val_if_fail (copyright != null && copyright.length > 8, null);
+
       Gtk.AboutDialog dialog = new Gtk.AboutDialog ();
 
-      return dialog;
+      unowned string applet_name;
+      if (this.display_name != null)
+      {
+        applet_name = this.display_name;
+      }
+      else
+      {
+        applet_name = this.canonical_name;
+      }
+
+      dialog.set_copyright (copyright);
+
+      switch (license)
+      {
+        case AppletLicense.GPLV2:
+          dialog.set_license ("GPLv2");
+          break;
+        case AppletLicense.GPLV3:
+          dialog.set_license ("GPLv3");
+          break;
+        case AppletLicense.LGPLV2_1:
+          dialog.set_license ("LGPLv2.1");
+          break;
+        case AppletLicense.LGPLV3:
+          dialog.set_license ("LGPLv3");
+          break;
+        default:
+          warning ("License not set!");
+          break;
+      }
+
+      dialog.set_program_name (applet_name);
+
+      if (version != null)
+      {
+        dialog.set_version (version);
+      }
+
+      if (comments != null)
+      {
+        dialog.set_comments (comments);
+      }
+
+      if (website != null)
+      {
+        dialog.set_website (website);
+      }
+
+      if (website_label != null)
+      {
+        dialog.set_website_label (website_label);
+      }
+
+      if (icon_name == null)
+      {
+        icon_name = "stock_about";
+      }
+
+      dialog.set_logo_icon_name (icon_name);
+      Gdk.Pixbuf pixbuf = Gtk.IconTheme.get_default ().load_icon (icon_name, 64, 0);
+      if (pixbuf != null)
+      {
+        dialog.set_icon (pixbuf);
+      }
+
+      if (translator_credits != null)
+      {
+        dialog.set_translator_credits (translator_credits);
+      }
+
+      if (authors != null)
+      {
+        dialog.set_authors (authors);
+      }
+
+      if (artists != null)
+      {
+        dialog.set_artists (artists);
+      }
+
+      if (documenters != null)
+      {
+        dialog.set_documenters (documenters);
+      }
+
+      dialog.response.connect ( (d, response) =>
+      {
+        d.hide ();
+      });
+      Signal.connect (dialog, "delete-event", 
+                      (Callback) Gtk.Widget.hide_on_delete, null);
+
+      string item_text = "About %s".printf (applet_name);
+      Gtk.ImageMenuItem item = new Gtk.ImageMenuItem.with_label (item_text);
+      item.set_image (new Gtk.Image.from_stock (Gtk.STOCK_ABOUT,
+                                                Gtk.IconSize.MENU));
+      item.always_show_image = true;
+
+      item.show ();
+      item.activate.connect ( (i) =>
+      {
+        dialog.show_all ();
+      });
+      item.destroy_event.connect ( (i) =>
+      {
+        dialog.destroy ();
+        return false;
+      });
+
+      return item;
     }
 
-    public Gtk.Widget create_about_item_simple (string copyright,
-                                                int license,
-                                                string version)
+    public Gtk.Widget? create_about_item_simple (string copyright,
+                                                 AppletLicense license,
+                                                 string version)
     {
       return this.create_about_item (copyright, license, version, 
                                      null, null, null, null,
@@ -332,7 +453,15 @@ namespace Awn
 
     public Gtk.Widget create_default_menu ()
     {
-      return new Gtk.Menu ();
+      Gtk.Menu menu = new Gtk.Menu ();
+
+      menu.append (this.create_pref_item () as Gtk.MenuItem);
+
+      Gtk.MenuItem separator = new Gtk.SeparatorMenuItem ();
+      separator.show ();
+      menu.append (separator);
+
+      return menu;
     }
 
     public Gdk.NativeWindow docklet_request (int min_size,
