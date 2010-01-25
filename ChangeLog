@@ -1,3 +1,9 @@
+2010-01-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-window.c:
+	Possible fix for 503106.
+	
 2010-01-13  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
