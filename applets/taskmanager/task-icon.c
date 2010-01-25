@@ -2145,8 +2145,9 @@ task_icon_minimize_group(TaskIcon * icon,TaskWindow * window)
       GSList * i;
       for (i = icon->priv->items; i; i=i->next)
       {
-        WnckWindow * wnck_win = task_window_get_window (i->data);
+        WnckWindow * wnck_win;
         if (!TASK_IS_WINDOW (i->data) ) continue;
+        wnck_win = task_window_get_window (i->data);
         if (!task_item_is_visible(i->data)) continue;
         if (!wnck_window_is_in_viewport (wnck_win, active_ws) )
         {
@@ -2186,10 +2187,11 @@ task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
       GSList * i;
       for (i = icon->priv->items; i; i=i->next)
       {
-        WnckWindow * wnck_win = task_window_get_window (i->data);
+        WnckWindow * wnck_win;
         if (!TASK_IS_WINDOW (i->data) ) continue;
         if (i->data == window) continue;
         if (!task_item_is_visible(i->data)) continue;
+        wnck_win = task_window_get_window (i->data);
         if (!wnck_window_is_in_viewport (wnck_win, active_ws) )
         {
           continue;
