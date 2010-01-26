@@ -1,0 +1,12 @@
+<menu>
+  <menuitem type="Internal-Dock-Prefs"></menuitem>
+  <menuitem type="Internal-Customize-Icon"></menuitem>
+  <menuitem type="Internal-Remove-Customized-Icon"></menuitem>
+  <menuitem type="Internal-Add-To-Launcher-List"></menuitem>  
+  <menuitem type="Internal-Separator"></menuitem>
+  <menuitem type="Internal-Inline-Plugins"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>
+  <menuitem type="Internal-Launch"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>
+  <menuitem type="Internal-Smart-Wnck-Simple-Menu"></menuitem>
+</menu>

@@ -1,0 +1,90 @@
+include $(top_srcdir)/Makefile.shave
+MARSHAL_PREFIX = taskmanager
+include $(top_srcdir)/Makefile.marshal
+include $(top_srcdir)/Makefile.schemas
+
+AM_CPPFLAGS = \
+	$(STANDARD_CPPFLAGS) \
+	-I$(top_srcdir) \
+	-I$(srcdir) \
+	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
+	$(DISABLE_DEPRECATED_FLAGS) \
+	$(NULL)
+
+appletdir = $(APPLETDIR)/taskmanager
+applet_datadir = $(APPLETDATADIR)/taskmanager
+applet_LTLIBRARIES = taskmanager.la
+taskmanager_la_SOURCES = \
+	applet.c \
+	awn-desktop-lookup.h \
+	awn-desktop-lookup-cached.h \
+	awn-desktop-lookup-gnome3.h \
+	awn-desktop-lookup.c \
+	awn-desktop-lookup-cached.c \
+	awn-desktop-lookup-gnome3.c \
+	task-drag-indicator.c \
+	task-drag-indicator.h \
+	task-icon.c \
+	task-icon.h \
+	task-icon-build-context-menus.c \
+	task-icon-build-context-menus.h \
+	task-icon-private.h \
+	task-item.c \
+	task-item.h \
+	task-launcher.c \
+	task-launcher.h \
+	task-manager.c \
+	task-manager.h \
+	task-manager-glue.h \
+	task-manager-api-wrapper.c \
+	task-manager-api-wrapper.h \
+	task-manager-api-wrapper-glue.h \
+	task-settings.c \
+	task-settings.h \
+	task-window.c \
+	task-window.h \
+	util.h \
+	util.c  \
+	$(builddir)/taskmanager-marshal.c \
+	$(builddir)/taskmanager-marshal.h \
+	xutils.c \
+	xutils.h \
+	$(NULL)
+taskmanager_la_LIBADD = \
+	$(top_builddir)/libawn/libawn.la \
+	$(TASKMANAGER_LIBS) \
+	$(NULL)
+taskmanager_la_CFLAGS = $(WARNING_FLAGS) $(TASKMANAGER_CFLAGS)
+taskmanager_la_LDFLAGS = -module -avoid-version
+
+# DBus glue
+DBUS_XML = task-manager-dbus.xml task-manager-api-wrapper-dbus.xml
+
+task-manager-glue.h: task-manager-dbus.xml Makefile
+	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager --mode=glib-server --output=$@ $<
+
+task-manager-api-wrapper-glue.h: task-manager-api-wrapper-dbus.xml Makefile
+	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager_api_wrapper --mode=glib-server --output=$@ $<
+
+# Desktop file
+desktopdir = $(pkgdatadir)/applets
+desktop_DATA = taskmanager.desktop
+@INTLTOOL_DESKTOP_RULE@
+
+schema_in_files = awn-applet-taskmanager.schema-ini.in
+
+install-data-local: install-gconf-schemas
+
+BUILT_SOURCES = \
+	task-manager-glue.h \
+	task-manager-api-wrapper-glue.h \
+	$(MARSHALFILES) \
+	$(NULL)
+
+EXTRA_DIST = $(desktop_DATA).in.in $(schema_in_files) $(DBUS_XML) taskmanager-marshal.list
+CLEANFILES = $(desktop_DATA) $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
+
+taskmanager_menusdir = $(applet_datadir)/menus
+dist_taskmanager_menus_DATA =	\
+	$(wildcard menus/*.xml) \
+	$(NULL)

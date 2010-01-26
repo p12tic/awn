@@ -1,17 +1,17 @@
 ;; -*- scheme -*-
 ; object definitions ...
-(define-object Applet
+
+(define-interface Overlayable
   (in-module "Awn")
-  (parent "GtkEventBox")
-  (c-name "AwnApplet")
-  (gtype-id "AWN_TYPE_APPLET")
+  (c-name "AwnOverlayable")
+  (gtype-id "AWN_TYPE_OVERLAYABLE")
 )
 
-(define-object AppletDialog
+(define-object Applet
   (in-module "Awn")
-  (parent "GtkWindow")
-  (c-name "AwnAppletDialog")
-  (gtype-id "AWN_TYPE_APPLET_DIALOG")
+  (parent "GtkPlug")
+  (c-name "AwnApplet")
+  (gtype-id "AWN_TYPE_APPLET")
 )
 
 (define-object AppletSimple
@@ -19,53 +19,166 @@
   (parent "AwnApplet")
   (c-name "AwnAppletSimple")
   (gtype-id "AWN_TYPE_APPLET_SIMPLE")
+  (implements "AwnOverlayable")
 )
 
-(define-object Icons
+(define-object Alignment
+  (in-module "Awn")
+  (parent "GtkAlignment")
+  (c-name "AwnAlignment")
+  (gtype-id "AWN_TYPE_ALIGNMENT")
+)
+
+(define-object Box
+  (in-module "Awn")
+  (parent "GtkBox")
+  (c-name "AwnBox")
+  (gtype-id "AWN_TYPE_BOX")
+)
+
+(define-object DBusWatcher
   (in-module "Awn")
   (parent "GObject")
-  (c-name "AwnIcons")
-  (gtype-id "AWN_TYPE_ICONS")
+  (c-name "AwnDBusWatcher")
+  (gtype-id "AWN_TYPE_DBUS_WATCHER")
 )
 
-(define-object Plug
-  (in-module "Awn")
-  (parent "GtkPlug")
-  (c-name "AwnPlug")
-  (gtype-id "AWN_TYPE_PLUG")
-)
-
-(define-object Title
+(define-object Dialog
   (in-module "Awn")
   (parent "GtkWindow")
-  (c-name "AwnTitle")
-  (gtype-id "AWN_TYPE_TITLE")
+  (c-name "AwnDialog")
+  (gtype-id "AWN_TYPE_DIALOG")
 )
 
-;; Boxed types ...
-(define-boxed Config
+(define-object Effects
   (in-module "Awn")
-  (c-name "AwnConfigClient")
-  (gtype-id "AWN_TYPE_CONFIG_CLIENT")
-)
-
-(define-boxed DesktopItem
-  (in-module "Awn")
-  (c-name "AwnDesktopItem")
-  (gtype-id "AWN_TYPE_DESKTOP_ITEM")
-  (copy-func "awn_desktop_item_copy")
-  (release-func "awn_desktop_item_free")
-)
-
-(define-boxed Effects
-  (in-module "Awn")
+  (parent "GObject")
   (c-name "AwnEffects")
   (gtype-id "AWN_TYPE_EFFECTS")
 )
 
+(define-object Icon
+  (in-module "Awn")
+  (parent "GtkDrawingArea")
+  (c-name "AwnIcon")
+  (gtype-id "AWN_TYPE_ICON")
+  (implements "AwnOverlayable")
+)
+
+(define-object IconBox
+  (in-module "Awn")
+  (parent "AwnBox")
+  (c-name "AwnIconBox")
+  (gtype-id "AWN_TYPE_ICON_BOX")
+)
+
+(define-object ThemedIcon
+  (in-module "Awn")
+  (parent "AwnIcon")
+  (c-name "AwnThemedIcon")
+  (gtype-id "AWN_TYPE_THEMED_ICON")
+)
+
+(define-object Image
+  (in-module "Awn")
+  (parent "GtkImage")
+  (c-name "AwnImage")
+  (gtype-id "AWN_TYPE_IMAGE")
+  (implements "AwnOverlayable")
+)
+
+(define-object Label
+  (in-module "Awn")
+  (parent "GtkLabel")
+  (c-name "AwnLabel")
+  (gtype-id "AWN_TYPE_LABEL")
+)
+
+(define-object Overlay
+  (in-module "Awn")
+  (parent "GObject")
+  (c-name "AwnOverlay")
+  (gtype-id "AWN_TYPE_OVERLAY")
+)
+
+(define-object OverlayThemedIcon
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayThemedIcon")
+  (gtype-id "AWN_TYPE_OVERLAY_THEMED_ICON")
+)
+
+(define-object OverlayText
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayText")
+  (gtype-id "AWN_TYPE_OVERLAY_TEXT")
+)
+
+(define-object OverlayThrobber
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayThrobber")
+  (gtype-id "AWN_TYPE_OVERLAY_THROBBER")
+)
+
+(define-object OverlayPixbuf
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayPixbuf")
+  (gtype-id "AWN_TYPE_OVERLAY_PIXBUF")
+)
+
+(define-object OverlayPixbufFile
+  (in-module "Awn")
+  (parent "AwnOverlayPixbuf")
+  (c-name "AwnOverlayPixbufFile")
+  (gtype-id "AWN_TYPE_OVERLAY_PIXBUF_FILE")
+)
+
+(define-object OverlayProgress
+  (in-module "Awn")
+  (parent "AwnOverlay")
+  (c-name "AwnOverlayProgress")
+  (gtype-id "AWN_TYPE_OVERLAY_PROGRESS")
+)
+
+(define-object OverlayProgressCircle
+  (in-module "Awn")
+  (parent "AwnOverlayProgress")
+  (c-name "AwnOverlayProgressCircle")
+  (gtype-id "AWN_TYPE_OVERLAY_PROGRESS_CIRCLE")
+)
+
+(define-object PixbufCache
+  (in-module "Awn")
+  (parent "GObject")
+  (c-name "AwnPixbufCache")
+  (gtype-id "AWN_TYPE_PIXBUF_CACHE")
+)
+
+(define-object Tooltip
+  (in-module "Awn")
+  (parent "GtkWindow")
+  (c-name "AwnTooltip")
+  (gtype-id "AWN_TYPE_TOOLTIP")
+)
+
 ;; Enumerations and flags ...
 
-(define-enum CairoRoundCorners
+(define-enum AppletLicense
+  (in-module "Awn")
+  (c-name "AwnAppletLicense")
+  (gtype-id "AWN_TYPE_APPLET_LICENSE")
+  (values
+    '("gplv2" "AWN_APPLET_LICENSE_GPLV2")
+    '("gplv3" "AWN_APPLET_LICENSE_GPLV3")
+    '("lgplv2-1" "AWN_APPLET_LICENSE_LGPLV2_1")
+    '("lgplv3" "AWN_APPLET_LICENSE_LGPLV3")
+  )
+)
+
+(define-flags CairoRoundCorners
   (in-module "Awn")
   (c-name "AwnCairoRoundCorners")
   (gtype-id "AWN_TYPE_CAIRO_ROUND_CORNERS")
@@ -83,15 +196,27 @@
   )
 )
 
-(define-enum Orientation
+(define-flags AppletFlags
   (in-module "Awn")
-  (c-name "AwnOrientation")
-  (gtype-id "AWN_TYPE_ORIENTATION")
+  (c-name "AwnAppletFlags")
+  (gtype-id "AWN_TYPE_APPLET_FLAGS")
   (values
-    '("bottom" "AWN_ORIENTATION_BOTTOM")
-    '("top" "AWN_ORIENTATION_TOP")
-    '("right" "AWN_ORIENTATION_RIGHT")
-    '("left" "AWN_ORIENTATION_LEFT")
+    '("flags-none" "AWN_APPLET_FLAGS_NONE")
+    '("expand-minor" "AWN_APPLET_EXPAND_MINOR")
+    '("expand-major" "AWN_APPLET_EXPAND_MAJOR")
+    '("is-expander" "AWN_APPLET_IS_EXPANDER")
+    '("is-separator" "AWN_APPLET_IS_SEPARATOR")
+  )
+)
+
+(define-enum OverlayAlign
+  (in-module "Awn")
+  (c-name "AwnOverlayAlign")
+  (gtype-id "AWN_TYPE_OVERLAY_ALIGN")
+  (values
+    '("centre" "AWN_OVERLAY_ALIGN_CENTRE")
+    '("left" "AWN_OVERLAY_ALIGN_LEFT")
+    '("right" "AWN_OVERLAY_ALIGN_RIGHT")
   )
 )
 
@@ -110,265 +235,57 @@
   )
 )
 
-(define-enum ConfigListType
-  (in-module "Awn")
-  (c-name "AwnConfigListType")
-  (gtype-id "AWN_TYPE_CONFIG_LIST_TYPE")
-  (values
-    '("boolean" "AWN_CONFIG_LIST_TYPE_BOOL")
-    '("float" "AWN_CONFIG_LIST_TYPE_FLOAT")
-    '("integer" "AWN_CONFIG_LIST_TYPE_INT")
-    '("string" "AWN_CONFIG_LIST_TYPE_STRING")
-  )
+;; From awn-dbus-watcher.h
+
+(define-function dbus_watcher_get_default
+  (c-name "awn_dbus_watcher_get_default")
+  (return-type "AwnDBusWatcher*")
 )
 
-(define-enum ConfigValueType
-  (in-module "Awn")
-  (c-name "AwnConfigValueType")
-  (gtype-id "AWN_TYPE_CONFIG_VALUE_TYPE")
-  (values
-    '("null" "AWN_CONFIG_VALUE_TYPE_NULL")
-    '("boolean" "AWN_CONFIG_VALUE_TYPE_BOOL")
-    '("float" "AWN_CONFIG_VALUE_TYPE_FLOAT")
-    '("integer" "AWN_CONFIG_VALUE_TYPE_INT")
-    '("string" "AWN_CONFIG_VALUE_TYPE_STRING")
-    '("list_boolean" "AWN_CONFIG_VALUE_TYPE_LIST_BOOL")
-    '("list_float" "AWN_CONFIG_VALUE_TYPE_LIST_FLOAT")
-    '("list_integer" "AWN_CONFIG_VALUE_TYPE_LIST_INT")
-    '("list_string" "AWN_CONFIG_VALUE_TYPE_LIST_STRING")
-  )
-)
 
-;; From awn-applet-dialog.h
-
-(define-function awn_applet_dialog_get_type
-  (c-name "awn_applet_dialog_get_type")
-  (return-type "GType")
-)
+;; From awn-dialog.h
 
 (define-function dialog_new
-  (c-name "awn_applet_dialog_new")
-  (is-constructor-of "AwnAppletDialog")
+  (is-constructor-of "AwnDialog")
+  (c-name "awn_dialog_new")
   (return-type "GtkWidget*")
-  (parameters
-    '("AwnApplet*" "applet")
+  (properties
+    '("anchor" (optional) (argname "anchor"))
+    '("anchor-applet" (optional) (argname "anchor-applet"))
   )
 )
 
-
-
-
-(define-method position_reset
-  (of-object "AwnAppletDialog")
-  (c-name "awn_applet_dialog_position_reset")
-  (return-type "none")
+(define-method get_content_area
+  (c-name "awn_dialog_get_content_area")
+  (of-object "AwnDialog")
+  (return-type "GtkWidget*")
 )
 
+;; From awn-alignment.h
 
-
-;; From awn-config-client.h
-
-(define-function config_client_new
-  (c-name "awn_config_client_new")
-  (is-constructor-of "AwnConfigClient")
-  (return-type "AwnConfigClient*")
-)
-
-(define-method clear
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_clear")
-  (return-type "none")
-  (parameters
-    '("GError**" "opt_error")
+(define-function alignment_new_for_applet
+  (c-name "awn_alignment_new_for_applet")
+  (is-constructor-of "AwnAlignment")
+  (return-type "GtkWidget*")
+  (properties
+    '("applet" (argname "applet"))
+    '("scale" (optional) (argname "scale"))
   )
 )
 
-(define-method ensure_group
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_ensure_group")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-  )
-)
-
-(define-method notify_add
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_notify_add")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("AwnConfigClientNotifyFunc" "callback")
-    '("gpointer" "data")
-  )
-)
-
-(define-method exists
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_entry_exists")
-  (return-type "gboolean")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-  )
-)
-
-(define-method get_value_type
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_value_type")
-  (return-type "AwnConfigValueType")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_bool
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_bool")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("gboolean" "the_bool")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_int
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_int")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("gint" "the_int")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_string
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_string")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("const-gchar*" "the_string")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_float
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_float")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("gdouble" "the_float")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method set_list
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_set_list")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GConfValueType" "list_type")
-    '("GSList*" "list")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method get_bool
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_bool")
-  (return-type "gboolean")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method get_int
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_int")
+(define-method get_offset_modifier
+  (c-name "awn_alignment_get_offset_modifier")
+  (of-object "AwnAlignment")
   (return-type "gint")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
-  )
 )
 
-(define-method get_string
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_string")
-  (return-type "gchar*")
+(define-method set_offset_modifier
+  (c-name "awn_alignment_set_offset_modifier")
+  (of-object "AwnAlignment")
   (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
+    '("gint" "modifier")
   )
 )
-
-(define-method get_float
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_float")
-  (return-type "gfloat")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-method get_list
-  (of-object "AwnConfigClient")
-  (c-name "awn_config_client_get_list")
-  (return-type "GSList*")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-    '("AwnConfigListType" "list_type")
-    '("GError**" "opt_error")
-  )
-)
-
-(define-function config_key_lock_open
-  (c-name "awn_config_client_key_lock_open")
-  (return-type "int")
-  (parameters
-    '("const-gchar*" "group")
-    '("const-gchar*" "key")
-  )
-)
-
-(define-function config_key_lock
-  (c-name "awn_config_client_key_lock")
-  (return-type "none")
-  (parameters
-    '("int" "fd")
-    '("int" "operation")
-  )
-)
-
-(define-function config_key_lock_close
-  (c-name "awn_config_client_key_lock_close")
-  (return-type "none")
-  (parameters
-    '("int" "fd")
-  )
-)
-
-
 
 ;; From awn-applet.h
 
@@ -381,34 +298,146 @@
   (c-name "awn_applet_new")
   (is-constructor-of "AwnApplet")
   (return-type "GtkWidget*")
-  (parameters
-    '("const-gchar*" "uid")
-    '("gint" "orient")
-    '("gint" "height")
+  (properties
+    '("canonical_name" (argname "canonical_name"))
+    '("uid" (argname "uid"))
+    '("panel_id" (argname "panel_id"))
   )
 )
 
-(define-method get_orientation
+(define-method get_canonical_name
   (of-object "AwnApplet")
-  (c-name "awn_applet_get_orientation")
-  (return-type "AwnOrientation")
+  (c-name "awn_applet_get_canonical_name")
+  (return-type "const-gchar*")
 )
 
-(define-method get_height
+(define-method get_pos_type
   (of-object "AwnApplet")
-  (c-name "awn_applet_get_height")
+  (c-name "awn_applet_get_pos_type")
+  (return-type "GtkPositionType")
+)
+
+(define-method set_pos_type
+  (of-object "AwnApplet")
+  (c-name "awn_applet_set_pos_type")
+  (parameters
+    '("GtkPositionType" "position")
+  )
+)
+
+(define-method get_offset
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_offset")
+  (return-type "gint")
+)
+
+(define-method get_offset_at
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_offset_at")
+  (parameters
+    '("gint" "x")
+    '("gint" "y")
+  )
+  (return-type "gint")
+)
+
+(define-method get_size
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_size")
   (return-type "guint")
+)
+
+(define-method get_uid
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_uid")
+  (return-type "const-gchar*")
+)
+
+(define-method get_behavior
+  (of-object "AwnApplet")
+  (c-name "awn_applet_get_behavior")
+  (return-type "AwnAppletFlags")
+)
+
+(define-method set_behavior
+  (of-object "AwnApplet")
+  (c-name "awn_applet_set_behavior")
+  (parameters
+    '("AwnAppletFlags" "flags")
+  )
+)
+
+(define-method inhibit_autohide
+  (of-object "AwnApplet")
+  (c-name "awn_applet_inhibit_autohide")
+  (return-type "guint")
+  (parameters
+    '("const-gchar*" "reason")
+  )
+)
+
+(define-method uninhibit_autohide
+  (of-object "AwnApplet")
+  (c-name "awn_applet_uninhibit_autohide")
+  (parameters
+    '("guint" "cookie")
+  )
+)
+
+(define-method docklet_request
+  (of-object "AwnApplet")
+  (c-name "awn_applet_docklet_request")
+  (return-type "GdkNativeWindow")
+  (parameters
+    '("gint" "min_size")
+    '("gboolean" "shrink" (default "FALSE"))
+    '("gboolean" "expand" (default "TRUE"))
+  )
 )
 
 (define-method create_default_menu
   (of-object "AwnApplet")
   (c-name "awn_applet_create_default_menu")
   (return-type "GtkWidget*")
+  (caller-owns-return #t)
 )
 
 (define-function create_pref_item
   (c-name "awn_applet_create_pref_item")
   (return-type "GtkWidget*")
+  (caller-owns-return #t)
+)
+
+(define-method create_about_item
+  (of-object "AwnApplet")
+  (c-name "awn_applet_create_about_item")
+  (return-type "GtkWidget*")
+  (caller-owns-return #t)
+  (parameters
+    '("const-gchar*" "copyright")
+    '("AwnAppletLicense" "license")
+    '("const-gchar*" "version")
+    '("const-gchar*" "comments")
+    '("const-gchar*" "website")
+    '("const-gchar*" "website_label")
+    '("const-gchar*" "icon_name")
+    '("const-gchar*" "translator_credits")
+    '("GStrv" "authors")
+    '("GStrv" "artists")
+    '("GStrv" "documenters")
+  )
+)
+
+(define-method create_about_item_simple
+  (of-object "AwnApplet")
+  (c-name "awn_applet_create_about_item_simple")
+  (return-type "GtkWidget*")
+  (caller-owns-return #t)
+  (parameters
+    '("const-gchar*" "copyright")
+    '("AwnAppletLicense" "license")
+    '("const-gchar*" "version")
+  )
 )
 
 ;; From awn-applet-simple.h
@@ -422,25 +451,16 @@
   (c-name "awn_applet_simple_new")
   (is-constructor-of "AwnAppletSimple")
   (return-type "GtkWidget*")
-  (parameters
-    '("const-gchar*" "uid")
-    '("gint" "orient")
-    '("gint" "height")
+  (properties
+    '("canonical_name" (argname "canonical_name"))
+    '("uid" (argname "uid"))
+    '("panel_id" (argname "panel_id"))
   )
 )
 
-(define-method set_icon
+(define-method set_icon_pixbuf
   (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_icon")
-  (return-type "none")
-  (parameters
-    '("GdkPixbuf*" "pixbuf")
-  )
-)
-
-(define-method set_temp_icon
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_temp_icon")
+  (c-name "awn_applet_simple_set_icon_pixbuf")
   (return-type "none")
   (parameters
     '("GdkPixbuf*" "pixbuf")
@@ -456,110 +476,227 @@
   )
 )
 
-(define-method set_icon_context_scaled
+(define-method set_icon_surface
   (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_icon_context_scaled")
+  (c-name "awn_applet_simple_set_icon_surface")
   (return-type "none")
   (parameters
-    '("cairo_t*" "cr")
+    '("cairo_surface_t*" "surface")
   )
 )
 
-(define-method effects_off
+(define-method set_icon_name
   (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_effects_off")
-  (return-type "none")
-)
-
-(define-method effects_on
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_effects_on")
-  (return-type "none")
-)
-
-(define-method set_title_visibility
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_title_visibility")
+  (c-name "awn_applet_simple_set_icon_name")
   (return-type "none")
   (parameters
-    '("gboolean" "state")
-  )
-)
-
-(define-method set_title
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_title")
-  (return-type "none")
-  (parameters
-    '("const-gchar*" "title_string")
-  )
-)
-
-(define-method set_awn_icon
-  (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_awn_icon")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("const-gchar*" "applet_name")
     '("const-gchar*" "icon_name")
   )
 )
 
-(define-method set_awn_icons
+(define-method set_icon_info
   (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_awn_icons")
-  (return-type "GdkPixbuf*")
+  (c-name "awn_applet_simple_set_icon_info")
+  (return-type "none")
   (parameters
-    '("const-gchar*" "applet_name")
-    '("const-gchar**" "states")
-    '("const-gchar**" "icon_names")
+    '("GStrv" "states")
+    '("GStrv" "icon_names")
   )
 )
 
-
-(define-method set_awn_icon_state
+(define-method set_icon_state
   (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_set_awn_icon_state")
-  (return-type "GdkPixbuf*")
+  (c-name "awn_applet_simple_set_icon_state")
+  (return-type "none")
   (parameters
     '("const-gchar*" "state")
   )
 )
 
-(define-method get_awn_icons
+(define-method set_tooltip_text
   (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_get_awn_icons")
-  (return-type "AwnIcons*")
+  (c-name "awn_applet_simple_set_tooltip_text")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "text")
+  )
 )
 
-(define-method get_effects
+(define-method get_tooltip_text
   (of-object "AwnAppletSimple")
-  (c-name "awn_applet_simple_get_effects")
-  (return-type "AwnEffects*")
-  (caller-owns-return #t)
+  (c-name "awn_applet_simple_get_tooltip_text")
+  (return-type "gchar*")
+)
+
+(define-method set_message
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_message")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "message")
+  )
+)
+
+(define-method get_message
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_get_message")
+  (return-type "gchar*")
+)
+
+(define-method set_progress
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_progress")
+  (return-type "none")
+  (parameters
+    '("gfloat" "progress")
+  )
+)
+
+(define-method get_progress
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_get_progress")
+  (return-type "gfloat")
+)
+
+(define-method get_icon
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_get_icon")
+  (return-type "AwnIcon*")
+)
+
+(define-method set_effect
+  (of-object "AwnAppletSimple")
+  (c-name "awn_applet_simple_set_effect")
+  (return-type "none")
+  (parameters
+    '("AwnEffect" "effect")
+  )
+)
+
+;; From awn-box.h
+
+(define-function awn_box_get_type
+  (c-name "awn_box_get_type")
+  (return-type "GType")
+)
+
+(define-function awn_box_new
+  (c-name "awn_box_new")
+  (is-constructor-of "AwnBox")
+  (return-type "GtkWidget*")
+  (properties
+    '("orientation" (optional) (argname "orientation"))
+  )
+)
+
+(define-method set_orientation
+  (of-object "AwnBox")
+  (c-name "awn_box_set_orientation")
+  (return-type "none")
+  (parameters
+    '("GtkOrientation" "orient")
+  )
+)
+
+(define-method set_orientation_from_pos_type
+  (of-object "AwnBox")
+  (c-name "awn_box_set_orientation_from_pos_type")
+  (return-type "none")
+  (parameters
+    '("GtkPositionType" "pos_type")
+  )
 )
 
 ;; From awn-cairo-utils.h
 
-(define-function awn_cairo_rounded_rect
+(define-function cairo_rounded_rect
   (c-name "awn_cairo_rounded_rect")
   (return-type "none")
   (parameters
     '("cairo_t*" "cr")
-    '("int" "x0")
-    '("int" "y0")
-    '("int" "width")
-    '("int" "height")
+    '("double" "x0")
+    '("double" "y0")
+    '("double" "width")
+    '("double" "height")
     '("double" "radius")
     '("AwnCairoRoundCorners" "state")
   )
 )
 
-(define-function rgba_string_to_dict
-  (c-name "awn_cairo_string_to_color")
-  (return-type "AwnColor*")
+(define-function cairo_rounded_rect_shadow
+  (c-name "awn_cairo_rounded_rect_shadow")
+  (return-type "none")
   (parameters
-    '("const-gchar*" "string")
+    '("cairo_t*" "cr")
+    '("double" "x0")
+    '("double" "y0")
+    '("double" "width")
+    '("double" "height")
+    '("double" "radius")
+    '("AwnCairoRoundCorners" "state")
+    '("double" "shadow_radius")
+    '("double" "shadow_alpha")
+  )
+)
+
+(define-function cairo_set_source_color
+  (c-name "awn_cairo_set_source_color")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("DesktopAgnosticColor*" "color")
+  )
+)
+
+(define-function cairo_set_source_color_with_alpha_multiplier
+  (c-name "awn_cairo_set_source_color_with_alpha_multiplier")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("DesktopAgnosticColor*" "color")
+    '("gdouble" "multiplier")
+  )
+)
+
+(define-function cairo_set_source_color_with_multipliers
+  (c-name "awn_cairo_set_source_color_with_multipliers")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("DesktopAgnosticColor*" "color")
+    '("gdouble" "color_multiplier")
+    '("gdouble" "alpha_multiplier")
+  )
+)
+
+
+;; From awn-config.h
+
+(define-function config_get_default
+  (c-name "awn_config_get_default")
+  (return-type "DesktopAgnosticConfigClient*")
+  (parameters
+    '("gint" "panel_id")
+    '("GError**" "error")
+  )
+)
+
+(define-function config_get_default_for_applet
+  (c-name "awn_config_get_default_for_applet")
+  (return-type "DesktopAgnosticConfigClient*")
+  (parameters
+    '("AwnApplet*" "applet")
+    '("GError**" "error")
+  )
+)
+
+(define-function config_get_default_for_applet_by_info
+  (c-name "awn_config_get_default_for_applet_by_info")
+  (return-type "DesktopAgnosticConfigClient*")
+  (parameters
+    '("const-gchar*" "name")
+    '("const-gchar*" "uid")
+    '("GError**" "error")
   )
 )
 
@@ -569,171 +706,19 @@
 
 
 
-;; From awn-desktop-item.h
+;; From awn-effects.h
 
-(define-function awn_desktop_item_get_type
-  (c-name "awn_desktop_item_get_type")
+(define-function awn_effects_get_type
+  (c-name "awn_efffects_get_type")
   (return-type "GType")
 )
 
-(define-function awn_desktop_item_new
-  (c-name "awn_desktop_item_new")
-  (is-constructor-of "AwnDesktopItem")
-  (return-type "AwnDesktopItem*")
-  (parameters
-    '("gchar*" "filename")
-  )
-)
-
-(define-method get_filename
-  (c-name "awn_desktop_item_get_filename")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-)
-
-(define-method get_item_type
-  (c-name "awn_desktop_item_get_item_type")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-)
-
-(define-method set_item_type
-  (c-name "awn_desktop_item_set_item_type")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "item_type")
-  )
-)
-
-(define-method get_icon
-  (c-name "awn_desktop_item_get_icon")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-  (parameters
-    '("GtkIconTheme*" "icon_theme")
-  )
-)
-
-(define-method set_icon
-  (c-name "awn_desktop_item_set_icon")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "icon")
-  )
-)
-
-(define-method get_name
-  (c-name "awn_desktop_item_get_name")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-)
-
-(define-method set_name
-  (c-name "awn_desktop_item_set_name")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "name")
-  )
-)
-
-(define-method get_exec
-  (c-name "awn_desktop_item_get_exec")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-)
-
-(define-method set_exec
-  (c-name "awn_desktop_item_set_exec")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "exec")
-  )
-)
-
-(define-method get_string
-  (c-name "awn_desktop_item_get_string")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-  (parameters
-    '("gchar*" "key")
-  )
-)
-
-(define-method set_string
-  (c-name "awn_desktop_item_set_string")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "key")
-    '("gchar*" "value")
-  )
-)
-
-(define-method get_localestring
-  (c-name "awn_desktop_item_get_localestring")
-  (of-object "AwnDesktopItem")
-  (return-type "gchar*")
-  (parameters
-    '("gchar*" "key")
-  )
-)
-
-(define-method set_localestring
-  (c-name "awn_desktop_item_set_localestring")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "key")
-    '("gchar*" "locale")
-    '("gchar*" "value")
-  )
-)
-
-(define-method exists
-  (c-name "awn_desktop_item_exists")
-  (of-object "AwnDesktopItem")
-  (return-type "gboolean")
-)
-
-(define-method launch
-  (c-name "awn_desktop_item_launch")
-  (of-object "AwnDesktopItem")
-  (return-type "gint")
-  (parameters
-    '("GSList*" "documents")
-    '("GError**" "err")
-  )
-)
-
-(define-method save
-  (c-name "awn_desktop_item_save")
-  (of-object "AwnDesktopItem")
-  (return-type "none")
-  (parameters
-    '("gchar*" "new_filename")
-    '("GError**" "err")
-  )
-)
-
-;; From awn-effects.h
-
-; This constructor is not much of use
-;(define-function effects_new
-;  (c-name "awn_effects_new")
-;  (is-constructor-of "AwnEffects")
-;  (return-type "AwnEffects*")
-;)
-
-(define-function effect_new_for_widget
+(define-function effects_new_for_widget
   (c-name "awn_effects_new_for_widget")
   (is-constructor-of "AwnEffects")
   (return-type "AwnEffects*")
-  (parameters
-    '("GtkWidget" "widget")
+  (properties
+    '("widget" (argname "widget"))
   )
 )
 
@@ -746,16 +731,15 @@
   )
 )
 
-; FIXME: start and stop notify functions, define the type in override?!
 (define-method start_ex
   (of-object "AwnEffects")
   (c-name "awn_effects_start_ex")
   (return-type "none")
   (parameters
     '("AwnEffect" "effect")
-    '("int" "start" (default "0") (null-ok))
-    '("int" "stop" (default "0") (null-ok))
     '("int" "max_loops")
+    '("gboolean" "signal_start" (default "FALSE") (null-ok))
+    '("gboolean" "signal_end" (default "FALSE") (null-ok))
   )
 )
 
@@ -768,108 +752,57 @@
   )
 )
 
-(define-method reflection_off
+(define-method cairo_create
   (of-object "AwnEffects")
-  (c-name "awn_effects_reflection_off")
-  (return-type "none")
+  (c-name "awn_effects_cairo_create")
+  (return-type "cairo_t*")
 )
 
-(define-method reflection_on
+(define-method cairo_create_clipped
   (of-object "AwnEffects")
-  (c-name "awn_effects_reflection_on")
-  (return-type "none")
-)
-
-(define-method set_offset_cut
-  (of-object "AwnEffects")
-  (c-name "awn_effects_set_offset_cut")
-  (return-type "none")
+  (c-name "awn_effects_cairo_create_clipped")
   (parameters
-    '("gboolean" "cut")
+    '("GdkEventExpose*" "event")
   )
+  (return-type "cairo_t*")
 )
 
-(define-method register
+(define-method cairo_destroy
   (of-object "AwnEffects")
-  (c-name "awn_effects_register")
-  (return-type "none")
-  (parameters
-    '("GtkWidget*" "obj")
-  )
-)
-
-(define-method unregister
-  (of-object "AwnEffects")
-  (c-name "awn_effects_unregister")
+  (c-name "awn_effects_cairo_destroy")
   (return-type "none")
 )
 
-(define-method draw_background
+(define-method set_icon_size
   (of-object "AwnEffects")
-  (c-name "awn_effects_draw_background")
-  (return-type "none")
-  (parameters
-    '("cairo_t*" "cr")
-  )
-)
-
-(define-method draw_foreground
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_foreground")
-  (return-type "none")
-  (parameters
-    '("cairo_t*" "cr")
-  )
-)
-
-(define-method draw_icons
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_icons")
-  (return-type "none")
-  (parameters
-    '("cairo_t*" "cr")
-    '("GdkPixbuf*" "icon")
-    '("GdkPixbuf*" "reflect" (default "NULL") (null-ok))
-  )
-)
-
-(define-method draw_icons_cairo
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_icons_cairo")
-  (return-type "none")
-  (parameters
-    '("cairo_t*" "cr")
-    '("cairo_t*" "icon_context")
-    '("cairo_t*" "reflect_context" (default "NULL") (null-ok))
-  )
-)
-
-(define-method draw_set_window_size
-  (of-object "AwnEffects")
-  (c-name "awn_effects_draw_set_window_size")
+  (c-name "awn_effects_set_icon_size")
   (return-type "none")
   (parameters
     '("gint" "width")
     '("gint" "height")
+    '("gboolean" "requestSize")
   )
 )
 
-(define-method draw_set_icon_size
+(define-method add_overlay
   (of-object "AwnEffects")
-  (c-name "awn_effects_draw_set_icon_size")
+  (c-name "awn_effects_add_overlay")
   (return-type "none")
   (parameters
-    '("gint" "width")
-    '("gint" "height")
+    '("AwnOverlay*" "overlay")
+  )
+)
+
+(define-method remove_overlay
+  (of-object "AwnEffects")
+  (c-name "awn_effects_remove_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnOverlay*" "overlay")
   )
 )
 
 ;; From awn-enum-types.h
-
-(define-function awn_orientation_get_type
-  (c-name "awn_orientation_get_type")
-  (return-type "GType")
-)
 
 (define-function awn_cairo_round_corners_get_type
   (c-name "awn_cairo_round_corners_get_type")
@@ -881,143 +814,630 @@
   (return-type "GType")
 )
 
+;; From awn-icon.h
 
-
-;; From awn-plug.h
-
-(define-function awn_plug_get_type
-  (c-name "awn_plug_get_type")
-  (return-type "GType")
-)
-
-(define-function awn_plug_new
-  (c-name "awn_plug_new")
-  (is-constructor-of "AwnPlug")
+(define-function awn_icon_new
+  (c-name "awn_icon_new")
+  (is-constructor-of "AwnIcon")
   (return-type "GtkWidget*")
-  (parameters
-    '("AwnApplet*" "applet")
+  (properties
+    '("bind_effects" (optional) (arg-name "bind_effects"))
   )
 )
 
-(define-method construct
-  (of-object "AwnPlug")
-  (c-name "awn_plug_construct")
+(define-method set_pos_type
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_pos_type")
   (return-type "none")
   (parameters
-    '("GdkNativeWindow" "socket_id")
+    '("GtkPositionType" "position")
   )
 )
 
-
-
-;; From awn-title.h
-
-(define-function awn_title_get_type
-  (c-name "awn_title_get_type")
-  (return-type "GType")
+(define-method get_pos_type
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_pos_type")
+  (return-type "GtkPositionType")
 )
 
-(define-function awn_title_get_default
-  (c-name "awn_title_get_default")
-  (return-type "GtkWidget*")
-)
-
-(define-method show
-  (of-object "AwnTitle")
-  (c-name "awn_title_show")
+(define-method set_offset
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_offset")
   (return-type "none")
   (parameters
-    '("GtkWidget*" "focus")
+    '("gint" "offset")
+  )
+)
+
+(define-method get_offset
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_offset")
+  (return-type "gint")
+)
+
+(define-method set_effect
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_effect")
+  (return-type "none")
+  (parameters
+    '("AwnEffect" "effect")
+  )
+)
+
+(define-method set_from_pixbuf
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_from_pixbuf")
+  (return-type "none")
+  (parameters
+    '("GdkPixbuf*" "pixbuf")
+  )
+)
+
+(define-method set_from_context
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_from_context")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "ctx")
+  )
+)
+
+(define-method set_from_surface
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_from_surface")
+  (return-type "none")
+  (parameters
+    '("cairo_surface_t*" "surface")
+  )
+)
+
+(define-method set_custom_paint
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_custom_paint")
+  (return-type "none")
+  (parameters
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method get_tooltip
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_tooltip")
+  (return-type "AwnTooltip*")
+)
+
+(define-method set_tooltip_text
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_tooltip_text")
+  (return-type "none")
+  (parameters
     '("const-gchar*" "text")
   )
 )
 
-(define-method hide
-  (of-object "AwnTitle")
-  (c-name "awn_title_hide")
+(define-method get_tooltip_text
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_tooltip_text")
+  (return-type "gchar*")
+)
+
+(define-method set_is_active
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_is_active")
   (return-type "none")
   (parameters
-    '("GtkWidget*" "focus")
+    '("gboolean" "is_active")
   )
 )
 
-;; From awn-icons.h
+(define-method get_is_active
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_is_active")
+  (return-type "gboolean")
+)
 
-(define-function awn_icons_get_type
-  (c-name "awn_icons_get_type")
+(define-method set_indicator_count
+  (of-object "AwnIcon")
+  (c-name "awn_icon_set_indicator_count")
+  (return-type "none")
+  (parameters
+    '("gint" "count")
+  )
+)
+
+(define-method get_indicator_count
+  (of-object "AwnIcon")
+  (c-name "awn_icon_get_indicator_count")
+  (return-type "gint")
+)
+
+;; From awn-icon-box.h
+
+(define-function awn_iconbox_new
+  (c-name "awn_icon_box_new_for_applet")
+  (is-constructor-of "AwnIconBox")
+  (return-type "AwnIconBox*")
+  (properties
+    '("applet" (optional) (arg-name "applet"))
+  )
+)
+
+;; From awn-image.h
+
+(define-function awn_image_new
+  (c-name "awn_image_new")
+  (is-constructor-of "AwnImage")
+  (return-type "AwnImage*")
+)
+
+;; From awn-label.h
+
+(define-function awn_label_new
+  (c-name "awn_label_new")
+  (is-constructor-of "AwnLabel")
+  (return-type "AwnLabel*")
+  (properties
+    '("label" (optional) (arg-name "label"))
+  )
+)
+
+;; From awn-overlay.h
+
+(define-function awn_overlay_new
+  (c-name "awn_overlay_new")
+  (is-constructor-of "AwnOverlay")
+  (return-type "AwnOverlay*")
+)
+
+(define-method render_overlay
+  (of-object "AwnOverlay")
+  (c-name "awn_overlay_render")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+    '("cairo_t*" "cr")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method move_to
+  (of-object "AwnOverlay")
+  (c-name "awn_overlay_move_to")
+  (return-type "none")
+  (parameters
+    '("cairo_t*" "cr")
+    '("gint" "icon_width")
+    '("gint" "icon_height")
+    '("gint" "overlay_width")
+    '("gint" "overlay_height")
+    '("AwnOverlayCoord*" "coord")
+  )
+)
+
+
+;; From awn-overlayable.h
+
+(define-method get_effects
+  (of-object "AwnOverlayable")
+  (c-name "awn_overlayable_get_effects")
+  (return-type "AwnEffects*")
+)
+
+(define-method add_overlay
+  (of-object "AwnOverlayable")
+  (c-name "awn_overlayable_add_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnOverlay*" "overlay")
+  )
+)
+
+(define-method remove_overlay
+  (of-object "AwnOverlayable")
+  (c-name "awn_overlayable_remove_overlay")
+  (return-type "none")
+  (parameters
+    '("AwnOverlay*" "overlay")
+  )
+)
+
+
+;; From awn-overlay-text.h
+
+(define-function awn_overlay_text_new
+  (c-name "awn_overlay_text_new")
+  (is-constructor-of "AwnOverlayText")
+  (return-type "AwnOverlayText*")
+  (properties
+    '("text" (optional) (argname "text"))
+  )
+)
+
+;; From awn-overlay-themed-icon.h
+
+(define-function awn_overlay_themed_icon_new
+  (c-name "awn_overlay_themed_icon_new")
+  (is-constructor-of "AwnOverlayThemedIcon")
+  (properties
+    '("icon-name"   (argname "icon_name"))
+  )
+)
+
+;; From awn-overlay-throbber.h
+
+(define-function awn_overlay_throbber_new
+  (c-name "awn_overlay_throbber_new")
+  (is-constructor-of "AwnOverlayThrobber")
+  (return-type "AwnOverlayThrobber*")
+)
+
+;; From awn-overlay-pixbuf.h
+
+(define-function awn_overlay_pixbuf_new
+  (c-name "awn_overlay_pixbuf_new")
+  (is-constructor-of "AwnOverlayPixbuf")
+  (return-type "AwnOverlayPixbuf*")
+  (properties
+    '("pixbuf" (optional) (argname "pixbuf"))
+  )
+)
+
+;; From awn-overlay-pixbuf-file.h
+
+(define-function awn_overlay_pixbuf_file_new
+  (c-name "awn_overlay_pixbuf_file_new")
+  (is-constructor-of "AwnOverlayPixbufFile")
+  (return-type "AwnOverlayPixbufFile*")
+  (properties
+    '("file-name" (optional) (argname "file-name"))
+  )
+)
+
+;; From awn-overlay-progress-circle.h
+
+(define-function awn_overlay_progress_circle_new
+  (c-name "awn_overlay_progress_circle_new")
+  (is-constructor-of "AwnOverlayProgressCircle")
+  (return-type "AwnOverlayProgressCircle*")
+)
+
+;; From awn-pixbuf-cache.h
+
+(define-function awn_pixbuf_cache_new
+  (c-name "awn_pixbuf_cache_new")
+  (is-constructor-of "AwnPixbufCache")
+  (return-type "AwnPixbufCache*")
+)
+
+(define-function pixbuf_cache_get_default
+  (c-name "awn_pixbuf_cache_get_default")
+  (return-type "AwnPixbufCache*")
+)
+
+(define-method invalidate
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_invalidate")
+  (return-type "none")
+)
+
+(define-method insert_pixbuf
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_insert_pixbuf")
+  (return-type "none")
+  (parameters
+    '("GdkPixbuf*" "pbuf")
+    '("const-gchar*" "scope")
+    '("const-gchar*" "theme_name")
+    '("const-gchar*" "icon_name")
+  )
+)
+
+(define-method insert_pixbuf_simple_key
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_insert_pixbuf_simple_key")
+  (return-type "none")
+  (parameters
+    '("GdkPixbuf*" "pbuf")
+    '("const-gchar*" "simple_key")
+  )
+)
+
+(define-method insert_null_result
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_insert_null_result")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "scope")
+    '("const-gchar*" "theme_name")
+    '("const-gchar*" "icon_name")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+(define-method lookup
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_lookup")
+  (return-type "GdkPixbuf*")
+  (caller-owns-return #t)
+  (parameters
+    '("const-gchar*" "scope")
+    '("const-gchar*" "theme_name")
+    '("const-gchar*" "icon_name")
+    '("gint" "width")
+    '("gint" "height")
+    '("gboolean*" "null_result")
+  )
+)
+
+(define-method lookup_simple_key
+  (of-object "AwnPixbufCache")
+  (c-name "awn_pixbuf_cache_lookup_simple_key")
+  (return-type "GdkPixbuf*")
+  (caller-owns-return #t)
+  (parameters
+    '("const-gchar*" "simple_key")
+    '("gint" "width")
+    '("gint" "height")
+  )
+)
+
+;; From awn-tooltip.h
+
+(define-function awn_tooltip_get_type
+  (c-name "awn_tooltip_get_type")
   (return-type "GType")
 )
 
-(define-function awn_icons_new
-  (c-name "awn_icons_new")
-  (is-constructor-of "AwnIcons")
+(define-function tooltip_new_for_widget
+  (c-name "awn_tooltip_new_for_widget")
+  (return-type "GtkWidget*")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+  (caller-owns-return #t)
+)
+
+(define-method set_text
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_set_text")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "text")
+  )
+)
+
+(define-method get_text
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_get_text")
+  (return-type "gchar*")
+)
+
+(define-method set_focus_widget
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_set_focus_widget")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-method set_font_name
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_set_font_name")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "font_name")
+  )
+)
+
+(define-method set_font_color
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_set_font_color")
+  (return-type "none")
+  (parameters
+    '("DesktopAgnosticColor*" "font_color")
+  )
+)
+
+(define-method set_background_color
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_set_background_color")
+  (return-type "none")
+  (parameters
+    '("DesktopAgnosticColor*" "bg_color")
+  )
+)
+
+(define-method set_delay
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_set_delay")
+  (return-type "none")
+  (parameters
+    '("gint" "msecs")
+  )
+)
+
+(define-method get_delay
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_get_delay")
+  (return-type "gint")
+)
+
+(define-method update_position
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_update_position")
+  (return-type "none")
+)
+
+(define-method set_position_hint
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_set_position_hint")
+  (return-type "none")
+  (parameters
+    '("GtkPositionType" "position")
+    '("gint" "size")
+  )
+)
+
+;; From awn-themed-icon.h
+
+(define-function awn_themed_icon_get_type
+  (c-name "awn_themed_icon_get_type")
+  (return-type "GType")
+)
+
+(define-function awn_themed_icon_new
+  (c-name "awn_themed_icon_new")
+  (is-constructor-of "AwnThemedIcon")
+  (return-type "GtkWidget*")
+  (properties
+    '("bind_effects" (optional) (argname "bind_effects"))
+  )
+)
+
+(define-method set_state
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_set_state")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "state")
+  )
+)
+
+(define-method get_state
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_get_state")
+  (return-type "const-gchar*")
+)
+
+(define-method get_default_theme_name
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_get_default_theme_name")
+  (return-type "const-gchar*")
+)
+
+(define-method set_size
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_set_size")
+  (return-type "none")
+  (parameters
+    '("gint" "size")
+  )
+)
+
+(define-method get_size
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_get_size")
+  (return-type "gint")
+)
+
+(define-method set_info
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_set_info")
+  (return-type "none")
   (parameters
     '("const-gchar*" "applet_name")
-  )  
-  (return-type "AwnIcons*")
-)
-
-(define-method get_icon_at_height
-  (of-object "AwnIcons")
-  (c-name "awn_icons_get_icon_at_height")
-  (return-type "GdkPixbuf*")
-  (parameters
-    '("const-gchar*" "state")
-    '("gint" "height")
+    '("const-gchar*" "uid")
+    '("GStrv" "states")
+    '("GStrv" "icon_names")
   )
 )
 
-(define-method get_icon_simple_at_height
-  (of-object "AwnIcons")
-  (c-name "awn_icons_get_icon_simple_at_height")
-  (return-type "GdkPixbuf*")
+(define-method set_info_append
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_set_info_append")
+  (return-type "none")
   (parameters
-    '("gint" "height")
+    '("const-gchar*" "state")
+    '("const-gchar*" "icon_name")
   )
 )
 
-(define-method get_icon
-  (of-object "AwnIcons")
-  (c-name "awn_icons_get_icon")
-  (return-type "GdkPixbuf*")
+(define-method set_applet_info
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_set_applet_info")
+  (return-type "none")
   (parameters
-    '("const-gchar*" "state")
+    '("const-gchar*" "applet_name")
+    '("const-gchar*" "uid")
+  )
+)
+
+(define-method set_info_simple
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_set_info_simple")
+  (return-type "none")
+  (parameters
+    '("const-gchar*" "applet_name")
+    '("const-gchar*" "uid")
+    '("const-gchar*" "icon_name")
   )
 )
 
 (define-method override_gtk_theme
-  (of-object "AwnIcons")
-  (c-name "awn_icons_override_gtk_theme")
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_override_gtk_theme")
   (return-type "none")
   (parameters
-    '("const-gchar*" "theme_name")
+    '("const-gchar*" "theme_name"  (default "NULL") (null-ok))
   )
 )
 
-(define-method get_icon_simple
-  (of-object "AwnIcons")
-  (c-name "awn_icons_get_icon_simple")
+(define-method get_icon_at_size
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_get_icon_at_size")
   (return-type "GdkPixbuf*")
-)
-
-(define-method set_height
-  (of-object "AwnIcons")
-  (c-name "awn_icons_set_height")
-  (return-type "none")
+  (caller-owns-return #t)
   (parameters
-    '("gint" "height")
+    '("gint" "size")
+    '("const-gchar*" "state" (default "NULL") (null-ok))
   )
 )
 
-;; From awn-vfs.h
-
-(define-function vfs_init
-  (c-name "awn_vfs_init")
+(define-method clear_icons
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_clear_icons")
   (return-type "none")
+  (parameters
+    '("gint" "scope")
+  )
+)
+
+(define-method clear_info
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_clear_info")
+  (return-type "none")
+)
+
+;; From awn-utils.h
+
+(define-function utils_ensure_transparent_bg
+  (c-name "awn_utils_ensure_transparent_bg")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
+)
+
+(define-function utils_make_transparent_bg
+  (c-name "awn_utils_make_transparent_bg")
+  (return-type "none")
+  (parameters
+    '("GtkWidget*" "widget")
+  )
 )
 
 
 
-;; From stamp-awn-enum-types.h
+;; Miscellaneous needed
 
-
+(define-function image_menu_item_new_with_label
+  (c-name "gtk_image_menu_item_new_with_label")
+  (return-type "GtkImageMenuItem*")
+  (parameters
+    '("const-gchar*" "label")
+  )
+)

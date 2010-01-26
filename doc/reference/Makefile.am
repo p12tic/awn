@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+include $(top_srcdir)/Makefile.shave
+
 # We require automake 1.6 at least.
 AUTOMAKE_OPTIONS = 1.6
 
@@ -20,7 +22,7 @@ DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
 # gtk-doc will search all .c & .h files beneath here for inline comments
 # documenting the functions and macros.
 # e.g. DOC_SOURCE_DIR=../../../gtk
-DOC_SOURCE_DIR=../../libawn
+DOC_SOURCE_DIR=$(top_srcdir)/libawn
 
 # Extra options to pass to gtkdoc-scangobj. Not normally needed.
 SCANGOBJ_OPTIONS=
@@ -44,12 +46,32 @@ FIXXREF_OPTIONS=
 # Used for dependencies. The docs will be rebuilt if any of these change.
 # e.g. HFILE_GLOB=$(top_srcdir)/gtk/*.h
 # e.g. CFILE_GLOB=$(top_srcdir)/gtk/*.c
-HFILE_GLOB=$(top_srcdir)/libawn/*.h
-CFILE_GLOB=$(top_srcdir)/libawn/*.c
+HFILE_GLOB=$(DOC_SOURCE_DIR)/*.h
+CFILE_GLOB=$(DOC_SOURCE_DIR)/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
-IGNORE_HFILES=
+# For some bizarre reason, I needed to add nonexistent buffer files to get it
+# to work correctly. (malept)
+IGNORE_HFILES= \
+	awn-effect-bounce.h \
+	awn-effect-desaturate.h \
+	awn-effect-fade.h \
+	awn-effect-glow.h \
+	awn-effect-simple.h \
+	awn-effect-spotlight.h \
+	awn-effect-spotlight3d.h \
+	awn-effect-squish.h \
+	awn-effect-turn.h \
+	awn-effect-zoom.h \
+	awn-effects-ops-helpers.h \
+	awn-effects-shared.h \
+	awn-enum-types.h \
+	gseal-transition.h \
+	libawn.h \
+	libawn-marshal.h \
+	stamp-awn-enum-types.h \
+	invalid.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
@@ -83,6 +105,11 @@ GTKDOC_LIBS = \
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
 include $(top_srcdir)/gtk-doc.make
+
+if MAINTAINER_MODE
+$(DOC_MODULE).types: $(HFILE_GLOB)
+	$(QUIET_GEN) gtkdoc-scan --rebuild-sections --rebuild-types --module=$(DOC_MODULE) --source-dir=$(DOC_SOURCE_DIR) --ignore-headers="$(IGNORE_HFILES)"
+endif
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in

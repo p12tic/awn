@@ -1,6 +1,9 @@
-usr/bin/awn-applet-activation
-usr/bin/awn-autostart
+usr/bin/avant-window-navigator
+usr/bin/awn-applet*
+usr/lib/awn/applets/*/*.so
 usr/share/applications/avant-window-navigator.desktop
 usr/share/avant-window-navigator/applets/*.desktop
+usr/share/avant-window-navigator/applets/*/*/*.xml
 usr/share/avant-window-navigator/schemas/*.schema-ini
+usr/share/avant-window-navigator/*.ui
 etc/gconf

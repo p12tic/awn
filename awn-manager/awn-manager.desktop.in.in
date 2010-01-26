@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-_Name=Awn Manager
-_Comment=Manage Awn preferences, launchers, applets and themes
-Exec=awn-manager
-Icon=awn-manager
-Categories=Settings;DesktopSettings;GTK;
-

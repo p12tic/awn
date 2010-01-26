@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2007-2009 Michal Hruby <michal.mhr@gmail.com>
  *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -12,367 +12,1015 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+#include "awn-config.h"
 #include "awn-effects.h"
-#include "awn-effects-ops.h"
+#include "awn-effects-ops-new.h"
+#include "awn-enum-types.h"
+#include "awn-overlay.h"
 
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #include <cairo/cairo-xlib.h>
 
-#include "awn-effect-spotlight.h"
-#include "awn-effect-bounce.h"
-#include "awn-effect-glow.h"
-#include "awn-effect-zoom.h"
-#include "awn-effect-fade.h"
-#include "awn-effect-squish.h"
-#include "awn-effect-turn.h"
-#include "awn-effect-spotlight3d.h"
-#include "awn-effect-desaturate.h"
+#include "gseal-transition.h"
 
-#ifndef M_PI
-#define  M_PI 3.14159265358979323846
-#endif
-#define  RADIANS_PER_DEGREE  0.0174532925
+#include "anims/awn-effects-shared.h"
 
-#define  AWN_FRAME_RATE    40
+#include "anims/awn-effect-bounce.h"
+#include "anims/awn-effect-desaturate.h"
+#include "anims/awn-effect-fade.h"
+#include "anims/awn-effect-glow.h"
+#include "anims/awn-effect-simple.h"
+#include "anims/awn-effect-spotlight.h"
+#include "anims/awn-effect-spotlight3d.h"
+#include "anims/awn-effect-squish.h"
+#include "anims/awn-effect-turn.h"
+#include "anims/awn-effect-zoom.h"
 
-/* FORWARD DECLARATIONS */
+G_DEFINE_TYPE(AwnEffects, awn_effects, G_TYPE_OBJECT)
 
-extern GdkPixbuf *SPOTLIGHT_PIXBUF;
+#define AWN_EFFECTS_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
+  AWN_TYPE_EFFECTS, \
+  AwnEffectsPrivate))
 
-#define EFFECT_BOUNCE 0
-#define EFFECT_FADE 1
-#define EFFECT_SPOTLIGHT 2
-#define EFFECT_ZOOM 3
-#define EFFECT_SQUISH 4
-#define EFFECT_TURN_3D 5
-#define EFFECT_TURN_3D_SPOTLIGHT 6
-#define EFFECT_GLOW 7
-
-// NOTE! Always make sure that all EFFECTS arrays have same number of elements
-static const GSourceFunc OPENING_EFFECTS[] =
-{
-  NULL,
-  (GSourceFunc) bounce_opening_effect,
-  (GSourceFunc) zoom_opening_effect,
-  (GSourceFunc) spotlight_opening_effect2,
-  (GSourceFunc) zoom_opening_effect,
-  (GSourceFunc) bounce_squish_opening_effect,
-  (GSourceFunc) turn_opening_effect,
-  (GSourceFunc) spotlight3D_opening_effect,
-  (GSourceFunc) glow_opening_effect
-};
-static const GSourceFunc CLOSING_EFFECTS[] =
-{
-  NULL,
-  (GSourceFunc) fade_out_effect,
-  (GSourceFunc) zoom_closing_effect,
-  (GSourceFunc) spotlight_closing_effect,
-  (GSourceFunc) zoom_closing_effect,
-  (GSourceFunc) bounce_squish_closing_effect,
-  (GSourceFunc) turn_closing_effect,
-  (GSourceFunc) spotlight3D_closing_effect,
-  (GSourceFunc) glow_closing_effect
-};
-static const GSourceFunc HOVER_EFFECTS[] =
-{
-  NULL,
-  (GSourceFunc) bounce_effect,
-  (GSourceFunc) fading_effect,
-  (GSourceFunc) spotlight_effect,
-  (GSourceFunc) zoom_effect,
-  (GSourceFunc) bounce_squish_effect,
-  (GSourceFunc) turn_hover_effect,
-  (GSourceFunc) spotlight3D_hover_effect,
-  (GSourceFunc) glow_effect
-};
-static const GSourceFunc LAUNCHING_EFFECTS[] =
-{
-  NULL,
-  (GSourceFunc) bounce_effect,
-  (GSourceFunc) fading_effect,
-  (GSourceFunc) spotlight_half_fade_effect,
-  (GSourceFunc) zoom_attention_effect,
-  (GSourceFunc) bounce_squish_effect,
-  (GSourceFunc) turn_hover_effect,
-  (GSourceFunc) spotlight_half_fade_effect,
-  (GSourceFunc) glow_attention_effect
-};
-static const GSourceFunc ATTENTION_EFFECTS[] =
-{
-  NULL,
-  (GSourceFunc) bounce_effect,
-  (GSourceFunc) fading_effect,
-  (GSourceFunc) spotlight_half_fade_effect,
-  (GSourceFunc) zoom_attention_effect,
-  (GSourceFunc) bounce_squish_attention_effect,
-  (GSourceFunc) turn_hover_effect,
-  (GSourceFunc) spotlight3D_hover_effect,
-  (GSourceFunc) glow_attention_effect
-};
-static const GSourceFunc FINALIZE_EFFECTS[] =
-{
-  NULL,
-  (GSourceFunc) bounce_effect_finalize,
-  (GSourceFunc) fading_effect_finalize,
-  (GSourceFunc) spotlight_effect_finalize,
-  (GSourceFunc) zoom_effect_finalize,
-  (GSourceFunc) bounce_squish_effect_finalize,
-  (GSourceFunc) turn_effect_finalize,
-  (GSourceFunc) spotlight3D_effect_finalize,
-  (GSourceFunc) glow_effect_finalize
-};
-
-//The default ops list that the existing effects expect.
-static const AwnEffectsOp OP_LIST[] =
-{
-  {awn_effect_op_saturate, NULL},
-  {awn_effect_op_hflip, NULL},
-  {awn_effect_op_glow, NULL},
-  {awn_effect_move_x, NULL},
-  {awn_effect_op_3dturn, NULL},
-  {(AwnEffectsOpfn)NULL, NULL}
-};
-
-// effect functions
-
-/**
- * awn_effects_init:
- * @fx: Pointer to #AwnEffects structure.
- * @obj: Object which will be passed to all callback functions, this object is
- * also passed to gtk_widget_queue_draw() during the animation.
- *
- * Initializes #AwnEffects structure.
+/* if someone wants faster/slower animations add a speed multiplier
+ * property (and use it in the animations) but don't change fps
  */
-static void awn_effects_init(AwnEffects * fx, GtkWidget * widget);
+#define AWN_FRAMES_PER_SECOND(fx) (25)
+#define AWN_ANIMATIONS_PER_BUNDLE 5
 
-static gboolean awn_effects_enter_event(GtkWidget * widget,
-                                   GdkEventCrossing * event, gpointer data);
-static gboolean awn_effects_leave_event(GtkWidget * widget,
-                                   GdkEventCrossing * event, gpointer data);
+#define AWN_INTERNAL_ICON "__awn_internal_"
 
-static gdouble calc_curve_position(gdouble cx, gdouble a, gdouble b);
+#define AWN_INTERNAL_SPOTLIGHT	AWN_INTERNAL_ICON "spotlight"
+#define AWN_INTERNAL_ARROW1	AWN_INTERNAL_ICON "arrow1"
+#define AWN_INTERNAL_ARROW2	AWN_INTERNAL_ICON "arrow2"
 
-static gpointer _awn_effects_copy(gpointer boxed)
+typedef gboolean (*_AwnAnimation)(AwnEffectsAnimation*);
+
+enum
 {
-  // FIXME: should we really make a copy?
-  return boxed;
-}
+  ANIMATION_START,
+  ANIMATION_END,
 
-static void _awn_effects_free(gpointer boxed)
+  LAST_SIGNAL
+};
+static guint32 _effects_signals[LAST_SIGNAL] = { 0 };
+
+enum {
+  PROP_0,
+  PROP_WIDGET,
+  PROP_NO_CLEAR,
+  PROP_INDIRECT_PAINT,
+  PROP_POSITION,
+  PROP_CURRENT_EFFECTS,
+  PROP_ICON_OFFSET,
+  PROP_ICON_ALPHA,
+  PROP_REFLECTION_OFFSET,
+  PROP_REFLECTION_ALPHA,
+  PROP_REFLECTION_VISIBLE,
+  PROP_MAKE_SHADOW,
+  PROP_IS_ACTIVE,
+  PROP_IS_DEPRESSED,
+  PROP_PROGRESS,
+  PROP_BORDER_CLIP,
+  PROP_SPOTLIGHT_ICON,
+  PROP_ACTIVE_RECT_COLOR,
+  PROP_ACTIVE_RECT_OUTLINE,
+  PROP_DOT_COLOR,
+  PROP_ARROW_ICON,
+  PROP_ARROWS_COUNT,
+  PROP_CUSTOM_ACTIVE_ICON
+};
+
+/* FORWARDS */
+static void awn_effects_prop_changed (GObject *object, GParamSpec *pspec);
+
+static void
+awn_effects_dispose (GObject *object)
 {
-  if (boxed)
-    awn_effects_free(AWN_EFFECTS(boxed));
-}
+  AwnEffects *fx = AWN_EFFECTS (object);
 
-void awn_effects_free(AwnEffects *fx)
-{
-  awn_effects_finalize(fx);
-  g_free(fx->op_list);
-  g_free(fx);
-}
-
-GType awn_effects_get_type(void)
-{
-  static GType type = 0;
-
-  if (type == 0) {
-    type = g_boxed_type_register_static("AwnEffects",
-                                        _awn_effects_copy,
-                                        _awn_effects_free);
+  /* destroy animation timer */
+  if (fx->priv->timer_id)
+  {
+    g_source_remove (fx->priv->timer_id);
+    fx->priv->timer_id = 0;
   }
 
-  return type;
-}
+  if (fx->widget)
+  {
+    g_object_remove_weak_pointer ((GObject*)fx->widget, (gpointer*)&fx->widget);
+    fx->widget = NULL;
+  }
 
-AwnEffects* awn_effects_new()
-{
-  AwnEffects *fx = g_new(AwnEffects, 1);
-  awn_effects_init(fx, NULL);
-  return fx;
-}
+  /* unref overlays in our overlay list */
+  if (fx->priv->overlays)
+  {
+    for (GList *iter = fx->priv->overlays; iter != NULL;
+         iter = g_list_next (iter))
+    {
+      AwnOverlay *overlay = iter->data;
+      g_signal_handlers_disconnect_by_func (overlay,
+        G_CALLBACK (awn_effects_prop_changed), fx);
+      g_object_unref (overlay);
+    }
+    g_list_free (fx->priv->overlays);
+    fx->priv->overlays = NULL;
+  }
 
-AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
-{
-  AwnEffects *fx = g_new(AwnEffects, 1);
-  awn_effects_init(fx, widget);
-  return fx;
-}
-
-void
-awn_effects_init(AwnEffects * fx, GtkWidget * widget)
-{
-  fx->self = widget;
-  fx->focus_window = NULL;
-  fx->settings = awn_get_settings();
-  fx->title = NULL;
-  fx->get_title = NULL;
-  fx->effect_queue = NULL;
-
-  fx->icon_width = 48;
-  fx->icon_height = 48;
-  fx->window_width = 0;
-  fx->window_height = 0;
-
-  /* EFFECT VARIABLES */
-  fx->effect_lock = FALSE;
-  fx->current_effect = AWN_EFFECT_NONE;
-  fx->direction = AWN_EFFECT_DIR_NONE;
-  fx->count = 0;
-
-  fx->x_offset = 0;
-  fx->y_offset = 0;
-  fx->curve_offset = 0;
-
-  fx->delta_width = 0;
-  fx->delta_height = 0;
-
-  //fx->clip_region = ; // no need to init, there's a boolean guarding it
-
-  fx->rotate_degrees = 0.0;
-  fx->alpha = 1.0;
-  fx->spotlight_alpha = 0.0;
-  fx->saturation = 1.0;
-  fx->glow_amount = 0.0;
-
-  fx->icon_depth = 0;
-  fx->icon_depth_direction = 0;
-
-  fx->hover = FALSE;
-  fx->clip = FALSE;
-  fx->flip = FALSE;
-  fx->spotlight = FALSE;
-  fx->do_reflections = TRUE;
-  fx->do_offset_cut = TRUE;
-
-  fx->enter_notify = 0;
-  fx->leave_notify = 0;
-  fx->timer_id = 0;
-
-  fx->icon_ctx = NULL;
-  fx->reflect_ctx = NULL;
-
-  fx->op_list = g_malloc(sizeof(OP_LIST));
-  memcpy(fx->op_list, OP_LIST, sizeof(OP_LIST));
+  G_OBJECT_CLASS (awn_effects_parent_class)->dispose(object);
 }
 
 static void
-awn_effects_dispose_queue(AwnEffects * fx)
+awn_effects_finalize (GObject *object)
 {
-  if (fx->timer_id)
-  {
-    GSource *s = g_main_context_find_source_by_id(NULL, fx->timer_id);
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client;
+  AwnEffects *fx = AWN_EFFECTS (object);
 
-    if (s)
+  client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_warning ("An error occurred while trying to retrieve the configuration client: %s",
+               error->message);
+    g_error_free (error);
+  }
+  else
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (client,
+                                                          object, NULL);
+  }
+
+  fx->widget = NULL;
+
+  /* free effect queue and associated AwnEffectsPriv */
+  if (fx->priv->effect_queue)
+  {
+    g_list_foreach (fx->priv->effect_queue, (GFunc)g_free, NULL);
+    g_list_free (fx->priv->effect_queue);
+    fx->priv->effect_queue = NULL;
+  }
+
+  G_OBJECT_CLASS (awn_effects_parent_class)->finalize(object);
+}
+
+/* it'd be so much easier if this wasn't compiled into AWN */
+typedef struct _mem_reader_t {
+  void *data;
+  size_t size;
+  unsigned int offset;
+} mem_reader_t;
+
+static cairo_status_t
+internal_reader(void *closure, unsigned char *data,
+                               unsigned int length)
+{
+  mem_reader_t *mem_reader = (mem_reader_t*)closure;
+  unsigned char *in_data = mem_reader->data;
+
+  if (mem_reader->offset + length <= mem_reader->size)
+  {
+    memcpy(data, in_data + mem_reader->offset, length);
+    mem_reader->offset += length;
+    return CAIRO_STATUS_SUCCESS;
+  }
+
+  return CAIRO_STATUS_READ_ERROR;
+}
+
+static GQuark
+awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
+{
+  if (path == NULL || path[0] == '\0') return 0;
+  /* handle Awn's internal icons */
+  else if (g_str_has_prefix (path, AWN_INTERNAL_ICON))
+  {
+    if (g_strcmp0 (path, AWN_INTERNAL_ARROW1) == 0)
+      fx->priv->arrow_type = AWN_ARROW_TYPE_1;
+    else if (g_strcmp0 (path, AWN_INTERNAL_ARROW2) == 0)
+      fx->priv->arrow_type = AWN_ARROW_TYPE_2;
+
+    /* did we already initialize data for this string? */
+    GQuark q = g_quark_try_string (path);
+    if (q) return q;
+
+    q = g_quark_from_string(path);
+    cairo_surface_t *surface = NULL;
+
+    if (g_strcmp0(path, AWN_INTERNAL_SPOTLIGHT) == 0)
     {
-      g_source_destroy(s);
+      #include "../data/active/spotlight_png_inline.c"
+
+      mem_reader_t mem_reader;
+      mem_reader.data = spotlight_bin_data;
+      mem_reader.size = sizeof(spotlight_bin_data);
+      mem_reader.offset = 0;
+
+      surface = cairo_image_surface_create_from_png_stream (internal_reader,
+                                                            &mem_reader);
+      if (cairo_surface_status(surface) != CAIRO_STATUS_SUCCESS) {
+        g_warning("Error while trying to read internal PNG icon!");
+        cairo_surface_destroy(surface);
+        surface = NULL;
+      }
+    }
+
+    GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
+
+    g_datalist_id_set_data(icons, q, surface);
+
+    return q;
+  }
+  else
+  {
+    GQuark q = g_quark_try_string(path);
+    if (!q) {
+      /* needs to be added to class' custom_icons */
+      q = g_quark_from_string(path);
+
+      cairo_surface_t *surface = cairo_image_surface_create_from_png(path);
+      if (cairo_surface_status(surface) != CAIRO_STATUS_SUCCESS) {
+        g_warning("Error while trying to read PNG icon \"%s\"", path);
+        cairo_surface_destroy(surface);
+        surface = NULL;
+      }
+      GData **icons = &(AWN_EFFECTS_GET_CLASS(fx)->custom_icons);
+
+      g_datalist_id_set_data(icons, q, surface);
+    }
+    return q;
+  }
+}
+
+static void
+awn_effects_widget_hidden (AwnEffects *fx)
+{
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+
+  AwnEffectsPrivate *priv = AWN_EFFECTS_GET_PRIVATE (fx);
+
+  priv->already_exposed = FALSE;
+}
+
+static void
+awn_effects_get_property (GObject      *object,
+                          guint         prop_id,
+                          GValue *value,
+                          GParamSpec   *pspec)
+{
+  AwnEffects *fx = AWN_EFFECTS (object);
+
+  switch (prop_id) {
+    case PROP_WIDGET:
+      g_value_set_object(value, fx->widget);
+      break;
+    case PROP_NO_CLEAR:
+      g_value_set_boolean(value, fx->no_clear);
+      break;
+    case PROP_INDIRECT_PAINT:
+      g_value_set_boolean(value, fx->indirect_paint);
+      break;
+    case PROP_POSITION:
+      g_value_set_enum(value, fx->position);
+      break;
+    case PROP_CURRENT_EFFECTS:
+      g_value_set_int(value, (int)fx->set_effects);
+      break;
+    case PROP_ICON_OFFSET:
+      g_value_set_int(value, fx->icon_offset);
+      break;
+    case PROP_ICON_ALPHA:
+      g_value_set_float(value, fx->icon_alpha);
+      break;
+    case PROP_REFLECTION_OFFSET:
+      g_value_set_int(value, fx->refl_offset);
+      break;
+    case PROP_REFLECTION_ALPHA:
+      g_value_set_float(value, fx->refl_alpha);
+      break;
+    case PROP_REFLECTION_VISIBLE:
+      g_value_set_boolean(value, fx->do_reflection);
+      break;
+    case PROP_MAKE_SHADOW:
+      g_value_set_boolean(value, fx->make_shadow);
+      break;
+    case PROP_IS_ACTIVE:
+      g_value_set_boolean(value, fx->is_active);
+      break;
+    case PROP_IS_DEPRESSED:
+      g_value_set_boolean(value, fx->depressed);
+      break;
+    case PROP_ARROWS_COUNT:
+      g_value_set_int(value, fx->arrows_count);
+      break;
+    case PROP_PROGRESS:
+      g_value_set_float(value, fx->progress);
+      break;
+    case PROP_BORDER_CLIP:
+      g_value_set_int(value, fx->border_clip);
+      break;
+    case PROP_SPOTLIGHT_ICON:
+      g_value_set_string(value, g_quark_to_string(fx->spotlight_icon));
+      break;
+    case PROP_ARROW_ICON:
+      g_value_set_string(value, g_quark_to_string(fx->arrow_icon));
+      break;
+    case PROP_CUSTOM_ACTIVE_ICON:
+      g_value_set_string(value, g_quark_to_string(fx->custom_active_icon));
+      break;
+    case PROP_ACTIVE_RECT_COLOR:
+      g_value_set_object (value, fx->priv->active_rect_color);
+      break;
+    case PROP_ACTIVE_RECT_OUTLINE:
+      g_value_set_object (value, fx->priv->active_rect_outline);
+      break;
+    case PROP_DOT_COLOR:
+      g_value_set_object (value, fx->priv->dot_color);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+static void
+awn_effects_set_property (GObject      *object,
+                          guint         prop_id,
+                          const GValue *value,
+                          GParamSpec   *pspec)
+{
+  AwnEffects *fx = AWN_EFFECTS (object);
+  AwnEffectsPrivate *priv = AWN_EFFECTS_GET_PRIVATE (object);
+
+  switch (prop_id) {
+    case PROP_WIDGET:
+      if (fx->widget)
+      {
+        g_object_remove_weak_pointer ((GObject*)fx->widget,
+                                      (gpointer*)&fx->widget);
+      }
+      fx->widget = g_value_get_object (value);
+      g_object_add_weak_pointer ((GObject*)fx->widget, (gpointer*)&fx->widget);
+      g_signal_connect_swapped ((GObject*)fx->widget, "hide",
+                                G_CALLBACK (awn_effects_widget_hidden), fx);
+      break;
+    case PROP_NO_CLEAR:
+      fx->no_clear = g_value_get_boolean(value);
+      break;
+    case PROP_INDIRECT_PAINT:
+      fx->indirect_paint = g_value_get_boolean(value);
+      break;
+    case PROP_POSITION:
+      fx->position = g_value_get_enum(value);
+      break;
+    case PROP_CURRENT_EFFECTS:
+      fx->set_effects = (uint)g_value_get_int(value);
+      break;
+    case PROP_ICON_OFFSET:
+      fx->icon_offset = g_value_get_int(value);
+      break;
+    case PROP_ICON_ALPHA:
+      fx->icon_alpha = g_value_get_float(value);
+      break;
+    case PROP_REFLECTION_OFFSET:
+      fx->refl_offset = g_value_get_int(value);
+      break;
+    case PROP_REFLECTION_ALPHA:
+      fx->refl_alpha = g_value_get_float(value);
+      break;
+    case PROP_REFLECTION_VISIBLE:
+      fx->do_reflection = g_value_get_boolean(value);
+      break;
+    case PROP_MAKE_SHADOW:
+      fx->make_shadow = g_value_get_boolean(value);
+      break;
+    case PROP_IS_ACTIVE:
+      fx->is_active = g_value_get_boolean(value);
+      break;
+    case PROP_IS_DEPRESSED:
+      fx->depressed = g_value_get_boolean(value);
+      break;
+    case PROP_ARROWS_COUNT:
+      fx->arrows_count = g_value_get_int(value);
+      break;
+    case PROP_PROGRESS:
+      fx->progress = g_value_get_float(value);
+      break;
+    case PROP_BORDER_CLIP:
+      fx->border_clip = g_value_get_int(value);
+      break;
+    case PROP_SPOTLIGHT_ICON:
+      fx->spotlight_icon =
+        awn_effects_set_custom_icon (fx, g_value_get_string (value));
+      break;
+    case PROP_ARROW_ICON:
+      /* arrow_type will be set by set_custom_icon if we use internal icon */
+      fx->priv->arrow_type = AWN_ARROW_TYPE_CUSTOM;
+      fx->arrow_icon = 
+        awn_effects_set_custom_icon (fx, g_value_get_string (value));
+      break;
+    case PROP_CUSTOM_ACTIVE_ICON:
+      fx->custom_active_icon = 
+        awn_effects_set_custom_icon (fx, g_value_get_string (value));
+      break;
+    case PROP_ACTIVE_RECT_COLOR:
+      if (priv->active_rect_color)
+      {
+        g_object_unref (priv->active_rect_color);
+        priv->active_rect_color = NULL;
+      }
+      priv->active_rect_color = g_value_dup_object (value);
+      break;
+    case PROP_ACTIVE_RECT_OUTLINE:
+      if (priv->active_rect_outline)
+      {
+        g_object_unref (priv->active_rect_outline);
+        priv->active_rect_outline = NULL;
+      }
+      priv->active_rect_outline = g_value_dup_object (value);
+      break;
+    case PROP_DOT_COLOR:
+      if (priv->dot_color)
+      {
+        g_object_unref (priv->dot_color);
+        priv->dot_color = NULL;
+      }
+      priv->dot_color = g_value_dup_object (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+  }
+}
+
+static void
+awn_effects_prop_changed(GObject *object, GParamSpec *pspec)
+{
+  AwnEffects *fx = AWN_EFFECTS(object);
+
+  awn_effects_redraw (fx);
+}
+
+/**
+ * awn_effects_redraw:
+ * @fx: #AwnEffects instance.
+ *
+ * Schedules redraw of the managed widget. Contrary to #gtk_widget_queue_draw, 
+ * this function tries to minimize the area that needs to be redrawn.
+ */
+void
+awn_effects_redraw(AwnEffects *fx)
+{
+  if (fx->widget && GTK_WIDGET_DRAWABLE (fx->widget))
+  {
+    gint x, y, w, h;
+    gint dx = 0, dy = 0;
+    gint last_size = fx->priv->last_redraw_size;
+    gdouble icon_size;
+    GtkAllocation alloc;
+
+    gtk_widget_get_allocation (fx->widget, &alloc);
+    if (GTK_WIDGET_NO_WINDOW (fx->widget))
+    {
+      dx = alloc.x;
+      dy = alloc.y;
+    }
+    switch (fx->position)
+    {
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
+        icon_size = fx->is_active && fx->priv->height_mod <= 1.0 ?
+          fx->priv->icon_height :
+          fx->priv->icon_height * fx->priv->height_mod;
+        icon_size *= fx->make_shadow ? 1.0625 : 1.0;
+        w = alloc.width;
+        h = ceil (icon_size) +
+            fx->icon_offset + fx->priv->top_offset +
+            AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
+
+        fx->priv->last_redraw_size = h;
+        h = MAX (h, last_size == 0 ? fx->priv->icon_height : last_size);
+
+        x = dx;
+        y = fx->position == GTK_POS_TOP ? dy : alloc.height - h + dy;
+
+        gtk_widget_queue_draw_area (fx->widget, x, y, w, h);
+        break;
+
+      case GTK_POS_RIGHT:
+      case GTK_POS_LEFT:
+        icon_size = fx->is_active && fx->priv->width_mod <= 1.0 ?
+          fx->priv->icon_width :
+          fx->priv->icon_width * fx->priv->width_mod;
+        icon_size *= fx->make_shadow ? 1.0625 : 1.0;
+        w = ceil (icon_size) +
+            fx->icon_offset + fx->priv->top_offset +
+            AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
+        h = alloc.height;
+
+        fx->priv->last_redraw_size = w;
+        w = MAX (w, last_size == 0 ? fx->priv->icon_width : last_size);
+
+        x = fx->position == GTK_POS_LEFT ? dx : alloc.width - w + dx;
+        y = dy;
+
+        gtk_widget_queue_draw_area (fx->widget, x, y, w, h);
+        break;
+      default:
+        gtk_widget_queue_draw (fx->widget);
     }
   }
-
-  GList *queue = fx->effect_queue;
-
-  while (queue)
-  {
-    g_free(queue->data);
-    queue->data = NULL;
-    queue = g_list_next(queue);
-  }
-
-  if (fx->effect_queue) g_list_free(fx->effect_queue);
-
-  fx->effect_queue = NULL;
 }
 
-void
-awn_effects_finalize(AwnEffects * fx)
+static void
+awn_effects_register_effect_bundle(AwnEffectsClass *klass,
+                                   _AwnAnimation opening,
+                                   _AwnAnimation closing,
+                                   _AwnAnimation hover,
+                                   _AwnAnimation launching,
+                                   _AwnAnimation attention)
 {
-  awn_effects_unregister(fx);
-  awn_effects_dispose_queue(fx);
-  
+  /* make sure there are exactly AWN_ANIMATIONS_PER_BUNDLE items */
+  GPtrArray *anims = klass->animations;
 
-  if (  fx->icon_ctx)
-  {
-    cairo_surface_destroy( cairo_get_target(fx->icon_ctx));    
-    cairo_destroy(  fx->icon_ctx);
-    fx->icon_ctx=NULL;
-  }
-
-  if (   fx->reflect_ctx )
-  {
-    cairo_surface_destroy( cairo_get_target(fx->reflect_ctx));        
-    cairo_destroy(   fx->reflect_ctx );
-    fx->reflect_ctx=NULL;
-  }
-  
-  fx->self = NULL;
+  g_ptr_array_add(anims, opening);
+  g_ptr_array_add(anims, closing);
+  g_ptr_array_add(anims, hover);
+  g_ptr_array_add(anims, launching);
+  g_ptr_array_add(anims, attention);
 }
 
-void
-awn_effects_set_title(AwnEffects * fx, AwnTitle * title,
-                      AwnTitleCallback title_func)
+static void
+awn_effects_class_init(AwnEffectsClass *klass)
 {
-  fx->title = title;
-  fx->get_title = title_func;
+  GObjectClass *obj_class = G_OBJECT_CLASS(klass);
+
+  obj_class->set_property = awn_effects_set_property;
+  obj_class->get_property = awn_effects_get_property;
+  obj_class->notify = awn_effects_prop_changed;
+  obj_class->dispose = awn_effects_dispose;
+  obj_class->finalize = awn_effects_finalize;
+
+  /**
+   * AwnEffects::animation-start:
+   *
+   * @fx: The #AwnEffects instance which received the signal.
+   * @effect: Effect type which was started.
+   *
+   * The ::animation-start signal is emitted when the animation starts playing
+   * (ie. all other animations queued before it finish playing).
+   * You also have to explicitely ask AwnEffects to emit this signal using 
+   * #awn_effects_start_ex method.
+   * Note: Signal is emitted only once even if another animation with higher
+   *  priority interrupts the animation and this animation is started again
+   *  later (ie. no signal on this second start).
+   */
+  _effects_signals[ANIMATION_START] =
+    g_signal_new ("animation-start", G_OBJECT_CLASS_TYPE(obj_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET(AwnEffectsClass, animation_start),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__ENUM,
+                  G_TYPE_NONE, 1, AWN_TYPE_EFFECT);
+  /**
+   * AwnEffects::animation-end:
+   *
+   * @fx: The #AwnEffects instance which received the signal.
+   * @effect: Effect type which just finished.
+   *
+   * The ::animation-end signal is emitted when the animation finishes, and
+   * as ::animation-start signal is emitted only once for the entire
+   * animation (see the note in description for ::animation-start signal).
+   * You also have to explicitely ask AwnEffects to emit this signal using
+   * #awn_effects_start_ex method.
+   */
+  _effects_signals[ANIMATION_END] =
+    g_signal_new ("animation-end", G_OBJECT_CLASS_TYPE(obj_class),
+                  G_SIGNAL_RUN_FIRST,
+                  G_STRUCT_OFFSET(AwnEffectsClass, animation_end),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__ENUM,
+                  G_TYPE_NONE, 1, AWN_TYPE_EFFECT);
+
+  g_type_class_add_private (obj_class, sizeof (AwnEffectsPrivate));
+
+  klass->animations = g_ptr_array_sized_new(AWN_ANIMATIONS_PER_BUNDLE * 9); /* 5 animations per bundle, 9 effect bundles */
+
+  awn_effects_register_effect_bundle(klass,
+    simple_opening_effect,
+    simple_closing_effect,
+    simple_hover_effect,
+    simple_attention_effect,
+    simple_attention_effect
+  );
+  awn_effects_register_effect_bundle(klass,
+    bounce_opening_effect,
+    fade_out_effect,
+    bounce_hover_effect,
+    bounce_effect,
+    bounce_effect
+  );
+  awn_effects_register_effect_bundle(klass,
+    zoom_opening_effect,
+    zoom_closing_effect,
+    fading_effect,
+    fading_effect,
+    fading_effect
+  );
+  awn_effects_register_effect_bundle(klass,
+    spotlight_opening_effect,
+    spotlight_closing_effect,
+    spotlight_hover_effect,
+    spotlight_half_fade_effect,
+    spotlight_half_fade_effect
+  );
+  awn_effects_register_effect_bundle(klass,
+    zoom_opening_effect,
+    zoom_closing_effect,
+    zoom_effect,
+    zoom_attention_effect,
+    zoom_attention_effect
+  );
+  awn_effects_register_effect_bundle(klass,
+    bounce_squish_opening_effect,
+    bounce_squish_closing_effect,
+    /*bounce_squish_hover_effect,*/
+    bounce_squish_effect,
+    bounce_squish_effect,
+    bounce_squish_attention_effect
+  );
+  awn_effects_register_effect_bundle(klass,
+    turn_opening_effect,
+    turn_closing_effect,
+    turn_hover_effect,
+    turn_effect,
+    turn_effect
+  );
+  awn_effects_register_effect_bundle(klass,
+    spotlight3D_opening_effect,
+    spotlight3D_closing_effect,
+    spotlight3D_hover_effect,
+    spotlight_half_fade_effect,
+    spotlight3D_effect
+  );
+  awn_effects_register_effect_bundle(klass,
+    glow_opening_effect,
+    glow_closing_effect,
+    glow_effect,
+    glow_attention_effect,
+    glow_attention_effect
+  );
+
+  /* association between icon paths and cairo image surfaces */
+  g_datalist_init(&klass->custom_icons);
+
+  /**
+   * AwnEffects:widget:
+   *
+   * Determines which widget is animated by this instance of #AwnEffects.
+   */
+  g_object_class_install_property (
+    obj_class, PROP_WIDGET,
+    g_param_spec_object ("widget",
+                         "Widget",
+                         "Widget to draw to",
+                         GTK_TYPE_WIDGET,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:no-clear:
+   *
+   * Whether the context should be cleared when painting.
+   * Set no-clear to FALSE to improve performace if you're using
+   * background of proper color on the widget.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_NO_CLEAR,
+    g_param_spec_boolean("no-clear",
+                         "No context clear",
+                         "Don't clear background to transparent",
+                         TRUE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:indirect-paint:
+   *
+   * Determines whether transformations are applied directly to the widget, or
+   * to an offscreen buffer before being painted to target widget.
+   * Set to FALSE to improve performance, but will cause artifacts if used on
+   * non-transparent window.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_INDIRECT_PAINT,
+    g_param_spec_boolean("indirect-paint",
+                         "Indirect paint",
+                         "Determines whether to apply transforms directly on "
+                         "the window or paint to a buffer instead",
+                         TRUE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:position:
+   *
+   * Determines position of the widget.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_POSITION,
+    g_param_spec_enum("position",
+                      "Position",
+                      "Icon position",
+                      GTK_TYPE_POSITION_TYPE, GTK_POS_BOTTOM,
+                      G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                      G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:effects:
+   *
+   * Set a bitmask to specify which kind of effects are used on the widget.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_CURRENT_EFFECTS,
+    g_param_spec_int("effects",
+                     "Current effects",
+                     "Active effects set for this instance",
+                     G_MININT, G_MAXINT, 0, /* set to simple (glow) */
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:icon-offset:
+   *
+   * Determines offset of the icon from border of the widget's window.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_ICON_OFFSET,
+    g_param_spec_int("icon-offset",
+                     "Icon offset",
+                     "Offset of drawn icon to window border",
+                     G_MININT, G_MAXINT, 0,
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:icon-alpha:
+   *
+   * Determines alpha value of the drawn icon.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_ICON_ALPHA,
+    g_param_spec_float("icon-alpha",
+                       "Icon alpha",
+                       "Alpha value of drawn icon",
+                       0.0, 1.0, 1.0,
+                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:reflection-offset:
+   *
+   * Determines offset of the reflection from the drawn icon.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_REFLECTION_OFFSET,
+    g_param_spec_int("reflection-offset",
+                     "Reflection offset",
+                     "Offset of drawn reflection to icon",
+                     G_MININT, G_MAXINT, 0,
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:reflection-alpha:
+   *
+   * Determines alpha value of the reflected icon.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_REFLECTION_ALPHA,
+    g_param_spec_float("reflection-alpha",
+                       "Reflection alpha",
+                       "Alpha value of drawn reflection",
+                       0.0, 1.0, 0.25,
+                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:reflection-visible:
+   *
+   * Determines whether the reflection is visible.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_REFLECTION_VISIBLE,
+    g_param_spec_boolean("reflection-visible",
+                         "Reflection visibility",
+                         "Determines whether reflection is visible",
+                         TRUE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:make-shadow:
+   *
+   * Determines whether to draw a shadow around the icon.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_MAKE_SHADOW,
+    g_param_spec_boolean("make-shadow",
+                         "Create shadow",
+                         "Determines whether shadow is drawn around icon",
+                         FALSE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:active:
+   *
+   * Determines whether to draw the active rectangle behind the icon.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_IS_ACTIVE,
+    g_param_spec_boolean("active",
+                         "Active",
+                         "Determines whether to draw active hint around icon",
+                         FALSE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property(
+    obj_class, PROP_ACTIVE_RECT_COLOR,
+    g_param_spec_object ("active-rect-color",
+                         "Active Rectangle Color",
+                         "Color used for painting active rectangle",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property(
+    obj_class, PROP_ACTIVE_RECT_OUTLINE,
+    g_param_spec_object ("active-rect-outline",
+                         "Active Rectangle Outline Color",
+                         "Color used for painting outline of active rectangle",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property(
+    obj_class, PROP_DOT_COLOR,
+    g_param_spec_object ("dot-color",
+                         "Glowing Dot Color",
+                         "Color used for painting glowing dot",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * AwnEffects:depressed:
+   *
+   * Determines whether to draw the icon slightly desaturated.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_IS_DEPRESSED,
+    g_param_spec_boolean("depressed",
+                         "Depressed",
+                         "Determines whether to draw the icon slightly "
+                         "desaturated",
+                         FALSE,
+                         G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                         G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:arrows-count:
+   *
+   * Determines the number of arrows drawn.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_ARROWS_COUNT,
+    g_param_spec_int("arrows-count",
+                     "Arrows count",
+                     "Number of arrows to draw",
+                     0, G_MAXINT, 0,
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:border-clip:
+   *
+   * Determines amount of clipping of the icon edge. (suitable for offset
+   * on the 3D bar)
+   */
+  g_object_class_install_property(
+    obj_class, PROP_BORDER_CLIP,
+    g_param_spec_int("border-clip",
+                     "Active",
+                     "Clips border of the icon",
+                     0, G_MAXINT, 0,
+                     G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                     G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:progress:
+   *
+   * Extra progress pie painted on the pie and percentage value it represents.
+   * Set to 1.0 to hide the progress pie.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_PROGRESS,
+    g_param_spec_float("progress",
+                       "Progress",
+                       "Value displayed on extra progress pie"
+                       " drawn on the icon",
+                       0.0, 1.0, 1.0,
+                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                       G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:spotlight-png:
+   *
+   * Path to png icon which will be used for the spotlight effect.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_SPOTLIGHT_ICON,
+    g_param_spec_string("spotlight-png",
+                        "Spotlight Icon",
+                        "Icon to draw for the spotlight effect",
+                        AWN_INTERNAL_SPOTLIGHT,
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:arrow-icon:
+   *
+   * Path to a png icon which will be painted when the property
+   * #AwnEffects:arrows-count is more than 0.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_ARROW_ICON,
+    g_param_spec_string("arrow-png",
+                        "Arrow Icon",
+                        "Icon to draw when arrows-count is more than 0",
+                        AWN_INTERNAL_ARROW1,
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS));
+  /**
+   * AwnEffects:custom-active-png:
+   *
+   * Path to a custom png icon which will be painted when the property
+   * #AwnEffects:active is set to TRUE.
+   */
+  g_object_class_install_property(
+    obj_class, PROP_CUSTOM_ACTIVE_ICON,
+    g_param_spec_string("custom-active-png",
+                        "Custom active Icon",
+                        "Custom icon to draw when in active state",
+                        NULL,
+                        G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                        G_PARAM_STATIC_STRINGS));
 }
 
-static gboolean
-awn_effects_enter_event(GtkWidget * widget, GdkEventCrossing * event,
-                   gpointer data)
+static void
+awn_effects_init(AwnEffects * fx)
 {
+  fx->priv = AWN_EFFECTS_GET_PRIVATE (fx);
+  /* the entire structure is zeroed in allocation, define only non-zero vars
+   * which are not properties
+   */
 
-  AwnEffects *fx = (AwnEffects *) data;
+  fx->priv->icon_width = 48;
+  fx->priv->icon_height = 48;
+  fx->priv->last_redraw_size = 0;
 
-  if (fx->settings)
-  {
-    fx->settings->hiding = FALSE;
-  }
-
-  if (fx->title && fx->get_title)
-  {
-    awn_title_show(fx->title, fx->focus_window, fx->get_title(fx->self));
-  }
-
-  fx->hover = TRUE;
-
-  awn_effects_start(fx, AWN_EFFECT_HOVER);
-  return FALSE;
+  fx->priv->width_mod = 1.0;
+  fx->priv->height_mod = 1.0;
+  fx->priv->alpha = 1.0;
+  fx->priv->saturation = 1.0;
 }
 
-static gboolean
-awn_effects_leave_event(GtkWidget * widget, GdkEventCrossing * event,
-                   gpointer data)
+/**
+ * awn_effects_new_for_widget:
+ * @widget: Managed widget, computing window width and height is based on it and
+ * it is also passed to gtk_widget_queue_draw() during the animations.
+ *
+ * Creates new #AwnEffects instance.
+ */
+AwnEffects* awn_effects_new_for_widget(GtkWidget * widget)
 {
-  AwnEffects *fx = (AwnEffects *) data;
+  g_return_val_if_fail(GTK_IS_WIDGET(widget), NULL);
 
-  if (fx->title)
-  {
-    awn_title_hide(fx->title, fx->focus_window);
-  }
+  AwnEffects *fx = g_object_new(AWN_TYPE_EFFECTS, "widget", widget, NULL);
 
-  fx->hover = FALSE;
+  /*
+   * we will use weak reference on the widget, because we want the widget
+   * to destroy us when it dies
+   * though we could also ref the widget and unref it in our dispose
+   */
 
-  awn_effects_stop(fx, AWN_EFFECT_HOVER);
-  return FALSE;
+  return fx;
 }
 
-static gint
-awn_effects_sort(gconstpointer a, gconstpointer b)
+/* we don't really need to expose this enum */
+typedef enum
 {
-  const AwnEffectsPrivate *data1 = (AwnEffectsPrivate *) a;
-  const AwnEffectsPrivate *data2 = (AwnEffectsPrivate *) b;
-  return (gint)(data1->priority - data2->priority);
-}
+  AWN_EFFECT_PRIORITY_HIGHEST,
+  AWN_EFFECT_PRIORITY_HIGH,
+  AWN_EFFECT_PRIORITY_ABOVE_NORMAL,
+  AWN_EFFECT_PRIORITY_NORMAL,
+  AWN_EFFECT_PRIORITY_BELOW_NORMAL,
+  AWN_EFFECT_PRIORITY_LOW,
+  AWN_EFFECT_PRIORITY_LOWEST
+} AwnEffectPriority;
 
 static AwnEffectPriority
 awn_effects_get_priority(const AwnEffect effect)
@@ -400,41 +1048,58 @@ awn_effects_get_priority(const AwnEffect effect)
   }
 }
 
-void awn_effects_reflection_off(AwnEffects * fx)
+static gint
+awn_effects_sort(gconstpointer a, gconstpointer b)
 {
-  fx->do_reflections = FALSE;  
-}
-void awn_effects_reflection_on(AwnEffects * fx)
-{
-  fx->do_reflections = TRUE; 
-}
-void awn_effects_set_offset_cut(AwnEffects * fx, gboolean cut)
-{
-  fx->do_offset_cut = cut;
+  const AwnEffectsAnimation *data1 = (AwnEffectsAnimation *) a;
+  const AwnEffectsAnimation *data2 = (AwnEffectsAnimation *) b;
+  return (gint)(awn_effects_get_priority(data1->this_effect) - 
+    awn_effects_get_priority(data2->this_effect));
 }
 
-
+/**
+ * awn_effects_start:
+ * @fx: Pointer to #AwnEffects instance.
+ * @effect: #AwnEffect to schedule.
+ *
+ * Start a single effect. The effect will loop until awn_effect_stop()
+ * is called.
+ */
 void
 awn_effects_start(AwnEffects * fx, const AwnEffect effect)
 {
-  awn_effects_start_ex(fx, effect, NULL, NULL, 0);
+  awn_effects_start_ex(fx, effect, 0, FALSE, FALSE);
 }
 
+/**
+ * awn_effects_start_ex:
+ * @fx: Pointer to #AwnEffects instance.
+ * @effect: Effect to schedule.
+ * @max_loops: Number of maximum animation loops (0 for unlimited).
+ * @signal_start: Determines whether the animation should emit "animation-start"
+ *   signal when it starts.
+ * @signal_end: Determines whether the animation should emit "animation-end"
+ *   signal when it finishes.
+ *
+ * Extended effect start, which provides a way to specify maximum number of loops
+ * and possibility to emit signals for animation start & end.
+ */
 void
-awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
-                    AwnEventNotify start, AwnEventNotify stop,
-                    gint max_loops)
+awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
+                     gboolean signal_start, gboolean signal_end)
 {
-  if (effect == AWN_EFFECT_NONE || fx->self == NULL)
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+  
+  if (effect == AWN_EFFECT_NONE || fx->widget == NULL)
   {
     return;
   }
 
-  AwnEffectsPrivate *queue_item;
+  AwnEffectsAnimation *queue_item;
 
-  GList *queue = fx->effect_queue;
+  GList *queue = fx->priv->effect_queue;
 
-  // dont start the effect if already in queue
+  /* dont start the effect if already in queue */
 
   while (queue)
   {
@@ -448,33 +1113,41 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect,
     queue = g_list_next(queue);
   }
 
-  AwnEffectsPrivate *priv = g_new(AwnEffectsPrivate, 1);
+  AwnEffectsAnimation *anim = g_new(AwnEffectsAnimation, 1);
 
-  priv->effects = fx;
-  priv->this_effect = effect;
-  priv->priority = awn_effects_get_priority(effect);
-  priv->max_loops = max_loops;
-  priv->start = start;
-  priv->stop = stop;
+  anim->effects = fx;
+  anim->this_effect = effect;
+  anim->max_loops = max_loops;
+  anim->signal_start = signal_start;
+  anim->signal_end = signal_end;
 
-  fx->effect_queue = g_list_insert_sorted(fx->effect_queue, priv,
-                                          awn_effects_sort);
+  fx->priv->effect_queue = g_list_insert_sorted(fx->priv->effect_queue, anim,
+                                                awn_effects_sort);
   awn_effects_main_effect_loop(fx);
 }
 
+/**
+ * awn_effects_stop:
+ * @fx: Pointer to #AwnEffects instance.
+ * @effect: #AwnEffect to stop.
+ *
+ * Stop a single effect.
+ */
 void
 awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
 {
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+  
   if (effect == AWN_EFFECT_NONE)
   {
     return;
   }
 
-  AwnEffectsPrivate *queue_item;
+  AwnEffectsAnimation *queue_item;
 
-  GList *queue = fx->effect_queue;
+  GList *queue = fx->priv->effect_queue;
 
-  // remove the effect if in queue
+  /* find the effect in queue */
 
   while (queue)
   {
@@ -490,733 +1163,489 @@ awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
 
   if (queue)
   {
-    gboolean dispose = queue_item->this_effect != fx->current_effect;
-    fx->effect_queue = g_list_remove(fx->effect_queue, queue_item);
+    /* remove the effect from effect_queue and free the struct if the effect */
+
+    /* is not in the middle of animation currently */
+    gboolean dispose = queue_item->this_effect != fx->priv->current_effect;
+    fx->priv->effect_queue = g_list_remove(fx->priv->effect_queue, queue_item);
 
     if (dispose)
     {
       g_free(queue_item);
+    } 
+    else if (fx->priv->sleeping_func)
+    {
+      /* wake up sleeping effect */
+      fx->priv->timer_id = g_timeout_add(1000 / AWN_FRAMES_PER_SECOND(fx),
+                                         fx->priv->sleeping_func, queue_item);
+      fx->priv->sleeping_func = NULL;
     }
   }
 }
 
-static GSourceFunc get_animation(AwnEffectsPrivate *topEffect, gint effects[])
+static gpointer get_animation(AwnEffectsAnimation *topEffect, guint fxNum)
 {
-  GSourceFunc animation = NULL;
-
   switch (topEffect->this_effect)
   {
-
-    case AWN_EFFECT_HOVER:
-      animation = HOVER_EFFECTS[effects[0]];
-      break;
-
-    case AWN_EFFECT_OPENING:
-      animation = OPENING_EFFECTS[effects[1]];
-      break;
-
-    case AWN_EFFECT_CLOSING:
-      animation = CLOSING_EFFECTS[effects[2]];
-      break;
-
-    case AWN_EFFECT_LAUNCHING:
-      animation = LAUNCHING_EFFECTS[effects[3]];
-      break;
-
-    case AWN_EFFECT_ATTENTION:
-      animation = ATTENTION_EFFECTS[effects[4]];
-      break;
-
     case AWN_EFFECT_DESATURATE:
-//      g_assert(FALSE);    //let's find out when this is used.  I believe it is somewhere...
-      animation = (GSourceFunc) desaturate_effect;
-      break;
+      return desaturate_effect;
 
     default:
       break;
   }
 
-  return animation;
+  GPtrArray *anims = AWN_EFFECTS_GET_CLASS(topEffect->effects)->animations;
+
+  guint increment = topEffect->this_effect - 1;
+  if (fxNum*AWN_ANIMATIONS_PER_BUNDLE + increment >= anims->len) {
+    return NULL;
+  }
+
+  return g_ptr_array_index(anims, fxNum*AWN_ANIMATIONS_PER_BUNDLE + increment);
 }
 
 void
 awn_effects_main_effect_loop(AwnEffects * fx)
 {
-  if (fx->current_effect != AWN_EFFECT_NONE || fx->effect_queue == NULL)
+  if (fx->priv->current_effect != AWN_EFFECT_NONE
+      || fx->priv->effect_queue == NULL)
   {
+    if (fx->priv->sleeping_func && fx->priv->effect_queue)
+    {
+      /* check if sleeping effect is still on top */
+      AwnEffectsAnimation *queue_item = fx->priv->effect_queue->data;
+      if (fx->priv->current_effect == queue_item->this_effect) return;
+
+      /* sleeping effect is not on top -> wake & play it */
+
+      /* find correct effectsPrivate starting with the second item */
+      GList *queue = g_list_next(fx->priv->effect_queue);
+      while (queue)
+      {
+        queue_item = queue->data;
+
+        if (queue_item->this_effect == fx->priv->current_effect) break;
+
+        queue = g_list_next(queue);
+      }
+
+      g_return_if_fail(queue_item);
+
+      fx->priv->timer_id = g_timeout_add(1000 / AWN_FRAMES_PER_SECOND(fx),
+                                         fx->priv->sleeping_func, queue_item);
+      fx->priv->sleeping_func = NULL;
+    }
     return;
   }
 
-  AwnEffectsPrivate *topEffect =
+  AwnEffectsAnimation *topEffect =
 
-    (AwnEffectsPrivate *)(fx->effect_queue->data);
+    (AwnEffectsAnimation *)(fx->priv->effect_queue->data);
 
-  GSourceFunc animation = NULL;
+  /* FIXME: simplifing the index to (topEffect->thisEffect-1) changed
+   *  the gconf key a bit -> update awn-settings's custom effect setting
+   *  to reflect this change.
+   */
 
-  gint icon_effect = 0;
+  gint i = topEffect->this_effect - 1;
+  guint effect = fx->set_effects & (0xF << (i * 4));
+  effect >>= i * 4;
 
-#define EFFECT_TYPES_COUNT 5
-  gint effects[EFFECT_TYPES_COUNT] = { 0 };
-
-  if (fx->settings)
-  {
-    icon_effect = fx->settings->icon_effect;
-    gint i;
-
-    for (i = 0; i < EFFECT_TYPES_COUNT; i++)
-    {
-      gint effect = icon_effect & (0xF << (i * 4));
-      effect >>= i * 4;
-
-      if (effect >= sizeof(HOVER_EFFECTS) / sizeof(GSourceFunc))
-      {
-        effect = -1;
-      }
-
-      // spotlight initialization
-      if (effect == EFFECT_SPOTLIGHT || effect == EFFECT_TURN_3D_SPOTLIGHT)
-      {
-        spotlight_init();
-      }
-
-      effects[i] = effect + 1;
-    }
-  }
-
-  animation = get_animation(topEffect, effects);
+  GSourceFunc animation = (GSourceFunc) get_animation(topEffect, effect);
 
   if (animation)
   {
-    fx->timer_id = g_timeout_add(1000 / fx->settings->frame_rate,
-                                 animation, topEffect);
-    fx->current_effect = topEffect->this_effect;
-    fx->effect_lock = FALSE;
+    // FIXME: if we're not mapped wait with starting the timer for the map-event
+    fx->priv->timer_id = g_timeout_add(1000 / AWN_FRAMES_PER_SECOND(fx),
+                                       animation, topEffect);
+    fx->priv->current_effect = topEffect->this_effect;
+    fx->priv->effect_lock = FALSE;
+
+    // to fix problem with first expose we call the animation function
+    //  immediately
+    if (fx->priv->already_exposed == FALSE)
+    {
+      guint timer_backup = fx->priv->timer_id;
+      if (animation (topEffect) == FALSE)
+      {
+        // if the animation is one-frame, we need to kill the timer ourselves,
+        //  but effect cleanup set the timer_id to 0 meanwhile
+        g_source_remove (timer_backup);
+      }
+    }
   }
   else
   {
-    if (topEffect->start)
-    {
-      topEffect->start(fx->self);
-    }
+    /* the callbacks can try to destroy us, but we don't want to die... yet */
+    g_object_ref (fx);
 
-    if (topEffect->stop)
-    {
-      topEffect->stop(fx->self);
-    }
+    /* emit the signals */
+    awn_effect_emit_anim_start(topEffect);
+    awn_effect_emit_anim_end(topEffect);
 
-    // dispose AwnEffectsPrivate
+    /* dispose AwnEffectsAnimation */
     awn_effects_stop(fx, topEffect->this_effect);
+
+    /* we can die now */
+    g_object_unref (fx);
   }
 }
 
+void awn_effects_emit_anim_start(AwnEffects *fx, AwnEffect effect)
+{
+  g_signal_emit( fx, _effects_signals[ANIMATION_START], 0, effect);
+}
+
+void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect)
+{
+  g_signal_emit( fx, _effects_signals[ANIMATION_END], 0, effect);
+}
+
+/**
+ * awn_effects_set_icon_size:
+ * @fx: Pointer to #AwnEffects instance.
+ * @width: Width of drawn icon.
+ * @height: Height of drawn icon.
+ * @requestSize: Set to true to call gtk_widget_set_size_request
+ *   for the managed widget.
+ *
+ * Sets up correct offsets in managed window based on dimensions of drawn icon.
+ */
 void
-awn_effects_register(AwnEffects * fx, GtkWidget * obj)
+awn_effects_set_icon_size(AwnEffects * fx, gint width, gint height,
+                          gboolean requestSize)
 {
-  if (fx->focus_window)
+  AwnEffectsPrivate *priv = fx->priv;
+
+  gint old_width = priv->icon_width;
+  gint old_height = priv->icon_height;
+
+  if (width <= 0) width = 1;
+  if (height <= 0) height = 1;
+
+  priv->icon_width = width;
+  priv->icon_height = height;
+
+  if (priv->clip)
   {
-    awn_effects_unregister(fx);
+    /* we're in middle of animation, let's update the clip region */
+    priv->clip_region.x =
+      priv->clip_region.x / (float)old_width * width;
+    priv->clip_region.y =
+      priv->clip_region.y / (float)old_height * height;
+    priv->clip_region.width =
+      priv->clip_region.width / (float)old_width * width;
+    priv->clip_region.height =
+      priv->clip_region.height / (float)old_height * height;
   }
 
-  fx->focus_window = obj;
-
-  fx->enter_notify = g_signal_connect(G_OBJECT(obj), "enter-notify-event",
-                                      G_CALLBACK(awn_effects_enter_event), fx);
-  fx->leave_notify = g_signal_connect(G_OBJECT(obj), "leave-notify-event",
-                                      G_CALLBACK(awn_effects_leave_event), fx);
-}
-
-void
-awn_effects_unregister(AwnEffects * fx)
-{
-  if (fx->enter_notify)
+  if (requestSize && fx->widget)
   {
-    g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->enter_notify);
-    fx->enter_notify = 0;
-  }
+    /* this should be only used without AwnIcon,
+     * AwnIcon handles size_requests well enough
+     */
 
-  if (fx->leave_notify)
-  {
-    g_signal_handler_disconnect(G_OBJECT(fx->focus_window), fx->leave_notify);
-    fx->leave_notify = 0;
-  }
-
-  fx->focus_window = NULL;
-}
-
-void
-apply_spotlight(AwnEffects * fx, cairo_t * cr)
-{
-  static cairo_t * unscaled_spot_ctx = NULL;
-  static gint scaled_width = -1;
-  static gint scaled_height = -1;
-  static cairo_t * spot_ctx = NULL;
-  cairo_surface_t * spot_srfc = NULL;
-//  gint x1 = 0;
-  gint y1 = fx->window_height - fx->icon_height;
-
-  if (fx->settings)
-    y1 = fx->window_height - fx->settings->icon_offset - fx->icon_height;
-
-  if (!unscaled_spot_ctx)
-  {
-    cairo_surface_t * srfc = cairo_surface_create_similar(cairo_get_target(cr),
-                             CAIRO_CONTENT_COLOR_ALPHA,
-                             gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF),
-                             gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF));
-    unscaled_spot_ctx = cairo_create(srfc);
-    gdk_cairo_set_source_pixbuf(unscaled_spot_ctx, SPOTLIGHT_PIXBUF, 0, 0);
-    cairo_paint(unscaled_spot_ctx);
-  }
- // printf("window width = %d\n",fx->window_width);
-  if ((scaled_width != fx->window_width) ||
-      (scaled_height != fx->icon_height*5/4))
-  {
-  //  printf("rescale spot \n");
-    if (spot_ctx)
-    {
-      cairo_surface_destroy(spot_srfc);
-      cairo_destroy(spot_ctx);
-    }
-
-    scaled_width = fx->window_width;
-
-    scaled_height = fx->icon_height*5/4;
-    spot_srfc = cairo_surface_create_similar(cairo_get_target(cr),
-                CAIRO_CONTENT_COLOR_ALPHA,
-                scaled_width,
-                scaled_height);
-    spot_ctx = cairo_create(spot_srfc);
-    cairo_save(spot_ctx);
-    cairo_scale(spot_ctx,
-                fx->window_width / (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF),
-                fx->icon_height*5/4 / (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF)
-                );
-
-    cairo_set_source_surface(spot_ctx, cairo_get_target(unscaled_spot_ctx),
-                             0.0, 0.0);
-    cairo_paint(spot_ctx);
-    cairo_scale(spot_ctx,
-                (double) gdk_pixbuf_get_width(SPOTLIGHT_PIXBUF) / fx->window_width,
-                (double) gdk_pixbuf_get_height(SPOTLIGHT_PIXBUF) * 5/4 / fx->icon_height
-               );
-    cairo_restore(spot_ctx);
-  }
-
-  if (fx->spotlight && fx->spotlight_alpha > 0)
-  {
-    y1 = y1 + fx->icon_height / 12;
-    cairo_save(cr);
-    cairo_set_source_surface(cr, cairo_get_target(spot_ctx), 0, y1);
-//    cairo_rectangle(cr,0,0,fx->window_width,fx->window_height*5/4);
-    cairo_paint_with_alpha(cr, fx->spotlight_alpha);
-    cairo_restore(cr);
-  }
-}
-
-
-void
-awn_effects_draw_background(AwnEffects * fx, cairo_t * cr)
-{
-  if (fx->spotlight && fx->spotlight_alpha > 0)
-  {
-    apply_spotlight(fx, cr);
-  }
-}
-
-void apply_awn_curves(AwnEffects * fx)
-{
-  if (fx->settings->bar_angle < 0)
-  {
-    int awn_bar_width = fx->settings->bar_width;
-    double awn_curve_curviness = fx->settings->curviness;
-    int awn_monitor_width = fx->settings->monitor_width;
-
-    gint curvex = GTK_WIDGET(fx->self)->allocation.x;
-
-    if (curvex == 0)  // is applet?
-    {
-      gint curvex1 = 0;
-      gdk_window_get_origin(fx->focus_window->window, &curvex1, NULL);
-      curvex = curvex1 - (awn_monitor_width - awn_bar_width) / 2;
-    }
-
-    if (awn_curve_curviness)
-      fx->settings->curviness = awn_curve_curviness;
-
-    if (curvex > 0)
-      fx->curve_offset =
-        calc_curve_position(curvex + (fx->settings->task_width / 4),
-                            awn_bar_width,
-                            (fx->settings->bar_height *
-                             fx->settings->curviness) / 2.);
-    else
-      fx->curve_offset = 0;
-
-  }
-  else if (fx->curve_offset)
-  {
-    fx->curve_offset = 0;
-  }
-}
-
-void
-darken_surface(cairo_surface_t *src)
-{
-  int width, height, row_stride;
-  guchar *pixsrc, *target_pixels;
-  cairo_surface_t *temp_srfc;
-  cairo_t *temp_ctx;
-  
-  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                         cairo_xlib_surface_get_width(src),
-                                         cairo_xlib_surface_get_height(src)
-                                        );
-  temp_ctx = cairo_create(temp_srfc);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);  
-  cairo_set_source_surface(temp_ctx, src, 0, 0);
-  cairo_paint(temp_ctx);
-  
-  width = cairo_image_surface_get_width(temp_srfc);
-  height = cairo_image_surface_get_height(temp_srfc);
-  row_stride = cairo_image_surface_get_stride(temp_srfc);
-  target_pixels = cairo_image_surface_get_data(temp_srfc);
-
-  // darken
-  int i, j;
-  for (i = 0; i < height; i++) {
-    pixsrc = target_pixels + i * row_stride;
-    for (j = 0; j < width; j++) {
-      *pixsrc = 0;
-      pixsrc++;
-      *pixsrc = 0;
-      pixsrc++;
-      *pixsrc = 0;
-      pixsrc++;
-      // alpha
-      pixsrc++;
-    }
-  }
-
-  // --
-  
-  cairo_destroy(temp_ctx);
-
-  temp_ctx = cairo_create(src);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
-  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface(temp_ctx, temp_srfc, 0, 0);
-  cairo_paint(temp_ctx);
-  cairo_surface_destroy(temp_srfc);
-  cairo_destroy(temp_ctx);
-}
-/*
-void
-blur_surface(cairo_surface_t *src, const int radius)
-{
-  guchar * pixdest, * target_pixels_dest, * target_pixels, * pixsrc;
-  cairo_surface_t * temp_srfc, * temp_srfc_dest;
-  cairo_t         * temp_ctx, * temp_ctx_dest;
-
-  g_return_if_fail(src);
-  int width = cairo_xlib_surface_get_width(src);
-  int height = cairo_xlib_surface_get_height(src);
-  
-  // the original stuff
-  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-  temp_ctx = cairo_create(temp_srfc);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);  
-  cairo_set_source_surface(temp_ctx, src, 0, 0);
-  cairo_paint(temp_ctx);
-  
-  // the stuff we draw to
-  temp_srfc_dest = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-  temp_ctx_dest = cairo_create(temp_srfc_dest);
-  //---
-
-  int row_stride = cairo_image_surface_get_stride(temp_srfc);
-  target_pixels = cairo_image_surface_get_data(temp_srfc);
-  target_pixels_dest = cairo_image_surface_get_data(temp_srfc_dest);
-
-  // -- blur ---
-  int total_r, total_g, total_b, total_a;
-  int x, y, kx, ky;
-
-  for (y = 0; y < height; ++y)
-  {
-    for (x = 0; x < width; ++x)
-    {
-      total_r = total_g = total_b = total_a = 0;
-
-      for (ky = -radius; ky <= radius; ++ky) {
-        if ((y+ky)>0 && (y+ky)<height) {
-          for (kx = -radius; kx <= radius; ++kx) {
-            if((x+kx)>0 && (x+kx)<width) {
-              pixsrc = (target_pixels + (y+ky) * row_stride);
-              pixsrc += (x+kx)*4;
-              pixsrc += 3;
-              if(*pixsrc > 0) {
-                pixsrc -= 3;
-                total_r += *pixsrc; pixsrc++;
-                total_g += *pixsrc; pixsrc++;
-                total_b += *pixsrc; pixsrc++;
-                total_a += *pixsrc;
-              }
-            }
-          }
-        }
-      }
-  
-      total_r /= pow((radius<<1)|1,2);
-      total_g /= pow((radius<<1)|1,2);
-      total_b /= pow((radius<<1)|1,2);
-      total_a /= pow((radius<<1)|1,2);    
-
-      pixdest = (target_pixels_dest + y * row_stride);
-      pixdest += x*4;
-
-      *pixdest = (guchar) total_r; pixdest++;
-      *pixdest = (guchar) total_g; pixdest++;
-      *pixdest = (guchar) total_b; pixdest++;
-      *pixdest = (guchar) total_a;
-    }	
-  }
-  //----------
-  
-  cairo_set_operator(temp_ctx, CAIRO_OPERATOR_CLEAR);
-  cairo_paint(temp_ctx);
-  cairo_destroy(temp_ctx);
-
-  temp_ctx = cairo_create(src);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
-  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface(temp_ctx, temp_srfc_dest, 0, 0);
-  cairo_paint(temp_ctx);
-  cairo_surface_destroy(temp_srfc);
-  cairo_surface_destroy(temp_srfc_dest);
-  cairo_destroy(temp_ctx);
-  cairo_destroy(temp_ctx_dest);
-}
-*/
-void
-blur_surface_shadow(cairo_surface_t *src, const int radius)
-{
-  guchar * pixdest, * target_pixels_dest, * target_pixels, * pixsrc;
-  cairo_surface_t * temp_srfc, * temp_srfc_dest;
-  cairo_t         * temp_ctx, * temp_ctx_dest;
-
-  g_return_if_fail(src);
-  int width = cairo_xlib_surface_get_width(src);
-  int height = cairo_xlib_surface_get_height(src);
-  
-  // the original stuff
-  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-  temp_ctx = cairo_create(temp_srfc);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);  
-  cairo_set_source_surface(temp_ctx, src, 0, 0);
-  cairo_paint(temp_ctx);
-  
-  // the stuff we draw to
-  temp_srfc_dest = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, width, height);
-  temp_ctx_dest = cairo_create(temp_srfc_dest);
-  //---
-
-  int row_stride = cairo_image_surface_get_stride(temp_srfc);
-  target_pixels = cairo_image_surface_get_data(temp_srfc);
-  target_pixels_dest = cairo_image_surface_get_data(temp_srfc_dest);
-
-  // -- blur ---
-  int total_a;
-  int x, y, kx, ky;
-
-  for (y = 0; y < height; ++y)
-  {
-    for (x = 0; x < width; ++x)
-    {
-			total_a = 0;
-
-      for (ky = -radius; ky <= radius; ++ky) {
-        if ((y+ky)>0 && (y+ky)<height) {
-          for (kx = -radius; kx <= radius; ++kx) {
-            if((x+kx)>0 && (x+kx)<width) {
-              pixsrc = (target_pixels + (y+ky) * row_stride) + ((x+kx)*4) + 3;
-
-              total_a += *pixsrc;
-            }
-          }
-        }
-      }
-  
-      total_a /= pow((radius<<1)|1,2);    
-
-      pixdest = (target_pixels_dest + y * row_stride);
-      pixdest += x*4;
-			pixdest += 3;
-      *pixdest = (guchar) total_a;
-    }	
-  }
-  //----------
-  
-  cairo_set_operator(temp_ctx, CAIRO_OPERATOR_CLEAR);
-  cairo_paint(temp_ctx);
-  cairo_destroy(temp_ctx);
-
-  temp_ctx = cairo_create(src);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
-  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface(temp_ctx, temp_srfc_dest, 0, 0);
-  cairo_paint(temp_ctx);
-  cairo_surface_destroy(temp_srfc);
-  cairo_surface_destroy(temp_srfc_dest);
-  cairo_destroy(temp_ctx);
-  cairo_destroy(temp_ctx_dest);
-}
-
-void
-make_shadows(AwnEffects * fx, cairo_t * cr, int x1, int y1, int width, int height)
-{
-    cairo_surface_t * blur_s;
-    cairo_t * blur_c;
-
-    // icon shadow
-    blur_s = cairo_surface_create_similar(cairo_get_target(cr),CAIRO_CONTENT_COLOR_ALPHA, fx->icon_width+10, fx->icon_height+10);
-    blur_c = cairo_create(blur_s);
-	
-    cairo_set_operator(blur_c,CAIRO_OPERATOR_SOURCE);
-    cairo_set_source_surface(blur_c, cairo_get_target(fx->icon_ctx), 5, 5);
-    cairo_paint(blur_c);
-
-    darken_surface(blur_s);
-    blur_surface_shadow(blur_s, 4);
-  
-    cairo_set_source_surface(cr, blur_s, x1-5, y1-7);	
-    cairo_paint_with_alpha(cr, 0.5);
-
-    cairo_surface_destroy(blur_s);
-    cairo_destroy(blur_c);
-
-
-    // scaled shadow
-    cairo_rectangle(cr, 0, fx->window_height - fx->settings->bar_height + (fx->settings->bar_height / 2) - 4, fx->window_width, fx->settings->bar_height);
-    cairo_clip(cr);
-    x1 = (fx->window_width - width) / 2;
-    y1 = fx->window_height - height - fx->settings->icon_offset;
-
-    blur_s = cairo_surface_create_similar(cairo_get_target(cr),CAIRO_CONTENT_COLOR_ALPHA, fx->icon_width+10, fx->icon_height+10);
-    blur_c = cairo_create(blur_s);
-	
-    cairo_set_operator(blur_c,CAIRO_OPERATOR_SOURCE);
-    cairo_scale(blur_c, 1, 0.5);
-    cairo_set_source_surface(blur_c, cairo_get_target(fx->icon_ctx), 5, 5);
-    cairo_paint(blur_c);
-
-    darken_surface(blur_s);
-    blur_surface_shadow(blur_s, 1);
-  
-    cairo_set_source_surface(cr, blur_s, x1-5, y1-5+(fx->icon_height/2));	
-    cairo_paint_with_alpha(cr, 0.2);
-
-    cairo_reset_clip(cr);
-    cairo_surface_destroy(blur_s);
-    cairo_destroy(blur_c);
-}
-
-/*
-  The icon surface must be an xlib surface.  expose() in awn-applet-simple
-  converts image surfaces to xlib surfaces if needed.  Direct callers of
-  this function will need to handle it themselves.
-*/
-void
-awn_effects_draw_icons_cairo(AwnEffects * fx, cairo_t * cr, cairo_t *  icon_context,
-                     cairo_t * reflect_context)
-{
-  cairo_surface_t * icon;       //Surfaces pulled from args.
-  cairo_surface_t * reflect = NULL;
-  DrawIconState  ds;
-  gboolean icon_changed = FALSE;
-  gint i;
-
-  icon = cairo_get_target(icon_context);
-
-  if (reflect_context)
-  {
-    reflect = cairo_get_target(reflect_context);
-  }
-
-  fx->icon_width = cairo_xlib_surface_get_width(icon);
-
-  fx->icon_height = cairo_xlib_surface_get_height(icon);
-  ds.current_width = fx->icon_width;
-  ds.current_height = fx->icon_height;
-  ds.x1 = (fx->window_width - ds.current_width) / 2;
-  ds.y1 = (fx->window_height - ds.current_height); // sit on bottom by default
-
-  apply_awn_curves(fx); //hopefully I haven't broken awn-curves.
-
-  if (fx->settings)
-  {
-    ds.y1 = fx->window_height - fx->settings->icon_offset - ds.current_height -
-            fx->y_offset;
-  }
-
-  ds.y1 -= fx->curve_offset;
-  
-	if (fx->clip) 
-  {
-		gint x = fx->clip_region.x;
-		gint y = fx->clip_region.y;
-		gint w = fx->clip_region.width;
-		gint h = fx->clip_region.height;  
-		if ( !(	x >= 0 && x < fx->icon_width &&
-			w-x > 0 && w-x <= fx->icon_width &&
-			y >= 0 && x < fx->icon_height &&
-			h-y > 0 && h-y <= fx->icon_height) )
-    {
-      return;
-    }
-  }
-  
-  // sanity check
-  if (fx->delta_width <= -ds.current_width
-      || fx->delta_height <= -ds.current_height)
-  {
-    // we would display blank icon
-    return;
-  }
-
-  /* scaling */
-  /*
-   first op. WARNING will take care of the (re)allocate of the context/surfaces
-   if needed.
-
-   WARNING make no assumptions about fx->icon_srfc, fx->icon_ctx,
-   fx->reflect_srfc, fx->reflect_ctx being correct before this call.
-  */
-  icon_changed = awn_effect_op_scale_and_clip(fx, &ds, icon, &fx->icon_ctx,
-                                       &fx->reflect_ctx) || icon_changed;
-
-  for (i = 0;fx->op_list[i].fn;i++)
-  {
-    icon_changed = fx->op_list[i].fn(fx, &ds, fx->op_list[i].data)
-                                    || icon_changed;
-  }
-
-  // shadows
-  if (fx->settings && fx->settings->bar_angle > 0 && fx->settings->show_shadows)
-  {
-		make_shadows(fx, cr, ds.x1, ds.y1, ds.current_width, ds.current_height);
-  }
-	
-  //Update our displayed Icon.
-  cairo_set_source_surface(cr, cairo_get_target(fx->icon_ctx), ds.x1, ds.y1);
-
-  cairo_paint_with_alpha(cr, fx->settings->icon_alpha * fx->alpha);
-
-  //------------------------------------------------------------------------
-  /* reflection */
-  
-  if (fx->do_reflections)
-  {
-    if (fx->y_offset >= 0)
-    {
-      ds.y1 += ds.current_height + fx->y_offset * 2 - ((fx->settings->reflection_offset > 30)? 30 : fx->settings->reflection_offset);
-
-      if (icon_changed || !reflect)
-      {
-        cairo_matrix_t matrix;
-        cairo_matrix_init(&matrix,
-                          1,
-                          0,
-                          0,
-                          -1,
-                          (ds.current_width / 2.0)*(1 - (1)),
-                          (ds.current_height / 2.0)*(1 - (-1))
-                         );
-        cairo_save(fx->reflect_ctx);
-        cairo_transform(fx->reflect_ctx, &matrix);
-        cairo_set_source_surface(fx->reflect_ctx, cairo_get_target(fx->icon_ctx), 
-                                 0, 0);
-        cairo_paint(fx->reflect_ctx);
-
-        cairo_set_operator(cr,CAIRO_OPERATOR_DEST_OVER);
-        cairo_set_source_surface(cr, cairo_get_target(fx->reflect_ctx), 
-                                 ds.x1, ds.y1);
-        cairo_paint_with_alpha(cr, fx->alpha / 4);
-        cairo_set_operator(cr,CAIRO_OPERATOR_OVER);
-        cairo_restore(fx->reflect_ctx);
-      }
-      else
-      {
-        cairo_set_source_surface(cr, reflect, ds.x1, ds.y1);
-        cairo_paint_with_alpha(cr, fx->settings->icon_alpha * 
-                                    fx->alpha * 
-                                    fx->settings->reflection_alpha_mult);
-      }
-    }
-    /* 4px offset for 3D look for reflection*/
-    if (fx->do_offset_cut && fx->settings && fx->settings->bar_angle > 0)
-    {
-      cairo_save(cr);
-      cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-      cairo_set_source_rgba(cr, 1, 1, 1, 0);
-      cairo_rectangle(cr, 0, ((fx->settings->bar_height * 2) - 4) +
-                      fx->settings->icon_offset, fx->window_width, 4);
-      cairo_fill(cr);
-      cairo_restore(cr);
+    gint inc = fx->icon_offset;
+    switch (fx->position) {
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
+        gtk_widget_set_size_request(fx->widget, width*6/5, height + inc);
+        break;
+      case GTK_POS_RIGHT:
+      case GTK_POS_LEFT:
+        gtk_widget_set_size_request(fx->widget, width + inc, height*6/5);
+        break;
     }
   }
 }
 
-void
-awn_effects_draw_icons(AwnEffects * fx, cairo_t * cr, GdkPixbuf * icon,
-               GdkPixbuf * reflect)
+/**
+ * awn_effects_cairo_create:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * <note>
+ *  Make sure you call awn_effects_cairo_destroy() on the cairo context
+ *  returned by this call.
+ * </note>
+ * 
+ * Returns: cairo context where an icon can be drawn. (the icon should have 
+ * dimensions specified by a previous call to #awn_effects_set_icon_size)
+ */
+cairo_t *awn_effects_cairo_create(AwnEffects *fx)
 {
-  /*rather inefficient still...
-    Only user of this AFAIK is core.
+  return awn_effects_cairo_create_clipped(fx, NULL);
+}
+
+/**
+ * awn_effects_cairo_create_clipped:
+ * @fx: Pointer to #AwnEffects instance.
+ * @event: #GdkEventExpose received by the widget.
+ *
+ * Creates a Cairo context for drawing to #AwnEffects:widget. The drawing
+ * region will be clipped to @event's region member, and translated to its
+ * area member, so you can always paint the icon at coordinates [0, 0].
+ * 
+ * <note>
+ *  Make sure you call awn_effects_cairo_destroy() on the cairo context
+ *  returned by this call.
+ * </note>
+ * 
+ * Returns: cairo context where an icon can be drawn. (the icon should have
+ * dimensions specified by a previous call to #awn_effects_set_icon_size)
+ *
+ */
+cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
+                                          GdkEventExpose *event)
+{
+  g_return_val_if_fail(AWN_IS_EFFECTS(fx) && fx->widget, NULL);
+
+  AwnEffectsPrivate *priv = fx->priv;
+  cairo_t *cr;
+  GtkAllocation alloc;
+
+  cr = gdk_cairo_create (gtk_widget_get_window (fx->widget));
+  g_return_val_if_fail(cairo_status(cr) == CAIRO_STATUS_SUCCESS, NULL);
+  fx->window_ctx = cr;
+
+  /* 
+   * Oh right, first we used cairo_xlib_surface_get_width/height, but we
+   * discovered that is causes artifacts, so now we use simple allocation
+   * which seems to work just fine.
    */
-  g_return_if_fail(GDK_IS_PIXBUF(icon));
+  gtk_widget_get_allocation (fx->widget, &alloc);
+  priv->window_width = alloc.width;
+  priv->window_height = alloc.height;
 
-  cairo_surface_t * icon_srfc = cairo_surface_create_similar(
-                                  cairo_get_target(cr),
-                                  CAIRO_CONTENT_COLOR_ALPHA,
-                                  gdk_pixbuf_get_width(icon),
-                                  gdk_pixbuf_get_height(icon));
-  cairo_t * icon_context = cairo_create(icon_srfc);
-  gdk_cairo_set_source_pixbuf(icon_context, icon, 0, 0);
-  cairo_paint(icon_context);
-
-  awn_effects_draw_icons_cairo(fx, cr, icon_context, NULL);
-
-  cairo_surface_destroy(icon_srfc);
-  cairo_destroy(icon_context);
-}
-
-void
-awn_effects_draw_foreground(AwnEffects * fx, cairo_t * cr)
-{
-  if (fx->spotlight && fx->spotlight_alpha > 0)
+  if (event)
   {
-    apply_spotlight(fx, cr);
+    /* clip the region */
+    gdk_cairo_region (cr, event->region);
+    cairo_clip (cr);
+
+    /* this part of the code is also very sensitive, using different condition
+     * (ie "if (event->area.x > 0)" results in artifacts similar to the ones
+     * mentioned above if using cairo_xlib_surface_get_width/height)
+     */
+    if (!gtk_widget_get_has_window (fx->widget))
+    {
+      cairo_translate (cr, (double)(alloc.x), (double)(alloc.y));
+    }
   }
 
+  if (fx->priv->already_exposed == FALSE)
+    fx->priv->already_exposed = TRUE;
+
+  if (fx->no_clear == FALSE)
+    awn_effects_pre_op_clear (fx, cr, NULL, NULL);
+
+#if 0
+  g_debug("Icon size: %dx%d, Surface size: %dx%d", 
+          priv->icon_width, priv->icon_height,
+          priv->window_width, priv->window_height);
+  g_debug("Allocation size: (%d,%d) (%dx%d)",
+          alloc.x, alloc.y,
+          alloc.width, alloc.height);
+#endif
+
+  if (fx->indirect_paint)
+  {
+    cairo_surface_t *targetSurface = cairo_get_target(cr);
+    /* we'll give to user virtual context and later paint everything on real one */
+    targetSurface = cairo_surface_create_similar(targetSurface,
+                                                 CAIRO_CONTENT_COLOR_ALPHA,
+                                                 priv->window_width,
+                                                 priv->window_height
+                                                );
+    g_return_val_if_fail(
+      cairo_surface_status(targetSurface) == CAIRO_STATUS_SUCCESS, NULL);
+    cr = cairo_create(targetSurface);
+  }
+  /* if we're painting directly virtual_ctx == window_ctx */
+  fx->virtual_ctx = cr;
+
+  /* FIXME: make GtkAllocation AwnEffects member, so it's accessible in both
+   * pre and post ops (can be then used for optimizations)
+   * Then the param should be also removed from all ops functions.
+   */
+  GtkAllocation ds;
+  ds.width = priv->icon_width;
+  ds.height = priv->icon_height;
+  ds.x = (priv->window_width - ds.width) / 2;
+  ds.y = (priv->window_height - ds.height); /* sit on bottom by default */
+
+  /* put actual transformations here (no drawing)
+   * FIXME: put the functions in some kind of list/array
+   */
+  awn_effects_pre_op_translate(fx, cr, &ds, NULL);
+  awn_effects_pre_op_clip(fx, cr, &ds, NULL);
+  awn_effects_pre_op_scale(fx, cr, &ds, NULL);
+  awn_effects_pre_op_rotate(fx, cr, &ds, NULL);
+  awn_effects_pre_op_flip(fx, cr, &ds, NULL);
+
+  return cr;
 }
 
+/**
+ * awn_effects_cairo_destroy:
+ * @fx: Pointer to #AwnEffects instance.
+ *
+ * Finish drawing of the icon and run all post-ops.
+ */
+void awn_effects_cairo_destroy(AwnEffects *fx)
+{
+  cairo_t *cr = fx->virtual_ctx;
+
+  /* FIXME: divide overlays into two lists - those where effects should be
+   *  applied and where they shouldn't
+   */
+  GList *overlays_with_effects = NULL;
+  GList *overlays_wo_effects = NULL;
+
+  for (GList *iter=g_list_first (fx->priv->overlays); iter != NULL;
+       iter=g_list_next (iter))
+  {
+    GList **target = awn_overlay_get_apply_effects (AWN_OVERLAY (iter->data)) ?
+      &overlays_with_effects : &overlays_wo_effects;
+    *target = g_list_append (*target, iter->data);
+  }
+
+  /* Now paint the overlays which should have effects applied */
+  for (GList *iter=g_list_first (overlays_with_effects); iter != NULL;
+       iter=g_list_next (iter))
+  {
+    AwnOverlay *overlay = iter->data;
+    awn_overlay_render (overlay, fx->widget, cr,
+                        fx->priv->icon_width, fx->priv->icon_height);
+  }
+
+  cairo_reset_clip (cr);
+  /* FIXME: 
+   *   NO_WINDOW widgets won't like this!
+   *     (though it'll cause problems only when indirect-paint == FALSE)
+   */
+  cairo_identity_matrix (cr);
+
+  /* put surface operations here
+   * FIXME: put the functions in some kind of list/array
+   */
+  awn_effects_post_op_clip(fx, cr, NULL, NULL);
+  awn_effects_post_op_depth(fx, cr, NULL, NULL);
+  awn_effects_post_op_shadow(fx, cr, NULL, NULL);
+  awn_effects_post_op_saturate(fx, cr, NULL, NULL);
+  awn_effects_post_op_glow(fx, cr, NULL, NULL);
+  awn_effects_post_op_alpha(fx, cr, NULL, NULL);
+  awn_effects_post_op_reflection(fx, cr, NULL, NULL);
+  awn_effects_post_op_active (fx, cr, NULL, NULL);
+  awn_effects_post_op_spotlight(fx, cr, NULL, NULL);
+  awn_effects_post_op_arrow (fx, cr, NULL, NULL);
+  awn_effects_post_op_progress(fx, cr, NULL, NULL);
+
+  if (overlays_wo_effects != NULL)
+  {
+    double x, y;
+    awn_effects_get_base_coords (fx, &x, &y);
+    cairo_translate (cr, x, y);
+
+    /* Now paint the overlays which should NOT have effects applied */
+    for (GList *iter=g_list_first (overlays_wo_effects); iter != NULL;
+         iter=g_list_next (iter))
+    {
+      AwnOverlay *overlay = iter->data;
+      awn_overlay_render (overlay, fx->widget, cr,
+                          fx->priv->icon_width, fx->priv->icon_height);
+    }
+  }
+
+  if (fx->indirect_paint)
+  {
+    cairo_set_operator(fx->window_ctx, CAIRO_OPERATOR_OVER);
+    cairo_set_source_surface(fx->window_ctx, cairo_get_target(cr), 0, 0);
+    cairo_paint(fx->window_ctx);
+
+    cairo_surface_destroy(cairo_get_target(cr));
+    cairo_destroy(fx->virtual_ctx);
+  }
+  cairo_destroy(fx->window_ctx);
+
+  g_list_free (overlays_with_effects);
+  g_list_free (overlays_wo_effects);
+
+  fx->window_ctx = NULL;
+  fx->virtual_ctx = NULL;
+}
+
+/**
+ * awn_effects_add_overlay:
+ * @fx: AwnEffects instance.
+ * @overlay: AwnOverlay instance which should be added.
+ *
+ * Adds an overlay to the list of rendered overlays.
+ */
 void
-awn_effects_draw_set_icon_size(AwnEffects * fx, const gint width, const gint height)
+awn_effects_add_overlay (AwnEffects *fx, AwnOverlay *overlay)
 {
-  fx->icon_width = width;
-  fx->icon_height = height;
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+
+  AwnEffectsPrivate *priv = fx->priv;
+
+  if (g_list_find (priv->overlays, overlay) == NULL)
+  {
+    priv->overlays = g_list_append (priv->overlays,
+                                    g_object_ref_sink (overlay));
+    awn_effects_redraw (fx);
+    g_signal_connect_swapped (overlay, "notify",
+                              G_CALLBACK (awn_effects_prop_changed), fx);
+  }
+  else
+  {
+    g_warning ("%s: Attempt to add overlay that is already in overlays list!",
+               __func__);
+  }
 }
 
+/**
+ * awn_effects_remove_overlay:
+ * @fx: AwnEffects instance.
+ * @overlay: AwnOverlay which was previously added using
+ *  awn_effects_add_overlay.
+ *
+ * Removes overlay from the list of rendered overlays.
+ */
 void
-awn_effects_draw_set_window_size(AwnEffects * fx, const gint width,
-                         const gint height)
+awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay)
 {
-  fx->window_width = width;
-  fx->window_height = height;
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+
+  AwnEffectsPrivate *priv = fx->priv;
+  GList *elem;
+
+  if ((elem = (g_list_find (priv->overlays, overlay))) != NULL)
+  {
+    g_signal_handlers_disconnect_by_func (overlay,
+      G_CALLBACK (awn_effects_prop_changed), fx);
+    priv->overlays = g_list_delete_link (priv->overlays, elem);
+    g_object_unref (overlay);
+    awn_effects_redraw (fx);
+  }
+  else
+  {
+    g_warning ("%s: Attempt to remove overlay that is not in overlays list!",
+               __func__);
+  }
 }
 
-static gdouble
-calc_curve_position(gdouble cx, gdouble a, gdouble b)  // pos, width, height
+/**
+ * awn_effects_get_overlays:
+ * @fx: #AwnEffects instance.
+ *
+ * Returns: a newly-allocated list of the overlays added to this effects
+ * instance.
+ */
+GList*
+awn_effects_get_overlays (AwnEffects *fx)
 {
-  return a <= 0 ? 0 : sin(cx / a * M_PI) * b;
+  g_return_val_if_fail (AWN_IS_EFFECTS (fx), NULL);
+
+  return g_list_copy (fx->priv->overlays);
 }
+

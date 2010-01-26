@@ -1,0 +1,5 @@
+usr/share/avant-window-navigator/awn-settings/
+usr/share/icons/hicolor/*/apps/awn-settings.*
+usr/share/icons/hicolor/*/categories/awn-plugins.*
+usr/bin/awn-settings
+usr/share/applications/awn-settings.desktop

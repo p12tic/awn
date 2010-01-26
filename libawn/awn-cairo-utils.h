@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007 Anthony Arobone <aarobone@gmail.com>
+ *  Copyright (C) 2009 Mark Lee <avant-wn@lazymalevolence.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -11,28 +12,31 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  Author : Anthony Arobone <aarobone@gmail.com>
+ *           (awn_cairo_rounded_rect)
+ *  Author : Mark Lee <avant-wn@lazymalevolence.com>
+ *           (awn_cairo_set_source_color,
+ *            awn_cairo_set_source_color_with_alpha_multiplier,
+ *            awn_cairo_pattern_add_color_stop_color)
 */
 
 
 #ifndef __AWN_CAIRO_UTILS_H__
 #define __AWN_CAIRO_UTILS_H__
 
-#include <gtk/gtk.h>
-
+#include <cairo.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 typedef enum
 {
 	ROUND_NONE		= 0,
-	ROUND_TOP_LEFT		= 1,
-	ROUND_TOP_RIGHT		= 2,
-	ROUND_BOTTOM_RIGHT	= 4,
-	ROUND_BOTTOM_LEFT	= 8,
+	ROUND_TOP_LEFT		= 1 << 0,
+	ROUND_TOP_RIGHT		= 1 << 1,
+	ROUND_BOTTOM_RIGHT	= 1 << 2,
+	ROUND_BOTTOM_LEFT	= 1 << 3,
 	ROUND_TOP		= ROUND_TOP_LEFT | ROUND_TOP_RIGHT,
 	ROUND_BOTTOM		= ROUND_BOTTOM_LEFT | ROUND_BOTTOM_RIGHT,
 	ROUND_LEFT		= ROUND_TOP_LEFT | ROUND_BOTTOM_LEFT,
@@ -40,25 +44,43 @@ typedef enum
 	ROUND_ALL		= ROUND_LEFT | ROUND_RIGHT
 } AwnCairoRoundCorners;
 
-typedef struct
-{
-        gfloat red;
-        gfloat green;
-        gfloat blue;
-        gfloat alpha;
-} AwnColor;
-
-
 void 
 awn_cairo_rounded_rect (cairo_t *cr, 
-                        int x0, int y0, 
-                        int width, int height, 
+                        double x0, double y0,
+                        double width, double height,
                         double radius, AwnCairoRoundCorners state);
 
-
-/* takes a string of RRGGBBAA and converts to AwnColor */
 void
-awn_cairo_string_to_color (const gchar *string, AwnColor *color);
+awn_cairo_rounded_rect_shadow(cairo_t *cr, double rx0, double ry0,
+                              double width, double height,
+                              double radius, AwnCairoRoundCorners state,
+                              double shadow_radius, double shadow_alpha);
+
+void
+awn_cairo_set_source_color (cairo_t              *cr,
+                            DesktopAgnosticColor *color);
+
+void
+awn_cairo_set_source_color_with_alpha_multiplier (cairo_t              *cr,
+                                                  DesktopAgnosticColor *color,
+                                                  gdouble               multiplier);
+
+void
+awn_cairo_set_source_color_with_multipliers (cairo_t              *cr,
+                                             DesktopAgnosticColor *color,
+                                             gdouble               color_multiplier,
+                                             gdouble               alpha_multiplier);
+
+void
+awn_cairo_pattern_add_color_stop_color (cairo_pattern_t      *pattern,
+                                        double                offset,
+                                        DesktopAgnosticColor *color);
+
+void
+awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier (cairo_pattern_t      *pattern,
+                                                              double                offset,
+                                                              DesktopAgnosticColor *color,
+                                                              gdouble               multiplier);
 
 #endif
 

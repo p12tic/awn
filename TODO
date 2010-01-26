@@ -1,17 +1,101 @@
 See launchpad.net/awn for blueprints and bugs.
 
-Pyawn Notes
-awn_applet_dialog_new needs to be re-done to work.
+===
 
-(define-function dialog_new
-  (c-name "awn_applet_dialog_new")
-  (is-constructor-of "AwnAppletDialog")
-  (return-type "GtkWidget*")
-  (parameters
-    '("AwnApplet*" "applet")
-  )
-)
+Using this as a brain-dump location for an incomplete list of remaining thnings
+that need to be done before we can make a devel release:
 
-awn_applet_gconf_set/get_value doesn't work as yet
+src/
+  - Make the panel set the right hints for
+    - Panel mode
+    - Desktop mode
+  - Add DBus support to inhibit autohide
+  - auto-resize support when panel runs out of space
+  - Add expand mode support
+    - Make sure AwnAppletManager respects the applets expand setting for
+      expand major/minor
+  - Fix the backgrounds
+    - Port over meek's work on png/svg backgrounds
+      - Will need to add a small .desktop file to the theme directory so we can
+        get:
+        - Name
+        - Author
+        - Version
+        - License ?
+        - clip_size (for the bottom)
+        - padding_size (extra padding around the minor edges of the panel i.e.
+          left/right edge for orient==bottom, top/bottom for orient==right).
+  - Write simple preferences for the panel
+    - General
+      - Panel size & orientation
+      - Multi-monitor set-up
+      - [] Expand, [] Autohide
+    - Effects and Themeing/Look and feel
+      - Icon effects
+      - Theme engine
+        - Flat, 3D or pixmap
+          - If flat/3d, which colours (not if in Gtk theme mode)
+          - If pixmap, which theme
+        - [] Use desktop theme colours
+      - Applets
+        - Simple applet list with way to add/remove/reorder/install/delete
+  - Seperator support
+  - Expander/spring support
+  - A11y support!?! (not a critical, but we should have a plan)
+    - keyboard navigation at minimum
+    - some sort of ATK support?
 
+libawn/
+  - AwnIcon/AwnEffects
+    - metadata drawing
+      - message
+    - replace config bitfield for effects with a bunch of string-based options
+      (enum-like)
+    - [Nice-to-have] make speed of effects configurable
+  - AwnAppletSimple
+    - Write a test-case with lots of pixbuf, cairo_surface and icon-name swaps
+      to make sure we are not leaking when doing switches
+    - Make sure I haven't broken the themed icon support
+  - AwnTooltip
+    - shadows?
+  - AwnDialog
+    - Inhibit autohide on the panel if dialog is showing
 
+applets/taskmananger
+  - Complete simple window-managment
+    - D-Bus support
+      - Add the necessary stuff to get TaskWindow's on dbus, so external
+        processes can
+        - Set progress/message information
+        - Change the icon
+          - Add support for sending a pixbuf over the bus in libawn + python
+        - Replace the context menu with their own menu/dialog
+          - Have a way to still reach the standard context menu if need be
+    - "Create shortcut" support
+  - TaskIcon
+    - Support for doing something clever when desktop files are dropped on the
+      bar (like adding them).
+    - React when a launcher get removed. Now it just stays there.
+        (Could be a problem with D&D, cuzz all existing launchers get reset on drag)
+        h4writer: This is probably the fault of the function "ensure_layout" in task-manager.c
+                  This gets also called when opening/closing window. So it will happen then too.
+  - Window grouping
+    - Drag-and-drop of task-icons on top eachother to create arbitary groups
+    - Application grouping
+      - Always/sometimes/never
+    - Show all windows when clicked/scrubbing/show popup on right-click to
+      choose windows
+    - Drag & Drop support for multiple windows
+  - Preferences
+    - For what?
+      - Addition/removing of launchers can be done through drag-and-drop
+      - Re-ordering of launchers can be done the same way
+  - D&D
+    - To many drag-ended signals for one drop
+    - Set that the drop worked, so it doesn't go back to original place
+
+misc
+  - Process naming in awn-applet-activation
+  - Documentation
+
+===

@@ -6,632 +6,839 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-02-02 23:50+0100\n"
-"PO-Revision-Date: 2009-04-01 03:49+0000\n"
-"Last-Translator: Naoharu Ito <naoharu.itou@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-10-29 20:47-0700\n"
+"PO-Revision-Date: 2009-02-01 22:57+0000\n"
+"Last-Translator: José Lou C. <knight4light@gmail.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-04-18 19:40+0000\n"
+"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: ../awn-manager/awn-manager.desktop.in.in.h:1
-#: ../awn-manager/awnManager.py:75
-msgid "Awn Manager"
-msgstr "Awn設定マネージャ"
+#: ../applets/expander/expander.desktop.in.in.h:1
+msgid "Expander"
+msgstr ""
 
-#: ../awn-manager/awn-manager.desktop.in.in.h:2
+#: ../applets/expander/expander.desktop.in.in.h:2
+msgid "Fills space on the panel in expand mode"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
+msgid ""
+"Behavior when window on a different workspace is activated. (0 for default, "
+"1 - change active workspace, 2 - move to current workspace)"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
+msgid "Delay before activating a window when dragging over an icon."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
+msgid ""
+"Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
+"Copy if owned by user, 2.. Do not copy."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
+msgid "Disables changing of panel icon when app indicates icon change."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
+msgid "Enable long press to open Dialog."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
+msgid "Enable reordering of windows by drag and drop "
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
+msgid "Enabling group of tasks."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
+msgid ""
+"How radical matching is applied for grouping items. The value should be "
+"between 0 and 99. 0 is as good as no grouping. 99 will match almost "
+"everything."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
+msgid ""
+"How to generate the list of windows tested for intersection when Intellihide "
+"is active.  0.. use windows on active workspace, 1.. use windows of "
+"currently focused app."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
+msgid ""
+"Intellihide if hide is enabled for the panel.  This will inhibit autohide of "
+"the panel if there are no intersecting windows in the relevant window list "
+"(see intellihide_mode)."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
+msgid ""
+"Maximum number of task indicators to show under icons. Valid range is 0..3."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
+msgid ""
+"Number of seconds to inhibit autohide when a application requests attention. "
+"A value of 0 disables."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
+msgid "Only show and manager launcher windows"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
+#, fuzzy
+msgid "Show windows from all workspaces"
+msgstr "全てのビューポートのウィンドウを表示"
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
+msgid ""
+"The threshold at which text count begins to be displayed. valid range 1.."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
+msgid ""
+"a list of paths to .desktop files from which the taskmanager should create "
+"it's launchers"
+msgstr ""
+
+#: ../applets/taskmanager/task-launcher.c:920
+#: ../applets/taskmanager/task-icon.c:2363
+#: ../applets/taskmanager/task-icon.c:2461
+#, fuzzy
+msgid "Launch"
+msgstr "起動中"
+
+#: ../applets/taskmanager/task-launcher.c:1002
+#, fuzzy, c-format
+msgid "Launch %s"
+msgstr "起動中"
+
+#: ../applets/taskmanager/task-icon.c:2419
+#, fuzzy
+msgid "Add to Launcher List"
+msgstr "ランチャーの追加と削除"
+
+#: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
+msgid "Launcher/Taskmanager"
+msgstr ""
+
+#: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
+msgid "Launcher/Taskmanager applet"
+msgstr ""
+
+#: ../awn-settings/awn-settings.desktop.in.h:1
+msgid "Awn Settings"
+msgstr ""
+
+#: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Awnの設定、ランチャー、アプレットやテーマを管理する"
 
-#: ../awn-manager/awnLauncher.py:160
-msgid "Invalid launcher"
-msgstr "無効なランチャー"
+#: ../awn-settings/awnClass.py:264
+msgid "Error, a sources.list already exist"
+msgstr ""
 
-#: ../awn-manager/awnLauncherEditor.py:142
-msgid "Select an Executable File"
-msgstr "実行ファイルを選択してください"
+#: ../awn-settings/awnClass.py:332
+msgid "Error, the path is empty or already exist"
+msgstr ""
 
-#: ../awn-manager/awnLauncherEditor.py:160
-#, python-format
-msgid "Please provide a name for the launcher in the \"%s\" field."
-msgstr "ランチャー名を\"%s\"フィールドに入力してください"
-
-#: ../awn-manager/awnLauncherEditor.py:160
-#: ../awn-manager/launcher-editor.glade.h:3
-msgid "<b>Name:</b>"
-msgstr "<b>名前:</b>"
-
-#: ../awn-manager/awnLauncherEditor.py:163
-#, python-format
-msgid "Please provide a program to launch in the \"%s\" field."
-msgstr "ランチャープログラムを\"%s\"フィールドに入力してください"
-
-#: ../awn-manager/awnLauncherEditor.py:163
-#: ../awn-manager/launcher-editor.glade.h:1
-msgid "<b>Command:</b>"
-msgstr "<b>コマンド:</b>"
-
-#: ../awn-manager/awnLauncherEditor.py:175
-#, python-format
-msgid "Couldn't save the launcher. Error: %s"
-msgstr "ランチャーを保存できませんでした エラー：%s"
-
-#: ../awn-manager/awnManager.py:59
-msgid "Awn Manager can't be run as root."
-msgstr "Awn マネージャーは root ユーザで実行できません"
-
-#. must be on one line due to i18n
-#: ../awn-manager/awnManager.py:148
+#: ../awn-settings/awnClass.py:452
 #, python-format
 msgid ""
-"Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
-"installed. It usually comes with librsvg, or a package similarly named."
+"Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
-"\"%s\" アイコンが読み込めません。Gtk+ 用の SVG ローダーがインストールされているか確認してください。通常、SVG ローダーは "
-"librsvg またはそれに似たパッケージ名です。"
 
-#: ../awn-manager/awnManager.py:173
-msgid "AWN has been successfully refreshed"
-msgstr "Awn のリフレッシュに成功しました"
-
-#: ../awn-manager/awnManager.py:179
-#: ../data/avant-window-navigator.desktop.in.in.h:2
-msgid "Avant Window Navigator"
-msgstr "Avant Window Navigator"
-
-#: ../awn-manager/awnManager.py:197
-msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr "自由にカスタマイズできるドックライクな GNOME 用ウィンドウナビゲーター"
-
-#: ../awn-manager/awnManager.py:199
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version."
+#: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
+#: ../awn-settings/awnSettings.py.in:144
+msgid "None"
 msgstr ""
-"本プログラムはフリー・ソフトウェアです。あなたは、Free Software Foundation "
-"が公表したGNU一般公有使用許諾の「バージョン2」あるいはそれ以降の各バージョンの中からいずれかを選択し、そのバージョンが定める条項に従って本プログラムを"
-"再頒布または変更することができます。"
 
-#: ../awn-manager/awnManager.py:201
-msgid ""
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details."
+#: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
+msgid "Simple"
 msgstr ""
-"このプログラムは有用であることを願って頒布されますが、 *全くの無保証* です。*商業可能性の保証* や *特定の目的への適合性* "
-"は、言外に示されたものも含め全く存在しません。詳しくはGNU一般公衆利用許諾契約書をご覧ください。"
 
-#: ../awn-manager/awnManager.py:203
-msgid ""
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 51 "
-"Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
-msgstr ""
-"あなたはこのプログラムと共に、GNU一般公衆利用許諾契約書の複製を一部受け取ったはずです。もし受け取っていなければ、フリーソフトウェア財団まで請求してくだ"
-"さい(宛先は the Free Software Foundation,Inc., 51 Franklin St, Fifth Floor, "
-"Boston, MA 02110-1301 USA)。"
-
-#: ../awn-manager/awnPreferences.py:247
-msgid "PNG Files"
-msgstr "PNG ファイル"
-
-#: ../awn-manager/awnPreferences.py:332 ../awn-manager/awnPreferences.py:392
-#: ../awn-manager/awnPreferences.py:447
+#: ../awn-settings/awnClass.py:825 ../awn-settings/awnClass.py:886
 msgid "Classic"
 msgstr "クラシック"
 
-#: ../awn-manager/awnPreferences.py:333 ../awn-manager/awnPreferences.py:393
-#: ../awn-manager/awnPreferences.py:448
+#: ../awn-settings/awnClass.py:826 ../awn-settings/awnClass.py:887
 msgid "Fade"
-msgstr "フェード"
+msgstr ""
 
-#: ../awn-manager/awnPreferences.py:334 ../awn-manager/awnPreferences.py:394
-#: ../awn-manager/awnPreferences.py:449
+#: ../awn-settings/awnClass.py:827 ../awn-settings/awnClass.py:888
 msgid "Spotlight"
 msgstr "スポットライト"
 
-#: ../awn-manager/awnPreferences.py:335 ../awn-manager/awnPreferences.py:395
-#: ../awn-manager/awnPreferences.py:450
+#: ../awn-settings/awnClass.py:828 ../awn-settings/awnClass.py:889
 msgid "Zoom"
-msgstr "ズーム"
+msgstr ""
 
-#: ../awn-manager/awnPreferences.py:336 ../awn-manager/awnPreferences.py:396
-#: ../awn-manager/awnPreferences.py:451
+#: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
 msgid "Squish"
-msgstr "スプラッシュ"
+msgstr ""
 
-#: ../awn-manager/awnPreferences.py:337
-msgid "3D turn"
-msgstr "3D ターン"
-
-#: ../awn-manager/awnPreferences.py:338
-msgid "3D turn with spotlight"
-msgstr "スポットライト付き 3D ターン"
-
-#: ../awn-manager/awnPreferences.py:339 ../awn-manager/awnPreferences.py:399
-#: ../awn-manager/awnPreferences.py:454
-msgid "Glow"
-msgstr "発光"
-
-#: ../awn-manager/awnPreferences.py:361
-msgid "Flat bar"
-msgstr "フラット"
-
-#: ../awn-manager/awnPreferences.py:362
-msgid "3D look"
-msgstr "3D"
-
-#: ../awn-manager/awnPreferences.py:391 ../awn-manager/awnPreferences.py:446
-msgid "None"
-msgstr "なし"
-
-#: ../awn-manager/awnPreferences.py:397 ../awn-manager/awnPreferences.py:452
+#: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
 msgid "3D Turn"
-msgstr "3D ターン"
+msgstr ""
 
-#: ../awn-manager/awnPreferences.py:398 ../awn-manager/awnPreferences.py:453
+#: ../awn-settings/awnClass.py:831 ../awn-settings/awnClass.py:892
 msgid "3D Spotlight Turn"
-msgstr "スポットライト付き 3D ターン"
+msgstr ""
 
-#: ../awn-manager/awnPreferences.py:455
-#: ../awn-manager/launcher-editor.glade.h:4
+#: ../awn-settings/awnClass.py:832 ../awn-settings/awnClass.py:893
+msgid "Glow"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:894 ../awn-settings/awnSettings.py.in:152
 msgid "Custom"
-msgstr "カスタム"
+msgstr ""
 
-#: ../awn-manager/awnPreferences.py:537
+#: ../awn-settings/awnClass.py:974
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
 
-#: ../awn-manager/awnPreferences.py:547
+#: ../awn-settings/awnClass.py:984
 msgid "Confirm directory creation"
-msgstr "ディレクトリ作成の確認"
+msgstr ""
 
-#: ../awn-manager/awnPreferences.py:548
+#: ../awn-settings/awnClass.py:985
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
 
-#: ../awn-manager/launcher-editor.glade.h:2
-msgid "<b>Description:</b>"
-msgstr "<b>説明:</b>"
-
-#: ../awn-manager/launcher-editor.glade.h:5
-msgid "Directory:"
-msgstr "ディレクトリ:"
-
-#: ../awn-manager/launcher-editor.glade.h:6
-msgid "Launcher Editor"
+#: ../awn-settings/awnClass.py:1040
+#, python-format
+msgid "Could not locate any of these icons: %s\n"
 msgstr ""
 
-#: ../awn-manager/launcher-editor.glade.h:7
-msgid "Launcher Icon"
-msgstr "ランチャーアイコン"
-
-#: ../awn-manager/launcher-editor.glade.h:8
-msgid "Open..."
-msgstr "開く..."
-
-#: ../awn-manager/launcher-editor.glade.h:9
-msgid "Select A Folder"
-msgstr "フォルダの選択"
-
-#: ../awn-manager/launcher-editor.glade.h:10
-msgid "Select Icon"
-msgstr "アイコンの選択"
-
-#: ../awn-manager/launcher-editor.glade.h:11
-msgid "Stock/In Theme"
+#: ../awn-settings/awnClass.py:1047
+#, python-format
+msgid "Could not locate the following icon: %s\n"
 msgstr ""
 
-#: ../awn-manager/window.glade.h:1
-msgid "<b>Active Icon</b>"
-msgstr "<b>アクティブなアイコン</b>"
+#: ../awn-settings/awnClass.py:1069
+msgid "AWN has been successfully refreshed"
+msgstr "AWNのリフレッシ成功です"
 
-#: ../awn-manager/window.glade.h:2
-msgid "<b>Applet Preferences</b>"
-msgstr "<b>アプレット設定</b>"
+#: ../awn-settings/awnClass.py:1075
+#: ../data/avant-window-navigator.desktop.in.h:2
+msgid "Avant Window Navigator"
+msgstr "Avant ウィンドウ・ナビゲーター"
 
-#: ../awn-manager/window.glade.h:3
-msgid "<b>Arrows</b>"
-msgstr "<b>矢印</b>"
-
-#: ../awn-manager/window.glade.h:4
-msgid "<b>Bar behaviour</b>"
-msgstr "<b>バーの動作</b>"
-
-#: ../awn-manager/window.glade.h:5
-msgid "<b>Borders</b>"
-msgstr "<b>境界</b>"
-
-#: ../awn-manager/window.glade.h:6
-msgid "<b>Customize Effects</b>"
-msgstr "<b>エフェクト設定</b>"
-
-#: ../awn-manager/window.glade.h:7
-msgid "<b>General Preferences</b>"
-msgstr "<b>一般設定</b>"
-
-#: ../awn-manager/window.glade.h:8
-msgid "<b>Gradient</b>"
-msgstr "グラデーション"
-
-#: ../awn-manager/window.glade.h:9
-msgid "<b>Highlight</b>"
-msgstr "ハイライト"
-
-#: ../awn-manager/window.glade.h:10
-msgid "<b>Icon Effects</b>"
-msgstr "<b>アイコン設定</b>"
-
-#: ../awn-manager/window.glade.h:11
-msgid "<b>Launcher Preferences</b>"
-msgstr "<b>ランチャー設定</b>"
-
-#: ../awn-manager/window.glade.h:12
-msgid "<b>Look </b>"
-msgstr "<b>外観 </b>"
-
-#: ../awn-manager/window.glade.h:13
-msgid "<b>Pattern</b>"
-msgstr "<b>パターン</b>"
-
-#: ../awn-manager/window.glade.h:14
-msgid "<b>Separator</b>"
-msgstr "<b>区切り</b>"
-
-#: ../awn-manager/window.glade.h:15
-msgid "<b>Startup behaviour</b>"
-msgstr "<b>スタートアップ時の動作</b>"
-
-#: ../awn-manager/window.glade.h:16
-msgid "<b>Text</b>"
-msgstr "<b>テキスト</b>"
-
-#: ../awn-manager/window.glade.h:17
-msgid "<b>Themes</b>"
-msgstr "<b>テーマ</b>"
-
-#: ../awn-manager/window.glade.h:18
-msgid "<b>Windows</b>"
-msgstr "<b>ウィンドウ</b>"
-
-#: ../awn-manager/window.glade.h:19
-msgid "Activate"
-msgstr "有効化"
-
-#: ../awn-manager/window.glade.h:20
-msgid "Add and remove applets"
-msgstr "アプレットの追加と削除"
-
-#: ../awn-manager/window.glade.h:21
-msgid "Add and remove launchers"
-msgstr "ランチャーの追加と削除"
-
-#: ../awn-manager/window.glade.h:22
-msgid "Add, remove and save themes"
-msgstr "テーマの追加と削除"
-
-#: ../awn-manager/window.glade.h:23
-msgid "Alert when application window updated"
-msgstr "アプリケーションウィンドウが更新されたら警告する"
-
-#: ../awn-manager/window.glade.h:24
-msgid "Arrow offset: "
-msgstr "矢印 オフセット "
-
-#: ../awn-manager/window.glade.h:25
-msgid "Attention"
-msgstr "注意"
-
-#: ../awn-manager/window.glade.h:26
-msgid "Auto hide bar when not in use"
-msgstr "使わないときバーを自動的に隠す"
-
-#: ../awn-manager/window.glade.h:27
-msgid "Automatically start AWN on login."
-msgstr "ログイン時に Awn を自動起動する。"
-
-#: ../awn-manager/window.glade.h:28
-msgid "Background color:"
-msgstr "背景色:"
-
-#: ../awn-manager/window.glade.h:29
-msgid "Bar Appearance"
-msgstr "バーの外観"
-
-#: ../awn-manager/window.glade.h:30
-msgid "Bar angle: "
-msgstr "バーの角度: "
-
-#: ../awn-manager/window.glade.h:31
-msgid "Bar height: "
-msgstr "バーの高さ: "
-
-#: ../awn-manager/window.glade.h:32
-msgid "Change the look and behaviour of the dock"
-msgstr "ドックの外観と動作を変更します"
-
-#: ../awn-manager/window.glade.h:33
-msgid "Closing"
-msgstr "閉じています"
-
-#: ../awn-manager/window.glade.h:34
-msgid "Color:"
-msgstr "色:"
-
-#: ../awn-manager/window.glade.h:35
-msgid "Deactivate"
-msgstr "無効化"
-
-#: ../awn-manager/window.glade.h:36
-msgid "Delete"
-msgstr "削除"
-
-#: ../awn-manager/window.glade.h:37
-msgid "Enable pattern"
-msgstr "パターンを有効にする"
-
-#: ../awn-manager/window.glade.h:38
-msgid "Enable rounded corners"
-msgstr "ドックの角を丸める"
-
-#: ../awn-manager/window.glade.h:39
-msgid "Expand bar to monitor width"
+#: ../awn-settings/awnClass.py:1093
+msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
 
-#: ../awn-manager/window.glade.h:40
-msgid "First step color:"
-msgstr "一段目の色"
-
-#: ../awn-manager/window.glade.h:41
-msgid "Font:"
-msgstr "フォント:"
-
-#: ../awn-manager/window.glade.h:42
-msgid "General"
-msgstr "一般"
-
-#: ../awn-manager/window.glade.h:43
-msgid "Glass Engine"
-msgstr "鏡面効果の設定"
-
-#: ../awn-manager/window.glade.h:44
-msgid "Hover"
-msgstr "ホバー"
-
-#: ../awn-manager/window.glade.h:45
+#: ../awn-settings/awnClass.py:1095
 msgid ""
-"Icon attention effect will be activated to alert user of updated windows."
-msgstr "アイコンエフェクトを更新されたウィンドウに対して有効化"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version."
+msgstr ""
+"本プログラムはフリー・ソフトウェアです。あなたは、Free Software Foundation が"
+"公表したGNU一般公有使用許諾の「バージョン2」あるいはそれ以降の各バージョンの"
+"中からいずれかを選択し、そのバージョンが定める条項に従って本プログラムを再頒"
+"布または変更することができます。"
 
-#: ../awn-manager/window.glade.h:46
-msgid "Icon offset: "
-msgstr "アイコンのオフセット: "
+#: ../awn-settings/awnClass.py:1097
+msgid ""
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details."
+msgstr ""
+"このプログラムは有用であることを願って頒布されますが、* 全くの無保証* です。"
+"商業可能性の保証や特定の目的への適合性は、言外に示されたものも含め全く存在し"
+"ません。詳しくはGNU 一般公衆利用許諾契約書をご覧ください。"
 
-#: ../awn-manager/window.glade.h:47
-msgid "Install"
-msgstr "インストール"
+#: ../awn-settings/awnClass.py:1099
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
+msgstr ""
 
-#: ../awn-manager/window.glade.h:48
-msgid "Internal border:"
-msgstr "内側の境界"
+#: ../awn-settings/awnSettings.py.in:69
+msgid "Awn Settings can't be run as root."
+msgstr ""
 
-#: ../awn-manager/window.glade.h:49
-msgid "Keep below maximized windows when not in use"
-msgstr "使わないとき最大化ウィンドウの下に保つ"
+#: ../awn-settings/awnSettings.py.in:139
+msgid "Left"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:50
-msgid "Launching"
-msgstr "起動中"
+#: ../awn-settings/awnSettings.py.in:139
+msgid "Right"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:51
-msgid "Main border:"
-msgstr "メインの境界"
+#: ../awn-settings/awnSettings.py.in:140
+msgid "Top"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:52
-msgid "Maximized windows don't cover the bar (requires restart)"
-msgstr "最大化されたウィンドウをバーで覆わない (再起動が必要)"
+#: ../awn-settings/awnSettings.py.in:140
+msgid "Bottom"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:53
-msgid "Opening"
-msgstr "開いています"
+#: ../awn-settings/awnSettings.py.in:144
+msgid "Flat"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:54
-msgid "Pattern Engine"
-msgstr "パターンの設定"
+#: ../awn-settings/awnSettings.py.in:144
+msgid "3d"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:55
-msgid "Second step color:"
-msgstr "二段目の色"
+#: ../awn-settings/awnSettings.py.in:145
+msgid "Curved"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:56
-msgid "Separator color:"
-msgstr "区切りの色"
+#: ../awn-settings/awnSettings.py.in:145
+msgid "Edgy"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:57
-msgid "Shadow color:"
-msgstr "影の色:"
+#: ../awn-settings/awnSettings.py.in:145
+msgid "Floaty"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:58
-msgid "Show separator between launchers and tasks"
-msgstr "ランチャとタスクの間に区切りを表示"
+#: ../awn-settings/awnSettings.py.in:149
+msgid "Standard"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:59
-msgid "Show windows from all viewports"
-msgstr "全てのビューポートのウィンドウを表示"
+#: ../awn-settings/awnSettings.py.in:149
+msgid "Panel mode"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:60
-msgid "Task Appearance"
-msgstr "タスクの外観"
+#: ../awn-settings/awnSettings.py.in:150
+msgid "Autohide Keep below"
+msgstr ""
 
-#: ../awn-manager/window.glade.h:61
-msgid "Tasks have arrows"
-msgstr "タスクに矢印をつける"
-
-#: ../awn-manager/window.glade.h:62
-msgid "The bar automatically hides when not used"
+#: ../awn-settings/awnSettings.py.in:151
+#, fuzzy
+msgid "Autohide Fade out"
 msgstr "使わないときバーを自動的に隠す"
 
-#: ../awn-manager/window.glade.h:63
-msgid "Transparency:"
+#: ../awn-settings/awnSettings.py.in:152
+#, fuzzy
+msgid "Transparency"
 msgstr "透明度:"
 
-#: ../awn-manager/window.glade.h:64
-msgid "Windows don't overlap the bar if this is set"
-msgstr "ウィンドウをバーの上に表示させない"
-
-#: ../awn-manager/window.glade.h:65
-msgid "page 1"
-msgstr "ページ 1"
-
-#: ../awn-manager/window.glade.h:66
-msgid "page 2"
-msgstr "ページ 2"
-
-#: ../awn-manager/window.glade.h:67
-msgid "page 3"
-msgstr "ページ 3"
-
-#: ../awn-manager/window.glade.h:68
-msgid "page 4"
-msgstr "ページ 4"
-
-#: ../data/avant-window-navigator.desktop.in.in.h:1
-msgid "A dock-like window navigator."
-msgstr "ドックライクなウィンドウナビゲーター"
-
-#: ../libawn/egg/eggdesktopfile.c:136
-#, c-format
-msgid "File is not a valid .desktop file"
-msgstr "無効な .desktop ファイルです"
-
-#: ../libawn/egg/eggdesktopfile.c:161
-#, c-format
-msgid "Unrecognized desktop file Version '%s'"
-msgstr ".desktop ファイルのバージョンが '%s' ではないようです"
-
-#: ../libawn/egg/eggdesktopfile.c:953
-#, c-format
-msgid "Starting %s"
-msgstr "%s の起動中"
-
-#: ../libawn/egg/eggdesktopfile.c:1095
-#, c-format
-msgid "Application does not accept documents on command line"
-msgstr "コマンドラインからドキュメントを指定できません"
-
-#: ../libawn/egg/eggdesktopfile.c:1191
-#, c-format
-msgid "Unrecognized launch option: %d"
-msgstr "不明な起動オプションです: %d"
-
-#: ../libawn/egg/eggdesktopfile.c:1410
-#, c-format
-msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-msgstr "'Type=Link' のエントリにはドキュメントの URI を指定できません"
-
-#: ../libawn/egg/eggdesktopfile.c:1433
-#, c-format
-msgid "Not a launchable item"
-msgstr "起動可能なアイテムではありません"
-
-#: ../libawn/awn-applet.c:165
-msgid "Clear Custom Icons?"
-msgstr "カスタムアイコンをクリアしますか？"
-
-#: ../libawn/awn-applet.c:173
-msgid "Clear all custom (applet) icons?"
+#: ../awn-settings/awnSettings.py.in:594
+msgid "Solid"
 msgstr ""
 
-#: ../libawn/awn-applet.c:187 ../src/awn-task.c:2264 ../src/main.c:517
-msgid "Dock Preferences"
-msgstr "ドック設定"
-
-#: ../libawn/awn-applet.c:201
-msgid "Clear All Custom Icons"
+#: ../awn-settings/awnSettings.py.in:594
+msgid "Outline"
 msgstr ""
 
-#. TODO , add text, add scope options, display icon.
-#: ../libawn/awn-icons.c:308
-msgid "Change Icon?"
-msgstr "アイコンを変更しますか？"
-
-#: ../libawn/awn-icons.c:328 ../libawn/awn-icons.c:333
-msgid "Use this icon?"
-msgstr "このアイコンを使用しますか？"
-
-#: ../libawn/awn-icons.c:338
-msgid "Apply to this applet instance."
+#: ../awn-settings/awnSettings.py.in:595
+msgid "Outline, Reversed"
 msgstr ""
 
-#: ../libawn/awn-icons.c:342
-msgid "Apply to this applet type."
-msgstr ""
-
-#: ../libawn/awn-icons.c:344
-msgid "Apply to icon name."
-msgstr ""
-
-#. Create the dialog
-#: ../src/awn-task.c:1965
-msgid "Choose New Image..."
-msgstr "新しいイメージを選択..."
-
-#: ../src/awn-task.c:2057
-msgid "Preferences"
-msgstr "設定"
-
-#: ../src/awn-task.c:2060
-msgid "Change Icon..."
-msgstr "アイコンを変更..."
-
-#: ../src/awn-task.c:2072
-msgid "Change Image..."
-msgstr "イメージを変更..."
-
-#: ../src/awn-task.c:2214
-msgid "Change Icon"
-msgstr "アイコンを変更する"
-
-#: ../src/main.c:157
-msgid "Prints the version number"
-msgstr "バージョンを表示する"
-
-#: ../src/main.c:162
-msgid "Starts the Avant Window Navigator dock"
-msgstr "Avant Window Navigator dock 起動"
-
-#: ../src/main.c:315
-#, c-format
-msgid "Failed to make connection to session bus: %s"
-msgstr "セッションバスの接続に失敗しました。: %s"
-
-#: ../src/main.c:330
-#, c-format
-msgid "There was an error requesting the name: %s"
-msgstr ""
-
-#: ../src/main.c:701
+#: ../bindings/python/__init__.py:117
+#, python-format
 msgid ""
-"Warning: Screen isn't composited. Please run compiz (-fusion) or another "
-"compositing manager."
-msgstr "警告: 視覚効果が有効になっていません。compiz (-fusion) または、その他の視覚効果マネージャーを起動してください。"
+"The following Python modules could not be found: %s.  There are a few "
+"possible\n"
+"explanations for this:\n"
+"\n"
+"1. You do not have this Python module installed.  In this case, you should\n"
+"visit the AWN wiki's applets section to figure out the exact name of the\n"
+"package for your distribution that provides this module.\n"
+"\n"
+"2. The module is installed in a non-standard location.  This is usually the\n"
+"case when you manually install a package, that is, not via your "
+"distribution's\n"
+"package manager.  This situation is explained in the FAQ section of the "
+"wiki.\n"
+msgstr ""
 
-#: ../src/main.c:718
-msgid "Starting avant-window-navigator"
-msgstr "avant-window-navigator 起動中"
+#: ../bindings/python/__init__.py:132
+msgid "Awn Wiki"
+msgstr ""
 
-#: ../src/main.c:720
-msgid "Don't show this message again."
-msgstr "再度、このメッセージを表示しない"
+#: ../data/avant-window-navigator.desktop.in.h:1
+msgid "A dock-like window navigator."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:1
+msgid "0 - solid, 1 - outline, 2 - outline, reversed."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:2
+msgid "3)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:3
+msgid "5)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:4
+msgid "A bitmask which stores the type of effect for each event"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:5
+msgid "Alignment of a non-expanded panel on the monitor edge."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+msgid "An optional offset when you have more than 1 monitors."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:7
+msgid ""
+"Anything greater than 0 will draw a panel with corners. The greater the "
+"radius, the larger the corners."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:8
+#, fuzzy
+msgid "Background color for AwnDialog's title."
+msgstr "背景色:"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:9
+#, fuzzy
+msgid "Background color for AwnDialog."
+msgstr "背景色:"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:10
+#, fuzzy
+msgid "Background color of the tooltip"
+msgstr "背景色:"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:11
+msgid ""
+"Determines if generic configuration editor is allowed for applets that do "
+"not have a customized preferences dialog."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:12
+msgid "Draw separators."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:13
+#, fuzzy
+msgid "Enable drawing of a pattern."
+msgstr "パターンを有効にする"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
+#, fuzzy
+msgid "First gradient step color."
+msgstr "最初の段の色"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:15
+#, fuzzy
+msgid "First highlight gradient step color."
+msgstr "最初の段の色"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
+#, fuzzy
+msgid "Font color of the tooltip"
+msgstr "背景色:"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:17
+#, fuzzy
+msgid "Font name of the tooltip"
+msgstr "背景色:"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:18
+msgid "Force monitor geometry."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:19
+msgid "Icon text color.  Leave empty to use gtk theme color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:20
+msgid "Icon text outline color.  Leave empty to use gtk theme color."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:21
+msgid "If true, maximised windows will not cover the panel."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:22
+msgid "If true, the panel will expand to full monitor width/height."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:23
+#, fuzzy
+msgid "Internal border color."
+msgstr "内側の境界"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
+#, fuzzy
+msgid "Main border color."
+msgstr "メインの境界"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+msgid "Offset between the icons and their dialog."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:26
+msgid "Offset of the icons from window border."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:27
+msgid "Path to the current desktop file theme."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:28
+msgid "Path to the png containing the active icon background."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:29
+msgid "Path to the png containing the arrow icon."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
+msgid ""
+"Provides possibility to click on windows behind the panel. (0 - never click "
+"through, 1 - click through when holding CTRL, 2 - always click through and "
+"interact with panel only when holding CTRL)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:31
+msgid "Reflection alpha as a multiple of the current alpha of the icon."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+#, fuzzy
+msgid "Second gradient step color."
+msgstr "二段目の色"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:33
+#, fuzzy
+msgid "Second highlight gradient step color."
+msgstr "二段目の色"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:34
+#, fuzzy
+msgid "Separator color."
+msgstr "区切りの色"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:35
+msgid "Show shadows for icons."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:36
+msgid "The active list UA Screenlets for this panel."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:37
+msgid "The angle of the panel in 3D mode."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:38
+msgid "The curviness of the panel in Curves mode."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:39
+msgid "The forced monitor height. Only used if monitor_force is true."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:40
+msgid "The forced monitor width. Only used if monitor_force is true."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:41
+msgid ""
+"The list of UA Screenlets that have been previous added in the form "
+"ScreeneletInstance::Position."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:42
+msgid ""
+"The list of applets for this panel ordered from left-to-right or top-to-"
+"bottom."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:43
+msgid "The list of panels."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:44
+msgid "The location of the pattern to draw."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:45
+msgid "The offset between the icon and it's reflection"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:46
+msgid "The opacity of the icons, from 0.0 to 1.0"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:47
+#, fuzzy
+msgid "The opacity of the pattern."
+msgstr "パターンを有効にする"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:48
+msgid "The symmetry of the curve in Curves mode."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:49
+msgid "The user-visible size of Awn."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:50
+msgid "Time in ms after which AwnIcon will emit long-press signal."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:51
+msgid "Whether AwnDialog should use Gtk theme colors."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:52
+msgid "Whether to close dialogs on loss of focus."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:53
+msgid "Whether to use colors from the current Gtk theme."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:54
+msgid ""
+"width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
+"- 5.0."
+msgstr ""
+
+#: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:592
+msgid "Dock Preferences"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:1931
+msgid "Icons"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:1933
+msgid "Choose Custom Icon"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:2019
+msgid "Customize Icon"
+msgstr ""
+
+#: ../libawn/awn-themed-icon.c:2105
+msgid "Remove Customized Icon"
+msgstr ""
+
+#: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
+msgid "Loading applet..."
+msgstr ""
+
+#: ../src/awn-applet-proxy.c:365 ../src/awn-applet-proxy.c:466
+msgid "Whoops! The applet crashed. Click to restart it."
+msgstr ""
+
+#: ../src/awn-panel.c:3098
+msgid "Close docklet"
+msgstr ""
+
+#~ msgid "PNG Files"
+#~ msgstr "PNG　ファイル"
+
+#~ msgid "Select an Executable File"
+#~ msgstr "実行ファイルを選んでください"
+
+#~ msgid "Please provide a name for the launcher in the \"%s\" field."
+#~ msgstr "ラーンチャの名を\"%s\"フィールドに書いてください"
+
+#~ msgid "<b>Name:</b>"
+#~ msgstr "<b>名前:</b>"
+
+#~ msgid "Please provide a program to launch in the \"%s\" field."
+#~ msgstr "ラーンチャを明けるためプログラムを\"%s\"フィールドに書いてください"
+
+#~ msgid "<b>Command:</b>"
+#~ msgstr "<b>コマンド:</b>"
+
+#~ msgid "Couldn't save the launcher. Error: %s"
+#~ msgstr "ラーンチャをセーブ出来ませんでした。エラー：%s"
+
+#~ msgid "<b>Active Icon</b>"
+#~ msgstr "<b>アクティブなアイコン</b>"
+
+#~ msgid "<b>Applet Preferences</b>"
+#~ msgstr "<b>アプレット設定</b>"
+
+#~ msgid "<b>Arrows</b>"
+#~ msgstr "<b>矢印</b>"
+
+#~ msgid "<b>Bar behaviour</b>"
+#~ msgstr "<b>バーの動作</b>"
+
+#~ msgid "<b>Borders</b>"
+#~ msgstr "<b>境界</b>"
+
+#~ msgid "<b>Customize Effects</b>"
+#~ msgstr "<b>特撮設定</b>"
+
+#~ msgid "<b>General Preferences</b>"
+#~ msgstr "<b>設定</b>"
+
+#~ msgid "<b>Gradient</b>"
+#~ msgstr "グラデーション"
+
+#~ msgid "<b>Highlight</b>"
+#~ msgstr "<b>光沢</b>"
+
+#~ msgid "<b>Icon Effects</b>"
+#~ msgstr "<b>アイコン設定</b>"
+
+#~ msgid "<b>Launcher Preferences</b>"
+#~ msgstr "<b>ランチャー設定</b>"
+
+#~ msgid "<b>Look </b>"
+#~ msgstr "<b>外観 </b>"
+
+#~ msgid "<b>Pattern</b>"
+#~ msgstr "<b>パターン</b>"
+
+#~ msgid "<b>Separator</b>"
+#~ msgstr "<b>区切り</b>"
+
+#~ msgid "<b>Text</b>"
+#~ msgstr "<b>テキスト</b>"
+
+#~ msgid "<b>Themes</b>"
+#~ msgstr "<b>テーマ</b>"
+
+#~ msgid "<b>Windows</b>"
+#~ msgstr "<b>ウィンドウ</b>"
+
+#~ msgid "Activate"
+#~ msgstr "有効化"
+
+#~ msgid "Add and remove applets"
+#~ msgstr "アプレットの追加と削除"
+
+#~ msgid "Add and remove launchers"
+#~ msgstr "ランチャーの追加と削除"
+
+#~ msgid "Add, remove and save themes"
+#~ msgstr "テーマの追加と削除"
+
+#~ msgid "Alert when application window updated"
+#~ msgstr "アプリケーションウィンドウが更新されたら警告"
+
+#~ msgid "Attention"
+#~ msgstr "注意"
+
+#~ msgid "Auto hide bar when not in use"
+#~ msgstr "使わないときバーを自動的に隠す"
+
+#~ msgid "Bar Appearance"
+#~ msgstr "バーの外観"
+
+#~ msgid "Bar angle: "
+#~ msgstr "バーの角度: "
+
+#~ msgid "Bar height: "
+#~ msgstr "バーの高さ: "
+
+#~ msgid "Change the look and behaviour of the dock"
+#~ msgstr "Dockの外観と動作を変更します"
+
+#~ msgid "Closing"
+#~ msgstr "閉じています"
+
+#~ msgid "Color:"
+#~ msgstr "色:"
+
+#~ msgid "Deactivate"
+#~ msgstr "無効化"
+
+#~ msgid "Delete"
+#~ msgstr "削除"
+
+#~ msgid "Enable rounded corners"
+#~ msgstr "Dockの角を丸める"
+
+#~ msgid "Font:"
+#~ msgstr "フォント:"
+
+#~ msgid "General"
+#~ msgstr "全般"
+
+#~ msgid "Glass Engine"
+#~ msgstr "鏡面効果の設定"
+
+#~ msgid "Hover"
+#~ msgstr "ホバー"
+
+#~ msgid ""
+#~ "Icon attention effect will be activated to alert user of updated windows."
+#~ msgstr "アイコンエフェクトを更新されたウィンドウに対して有効化"
+
+#~ msgid "Icon offset: "
+#~ msgstr "アイコン偏り： "
+
+#~ msgid "Install"
+#~ msgstr "インストール"
+
+#~ msgid "Keep below maximized windows when not in use"
+#~ msgstr "使わないとき最大化ウィンドウの下に保つ"
+
+#~ msgid "Launching"
+#~ msgstr "起動中"
+
+#~ msgid "Maximized windows don't cover the bar (requires restart)"
+#~ msgstr "最大化されたウィンドウをバーで覆わない (再起動が必要)"
+
+#~ msgid "Opening"
+#~ msgstr "開いています"
+
+#~ msgid "Pattern Engine"
+#~ msgstr "パターンの設定"
+
+#~ msgid "Shadow color:"
+#~ msgstr "影の色:"
+
+#~ msgid "Show separator between launchers and tasks"
+#~ msgstr "ランチャとタスクの間に区切りを表示"
+
+#~ msgid "Task Appearance"
+#~ msgstr "タスクの外観"
+
+#~ msgid "Tasks have arrows"
+#~ msgstr "タスクに矢印をつける"
+
+#~ msgid "The bar automatically hides when not used"
+#~ msgstr "使わないときバーを自動的に隠す"
+
+#~ msgid "Transparency:"
+#~ msgstr "透明度:"
+
+#~ msgid "Windows don't overlap the bar if this is set"
+#~ msgstr "ウィンドウをバーの上に表示させない"
+
+#~ msgid "page 1"
+#~ msgstr "ページ1"
+
+#~ msgid "page 2"
+#~ msgstr "ページ 2"
+
+#~ msgid "page 3"
+#~ msgstr "ページ 3"
+
+#~ msgid "page 4"
+#~ msgstr "ページ 4"
+
+#~ msgid "Awn Manager"
+#~ msgstr "Awn マネージャー"
+
+#~ msgid "Change Icon"
+#~ msgstr "アイコンを変更する"

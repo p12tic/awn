@@ -3,94 +3,31 @@ headers
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#define NO_IMPORT_PYGOBJECT
-#include "pygobject.h"
+#include <pygobject.h>
 #include <pycairo.h>
-#ifdef USE_GCONF
-#include <gconf/gconf-value.h>
-#endif
-#include <libawn/awn-applet.h>
-#include <libawn/awn-applet-dialog.h>
-#include <libawn/awn-applet-simple.h>
-#include <libawn/awn-cairo-utils.h>
-#include <libawn/awn-config-client.h>
-#include <libawn/awn-defines.h>
-#include <libawn/awn-effects.h>
+#include <pygtk/pygtk.h>
 #include <libawn/awn-enum-types.h>
-#include <libawn/awn-plug.h>
-#include <libawn/awn-title.h>
-#include <libawn/awn-desktop-item.h>
-#include <libawn/awn-vfs.h>
+#include <libawn/libawn.h>
+#include <libawn/awn-utils.h>
+
 extern Pycairo_CAPI_t *Pycairo_CAPI;
 
-static GSList *
-_pysequence_to_gslist (PyObject *seq, AwnConfigListType list_type)
+/* Some hacking to get GdkRegion to work. */
+#ifndef PYGDK_TYPE_REGION
+GType pygdk_region_get_type (void) G_GNUC_CONST;
+#define PYGDK_TYPE_REGION (pygdk_region_get_type ())
+GType
+pygdk_region_get_type (void)
 {
-  GSList *list = NULL;
-
-  int i;
-  int len = PySequence_Length (seq);
-  for (i = 0; i < len; i++) {
-    PyObject *item = PySequence_GetItem (seq, i);
-    Py_DECREF(item);
-    switch (list_type) {
-      case AWN_CONFIG_CLIENT_LIST_TYPE_BOOL: {
-        gboolean *data = g_malloc (sizeof (gboolean));
-        *data = (gboolean)PyInt_AsLong (item);
-        list = g_slist_append (list, data);
-        break;
-      } case AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT: {
-        gdouble *data = g_malloc (sizeof (gdouble));
-        *data = (gdouble)PyFloat_AsDouble (item);
-        list = g_slist_append (list, data);
-        break;
-      } case AWN_CONFIG_CLIENT_LIST_TYPE_INT: {
-        gint *data = g_malloc (sizeof (gint));
-        *data = (gint)PyInt_AsLong (item);
-        list = g_slist_append (list, data);
-        break;
-      } case AWN_CONFIG_CLIENT_LIST_TYPE_STRING: {
-        gchar *data = g_strdup (PyString_AsString (item));
-        list = g_slist_append (list, data);
-        break;
-      }
-    }
-  }
-  return list;
+  static GType our_type = 0;
+  
+  if (our_type == 0)
+    /* GdkRegion is already taken by pygtk in its boxing of GdkRegion. */
+    our_type = g_type_from_name("GdkRegion");
+  return our_type;
 }
-static PyObject *
-_gslist_to_pylist (GSList *list, AwnConfigListType list_type) {
-  PyObject *py_list;
-  guint i;
-  gsize slist_len = g_slist_length (list);
-  py_list = PyList_New ((Py_ssize_t)slist_len);
+#endif /* GDK_TYPE_REGION */
 
-  for (i = 0; i < slist_len; i++) {
-    PyObject *py_data = NULL;
-    gpointer data = g_slist_nth_data (list, i);
-    if (data) {
-      switch (list_type) {
-        case AWN_CONFIG_CLIENT_LIST_TYPE_BOOL:
-          py_data = PyBool_FromLong (*((gboolean*)data));
-          break;
-        case AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT:
-          py_data = PyFloat_FromDouble (*((gdouble*)data));
-          break;
-        case AWN_CONFIG_CLIENT_LIST_TYPE_INT:
-          py_data = PyInt_FromLong (*((gint*)data));
-          break;
-        case AWN_CONFIG_CLIENT_LIST_TYPE_STRING:
-          py_data = PyString_FromString ((gchar*)data);
-          break;
-      }
-      if (PyList_SetItem (py_list, i, py_data) == -1) {
-        PyErr_SetString (PyExc_ValueError, "Could not populate the list with the configuration value.");
-        return NULL;
-      }
-    }
-  }
-  return py_list;
-}
 static gchar**
 _pysequence_to_gchar_array (PyObject *py_seq)
 {
@@ -127,8 +64,11 @@ _pysequence_to_gchar_array (PyObject *py_seq)
 modulename awn
 %%
 import gobject.GObject as PyGObject_Type
+import desktopagnostic.Color as PyDesktopAgnosticColor_Type
+import gtk.Alignment as PyGtkAlignment_Type
 import gtk.Dialog as PyGtkDialog_Type
 import gtk.EventBox as PyGtkEventBox_Type
+import gtk.Box as PyGtkBox_Type
 import gtk.HBox as PyGtkHBox_Type
 import gtk.IconTheme as PyGtkIconTheme_Type
 import gtk.Plug as PyGtkPlug_Type
@@ -137,357 +77,134 @@ import gtk.VBox as PyGtkVBox_Type
 import gtk.Widget as PyGtkWidget_Type
 import gtk.Window as PyGtkWindow_Type
 import gtk.gdk.Pixbuf as PyGdkPixbuf_Type
+import gtk.DrawingArea as PyGtkDrawingArea_Type
+import gtk.Image as PyGtkImage_Type
+import gtk.Label as PyGtkLabel_Type
 %%
 ignore-glob
   *_get_type
 %%
-override awn_config_client_new kwargs
-static int
-_wrap_awn_config_client_new (PyGBoxed *self, PyObject *args, PyObject *kwargs)
-{
-  static char *kwlist[] = { "name", "uid", NULL };
-  gchar *name = NULL;
-  PyObject *py_uid = NULL;
-  gchar *uid = NULL;
-
-  if (!PyArg_ParseTupleAndKeywords (args, kwargs,"|sO:AwnConfigClient.__init__", kwlist, &name, &py_uid)) {
-    return -1;
-  }
-  self->gtype = AWN_TYPE_CONFIG_CLIENT;
-  self->free_on_dealloc = FALSE;
-  if (name) {
-    if (!py_uid) {
-      PyErr_SetString (PyExc_ValueError, "The uid argument needs to be defined if the name argument is defined");
-      return -1;
-    }
-    if (PyString_Check (py_uid)) {
-      uid = PyString_AsString (py_uid);
-    } else if (py_uid != Py_None) {
-      PyErr_SetString (PyExc_TypeError, "The uid argument must be either a string or None");
-      return -1;
-    }
-    self->boxed = awn_config_client_new_for_applet (name, uid);
-  } else {
-    self->boxed = awn_config_client_new ();
-  }
-
-  if (!self->boxed) {
-    PyErr_SetString (PyExc_RuntimeError, "could not create AwnConfigClient object");
-    return -1;
-  }
-  self->free_on_dealloc = TRUE;
-  return 0;
-}
-%%
-override awn_config_client_get_list kwargs
+override awn_applet_create_about_item kwargs
 static PyObject *
-_wrap_awn_config_client_get_list (PyGBoxed *self, PyObject *args, PyObject *kwargs)
+_wrap_awn_applet_create_about_item (PyGObject *self, PyObject *args,
+                                    PyObject *kwargs)
 {
-  static char *kwlist[] = { "group", "key", "list_type", NULL };
-  char *group, *key;
-  AwnConfigListType list_type;
-  GSList *ret = NULL;
-  GError *opt_error = NULL;
+  static char *kwlist[] = { "copyright", "license", "version", "comments",
+                            "website", "website_label", "icon-name",
+                            "translator_credits", "authors", "artists",
+                            "documentors", NULL };
+  char *copyright, *version, *comments, *website, *website_label, *icon_name,
+       *translator_credits;
+  PyObject *py_license = NULL;
+  PyObject *py_authors = NULL;
+  PyObject *py_artists = NULL;
+  PyObject *py_documentors = NULL;
+  GtkWidget *ret;
+  AwnAppletLicense license;
+  gchar **authors = NULL;
+  gchar **artists = NULL;
+  gchar **documentors = NULL;
 
-  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "ssi:AwnConfigClient.get_list", kwlist, &group, &key, &list_type)) {
-    return NULL;
-  }
-
-  ret = awn_config_client_get_list (pyg_boxed_get (self, AwnConfigClient), group, key, list_type, &opt_error);
-
-  if (pyg_error_check (&opt_error)) {
-    return NULL;
-  }
-
-  return _gslist_to_pylist (ret, list_type);
-}
-%%
-override awn_config_client_set_list kwargs
-static PyObject *
-_wrap_awn_config_client_set_list (PyGBoxed *self, PyObject *args, PyObject *kwargs)
-{
-  static char *kwlist[] = { "group", "key", "list_type", "value", NULL };
-  char *group, *key;
-  AwnConfigListType list_type;
-  PyObject *py_list;
-  GSList *the_list = NULL;
-  GError *opt_error = NULL;
-
-  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "ssiO:AwnConfigClient.set_list", kwlist, &group, &key, &list_type, &py_list)) {
-    return NULL;
-  }
-
-  if (!PyList_Check (py_list) && !PyTuple_Check (py_list)) {
-    PyErr_SetString (PyExc_TypeError, "Fourth argument not a tuple or list");
-    return NULL;
-  }
-  the_list = _pysequence_to_gslist (py_list, list_type);
-
-  awn_config_client_set_list (pyg_boxed_get (self, AwnConfigClient), group, key, list_type, the_list, &opt_error);
-
-  g_slist_foreach (the_list, (GFunc)g_free, NULL);
-  g_slist_free (the_list);
-
-  if (pyg_error_check (&opt_error)) {
-    return NULL;
-  }
-
-  Py_INCREF (Py_None);
-  return Py_None;
-}
-%%
-override awn_applet_simple_set_temp_icon kwargs
-static PyObject *
-_wrap_awn_applet_simple_set_temp_icon (PyGObject *self, PyObject *args, PyObject *kwargs)
-{
-    return _wrap_awn_applet_simple_set_icon (self, args, kwargs);
-}
-%%
-override awn_config_client_notify_add kwargs
-/* Borrowed from gnome-python/trunk/gconf/gconf.override, r585 */
-void
-pyawn_config_client_notify_add (AwnConfigClientNotifyEntry *entry, PyObject *tuple)
-{
-    PyObject *func;
-    PyObject *userdata = NULL;
-    PyObject *notify_entry;
-    PyObject *value;
-    PyObject *ret;
-    PyGILState_STATE state;
-
-    state = pyg_gil_state_ensure ();
-
-    g_assert (PyTuple_Check (tuple));
-    func = PyTuple_GetItem (tuple, 0);
-    userdata = PyTuple_GetItem (tuple, 1);
-
-    /* build the AwnConfigClientNotifyEntry python equivalent manually, as a dictionary */
-    notify_entry = PyDict_New ();
-    PyDict_SetItemString (notify_entry, "client", pyg_boxed_new (AWN_TYPE_CONFIG_CLIENT, entry->client, TRUE, TRUE));
-    PyDict_SetItemString (notify_entry, "group", PyString_FromString (entry->group));
-    PyDict_SetItemString (notify_entry, "key", PyString_FromString (entry->key));
-    switch (awn_config_client_get_value_type (entry->client, entry->group, entry->key, NULL)) {
-        case AWN_CONFIG_VALUE_TYPE_BOOL:
-            value = PyBool_FromLong (entry->value.bool_val);
-            break;
-        case AWN_CONFIG_VALUE_TYPE_FLOAT:
-            value = PyFloat_FromDouble (entry->value.float_val);
-            break;
-        case AWN_CONFIG_VALUE_TYPE_INT:
-            value = PyInt_FromLong (entry->value.int_val);
-            break;
-        case AWN_CONFIG_VALUE_TYPE_STRING:
-            value = PyString_FromString (entry->value.str_val);
-            break;
-        case AWN_CONFIG_VALUE_TYPE_LIST_BOOL:
-            value = _gslist_to_pylist (entry->value.list_val, AWN_CONFIG_CLIENT_LIST_TYPE_BOOL);
-            break;
-        case AWN_CONFIG_VALUE_TYPE_LIST_FLOAT:
-            value = _gslist_to_pylist (entry->value.list_val, AWN_CONFIG_CLIENT_LIST_TYPE_FLOAT);
-            break;
-        case AWN_CONFIG_VALUE_TYPE_LIST_INT:
-            value = _gslist_to_pylist (entry->value.list_val, AWN_CONFIG_CLIENT_LIST_TYPE_INT);
-            break;
-        case AWN_CONFIG_VALUE_TYPE_LIST_STRING:
-            value = _gslist_to_pylist (entry->value.list_val, AWN_CONFIG_CLIENT_LIST_TYPE_STRING);
-            break;
-        default:
-            PyErr_Format (PyExc_ValueError, "Could not determine the value type of the configuration key '[%s]%s'.", entry->group, entry->key);
-            return;
-            break;
-    }
-    PyDict_SetItemString (notify_entry, "value", value);
-
-    if (!userdata) {
-        ret = PyObject_CallFunction (func, "N",  notify_entry);
-    } else {
-        ret = PyObject_CallFunction (func, "NO", notify_entry, userdata);
-    }
-
-    if (ret == NULL) {
-            PyErr_Print ();
-    } else {
-            Py_DECREF (ret);
-    }
-
-    pyg_gil_state_release (state);
-}
-
-static PyObject *
-_wrap_awn_config_client_notify_add (PyGBoxed *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "group", "key", "func",  "user_data", NULL };
-    gchar *group;
-    gchar *key;
-    PyObject *callback;
-    PyObject *extra = NULL;
-    PyObject *data;
-
-    if (!PyArg_ParseTupleAndKeywords (args, kwargs,
-                                      "ssO|O:AwnConfigClient.notify_add",
-                                      kwlist, &group, &key,
-                                      &callback, &extra)) {
-        return NULL;
-    }
-
-    if (!PyCallable_Check (callback)) {
-        PyErr_SetString (PyExc_TypeError, "Third argument not callable");
-        return NULL;
-    }
-
-    if (extra) {
-        Py_INCREF (extra);
-    } else {
-        extra = PyTuple_New (0);
-    }
-
-    data = Py_BuildValue ("(ON)", callback, extra);
-
-    awn_config_client_notify_add (pyg_boxed_get(self, AwnConfigClient),
-                                  group, key,
-                                  (AwnConfigClientNotifyFunc)pyawn_config_client_notify_add,
-                                  data);
-
-    Py_INCREF (Py_None);
-    return Py_None;
-}
-%%
-override awn_desktop_item_launch kwargs
-static PyObject *
-_wrap_awn_desktop_item_launch (PyGBoxed *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "documents", NULL };
-    PyObject *py_documents = NULL;
-    GSList *documents = NULL;
-    GError *opt_error = NULL;
-    gint pid;
-
-    if (!PyArg_ParseTupleAndKeywords (args, kwargs, "|O:AwnDesktopItem.launch", kwlist, &py_documents)) {
-        return NULL;
-    }
-
-    if (py_documents) {
-        if (PyList_Check (py_documents) || PyTuple_Check (py_documents)) {
-            /* abuse the utility function */
-            documents = _pysequence_to_gslist (py_documents, AWN_CONFIG_CLIENT_LIST_TYPE_STRING);
-        } else if (PyString_Check (py_documents)) {
-            /* only one argument */
-            documents = g_slist_append (documents, PyString_AsString (py_documents));
-        } else {
-            PyErr_SetString (PyExc_TypeError, "Argument is not a sequence");
-            return NULL;
-        }
-    }
-
-    pid = awn_desktop_item_launch (pyg_boxed_get (self, AwnDesktopItem), documents, &opt_error);
-
-    if (pyg_error_check (&opt_error)) {
-        return NULL;
-    }
-
-    return PyInt_FromLong (pid);
-}
-%%
-override awn_cairo_string_to_color kwargs
-static PyObject *
-_wrap_awn_cairo_string_to_color (PyObject *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "color_string", NULL };
-
-    const gchar *color_string;
-    AwnColor *color = g_malloc (sizeof (AwnColor));
-    PyObject *color_dict;
-
-    if (!PyArg_ParseTupleAndKeywords (args, kwargs, "s:cairo_string_to_color", kwlist, &color_string)) {
-        return NULL;
-    }
-
-    awn_cairo_string_to_color (color_string, color);
-
-    color_dict = PyDict_New ();
-    PyDict_SetItemString (color_dict, "red", PyFloat_FromDouble (color->red));
-    PyDict_SetItemString (color_dict, "green", PyFloat_FromDouble (color->green));
-    PyDict_SetItemString (color_dict, "blue", PyFloat_FromDouble (color->blue));
-    PyDict_SetItemString (color_dict, "alpha", PyFloat_FromDouble (color->alpha));
-
-    g_free (color);
-
-    return color_dict;
-}
-%%
-override awn_config_client_key_lock_open kwargs
-static PyObject *
-_wrap_awn_config_client_key_lock_open(PyObject *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "group", "key", NULL };
-    char *group, *key;
-    int ret;
-
-    if (!PyArg_ParseTupleAndKeywords (args, kwargs,"ss:AwnConfigClient.lock_open", kwlist, &group, &key))
-        return NULL;
-    
-    ret = awn_config_client_key_lock_open (group, key);
-    
-    return PyInt_FromLong (ret);
-}
-%%
-override awn_config_client_key_lock kwargs
-static PyObject *
-_wrap_awn_config_client_key_lock (PyObject *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "fd", "operation", NULL };
-    int fd, operation, ret;
-
-    if (!PyArg_ParseTupleAndKeywords (args, kwargs,"ii:AwnConfigClient.lock", kwlist, &fd, &operation))
-        return NULL;
-    
-    ret = awn_config_client_key_lock (fd, operation);
-
-    if (ret != 0) {
-        return PyErr_SetFromErrno(PyExc_IOError);
-    }
-    
-    Py_INCREF(Py_None);
-    return Py_None;
-}
-%%
-override awn_config_client_key_lock_close kwargs
-static PyObject *
-_wrap_awn_config_client_key_lock_close (PyObject *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "fd", NULL };
-    int fd, ret;
-
-    if (!PyArg_ParseTupleAndKeywords (args, kwargs,"i:AwnConfigClient.lock_close", kwlist, &fd))
-        return NULL;
-    
-    ret = awn_config_client_key_lock_close (fd);
-
-    if (ret != 0) {
-        return PyErr_SetFromErrno(PyExc_IOError);
-    }
-    
-    Py_INCREF(Py_None);
-    return Py_None;
-}
-%%
-override awn_applet_simple_set_awn_icons kwargs
-static PyObject *
-_wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject *kwargs)
-{
-  static char *kwlist[] = { "applet_name", "states", "icon_names", NULL };
-  gchar *applet_name;
-  PyObject *py_states;
-  PyObject *py_icon_names;
-  gchar **states = NULL;
-  gchar **icon_names = NULL;
-  GdkPixbuf *ret;
-
-  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "sOO:AwnAppletSimple.set_awn_icons", kwlist, &applet_name, &py_states, &py_icon_names))
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs,
+                                    "sOzzzzzzOOO:AwnApplet.create_about_item",
+                                    kwlist, &copyright, &py_license, &version,
+                                    &comments, &website, &website_label,
+                                    &icon_name, &translator_credits,
+                                    &py_authors, &py_artists, &py_documentors))
   {
     return NULL;
   }
 
+  if (pyg_enum_get_value (AWN_TYPE_APPLET_LICENSE, py_license,
+                          (gpointer)&license))
+  {
+    return NULL;
+  }
+
+  if (py_authors != Py_None)
+  {
+    authors = _pysequence_to_gchar_array (py_authors);
+  }
+  if (py_artists != Py_None)
+  {
+    artists = _pysequence_to_gchar_array (py_artists);
+  }
+  if (py_documentors != Py_None)
+  {
+    documentors = _pysequence_to_gchar_array (py_documentors);
+  }
+
+  ret = awn_applet_create_about_item (AWN_APPLET(self->obj), copyright,
+                                      license, version, comments, website,
+                                      website_label, icon_name,
+                                      translator_credits,
+                                      (const gchar **)authors,
+                                      (const gchar **)artists,
+                                      (const gchar **)documentors);
+
+  /* pygobject_new handles NULL checking */
+  return pygobject_new ((GObject *)ret);
+}
+%%
+override awn_effects_cairo_create
+static PyObject *
+_wrap_awn_effects_cairo_create(PyGObject *self)
+{
+    cairo_t *ret = awn_effects_cairo_create(AWN_EFFECTS(self->obj));
+
+    cairo_reference(ret);
+    /* bug in pygtk-codegen > sets second parameter to NULL in call to
+     * PycairoContext_FromContext, which causes segmentation error in newer
+     * versions of pycairo
+     */
+    return PycairoContext_FromContext(ret, &PycairoContext_Type, NULL);
+}
+%%
+override awn_effects_cairo_create_clipped
+static PyObject *
+_wrap_awn_effects_cairo_create_clipped(PyGObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = { "event", NULL };
+    GdkEvent *event = NULL;
+    PyObject *py_event;
+    cairo_t *ret;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O:AwnEffects.cairo_create_clipped", kwlist, &py_event))
+        return NULL;
+    if (pyg_boxed_check(py_event, GDK_TYPE_EVENT))
+        event = pyg_boxed_get(py_event, GdkEvent);
+    else {
+        PyErr_SetString(PyExc_TypeError, "event should be a GdkEvent");
+        return NULL;
+    }
+
+    ret = awn_effects_cairo_create_clipped(AWN_EFFECTS(self->obj), (GdkEventExpose *)event);
+
+    cairo_reference(ret);
+    /* bug in pygtk-codegen > sets second parameter to NULL in call to
+     * PycairoContext_FromContext, which causes segmentation error in newer
+     * versions of pycairo
+     */
+    return PycairoContext_FromContext(ret, &PycairoContext_Type, NULL);
+}
+%%
+override awn_themed_icon_set_info kwargs
+static PyObject *
+_wrap_awn_themed_icon_set_info (PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  static char *kwlist[] = { "applet_name", "uid", "states", "icon_names", NULL };
+  gchar *applet_name;
+  gchar *uid;
+  PyObject *py_states;
+  PyObject *py_icon_names;
+  gchar **states = NULL;
+  gchar **icon_names = NULL;
+ 
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "ssOO:AwnThemedIcon.set_info", kwlist, &applet_name, &uid, &py_states, &py_icon_names))
+  {
+    return NULL;
+  }
+ 
   if (!PySequence_Check (py_states))
   {
     PyErr_SetString (PyExc_TypeError, "states argument must be a sequence.");
@@ -526,62 +243,105 @@ _wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject 
     return NULL;
   }
 
-  ret = awn_applet_simple_set_awn_icons (AWN_APPLET_SIMPLE (pygobject_get (self)),
-                                         (const gchar*)applet_name,
-                                         (const GStrv)states,
-                                         (const GStrv)icon_names);
+  awn_themed_icon_set_info (AWN_THEMED_ICON (pygobject_get (self)),
+    (const gchar*) applet_name,
+    (const gchar*) uid,
+    (const GStrv) states,
+    (const GStrv) icon_names);
 
   g_free (states);
   g_free (icon_names);
 
-  return pygobject_new (G_OBJECT (ret));
+  Py_INCREF(Py_None);
+  return Py_None;
 }
 %%
-override awn_applet_simple_get_effects
+override awn_applet_simple_set_icon_info kwargs
 static PyObject *
-_wrap_awn_applet_simple_get_effects (PyGObject *self)
+_wrap_awn_applet_simple_set_icon_info (PyObject *self, PyObject *args, PyObject *kwargs)
 {
-    AwnEffects *ret;
+  static char *kwlist[] = { "states", "icon_names", NULL };
+  PyObject *py_states;
+  PyObject *py_icon_names;
+  gchar **states = NULL;
+  gchar **icon_names = NULL;
+ 
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "OO:AwnAppletSimple.set_icon_info", kwlist, &py_states, &py_icon_names))
+  {
+    return NULL;
+  }
+ 
+  if (!PySequence_Check (py_states))
+  {
+    PyErr_SetString (PyExc_TypeError, "states argument must be a sequence.");
+    return NULL;
+  }
 
-    ret = awn_applet_simple_get_effects(AWN_APPLET_SIMPLE(self->obj));
+  if (!PySequence_Check (py_icon_names))
+  {
+    PyErr_SetString (PyExc_TypeError, "icon_names argument must be a sequence.");
+    return NULL;
+  }
 
-    /* pyg_boxed_new handles NULL checking */
-    return pyg_boxed_new(AWN_TYPE_EFFECTS, ret, FALSE, FALSE);
+  if (PySequence_Size (py_states) != PySequence_Size (py_icon_names))
+  {
+    PyErr_SetString (PyExc_ValueError, "The states and icon names sequences must have the same number of elements.");
+    return NULL;
+  }
 
+  states = _pysequence_to_gchar_array (py_states);
+  if (!states)
+  {
+    PyErr_SetString (PyExc_TypeError, "states argument must be a sequence only containing strings.");
+    return NULL;
+  }
+
+  icon_names = _pysequence_to_gchar_array (py_icon_names);
+  if (!icon_names)
+  {
+    PyErr_SetString (PyExc_TypeError, "icon_names argument must be a sequence only containing strings.");
+    return NULL;
+  }
+
+  if (g_strv_length (states) != g_strv_length (icon_names))
+  {
+    PyErr_SetString (PyExc_ValueError, "The states and icon names arrays must have the same number of elements.");
+    return NULL;
+  }
+
+  awn_applet_simple_set_icon_info (AWN_APPLET_SIMPLE (pygobject_get (self)),
+    (const GStrv) states,
+    (const GStrv) icon_names);
+
+  g_free (states);
+  g_free (icon_names);
+
+  Py_INCREF(Py_None);
+  return Py_None;
 }
 %%
-override awn_effects_start_ex kwargs
-static PyObject *
-_wrap_awn_effects_start_ex(PyObject *self, PyObject *args, PyObject *kwargs)
+override gtk_image_menu_item_new_with_label kwargs
+static PyObject*
+_wrap_gtk_image_menu_item_new_with_label (PyObject *self, PyObject *args, PyObject *kwargs)
 {
-    static char *kwlist[] = { "effect", "start", "stop", "max_loops", NULL };
-    AwnEffect effect;
-    PyObject *py_effect = NULL;
-    int start = 0, stop = 0, max_loops;
+  static char *kwlist[] = { "label", NULL };
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O|iii:AwnEffects.start_ex", kwlist, &py_effect, &start, &stop, &max_loops))
-        return NULL;
-    if (pyg_enum_get_value(AWN_TYPE_EFFECT, py_effect, (gpointer)&effect))
-        return NULL;
+  gchar *label;
+  GtkWidget *item;
 
-    awn_effects_start_ex(pyg_boxed_get(self, AwnEffects), effect, NULL, NULL, max_loops);
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "s:image_menu_item_new_with_label", kwlist, &label))
+  {
+    return NULL;
+  }
 
-    Py_INCREF(Py_None);
-    return Py_None;
-}
-%%
-override awn_effects_draw_icons_cairo kwargs
-static PyObject *
-_wrap_awn_effects_draw_icons_cairo(PyObject *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = { "cr", "icon_context", "reflect_context", NULL };
-    PycairoContext *cr, *icon_context, *reflect_context = NULL;
+  item = gtk_image_menu_item_new_with_label (label);
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs,"O!O!|O!:AwnEffects.draw_icons_cairo", kwlist, &PycairoContext_Type, &cr, &PycairoContext_Type, &icon_context, &PycairoContext_Type, &reflect_context))
-        return NULL;
-
-    awn_effects_draw_icons_cairo(pyg_boxed_get(self, AwnEffects), cr->ctx, icon_context->ctx, reflect_context ? reflect_context->ctx : NULL);
-
-    Py_INCREF(Py_None);
-    return Py_None;
+  if (item)
+  {
+    return pygobject_new ((GObject*)item);
+  }
+  else
+  {
+    return NULL;
+  }
 }

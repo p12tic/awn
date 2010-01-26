@@ -1,0 +1,125 @@
+#
+#  Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
+#
+#  Author: Neil Jagdish Patel <njpatel@gmail.com>
+#
+#  Notes: Avant Window Navigator preferences window
+
+import os
+from desktopagnostic.config import GROUP_DEFAULT
+
+PREFIX = "@prefix@"
+
+LOCALEDIR = os.path.join (PREFIX, "share", "locale")
+PKGDATADIR = '@PKGDATADIR@'
+
+HOME_CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "awn")
+HOME_APPLET_DIR = os.path.join(HOME_CONFIG_DIR, "applets")
+SYS_APPLET_DIR = os.path.join (PREFIX, "share", "avant-window-navigator","applets")
+HOME_LAUNCHERS_DIR = os.path.join(HOME_CONFIG_DIR, "launchers")
+HOME_THEME_DIR = os.path.join(HOME_CONFIG_DIR, "themes")
+SYS_THEME_DIR = os.path.join (PREFIX, "share", "avant-window-navigator","themes")
+HOME_CUSTOM_ICONS_DIR = os.path.join(HOME_CONFIG_DIR, "custom-icons")
+VERSION = '@VERSION@'
+EXTRA_VERSION = '@EXTRA_VERSION@'
+THEME_VERSION = '0.4.0'
+
+#TODO update to real branches when stable
+DEFAULT_SOURCES_LIST = [[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local'], [SYS_APPLET_DIR,'local'], [HOME_APPLET_DIR,'local']]
+
+
+# AwnConfigClient Groups/Keys
+AWN                     = GROUP_DEFAULT         #group
+PANEL                   = "panel"               #group
+PANEL_MODE              = "panel_mode"          #bool
+ORIENT                  = "orient"              #int
+OFFSET                  = "offset"              #int
+SIZE                    = "size"                #int
+APPLET_LIST             = "applet_list"         #list-string
+MONITOR_FORCE           = "monitor_force"       #bool
+MONITOR_HEIGHT          = "monitor_height"      #int
+MONITOR_WIDTH           = "monitor_width"       #int
+MONITOR_X_OFFSET        = "monitor_x_offset"    #int
+MONITOR_Y_OFFSET        = "monitor_y_offset"    #int
+MONITOR_ALIGN           = "monitor_align"       #float
+AUTOHIDE                = "autohide"            #int
+STYLE                   = "style"               #int
+EXPAND                  = "expand"              #bool
+CLICKTHROUGH            = "clickthrough"        #int
+BEHAVIOR                = "behavior"            #int
+UA_LIST                 = "ua_active_list"      #list-string
+
+PANELS                  = "panels"              #group
+PANEL_LIST              = "panel_list"          #int
+
+THEME                   = "theme"               #group
+GSTEP1                  = "gstep1"              #string
+GSTEP2                  = "gstep2"              #string
+GHISTEP1                = "ghistep1"            #string
+GHISTEP2                = "ghistep2"            #string
+ICON_TEXT_COLOR         = "icon_text_color"     #string
+ICON_TEXT_OUTLINE_COLOR = "icon_text_outline_color"     #string
+ICON_FONT_MODE          = "icon_font_mode"      #int
+BORDER                  = "border"              #string
+HILIGHT                 = "hilight"             #string
+SHOW_SEP                = "show_sep"            #bool
+SEP_COLOR               = "sep_color"           #string
+DRAW_PATTERN            = "draw_pattern"        #bool
+PATTERN_ALPHA           = "pattern_alpha"       #float
+PATTERN_FILENAME        = "pattern_filename"    #string
+GTK_THEME_MODE          = "gtk_theme_mode"      #bool
+CORNER_RADIUS           = "corner_radius"       #float
+PANEL_ANGLE             = "panel_angle"         #float
+CURVINESS               = "curviness"           #float
+CURVES_SYMMETRY         = "curves_symmetry"     #float
+TOOLTIP_FONT_NAME       = "tooltip_font_name"   #string
+TOOLTIP_FONT_COLOR      = "tooltip_font_color"  #string
+TOOLTIP_BG_COLOR        = "tooltip_bg_color"    #string
+CURRENT_THEME           = "current_theme"       #string
+
+EFFECTS                 = "effects"             #group
+REFLECTION_OFFSET       = "reflection_offset"   #int
+ICON_EFFECT             = "icon_effect"         #int
+ICON_ALPHA              = "icon_alpha"          #float
+REFLECTION_A_MULTIPLIER = "reflection_alpha_multiplier" #float
+SHOW_SHADOWS            = "show_shadows"        #bool
+ARROW_ICON              = "arrow_icon"          #string
+#FRAME_RATE             = "frame_rate"          #int
+#ENABLE_ICON_DEPTH      = "enable_icon_depth"   #bool
+
+LAUNCHERS_LIST          = "launcher_paths"      #list-string
+ONLY_LAUNCHERS          = "only_show_launchers" #bool
+ALL_WINDOWS             = "show_all_windows"    #bool
+DRAG_AND_DROP           = "drag_and_drop"       #bool
+MATCH_STRENGTH          = "match_strength"      #int
+GROUPING                = "grouping"            #bool
+INTELLIHIDE             = "intellihide"         #bool
+LONG_PRESS              = "enable_long_press"   #bool
+OVERLAY_ICON            = "overlay_application_icons" #bool
+OVERLAY_ICON_SWAP       = "overlay_application_icons_swap" #bool
+ICON_BEHAVIOR           = "icon_change_behavior" #int
+
+# i18n-related
+I18N_DOMAIN = "avant-window-navigator"
+
+def i18nize(symbol_table):
+    import locale
+    import gettext
+    locale.setlocale(locale.LC_ALL, '')
+    gettext.bindtextdomain(I18N_DOMAIN, LOCALEDIR)
+    gettext.textdomain(I18N_DOMAIN)
+    symbol_table['_'] = gettext.gettext

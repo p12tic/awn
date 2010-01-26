@@ -1,13 +1,21 @@
-awn-manager/awn-manager.desktop.in.in
-awn-manager/awnLauncher.py
-awn-manager/awnLauncherEditor.py
-awn-manager/awnManager.py
-awn-manager/awnPreferences.py
-awn-manager/launcher-editor.glade
-awn-manager/window.glade
-data/avant-window-navigator.desktop.in.in
-libawn/egg/eggdesktopfile.c
+applets/expander/expander.desktop.in.in
+[type: gettext/ini]applets/taskmanager/awn-applet-taskmanager.schema-ini.in
+applets/taskmanager/task-launcher.c
+applets/taskmanager/task-icon.c
+applets/taskmanager/taskmanager.desktop.in.in
+applets/quick-prefs/applet.c
+applets/quick-prefs/quick-prefs.desktop.in.in
+applets/separator/separator.desktop.in.in
+applets/taskmanager/task-icon-build-context-menus.c
+awn-settings/awn-settings.desktop.in
+awn-settings/awn-settings.ui
+awn-settings/awnClass.py
+awn-settings/awnSettings.py.in
+bindings/python/__init__.py
+data/avant-window-navigator.desktop.in
+[type: gettext/ini]data/avant-window-navigator.schema-ini.in.in
+data/awn-themed-icon.ui
 libawn/awn-applet.c
-libawn/awn-icons.c
-src/awn-task.c
-src/main.c
+libawn/awn-themed-icon.c
+src/awn-applet-proxy.c
+src/awn-panel.c

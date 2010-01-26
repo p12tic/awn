@@ -1,5 +1,7 @@
-applets/taskman.desktop.in.in
-awn-manager/awn-manager.desktop.in
-data/avant-window-navigator.desktop.in
-data/awn-applets-shared.schemas.in
-data/awn.schemas.in
+applets/taskmanager/taskmanager.desktop.in
+applets/expander/expander.desktop.in
+applets/separator/separator.desktop.in
+applets/quick-prefs/quick-prefs.desktop.in
+awn-manager/
+awn-settings/awnSettings.py
+debian/

@@ -24,7 +24,11 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include <libawn/awn-config-client.h>
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-bindings.h>
+
+#include <libdesktop-agnostic/config.h>
+#include <libawn/libawn.h>
 
 G_BEGIN_DECLS
 
@@ -59,11 +63,68 @@ struct _AwnPanel
 struct _AwnPanelClass 
 {
   GtkWindowClass parent_class;
+
+  /*< signals >*/
+  void (*size_changed)     (AwnPanel *panel, gint size);
+  void (*position_changed) (AwnPanel *panel, GtkPositionType position);
+  void (*offset_changed)   (AwnPanel *panel, gint offset);
+  void (*property_changed) (AwnPanel *panel,
+                            const gchar *prop_name, GValue *value);
+  void (*destroy_notify)   (AwnPanel *panel);
+  void (*destroy_applet)   (AwnPanel *panel, const gchar *uid);
+
+  gboolean (*autohide_start) (AwnPanel *panel);
+  void     (*autohide_end)   (AwnPanel *panel);
 };
 
-GType       awn_panel_get_type          (void) G_GNUC_CONST;
+GType       awn_panel_get_type            (void) G_GNUC_CONST;
 
-GtkWidget * awn_panel_new_from_config (AwnConfigClient *client);
+GtkWidget * awn_panel_new_with_panel_id   (gint panel_id);
+
+gboolean    awn_panel_add_applet          (AwnPanel        *panel,
+                                           gchar           *desktop_file,
+                                           GError         **error);
+
+gboolean    awn_panel_delete_applet       (AwnPanel        *panel,
+                                           gchar           *uid,
+                                           GError         **error);
+
+gboolean    awn_panel_set_applet_flags    (AwnPanel         *panel,
+                                           const gchar      *uid,
+                                           gint              flags,
+                                           GError          **error);
+
+void        awn_panel_inhibit_autohide    (AwnPanel *panel,
+                                           const gchar *app_name,
+                                           const gchar *reason,
+                                           DBusGMethodInvocation *context);
+
+gboolean    awn_panel_uninhibit_autohide  (AwnPanel         *panel,
+                                           guint             cookie);
+
+gboolean    awn_panel_get_inhibitors      (AwnPanel         *panel,
+                                           GStrv            *reasons);
+
+void        awn_panel_docklet_request     (AwnPanel         *panel,
+                                           gint              min_size,
+                                           gboolean          shrink,
+                                           gboolean          expand,
+                                           DBusGMethodInvocation *context);
+
+gboolean    awn_panel_get_snapshot        (AwnPanel *panel,
+                                           GValue *value,
+                                           GError **error);
+
+gboolean    awn_panel_get_all_server_flags(AwnPanel *panel,
+                                           GHashTable **hash,
+                                           gchar     *name,
+                                           GError   **error);
+
+gboolean    awn_panel_ua_add_applet       (AwnPanel *panel,
+                                           gchar *name, glong xid,
+                                           gint width, gint height,
+                                           gchar *size_type,
+                                           GError **error);
 
 G_END_DECLS
 

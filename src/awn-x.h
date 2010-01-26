@@ -29,19 +29,4 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#define WNCK_I_KNOW_THIS_IS_UNSTABLE 1
-#include <libwnck/libwnck.h>
-
-#include <libawn/awn-desktop-item.h>
-
-GdkPixbuf* awn_x_get_icon (WnckWindow *window, gint width, gint height);
-
-void awn_x_set_icon_geometry (gulong xwindow, int x, int y, int width, int height);
-
-void awn_x_set_strut (GtkWindow *window);
-
-GdkPixbuf * awn_x_get_icon_for_window (WnckWindow *window, gint width, gint height);
-GdkPixbuf * awn_x_get_icon_for_launcher (AwnDesktopItem *item, gint width, gint height);
-GString * awn_x_get_application_name (WnckWindow *window, WnckApplication *app);
-
 #endif

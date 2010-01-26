@@ -24,26 +24,29 @@
 #include <pygobject.h>
 #include <cairo/cairo.h>
 #include <pycairo.h>
-#ifdef USE_GCONF
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
-#include <gconf/gconf-value.h>
-#endif
 #include <gtk/gtk.h>
 #include <libawn/awn-applet.h>
-#include <libawn/awn-applet-dialog.h>
 #include <libawn/awn-applet-simple.h>
 #include <libawn/awn-defines.h>
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-enum-types.h>
 #include <libawn/awn-effects.h>
-#include <libawn/awn-plug.h>
-#include <libawn/awn-title.h>
+#include <libawn/awn-tooltip.h>
 
+/* the following symbols are declared in awn.c: */
+void pyawn_add_constants (PyObject *module, const gchar *strip_prefix);
 void pyawn_register_classes (PyObject *d);
 extern PyMethodDef pyawn_functions[];
 
 Pycairo_CAPI_t *Pycairo_CAPI;
+
+void sink_awnoverlay (GObject *object)
+{
+  if (g_object_is_floating (object))
+  {
+    g_object_ref_sink (object);
+  }
+}
 
 DL_EXPORT (void)
 initawn (void)
@@ -59,10 +62,15 @@ initawn (void)
                 return;
         }
 
+        pygobject_register_sinkfunc (AWN_TYPE_OVERLAY, sink_awnoverlay);
+
         m = Py_InitModule ("awn", pyawn_functions);
         d = PyModule_GetDict (m);
 
         pyawn_register_classes (d);
+        pyawn_add_constants (m, "AWN_");
+
+        PyModule_AddIntConstant (m, "PANEL_ID_DEFAULT", AWN_PANEL_ID_DEFAULT);
 
         if (PyErr_Occurred ()) {
                 Py_FatalError ("unable to initialise awn module");

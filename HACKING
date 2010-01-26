@@ -1,0 +1,100 @@
+===============
+Developer Guide
+===============
+
+All developers should run ``./configure`` with the flag
+``--enable-maintainer-mode``. This flag is enabled by default if you run
+``./autogen.sh`` in lieu of ``./configure``.
+
+Adding New API
+--------------
+
+When you add new API, you need to update the following areas:
+
+* ``bindings/python``
+* ``bindings/vala``
+* ``doc/reference`` (gtk-doc)
+
+Python bindings
+~~~~~~~~~~~~~~~
+
+This is currently a manual process (until GObject Introspection and PyGI
+are available in major distros) involving modifying the awn.defs file (which
+uses a Scheme-like format) and possibly the awn.overrides file (which has a
+very bizarre file format). For more information on the PyGObject code
+generation system, see:
+
+* http://faq.pygtk.org/index.py?req=show&file=faq01.011.htp
+* http://wiki.laptop.org/go/PyGTK-Codegen
+* http://www.ibm.com/developerworks/linux/library/l-wrap/
+
+Vala bindings
+~~~~~~~~~~~~~
+
+These are easier to build. Run the following commands::
+
+    make -C libawn install
+    touch bindings/vala/awn.files
+    make -C bindings/vala
+
+This regenerates the introspection file and the Vala API file, which are
+both currently versioned. Note that the current system reads the introspection
+data from the installed location instead of the tree, which is why the
+``make install`` command is present. When GObject Introspection support is
+properly integrated, generating the bindings will be at build-time, instead of
+a semi-manual process by the developer. Note that you may have to edit the
+``awn.metadata`` file and/or the ``awn-custom.vala`` file as well, as the
+introspection generation step sometimes does not accurately catch all of the
+API metadata that Vala can express.
+
+Code Documentation (gtk-doc)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Awn uses the gtk-doc system to document its API. To regenerate the versioned
+documentation templates, run the following commands::
+
+    rm doc/reference/libawn.types
+    make -C doc/reference libawn.types
+
+If you add or remove a new type to ``libawn``, you should also modify the
+documentation index file, ``doc/reference/libawn-docs.sgml``.
+
+Adding/Modifying Translatable Strings
+-------------------------------------
+
+When one adds, modifies, or removes a translatable string, all of the gettext
+PO files need to be updated. There is a convenience ``make`` rule that
+accomplishes this::
+
+    make i18n-update
+
+Additionally, if you add or remove files which contain translatable strings,
+make sure that you update ``po/POTFILES.in``. You can check to see if your
+file(s) need to be added by running::
+
+    make check
+
+Coding Style
+------------
+
+For C and Vala code, the `code style guidelines`_ on the wiki should be
+followed.
+
+Python code should conform to `PEP 8`_, and should be documented using the
+`Sphinx`_ documentation format.
+
+.. _code style guidelines: http://wiki.awn-project.org/CodeStyleGuidelines
+.. _PEP 8: http://www.python.org/dev/peps/pep-0008/
+.. _Sphinx: http://sphinx.pocoo.org/
+
+Submitting Your Changes
+-----------------------
+
+If you have not been given direct access to the repository, feature branches
+and merge requests are preferred over sending patches to the bug tracker.
+For more information, read the documentation on `Launchpad's code review
+feature`_.
+
+.. _Launchpad's code review feature: https://help.launchpad.net/Code/Review
+
+.. vim:ft=rst:

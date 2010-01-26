@@ -24,7 +24,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-#include <libawn/awn-config-client.h>
+#include <libdesktop-agnostic/config.h>
 
 G_BEGIN_DECLS
 
@@ -51,10 +51,11 @@ typedef struct _AwnMonitorPrivate AwnMonitorPrivate;
 struct _AwnMonitor {
   GObject parent;
 
-  gint width;
-  gint height;
-  gint xoffset;
-  gfloat xalign;
+  gint   width;
+  gint   height;
+  gint   x_offset;
+  gint   y_offset;
+  gfloat align;
 
   /*< private >*/
   AwnMonitorPrivate *priv;
@@ -70,7 +71,7 @@ struct _AwnMonitorClass {
 GType awn_monitor_get_type(void) G_GNUC_CONST;
 
 
-AwnMonitor * awn_monitor_new_from_config (AwnConfigClient *client);
+AwnMonitor * awn_monitor_new_from_config (DesktopAgnosticConfigClient *client);
 
 G_END_DECLS
 

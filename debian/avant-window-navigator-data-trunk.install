@@ -1,5 +1,4 @@
-usr/share/avant-window-navigator/active/
 usr/share/icons/hicolor/*/apps/avant-window-navigator.*
 usr/share/avant-window-navigator/index.theme
 usr/share/locale/
-usr/share/avant-window-navigator/themes/
+usr/share/avant-window-navigator/themes/*

@@ -1,0 +1,11 @@
+avant-window-navigator
+==========
+
+Avant-window-navigator is an application which need real transparency.
+You can obtain this using a composite manager like :
+
+- xcompmgr : run xcompmgr before running avant-window-navigator
+- xfwm4 (>= 4.2.0) : you need to enable composite support in xfwm4 settings.
+- compiz : run compiz before running avant-window-navigator.
+- metacity (>= 2.21.5) : you need to enable composite support in gconf settings ( /apps/metacity/general/compositing_manager).
+- kde-window-manager (>= 4:4.0.0) : run kde-window-manager before running avant-window-navigator.

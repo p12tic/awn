@@ -1,58 +1,65 @@
-Avant Window Navigator (Awn) - http://launchpad.net/awn
-=======================================================
+============================
+Avant Window Navigator (Awn)
+============================
 
-A dock-like bar which sits at the bottom of you screen, allowing you to launch
-and control applications. Also has the ability to embed external applets. Look
-and feel are fully customisable, and theming support is also available.
+A dock-like bar which sits at the bottom of your screen, allowing you to launch
+and control applications. It also has the ability to embed external applets. The
+look and feel are fully customizable, and theming support is also available.
 
 Installation
-============
+------------
 
-libwnck-1.0
-gnome-desktop-2.0
-libgnome-2.0
-gnome-vfs-2.0
-gconf-2.0
-x11
-xproto
-dbus-glib-1
-libglade-2.0
-xdamage
-xcomposite
-xrender
+Please find out if your distribution has either binary packages available for
+Awn, or ebuilds/recipes/build scripts available through your distribution's
+package manager. It will save you a lot of time and energy if you install via
+your distribution's package manager.
 
-You will also need the following python packages (these are debian-specific naming, but should also be easy to find on other systems):
-python2.5-dev
-python-gnome2-dev
-python-gnome2-desktop-dev
-python-gnome2-extras-dev
+The following packages are required to build Awn from source. Note that in most
+distributions, you need both the library and development/header packages
+installed in order for the build process to work correctly.
 
-Installation: Backends
-======================
+* GNU Make
+* libdesktop-agnostic [1]_
+* libwnck 2.22 or later
+* libX11
+* dbus-glib
+* xdamage
+* xcomposite
+* xrender
+* Python 2.5 or later
+* PyGTK 2.12 or later
+* pyxdg (also known as python-xdg)
 
-Awn can be compiled to work with various desktop-specific backends for file transfer, .desktop file manipulation and configuration. Here's a list of backeds:
+.. _[1]:: https://launchpad.net/libdesktop-agnostic
 
-  - gnome - This uses gnome-vfs, libgnome-desktop and gconf
-  - xfce4 - thuner-vfs, eggdesktop, GKeyFile
-  - agnostic - gio, eggdesktop, GKeyfile
+To build from source, run::
 
-You can switch between backends using --with-backend=BACKEND, where BACKEND=gnome, xfce4 or agnostic. The default backend it gnome.
+    ./configure
+    make
+    make install
+
+``./configure`` can take arguments, please see ``./configure --help`` for
+details. As the default install location is ``/usr/local``, you may need to run
+``sudo make install`` instead of ``make install``.
 
 Usage
-=====
+-----
 
-You can launch Awn from Applications->Accessories->Avant Window Navigator. You
-can edit preferences by either launching Awn Manager from System->Preferences->Awn Manager, or right-clicking on the far left or right of the main bar, and selecting 'Preferences'.
+You can launch Awn from ``Applications -> Accessories -> Avant Window Navigator``.
+You can change the settings by either launching the preferences dialog from
+``System -> Preferences -> Awn Settings``, or right-clicking on most places on
+the bar, and selecting 'Dock Preferences' in the menu that appears.
 
-If Awn Manager does not start, please run `awn-manager` from the terminal to 
-see if any dependancies are missing.
+If the preferences dialog does not start, please run ``awn-settings`` from the
+terminal to see if any dependencies are missing.
 
 Help
-====
+----
 
 If you have any questions/bug reports/ideas, you can find help in the following
 locations:
 
-http://launchpad.net/awn - Main project page
-http://wiki.awn-project.org - Wiki
-http://forum.awn-project.org - Forum
+* https://launchpad.net/awn - Main project page
+* http://wiki.awn-project.org/ - Wiki
+* http://awn.planetblur.org/ - Forum
+* irc://irc.freenode.net/#awn - IRC

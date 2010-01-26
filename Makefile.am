@@ -1,21 +1,41 @@
 NULL = 
 
-SUBDIRS =				\
-	libawn                          \
-	src				\
-	awn-applet-activation           \
-	awn-manager			\
-	applets                         \
-	po				\
-	bindings			\
-	data				\
-	doc				\
+if HAVE_VALA
+VALA_BINDINGS = bindings/vala
+endif
+
+SUBDIRS = \
+	libawn \
+	src \
+	applet-activation \
+	awn-settings \
+	applets/taskmanager \
+	applets/expander \
+	applets/separator \
+	bindings/python \
+	bindings/vala \
+	po \
+	data \
+	tests \
+	doc \
+	themes \
 	$(NULL)
 
+if HAVE_VALA
+SUBDIRS += applets/quick-prefs
+endif
+
+ACLOCAL_AMFLAGS = -I m4
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = awn.pc
+
+i18n-update: po/POTFILES.in po/POTFILES.skip
+	(cd po && for lang in `grep ALL_LINGUAS ../configure.in | cut -d'"' -f2`; do \
+		echo -n "Updating $$lang:"; \
+		intltool-update $$lang; \
+	done)
 
 EXTRA_DIST =				\
 	intltool-extract.in		\
@@ -27,4 +47,6 @@ EXTRA_DIST =				\
 DISTCLEANFILES =			\
 	intltool-extract		\
 	intltool-merge			\
-	intltool-update
+	intltool-update			\
+	doltcompile			\
+	doltlibtool

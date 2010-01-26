@@ -1,10 +1,7 @@
 APP_ICON_NAME = avant-window-navigator
 include $(top_srcdir)/Makefile.app-icons
-
-SUBDIRS =		\
-        active		\
-        default-theme	\
-        $(NULL)
+include $(top_srcdir)/Makefile.shave
+include $(top_srcdir)/Makefile.schemas
 
 # desktop file
 
@@ -34,39 +31,17 @@ update-icon-cache:
 		echo "***   $(gtk_update_icon_cache)"; \
 	fi
 
-text_DATA = \
-	index.theme
+dist_pkg_DATA = \
+	awn-themed-icon.ui \
+	index.theme 
 
-textdir = $(pkgdatadir)
+pkgdir = $(pkgdatadir)
 
 # config-related
 
-if USE_GCONF
-schemasdir       = @GCONF_SCHEMA_FILE_DIR@
-schemas_in_files = awn.schemas.in awn-applets-shared.schemas.in
-schemas_DATA = $(schemas_in_files:.schemas.in=.schemas)
+schema_in_files = avant-window-navigator.schema-ini.in
 
-awn.schemas.in: awn.schema-ini
-	$(top_srcdir)/data/awn-schema-to-gconf $< $@
-
-awn-applets-shared.schemas.in: shared.schema-ini
-	$(top_srcdir)/data/awn-schema-to-gconf $< $@ shared
-
-@INTLTOOL_SCHEMAS_RULE@
-
-if GCONF_SCHEMAS_INSTALL
-install-gconf-schemas: $(schemas_DATA)
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(schemas_DATA)
-else
-install-gconf-schemas:
-endif
-else
-install-gconf-schemas:
-endif
-schemadir = $(pkgdatadir)/schemas
-schema_DATA = awn.schema-ini shared.schema-ini
-
-dist_bin_SCRIPTS = awn-schema-to-gconf awn-autostart awn-applets-migration
+dist_bin_SCRIPTS = awn-applets-migration
 
 # global
 
@@ -76,8 +51,12 @@ uninstall-local:
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps/avant-window-navigator.png
 	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/avant-window-navigator.png
 
-EXTRA_DIST += $(icons) $(text_DATA) $(desktop_DATA).in.in awn.schema-ini shared.schema-ini
+EXTRA_DIST += \
+	$(icons) \
+	$(text_DATA) \
+	$(desktop_DATA).in \
+	$(schema_in_files:.schema-ini.in=.schema-ini.in.in) \
+	active/spotlight_png_inline.c \
+	$(NULL)
 
-CLEANFILES = $(desktop_DATA) $(desktop_DATA).in
-
-DISTCLEANFILES = awn.schemas.in awn.schemas awn-applets-shared.schemas.in awn-applets-shared.schemas 
+CLEANFILES = $(desktop_DATA) $(schemas_DATA) $(schema_in_DATA) $(schema_DATA)
