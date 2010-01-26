@@ -3609,11 +3609,11 @@ dbus_inhibitor_lost (AwnDBusWatcher *watcher, gchar *name,
   awn_panel_uninhibit_autohide (item->panel, item->cookie);
 }
 
-void
+guint
 awn_panel_inhibit_autohide (AwnPanel *panel,
+                            const gchar *sender,
                             const gchar *app_name,
-                            const gchar *reason,
-                            DBusGMethodInvocation *context)
+                            const gchar *reason)
 {
   AwnPanelPrivate *priv = panel->priv;
 
@@ -3621,7 +3621,6 @@ awn_panel_inhibit_autohide (AwnPanel *panel,
 
   // watch the sender on dbus and remove all its inhibits when it
   //   disappears (to be sure that we don't misbehave due to crashing app)
-  gchar *sender = dbus_g_method_get_sender (context);
   gchar *detailed_signal = g_strdup_printf ("name-disappeared::%s", sender);
   g_signal_connect (awn_dbus_watcher_get_default (), detailed_signal,
                     G_CALLBACK (dbus_inhibitor_lost),
@@ -3629,9 +3628,8 @@ awn_panel_inhibit_autohide (AwnPanel *panel,
                                          GINT_TO_POINTER (cookie)));
 
   g_free (detailed_signal);
-  g_free (sender);
 
-  dbus_g_method_return (context, cookie);
+  return cookie;
 }
 
 gboolean
