@@ -19,11 +19,24 @@ VALA_FILES = \
 	awn-app.vala \
 	$(NULL)
 
-VALA_C_FILES = $(VALA_FILES:.vala=.c)
-VALA_H_FILES = $(VALA_FILES:.vala=.h)
+VALA_GENERATED_FILES = \
+	$(VALA_FILES:.vala=.c) \
+	$(VALA_FILES:.vala=.h) \
+	$(NULL)
+
+VALA_PKGS = \
+	--pkg dbus-glib-1 \
+	--pkg gtk+-2.0 \
+	--pkg desktop-agnostic-cfg \
+	$(NULL)
+
+VALA_VAPI_FILES = \
+	$(top_builddir)/bindings/vala/awn.vapi \
+	awn-panel.vapi \
+	$(NULL)
 
 .vala.c:
-	$(VALAC) -C -H $(<:.vala=.h) $< --pkg dbus-glib-1 --pkg gtk+-2.0 --pkg desktop-agnostic-cfg --pkg awn awn-panel.vapi
+	$(VALAC) -C -H $(<:.vala=.h) $< $(VALA_VAPI_FILES) $(VALA_PKGS) && \
 	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(<:.vala=).[ch]
 
 bin_PROGRAMS = avant-window-navigator
@@ -69,13 +82,11 @@ avant_window_navigator_SOURCES =	\
 	inlinepixbufs.h \
 	xutils.h \
 	xutils.c \
-	$(VALA_C_FILES) \
-	$(VALA_H_FILES) \
+	$(VALA_GENERATED_FILES) \
 	$(NULL)
 
 BUILT_SOURCES = \
-	$(VALA_C_FILES) \
-	$(VALA_H_FILES) \
+	$(VALA_GENERATED_FILES) \
 	$(MARSHALFILES) \
 	$(NULL)
 

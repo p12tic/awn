@@ -7,7 +7,41 @@ STAMPFILES = stamp-awn-enum-types.h
 
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
-BUILT_SOURCES = $(ENUMFILES) \
+VALA_FILES = \
+	awn-applet.vala \
+	awn-panel-connector.vala \
+	$(NULL)
+
+VALA_GENERATED_FILES = \
+	$(VALA_FILES:.vala=.c) \
+	$(VALA_FILES:.vala=.h) \
+	$(NULL)
+
+VALA_PKGS = \
+	--pkg dbus-glib-1 \
+	--pkg gtk+-2.0 \
+	--pkg desktop-agnostic \
+	--pkg posix \
+	--pkg x11 \
+	$(NULL)
+
+VALA_VAPI_FILES = \
+	awn-defines.vapi \
+	awn-panel-connector.vapi \
+	$(NULL)
+
+.vala.vapi:
+	$(VALAC) -C -H $(<:.vala=.h) --vapi $(<:.vala=.vapi) $< awn-defines.vapi $(VALA_PKGS) && \
+	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(<:.vala=).[ch]
+
+.vala.c:
+	$(VALAC) -C -H $(<:.vala=.h) $< $(VALA_VAPI_FILES) $(VALA_PKGS) && \
+	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(<:.vala=).[ch]
+
+BUILT_SOURCES = \
+	awn-panel-connector.vapi \
+	$(VALA_GENERATED_FILES) \
+	$(ENUMFILES) \
 	$(builddir)/libawn-marshal.c \
 	$(builddir)/libawn-marshal.h \
 	$(NULL)
@@ -28,7 +62,6 @@ libawnincdir = $(includedir)/libawn
 public_headers = \
 	awn-defines.h \
 	awn-alignment.h \
-	awn-applet.h \
 	awn-applet-simple.h \
 	awn-box.h \
 	awn-cairo-utils.h \
@@ -51,11 +84,11 @@ public_headers = \
 	awn-overlay-themed-icon.h \
 	awn-overlay-text.h \
 	awn-overlay-throbber.h \
-	awn-panel-connector.h \
 	awn-themed-icon.h \
 	awn-tooltip.h \
 	awn-utils.h \
-	libawn.h
+	libawn.h \
+	$(VALA_FILES:.vala=.h) \
 	$(NULL)
 
 anims_headers = \
@@ -98,7 +131,6 @@ source_h = $(public_headers) $(private_headers)
 source_c = \
 	$(anims_source) \
 	awn-alignment.c \
-	awn-applet.c \
 	awn-applet-simple.c \
 	awn-box.c \
 	awn-cairo-utils.c \
@@ -122,7 +154,6 @@ source_c = \
 	awn-overlay-themed-icon.c \
 	awn-overlay-text.c \
 	awn-overlay-throbber.c \
-	awn-panel-connector.c \
 	awn-pixbuf-cache.c \
 	awn-themed-icon.c \
 	awn-tooltip.c \
