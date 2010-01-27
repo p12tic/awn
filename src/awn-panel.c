@@ -68,6 +68,7 @@ struct _AwnPanelPrivate
   GHashTable *inhibits;
   guint startup_inhibit_cookie;
 
+  AwnPanelDispatcher *dbus_proxy;
   AwnBackground *bg;
 
   GtkWidget *alignment;
@@ -593,7 +594,7 @@ awn_panel_constructed (GObject *object)
                     G_CALLBACK (gtk_true), NULL);
 
   /* DBus interface */
-  awn_panel_dispatcher_new (AWN_PANEL (object));
+  priv->dbus_proxy = awn_panel_dispatcher_new (AWN_PANEL (object));
   
   /* Contents */
   priv->manager = awn_applet_manager_new_from_config (priv->client);
@@ -1720,6 +1721,12 @@ awn_panel_finalize (GObject *object)
   {
     g_hash_table_destroy (priv->inhibits);
     priv->inhibits = NULL;
+  }
+
+  if (priv->dbus_proxy)
+  {
+    g_object_unref (priv->dbus_proxy);
+    priv->dbus_proxy = NULL;
   }
 
   G_OBJECT_CLASS (awn_panel_parent_class)->finalize (object);
@@ -3148,9 +3155,9 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   if (offset_mod != 1.0)
   {
     GValue mod_value = {0};
-    g_value_init (&mod_value, G_TYPE_FLOAT);
+    g_value_init (&mod_value, G_TYPE_DOUBLE);
     /* FIXME: we also need to calculate our dimensions based on offset_mod */
-    g_value_set_float (&mod_value, offset_mod);
+    g_value_set_double (&mod_value, offset_mod);
 
     priv->offset_mod = offset_mod;
     g_object_notify (G_OBJECT (panel), "offset-modifier");

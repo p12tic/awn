@@ -31,9 +31,6 @@ namespace Awn
                           "/org/awnproject/Awn/Panel%d".printf (this.panel_id),
                           "org.awnproject.Awn.Panel");
 
-        panel.PositionChanged += this.on_position_changed;
-        panel.OffsetChanged += this.on_offset_changed;
-        panel.SizeChanged += this.on_size_changed;
         panel.PropertyChanged += this.on_property_changed;
         panel.DestroyApplet += this.on_applet_destroy;
 
@@ -60,33 +57,6 @@ namespace Awn
       else
       {
         warning ("Panel-id is not set to correct value!");
-      }
-    }
-
-    private void on_position_changed (dynamic DBus.Object proxy,
-                                      int new_position)
-    {
-      if (this.position != new_position)
-      {
-        this.position = (Gtk.PositionType)new_position;
-      }
-    }
-
-    private void on_offset_changed (dynamic DBus.Object proxy,
-                                    int new_offset)
-    {
-      if (this.offset != new_offset)
-      {
-        this.offset = new_offset;
-      }
-    }
-
-    private void on_size_changed (dynamic DBus.Object proxy,
-                                  int new_size)
-    {
-      if (this.size != new_size)
-      {
-        this.size = new_size;
       }
     }
 

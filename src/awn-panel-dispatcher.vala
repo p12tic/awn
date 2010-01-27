@@ -64,6 +64,23 @@ namespace Awn
     {
       Object (panel: panel);
 
+      panel.size_changed.connect ( (p, s) =>
+      {
+        this.property_changed ("Size", s);
+      });
+      panel.position_changed.connect ( (p, pos) =>
+      {
+        this.property_changed ("Position", pos);
+      });
+      panel.offset_changed.connect ( (p, o) =>
+      {
+        this.property_changed ("Offset", o);
+      });
+      panel.property_changed.connect ( (p, pn, v) =>
+      {
+        this.property_changed (pn, v);
+      });
+
       var conn = DBus.Bus.get (DBus.BusType.SESSION);
       string obj_path = "/org/awnproject/Awn/Panel%d".printf(panel.panel_id);
       conn.register_object (obj_path, this);
@@ -120,61 +137,4 @@ namespace Awn
     public int size { get { return panel.size; } set { panel.size = value; } }
     public int64 panel_xid { get { return panel.panel_xid; } }
   }
-  /*
-  public class Test: Object, PanelDBusInterface
-  {
-    public static void main (string[] args)
-    {
-      MainLoop ml = new MainLoop ();
-
-      Test t = new Test ();
-
-      var conn = DBus.Bus.get (DBus.BusType.SESSION);
-      conn.register_object ("/org/example/test", t);
-
-      ml.run ();
-    }
-
-    public void add_applet (string desktop_file) throws DBus.Error
-    {
-    }
-    public void delete_applet (string uid) throws DBus.Error
-    {
-    }
-
-    public void docklet_request (int min_size, bool shrink, bool expand) throws DBus.Error
-    {
-    }
-    public string[] get_inhibitors () throws DBus.Error
-    {
-      string[] inhibitors = {""};
-
-      return inhibitors;
-    }
-    public Value get_snapshot () throws DBus.Error
-    {
-      Value v = 3;
-      return v;
-    }
-    public uint inhibit_autohide (DBus.BusName sender, string app_name, string reason) throws DBus.Error
-    {
-      return 1;
-    }
-    public void uninhibit_autohide (uint cookie) throws DBus.Error
-    {
-    }
-
-    public void set_applet_flags (string uid, int flags) throws DBus.Error
-    {
-    }
-
-    public double offset_modifier { get { return 1.0; } }
-    public int max_size { get { return 100; } }
-    public int offset { get; set; }
-    public int path_type { get { return 1; } }
-    public int position { get; set; }
-    public int size { get; set; }
-    public int64 panel_xid { get { return 1234567890; } }
-  }
-  */
 }
