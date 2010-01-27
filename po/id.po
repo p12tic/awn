@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2009-11-29 16:41+0000\n"
-"Last-Translator: Hertatijanto Hartono <dvertx@gmail.com>\n"
+"PO-Revision-Date: 2010-01-27 00:10+0000\n"
+"Last-Translator: Fakhrul Rijal <frijal@gmail.com>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-11-30 04:39+0000\n"
+"X-Launchpad-Export-Date: 2010-01-27 04:46+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -181,7 +181,7 @@ msgstr "Zum"
 
 #: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
 msgid "Squish"
-msgstr ""
+msgstr "Gepeng"
 
 #: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
 msgid "3D Turn"
@@ -250,8 +250,8 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
-"Program ini adalah perangkat lunak bebas, Anda dapat mendistribusikannya "
-"dan/atau memodifikasinya dibawah ketentuan GNU General Public License "
+"Program ini adalah perangkat lunak bebas; anda dapat mendistribusikannya "
+"dan/atau memodifikasinya mengikuti ketentuan GNU General Public License "
 "sebagaimana dipublikasikan oleh Free Software Foundation; baik Lisensi versi "
 "2, atau (sesuai pilihan anda) versi berikutnya."
 
@@ -273,8 +273,8 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
-"Anda seharusnya telah menerima sebuah salinan GNU General Public License "
-"bersamaan dengan program ini; jika tidak, layangkan surat ke Free Software "
+"Anda seharusnya telah menerima salinan lisensi GNU General Public License "
+"terlampir bersama program ini; jika tidak, layangkan surat ke Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:69
@@ -373,7 +373,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr "Navigator window berjangkar."
+msgstr "Navigator jendela berjangkar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."

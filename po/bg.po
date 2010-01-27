@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2009-10-30 05:09+0000\n"
+"PO-Revision-Date: 2010-01-27 00:03+0000\n"
 "Last-Translator: Nikola Kasabov <nikola.kasabov@gmail.com>\n"
 "Language-Team: Bulgarian <bg@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-11-07 04:42+0000\n"
+"X-Launchpad-Export-Date: 2010-01-27 04:45+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -157,7 +157,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
 #: ../awn-settings/awnSettings.py.in:144
 msgid "None"
-msgstr ""
+msgstr "Без"
 
 #: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
 msgid "Simple"
@@ -165,19 +165,19 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:825 ../awn-settings/awnClass.py:886
 msgid "Classic"
-msgstr ""
+msgstr "Класически"
 
 #: ../awn-settings/awnClass.py:826 ../awn-settings/awnClass.py:887
 msgid "Fade"
-msgstr ""
+msgstr "Изчезване"
 
 #: ../awn-settings/awnClass.py:827 ../awn-settings/awnClass.py:888
 msgid "Spotlight"
-msgstr ""
+msgstr "Прожектор"
 
 #: ../awn-settings/awnClass.py:828 ../awn-settings/awnClass.py:889
 msgid "Zoom"
-msgstr ""
+msgstr "Увеличаване"
 
 #: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
 msgid "Squish"
@@ -185,19 +185,19 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
 msgid "3D Turn"
-msgstr ""
+msgstr "3D завъртане"
 
 #: ../awn-settings/awnClass.py:831 ../awn-settings/awnClass.py:892
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D завъртане с прожектор"
 
 #: ../awn-settings/awnClass.py:832 ../awn-settings/awnClass.py:893
 msgid "Glow"
-msgstr ""
+msgstr "Блясък"
 
 #: ../awn-settings/awnClass.py:894 ../awn-settings/awnSettings.py.in:152
 msgid "Custom"
-msgstr ""
+msgstr "Потребителски"
 
 #: ../awn-settings/awnClass.py:974
 #, python-format
@@ -205,6 +205,8 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Автоматичното създаване е неуспешно. Моля ръчно създайте директорията:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:984
 msgid "Confirm directory creation"
@@ -237,7 +239,7 @@ msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1093
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Напълно променим док-подобен навигатор на прозорци за GNOME."
 
 #: ../awn-settings/awnClass.py:1095
 msgid ""
@@ -246,6 +248,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Тази програма е свободен софтуер; можете да я разпространявате и/или "
+"променяте според условията на GNU General Public License, публикувани от "
+"Free Software Foundation; включително версия 2 на лиценза или по усмотрение "
+"на всяка следваща версия."
 
 #: ../awn-settings/awnClass.py:1097
 msgid ""
@@ -254,6 +260,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Тази програма се разпространява с надеждата, че ще бъде полезна, но БЕЗ "
+"НИКАКВИ ГАРАНЦИИ, дори и косвените за ПРОДАЖБА или СЪОТВЕТСТВИЕ С КАКВАТО И "
+"ДА Е УПОТРЕБА. За подробности погледнете Общия публичен лиценз на GNU."
 
 #: ../awn-settings/awnClass.py:1099
 msgid ""
@@ -358,7 +367,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Док-подобен навигатор на прозорци"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -591,7 +600,7 @@ msgstr ""
 
 #: ../libawn/awn-applet.c:1002 ../src/awn-panel.c:592
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Настройки на дока"
 
 #: ../libawn/awn-themed-icon.c:1931
 msgid "Icons"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2009-10-30 02:20+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2010-01-27 00:02+0000\n"
+"Last-Translator: Iñigo Varela <malditoastur@gmail.com>\n"
 "Language-Team: Asturian <ast@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-11-07 04:42+0000\n"
+"X-Launchpad-Export-Date: 2010-01-27 04:45+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -169,7 +169,7 @@ msgstr "Clásicu"
 
 #: ../awn-settings/awnClass.py:826 ../awn-settings/awnClass.py:887
 msgid "Fade"
-msgstr "Dilir"
+msgstr "Chisbar"
 
 #: ../awn-settings/awnClass.py:827 ../awn-settings/awnClass.py:888
 msgid "Spotlight"
@@ -181,7 +181,7 @@ msgstr "Zoom"
 
 #: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
 msgid "Squish"
-msgstr "Apretar"
+msgstr "Rebotante"
 
 #: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
 msgid "3D Turn"
@@ -205,20 +205,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
-"Falló la criación automática. Crea manualmente'l direutoriu:\n"
+"Falló la criación automática del direutoriu. Por favor, tente facela "
+"manualmente:\n"
 "%s"
 
 #: ../awn-settings/awnClass.py:984
 msgid "Confirm directory creation"
-msgstr "Confirma la creación del direutoriu"
+msgstr "Confirma la creación de la carpeta"
 
 #: ../awn-settings/awnClass.py:985
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
-"Entá nun esiste un direutoriu d'entamu automáticu pa la to cuenta "
-"d'usuariu.\n"
+"Entá nun esiste un direutoriu d'entamu pa la to cuenta d'usuariu.\n"
 "Quies que se faiga una automáticamente?"
 
 #: ../awn-settings/awnClass.py:1040
@@ -242,7 +242,7 @@ msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1093
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr "Ñavegador de ventanes pa GNOME de tipu barra personalizable dafechu"
+msgstr "Dock completamente personalitzable como xestor de ventanes pa GNOME"
 
 #: ../awn-settings/awnClass.py:1095
 msgid ""
@@ -636,3 +636,14 @@ msgstr ""
 #: ../src/awn-panel.c:3098
 msgid "Close docklet"
 msgstr ""
+
+#~ msgid "PNG Files"
+#~ msgstr "Ficheros PNG"
+
+#, python-format
+#~ msgid ""
+#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+#~ "installed. It usually comes with librsvg, or a package similarly named."
+#~ msgstr ""
+#~ "Nun pudo cargase l'iconu \"%s\". Tea seguru de que'l cargador SVG pa Gtk+ ta "
+#~ "instaláu. Davezu suel venir con librsvg, o un paquete con nome asemeyáu."

@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2010-01-09 15:23+0000\n"
-"Last-Translator: Nicolas Delvaux <Unknown>\n"
+"PO-Revision-Date: 2010-01-27 00:08+0000\n"
+"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-01-10 07:17+0000\n"
+"X-Launchpad-Export-Date: 2010-01-27 04:46+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -185,7 +185,7 @@ msgstr "Projecteur"
 
 #: ../awn-settings/awnClass.py:828 ../awn-settings/awnClass.py:889
 msgid "Zoom"
-msgstr "Zoom"
+msgstr "Grossissement"
 
 #: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
 msgid "Squish"
@@ -213,7 +213,7 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
-"La création automatique a échoué. Veuillez créer manuellement le dossier:\n"
+"La création automatique a échoué. Veuillez créer manuellement le dossier :\n"
 "%s"
 
 #: ../awn-settings/awnClass.py:984
@@ -225,7 +225,8 @@ msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
-"Il n'y a pas de répertoire autostart pré-existant pour votre compte.\n"
+"Il n'y a pas de dossier de démarrage automatique pré-existant pour votre "
+"compte.\n"
 "Voulez-vous que celui-ci soit créé automatiquement ?"
 
 #: ../awn-settings/awnClass.py:1040
