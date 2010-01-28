@@ -102,14 +102,13 @@ guint       awn_panel_inhibit_autohide    (AwnPanel *panel,
 gboolean    awn_panel_uninhibit_autohide  (AwnPanel         *panel,
                                            guint             cookie);
 
-gboolean    awn_panel_get_inhibitors      (AwnPanel         *panel,
-                                           GStrv            *reasons);
+GStrv       awn_panel_get_inhibitors      (AwnPanel         *panel);
 
-void        awn_panel_docklet_request     (AwnPanel         *panel,
+gint64      awn_panel_docklet_request     (AwnPanel         *panel,
                                            gint              min_size,
                                            gboolean          shrink,
                                            gboolean          expand,
-                                           DBusGMethodInvocation *context);
+                                           GError          **error);
 
 gboolean    awn_panel_get_snapshot        (AwnPanel *panel,
                                            GValue *value,

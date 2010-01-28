@@ -79,8 +79,11 @@ namespace Awn
       }
       set
       {
-        this._position = value;
-        this.position_changed (this._position);
+        if (this._position != value)
+        {
+          this._position = value;
+          this.position_changed (this._position);
+        }
       }
     }
 
@@ -134,8 +137,11 @@ namespace Awn
       }
       set
       {
-        this._size = value;
-        this.size_changed (this._size);
+        if (this._size != value)
+        {
+          this._size = value;
+          this.size_changed (this._size);
+        }
       }
     }
 

@@ -11,8 +11,9 @@ namespace Awn {
     public bool set_applet_flags (string uid, int flags) throws GLib.Error;
     public uint inhibit_autohide (string sender, string app_name, string reason); 
     public bool uninhibit_autohide (uint cookie);
-    
-    public bool get_inhibitors ([CCode (array_length = false, array_null_terminated = true)] out string[] reasons);
+
+    [CCode (array_length = false, array_null_terminated = true)]
+    public string[] get_inhibitors ();
 
     public bool get_snapshot (out GLib.Value val) throws GLib.Error;
 
