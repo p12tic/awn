@@ -35,7 +35,8 @@ namespace Awn
         panel.DestroyApplet += this.on_applet_destroy;
 
         proxy = (owned)panel;
-        proxy.destroy.connect (this.on_proxy_destroyed);
+        // FIXME: uncomment once in official Vala release
+        //proxy.destroy.connect (this.on_proxy_destroyed);
 
         // initialize properties
         dynamic DBus.Object props =
@@ -56,7 +57,7 @@ namespace Awn
       }
       else
       {
-        warning ("Panel-id is not set to correct value!");
+        error ("Panel-id is not set to correct value!");
       }
     }
 
