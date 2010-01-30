@@ -47,6 +47,7 @@
 #include "libawn/awn-pixbuf-cache.h"
 #include "awn-desktop-lookup-cached.h"
 #include "task-manager.h"
+#include "dock-manager-api.h"
 #include "task-manager-glue.h"
 
 #include "task-drag-indicator.h"
@@ -117,6 +118,7 @@ struct _TaskManagerPrivate
   gint         attention_required_reminder;
 
   AwnDesktopLookupCached * desktop_lookup;
+  TaskManagerDispatcher *dbus_proxy;
 };
 
 typedef struct
@@ -490,6 +492,9 @@ task_manager_constructed (GObject *object)
   g_debug ("Feeding the cache");
   priv->desktop_lookup = awn_desktop_lookup_cached_new ();
   g_debug ("Done Feeding the cache");
+
+  /* DBus interface */
+  priv->dbus_proxy = task_manager_dispatcher_new (TASK_MANAGER (object));
 }
 
 static void

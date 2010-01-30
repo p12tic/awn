@@ -11,6 +11,30 @@ AM_CPPFLAGS = \
 	$(DISABLE_DEPRECATED_FLAGS) \
 	$(NULL)
 
+VALA_FILES = \
+	dock-manager-api.vala \
+	$(NULL)
+
+VALA_GENERATED_FILES = \
+	$(VALA_FILES:.vala=.c) \
+	$(VALA_FILES:.vala=.h) \
+	$(NULL)
+
+VALA_PKGS = \
+	--pkg dbus-glib-1 \
+	--pkg gtk+-2.0 \
+	--pkg desktop-agnostic-cfg \
+	$(NULL)
+
+VALA_VAPI_FILES = \
+	$(top_builddir)/bindings/vala/awn.vapi \
+	task-manager.vapi \
+	$(NULL)
+
+.vala.c:
+	$(VALAC) -C -H $(<:.vala=.h) $< $(VALA_VAPI_FILES) $(VALA_PKGS) && \
+	$(SED) -i -r 's/^#include <(task.+h)>$$/#include "\1"/' $(<:.vala=).[ch]
+
 appletdir = $(APPLETDIR)/taskmanager
 applet_datadir = $(APPLETDATADIR)/taskmanager
 applet_LTLIBRARIES = taskmanager.la
@@ -49,6 +73,7 @@ taskmanager_la_SOURCES = \
 	$(builddir)/taskmanager-marshal.h \
 	xutils.c \
 	xutils.h \
+	$(VALA_GENERATED_FILES) \
 	$(NULL)
 taskmanager_la_LIBADD = \
 	$(top_builddir)/libawn/libawn.la \
@@ -76,6 +101,7 @@ schema_in_files = awn-applet-taskmanager.schema-ini.in
 install-data-local: install-gconf-schemas
 
 BUILT_SOURCES = \
+	$(VALA_GENERATED_FILES) \
 	task-manager-glue.h \
 	task-manager-api-wrapper-glue.h \
 	$(MARSHALFILES) \
