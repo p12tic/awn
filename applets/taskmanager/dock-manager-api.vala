@@ -46,12 +46,12 @@ public interface DockItemDBusInterface: GLib.Object
 
 public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 {
-  public TaskManager manager { get; construct; }
+  public Task.Manager manager { get; construct; }
 
   // TODO: remove!
   private TaskIconDispatcher test_item;
 
-  public TaskManagerDispatcher (TaskManager manager)
+  public TaskManagerDispatcher (Task.Manager manager)
   {
     GLib.Object (manager: manager);
 
