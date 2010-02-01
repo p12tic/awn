@@ -38,6 +38,7 @@
 
 static gboolean version = FALSE;
 static gboolean is_startup = FALSE;
+static gint startup_delay = 5;
 
 GOptionEntry entries[] = 
 {
@@ -52,6 +53,12 @@ GOptionEntry entries[] =
     0, G_OPTION_ARG_NONE,
     &is_startup,
     "Hint the panel that this is start of the session", NULL
+  },
+  {
+    "startup-delay", 0,
+    0, G_OPTION_ARG_INT,
+    &startup_delay,
+    "Number of seconds to wait before starting", NULL
   },
   { 
     NULL 
@@ -69,7 +76,7 @@ main (gint argc, gchar *argv[])
   GError          *error = NULL;
   guint32          ret;
  
-  context = g_option_context_new ("- Avant Window Navigator" VERSION);
+  context = g_option_context_new ("- Avant Window Navigator " VERSION);
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_add_group (context, gtk_get_option_group (TRUE));
   g_option_context_parse (context, &argc, &argv, NULL);
@@ -132,7 +139,7 @@ main (gint argc, gchar *argv[])
     return EXIT_SUCCESS;
   }
 
-  if (is_startup) sleep (5);
+  if (is_startup) sleep (startup_delay);
 
   /* Launch Awn */
   app = awn_application_get_default ();
