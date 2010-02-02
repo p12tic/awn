@@ -1,3 +1,12 @@
+2010-02-01  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* po/POTFILES.in:
+	Don't translate generated files.
+
+	* po/avant-window-navigator.pot:
+	* po/*.po:
+	Update gettext files.
+
 2010-01-25  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
