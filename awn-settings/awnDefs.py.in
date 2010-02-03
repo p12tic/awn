@@ -36,9 +36,10 @@ SYS_THEME_DIR = os.path.join (PREFIX, "share", "avant-window-navigator","themes"
 HOME_CUSTOM_ICONS_DIR = os.path.join(HOME_CONFIG_DIR, "custom-icons")
 VERSION = '@VERSION@'
 EXTRA_VERSION = '@EXTRA_VERSION@'
+THEME_VERSION = '0.4.0'
 
 #TODO update to real branches when stable
-DEFAULT_SOURCES_LIST = [[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local'], [SYS_APPLET_DIR,'local']]
+DEFAULT_SOURCES_LIST = [[SYS_THEME_DIR,'local'],[HOME_THEME_DIR,'local'], [SYS_APPLET_DIR,'local'], [HOME_APPLET_DIR,'local']]
 
 
 # AwnConfigClient Groups/Keys
@@ -52,7 +53,8 @@ APPLET_LIST             = "applet_list"         #list-string
 MONITOR_FORCE           = "monitor_force"       #bool
 MONITOR_HEIGHT          = "monitor_height"      #int
 MONITOR_WIDTH           = "monitor_width"       #int
-MONITOR_OFFSET          = "monitor_offset"      #int
+MONITOR_X_OFFSET        = "monitor_x_offset"    #int
+MONITOR_Y_OFFSET        = "monitor_y_offset"    #int
 MONITOR_ALIGN           = "monitor_align"       #float
 AUTOHIDE                = "autohide"            #int
 STYLE                   = "style"               #int
@@ -70,6 +72,8 @@ GSTEP2                  = "gstep2"              #string
 GHISTEP1                = "ghistep1"            #string
 GHISTEP2                = "ghistep2"            #string
 ICON_TEXT_COLOR         = "icon_text_color"     #string
+ICON_TEXT_OUTLINE_COLOR = "icon_text_outline_color"     #string
+ICON_FONT_MODE          = "icon_font_mode"      #int
 BORDER                  = "border"              #string
 HILIGHT                 = "hilight"             #string
 SHOW_SEP                = "show_sep"            #bool
@@ -104,6 +108,10 @@ DRAG_AND_DROP           = "drag_and_drop"       #bool
 MATCH_STRENGTH          = "match_strength"      #int
 GROUPING                = "grouping"            #bool
 INTELLIHIDE             = "intellihide"         #bool
+LONG_PRESS              = "enable_long_press"   #bool
+OVERLAY_ICON            = "overlay_application_icons" #bool
+OVERLAY_ICON_SWAP       = "overlay_application_icons_swap" #bool
+ICON_BEHAVIOR           = "icon_change_behavior" #int
 
 # i18n-related
 I18N_DOMAIN = "avant-window-navigator"

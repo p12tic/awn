@@ -84,77 +84,66 @@ import gtk.Label as PyGtkLabel_Type
 ignore-glob
   *_get_type
 %%
-override awn_applet_simple_set_temp_icon kwargs
+override awn_applet_create_about_item kwargs
 static PyObject *
-_wrap_awn_applet_simple_set_temp_icon (PyGObject *self, PyObject *args, PyObject *kwargs)
+_wrap_awn_applet_create_about_item (PyGObject *self, PyObject *args,
+                                    PyObject *kwargs)
 {
-    return _wrap_awn_applet_simple_set_icon (self, args, kwargs);
-}
-%%
-override awn_applet_simple_set_awn_icons kwargs
-static PyObject *
-_wrap_awn_applet_simple_set_awn_icons (PyObject *self, PyObject *args, PyObject *kwargs)
-{
-  static char *kwlist[] = { "applet_name", "states", "icon_names", NULL };
-  gchar *applet_name;
-  PyObject *py_states;
-  PyObject *py_icon_names;
-  gchar **states = NULL;
-  gchar **icon_names = NULL;
-  GdkPixbuf *ret;
+  static char *kwlist[] = { "copyright", "license", "version", "comments",
+                            "website", "website_label", "icon-name",
+                            "translator_credits", "authors", "artists",
+                            "documentors", NULL };
+  char *copyright, *version, *comments, *website, *website_label, *icon_name,
+       *translator_credits;
+  PyObject *py_license = NULL;
+  PyObject *py_authors = NULL;
+  PyObject *py_artists = NULL;
+  PyObject *py_documentors = NULL;
+  GtkWidget *ret;
+  AwnAppletLicense license;
+  gchar **authors = NULL;
+  gchar **artists = NULL;
+  gchar **documentors = NULL;
 
-  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "sOO:AwnAppletSimple.set_awn_icons", kwlist, &applet_name, &py_states, &py_icon_names))
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs,
+                                    "sOzzzzzzOOO:AwnApplet.create_about_item",
+                                    kwlist, &copyright, &py_license, &version,
+                                    &comments, &website, &website_label,
+                                    &icon_name, &translator_credits,
+                                    &py_authors, &py_artists, &py_documentors))
   {
     return NULL;
   }
 
-  if (!PySequence_Check (py_states))
+  if (pyg_enum_get_value (AWN_TYPE_APPLET_LICENSE, py_license,
+                          (gpointer)&license))
   {
-    PyErr_SetString (PyExc_TypeError, "states argument must be a sequence.");
     return NULL;
   }
 
-  if (!PySequence_Check (py_icon_names))
+  if (py_authors != Py_None)
   {
-    PyErr_SetString (PyExc_TypeError, "icon_names argument must be a sequence.");
-    return NULL;
+    authors = _pysequence_to_gchar_array (py_authors);
+  }
+  if (py_artists != Py_None)
+  {
+    artists = _pysequence_to_gchar_array (py_artists);
+  }
+  if (py_documentors != Py_None)
+  {
+    documentors = _pysequence_to_gchar_array (py_documentors);
   }
 
-  if (PySequence_Size (py_states) != PySequence_Size (py_icon_names))
-  {
-    PyErr_SetString (PyExc_ValueError, "The states and icon names sequences must have the same number of elements.");
-    return NULL;
-  }
+  ret = awn_applet_create_about_item (AWN_APPLET(self->obj), copyright,
+                                      license, version, comments, website,
+                                      website_label, icon_name,
+                                      translator_credits,
+                                      (const gchar **)authors,
+                                      (const gchar **)artists,
+                                      (const gchar **)documentors);
 
-  states = _pysequence_to_gchar_array (py_states);
-  if (!states)
-  {
-    PyErr_SetString (PyExc_TypeError, "states argument must be a sequence only containing strings.");
-    return NULL;
-  }
-
-  icon_names = _pysequence_to_gchar_array (py_icon_names);
-  if (!icon_names)
-  {
-    PyErr_SetString (PyExc_TypeError, "icon_names argument must be a sequence only containing strings.");
-    return NULL;
-  }
-
-  if (g_strv_length (states) != g_strv_length (icon_names))
-  {
-    PyErr_SetString (PyExc_ValueError, "The states and icon names arrays must have the same number of elements.");
-    return NULL;
-  }
-
-  ret = awn_applet_simple_set_awn_icons (AWN_APPLET_SIMPLE (pygobject_get (self)),
-                                         (const gchar*)applet_name,
-                                         (const GStrv)states,
-                                         (const GStrv)icon_names);
-
-  g_free (states);
-  g_free (icon_names);
-
-  return pygobject_new (G_OBJECT (ret));
+  /* pygobject_new handles NULL checking */
+  return pygobject_new ((GObject *)ret);
 }
 %%
 override awn_effects_cairo_create
@@ -271,14 +260,13 @@ override awn_applet_simple_set_icon_info kwargs
 static PyObject *
 _wrap_awn_applet_simple_set_icon_info (PyObject *self, PyObject *args, PyObject *kwargs)
 {
-  static char *kwlist[] = { "applet_name", "states", "icon_names", NULL };
-  gchar *applet_name;
+  static char *kwlist[] = { "states", "icon_names", NULL };
   PyObject *py_states;
   PyObject *py_icon_names;
   gchar **states = NULL;
   gchar **icon_names = NULL;
  
-  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "sOO:AwnAppletSimple.set_icon_info", kwlist, &applet_name, &py_states, &py_icon_names))
+  if (!PyArg_ParseTupleAndKeywords (args, kwargs, "OO:AwnAppletSimple.set_icon_info", kwlist, &py_states, &py_icon_names))
   {
     return NULL;
   }

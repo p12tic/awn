@@ -68,7 +68,7 @@ struct _AwnPanelClass
   void (*size_changed)     (AwnPanel *panel, gint size);
   void (*position_changed) (AwnPanel *panel, GtkPositionType position);
   void (*offset_changed)   (AwnPanel *panel, gint offset);
-  void (*property_changed) (AwnPanel *panel, const gchar *uid,
+  void (*property_changed) (AwnPanel *panel,
                             const gchar *prop_name, GValue *value);
   void (*destroy_notify)   (AwnPanel *panel);
   void (*destroy_applet)   (AwnPanel *panel, const gchar *uid);
@@ -79,7 +79,11 @@ struct _AwnPanelClass
 
 GType       awn_panel_get_type            (void) G_GNUC_CONST;
 
-GtkWidget * awn_panel_new_from_config     (DesktopAgnosticConfigClient *client);
+GtkWidget * awn_panel_new_with_panel_id   (gint panel_id);
+
+gboolean    awn_panel_add_applet          (AwnPanel        *panel,
+                                           gchar           *desktop_file,
+                                           GError         **error);
 
 gboolean    awn_panel_delete_applet       (AwnPanel        *panel,
                                            gchar           *uid,
@@ -107,12 +111,16 @@ void        awn_panel_docklet_request     (AwnPanel         *panel,
                                            gboolean          expand,
                                            DBusGMethodInvocation *context);
 
+gboolean    awn_panel_get_snapshot        (AwnPanel *panel,
+                                           GValue *value,
+                                           GError **error);
+
 gboolean    awn_panel_get_all_server_flags(AwnPanel *panel,
                                            GHashTable **hash,
                                            gchar     *name,
                                            GError   **error);
 
-gboolean    awn_panel_add_applet          (AwnPanel *panel,
+gboolean    awn_panel_ua_add_applet       (AwnPanel *panel,
                                            gchar *name, glong xid,
                                            gint width, gint height,
                                            gchar *size_type,

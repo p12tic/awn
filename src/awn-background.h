@@ -52,7 +52,7 @@ G_BEGIN_DECLS
 typedef struct _AwnBackground AwnBackground;
 typedef struct _AwnBackgroundClass AwnBackgroundClass;
 
-struct _AwnBackground 
+struct _AwnBackground
 {
   GObject  parent;
 
@@ -74,10 +74,16 @@ struct _AwnBackground
   /* Pattern options */
   gboolean   enable_pattern;
   gfloat     pattern_alpha;
-  GdkPixbuf *pattern;
+  GdkPixbuf *pattern_original;
+  cairo_surface_t *pattern;
 
-  /* Appearance options -- (some are backend specific) */
+  /* FIXME:
+   * These two should ultimately go somewhere else (once we do multiple panels)
+   */
+  gboolean dialog_gtk_mode;
   gboolean gtk_theme_mode;
+  
+  /* Appearance options -- (some are backend specific) */
   gboolean rounded_corners;
   gfloat   corner_radius;
   gint     panel_angle;

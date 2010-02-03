@@ -16,19 +16,29 @@
  */
 
 #include <libawn/libawn.h>
+#include <dbus/dbus-glib.h>
 
-gboolean awn_applet_factory_init (AwnApplet *applet);
+AwnApplet* awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id);
 
-static void on_embedded (AwnApplet *applet)
+AwnApplet*
+awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
 {
-  awn_applet_set_flags (applet, AWN_APPLET_IS_EXPANDER);
+  DBusGProxy *proxy;
+  GError *error = NULL;
+
+  gchar *object_path = g_strdup_printf ("/org/awnproject/Awn/Panel%d",
+                                        panel_id);
+  proxy = dbus_g_proxy_new_for_name (dbus_g_bus_get (DBUS_BUS_SESSION, &error),
+                                     "org.awnproject.Awn",
+                                     object_path,
+                                     "org.awnproject.Awn.Panel");
+
+  dbus_g_proxy_call (proxy, "SetAppletFlags",
+                     &error,
+                     G_TYPE_STRING, uid,
+                     G_TYPE_INT, AWN_APPLET_IS_EXPANDER,
+                     G_TYPE_INVALID, G_TYPE_INVALID);
+
+  return NULL;
 }
 
-gboolean
-awn_applet_factory_init (AwnApplet *applet)
-{
-  // we should let the applet fully initialize, then we can set the flag
-  g_signal_connect_after (applet, "embedded", G_CALLBACK (on_embedded), NULL);
-
-  return TRUE;
-}

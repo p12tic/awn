@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -51,6 +49,11 @@ struct _AwnEffectsPrivate
 
   gint icon_width, icon_height;
   gint window_width, window_height;
+  gint last_redraw_size;
+
+  DesktopAgnosticColor *active_rect_color;
+  DesktopAgnosticColor *active_rect_outline;
+  DesktopAgnosticColor *dot_color;
 
   /* EFFECT VARIABLES */
   gboolean effect_lock;

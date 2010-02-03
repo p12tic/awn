@@ -1,17 +1,19 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as 
- * published by the Free Software Foundation.
- *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * GNU Library General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *             Hannes Verschore <hv1989@gmail.com>
@@ -64,7 +66,8 @@ struct _TaskLauncherClass
 
 GType           task_launcher_get_type             (void) G_GNUC_CONST;
 
-TaskItem      * task_launcher_new_for_desktop_file (const gchar    *path);
+TaskItem      * task_launcher_new_for_desktop_file (AwnApplet * applet,
+                                                     const gchar    *path);
 
 const gchar   * task_launcher_get_desktop_path     (TaskLauncher   *launcher);
 
@@ -73,6 +76,6 @@ void            task_launcher_launch_with_data     (TaskLauncher   *launcher,
 
 const gchar *   task_launcher_get_icon_name       (TaskItem *item);
 
-
+const gchar *   task_launcher_get_exec            (TaskItem *item);
 #endif /* _TASK_LAUNCHER_H_ */
 

@@ -1,20 +1,30 @@
 /*
  * Copyright (C) 2009 Michal Hruby <michal.mhr@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License version 
- * 2 or later as published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by Michal Hruby <michal.mhr@gmail.com>
  *
+ */
+
+/**
+ * AwnLabel:
+ *
+ * Widget derived from #GtkLabel, which should be used to display text
+ * on the panel, as it provides various modes of drawing the text - with
+ * or without an outline, and is therefore easily readable on non-solid 
+ * colored background.
  */
 
 #include "awn-label.h"
@@ -212,8 +222,12 @@ awn_label_set_property (GObject *object, guint property_id,
 static void
 awn_label_finalize (GObject *object)
 {
+  DesktopAgnosticConfigClient *client;
   AwnLabelPrivate *priv = AWN_LABEL_GET_PRIVATE (object);
 
+  client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, NULL);
+  desktop_agnostic_config_client_unbind_all_for_object (client, object, NULL);
+  
   if (priv->text_color)
   {
     g_object_unref (priv->text_color);
@@ -254,6 +268,9 @@ awn_label_expose (GtkWidget *widget, GdkEventExpose *event)
 
   g_return_val_if_fail (cr, FALSE);
 
+  gdk_cairo_region (cr, event->region);
+  cairo_clip (cr);
+
   cairo_set_line_width (cr, priv->text_outline_width);
 
   PangoContext *context = pango_layout_get_context (layout);
@@ -280,6 +297,7 @@ awn_label_expose (GtkWidget *widget, GdkEventExpose *event)
 
   awn_cairo_set_source_color (cr, priv->font_mode == FONT_MODE_OUTLINE ?
                               priv->text_outline_color : priv->text_color);
+  cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
   pango_cairo_layout_path (cr, layout);
   cairo_stroke (cr);
 
@@ -298,41 +316,39 @@ awn_label_class_init (AwnLabelClass *klass)
   object_class->set_property = awn_label_set_property;
   object_class->finalize = awn_label_finalize;
 
-  GParamSpec *pspec;
-
-  pspec = g_param_spec_object ("text-color",
-                               "Text color",
-                               "Text color",
-                               DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_TEXT_COLOR, pspec);
-
-  pspec = g_param_spec_object ("text-outline-color",
-                               "Text Outline Color",
-                               "Text outline color",
-                               DESKTOP_AGNOSTIC_TYPE_COLOR,
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class,
-                                   PROP_TEXT_OUTLINE_COLOR, pspec);
-
-  pspec = g_param_spec_int ("font-mode",
-                            "Font Mode",
-                            "Font Mode",
-                            FONT_MODE_SOLID,
-                            FONT_MODE_OUTLINE_REVERSED,
-                            FONT_MODE_SOLID,
-                            G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_FONT_MODE, pspec);
-
-  pspec = g_param_spec_double ("text-outline-width",
-                               "Text Outline Width",
-                               "Text Outline Width",
-                               0.0,
-                               10.0,
-                               2.5,
-                               G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
   g_object_class_install_property (object_class, 
-                                   PROP_TEXT_OUTLINE_WIDTH, pspec);
+    PROP_TEXT_COLOR,
+    g_param_spec_object ("text-color",
+                         "Text color",
+                         "Text color",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class,
+    PROP_TEXT_OUTLINE_COLOR,
+    g_param_spec_object ("text-outline-color",
+                         "Text Outline Color",
+                         "Text outline color",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class, 
+    PROP_FONT_MODE,
+    g_param_spec_int ("font-mode",
+                      "Font Mode",
+                      "Font Mode",
+                      FONT_MODE_SOLID,
+                      FONT_MODE_OUTLINE_REVERSED,
+                      FONT_MODE_SOLID,
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class, 
+    PROP_TEXT_OUTLINE_WIDTH,
+    g_param_spec_double ("text-outline-width",
+                         "Text Outline Width",
+                         "Text Outline Width",
+                         0.0, 10.0, 2.5,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_type_class_add_private (klass, sizeof (AwnLabelPrivate));
 }
@@ -344,6 +360,14 @@ awn_label_init (AwnLabel *self)
                     G_CALLBACK (awn_label_expose), NULL);
 }
 
+/**
+ * awn_label_new:
+ *
+ * Creates new #AwnLabel. Automatically applies user configured colors and
+ * style.
+ *
+ * Returns: An instance of #AwnLabel.
+ */
 AwnLabel*
 awn_label_new (void)
 {

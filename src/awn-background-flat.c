@@ -48,15 +48,20 @@ static void awn_background_flat_padding_request (AwnBackground *bg,
 static void
 awn_background_flat_expand_changed (AwnBackground *bg) // has more params...
 {
-  awn_background_emit_changed(bg);
+  awn_background_emit_padding_changed (bg);
 }
 
 static void
 awn_background_flat_align_changed (AwnBackground *bg) // has more params...
 {
-  awn_background_emit_changed(bg);
+  awn_background_emit_padding_changed (bg);
 }
 
+static void
+awn_background_flat_radius_changed (AwnBackground *bg)
+{
+  awn_background_emit_padding_changed (bg);
+}
 
 static void
 awn_background_flat_constructed (GObject *object)
@@ -65,6 +70,9 @@ awn_background_flat_constructed (GObject *object)
   gpointer monitor = NULL;
 
   G_OBJECT_CLASS (awn_background_flat_parent_class)->constructed (object);
+
+  g_signal_connect (bg, "notify::corner-radius",
+                    G_CALLBACK (awn_background_flat_radius_changed), NULL);
 
   g_return_if_fail (bg->panel);
 
@@ -199,20 +207,36 @@ draw_top_bottom_background (AwnBackground  *bg,
   }
 
   /* Draw the background */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-  draw_rect (bg, cr, position, 1, 1, width-2, height-1, align, expand);
+  if (bg->enable_pattern && bg->pattern)
+  {
+    pat = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
+  }
+  else
+  {
+    pat = cairo_pattern_create_linear (0, 0, 0, height);
+    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
+    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  }
 
+  // we're painting like this (clip + paint) because it has much better
+  // performance as opposed to cairo_fill
+  cairo_save (cr);
+
+  draw_rect (bg, cr, position, 1, 1, width-3, height-1, align, expand);
+  cairo_clip (cr);
   cairo_set_source (cr, pat);
-  cairo_fill (cr);
+  cairo_paint (cr);
+
+  cairo_restore (cr);
+
   cairo_pattern_destroy (pat);
 
   /* Draw the hi-light */
   pat = cairo_pattern_create_linear (0, 0, 0, (height/3.0));
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect (bg, cr, position, 1, 1, width-2, height/3.0, align, expand);
+  draw_rect (bg, cr, position, 1, 1, width-3, height/3.0, align, expand);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -239,25 +263,38 @@ void awn_background_flat_padding_request (AwnBackground *bg,
                                           guint *padding_left,
                                           guint *padding_right)
 {
-  #define SIDE_PADDING 6
   #define TOP_PADDING 2
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  const gint side_padding = expand ? 0 : MAX (6, bg->corner_radius * 3 / 4);
+
+  gfloat align = awn_background_get_panel_alignment (bg);
+
   switch (position)
   {
     case GTK_POS_TOP:
-      *padding_top  = 0; *padding_bottom = TOP_PADDING;
-      *padding_left = SIDE_PADDING; *padding_right = SIDE_PADDING;
+      *padding_top  = 0;
+      *padding_bottom = TOP_PADDING;
+      *padding_left = align == 0.0 ? 0 : side_padding;
+      *padding_right = align == 1.0 ? 0 : side_padding;
       break;
     case GTK_POS_BOTTOM:
-      *padding_top  = TOP_PADDING; *padding_bottom = 0;
-      *padding_left = SIDE_PADDING; *padding_right = SIDE_PADDING;
+      *padding_top  = TOP_PADDING;
+      *padding_bottom = 0;
+      *padding_left = align == 0.0 ? 0 : side_padding;
+      *padding_right = align == 1.0 ? 0 : side_padding;
       break;
     case GTK_POS_LEFT:
-      *padding_top  = SIDE_PADDING; *padding_bottom = SIDE_PADDING;
-      *padding_left = 0; *padding_right = TOP_PADDING;
+      *padding_top  = align == 0.0 ? 0 : side_padding;
+      *padding_bottom = align == 1.0 ? 0 : side_padding;
+      *padding_left = 0;
+      *padding_right = TOP_PADDING;
       break;
     case GTK_POS_RIGHT:
-      *padding_top  = SIDE_PADDING; *padding_bottom = SIDE_PADDING;
-      *padding_left = TOP_PADDING; *padding_right = 0;
+      *padding_top  = align == 0.0 ? 0 : side_padding;
+      *padding_bottom = align == 1.0 ? 0 : side_padding;
+      *padding_left = TOP_PADDING;
+      *padding_right = 0;
       break;
     default:
       break;

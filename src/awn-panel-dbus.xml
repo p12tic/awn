@@ -4,6 +4,10 @@
     <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel"/>
   
     <!-- Methods -->
+    <method name="AddApplet">
+      <arg name="desktop_file" type="s" direction="in" />
+    </method>
+
     <method name="DeleteApplet">
       <arg name="uid" type="s" direction="in" />
     </method>
@@ -36,6 +40,10 @@
       <arg name="window_id" type="x" direction="out" />
     </method>
 
+    <method name="GetSnapshot">
+      <arg name="pixbuf" type="v" direction="out" />
+    </method>
+
     <!-- Signals -->
     <signal name="SizeChanged">
       <arg name="size" type="i" />
@@ -66,6 +74,8 @@
     <property name="MaxSize" type="i" access="read" />
     <property name="Position" type="i" access="read" />
     <property name="Offset" type="i" access="read" />
+    <property name="PathType" type="i" access="read" />
+    <property name="OffsetModifier" type="d" access="read" />
     <property name="PanelXid" type="x" access="read" />
 
   </interface>
@@ -75,6 +85,7 @@
 
     <!-- Methods -->
     <method name="add_applet">
+      <annotation name="org.freedesktop.DBus.GLib.CSymbol" value="awn_panel_ua_add_applet"/>
       <arg name="name" type="s" direction="in" />
       <arg name="uid" type="x" direction="in" />
       <arg name="width" type="i" direction="in" />

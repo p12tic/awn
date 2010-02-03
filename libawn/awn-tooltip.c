@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authors: Neil J. Patel <njpatel@gmail.com>
  *
@@ -434,8 +432,8 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
   /* Class property */
   g_object_class_install_property (obj_class,
     PROP_FOCUS,
-    g_param_spec_object ("focus",
-                         "Focus",
+    g_param_spec_object ("focus-widget",
+                         "Focus Widget",
                          "Widget to focus on",
                          GTK_TYPE_WIDGET,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
@@ -550,13 +548,14 @@ awn_tooltip_new_for_widget (GtkWidget *widget)
 {
   GtkWidget *tooltip;
 
-  tooltip = g_object_new(AWN_TYPE_TOOLTIP,
-                         "type", GTK_WINDOW_POPUP,
-                         "decorated", FALSE,
-                         "skip-pager-hint", TRUE,
-                         "skip-taskbar-hint", TRUE,
-                         "focus", widget,
-                         NULL);
+  tooltip = g_object_new (AWN_TYPE_TOOLTIP,
+                          "type", GTK_WINDOW_POPUP,
+                          "type-hint", GDK_WINDOW_TYPE_HINT_TOOLTIP,
+                          "decorated", FALSE,
+                          "skip-pager-hint", TRUE,
+                          "skip-taskbar-hint", TRUE,
+                          "focus-widget", widget,
+                          NULL);
 
   return tooltip;
 }
@@ -733,7 +732,7 @@ awn_tooltip_show (AwnTooltip *tooltip,
     return FALSE;
   }
 
-  if (gtk_widget_get_visible (tooltip)) return FALSE;
+  if (gtk_widget_get_visible (GTK_WIDGET (tooltip))) return FALSE;
 
   /* always use timer to show the widget, because there's a show/hide race
    * condition when mouse moves on the tooltip, leave-notify-event is generated
@@ -757,6 +756,7 @@ awn_tooltip_hide_timer(gpointer data)
   AwnTooltip *tooltip = (AwnTooltip*)data;
 
   tooltip->priv->hide_timer_id = 0;
+  if (!tooltip->priv->smart_behavior) return FALSE;
 
   gtk_widget_hide (GTK_WIDGET (tooltip));
 
@@ -812,7 +812,7 @@ on_button_press (GtkWidget *widget, GdkEventCrossing *event, AwnTooltip *tooltip
     g_source_remove (priv->show_timer_id);
     priv->show_timer_id = 0;
   }
-  else if (gtk_widget_get_visible (tooltip))
+  else if (gtk_widget_get_visible (GTK_WIDGET (tooltip)))
   {
     gtk_widget_hide (GTK_WIDGET (tooltip));
   }

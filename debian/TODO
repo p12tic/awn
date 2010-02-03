@@ -1,6 +1,0 @@
-#Todo when working in this branch
-- Re-enable vala bindings (vala*.install + rules)
-- Re-enable --as-needed flags (rules)
-- Remove 01 patch when the simple key will work. (patches/01*)
-- Re-enable docs generation and installation (libawn-doc*.install + rules)
-- Re-enable awn-manager

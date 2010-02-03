@@ -27,6 +27,7 @@
 #include "awn-background.h"
 
 #include "awn-defines.h"
+#include "libawn/gseal-transition.h"
 
 G_DEFINE_ABSTRACT_TYPE (AwnBackground, awn_background, G_TYPE_OBJECT)
 
@@ -52,6 +53,7 @@ enum
   PROP_PATTERN_FILENAME,
 
   PROP_GTK_THEME_MODE,
+  PROP_DIALOG_GTK_MODE,
   PROP_ROUNDED_CORNERS,
   PROP_CORNER_RADIUS,
   PROP_PANEL_ANGLE,
@@ -70,6 +72,11 @@ static guint _bg_signals[LAST_SIGNAL] = { 0 };
 
 static void awn_background_set_gtk_theme_mode (AwnBackground *bg, 
                                                gboolean       gtk_mode);
+
+static void awn_background_set_dialog_gtk_mode (AwnBackground *bg, 
+                                                gboolean       gtk_mode);
+
+static void awn_background_refresh_pattern (AwnBackground *bg);
 
 static void awn_background_padding_zero (AwnBackground *bg,
                                          GtkPositionType position,
@@ -124,44 +131,49 @@ awn_background_constructed (GObject *object)
   
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_SHOW_SEP,
-                                       object, "show_sep", TRUE,
+                                       object, "show-sep", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_SEP_COLOR,
-                                       object, "sep_color", TRUE,
+                                       object, "sep-color", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_DRAW_PATTERN,
-                                       object, "draw_pattern", TRUE,
+                                       object, "draw-pattern", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_PATTERN_ALPHA,
-                                       object, "pattern_alpha", TRUE,
+                                       object, "pattern-alpha", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_PATTERN_FILENAME,
-                                       object, "pattern_filename", TRUE,
+                                       object, "pattern-filename", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_GTK_THEME_MODE,
-                                       object, "gtk_theme_mode", TRUE,
+                                       object, "gtk-theme-mode", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_DLG_GTK_MODE,
+                                       object, "dialog-gtk-mode", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_CORNER_RADIUS,
-                                       object, "corner_radius", TRUE,
+                                       object, "corner-radius", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_PANEL_ANGLE,
-                                       object, "panel_angle", TRUE,
+                                       object, "panel-angle", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
@@ -171,7 +183,7 @@ awn_background_constructed (GObject *object)
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_CURVES_SYMMETRY,
-                                       object, "curves_symmetry", TRUE,
+                                       object, "curves-symmetry", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }
@@ -214,6 +226,7 @@ awn_background_set_property (GObject      *object,
                          GParamSpec   *pspec)
 {
   AwnBackground *bg = AWN_BACKGROUND (object);
+  GError *error = NULL;
 
   g_return_if_fail (AWN_IS_BACKGROUND (object));
 
@@ -284,15 +297,35 @@ awn_background_set_property (GObject      *object,
       break;
     case PROP_PATTERN_ALPHA:
       bg->pattern_alpha = g_value_get_float (value);
+      awn_background_refresh_pattern (bg);
       break;
     case PROP_PATTERN_FILENAME:
-      if (GDK_IS_PIXBUF (bg->pattern)) g_object_unref (bg->pattern);
-      bg->pattern = gdk_pixbuf_new_from_file (
-                               g_value_get_string (value), NULL);
+      if (bg->pattern_original != NULL)
+      {
+        g_object_unref  (bg->pattern_original);
+        bg->pattern_original = NULL;
+      }
+      bg->pattern_original = gdk_pixbuf_new_from_file (
+          g_value_get_string (value), &error);
+
+      if (error != NULL)
+      {
+        if (bg->enable_pattern)
+        {
+          g_warning ("Unable to load \"%s\". Error: %s.",
+                     g_value_get_string (value), error->message);
+        }
+        bg->pattern_original = NULL;
+        g_error_free (error);
+      }
+      awn_background_refresh_pattern (bg);
       break;
 
     case PROP_GTK_THEME_MODE:
       awn_background_set_gtk_theme_mode (bg, g_value_get_boolean (value));
+      break;
+    case PROP_DIALOG_GTK_MODE:
+      awn_background_set_dialog_gtk_mode (bg, g_value_get_boolean (value));
       break;
     case PROP_ROUNDED_CORNERS:
       bg->rounded_corners = g_value_get_boolean (value);
@@ -330,6 +363,14 @@ awn_background_finalize (GObject *object)
     desktop_agnostic_config_client_unbind_all_for_object (bg->client,
                                                           object, NULL);
   }
+
+  if (bg->changed)
+  {
+    g_signal_handler_disconnect (bg->panel, bg->changed);
+  }
+
+  if (bg->pattern_original) g_object_unref (bg->pattern_original);
+  if (bg->pattern) cairo_surface_destroy (bg->pattern);
 
   if (bg->g_step_1) g_object_unref (bg->g_step_1);
   if (bg->g_step_2) g_object_unref (bg->g_step_2);
@@ -472,8 +513,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
                          "Pattern filename",
                          "Pattern Filename",
                          "",
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                         G_PARAM_STATIC_STRINGS));
+                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
     PROP_GTK_THEME_MODE,
@@ -482,7 +522,15 @@ awn_background_class_init (AwnBackgroundClass *klass)
                           "Use colours from the current Gtk theme",
                           TRUE,
                           G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
-  
+
+  g_object_class_install_property (obj_class,
+    PROP_DIALOG_GTK_MODE,
+    g_param_spec_boolean ("dialog-gtk-mode",
+                          "Dialog Gtk theme mode",
+                          "Use colours from the current Gtk theme on dialog",
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
   g_object_class_install_property (obj_class,
     PROP_ROUNDED_CORNERS,
     g_param_spec_boolean ("rounded-corners",
@@ -548,6 +596,49 @@ awn_background_class_init (AwnBackgroundClass *klass)
                   G_TYPE_NONE, 0);
 }
 
+static void
+awn_background_refresh_pattern (AwnBackground *bg)
+{
+  if (bg->pattern != NULL)
+  {
+    cairo_surface_destroy (bg->pattern);
+    bg->pattern = NULL;
+  }
+
+  if (bg->pattern_original)
+  {
+    gint w, h;
+    w = gdk_pixbuf_get_width (bg->pattern_original);
+    h = gdk_pixbuf_get_height (bg->pattern_original);
+
+    if (FALSE) //if (bg->panel && GTK_WIDGET (bg->panel)->window)
+    {
+      // mhr3: using server-side pixmap seems to slow things down quite a lot
+      // (especially on 3d and curved) - nvidia-only issue???
+      GdkWindow *window = gtk_widget_get_window (GTK_WIDGET (bg->panel));
+
+      cairo_t *temp_cr = gdk_cairo_create (window);
+
+      bg->pattern = cairo_surface_create_similar (cairo_get_target (temp_cr),
+                                                  CAIRO_CONTENT_COLOR_ALPHA,
+                                                  w, h);
+
+      cairo_destroy (temp_cr);
+    }
+    else
+    {
+      bg->pattern = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, w, h);
+    }
+    // copy the pixbuf to cairo surface
+    cairo_t *cr = cairo_create (bg->pattern);
+
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    gdk_cairo_set_source_pixbuf (cr, bg->pattern_original, 0.0, 0.0);
+    cairo_paint_with_alpha (cr, bg->pattern_alpha);
+
+    cairo_destroy (cr);
+  }
+}
 
 static void
 awn_background_init (AwnBackground *bg)
@@ -587,13 +678,23 @@ awn_background_padding_request (AwnBackground *bg,
 {
   AwnBackgroundClass *klass;
 
-  g_return_if_fail (AWN_IS_BACKGROUND (bg));
-  
-  klass = AWN_BACKGROUND_GET_CLASS (bg);
-  g_return_if_fail (klass->padding_request != NULL);
+  g_return_if_fail (AWN_IS_BACKGROUND (bg) || bg == NULL);
 
-  klass->padding_request (bg, position, padding_top, padding_bottom,
-                          padding_left, padding_right);
+  if (bg)
+  {
+    klass = AWN_BACKGROUND_GET_CLASS (bg);
+    g_return_if_fail (klass->padding_request != NULL);
+
+    klass->padding_request (bg, position, padding_top, padding_bottom,
+                            padding_left, padding_right);
+  }
+  else
+  {
+    *padding_top = 0;
+    *padding_bottom = 0;
+    *padding_right = 0;
+    *padding_left = 0;
+  }
 }
 
 void 
@@ -702,6 +803,7 @@ static void
 set_cfg_from_theme (GdkColor                    *color,
                     gushort                      alpha,
                     DesktopAgnosticConfigClient *client,
+                    const gchar                 *group,
                     const gchar                 *key)
 {
   DesktopAgnosticColor *da_color;
@@ -711,8 +813,8 @@ set_cfg_from_theme (GdkColor                    *color,
   g_value_init (&val, DESKTOP_AGNOSTIC_TYPE_COLOR);
   g_value_set_object (&val, da_color);
   desktop_agnostic_config_client_set_value (client,
-                                            AWN_GROUP_THEME, key,
-                                            (const GValue*)&val, NULL);
+                                            group, key,
+                                            &val, NULL);
   g_value_unset (&val);
   g_object_unref (da_color);
 }
@@ -722,34 +824,44 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 {
   DesktopAgnosticConfigClient *client = bg->client;
   GtkStyle        *style;
-  DesktopAgnosticColor *sep_color;
-  GValue sep_color_val = {0};
 
-  style = gtk_widget_get_style (widget);
+  // try to get values which are set for the Panel, so we look like panel
+  GtkSettings *settings = gtk_settings_get_default ();
+  style = gtk_rc_get_style_by_paths (settings, "PanelWidget", "", G_TYPE_NONE);
+
+  if (style == NULL) style = gtk_widget_get_style (widget);
 
   g_debug ("Updating gtk theme colours");
 
   /* main colours */
-  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 155,
-                      client, AWN_THEME_GSTEP1);
+  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 224,
+                      client, AWN_GROUP_THEME, AWN_THEME_GSTEP1);
   set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 200,
-                      client, AWN_THEME_GSTEP2);
+                      client, AWN_GROUP_THEME, AWN_THEME_GSTEP2);
 
-  set_cfg_from_theme (&style->light[GTK_STATE_NORMAL], 220,
-                      client, AWN_THEME_GHISTEP1);
-  set_cfg_from_theme (&style->light[GTK_STATE_PRELIGHT], 32,
-                      client, AWN_THEME_GHISTEP2);
+  set_cfg_from_theme (&style->bg[GTK_STATE_ACTIVE], 180,
+                      client, AWN_GROUP_THEME, AWN_THEME_GHISTEP1);
+  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 32,
+                      client, AWN_GROUP_THEME, AWN_THEME_GHISTEP2);
 
   set_cfg_from_theme (&style->dark[GTK_STATE_ACTIVE], 200,
-                      client, AWN_THEME_BORDER);
-  set_cfg_from_theme (&style->light[GTK_STATE_ACTIVE], 100,
-                      client, AWN_THEME_HILIGHT);
+                      client, AWN_GROUP_THEME, AWN_THEME_BORDER);
+  set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 100,
+                      client, AWN_GROUP_THEME, AWN_THEME_HILIGHT);
 
-  /* Set colors for AwnDialog */
+  set_cfg_from_theme (&style->base[GTK_STATE_ACTIVE], 164,
+                      client, AWN_GROUP_THEME, AWN_THEME_SEP_COLOR);
+
+  set_cfg_from_theme (&style->fg[GTK_STATE_NORMAL], 255,
+                      client, AWN_GROUP_THEME, AWN_THEME_TEXT_COLOR);
   set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 255,
-                      client, AWN_THEME_DLG_BG);
-  set_cfg_from_theme (&style->bg[GTK_STATE_PRELIGHT], 255,
-                      client, AWN_THEME_DLG_TITLE_BG);
+                      client, AWN_GROUP_THEME, AWN_THEME_OUTLINE_COLOR);
+
+  /* now colors from standard (non-panel) theme */
+  style = gtk_widget_get_style (widget);
+
+  set_cfg_from_theme (&style->light[GTK_STATE_SELECTED], 255,
+                      client, AWN_GROUP_EFFECTS, AWN_EFFECTS_DOT_COLOR);
 
   /* Don't draw patterns */
   desktop_agnostic_config_client_set_bool (client,
@@ -762,59 +874,83 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
                                            AWN_GROUP_THEME,
                                            AWN_THEME_SHOW_SEP,
                                            TRUE, NULL);
-  sep_color = desktop_agnostic_color_new_from_string ("#FFFFFF00", NULL);
-  g_value_init (&sep_color_val, DESKTOP_AGNOSTIC_TYPE_COLOR);
-  g_value_set_object (&sep_color_val, sep_color);
-  desktop_agnostic_config_client_set_value (client,
-                                            AWN_GROUP_THEME,
-                                            AWN_THEME_SEP_COLOR,
-                                            &sep_color_val, NULL);
-  g_value_unset (&sep_color_val);
-  g_object_unref (sep_color);
 
   /* Misc settings */
 }
 
 static void
-on_widget_realized (GtkWidget *widget, AwnBackground *bg)
+load_dlg_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 {
-  load_colours_from_widget (bg, widget);
+  DesktopAgnosticConfigClient *client = bg->client;
+  GtkStyle        *style;
+
+  GtkSettings *settings = gtk_settings_get_default ();
+  style = gtk_rc_get_style_by_paths (settings, "AwnDialog", "", G_TYPE_NONE);
+
+  if (style == NULL) style = gtk_widget_get_style (widget);
+
+  g_debug ("Updating dialog colours");
+
+  /* Set colors for AwnDialog */
+  set_cfg_from_theme (&style->bg[GTK_STATE_NORMAL], 255,
+                      client, AWN_GROUP_THEME, AWN_THEME_DLG_BG);
+  set_cfg_from_theme (&style->bg[GTK_STATE_PRELIGHT], 255,
+                      client, AWN_GROUP_THEME, AWN_THEME_DLG_TITLE_BG);
 }
 
+static void
+update_widget_colors (GtkWidget *widget, AwnBackground *bg)
+{
+  if (bg->gtk_theme_mode)
+  {
+    load_colours_from_widget (bg, widget);
+  }
+  if (bg->dialog_gtk_mode)
+  {
+    load_dlg_colours_from_widget (bg, widget);
+  }
+}
 
 static void
 on_style_set (GtkWidget *widget, GtkStyle *old, AwnBackground *bg)
 {
-  load_colours_from_widget (bg, widget);
+  update_widget_colors (widget, bg);
+}
+
+static void
+awn_background_set_dialog_gtk_mode (AwnBackground *bg, gboolean gtk_mode)
+{
+  bg->dialog_gtk_mode = gtk_mode;
+  if (gtk_mode)
+  {
+    load_dlg_colours_from_widget (bg, GTK_WIDGET (bg->panel));
+  }
 }
 
 static void 
-awn_background_set_gtk_theme_mode (AwnBackground *bg, 
-                                   gboolean       gtk_mode)
+awn_background_set_gtk_theme_mode (AwnBackground *bg, gboolean gtk_mode)
 {
+  bg->gtk_theme_mode = gtk_mode;
+
+  GtkWidget *widget = GTK_WIDGET (bg->panel);
+
   if (gtk_mode)
   {
-    GtkWidget *widget = GTK_WIDGET (bg->panel);
-
     if (GTK_WIDGET_REALIZED (widget))
     {
       load_colours_from_widget (bg, widget);
     }
     else
     {
-      g_signal_connect (widget, "realize", G_CALLBACK (on_widget_realized), bg);
+      g_signal_connect (widget, "realize",
+                        G_CALLBACK (update_widget_colors), bg);
     }
-
-    if (bg->changed == 0)
-      bg->changed = g_signal_connect (widget, "style-set", 
-                                      G_CALLBACK (on_style_set), bg);
-    
   }
-  else
+
+  if (bg->changed == 0)
   {
-    if (bg->changed)
-      g_signal_handler_disconnect (bg->panel, bg->changed);
-    bg->changed = 0;
+    bg->changed = g_signal_connect (widget, "style-set",
+                                    G_CALLBACK (on_style_set), bg);
   }
 }
 

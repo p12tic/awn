@@ -39,6 +39,8 @@
 #define DEBUG_DRAW_EXTERNAL_BORDER_TOP        TRUE
 #define DEBUG_DRAW_HIGHLIGHT                  TRUE
 
+#define DEBUG_DRAW_INPUT_SHAPE_MASK           FALSE
+
 G_DEFINE_TYPE (AwnBackground3d, awn_background_3d, AWN_TYPE_BACKGROUND)
 
 /* FORWARDS */
@@ -53,6 +55,11 @@ static void awn_background_3d_draw (AwnBackground  *bg,
                                     cairo_t        *cr,
                                     GtkPositionType  position,
                                     GdkRectangle   *area);
+
+static void awn_background_3d_input_shape_mask (AwnBackground  *bg,
+                                                cairo_t        *cr,
+                                                GtkPositionType  position,
+                                                GdkRectangle   *area);
 
 static void awn_background_3d_update_padding (AwnBackground *bg);
 
@@ -106,8 +113,12 @@ awn_background_3d_class_init (AwnBackground3dClass *klass)
   obj_class->dispose = awn_background_3d_dispose;
 
   bg_class->draw = awn_background_3d_draw;
+#if DEBUG_DRAW_INPUT_SHAPE_MASK
+  bg_class->draw = awn_background_3d_input_shape_mask;
+#endif
+
   bg_class->padding_request = awn_background_3d_padding_request;
-  bg_class->get_input_shape_mask = awn_background_3d_draw;
+  bg_class->get_input_shape_mask = awn_background_3d_input_shape_mask;
 }
 
 
@@ -284,19 +295,15 @@ draw_rect_path (AwnBackground  *bg,
  * draw_top_bottom_background:
  * @param bg: AwnBackground
  * @param cr: a cairo context
- * @param x: the begin x position to draw 
- * @param y: the begin y position to draw
  * @param width: the width for the drawing
  * @param height: the height for the drawing
  *
- * Draws the bar in the bottom position on the cairo context &cr given 
- * the &x position, &y position, &width and &height.
+ * Draws the bar in the bottom position on the cairo context &cr
+ * on position x:0, y:0 with the specified &width and &height.
  */
 static void
 draw_top_bottom_background (AwnBackground  *bg,
                             cairo_t        *cr,
-                            gdouble         x,
-                            gdouble         y,
                             gint            width,
                             gint            height)
 {
@@ -353,13 +360,26 @@ draw_top_bottom_background (AwnBackground  *bg,
 #endif
 
   /* Draw the background (on the top) */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  if (bg->enable_pattern && bg->pattern)
+  {
+    pat = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
+  }
+  else
+  {
+    pat = cairo_pattern_create_linear (0, 0, 0, height);
+    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
+    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  }
+
+  cairo_save (cr);
 
   draw_rect_path (bg, cr, 0, 0, width, height, 0.5);
+  cairo_clip (cr);
   cairo_set_source (cr, pat);
-  cairo_fill (cr);
+  cairo_paint (cr);
+
+  cairo_restore (cr);
 
   cairo_pattern_destroy (pat);
 
@@ -414,13 +434,17 @@ awn_background_3d_padding_request (AwnBackground *bg,
 {
   gint offset, size;
   guint padding;
-  g_object_get (bg->panel, "offset", &offset, NULL);
-  g_object_get (bg->panel, "size", &size, NULL);
+  g_object_get (bg->panel, "offset", &offset, "size", &size, NULL);
 
   if(offset > size)
     padding = (size+offset)/2.0/tan((90-bg->panel_angle)*M_PI/180);
   else
-    padding = offset/tan((90-bg->panel_angle)*M_PI/180);
+  {
+    double angle = 90 - CLAMP (bg->panel_angle, 0.0, 75.0);
+    double y_pos = size / 2.0 + bg->corner_radius;
+    double x = y_pos / tan (angle * M_PI/180);
+    padding = MAX (x, offset);
+  }
 
   switch (position)
   {
@@ -457,6 +481,8 @@ awn_background_3d_padding_request (AwnBackground *bg,
  *
  * Draws the bar in the in the cairo context &cr given the position &position,
  * the &x and &y position and given &width and &height
+ *
+ * Important: every change to this function should get adjusted in input_shape_mask!!!
  */
 static void 
 awn_background_3d_draw (AwnBackground  *bg,
@@ -492,7 +518,75 @@ awn_background_3d_draw (AwnBackground  *bg,
       break;
   }
 
-  draw_top_bottom_background (bg, cr, 0, 0, width, height);
+  draw_top_bottom_background (bg, cr, width, height);
+
+  cairo_restore (cr);
+}
+
+/**
+ * awn_background_3d_input_shape_mask:
+ * @param bg: AwnBackground
+ * @param cr: a cairo context 
+ * @param position: position of the bar
+ * @param x: the begin x position to draw 
+ * @param y: the begin y position to draw
+ * @param width: the width for the drawing
+ * @param height: the height for the drawing
+ *
+ * Draws the bar in the in the cairo context &cr given the position &position,
+ * the &x and &y position and given &width and &height.
+ * The bar is only drawn in black for the input shape mask.
+ */
+static void 
+awn_background_3d_input_shape_mask (AwnBackground  *bg,
+                                    cairo_t        *cr, 
+                                    GtkPositionType  position,
+                                    GdkRectangle   *area)
+{
+  int i;
+  gint temp;
+  gint x = area->x, y = area->y;
+  gint width = area->width, height = area->height;
+  cairo_save (cr);
+
+  switch (position)
+  {
+    case GTK_POS_RIGHT:
+      cairo_translate (cr, x-1, y+height);
+      cairo_rotate (cr, M_PI * 1.5);
+      temp = width;
+      width = height; height = temp;
+      break;
+    case GTK_POS_LEFT:
+      cairo_translate (cr, x+width+1, y);
+      cairo_rotate (cr, M_PI * 0.5);
+      temp = width;
+      width = height; height = temp;
+      break;
+    case GTK_POS_TOP:
+      cairo_translate (cr, x+width, y+height+1);
+      cairo_rotate (cr, M_PI);
+      break;
+    default:
+      cairo_translate (cr, x, y-1);
+      break;
+  }
+
+  height -= SIDE_SPACE;
+
+  /* Basic set-up */
+  cairo_set_line_width (cr, 1.0);
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_translate (cr, 0.5, 0.5);
+
+  /* Draw the background (in black color*/
+  cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
+
+  for(i=SIDE_SPACE-1; i>-1; i--)
+  {
+    draw_rect_path (bg, cr, 0, i,  width, height, 0.5);
+    cairo_fill (cr);
+  }
 
   cairo_restore (cr);
 }

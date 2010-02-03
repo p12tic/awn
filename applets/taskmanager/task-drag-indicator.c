@@ -1,17 +1,19 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as 
- * published by the Free Software Foundation.
- *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * GNU Library General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  *
  * Authored by Hannes Verschore <hv1989@gmail.com>
  *
@@ -130,7 +132,7 @@ task_drag_indicator_init (TaskDragIndicator *drag_indicator)
 {
   TaskSettings *settings;
 
-  settings = task_settings_get_default ();
+  settings = task_settings_get_default (NULL);
 
   awn_icon_set_pos_type (AWN_ICON (drag_indicator), GTK_POS_BOTTOM);
   awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size);
@@ -191,7 +193,7 @@ task_drag_indicator_refresh (TaskDragIndicator      *drag_indicator)
 
   g_return_if_fail (TASK_IS_DRAG_INDICATOR (drag_indicator));
 
-  settings = task_settings_get_default ();
+  settings = task_settings_get_default (NULL);
 
   awn_icon_set_custom_paint (AWN_ICON (drag_indicator), settings->panel_size, settings->panel_size);
 }

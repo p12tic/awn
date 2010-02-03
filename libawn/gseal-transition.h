@@ -2,7 +2,7 @@
  *
  * GSEAL transition definitions.
  *
- * Copyright (C) 2009 Mark Lee <marklee@src.gnome.org>
+ * Copyright (C) 2009, 2010 Mark Lee <marklee@src.gnome.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,10 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
 
@@ -25,6 +23,7 @@
 #define __GSEAL_TRANSITION_H__
 
 #ifndef GSEAL
+#define gtk_adjustment_get_upper(x) (x)->upper
 #define gtk_selection_data_get_data(x) (x)->data
 #define gtk_selection_data_get_length(x) (x)->length
 #define gtk_socket_get_plug_window(x) (x)->plug_window

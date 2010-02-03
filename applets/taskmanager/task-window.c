@@ -2,17 +2,19 @@
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com> 
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as 
- * published by the Free Software Foundation.
- *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * GNU Library General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *             Hannes Verschore <hv1989@gmail.com>
@@ -38,6 +40,10 @@
 #include "xutils.h"
 #include "util.h"
 
+#if !GTK_CHECK_VERSION(2,14,0)
+#define GTK_ICON_LOOKUP_FORCE_SIZE 0
+#endif
+
 G_DEFINE_TYPE (TaskWindow, task_window, TASK_TYPE_ITEM)
 
 #define TASK_WINDOW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -56,12 +62,22 @@ struct _TaskWindowPrivate
   // Is this window in the workspace. If workspace is NULL, this is always TRUE;
   gboolean in_workspace;
 
+  AwnApplet   *applet;
+  
   /* Properties */
   gchar   *message;
   gfloat   progress;
+
+  /*Controls whether the item has been explicitly hidden using the dbus api.
+   This is no longer related to the hide/show controled by the show_all_windows
+   config key*/
   gboolean hidden;
   gboolean needs_attention;
   gboolean is_active;
+  gboolean highlighted;
+  
+  gint     use_win_icon;
+  
   gint     activate_behavior;
   
   GtkWidget         *menu;
@@ -71,14 +87,20 @@ struct _TaskWindowPrivate
   GtkWidget *box;
   GtkWidget *name;    /*name label*/
   GtkWidget *image;   /*placed in button (TaskItem) with label*/
-  
+
+  /*number of application initiated icon changes*/
+  guint     icon_changes;
+
+  gchar     *client_name;
 };
 
 enum
 {
   PROP_0,
   PROP_WINDOW,
-  PROP_ACTIVATE_BEHAVIOR
+  PROP_ACTIVATE_BEHAVIOR,
+  PROP_USE_WIN_ICON,
+  PROP_HIGHLIGHTED
 };
 
 enum
@@ -119,6 +141,7 @@ static void   _active_window_changed  (WnckScreen *screen,
                                       WnckWindow *previously_active_window,
                                       TaskWindow * item);
 
+static void   theme_changed_cb (GtkIconTheme *icon_theme,TaskWindow * window);
 
 /* GObject stuff */
 static void
@@ -139,6 +162,14 @@ task_window_get_property (GObject    *object,
 
     case PROP_ACTIVATE_BEHAVIOR:
       g_value_set_int (value, taskwin->priv->activate_behavior); 
+      break;
+
+    case PROP_USE_WIN_ICON:
+      g_value_set_int (value, taskwin->priv->use_win_icon); 
+      break;
+
+    case PROP_HIGHLIGHTED:
+      g_value_set_boolean (value, taskwin->priv->highlighted); 
       break;
     
     default:
@@ -166,6 +197,14 @@ task_window_set_property (GObject      *object,
       priv->activate_behavior = g_value_get_int (value);
       break;
 
+    case PROP_USE_WIN_ICON:
+      priv->use_win_icon = g_value_get_int (value);
+      break;
+
+    case PROP_HIGHLIGHTED:
+      task_window_set_highlighted (taskwin,g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -189,7 +228,7 @@ do_bind_property (DesktopAgnosticConfigClient *client, const gchar *key,
     g_error_free (error);
     return FALSE;
   }
-
+	
   return TRUE;
 }
 
@@ -197,12 +236,11 @@ static void
 task_window_constructed (GObject *object)
 {
   TaskWindowPrivate *priv;
-  AwnApplet   *applet;
   
   priv = TASK_WINDOW_GET_PRIVATE (object);
   
   g_object_get (object,
-                "applet",&applet,
+                "applet",&priv->applet,
                 NULL);
   
  /*  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;*/  
@@ -212,18 +250,46 @@ task_window_constructed (GObject *object)
   }
   g_signal_connect (wnck_screen_get_default(),"active-window-changed",
                     G_CALLBACK(_active_window_changed),object);
-  
-  if (!do_bind_property (awn_config_get_default_for_applet (applet, NULL), "activate_behavior", object,
+  g_signal_connect(G_OBJECT(gtk_icon_theme_get_default()),
+                   "changed",
+                   G_CALLBACK(theme_changed_cb),object);
+
+  if (!do_bind_property (awn_config_get_default_for_applet (priv->applet, NULL), "activate_behavior", object,
                          "activate_behavior"))
   {
     return;
   }
-  
+  priv->client_name = NULL;
 }
 
 static void
 task_window_dispose (GObject *object)
 {
+  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv; 
+  GError  * err = NULL;
+  /*TaskItem will also do this, so it shouldn't be necessary in TaskWindow.*/
+  if (priv->applet)
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (awn_config_get_default_for_applet (priv->applet, NULL), object, &err);
+    if (err)
+    {
+      g_warning ("%s: Failed to unbind_all: %s",__func__,err->message);
+      g_error_free (err);
+    }
+    priv->applet = NULL;
+  }  
+  if (priv->menu)
+  {
+    gtk_widget_destroy (priv->menu);
+    priv->menu=NULL;
+  }
+
+  if (priv->box)
+  {
+    gtk_widget_destroy (priv->box);
+    priv->box=NULL;
+  }
+  
   G_OBJECT_CLASS (task_window_parent_class)->dispose (object);
 }
 
@@ -231,13 +297,18 @@ task_window_dispose (GObject *object)
 static void
 task_window_finalize (GObject *object)
 {
-  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv;
-
-  g_free (priv->special_id);
-  G_OBJECT_CLASS (task_window_parent_class)->finalize (object);
+  TaskWindowPrivate *priv = TASK_WINDOW (object)->priv; 
   g_signal_handlers_disconnect_by_func(wnck_screen_get_default(), 
                                        G_CALLBACK (_active_window_changed), 
                                        object);
+  g_free (priv->client_name);
+  g_free (priv->special_id);
+  g_free (priv->message);
+  g_signal_handlers_disconnect_by_func (G_OBJECT(gtk_icon_theme_get_default()),
+                          G_CALLBACK(theme_changed_cb),object);  
+
+  G_OBJECT_CLASS (task_window_parent_class)->finalize (object);
+  
 }
 
 
@@ -340,7 +411,23 @@ task_window_class_init (TaskWindowClass *klass)
                                AWN_ACTIVATE_DEFAULT,
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ACTIVATE_BEHAVIOR, pspec);  
-  
+
+  pspec = g_param_spec_int ("use_win_icon",
+                               "Use the Applications Window icon",
+                               "Use the Applications Window icon",
+                                USE_DEFAULT,
+                                USE_NEVER,
+                                1,
+                               G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_USE_WIN_ICON, pspec);  
+
+  pspec = g_param_spec_boolean ("highlighted",
+                               "Highlight",
+                               "Highlight the item",
+                                FALSE,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_HIGHLIGHTED, pspec);  
+
   g_type_class_add_private (obj_class, sizeof (TaskWindowPrivate));
 }
 
@@ -359,7 +446,8 @@ task_window_init (TaskWindow *window)
   priv->hidden = FALSE;
   priv->needs_attention = FALSE;
   priv->is_active = FALSE;
-  
+  priv->use_win_icon = USE_DEFAULT;
+
   /* let this button listen to every event */
   gtk_widget_add_events (GTK_WIDGET (window), GDK_ALL_EVENTS_MASK);
 
@@ -379,6 +467,7 @@ task_window_init (TaskWindow *window)
   gtk_box_pack_start (GTK_BOX (priv->box), priv->image, FALSE, FALSE, 0);
   
   priv->name = gtk_label_new ("");
+  priv->icon_changes = 0;
   /*
    TODO once get/set prop is available create this a config key and bind
    */
@@ -441,7 +530,14 @@ on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
   priv = window->priv;
 
   name = wnck_window_get_name (wnckwin);
-  markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+  if (priv->highlighted)
+  {
+    markup = g_markup_printf_escaped ("<span font_style=\"italic\" font_weight=\"heavy\" font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+  }
+  else
+  {
+    markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+  }
   gtk_label_set_markup (GTK_LABEL (priv->name), markup);
   g_free (markup);  
   task_item_emit_name_changed (TASK_ITEM (window), name);  
@@ -450,7 +546,7 @@ on_window_name_changed (WnckWindow *wnckwin, TaskWindow *window)
 static void
 on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
 {
-  TaskSettings *s = task_settings_get_default ();
+  TaskSettings *s = task_settings_get_default (NULL);
   GdkPixbuf    *pixbuf;
   GdkPixbuf    *scaled;
   gint  height;
@@ -481,7 +577,8 @@ on_window_icon_changed (WnckWindow *wnckwin, TaskWindow *window)
   
   gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
   g_object_unref (scaled);
-  
+
+  priv->icon_changes ++;
   task_item_emit_icon_changed (TASK_ITEM (window), pixbuf);
   g_object_unref (pixbuf);
 }
@@ -501,10 +598,15 @@ on_window_workspace_changed (WnckWindow *wnckwin, TaskWindow *window)
     priv->in_workspace = wnck_window_is_in_viewport (priv->window, priv->workspace);
 
   if (priv->in_workspace && !priv->hidden)
+  {
+    gtk_widget_show (GTK_WIDGET(window));
     task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
+  }
   else
+  {
+    gtk_widget_hide (GTK_WIDGET(window));
     task_item_emit_visible_changed (TASK_ITEM (window), FALSE);
-  
+  }
   g_signal_emit (window, _window_signals[WORKSPACE_CHANGED], 
                  0, wnck_window_get_workspace (wnckwin));
 }
@@ -516,21 +618,30 @@ on_window_state_changed (WnckWindow      *wnckwin,
                          TaskWindow      *window)
 {
   TaskWindowPrivate *priv;
-  gboolean           hidden = FALSE;
+  gboolean           visible = TRUE;
   gboolean           needs_attention = FALSE;
     
   g_return_if_fail (TASK_IS_WINDOW (window));
   g_return_if_fail (WNCK_IS_WINDOW (wnckwin));
   priv = window->priv;
 
-  if (state & WNCK_WINDOW_STATE_SKIP_TASKLIST)
-    hidden = TRUE;
-
-  if (priv->hidden != hidden)
+  if ( state & WNCK_WINDOW_STATE_SKIP_TASKLIST)
   {
-    priv->hidden = hidden;
+    visible = FALSE;
+  }
+  
+  if ( GTK_WIDGET_VISIBLE(window) != visible )
+  {
+    if (!visible || priv->hidden)
+    {
+      gtk_widget_hide (GTK_WIDGET(window));
+    }
+    else
+    {
+      gtk_widget_show (GTK_WIDGET(window));
+    }
 
-    if (priv->in_workspace && !priv->hidden)
+    if (priv->in_workspace && visible && GTK_WIDGET_VISIBLE(window) && !priv->hidden)
       task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
     else
       task_item_emit_visible_changed (TASK_ITEM (window), FALSE);      
@@ -572,7 +683,7 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
   TaskWindowPrivate *priv;
   GdkPixbuf    *pixbuf;
   gchar * markup;
-  TaskSettings *s = task_settings_get_default ();
+  TaskSettings *s = task_settings_get_default (NULL);
   
   g_return_if_fail (TASK_IS_WINDOW (window));
 
@@ -591,8 +702,14 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
   g_signal_connect (wnckwin, "state-changed", 
                     G_CALLBACK (on_window_state_changed), window);
 
-  
-  markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
+  if (priv->highlighted)
+  {
+    markup = g_markup_printf_escaped ("<span font_style=\"italic\" font_weight=\"heavy\" font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
+  }
+  else
+  {
+    markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", wnck_window_get_name (wnckwin));
+  }
   task_item_emit_name_changed (TASK_ITEM (window), markup);
   on_window_name_changed (wnckwin,window);
   on_window_icon_changed (wnckwin,window);
@@ -607,6 +724,34 @@ task_window_set_window (TaskWindow *window, WnckWindow *wnckwin)
  * Public functions
  */
 
+void
+task_window_set_highlighted (TaskWindow *window, gboolean highlight_state)
+{
+  TaskWindowPrivate *priv;
+  
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = window->priv;
+
+  if (highlight_state != priv->highlighted)
+  {
+    const gchar * name;
+    gchar * markup;
+    
+    priv->highlighted = highlight_state;
+    name = wnck_window_get_name (priv->window);
+    if (priv->highlighted)
+    {
+      markup = g_markup_printf_escaped ("<span font_style=\"italic\" font_weight=\"heavy\" font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+    }
+    else
+    {
+      markup = g_markup_printf_escaped ("<span font_family=\"Sans\" font_stretch=\"ultracondensed\">%s</span>", name);
+    }
+    gtk_label_set_markup (GTK_LABEL (priv->name), markup);
+    g_free (markup);
+  }
+}
+
 /**
  * Returns the name of the WnckWindow.
  */
@@ -619,6 +764,44 @@ task_window_get_name (TaskWindow *window)
     return wnck_window_get_name (window->priv->window);
   
   return "";
+}
+
+gboolean 
+task_window_get_icon_is_fallback(TaskWindow * window)
+{
+  TaskWindowPrivate *priv;
+  
+  g_return_val_if_fail (TASK_IS_WINDOW (window), TRUE);
+  priv = window->priv;
+  
+  return wnck_window_get_icon_is_fallback (priv->window);
+}
+
+const gchar *
+task_window_get_client_name (TaskWindow *window)
+{
+  TaskWindowPrivate *priv;
+  
+  g_return_val_if_fail (TASK_IS_WINDOW (window), NULL);
+  priv = window->priv;
+  
+  if (!priv->client_name)
+  {
+    task_window_get_wm_client(window, &priv->client_name);
+  }
+  return priv->client_name;
+}
+
+
+/*
+ return the total number of icon changes 
+ */
+guint
+task_window_get_icon_changes (TaskWindow * window)
+{
+  g_return_val_if_fail (TASK_IS_WINDOW (window), 0);
+
+  return window->priv->icon_changes;
 }
 
 WnckScreen * 
@@ -702,6 +885,25 @@ task_window_get_wm_class (TaskWindow    *window,
 }
 
 gboolean   
+task_window_get_wm_client (TaskWindow    *window,
+                          gchar        **client_name)
+{
+  g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
+ 
+  *client_name = NULL;
+  
+  if (WNCK_IS_WINDOW (window->priv->window))
+  {
+    _wnck_get_client_name (wnck_window_get_xid (window->priv->window),client_name);
+    
+    if (*client_name)
+      return TRUE;
+  }
+
+  return FALSE;
+}
+
+gboolean   
 task_window_is_active (TaskWindow    *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
@@ -759,7 +961,27 @@ task_window_is_hidden (TaskWindow    *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
 
-  return window->priv->hidden;
+  return !GTK_WIDGET_VISIBLE(window);
+}
+
+/*hidden should be a prop*/
+void
+task_window_set_hidden (TaskWindow *window,gboolean hidden)
+{
+  TaskWindowPrivate * priv;
+  g_return_if_fail (TASK_IS_WINDOW(window));
+  priv=window->priv;
+
+  priv->hidden = hidden;
+  if (priv->in_workspace && !hidden)
+  {
+    gtk_widget_show (GTK_WIDGET(window));
+  }
+  else
+  {
+    gtk_widget_hide (GTK_WIDGET(window));
+  }
+  task_item_emit_visible_changed (TASK_ITEM (window), !hidden);
 }
 
 void
@@ -871,7 +1093,7 @@ task_window_activate (TaskWindow    *window,
         window_workspace = wnck_window_get_workspace (priv->window);
 
         if (active_workspace && window_workspace &&
-              !wnck_window_is_on_workspace(priv->window, active_workspace))
+              !wnck_window_is_in_viewport(priv->window, active_workspace))
         {
           wnck_workspace_activate(window_workspace, timestamp);
         }
@@ -1000,13 +1222,43 @@ _get_name (TaskItem    *item)
 static GdkPixbuf * 
 _get_icon (TaskItem    *item)
 {
-  TaskSettings *s = task_settings_get_default ();
+  /*
+   TODO:
+   Once the pixbuf lookups and caching get moved into a separate object in
+   AwnThemedIcon then this static can be replaced by use of that new object
+   */
+  static GdkPixbuf * fallback=NULL;
+  TaskSettings *s = task_settings_get_default (NULL);
   TaskWindow *window = TASK_WINDOW (item);
+  TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;
 
   if (WNCK_IS_WINDOW (window->priv->window))
+  {
+    if (wnck_window_get_icon_is_fallback (priv->window))
+    {
+      if (fallback && (gdk_pixbuf_get_height (fallback) != s->panel_size))
+      {
+        g_object_unref (fallback);
+        fallback = NULL;        
+      }
+      if (!fallback)
+      {
+        fallback = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                             "awn-window-fallback",
+                                             s->panel_size,
+                                             GTK_ICON_LOOKUP_FORCE_SIZE,
+                                             NULL);
+      }
+      if (fallback)
+      {
+        g_object_ref (fallback);
+        return fallback;
+      }
+      g_warning ("%s: Failed to load awn fallback.  Falling back to wnck fallback.",__func__);
+    }
     return _wnck_get_icon_at_size (window->priv->window, 
-                                   s->panel_size, s->panel_size);
-
+                                 s->panel_size, s->panel_size);
+  }
   return NULL;
 }
 
@@ -1015,7 +1267,7 @@ _is_visible (TaskItem *item)
 {
   TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;
   
-  return priv->in_workspace && !priv->hidden;
+  return priv->in_workspace && !priv->hidden && GTK_WIDGET_VISIBLE(item);
 }
 
 static GtkWidget *
@@ -1026,6 +1278,15 @@ _get_image_widget (TaskItem *item)
   return priv->image;
 }
 
+static void
+theme_changed_cb (GtkIconTheme *icon_theme,TaskWindow * window)
+{
+  TaskWindowPrivate *priv;
+  
+  g_return_if_fail (TASK_IS_WINDOW (window));
+  priv = window->priv;
+
+}
 
 static void
 _left_click (TaskItem *item, GdkEventButton *event)
@@ -1072,6 +1333,7 @@ _match (TaskItem *item,
   gchar   *full_cmd_to_match;
   gchar   *full_cmd = NULL;
   gchar   *id;
+  gboolean ignore_wm_client_name;
   
   g_return_val_if_fail (TASK_IS_WINDOW(item), 0);
 
@@ -1082,7 +1344,51 @@ _match (TaskItem *item,
 
   window = TASK_WINDOW (item);
   priv = window->priv;
-  
+
+  g_object_get (item,
+                "ignore_wm_client_name",&ignore_wm_client_name,
+                NULL);
+  /*
+  TODO:
+   Stuff the client_names into TaskWindow....  call task_window_get_wm_client
+   once and save in a field
+   */
+  if (!ignore_wm_client_name)
+  {
+    gchar buffer[256];
+    gchar buffer_to_match[256];
+    const gchar   *client_name = NULL;
+    const gchar   *client_name_to_match = NULL;
+
+    /*check the client names to begin with*/
+    client_name=task_window_get_client_name (TASK_WINDOW(item));
+    if (!client_name)
+    {
+      /*
+       WM_CLIENT_NAME is not necessarily set... in those case we'll assume 
+       that it's the host
+       */
+      gethostname (buffer, sizeof(buffer));
+      buffer [sizeof(buffer) - 1] = '\0';
+      client_name = buffer;
+    }
+    client_name_to_match = task_window_get_client_name (TASK_WINDOW(item_to_match));
+    if (!client_name_to_match)
+    {
+      /*
+       WM_CLIENT_NAME is not necessarily set... in those case we'll assume 
+       that it's the host
+       */
+      gethostname (buffer_to_match, sizeof(buffer_to_match));
+      buffer_to_match [sizeof(buffer_to_match) - 1] = '\0';
+      client_name_to_match = buffer_to_match;
+    }
+
+    if (g_strcmp0(client_name,client_name_to_match)!=0)
+    {
+      return 0;
+    }
+  }  
   window_to_match = TASK_WINDOW (item_to_match);
   pid = task_window_get_pid (window);
   pid_to_match = task_window_get_pid (window_to_match);
@@ -1125,6 +1431,8 @@ _match (TaskItem *item,
   }
   if (full_cmd && g_strcmp0 (full_cmd, full_cmd_to_match) == 0)
   {
+    g_free (res_name_to_match);
+    g_free (class_name_to_match);
     g_free (full_cmd_to_match);
     g_free (full_cmd);
     g_free (id);    
@@ -1141,6 +1449,7 @@ _match (TaskItem *item,
 #endif 
   if ( pid && ( pid_to_match == pid ))
   {
+    g_free (full_cmd);    
     g_free (res_name_to_match);
     g_free (class_name_to_match);        
     return 94;
@@ -1164,23 +1473,42 @@ _match (TaskItem *item,
       #ifdef DEBUG
       g_debug ("%s: 70  res_name = %s,  res_name_to_match = %s",__func__,res_name,res_name_to_match);
       #endif 
-      if ( g_strstr_len (res_name, strlen (res_name), res_name_to_match) ||
-           g_strstr_len (res_name_to_match, strlen (res_name_to_match), res_name))
+      if ( g_strcmp0 (res_name, res_name_to_match) == 0)
       {
         g_free (res_name);
         g_free (class_name);
-//        g_free (cmd);
         g_free (res_name_to_match);
         g_free (class_name_to_match);
-//        g_free (cmd_to_match);        
+        g_free (full_cmd);
         return 65;
       }
     }
   }
-
+  g_free (full_cmd);
   g_free (res_name);
   g_free (class_name);
   g_free (res_name_to_match);
   g_free (class_name_to_match);
   return 0; 
 }
+
+WinIconUse
+task_window_use_win_icon (TaskWindow * item)
+{
+  TaskWindowPrivate *priv;
+  g_return_val_if_fail (TASK_IS_WINDOW(item),0);
+  priv = item->priv;
+  
+  return priv->use_win_icon;
+}
+
+void
+task_window_set_use_win_icon (TaskWindow * item, WinIconUse win_use)
+{
+  TaskWindowPrivate *priv;
+  g_return_if_fail (TASK_IS_WINDOW(item));
+  priv = item->priv;
+  
+  priv->use_win_icon = win_use;
+}
+  

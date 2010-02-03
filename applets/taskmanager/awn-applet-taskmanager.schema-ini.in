@@ -1,0 +1,131 @@
+# Task Manager configuration schema
+# ---------------------------------
+
+# schema metadata
+[DEFAULT]
+single_instance = true
+
+# configuration options
+# PLEASE KEEP THIS ALPHABETIZED!
+
+[DEFAULT/activate_behavior]
+type = integer
+default = 0
+_description=Behavior when window on a different workspace is activated. (0 for default, 1 - change active workspace, 2 - move to current workspace)
+
+[DEFAULT/attention_autohide_timer]
+type = integer
+default = 4
+_description=Number of seconds to inhibit autohide when a application requests attention. A value of 0 disables.
+
+[DEFAULT/attention_required_reminder]
+type = integer
+default = 60
+_description=Number of seconds to wait before nagging again, by inhibiting autohide, if attention is required by any windows. A value of 0 disables.
+
+[DEFAULT/drag_and_drop]
+type = boolean
+default = false
+_description=Enable reordering of windows by drag and drop 
+
+[DEFAULT/drag_and_drop_hover_delay]
+type = integer
+default = 500
+_description=Delay before activating a window when dragging over an icon.
+
+[DEFAULT/desktop_copy]
+type = integer
+default = 1
+_description=Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. Copy if owned by user, 2.. Do not copy.
+
+[DEFAULT/enable_long_press]
+type = boolean
+default = false
+_description=Enable long press to open Dialog.
+
+[DEFAULT/grouping]
+type = boolean
+default = true
+_description=Enabling group of tasks.
+
+[DEFAULT/icon_change_behavior]
+type = integer
+default = 1
+_description= Controls the display of window icons in the Task Icon. 0) Alway display application provided window icons when window is active (except for a very few special cases). 1) Attempt to only display application provided icons when they are likely to provide useful/context info. 2) Ignore all application provide icons and only display the Lauuncher icon
+
+[DEFAULT/icon_grouping]
+type = boolean
+default = true
+_description= Group icons with the same launcher, if the grouping of windows is disabled.
+
+[DEFAULT/ignore_wm_client_name]
+type = boolean
+default = false
+_description= Allow grouping of windows together that have different WM_CLIENT_NAME values.
+
+[DEFAULT/intellihide]
+type = boolean
+default = true
+_description=Intellihide if hide is enabled for the panel.  This will inhibit autohide of the panel if there are no intersecting windows in the relevant window list (see intellihide_mode).
+
+[DEFAULT/intellihide_mode]
+type = integer
+default = 1
+_description=How to generate the list of windows tested for intersection when Intellihide is active.  0.. use windows on active workspace, 1.. use windows of currently focused app.
+
+[DEFAULT/launcher_paths]
+type = list-string
+default = /usr/share/applications/firefox.desktop;
+_description=a list of paths to .desktop files from which the taskmanager should create it's launchers
+
+[DEFAULT/match_strength]
+type = integer
+default = 99
+_description=How radical matching is applied for grouping items. The value should be between 0 and 99. 0 is as good as no grouping. 99 will match almost everything.
+
+[DEFAULT/max_indicators]
+type = integer
+default = 3
+_description=Maximum number of task indicators to show under icons. Valid range is 0..3.
+
+[DEFAULT/only_show_launchers]
+type = boolean
+default = false
+_description=Only show and manager launcher windows
+
+[DEFAULT/overlay_application_icons]
+type = boolean
+default = true
+_description= If true then application window icons will be overlayed on the Launcher icon instead of replacing according to the behaviour defined by icon_change_behavior.
+
+[DEFAULT/overlay_application_icons_alpha]
+type = float
+default = 1.0
+_description= Controls the alpha of the overlay if overlay_application_icons is true. Valid range 0.0 to 1.0.
+
+[DEFAULT/overlay_application_icons_scale]
+type = float
+default = 0.5
+_description= Controls the size of the overlay if overlay_application_icons is true. Valid range 0.2 to 0.7.
+
+[DEFAULT/overlay_application_icons_swap]
+type = boolean
+default = false
+_description= If overlay_application_icons is true, this key will reverse the overlay/overlayee if set to true.
+
+[DEFAULT/show_all_windows]
+type = boolean
+default = true
+_description=Show windows from all workspaces
+
+[DEFAULT/txt_indicator_threshold]
+type = integer
+default = 4
+_description=The threshold at which text count begins to be displayed. valid range 1..
+
+[DEFAULT/menu_filename]
+type = string
+default = standard.xml
+_description=Context menu definition.  Will look in the awn menu installation directory unless a absolutely path is provided.
+
+# vim: set ft=cfg :

@@ -1,9 +1,6 @@
 #!/usr/bin/make -f
+#DH_VERBOSE=1
 DEB_DH_INSTALL_SOURCEDIR=debian/tmp
-
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/gnome.mk
-include /usr/share/cdbs/1/rules/simple-patchsys.mk
 
 ifeq ($(wildcard .bzr),)
 EXTRA_VERSION := -rewrite-$(shell dpkg-parsechangelog | egrep '^Version:' | awk '{print $2}' | cut -d~ -f 2)
@@ -11,30 +8,39 @@ else
 EXTRA_VERSION := -rewrite-bzr$(shell bzr revno)-$(shell lsb_release -cs)1-1
 endif
 
+include /usr/share/quilt/quilt.make
 
-DEB_CONFIGURE_SCRIPT := $(CURDIR)/$(DEB_SRCDIR)/autogen.sh
-DEB_CONFIGURE_EXTRA_FLAGS += 	--disable-pymod-checks \
-				--enable-extra-version=$(EXTRA_VERSION)
+LDFLAGS+=-Wl,-z,defs -Wl,--as-needed
 
-DEB_CONFIGURE_SCRIPT_ENV += LDFLAGS="-Wl,-z,defs -Wl,--as-needed"
+configure_flags += 	--prefix=/usr \
+			--disable-pymod-checks \
+			--enable-gtk-doc \
+			--with-gconf-schema-file-dir=/etc/gconf/schemas \
+			--enable-extra-version=$(EXTRA_VERSION)
 
-DEB_INSTALL_MANPAGES_avant-window-navigator-trunk := debian/avant-window-navigator.1
-DEB_INSTALL_MANPAGES_awn-settings-trunk := debian/awn-settings.1 debian/awn-launcher-editor.1
+build: build-stamp
+build-stamp: $(QUILT_STAMPFN)
+	dh_testdir
+	./autogen.sh $(configure_flags)
+	dh_auto_build
+	touch build-stamp
 
-DEB_DH_MAKESHLIBS_ARGS_libawn0-trunk += -V"libawn0-trunk (>> 0.3.3)"
-DEB_DH_MAKESHLIBS_ARGS_avant-window-navigator-trunk += -n
-DEB_SHLIBDEPS_LIBRARY_avant-window-navigator-trunk:= libawn0-trunk
-DEB_SHLIBDEPS_INCLUDE_avant-window-navigator-trunk := debian/libawn0-trunk/usr/
-DEB_DH_STRIP_ARGS := --dbg-package=libawn0-dbg-trunk
+install: build install-stamp
+install-stamp:
+	dh_testroot
+	dh install --before build
+	dh_auto_build
+	dh install --after test
+	touch install-stamp
 
-#install/avant-window-navigator-trunk::
-#	dh_install -pavant-window-navigator-trunk --sourcedir=debian/tmp
-#	mv debian/tmp/usr/bin/avant-window-navigator debian/avant-window-navigator-trunk/usr/bin/awn
-#	cp data/awn-applets-migration.py debian/avant-window-navigator-trunk/usr/share/avant-window-navigator/awn-applets-migration.py
-#	cp debian/awn.wrapper debian/avant-window-navigator-trunk/usr/bin/avant-window-navigator
+clean: unpatch
+	dh clean
 
-binary-post-install/awn-settings-trunk::
-	dh_pycentral -pawn-settings-trunk
+binary-arch: install
+	dh_strip --dbg-package=libawn1-dbg-trunk
+	dh binary-arch --after test
 
-binary-post-install/python-awn-trunk::
-	dh_pycentral -ppython-awn-trunk
+binary-indep: install
+	dh binary-indep
+
+binary: binary-arch binary-indep

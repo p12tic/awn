@@ -287,6 +287,7 @@ awn_icon_get_indicator_count
 awn_icon_get_hover_effects
 awn_icon_set_hover_effects
 awn_icon_clicked
+awn_icon_middle_clicked
 <SUBSECTION Standard>
 AWN_ICON
 AWN_IS_ICON
@@ -317,8 +318,8 @@ awn_applet_get_size
 awn_applet_set_size
 awn_applet_get_uid
 awn_applet_set_uid
-awn_applet_get_flags
-awn_applet_set_flags
+awn_applet_get_behavior
+awn_applet_set_behavior
 awn_applet_create_default_menu
 awn_applet_inhibit_autohide
 awn_applet_uninhibit_autohide
@@ -398,6 +399,7 @@ AwnOverlayableIface
 awn_overlayable_get_effects
 awn_overlayable_add_overlay
 awn_overlayable_remove_overlay
+awn_overlayable_get_overlays
 <SUBSECTION Standard>
 AWN_OVERLAYABLE
 AWN_IS_OVERLAYABLE
@@ -487,6 +489,7 @@ awn_utils_ensure_transparent_bg
 awn_utils_make_transparent_bg
 awn_utils_get_offset_modifier_by_path_type
 awn_utils_gslist_to_gvaluearray
+awn_utils_show_menu_images
 </SECTION>
 
 <SECTION>

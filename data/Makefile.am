@@ -32,32 +32,14 @@ update-icon-cache:
 	fi
 
 dist_pkg_DATA = \
-	awn-themed-icon-ui.xml \
+	awn-themed-icon.ui \
 	index.theme 
 
 pkgdir = $(pkgdatadir)
 
-# active subdirectory
-
-active_DATA = \
-	active/spotlight1.png \
-	active/spotlight2.png \
-	active/glow.png \
-	active/glow2.png \
-	active/glow3.png \
-	active/glow4.png \
-	active/glow5.png \
-	active/glow6.png \
-	active/glow7.png \
-	active/glow8.png \
-	active/glow9.png \
-	$(NULL)
-
-activedir = $(pkgdatadir)/active
-
 # config-related
 
-schema_DATA = avant-window-navigator.schema-ini
+schema_in_files = avant-window-navigator.schema-ini.in
 
 dist_bin_SCRIPTS = awn-applets-migration
 
@@ -73,9 +55,8 @@ EXTRA_DIST += \
 	$(icons) \
 	$(text_DATA) \
 	$(desktop_DATA).in \
-	avant-window-navigator.schema-ini \
-	$(active_DATA) \
+	$(schema_in_files:.schema-ini.in=.schema-ini.in.in) \
 	active/spotlight_png_inline.c \
 	$(NULL)
 
-CLEANFILES = $(desktop_DATA) avant-window-navigator.schemas avant-window-navigator.schemas.in
+CLEANFILES = $(desktop_DATA) $(schemas_DATA) $(schema_in_DATA) $(schema_DATA)

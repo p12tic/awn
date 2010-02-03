@@ -25,6 +25,7 @@
 #include <libwnck/libwnck.h>
 
 #include "task-item.h"
+#include "util.h"
 
 #define TASK_TYPE_WINDOW (task_window_get_type ())
 
@@ -46,7 +47,7 @@
 typedef struct _TaskWindow        TaskWindow;
 typedef struct _TaskWindowClass   TaskWindowClass;
 typedef struct _TaskWindowPrivate TaskWindowPrivate;
- 
+
 struct _TaskWindow
 {
   TaskItem        parent;	
@@ -86,6 +87,10 @@ gint            task_window_get_pid           (TaskWindow    *window);
 gboolean        task_window_get_wm_class      (TaskWindow    *window,
                                                gchar        **res_name,
                                                gchar        **class_name);
+
+gboolean        task_window_get_wm_client     (TaskWindow    *window,
+                                               gchar        **client_name);
+
 WnckApplication*task_window_get_application   (TaskWindow    *window);
 WnckWindow*     task_window_get_window        (TaskWindow    *window);
 
@@ -109,8 +114,6 @@ void            task_window_set_active_workspace   (TaskWindow    *window,
 gboolean        task_window_is_on_workspace   (TaskWindow    *window,
                                                WnckWorkspace *space);
 
-
-
 void            task_window_activate          (TaskWindow    *window,
                                                guint32        timestamp);
 
@@ -128,7 +131,21 @@ void            task_window_set_icon_geometry (TaskWindow     *window,
                                                gint            width,
                                                gint            height);
 
-gboolean        task_window_get_is_running    (TaskWindow     *window);
+gboolean        task_window_get_is_running      (TaskWindow     *window);
+
+WinIconUse      task_window_use_win_icon        (TaskWindow * item);
+
+WinIconUse      task_window_get_icon_changes    (TaskWindow * window);
+
+void            task_window_set_use_win_icon    (TaskWindow * item, WinIconUse win_use);
+
+void            task_window_set_hidden          (TaskWindow *window,gboolean hidden);
+
+void            task_window_set_highlighted   (TaskWindow *window, gboolean highlight_state);
+
+const gchar *   task_window_get_client_name     (TaskWindow *window);
+
+gboolean        task_window_get_icon_is_fallback  (TaskWindow * window);
 
 #endif /* _TASK_WINDOW_H_ */
 

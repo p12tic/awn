@@ -12,13 +12,23 @@ AM_CPPFLAGS = \
 	$(NULL)
 
 appletdir = $(APPLETDIR)/taskmanager
+applet_datadir = $(APPLETDATADIR)/taskmanager
 applet_LTLIBRARIES = taskmanager.la
 taskmanager_la_SOURCES = \
 	applet.c \
+	awn-desktop-lookup.h \
+	awn-desktop-lookup-cached.h \
+	awn-desktop-lookup-gnome3.h \
+	awn-desktop-lookup.c \
+	awn-desktop-lookup-cached.c \
+	awn-desktop-lookup-gnome3.c \
 	task-drag-indicator.c \
 	task-drag-indicator.h \
 	task-icon.c \
 	task-icon.h \
+	task-icon-build-context-menus.c \
+	task-icon-build-context-menus.h \
+	task-icon-private.h \
 	task-item.c \
 	task-item.h \
 	task-launcher.c \
@@ -61,7 +71,7 @@ desktopdir = $(pkgdatadir)/applets
 desktop_DATA = taskmanager.desktop
 @INTLTOOL_DESKTOP_RULE@
 
-schema_DATA = awn-applet-taskmanager.schema-ini
+schema_in_files = awn-applet-taskmanager.schema-ini.in
 
 install-data-local: install-gconf-schemas
 
@@ -71,5 +81,10 @@ BUILT_SOURCES = \
 	$(MARSHALFILES) \
 	$(NULL)
 
-EXTRA_DIST = $(desktop_DATA).in.in $(schema_DATA) $(DBUS_XML)
-CLEANFILES = $(desktop_DATA) $(schemas_in_files) $(schemas_DATA) $(BUILT_SOURCES)
+EXTRA_DIST = $(desktop_DATA).in.in $(schema_in_files) $(DBUS_XML) taskmanager-marshal.list
+CLEANFILES = $(desktop_DATA) $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
+
+taskmanager_menusdir = $(applet_datadir)/menus
+dist_taskmanager_menus_DATA =	\
+	$(wildcard menus/*.xml) \
+	$(NULL)

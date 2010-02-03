@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -208,9 +206,7 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
 
   AWN_ANIMATION_INIT(anim) {
     priv->spotlight_alpha = 0.0;
-    priv->spotlight = TRUE;
     priv->glow_amount = priv->spotlight_alpha;
-    priv->clip = TRUE;
     priv->clip_region.x = 0;
     priv->clip_region.y = 0;
     priv->clip_region.height = priv->icon_height;
@@ -218,6 +214,9 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
     priv->direction = AWN_EFFECT_SPOTLIGHT_ON;
   }
 
+  priv->spotlight = TRUE;
+  priv->clip = TRUE;
+  
   const gint PERIOD = 40;
 
   if (priv->direction == AWN_EFFECT_SPOTLIGHT_ON)
@@ -262,14 +261,15 @@ spotlight_closing_effect(AwnEffectsAnimation * anim)
 
   if (priv->direction == AWN_EFFECT_SPOTLIGHT_OFF && priv->spotlight_alpha <= 0)
   {
-    priv->spotlight_alpha = 0;
-    priv->glow_amount = 0;
+    priv->alpha = 1.0;
+    priv->spotlight_alpha = 0.0;
+    priv->glow_amount = 0.0;
+    priv->clip = FALSE;
+    priv->spotlight = FALSE;
     priv->direction = AWN_EFFECT_DIR_NONE;
+
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);
-
-    if (!repeat)
-      priv->spotlight = FALSE;
   }
 
   return repeat;

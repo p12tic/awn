@@ -1,17 +1,19 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as 
- * published by the Free Software Foundation.
- *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * GNU Library General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *             Hannes Verschore <hv1989@gmail.com>
@@ -82,8 +84,10 @@ TaskItem  *     task_icon_get_launcher      (TaskIcon      *icon);
 
 guint           task_icon_count_items       (TaskIcon      *icon);
 guint           task_icon_count_ephemeral_items (TaskIcon * icon);
-void            task_icon_increment_ephemeral_count (TaskIcon *icon);
+guint           task_icon_count_tasklist_windows (TaskIcon * icon);
 
+void            task_icon_increment_ephemeral_count (TaskIcon *icon);
+void            task_icon_decrement_ephemeral_count (TaskIcon *icon);
 
 void            task_icon_append_item       (TaskIcon      *icon,
                                              TaskItem      *item);
@@ -110,6 +114,11 @@ void            task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val);
 
 void            task_icon_schedule_geometry_refresh (TaskIcon *icon);
 
+void            task_icon_moving_item       (TaskIcon *dest, TaskIcon * src, TaskItem *item);
+
+const TaskItem *task_icon_get_main_item (TaskIcon * icon);
+
+const gchar *   task_icon_get_custom_name (TaskIcon * icon);
 
 #endif /* _TASK_ICON_H_ */
 

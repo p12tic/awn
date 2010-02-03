@@ -1,17 +1,19 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as 
- * published by the Free Software Foundation.
- *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * GNU Library General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  *
  * Authored by Hannes Verschore <hv1989@gmail.com>
  *
@@ -35,12 +37,14 @@ struct _TaskItemPrivate
 
   TaskIcon *task_icon;
   AwnApplet * applet;
+  gboolean  ignore_wm_client_name;
 };
 
 enum
 {
   PROP_0,
-  PROP_APPLET
+  PROP_APPLET,
+  PROP_IGNORE_WM_CLIENT_NAME
 };
 
 enum
@@ -80,6 +84,9 @@ task_item_get_property (GObject    *object,
     case PROP_APPLET:
       g_value_set_object (value,priv->applet);
       break;
+    case PROP_IGNORE_WM_CLIENT_NAME:
+      g_value_set_boolean (value,priv->ignore_wm_client_name);
+      break;      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -98,7 +105,10 @@ task_item_set_property (GObject      *object,
   {
     case PROP_APPLET:
       priv->applet = g_value_get_object (value);
-      break;      
+      break;
+    case PROP_IGNORE_WM_CLIENT_NAME:
+      priv->ignore_wm_client_name = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -110,7 +120,8 @@ task_item_dispose (GObject *object)
 {
   TaskItem *item = TASK_ITEM (object);
   TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (object);
-
+  GError  * err = NULL;
+ 
   if (priv->icon)
   {
     g_object_unref (priv->icon);
@@ -124,6 +135,17 @@ task_item_dispose (GObject *object)
   item->progress_overlay = NULL;
   item->icon_overlay = NULL;
 
+  if (priv->applet)
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (awn_config_get_default_for_applet (priv->applet, NULL), object, &err);
+    if (err)
+    {
+      g_warning ("%s: Failed to unbind_all: %s",__func__,err->message);
+      g_error_free (err);
+    }
+    priv->applet = NULL;
+  }  
+  
   G_OBJECT_CLASS (task_item_parent_class)->dispose (object);
 }
 
@@ -131,6 +153,19 @@ task_item_dispose (GObject *object)
 static void
 task_item_finalize (GObject *object)
 {
+  TaskItemPrivate *priv = TASK_ITEM_GET_PRIVATE (object);
+  GError  * err = NULL;
+
+  if (priv->applet)
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (awn_config_get_default_for_applet (priv->applet, NULL), object, &err);
+    if (err)
+    {
+      g_warning ("%s: Failed to unbind_all: %s",__func__,err->message);
+      g_error_free (err);
+    }
+    priv->applet = NULL;
+  }  
   G_OBJECT_CLASS (task_item_parent_class)->finalize (object);
 }
 
@@ -139,11 +174,28 @@ task_item_constructed (GObject *object)
 {
   TaskItemClass *klass;  
   klass = TASK_ITEM_GET_CLASS (object);  
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client;
+  TaskItemPrivate *priv = TASK_ITEM(object)->priv;
+  
   g_return_if_fail (klass->is_visible);
   
   if (G_OBJECT_CLASS (task_item_parent_class)->constructed)
   {
     G_OBJECT_CLASS (task_item_parent_class)->constructed (object);
+  }
+
+  g_assert (priv->applet);
+  client = awn_config_get_default_for_applet (priv->applet, &error);
+  desktop_agnostic_config_client_bind (client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "ignore_wm_client_name", object, "ignore_wm_client_name", 
+                                       TRUE,DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       &error);
+  if (error)
+  {
+    g_warning ("Could not bind property ignore_wm_client_name:%s",error->message);
+    g_error_free (error);
   }
 
   /* connect to signals */
@@ -210,15 +262,22 @@ task_item_class_init (TaskItemClass *klass)
 			      G_STRUCT_OFFSET (TaskItemClass, visible_changed),
 			      NULL, NULL,
 			      g_cclosure_marshal_VOID__BOOLEAN, 
-			      G_TYPE_NONE, 
+			      G_TYPE_NONE,
+            1, G_TYPE_BOOLEAN);
 
-                  1, G_TYPE_BOOLEAN);
   pspec = g_param_spec_object ("applet",
                                "Applet",
                                "AwnApplet this item belongs to",
                                AWN_TYPE_APPLET,
                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_APPLET, pspec);
+
+  pspec = g_param_spec_boolean ("ignore_wm_client_name",
+                               "Ignore WM_CLIENT_NAME",
+                               "Ignore WM_CLIENT_NAME for grouping purposes",
+                               FALSE,
+                               G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_IGNORE_WM_CLIENT_NAME, pspec);
 
   g_type_class_add_private (obj_class, sizeof (TaskItemPrivate));
 }
@@ -449,12 +508,25 @@ task_item_set_task_icon (TaskItem *item, TaskIcon *icon)
   if (priv->task_icon)
   {
     AwnOverlayable *over = AWN_OVERLAYABLE (priv->task_icon);
-    if (item->text_overlay)
+    GList *overlays = awn_overlayable_get_overlays (over);
+
+    if (item->text_overlay
+        && g_list_find (overlays, item->text_overlay))
+    {
       awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->text_overlay));
-    if (item->progress_overlay)
+    }
+    if (item->progress_overlay
+        && g_list_find (overlays, item->progress_overlay))
+    {
       awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->progress_overlay));
-    if (item->icon_overlay)
+    }
+    if (item->icon_overlay
+        && g_list_find (overlays, item->icon_overlay))
+    {
       awn_overlayable_remove_overlay (over, AWN_OVERLAY (item->icon_overlay));
+    }
+
+    g_list_free (overlays);
   }
 
   priv->task_icon = icon;

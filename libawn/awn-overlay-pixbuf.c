@@ -1,14 +1,15 @@
 /*
  * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License version 
- * 2 or later as published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -141,6 +142,10 @@ awn_overlay_pixbuf_finalize (GObject *object)
   {
     g_object_unref (priv->pixbuf);
   }
+  if (priv->scaled_pixbuf)
+  {
+    g_object_unref (priv->scaled_pixbuf);
+  }  
   G_OBJECT_CLASS (awn_overlay_pixbuf_parent_class)->finalize (object);  
 }
 
@@ -148,7 +153,6 @@ static void
 awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec   *pspec;      
 
   object_class->get_property = awn_overlay_pixbuf_get_property;
   object_class->set_property = awn_overlay_pixbuf_set_property;
@@ -163,13 +167,14 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
  * A #GdkPixbuf to overlay.
  */        
   
-  pspec = g_param_spec_object ("pixbuf",
-                               "Pixbuf",
-                               "GdkPixbuf object",
-                               GDK_TYPE_PIXBUF,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_PIXBUF, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_PIXBUF,
+    g_param_spec_object ("pixbuf",
+                         "Pixbuf",
+                         "GdkPixbuf object",
+                         GDK_TYPE_PIXBUF,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnOverlayPixbuf:scale:
@@ -178,15 +183,14 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
  * value of 0.5
  */        
   
-  pspec = g_param_spec_double ("scale",
-                               "scale",
-                               "Scale",
-                               0.0,
-                               1.0,
-                               0.5,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_SCALE, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_SCALE,
+    g_param_spec_double ("scale",
+                         "scale",
+                         "Scale",
+                         0.0, 1.0, 0.5,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnOverlayPixbuf:alpha:
@@ -194,15 +198,14 @@ awn_overlay_pixbuf_class_init (AwnOverlayPixbufClass *klass)
  * An alpha value to apply to the Overlay.  Range of 0.0...1.0.  Default is 0.9.
  */        
   
-  pspec = g_param_spec_double ("alpha",
-                               "Alpha",
-                               "Alpha",
-                               0.0,
-                               1.0,
-                               0.9,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_ALPHA, pspec);   
+  g_object_class_install_property (object_class,
+    PROP_ALPHA,
+    g_param_spec_double ("alpha",
+                         "Alpha",
+                         "Alpha",
+                         0.0, 1.0, 0.9,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
   
   g_type_class_add_private (klass, sizeof (AwnOverlayPixbufPrivate));  
 }
@@ -266,10 +269,17 @@ _awn_overlay_pixbuf_render (AwnOverlay* _overlay,
   cairo_save (cr);
   pixbuf_width = gdk_pixbuf_get_width (priv->pixbuf);
   pixbuf_height = gdk_pixbuf_get_height (priv->pixbuf);
- 
-  scaled_width = lround (icon_width * priv->scale);  
-  scaled_height = lround (pixbuf_height * scaled_width / pixbuf_width);
 
+  scaled_width = lround (icon_width * priv->scale);  
+  scaled_height = lround (pixbuf_height * (scaled_width / (gdouble) pixbuf_width) );
+
+  
+  if ( (scaled_height / (gdouble) icon_height) > priv->scale)
+  {
+    scaled_height = lround (icon_height * priv->scale);
+    scaled_width = lround (pixbuf_width * (scaled_height / (gdouble) pixbuf_height));
+  }
+  
   /* Why do we do this?  Well the gdk pixbuf scaling gives a better result than
    the cairo scaling when dealing with a source pixbuf */
   if ( !priv->scaled_pixbuf || (scaled_width != gdk_pixbuf_get_width (priv->scaled_pixbuf) ) || 
@@ -299,7 +309,15 @@ _awn_overlay_pixbuf_render (AwnOverlay* _overlay,
                        scaled_width, scaled_height, &coord);
 
   if (awn_overlay_get_use_source_op (AWN_OVERLAY (overlay)))
-    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  {
+    // there's some issue in gdk + cairo, using source operator itself
+    // produces some artifacts
+    //cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+    cairo_rectangle (cr, coord.x, coord.y, scaled_width, scaled_height);
+    cairo_fill (cr);
+    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  }
 
   gdk_cairo_set_source_pixbuf (cr,priv->scaled_pixbuf,coord.x,coord.y);
   cairo_paint_with_alpha (cr,priv->alpha);

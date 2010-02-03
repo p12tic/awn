@@ -59,6 +59,8 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnThrobberPrivate *priv = AWN_THROBBER (widget)->priv;
   cairo_t *cr;
+  gint w, h;
+  GtkPositionType pos_type;
 
   /* clip the drawing region, nvidia likes it */
   AwnEffects *fx = awn_overlayable_get_effects (AWN_OVERLAYABLE (widget));
@@ -67,7 +69,8 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
   cairo_set_operator(cr, CAIRO_OPERATOR_OVER);
 
   // we'll paint to [0,0] - [1,1], so scale's needed
-  cairo_scale(cr, priv->size, priv->size);
+  g_object_get (G_OBJECT (widget), "icon-width", &w, "icon-height", &h, NULL);
+  cairo_scale (cr, w, h);
 
   switch (priv->type)
   {
@@ -172,6 +175,34 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
       cairo_stroke(cr);
       break;
     }
+    case AWN_THROBBER_TYPE_ARROW_1:
+      cairo_rotate (cr, M_PI);
+      cairo_translate (cr, -1.0, -1.0);
+      // no break
+    case AWN_THROBBER_TYPE_ARROW_2:
+    {
+      pos_type = awn_icon_get_pos_type (AWN_ICON (widget));
+      cairo_set_line_width (cr, 1.75 / priv->size);
+
+      GdkColor c = gtk_widget_get_style (widget)->fg[GTK_STATE_NORMAL];
+      double r = c.red / 65535.0;
+      double g = c.green / 65535.0;
+      double b = c.blue / 65535.0;
+
+      cairo_set_source_rgb (cr, r, g, b);
+
+      if (pos_type == GTK_POS_LEFT || pos_type == GTK_POS_RIGHT)
+      {
+        cairo_rotate (cr, 0.5 * M_PI);
+        cairo_translate (cr, 0.0, -1.0);
+      }
+      cairo_move_to (cr, 0.125, 0.4);
+      cairo_line_to (cr, 0.875, 0.5);
+      cairo_line_to (cr, 0.125, 0.6);
+      cairo_stroke (cr);
+
+      break;
+    }
     case AWN_THROBBER_TYPE_CLOSE_BUTTON:
     {
       cairo_set_line_width (cr, 1./priv->size);
@@ -218,11 +249,12 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
 static gboolean
 awn_throbber_timeout (gpointer user_data)
 {
-  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE(user_data);
+  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE (user_data);
 
   priv->counter = (priv->counter - 1) % 8 + 8;
 
-  gtk_widget_queue_draw (GTK_WIDGET (user_data));
+  AwnOverlayable *overlayable = AWN_OVERLAYABLE (user_data);
+  awn_effects_redraw (awn_overlayable_get_effects (overlayable));
 
   return TRUE;
 }
@@ -336,19 +368,46 @@ awn_throbber_set_type (AwnThrobber *throbber, AwnThrobberType type)
   }
 
   if (needs_redraw)
+  {
     gtk_widget_queue_draw (GTK_WIDGET (throbber));
+  }
 }
 
 void
 awn_throbber_set_size (AwnThrobber *throbber, gint size)
 {
+  gboolean is_horizontal;
+  GtkPositionType pos_type;
   g_return_if_fail (AWN_IS_THROBBER (throbber));
 
   AwnThrobberPrivate *priv = throbber->priv;
 
-  priv->size = size;
-  awn_icon_set_custom_paint (AWN_ICON (throbber), size, size);
+  switch (priv->type)
+  {
+    case AWN_THROBBER_TYPE_ARROW_1:
+    case AWN_THROBBER_TYPE_ARROW_2:
+      pos_type = awn_icon_get_pos_type (AWN_ICON (throbber));
+      is_horizontal = pos_type == GTK_POS_TOP || pos_type == GTK_POS_BOTTOM;
+      if (is_horizontal)
+      {
+        awn_icon_set_custom_paint (AWN_ICON (throbber), size / 5, size);
+      }
+      else
+      {
+        awn_icon_set_custom_paint (AWN_ICON (throbber), size, size / 5);
+      }
+      priv->size = size;
+      break;
+    case AWN_THROBBER_TYPE_CLOSE_BUTTON:
+      awn_icon_set_custom_paint (AWN_ICON (throbber), size / 2, size / 2);
+      priv->size = size / 2;
+      break;
+    default:
+      awn_icon_set_custom_paint (AWN_ICON (throbber), size, size);
+      priv->size = size;
+      break;
+  }
 
-  gtk_widget_queue_resize (GTK_WIDGET(throbber));
+  gtk_widget_queue_resize (GTK_WIDGET (throbber));
 }
 

@@ -30,6 +30,8 @@
 #include <gdk/gdkx.h>
 #include <gtk/gtk.h>
 
+#include <unistd.h>
+
 #include "xutils.h"
 
 typedef struct _WnckIconCache WnckIconCache;
@@ -106,6 +108,35 @@ _wnck_get_wmclass (Window xwindow,
       
       XFree (ch.res_class);
     }
+}
+
+
+void
+_wnck_get_client_name (Window xwindow, char **client_name)
+{
+  XTextProperty	text_prop;
+  Status status;
+  
+  _wnck_error_trap_push ();
+
+	status = XGetWMClientMachine(gdk_display, xwindow, &text_prop);
+
+  _wnck_error_trap_pop ();
+  
+  if (!status)
+  {
+    *client_name = NULL;
+    if (text_prop.value)
+    {
+      XFree (text_prop.value);
+    }
+    return;
+  }
+  if (text_prop.value)
+  {
+    *client_name = latin1_to_utf8 (text_prop.value);       
+    XFree (text_prop.value);
+  }
 }
 
 /*

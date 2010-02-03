@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authors: Michal Hruby <michal.mhr@gmail.com>
  *
@@ -42,7 +40,9 @@ struct _AwnAlignmentPrivate
 
   GtkPositionType position;
   gint offset_modifier;
+  gfloat offset_multiplier;
   gint last_offset;
+  gfloat scale;
 
   gulong position_changed_id;
   gulong offset_changed_id;
@@ -53,12 +53,17 @@ enum
   PROP_0,
 
   PROP_APPLET,
-  PROP_OFFSET_MOD
+  PROP_SCALE,
+  PROP_OFFSET_MOD,
+  PROP_OFFSET_MULT
 };
 
 /* Forwards */
 static void awn_alignment_set_applet (AwnAlignment *alignment,
                                       AwnApplet *applet);
+
+static void on_position_changed      (AwnAlignment *alignment,
+                                      GtkPositionType position);
 
 static void ensure_alignment         (AwnAlignment *alignment);
 
@@ -81,6 +86,12 @@ awn_alignment_get_property (GObject    *object,
       break;
     case PROP_OFFSET_MOD:
       g_value_set_int (value, priv->offset_modifier);
+      break;
+    case PROP_OFFSET_MULT:
+      g_value_set_float (value, priv->offset_multiplier);
+      break;
+    case PROP_SCALE:
+      g_value_set_float (value, priv->scale);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -108,6 +119,14 @@ awn_alignment_set_property (GObject      *object,
     case PROP_OFFSET_MOD:
       awn_alignment_set_offset_modifier (AWN_ALIGNMENT (object),
                                          g_value_get_int (value));
+      break;
+    case PROP_OFFSET_MULT:
+      priv->offset_multiplier = g_value_get_float (value);
+      ensure_alignment (AWN_ALIGNMENT (object));
+      break;
+    case PROP_SCALE:
+      priv->scale = g_value_get_float (value);
+      on_position_changed (AWN_ALIGNMENT (object), priv->position);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -166,6 +185,24 @@ awn_alignment_class_init (AwnAlignmentClass *klass)
                       G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
                       G_PARAM_STATIC_STRINGS));
 
+  g_object_class_install_property (obj_class,
+    PROP_OFFSET_MULT,
+    g_param_spec_float ("offset-multiplier",
+                        "Offset multiplier",
+                        "Offset multiplier",
+                        0.0, 1.0, 1.0,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
+    PROP_SCALE,
+    g_param_spec_float ("scale",
+                        "Scale",
+                        "If available space is bigger than needed for "
+                        "the child, how much of it to use for the child. "
+                        "0.0 means none, 1.0 means all.",
+                        0.0, 1.0, 1.0,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
   g_type_class_add_private (obj_class, sizeof (AwnAlignmentPrivate));
 }
 
@@ -177,6 +214,8 @@ awn_alignment_init (AwnAlignment *alignment)
   priv = alignment->priv = AWN_ALIGNMENT_GET_PRIVATE (alignment);
 
   priv->last_offset = 0;
+  priv->scale = 1.0;
+  priv->offset_multiplier = 1.0;
 
   g_signal_connect (alignment, "size-allocate",
                     G_CALLBACK (ensure_alignment), NULL);
@@ -210,16 +249,16 @@ on_position_changed (AwnAlignment *alignment, GtkPositionType position)
   switch (priv->position)
   {
     case GTK_POS_TOP:
-      gtk_alignment_set (align, 0.0, 0.0, 1.0, 0.0);
+      gtk_alignment_set (align, 0.5, 0.0, priv->scale, 0.0);
       break;
     case GTK_POS_BOTTOM:
-      gtk_alignment_set (align, 0.0, 1.0, 1.0, 0.0);
+      gtk_alignment_set (align, 0.5, 1.0, priv->scale, 0.0);
       break;
     case GTK_POS_LEFT:
-      gtk_alignment_set (align, 0.0, 0.0, 0.0, 1.0);
+      gtk_alignment_set (align, 0.0, 0.5, 0.0, priv->scale);
       break;
     case GTK_POS_RIGHT:
-      gtk_alignment_set (align, 1.0, 0.0, 0.0, 1.0);
+      gtk_alignment_set (align, 1.0, 0.5, 0.0, priv->scale);
       break;
   }
 
@@ -279,7 +318,7 @@ awn_alignment_set_offset_modifier (AwnAlignment *alignment, gint modifier)
 
   priv->offset_modifier = modifier;
 
-  if (priv->applet) ensure_alignment (alignment);
+  ensure_alignment (alignment);
 }
 
 static void
@@ -293,13 +332,17 @@ ensure_alignment (AwnAlignment *alignment)
   g_return_if_fail (AWN_IS_ALIGNMENT (alignment));
 
   priv = alignment->priv;
+
+  if (priv->applet == NULL) return;
+
   align = GTK_ALIGNMENT (alignment);
   gtk_widget_get_allocation (GTK_WIDGET (alignment), &alloc);
 
   x = alloc.x + alloc.width / 2;
   y = alloc.y + alloc.height / 2;
-  offset = awn_applet_get_offset_at (priv->applet, x, y)
-             + priv->offset_modifier;
+
+  offset = (awn_applet_get_offset_at (priv->applet, x, y) *
+            priv->offset_multiplier) + priv->offset_modifier;
   if (offset < 0) offset = 0;
 
   /* 

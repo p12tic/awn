@@ -1,4 +1,0 @@
-#!/bin/bash
-
-PYTHONPATH="@PY_PLAT_PKG@:@PY_SITE_PKG@:@PKGDATADIR@/awn-settings" \
-    python "@PKGDATADIR@/awn-settings/awnLauncherEditor.py" "$@"

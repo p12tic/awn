@@ -1,5 +1,6 @@
 /*
- *  Copyright (C) 
+ *  Copyright (C) 2009 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2009 Mark Lee <avant-wn@lazymalevolence.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -11,10 +12,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * F#include <gtk/gtk.h>ree Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
 */
 
@@ -46,6 +45,7 @@ void awn_utils_make_transparent_bg  (GtkWidget *widget);
  * awn_utils_get_offset_modifier_by_path_type:
  * @path_type:
  * @position:
+ * @offset:
  * @offset_modifier:
  * @pos_x:
  * @pos_y:
@@ -60,6 +60,7 @@ void awn_utils_make_transparent_bg  (GtkWidget *widget);
  */
 gfloat awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
                                                    GtkPositionType position,
+                                                   gint offset,
                                                    gfloat offset_modifier,
                                                    gint pos_x, gint pos_y,
                                                    gint width, gint height);
@@ -76,4 +77,16 @@ gfloat awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
  */
 GValueArray* awn_utils_gslist_to_gvaluearray (GSList *list);
 
+/**
+ * awn_utils_show_menu_images:
+ * @menu: A GtkMenu.
+ *
+ * Set all instances #GtkImageMenuItem in the #GtkMenu are set to visible. A 
+ * null op for GTK+ < 2.16.0
+ *
+ */
+void awn_utils_show_menu_images (GtkMenu * menu);
+
+const gchar *awn_utils_get_gtk_icon_theme_name (GtkIconTheme * theme);
 #endif
+

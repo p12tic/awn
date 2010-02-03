@@ -2,7 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
@@ -16,8 +16,8 @@
    height="48"
    id="svg1"
    sodipodi:version="0.32"
-   inkscape:version="0.44+devel"
-   sodipodi:docname="plug-ins-48.svg"
+   inkscape:version="0.46"
+   sodipodi:docname="awn-plugins.svg"
    sodipodi:docbase="/home/lapo/Desktop/plug-ins"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    sodipodi:modified="true">
@@ -35,10 +35,10 @@
             <dc:title>Lapo Calamandrei</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:date></dc:date>
+        <dc:date />
         <cc:license
            rdf:resource="http://creativecommons.org/licenses/GPL/2.0/" />
-        <dc:identifier></dc:identifier>
+        <dc:identifier />
         <dc:subject>
           <rdf:Bag>
             <rdf:li>plugin</rdf:li>
@@ -72,25 +72,35 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:window-width="1085"
-     inkscape:window-height="655"
+     inkscape:window-height="676"
      inkscape:cy="3.6125869"
-     inkscape:cx="24.897305"
+     inkscape:cx="-149.6027"
      inkscape:zoom="1"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:window-x="234"
-     inkscape:window-y="315"
+     inkscape:window-x="160"
+     inkscape:window-y="105"
      inkscape:current-layer="layer2"
      inkscape:showpageshadow="false"
      showborder="false"
      inkscape:grid-points="true"
      inkscape:grid-bbox="true"
      inkscape:guide-bbox="true"
-     gridspacingx="0.5px"
-     gridspacingy="0.5px"
-     gridempspacing="2"
      width="48px"
-     height="48px" />
+     height="48px">
+    <inkscape:grid
+       id="GridFromPre046Settings"
+       type="xygrid"
+       originx="0px"
+       originy="0px"
+       spacingx="0.5px"
+       spacingy="0.5px"
+       color="#0000ff"
+       empcolor="#0000ff"
+       opacity="0.2"
+       empopacity="0.4"
+       empspacing="2" />
+  </sodipodi:namedview>
   <defs
      id="defs3">
     <linearGradient

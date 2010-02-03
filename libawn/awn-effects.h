@@ -12,10 +12,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef _LIBAWN_AWN_EFFECTS_H
@@ -24,6 +22,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <gtk/gtk.h>
+#include <libdesktop-agnostic/desktop-agnostic.h>
 
 #include "awn-defines.h"
 #include "awn-overlay.h"
@@ -71,6 +70,10 @@ typedef struct _AwnEffectsPrivate AwnEffectsPrivate;
 typedef gboolean(* AwnEffectsOpfn )(AwnEffects * fx,
                                      GtkAllocation * alloc,
                                      gpointer user_data);
+
+// padding for active_rect, yea it really isn't nice but so far
+// it seems to be the only feasible solution
+#define AWN_EFFECTS_ACTIVE_RECT_PADDING 3
 
 typedef struct
 {
@@ -149,9 +152,9 @@ void awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay);
 
 GList* awn_effects_get_overlays (AwnEffects *fx);
 
+void awn_effects_redraw (AwnEffects *fx);
 
 /* Move this somewhere else eventually, these are used only internally */
-void awn_effects_redraw(AwnEffects *fx);
 void awn_effects_main_effect_loop(AwnEffects * fx);
 void awn_effects_emit_anim_start(AwnEffects *fx, AwnEffect effect);
 void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect);

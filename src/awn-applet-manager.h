@@ -64,6 +64,7 @@ struct _AwnAppletManagerClass
 
   /*< signals >*/
   void (*applet_embedded)    (AwnAppletManager *manager, GtkWidget *applet);
+  void (*applet_removed)     (AwnAppletManager *manager, GtkWidget *applet);
   void (*shape_mask_changed) (AwnAppletManager *manager);
 };
 
@@ -72,6 +73,8 @@ GType       awn_applet_manager_get_type          (void) G_GNUC_CONST;
 GtkWidget * awn_applet_manager_new_from_config   (DesktopAgnosticConfigClient *client);
 
 void        awn_applet_manager_refresh_applets   (AwnAppletManager *manager);
+
+gchar*      awn_applet_manager_generate_uid      (AwnAppletManager *manager);
 
 void        awn_applet_manager_add_widget        (AwnAppletManager *manager,
                                                   GtkWidget *widget, gint pos);
@@ -88,8 +91,11 @@ void        awn_applet_manager_set_applet_flags  (AwnAppletManager *manager,
 void        awn_applet_manager_show_applets      (AwnAppletManager *manager);
 void        awn_applet_manager_hide_applets      (AwnAppletManager *manager);
 
-void        awn_applet_manager_set_docklet_widget(AwnAppletManager *manager,
+void        awn_applet_manager_add_docklet       (AwnAppletManager *manager,
                                                   GtkWidget *docklet);
+gboolean    awn_applet_manager_get_docklet_mode  (AwnAppletManager *manager);
+
+void        awn_applet_manager_redraw_throbbers  (AwnAppletManager *manager);
 
 GdkRegion*  awn_applet_manager_get_mask          (AwnAppletManager *manager,
                                                   AwnPathType path_type,

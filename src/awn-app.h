@@ -70,11 +70,13 @@ struct _AwnAppClass
   void (*_awn_app_4) (void);
 };
 
-GType    awn_app_get_type    (void) G_GNUC_CONST;
+GType    awn_app_get_type     (void) G_GNUC_CONST;
 
-AwnApp * awn_app_get_default (void);
+AwnApp * awn_app_get_default  (void);
 
-gboolean awn_app_get_panels  (AwnApp *app, GPtrArray **panels);
+gboolean awn_app_remove_panel (AwnApp *app, gint panel_id, GError *error);
+
+gboolean awn_app_get_panels   (AwnApp *app, GPtrArray **panels);
 
 G_END_DECLS
 

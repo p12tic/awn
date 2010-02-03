@@ -218,109 +218,48 @@ lighten_component(const guchar cur_value, const gfloat amount,
 void
 lighten_surface (cairo_surface_t * src, 
                  gint surface_width, gint surface_height,
-                 const gfloat amount, gboolean absolute)
+                 const gfloat amount)
 {
-  int i, j;
-  int width, height, row_stride;
-  guchar *target_pixels;
-  guchar *pixsrc;
   cairo_surface_t * temp_srfc;
   cairo_t         * temp_ctx;
 
-  g_return_if_fail(src);
+  g_return_if_fail (src);
 
-  temp_srfc = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                          surface_width, surface_height);
-  temp_ctx = cairo_create(temp_srfc);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface(temp_ctx, src, 0, 0);
-  cairo_paint(temp_ctx);
+  temp_srfc = cairo_surface_create_similar (src,
+                                            CAIRO_CONTENT_COLOR_ALPHA,
+                                            surface_width, surface_height);
+  temp_ctx = cairo_create (temp_srfc);
+  cairo_set_operator (temp_ctx, CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_surface (temp_ctx, src, 0, 0);
+  cairo_paint (temp_ctx);
 
-  cairo_surface_flush(temp_srfc);
+/*
+  cairo_set_source_rgba (temp_ctx, 1.0, 1.0, 1.0, 
+                         CLAMP (amount * 0.1825, 0.0, 1.0));
+  cairo_set_operator (temp_ctx, CAIRO_OPERATOR_DEST_IN);
+  cairo_rectangle (temp_ctx, 0.0, 0.0, surface_width, surface_height);
+  cairo_fill (temp_ctx);
+*/
+  cairo_destroy (temp_ctx);
+  
+  temp_ctx = cairo_create (src);
 
-  width = cairo_image_surface_get_width(temp_srfc);
-  height = cairo_image_surface_get_height(temp_srfc);
-  row_stride = cairo_image_surface_get_stride(temp_srfc);
-  target_pixels = cairo_image_surface_get_data(temp_srfc);
+  cairo_set_operator (temp_ctx, CAIRO_OPERATOR_ADD);
+  cairo_set_source_surface (temp_ctx, temp_srfc, 0.0, 0.0);
 
-  for (i = 0; i < height; i++)
-  {
-    pixsrc = target_pixels + i * row_stride;
+  cairo_paint_with_alpha (temp_ctx, CLAMP (amount * 0.1825, 0.0, 1.0));
 
-    for (j = 0; j < width; j++)
-    {
-      *pixsrc = lighten_component(*pixsrc, amount, absolute);
-      pixsrc++;
-      *pixsrc = lighten_component(*pixsrc, amount, absolute);
-      pixsrc++;
-      *pixsrc = lighten_component(*pixsrc, amount, absolute);
-      pixsrc++;
-
-      pixsrc++; /* ALPHA */
-    }
-  }
-  cairo_surface_mark_dirty(temp_srfc);
-
-  cairo_destroy(temp_ctx);
-
-  temp_ctx = cairo_create(src);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
-  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface(temp_ctx, temp_srfc, 0, 0);
-  cairo_paint(temp_ctx);
-  cairo_destroy(temp_ctx);
-  cairo_surface_destroy(temp_srfc);
+  cairo_destroy (temp_ctx);
+  cairo_surface_destroy (temp_srfc);
 }
 
 void
-darken_surface (cairo_surface_t *src, gint surface_width, gint surface_height)
+darken_surface (cairo_t *cr, gint surface_width, gint surface_height)
 {
-  int width, height, row_stride;
-  guchar *pixsrc, *target_pixels;
-  cairo_surface_t *temp_srfc;
-  cairo_t *temp_ctx;
-
-  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                         surface_width, surface_height);
-  temp_ctx = cairo_create(temp_srfc);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface(temp_ctx, src, 0, 0);
-  cairo_paint(temp_ctx);
-
-  width = cairo_image_surface_get_width(temp_srfc);
-  height = cairo_image_surface_get_height(temp_srfc);
-  row_stride = cairo_image_surface_get_stride(temp_srfc);
-  target_pixels = cairo_image_surface_get_data(temp_srfc);
-
-  cairo_surface_flush(temp_srfc);
-  /* darken */
-  int i, j;
-  for (i = 0; i < height; i++) {
-    pixsrc = target_pixels + i * row_stride;
-    for (j = 0; j < width; j++) {
-      *pixsrc = 0;
-      pixsrc++;
-      *pixsrc = 0;
-      pixsrc++;
-      *pixsrc = 0;
-      pixsrc++;
-      /* alpha */
-      pixsrc++;
-    }
-  }
-  cairo_surface_mark_dirty(temp_srfc);
-
-  /* -- */
-
-  cairo_destroy(temp_ctx);
-
-  temp_ctx = cairo_create(src);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
-  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface(temp_ctx, temp_srfc, 0, 0);
-  cairo_paint(temp_ctx);
-  cairo_surface_destroy(temp_srfc);
-  cairo_destroy(temp_ctx);
+  cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 1.0);
+  cairo_set_operator (cr, CAIRO_OPERATOR_DEST_IN);
+  cairo_rectangle (cr, 0.0, 0.0, surface_width, surface_height);
+  cairo_fill (cr);
 }
 
 void
@@ -334,8 +273,8 @@ blur_surface_shadow (cairo_surface_t *src,
   g_return_if_fail(src);
 
   /* the original stuff */
-  temp_srfc = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 
-                                         surface_width, surface_height);
+  temp_srfc = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                          surface_width, surface_height);
   temp_ctx = cairo_create(temp_srfc);
   cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
   cairo_set_source_surface(temp_ctx, src, 0, 0);
@@ -354,52 +293,84 @@ blur_surface_shadow (cairo_surface_t *src,
   target_pixels = cairo_image_surface_get_data(temp_srfc);
   target_pixels_dest = cairo_image_surface_get_data(temp_srfc_dest);
 
-  /* -- blur --- */
+  /* -- blur the alpha channel (color should be only black anyway) --- */
+  /* Implements standard box filter, which is separable so we'll use it to
+       speed up the algorithm. */
   int total_a;
   int x, y, kx, ky;
+  const int kernel_size = radius * 2 + 1;
 
   for (y = 0; y < surface_height; ++y)
   {
     for (x = 0; x < surface_width; ++x)
     {
-                        total_a = 0;
+      total_a = 0;
 
-      for (ky = -radius; ky <= radius; ++ky) {
-        if ((y+ky)>0 && (y+ky)<surface_height) {
-          for (kx = -radius; kx <= radius; ++kx) {
-            if((x+kx)>0 && (x+kx)<surface_width) {
-              pixsrc = (target_pixels + (y+ky) * row_stride) + ((x+kx)*4) + 3;
+      for (kx = -radius; kx <= radius; ++kx)
+      {
+        if((x+kx)>0 && (x+kx)<surface_width)
+        {
+          pixsrc = (target_pixels + y * row_stride) + ((x+kx)*4) + 3;
 
-              total_a += *pixsrc;
-            }
-          }
+          total_a += *pixsrc;
         }
       }
 
-      total_a /= pow((radius<<1)|1,2);
+      total_a /= kernel_size;
 
       pixdest = (target_pixels_dest + y * row_stride);
       pixdest += x*4;
-                        pixdest += 3;
+      pixdest += 3;
+      *pixdest = (guchar) total_a;
+    }
+  }
+
+  // swap src & dest
+  target_pixels_dest = cairo_image_surface_get_data (temp_srfc);
+  target_pixels = cairo_image_surface_get_data (temp_srfc_dest);
+
+  for (y = 0; y < surface_height; ++y)
+  {
+    for (x = 0; x < surface_width; ++x)
+    {
+      total_a = 0;
+
+      for (ky = -radius; ky <= radius; ++ky)
+      {
+        if ((y+ky)>0 && (y+ky)<surface_height)
+        {
+          pixsrc = (target_pixels + (y+ky) * row_stride) + (x*4) + 3;
+
+          total_a += *pixsrc;
+        }
+      }
+
+      total_a /= kernel_size;
+
+      pixdest = (target_pixels_dest + y * row_stride);
+      pixdest += x*4;
+      pixdest += 3;
       *pixdest = (guchar) total_a;
     }
   }
   /* ---------- */
-  cairo_surface_mark_dirty(temp_srfc_dest);
+  
+  cairo_surface_mark_dirty(temp_srfc);
 
-  cairo_set_operator(temp_ctx, CAIRO_OPERATOR_CLEAR);
-  cairo_paint(temp_ctx);
-  cairo_destroy(temp_ctx);
+  if (temp_ctx)
+  {
+    cairo_destroy(temp_ctx);
+  }
 
-  temp_ctx = cairo_create(src);
-  cairo_set_operator(temp_ctx,CAIRO_OPERATOR_SOURCE);
-  g_assert( cairo_get_operator(temp_ctx) == CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface(temp_ctx, temp_srfc_dest, 0, 0);
-  cairo_paint(temp_ctx);
-  cairo_surface_destroy(temp_srfc);
-  cairo_surface_destroy(temp_srfc_dest);
-  cairo_destroy(temp_ctx);
-  cairo_destroy(temp_ctx_dest);
+  temp_ctx = cairo_create (src);
+  cairo_set_operator (temp_ctx, CAIRO_OPERATOR_SOURCE);
+  g_assert (cairo_get_operator (temp_ctx) == CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_surface (temp_ctx, temp_srfc, 0, 0);
+  cairo_paint (temp_ctx);
+  cairo_surface_destroy (temp_srfc);
+  cairo_surface_destroy (temp_srfc_dest);
+  cairo_destroy (temp_ctx);
+  cairo_destroy (temp_ctx_dest);
 }
 
 /**

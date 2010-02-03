@@ -6,13 +6,14 @@ pyfiles_DATA = \
 	awnDefs.py		\
 	awnSettings.py		\
 	awnSettingsHelper.py	\
-	awnLauncherEditor.py		
+	$(NULL)
 pyfilesdir = $(pkgdatadir)/awn-settings
 
-xml_DATA = 	launcher-editor.xml 	\
-		awn-settings.xml
+ui_DATA = \
+	awn-settings.ui \
+	$(NULL)
 
-xmldir = $(pkgdatadir)/awn-settings
+uidir = $(pkgdatadir)/awn-settings
 
 desktopdir   = $(datadir)/applications
 desktop_DATA = 	awn-settings.desktop
@@ -40,14 +41,12 @@ update-icon-cache:
 install-exec-local:
 	test -e "$(DESTDIR)$(bindir)" || mkdir -p "$(DESTDIR)$(bindir)"
 	$(INSTALL) -m 755 awnSettings.py "$(DESTDIR)$(bindir)/awn-settings"
-	$(INSTALL) -m 755 awn-launcher-editor "$(DESTDIR)$(bindir)"
 
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-settings
-	rm -f $(DESTDIR)$(bindir)/awn-launcher-editor
 
 EXTRA_DIST +=			\
-	$(xml_DATA)		\
+	$(ui_DATA)		\
 	*.py			\
 	$(desktop_DATA).in	\
 	$(NULL)

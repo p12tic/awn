@@ -13,10 +13,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -62,6 +60,7 @@ struct _AwnDialogPrivate
   gboolean anchored;
   gboolean esc_hide;
   gboolean effects_activate;
+  gboolean unfocus_hide;
 
   gint window_offset;
   gint window_offset_pub;
@@ -80,6 +79,7 @@ struct _AwnDialogPrivate
   gulong position_changed_id;
 
   guint inhibit_cookie;
+  guint unfocus_timer_id;
 
   gint old_x, old_y, old_w, old_h;
   gint a_old_x, a_old_y, a_old_w, a_old_h;
@@ -99,6 +99,7 @@ enum
   PROP_WINDOW_PADDING,
   PROP_HIDE_ON_ESC,
   PROP_EFFECTS_HILIGHT,
+  PROP_HIDE_ON_UNFOCUS,
 
   PROP_DIALOG_BG,
   PROP_TITLE_BG,
@@ -157,6 +158,28 @@ _on_composited_changed (GtkWidget *widget, gpointer data)
 
   gtk_widget_get_allocation (widget, &alloc);
   awn_dialog_set_masks (widget, alloc.width, alloc.height);
+}
+
+/*
+ With Various WMs we seem to lose sticky after one, or in some 
+ cases more, show/hide cycles of the Dialog.
+
+ TODO: We may also be losing skip taskbar in gnome-shell (that needs further study) 
+ */
+static gboolean
+_on_window_state_event (GtkWidget *dialog, GdkEventWindowState *event)
+{
+/* Have we just lost sticky?
+   It would be nice to check event->changed_mask to see if STICKY changed but
+   we don't get the initail state change signal when we set sticky in at least
+   one WM (openbox).*/
+  if ( ! (GDK_WINDOW_STATE_STICKY & event->new_window_state) )
+  {
+    /*     For whatever reason, sticky is gone.  We don't want that.*/
+    gtk_window_stick (GTK_WINDOW (dialog));
+  }
+
+  return FALSE;
 }
 
 static void
@@ -286,6 +309,21 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
   }
 }
 
+static gboolean
+_enable_unfocus (GtkWidget *widget)
+{
+  AwnDialogPrivate *priv = AWN_DIALOG_GET_PRIVATE (widget);
+
+  priv->unfocus_timer_id = 0;
+  if (priv->unfocus_hide &&
+      gtk_window_is_active (GTK_WINDOW (widget)) == FALSE)
+  {
+    gtk_widget_hide (widget);
+  }
+
+  return FALSE;
+}
+
 static void
 _real_show (GtkWidget *widget)
 {
@@ -305,6 +343,14 @@ _real_show (GtkWidget *widget)
       awn_applet_inhibit_autohide (priv->anchor_applet,
                                    "AwnDialog being displayed");
   }
+
+  if (priv->unfocus_timer_id)
+  {
+    g_source_remove (priv->unfocus_timer_id);
+  }
+
+  priv->unfocus_timer_id =
+    g_timeout_add_seconds (2, (GSourceFunc)_enable_unfocus, widget);
 }
 
 static void
@@ -557,17 +603,22 @@ _on_title_notify(GObject *dialog, GParamSpec *spec, gpointer null)
 static void
 _on_active_changed(GObject *dialog, GParamSpec *spec, gpointer null)
 {
-  // FIXME: add property to disable this
   AwnDialogPrivate *priv;
 
-  priv = AWN_DIALOG(dialog)->priv;
+  priv = AWN_DIALOG_GET_PRIVATE (dialog);
 
-  if (!AWN_IS_OVERLAYABLE (priv->anchor) || !priv->effects_activate) return;
+  if (AWN_IS_OVERLAYABLE (priv->anchor) && priv->effects_activate)
+  {
+    AwnOverlayable *icon = AWN_OVERLAYABLE (priv->anchor);
 
-  AwnOverlayable *icon = AWN_OVERLAYABLE (priv->anchor);
+    g_object_set (awn_overlayable_get_effects (icon),
+                  "active", gtk_window_is_active (GTK_WINDOW (dialog)), NULL);
+  }
 
-  g_object_set (awn_overlayable_get_effects (icon),
-                "active", gtk_window_is_active (GTK_WINDOW (dialog)), NULL);
+  if (priv->unfocus_hide && priv->unfocus_timer_id == 0)
+  {
+    gtk_widget_hide (GTK_WIDGET (dialog));
+  }
 }
 
 static void
@@ -646,8 +697,7 @@ awn_dialog_add(GtkContainer *dialog, GtkWidget *widget)
 {
   AwnDialogPrivate *priv;
 
-  g_return_if_fail (AWN_IS_DIALOG (dialog));
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (AWN_IS_DIALOG (dialog) && GTK_IS_WIDGET (widget));
   priv = AWN_DIALOG (dialog)->priv;
 
   gtk_box_pack_start (GTK_BOX (priv->vbox), widget, TRUE, TRUE, 0);
@@ -718,6 +768,7 @@ awn_dialog_constructed (GObject *object)
                                          DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                          NULL);
   }
+  g_signal_connect (object, "window-state-event", G_CALLBACK (_on_window_state_event), NULL);
 }
 
 static void
@@ -741,6 +792,9 @@ awn_dialog_get_property (GObject    *object,
     case PROP_HIDE_ON_ESC:
       g_value_set_boolean (value, priv->esc_hide);
       break;
+    case PROP_HIDE_ON_UNFOCUS:
+      g_value_set_boolean (value, priv->unfocus_hide);
+      break;
     case PROP_WINDOW_OFFSET:
       g_value_set_int (value, priv->window_offset_pub);
       break;
@@ -750,19 +804,19 @@ awn_dialog_get_property (GObject    *object,
     case PROP_EFFECTS_HILIGHT:
       g_value_set_boolean (value, priv->effects_activate);
       break;
-
     case PROP_DIALOG_BG:
-    case PROP_TITLE_BG:
-    case PROP_BORDER:
-    case PROP_HILIGHT:
-    {
-      DesktopAgnosticColor *color;
-
-      g_warning ("Property get unimplemented!");
-      color = desktop_agnostic_color_new_from_string ("white", NULL);
-      g_value_take_object (value, color);
+      g_value_set_object (value, priv->dialog_bg);
       break;
-    }
+    case PROP_TITLE_BG:
+      g_value_set_object (value, priv->title_bg);
+      break;
+    case PROP_BORDER:
+      g_value_set_object (value, priv->border_color);
+      break;
+    case PROP_HILIGHT:
+      g_value_set_object (value, priv->hilight_color);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -807,6 +861,9 @@ awn_dialog_set_property (GObject      *object,
       break;
     case PROP_HIDE_ON_ESC:
       priv->esc_hide = g_value_get_boolean (value);
+      break;
+    case PROP_HIDE_ON_UNFOCUS:
+      priv->unfocus_hide = g_value_get_boolean (value);
       break;
     case PROP_EFFECTS_HILIGHT:
       priv->effects_activate = g_value_get_boolean (value);
@@ -901,6 +958,36 @@ awn_dialog_finalize (GObject *object)
     priv->applet_size_id = 0;
   }
 
+  if (priv->unfocus_timer_id)
+  {
+    g_source_remove (priv->unfocus_timer_id);
+    priv->unfocus_timer_id = 0;
+  }
+  
+  if (priv->dialog_bg)
+  {
+    g_object_unref (priv->dialog_bg);
+    priv->dialog_bg = NULL;
+  }
+
+  if (priv->title_bg)
+  {
+    g_object_unref (priv->title_bg);
+    priv->title_bg = NULL;
+  }
+
+  if (priv->border_color)
+  {
+    g_object_unref (priv->border_color);
+    priv->border_color = NULL;
+  }
+
+  if (priv->hilight_color)
+  {
+    g_object_unref (priv->hilight_color);
+    priv->hilight_color = NULL;
+  }
+  
   G_OBJECT_CLASS (awn_dialog_parent_class)->finalize (object);
 }
 
@@ -952,6 +1039,16 @@ awn_dialog_class_init (AwnDialogClass *klass)
                           "Anchored",
                           "Moves the window together with it's anchor widget",
                           TRUE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
+    PROP_HIDE_ON_UNFOCUS,
+    g_param_spec_boolean ("hide-on-unfocus",
+                          "hide on unfocus",
+                          "Whether to hide the dialog when it's "
+                          "no longer active",
+                          FALSE,
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                           G_PARAM_STATIC_STRINGS));
 
@@ -1256,7 +1353,7 @@ _on_origin_changed (AwnApplet *applet, GdkRectangle *rect, AwnDialog *dialog)
 {
   g_return_if_fail (AWN_IS_DIALOG (dialog));
 
-  if (!gtk_widget_get_visible (dialog)) return;
+  if (!gtk_widget_get_visible (GTK_WIDGET (dialog))) return;
 
   awn_dialog_refresh_position (dialog, 0, 0);
 }
@@ -1269,6 +1366,16 @@ _applet_on_size_changed (AwnDialog *dialog)
   AwnDialogPrivate *priv = dialog->priv;
 
   awn_dialog_set_offset (dialog, priv->window_offset_pub);
+}
+
+GtkWidget*
+awn_dialog_get_content_area (AwnDialog *dialog)
+{
+  g_return_val_if_fail (AWN_IS_DIALOG (dialog), NULL);
+
+  AwnDialogPrivate *priv = dialog->priv;
+
+  return priv->vbox;
 }
 
 static void
@@ -1302,7 +1409,7 @@ awn_dialog_set_anchor_applet (AwnDialog *dialog, AwnApplet *applet)
     priv->applet_size_id = 0;
   }
 
-  if (applet) g_return_if_fail (AWN_IS_APPLET (applet));
+  g_return_if_fail (applet == NULL || AWN_IS_APPLET (applet));
 
   priv->anchor_applet = applet;
 

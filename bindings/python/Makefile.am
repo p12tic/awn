@@ -6,21 +6,19 @@ QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 NULL = 
 
 # awn python scripts
-pyawndir = $(PYTHON_PLATFORM_PKG)/awn
+pyawndir = $(pyexecdir)/awn
 pyawn_PYTHON = __init__.py
 
 INCLUDES = \
 	$(PYTHON_CPPFLAGS) \
 	$(PYGTK_CFLAGS) \
-	$(PYCAIRO_CFLAGS) \
 	$(AWN_CFLAGS) \
 	-I$(top_srcdir) \
 	-I$(top_builddir)/libawn \
-	-DHAVE_PYCAIRO \
 	$(NULL)
 
 # awn python extensions
-pyawnexecdir = $(PYTHON_PLATFORM_PKG)/awn
+pyawnexecdir = $(pyexecdir)/awn
 pyawnexec_LTLIBRARIES = awn.la
 
 common_ldflags = -module -avoid-version
@@ -37,7 +35,6 @@ awn_la_LIBADD = \
 	$(PYTHON_EXTRA_LIBS) \
 	$(PYTHON_EXTRA_LDFLAGS) \
 	$(PYGTK_LIBS) \
-	$(PYCAIRO_LIBS) \
 	$(AWN_LIBS) \
 	$(top_builddir)/libawn/libawn.la \
 	$(NULL)

@@ -2,14 +2,15 @@
  * Copyright (C) 2008,2009 Rodney Cryderman <rcryderman@gmail.com>
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License version 
- * 2 or later as published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -33,6 +34,7 @@
 #include <libdesktop-agnostic/vfs.h>
 
 #include "awn-themed-icon.h"
+#include "libawn.h"
 
 #include "gseal-transition.h"
 
@@ -70,7 +72,7 @@ G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
 
 #define LOAD_FLAGS GTK_ICON_LOOKUP_FORCE_SIZE | GTK_ICON_LOOKUP_GENERIC_FALLBACK
 #define AWN_ICON_THEME_NAME "awn-theme"
-#define AWN_CHANGE_ICON_UI PKGDATADIR"/awn-themed-icon-ui.xml"
+#define AWN_CHANGE_ICON_UI PKGDATADIR"/awn-themed-icon.ui"
 
 
 /*yes this is evil.  so sue me */
@@ -127,7 +129,8 @@ struct _AwnThemedIconPrivate
   
   gchar  *applet_name;
   gchar  *uid;
-
+  gchar * custom_icon_name;
+  
   GList   *list;
   
   gint    current_size;
@@ -138,10 +141,16 @@ struct _AwnThemedIconPrivate
   gulong  sig_id_for_awn_theme;  
   
   gboolean drag_and_drop;
-  
+  gchar * old_theme_name;
+
+  AwnPixbufCache *pixbufs;    /*our pixbuf cache*/
+  int  cache_sentinel;
+
   /*used in management of "Remove Custom Icon" menu items */
   gboolean    awn_theme_hit;  
   GtkWidget * remove_custom_icon_item;
+
+  GList * preload_list;
 };
 
 typedef struct
@@ -149,6 +158,7 @@ typedef struct
   AwnThemedIcon * icon;
   gint            size;
   gchar         * state;
+  guint         id;
 }AwnThemedIconPreloadItem;
 
 enum
@@ -167,7 +177,9 @@ enum
 
 static const GtkTargetEntry drop_types[] =
 {
-  { (gchar*)"text/uri-list", 0, 0}
+  { (gchar*)"STRING", GTK_TARGET_OTHER_APP, 0 },
+  { (gchar*)"text/plain", GTK_TARGET_OTHER_APP, 0},
+  { (gchar*)"text/uri-list", GTK_TARGET_OTHER_APP, 0 }
 };
 static const gint n_drop_types = G_N_ELEMENTS(drop_types);
 
@@ -189,6 +201,16 @@ static void awn_themed_icon_preload_all (AwnThemedIcon * icon);
 
 static GtkIconTheme* get_awn_theme(void);
 
+static GdkPixbuf * try_and_load_image_from_disk (const gchar *filename, gint size);
+
+void    awn_themed_icon_drag_data_received_internal (GtkWidget        *widget, 
+                                    GdkDragContext   *context,
+                                    gint              x, 
+                                    gint              y, 
+                                    GtkSelectionData *selection_data,
+                                    guint             info,
+                                    guint             evt_time);
+
 enum
 {
   PROP_0,
@@ -202,6 +224,7 @@ awn_theme_dir_changed (DesktopAgnosticVFSFileMonitor* self,
                        DesktopAgnosticVFSFile* other, 
                        DesktopAgnosticVFSFileMonitorEvent event)
 {
+  awn_pixbuf_cache_invalidate (awn_pixbuf_cache_get_default());
   gtk_icon_theme_set_custom_theme (get_awn_theme(), NULL);
   gtk_icon_theme_set_custom_theme (get_awn_theme(), AWN_ICON_THEME_NAME);
 }
@@ -257,63 +280,86 @@ get_awn_theme(void)
  Notes:
  scope probably isn't necessary... if the theme_name is always provided.
  */
-static  GHashTable *pixbufs;    /*our pixbuf cache*/
-
-static void
-add_pixbuf_to_cache (GdkPixbuf * pixbuf,const gchar * scope, 
-            const gchar * theme_name, 
-            const gchar * icon_name, 
-            gint  size)
-{
-  gchar * key;
-   
-  g_return_if_fail (GDK_IS_PIXBUF(pixbuf));
-  g_return_if_fail (icon_name);
-  if (!pixbufs)
-  {
-    pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);  
-  }
-  /*Conditional operator*/
-  key = g_strdup_printf ("%s::%s::%s::%d",
-                         scope?scope:"__NONE__",
-                         theme_name?theme_name:"__NONE__",
-                         icon_name,
-                         size);
-  g_hash_table_insert (pixbufs, key, pixbuf);  
-  g_object_ref (pixbuf);  
-}
 
 static GdkPixbuf * 
-lookup_pixbuf (const gchar * scope, const gchar * theme_name, 
-               const gchar * icon_name, gint  size)
+awn_themed_icon_lookup_pixbuf (AwnThemedIcon * icon,const gchar * scope, 
+                                GtkIconTheme * theme, 
+                                const gchar * icon_name, gint  size)
 {
+  AwnThemedIconPrivate * priv = AWN_THEMED_ICON_GET_PRIVATE (icon);
   GdkPixbuf *pixbuf;
-  gchar * key;
-  g_return_val_if_fail (icon_name,NULL);
-  if (!pixbufs)
+  gboolean  null_result;
+  const gchar * theme_name;
+
+  if (theme)
   {
-    pixbufs = g_hash_table_new_full (g_str_hash,g_str_equal, g_free, g_object_unref);  
+    theme_name = theme->priv->current_theme;
   }
+  else
+  {
+    theme_name = "__NONE__";
+  }
+
+  g_return_val_if_fail (icon_name,NULL);
+//  g_debug ("%s: cache size = %u",__func__,g_hash_table_size(pixbufs));  
   /*Conditional operator*/
-  key = g_strdup_printf ("%s::%s::%s::%d",
-                         scope?scope:"__NONE__",
-                         theme_name?theme_name:"__NONE__",
-                         icon_name,
-                         size);
-  pixbuf = g_hash_table_lookup (pixbufs,key);
-//  g_debug ("Cache lookup: %s for %s",pixbuf?"Hit":"Miss",key);
-  g_free (key);  
+  pixbuf = awn_pixbuf_cache_lookup (priv->pixbufs,
+                                    scope,
+                                    theme_name,
+                                    icon_name,
+                                    -1,
+                                    size,
+                                    &null_result);
+  if (pixbuf)
+  {
+    return pixbuf;
+  }
+
+  if ( !null_result)
+  {
+    if (theme)
+    {
+      pixbuf = theme_load_icon (theme, icon_name,
+                                     size, LOAD_FLAGS, NULL);
+    }
+    else
+    {
+      pixbuf = try_and_load_image_from_disk (priv->current_item->original_name, 
+                                     size);
+    }
+    if (pixbuf)
+    {
+      awn_pixbuf_cache_insert_pixbuf ( priv->pixbufs, 
+                                      pixbuf ,
+                                      scope,
+                                      theme_name,
+                                      icon_name);
+    }
+    else
+    {
+      awn_pixbuf_cache_insert_null_result ( priv->pixbufs,
+                                      scope,
+                                      theme_name,
+                                      icon_name,
+                                      -1,
+                                      size);
+    }
+  }
   return pixbuf;
 }
 
 
 static void
-invalidate_pixbuf_cache(void)
+awn_themed_icon_invalidate_pixbuf_cache(AwnThemedIcon * icon)
 {
-  if (pixbufs)
+  AwnThemedIconPrivate * priv = AWN_THEMED_ICON_GET_PRIVATE (icon);
+  if (priv->cache_sentinel)
   {
-    g_hash_table_remove_all (pixbufs);
-    pixbufs = NULL;
+    return;
+  } 
+  if (priv->pixbufs)
+  {
+    awn_pixbuf_cache_invalidate (priv->pixbufs);
   }
 }
 
@@ -364,6 +410,10 @@ awn_themed_icon_set_property (GObject *object, guint property_id,
       break;
     case PROP_DRAG_AND_DROP:
       priv->drag_and_drop = g_value_get_boolean (value);
+      if (!priv->drag_and_drop)
+      {
+        gtk_drag_dest_unset (GTK_WIDGET(object));
+      }
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -378,7 +428,7 @@ awn_themed_icon_dispose (GObject *object)
 
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
-  
+
   if (priv->sig_id_for_awn_theme)
   {
     g_signal_handler_disconnect (priv->awn_theme,priv->sig_id_for_awn_theme);
@@ -394,7 +444,7 @@ awn_themed_icon_dispose (GObject *object)
     g_signal_handler_disconnect (priv->gtk_theme,priv->sig_id_for_gtk_theme);
     priv->sig_id_for_gtk_theme = 0; 
   }
-  
+
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->dispose (object);
 }
 
@@ -402,10 +452,18 @@ static void
 awn_themed_icon_finalize (GObject *object)
 {
   AwnThemedIconPrivate *priv;
+  GList * iter;
 
   g_return_if_fail (AWN_IS_THEMED_ICON (object));
   priv = AWN_THEMED_ICON (object)->priv;
 
+  for (iter = priv->list; iter; iter = g_list_next (iter) )
+  {
+    AwnThemedIconItem * item = iter->data;
+    g_free (item->name);
+    g_free (item->state);
+    g_free (item->original_name);
+  }
   g_list_foreach (priv->list, (GFunc) g_free,NULL);
   g_list_free (priv->list);
   
@@ -415,7 +473,21 @@ awn_themed_icon_finalize (GObject *object)
   priv->uid = NULL;
   g_free (priv->icon_dir);               
   priv->icon_dir = NULL;
+  g_free (priv->custom_icon_name);
+  g_free (priv->old_theme_name);
   
+  for (iter = priv->preload_list; iter; iter = g_list_next (iter) )
+  {
+    AwnThemedIconPreloadItem * item = iter->data;
+    g_source_remove (item->id);
+    g_free (item->state);
+    g_free (item);
+
+  }
+  if (priv->preload_list)
+  {
+    g_list_free (priv->preload_list);
+  }
   G_OBJECT_CLASS (awn_themed_icon_parent_class)->finalize (object);  
 }
 
@@ -425,14 +497,13 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
 {
   GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
-  GParamSpec   *pspec;        
-  
+
   obj_class->get_property = awn_themed_icon_get_property;
   obj_class->set_property = awn_themed_icon_set_property;
   obj_class->dispose = awn_themed_icon_dispose;
   obj_class->finalize = awn_themed_icon_finalize;  
   
-  wid_class->drag_data_received = awn_themed_icon_drag_data_received;
+  wid_class->drag_data_received = awn_themed_icon_drag_data_received_internal;
 
 /**
  * AwnThemedIcon:rotate:
@@ -440,27 +511,29 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
  * Rotates the icon as per #GdkPixbufRotation.
  */
   
-  pspec = g_param_spec_enum ("rotate",
-                             "Rotate",
-                             "Rotation of the icon",
-                             GDK_TYPE_PIXBUF_ROTATION,
-                             GDK_PIXBUF_ROTATE_NONE,
-                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                             G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (obj_class, PROP_ROTATE, pspec);
+  g_object_class_install_property (obj_class, 
+    PROP_ROTATE,
+    g_param_spec_enum ("rotate",
+                       "Rotate",
+                       "Rotation of the icon",
+                       GDK_TYPE_PIXBUF_ROTATION,
+                       GDK_PIXBUF_ROTATE_NONE,
+                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                       G_PARAM_STATIC_STRINGS));
 
 /**
  * AwnThemedIcon:applet-name:
  *
  * The applet name.
  */
-  pspec = g_param_spec_string ("applet-name",
-                               "Applet Name",
-                               "Applet Name",
-                               NULL,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (obj_class, PROP_APPLET_NAME, pspec);   
+  g_object_class_install_property (obj_class,
+    PROP_APPLET_NAME,
+    g_param_spec_string ("applet-name",
+                         "Applet Name",
+                         "Applet Name",
+                         NULL,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
 
   /**
    * AwnThemedIcon:drag-and-drop:
@@ -475,13 +548,13 @@ awn_themed_icon_class_init (AwnThemedIconClass *klass)
    * a fallback by calling #awn_themed_icon_drag_data_received in a custom
    * signal handler for #GtkWidget::drag-data-received.
    */
-  pspec = g_param_spec_boolean ("drag_and_drop",
-                             "Drag and Drop",
-                             "Enable drag and drop",
-                             TRUE,
-                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-  g_object_class_install_property (obj_class, PROP_DRAG_AND_DROP, pspec);
-
+  g_object_class_install_property (obj_class,
+    PROP_DRAG_AND_DROP,
+    g_param_spec_boolean ("drag_and_drop",
+                          "Drag and Drop",
+                          "Enable drag and drop",
+                          TRUE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT));
   
   g_type_class_add_private (obj_class, sizeof (AwnThemedIconPrivate));
 }
@@ -535,6 +608,7 @@ check_dest_or_copy (const gchar *src, const gchar *dest)
 static void
 check_and_make_dir (const gchar *dir)
 {
+
   if (!g_file_test (dir, G_FILE_TEST_EXISTS))
   {
     g_mkdir (dir, 0755);
@@ -550,6 +624,7 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   gchar                *scalable_dir;
   gchar                *index_src;
   gchar                *index_dest;
+  GdkPixbuf            *pbuf = NULL;
 
   priv = icon->priv = AWN_THEMED_ICON_GET_PRIVATE (icon);
 
@@ -557,20 +632,30 @@ awn_themed_icon_init (AwnThemedIcon *icon)
   priv->uid = NULL;
   priv->list = NULL;
   priv->current_item = NULL;
-  priv->current_size = 48;
- 
-
+  priv->current_size = -1;
+  priv->custom_icon_name = NULL;
+  priv->preload_list = NULL;
+  priv->pixbufs = awn_pixbuf_cache_get_default ();
+  priv->cache_sentinel = 0;
+  
   /* Set-up the gtk-theme */
   priv->gtk_theme = gtk_icon_theme_get_default ();
+  priv->old_theme_name = g_strdup(priv->gtk_theme->priv->current_theme);
   priv->sig_id_for_gtk_theme = g_signal_connect (priv->gtk_theme, "changed", 
                     G_CALLBACK (on_icon_theme_changed), icon);
-  
   /*Calling this with the default icon theme (which contains hicolor dirs)
    to supress an irritating gtk warning that occurs if the first time we try 
    to get a themed icon a GtkIconTheme is used that does not contain
    hicolor dirs. It shouldn't find a icon and even if it does... we don't
    care.*/
-  theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
+  pbuf = theme_load_icon (priv->gtk_theme,"gtk_knows_best",16,0,NULL);
+  pbuf = awn_pixbuf_cache_lookup (priv->pixbufs,NULL,
+                                  priv->gtk_theme->priv->current_theme,
+                                  "gtk-knows-best",-1,16,NULL);
+  if (pbuf)
+  {
+    g_object_unref (pbuf);
+  }
   
   /* 
    * Set-up our special theme. We need to check for all the dirs
@@ -676,6 +761,11 @@ theme_load_icon (GtkIconTheme *icon_theme,
                                      GtkIconLookupFlags flags,
                                      GError **error)
 {
+  g_return_val_if_fail (GTK_IS_ICON_THEME (icon_theme),NULL);
+  g_return_val_if_fail (icon_name,NULL);
+  g_return_val_if_fail (size>0,NULL);
+
+//  g_debug ("%s",__func__);
   const gchar * names[2]={NULL,NULL};
   names[0] = icon_name;
   GtkIconInfo*  info = gtk_icon_theme_choose_icon (icon_theme,
@@ -702,6 +792,10 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 
   priv = icon->priv;
 
+  if (size<=0)
+  {
+    return NULL;
+  }
   /* Find the index of the current state in states */
   g_return_val_if_fail(priv-> list,NULL);	
   for (iter = priv->list; iter; iter=g_list_next (iter))
@@ -713,6 +807,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
       const gchar *applet_name;
       const gchar *icon_name;
       const gchar *uid;
+      gchar * base = NULL;
       gint         i;
       
       applet_name = priv->applet_name;
@@ -726,68 +821,35 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
         switch (i)
         {
           case SCOPE_UID:
-            name = g_strdup_printf ("%s-%s-%s", icon_name, applet_name, uid);
-            pixbuf = lookup_pixbuf ("scope_uid",
-                                    "awn-theme",
-                                    name,
-                                    size);
-            if (pixbuf)
-            {
-              g_object_ref (pixbuf);
-              break;
-            }
-            pixbuf = theme_load_icon (priv->awn_theme, name,
-                                             size, LOAD_FLAGS, NULL);
-            if (pixbuf)
-            {
-              add_pixbuf_to_cache (pixbuf ,"scope_uid",
-                                  "awn-theme",
-                                  name,
-                                  size);
-            }
+            base = g_path_get_basename (icon_name);
+            name = g_strdup_printf ("%s-%s-%s", base, applet_name, uid);
+            g_free (base);
+            pixbuf = awn_themed_icon_lookup_pixbuf (icon,
+                                                    "scope_uid",
+                                                    priv->awn_theme,
+                                                    name,
+                                                    size);
             break;
 
           case SCOPE_APPLET:
-            name = g_strdup_printf ("%s-%s", icon_name, applet_name);
-            pixbuf = lookup_pixbuf ("scope_applet",
-                                    "awn-theme",
-                                    name,
-                                    size);
-            if (pixbuf)
-            {
-              g_object_ref (pixbuf);
-              break;
-            }
-            pixbuf = theme_load_icon (priv->awn_theme, name,
-                                             size, LOAD_FLAGS, NULL);
-            if (pixbuf)
-            {
-              add_pixbuf_to_cache (pixbuf ,"scope_applet",
-                                  "awn-theme",
-                                  name,
-                                  size);
-            }
+            base = g_path_get_basename (icon_name);
+            name = g_strdup_printf ("%s-%s", base, applet_name);
+            g_free (base);
+            pixbuf = awn_themed_icon_lookup_pixbuf (icon,
+                                                    "scope_applet",
+                                                    priv->awn_theme,
+                                                    name,
+                                                    size);
             break;
 
           case SCOPE_AWN_THEME:
-            pixbuf = lookup_pixbuf ("scope_awn_theme",
-                                    "awn-theme",
-                                    icon_name,
-                                    size);            
-            if (pixbuf)
-            {
-              g_object_ref (pixbuf);
-              break;
-            }
-            pixbuf = theme_load_icon (priv->awn_theme, icon_name, 
-                                             size, LOAD_FLAGS, NULL);
-            if (pixbuf)
-            {
-              add_pixbuf_to_cache (pixbuf ,"scope_awn_theme",
-                                  "awn-theme",
-                                  icon_name,
-                                  size);
-            }
+            base = g_path_get_basename (icon_name);
+            pixbuf = awn_themed_icon_lookup_pixbuf (icon,
+                                                    "scope_awn_theme",
+                                                    priv->awn_theme,
+                                                    base,
+                                                    size);
+            g_free (base);
             break;
 
           case SCOPE_OVERRIDE_THEME:
@@ -795,94 +857,40 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             pixbuf = NULL;
             if (priv->override_theme)
             {
-              pixbuf = lookup_pixbuf ("scope_override_theme",
-                                    priv->override_theme->priv->current_theme,
-                                    icon_name,
-                                    size);              
-              if (pixbuf)
-              {
-                g_object_ref (pixbuf);
-                break;
-              }
-              pixbuf = theme_load_icon (priv->override_theme,
-                                               icon_name, 
-                                               size, LOAD_FLAGS, NULL);
-              if (pixbuf)
-              {
-                add_pixbuf_to_cache (pixbuf ,"scope_override_theme",
-                                  priv->override_theme->priv->current_theme,
-                                  icon_name,
-                                  size);
-              }                
+              pixbuf = awn_themed_icon_lookup_pixbuf (icon,
+                                                      "scope_override_theme",
+                                                      priv->override_theme,
+                                                      icon_name,
+                                                      size);              
             }
             break;
 
           case SCOPE_GTK_THEME:
-            pixbuf = lookup_pixbuf ("scope_gtk_theme",
-                                    priv->gtk_theme->priv->current_theme,
-                                    icon_name,
-                                    size);            
-            if (pixbuf)
-            {
-              g_object_ref (pixbuf);
-              break;
-            }
-            pixbuf = theme_load_icon (priv->gtk_theme, icon_name,
-                                             size, LOAD_FLAGS, NULL);
-            if (pixbuf)
-            {
-              add_pixbuf_to_cache (pixbuf ,"scope_gtk_theme",
-                                  priv->gtk_theme->priv->current_theme,
-                                  icon_name,
-                                  size);
-            }              
+            pixbuf = awn_themed_icon_lookup_pixbuf (icon,
+                                                    NULL,
+                                                    priv->gtk_theme,
+                                                    icon_name,
+                                                    size);            
             break;
 
           case SCOPE_FILENAME:
             pixbuf = NULL;
             if (priv->current_item->original_name)
             {
-              pixbuf = lookup_pixbuf ("scope_filename",
-                                    NULL,
-                                    icon_name,
-                                    size);              
-              if (pixbuf)
-              {
-                g_object_ref (pixbuf);
-                break;
-              }
-              pixbuf = try_and_load_image_from_disk (priv->current_item->original_name, 
-                                                   size);
-              if (pixbuf)
-              {
-                add_pixbuf_to_cache (pixbuf ,"scope_filename",
-                                  NULL,
-                                  icon_name,
-                                  size);
-              }                
+              pixbuf = awn_themed_icon_lookup_pixbuf (icon,
+                                                      NULL,
+                                                      NULL,
+                                                      icon_name,
+                                                      size);              
             }
             break;
 
           case SCOPE_FALLBACK_STOP:
-            pixbuf = lookup_pixbuf ("scope_fallback_stop",
-                                    priv->gtk_theme->priv->current_theme,
-                                    GTK_STOCK_MISSING_IMAGE,
-                                    size);            
-            if (pixbuf)
-            {
-              g_object_ref (pixbuf);
-              break;
-            }
-            pixbuf = theme_load_icon (priv->gtk_theme,
-                                             GTK_STOCK_MISSING_IMAGE,
-                                             size, LOAD_FLAGS, NULL);
-            if (pixbuf)
-            {
-              add_pixbuf_to_cache (pixbuf ,"scope_fallback_stop",
-                                  priv->gtk_theme->priv->current_theme,
-                                  GTK_STOCK_MISSING_IMAGE,
-                                  size);
-            }
+            pixbuf = awn_themed_icon_lookup_pixbuf (icon,
+                                                    NULL,
+                                                    priv->gtk_theme,
+                                                    GTK_STOCK_MISSING_IMAGE,
+                                                    size);            
             break;
 
           default:
@@ -891,9 +899,20 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             break;
         }
 
+        if (pixbuf && priv->awn_theme_hit && name)
+        {
+          if (priv->custom_icon_name)
+          {
+            g_free (priv->custom_icon_name);
+          }
+          priv->custom_icon_name = name;
+        }
+        else
+        {
+          g_free (name);
+        }
+        
         /* Check if we got a valid pixbuf on this run */
-        g_free (name);
-
         if (pixbuf)
         {
           /* FIXME: Should we make this position-aware? */
@@ -918,6 +937,11 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
                                               GDK_INTERP_HYPER);
             g_object_unref (temp);
           }
+          if (!name)
+          {
+            g_free (priv->custom_icon_name);
+            priv->custom_icon_name = NULL;
+          }
           return pixbuf;
         }
       }
@@ -941,7 +965,7 @@ ensure_icon (AwnThemedIcon *icon)
 
   priv = icon->priv;
 
-  if (!priv->list || !priv->current_item || !priv->current_size)
+  if (!priv->list || !priv->current_item || (priv->current_size<=0))
   {
     /* We're not ready yet */
     return;
@@ -1022,7 +1046,7 @@ awn_themed_icon_preload_all (AwnThemedIcon * icon)
 {
   AwnThemedIconPrivate *priv;  
   GList *iter;
-  
+
   priv = icon->priv;
   /*preload these icons */
   for (iter = priv->list; iter ; iter = g_list_next (iter) )
@@ -1050,7 +1074,11 @@ awn_themed_icon_set_size (AwnThemedIcon *icon,
   priv = icon->priv;
   if (priv->current_size != size)
   {
-    priv->current_size = size;  
+    if (priv->current_size >0)
+    {
+      awn_themed_icon_invalidate_pixbuf_cache (icon);
+    }
+    priv->current_size = size;
     ensure_icon (icon);
     awn_themed_icon_preload_all ( icon);    
   }    
@@ -1118,7 +1146,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
   gint  n_states;
   gint  i;
   gchar * state = NULL;
-  
+
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
   g_return_if_fail (applet_name);
   g_return_if_fail (uid);
@@ -1186,12 +1214,13 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
 
     /* Add the applet's system-wide icon dir first */ 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
+    priv->cache_sentinel++; /*don't invalidate the pixbuf cache*/
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
     g_free (search_dir);
 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", applet_name);
-    
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    priv->cache_sentinel--; /*unprotect the pixbuf cache*/    
     g_free (search_dir); 
   }
   if (state)
@@ -1213,9 +1242,9 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
       if (g_strstr_len (item->state,-1, "::no_drop::") !=  item->state)
       {
         gtk_drag_dest_set (GTK_WIDGET (icon),
-                       GTK_DEST_DEFAULT_MOTION | GTK_DEST_DEFAULT_DROP,
-                       drop_types, n_drop_types,
-                       GDK_ACTION_COPY | GDK_ACTION_ASK);
+                           GTK_DEST_DEFAULT_ALL,
+                           drop_types, n_drop_types,
+                           GDK_ACTION_COPY | GDK_ACTION_ASK | GDK_ACTION_MOVE);        
         break;
       }
     }
@@ -1271,7 +1300,7 @@ awn_themed_icon_set_info_simple (AwnThemedIcon  *icon,
 
 void
 awn_themed_icon_set_info_append (AwnThemedIcon  *icon,
-                                 const gchar    * state,                                 
+                                 const gchar    *state,
                                  const gchar    *icon_name)
 {
   /*  
@@ -1324,30 +1353,38 @@ awn_themed_icon_set_applet_info (AwnThemedIcon  *icon,
                                  const gchar    *uid)
 {
   AwnThemedIconPrivate *priv;
+  g_return_if_fail (AWN_IS_THEMED_ICON(icon));
   priv = icon->priv;
-  
   g_free (priv->uid);
-  priv->uid = g_strdup (uid);
+  if (uid)
+  {
+    priv->uid = g_strdup (uid);
+  }
+  else
+  {
+    priv->uid = NULL;
+  }
 
   /* Finally set-up the applet name & theme information */
   if (priv->applet_name && strcmp (priv->applet_name, applet_name) == 0)
   {
     /* Already appended the search path to the GtkIconTheme, so we skip this */
   }
-  else
+  else if (applet_name)
   {
     gchar *search_dir;
 
     g_free (priv->applet_name);
-    priv->applet_name = g_strdup (applet_name);
 
     /* Add the applet's system-wide icon dir first */
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
+    priv->cache_sentinel++; /*don't invalidate the pixbuf cache*/
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
     g_free (search_dir);
 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", applet_name);
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    priv->cache_sentinel--; /*unprotect the cache*/    
     g_free (search_dir); 
   }  
 }
@@ -1374,7 +1411,7 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
   if (priv->override_theme)
   {
     g_object_unref (priv->override_theme);
-    invalidate_pixbuf_cache ();
+    awn_themed_icon_invalidate_pixbuf_cache (icon);
   }
 
   if ( theme_name && strlen (theme_name) )
@@ -1457,14 +1494,14 @@ awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
 
 GdkPixbuf * 
 awn_themed_icon_get_icon_at_size (AwnThemedIcon *icon,
-                                  guint          size,
+                                  gint          size,
                                   const gchar   *state)
 {
   AwnThemedIconPrivate *priv;
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
   priv = icon->priv;
   g_return_val_if_fail (priv->list,NULL);
-  
+
   return get_pixbuf_at_size (icon, size, state);
 }
 
@@ -1480,6 +1517,7 @@ awn_themed_icon_get_default_theme_name (AwnThemedIcon *icon)
 {
   AwnThemedIconPrivate *priv;
   g_return_val_if_fail (AWN_IS_THEMED_ICON (icon), NULL);
+
   priv = icon->priv;
   g_return_val_if_fail (priv->gtk_theme, NULL);
   return priv->gtk_theme->priv->current_theme;
@@ -1610,8 +1648,8 @@ awn_themed_icon_preload_icon (AwnThemedIcon * icon, gchar * state, gint size)
   /*Conditional operator*/
   item->size = size > 0?size:priv->current_size;
   item->state = g_strdup(state);
-  g_idle_add (on_idle_preload,item);
-  
+  item->id = g_idle_add (on_idle_preload,item);
+  priv->preload_list = g_list_append (priv->preload_list,item);
 }
 
 /**
@@ -1625,6 +1663,7 @@ awn_themed_icon_preload_icon (AwnThemedIcon * icon, gchar * state, gint size)
 GtkIconTheme *
 awn_themed_icon_get_awn_theme (AwnThemedIcon * icon)
 {
+
   /*for the sake of bindings*/
   return get_awn_theme();  
 }
@@ -1636,8 +1675,18 @@ on_icon_theme_changed (GtkIconTheme *theme, AwnThemedIcon *icon)
 {
   AwnThemedIconPrivate *priv;  
   g_return_if_fail (AWN_IS_THEMED_ICON (icon));
+
   priv = icon->priv;
-  invalidate_pixbuf_cache ();
+  /*
+   Don't invalidate if the theme name hasn't really changed.  The most 
+   annoying instance of this occuring is when an new AwnThemedIcon is created.
+   */
+  if (g_strcmp0 (priv->old_theme_name,priv->gtk_theme->priv->current_theme) != 0)
+  {
+    awn_themed_icon_invalidate_pixbuf_cache (icon);  
+    g_free (priv->old_theme_name);
+    priv->old_theme_name = g_strdup (priv->gtk_theme->priv->current_theme);
+  }
   ensure_icon (icon);
 }
 
@@ -1662,6 +1711,7 @@ on_idle_preload (gpointer data)
                                item->state);
            
   g_object_unref (pixbuf);
+  priv->preload_list = g_list_remove (priv->preload_list,item);
   g_free (item->state);
   g_free (item);
   return FALSE;
@@ -1716,7 +1766,6 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
     return;
   }
   priv = icon->priv;
-
   /* First check we have valid data */
   if (selection_data == NULL ||
       gtk_selection_data_get_length (selection_data) == 0)
@@ -1819,14 +1868,13 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                  priv->current_item->name,
                                  suffix);
   }
-
   dest_filename = g_build_filename (priv->icon_dir,
                                     "awn-theme", "scalable",
                                     base_name, NULL);
 
   /* Make sure we don't have any conflicting icons */
   awn_themed_icon_clear_icons (icon, scope);
-  
+  awn_pixbuf_cache_invalidate (awn_pixbuf_cache_get_default());
   if (svg)
     check_dest_or_copy (sdata, dest_filename);
   else
@@ -1864,16 +1912,68 @@ drag_out:
     ensure_icon (icon);
 }
 
+void 
+awn_themed_icon_drag_data_received_internal (GtkWidget        *widget, 
+                                    GdkDragContext   *context,
+                                    gint              x, 
+                                    gint              y, 
+                                    GtkSelectionData *selection_data,
+                                    guint             info,
+                                    guint             evt_time)
+{
+  AwnThemedIcon        *icon = AWN_THEMED_ICON (widget);
+  AwnThemedIconPrivate *priv;
+
+  if (!AWN_IS_THEMED_ICON (icon))
+  {
+    gtk_drag_finish (context, FALSE, FALSE, evt_time);
+    return;
+  }
+  priv = icon->priv;
+  if (!priv->drag_and_drop)
+  {
+    return;
+  }
+  awn_themed_icon_drag_data_received (widget,context,x,y,selection_data,info,evt_time);
+}
+static void
+_update_preview (GtkFileChooser *file_chooser, GtkWidget *preview)
+{
+  GdkPixbuf *pixbuf;
+  char *filename;
+  gboolean have_preview;
+
+  filename = gtk_file_chooser_get_preview_filename (file_chooser);
+
+  if (filename == NULL)
+  {
+    gtk_file_chooser_set_preview_widget_active (file_chooser, FALSE);
+
+    return;
+  }
+
+  pixbuf = gdk_pixbuf_new_from_file_at_size (filename, 128, 128, NULL);
+  have_preview = (pixbuf != NULL);
+
+  g_free (filename);
+
+  gtk_image_set_from_pixbuf (GTK_IMAGE (preview), pixbuf);
+
+  if (pixbuf)
+    g_object_unref (pixbuf);
+
+  gtk_file_chooser_set_preview_widget_active (file_chooser, have_preview);
+}
 
 static void
 _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 {
-  GtkWidget * dialog;
+  GtkWidget * dialog, *preview;
   GtkFileFilter * filter = gtk_file_filter_new ();
-  
+
   gtk_file_filter_add_pattern (filter, "*.png");
   gtk_file_filter_add_pattern (filter, "*.svg");
-  gtk_file_filter_set_name (filter,NULL);
+  gtk_file_filter_set_name (filter, _("Icons"));
   
   dialog = gtk_file_chooser_dialog_new ( _("Choose Custom Icon"),
                                         NULL,
@@ -1883,15 +1983,21 @@ _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 				                                NULL);
   /* is there a correct way to determine the main icons dirs?*/
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog),"/usr/share/icons");
-  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog),filter);  
+  gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog),filter);
+  gtk_window_set_icon_name (GTK_WINDOW (dialog),"avant-window-navigator");
+  preview = gtk_image_new();
+  gtk_file_chooser_set_preview_widget (GTK_FILE_CHOOSER(dialog), preview);
+  g_signal_connect (dialog, "update-preview", G_CALLBACK (_update_preview), preview);
+
   if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
   {
     gchar * src_filename;
     gchar * dest_filename=NULL;
     gchar  ** tokens;
     gchar ** last;
+
+    awn_pixbuf_cache_invalidate (awn_pixbuf_cache_get_default());
     
-    g_debug ("copy and save the file");
     src_filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
     /*
      TODO check that src file is an icon
@@ -1957,6 +2063,9 @@ awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
                                   icon_name, NULL);
   
   item = gtk_image_menu_item_new_with_label (_("Customize Icon"));
+#if GTK_CHECK_VERSION (2,16,0)	
+	g_object_set (item,"always-show-image",TRUE,NULL);  
+#endif 
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item),
                                  gtk_image_new_from_stock(GTK_STOCK_OPEN,
                                                           GTK_ICON_SIZE_MENU));
@@ -1972,25 +2081,36 @@ awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
 
 
 static void
-_remove_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
+_remove_icon (GtkMenuItem *menuitem,AwnThemedIcon * icon)
 {
   /* is there a correct way to determine the main icons dirs?*/
   gchar * del_file;
-
+  AwnThemedIconPrivate * priv;
+  
+  priv = icon->priv;
+  if ( ! priv->custom_icon_name)
+  {
+    return;
+  }
+  awn_pixbuf_cache_invalidate (awn_pixbuf_cache_get_default());
+  gchar * dest_filename_minus_ext = g_build_filename (priv->icon_dir,
+                                                      "awn-theme", "scalable",
+                                                      priv->custom_icon_name, NULL);
   del_file = g_strdup_printf("%s.png",dest_filename_minus_ext);
   g_unlink (del_file);
   g_free (del_file);
   del_file = g_strdup_printf("%s.svg",dest_filename_minus_ext);
   g_unlink (del_file);
   g_free (del_file);      
-  
+
   gtk_icon_theme_set_custom_theme (get_awn_theme(), NULL);
   gtk_icon_theme_set_custom_theme (get_awn_theme(), AWN_ICON_THEME_NAME);  
+  g_free( dest_filename_minus_ext);
 }
 
 
 static void
-_remove_icon_cleanup (GtkWidget * widget, AwnThemedIcon * icon)
+_remove_icon_cleanup (AwnThemedIcon * icon, GtkWidget * widget)
 {
   AwnThemedIconPrivate * priv;
   
@@ -2004,7 +2124,8 @@ _remove_icon_cleanup (GtkWidget * widget, AwnThemedIcon * icon)
 /**
  * awn_themed_icon_create_remove_custom_icon_item:
  * @icon: A pointer to an #AwnThemedIcon object.
- * @icon_name: The name of the customized icon.
+ * @icon_name: A custom icon or name or NULL if the default customer icons are
+ * to be used
  *
  * Creates a "Remove Customize Icon" menu item.  Will only be visible when a
  * custom icon is in use.
@@ -2013,21 +2134,25 @@ _remove_icon_cleanup (GtkWidget * widget, AwnThemedIcon * icon)
  */
 
 GtkWidget *
-awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon, 
-                                         const gchar *icon_name)
+awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon, const gchar *icon_name)
 {
-  gchar * dest_filename;
   AwnThemedIconPrivate * priv;
   
   g_return_val_if_fail (AWN_IS_THEMED_ICON(icon),NULL);
-  g_return_val_if_fail (icon_name,NULL);
-  
   priv = icon->priv;
-  dest_filename = g_build_filename (priv->icon_dir,
-                                  "awn-theme", "scalable",
-                                  icon_name, NULL);
-  
-  priv->remove_custom_icon_item = gtk_image_menu_item_new_with_label (_("Remove Customize Icon"));
+
+  if (icon_name )
+  {
+    if (priv->custom_icon_name)
+    {
+      g_free (priv->custom_icon_name);
+    }
+    priv->custom_icon_name = g_strdup (icon_name);
+  }
+  priv->remove_custom_icon_item = gtk_image_menu_item_new_with_label (_("Remove Customized Icon"));
+#if GTK_CHECK_VERSION (2,16,0)	
+  g_object_set( priv->remove_custom_icon_item,"always-show-image",TRUE,NULL);      
+ #endif
   gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (priv->remove_custom_icon_item),
                                  gtk_image_new_from_stock(GTK_STOCK_OPEN,
                                                          GTK_ICON_SIZE_MENU));
@@ -2041,11 +2166,9 @@ awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon,
   }
   
   g_signal_connect (priv->remove_custom_icon_item, "activate", 
-                    G_CALLBACK (_remove_icon), dest_filename);
-  g_signal_connect_swapped (G_OBJECT (priv->remove_custom_icon_item), "unrealize",
-                    G_CALLBACK (g_free), dest_filename);
-  g_signal_connect (G_OBJECT (priv->remove_custom_icon_item), "unrealize",
-                    G_CALLBACK (_remove_icon_cleanup), icon);
+                    G_CALLBACK (_remove_icon), icon);
+  g_object_weak_ref (G_OBJECT (priv->remove_custom_icon_item),
+                    (GWeakNotify) _remove_icon_cleanup, icon);
   
   return priv->remove_custom_icon_item;
 }

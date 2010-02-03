@@ -25,6 +25,9 @@ import os
 import socket
 import time
 import urllib
+import cairo
+import array
+from ConfigParser import ConfigParser
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -33,14 +36,23 @@ try:
     import gobject
     import gtk
     import gtk.gdk as gdk
+    import pango
 except Exception, e:
     sys.stderr.write(str(e) + '\n')
     sys.exit(1)
 from xdg.DesktopEntry import DesktopEntry
 
+from awnSettingsHelper import bind_to_gtk_component
+
 import awnDefs as defs
-from awnLauncherEditor import awnLauncherEditor
+from desktopagnostic import config
+from desktopagnostic import vfs
+from desktopagnostic.config import GROUP_DEFAULT
+from desktopagnostic.ui import LauncherEditorDialog
 import tarfile
+import shutil
+import tempfile
+import dbus
 
 from bzrlib import branch
 from bzrlib.builtins import cmd_branch, cmd_pull
@@ -82,6 +94,67 @@ def make_color_string(color, alpha):
     return string
 
 EMPTY = "none";
+
+class AwnListStore(gtk.ListStore, gtk.TreeDragSource, gtk.TreeDragDest):
+
+    __gsignals__ = {
+        # we can't do TreePath easily, so lets use just int
+        # (change to string representation of TreePath if necessary)
+        'foreign-drop':
+            (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE,
+                [int, gtk.SelectionData.__gtype__])
+    }
+
+    def do_drag_data_received(self, dest, selection_data):
+        model, row = None, None
+        if selection_data.target == 'GTK_TREE_MODEL_ROW':
+            model, row = selection_data.tree_get_row_drag_data()
+
+        if model == self:
+            # drop from the same widget, handle reorder ourselves
+            src = row[0]
+            dst = dest[0]
+            if (src == dst):
+                return False
+
+            new_array = []
+            iter = self.get_iter_root()
+            while iter != None:
+                iter = self.iter_next(iter)
+                new_array.append(len(new_array))
+
+            # new_array[oldpos] = newpos
+            if src < dst:
+                new_array[src] = dst-1
+                for i in range(src+1, dst):
+                    new_array[i] = i-1
+            else:
+                new_array[src] = dst
+                for i in range(dst, src):
+                    new_array[i] = i+1
+
+            # need to map it to > new_order[newpos] = oldpos
+            new_order = new_array[:]
+            for i in range(len(new_array)): new_order[new_array[i]] = i
+            # emit change signals
+            self.reorder(new_order)
+        else:
+            self.emit("foreign-drop", dest[0], selection_data)
+
+        return False
+
+    def do_row_drop_possible(self, dest_path, selection_data):
+        return True
+
+    def do_drag_data_delete(self, path):
+        return True
+
+    def do_drag_data_get(self, path, selection_data):
+        # if we return False the default handler will do exactly what we want
+        return False
+
+gobject.type_register (AwnListStore)
+
 
 class awnBzr(gobject.GObject):
         #Utils Bzr
@@ -336,41 +409,22 @@ class awnBzr(gobject.GObject):
         #       '' if there is nothing,
         #       a string when there is no settings
         #       a list when there is a setting : [value of the setting, group settings, key setting]
-        struct= {       'type': '',             # Applet or Theme
-                        'location':'',          # Location of the desktop file
-                        'name': '',             # Name of the Type
-                        'comment':'',           # Comments
-                        'version':'',           # Version of the
-                        'copyright':'',         # Copyright
-                        'author':'',            # Author
-                        'licence_code':'',      # Licence for the code
-                        'licence_icons':'',     # Licence for the icons
-                        'icon':'',              # Icon for the type
-                        'style':'',             # Style of the bar
-                        # Applet specific
-                        'exec':'',              # Execution path, for applet
-                        'applet_type':'',       # Type of teh applet (C, Vala or Python)
-                        'applet_category':'',   # Category for the applet
-                        'singleton':'',         # True or False, use only one instance.
-                        # Theme specific
-                        'effects':'',
-                        'orientation':'',
-                        'size':'',
-                        'gtk_theme_mode':'',
-                        'corner_radius':'',
-                        'panel_angle':'',
-                        'curviness':''  ,
-                        'curves_symmetry':'',
-                        'gstep1':'',
-                        'gstep2':'',
-                        'ghistep1':'',
-                        'ghistep2':'',
-                        'border':'',
-                        'hilight':'',
-                        'corner_radius':'',
-                        'panel_angle':'',
-                }
-
+        struct = {
+            'type': '',             # Applet
+            'location':'',          # Location of the desktop file
+            'name': '',             # Name of the Type
+            'comment':'',           # Comments
+            'version':'',           # Version of the
+            'copyright':'',         # Copyright
+            'author':'',            # Author
+            'licence_code':'',      # Licence for the code
+            'licence_icons':'',     # Licence for the icons
+            'icon':'',              # Icon for the type
+            'exec':'',              # Execution path, for applet
+            'applet_type':'',       # Type of teh applet (C, Vala or Python)
+            'applet_category':'',   # Category for the applet
+            'singleton':'',         # True or False, use only one instance.
+        }
 
         desktop_entry = DesktopEntry(file_path)
         struct['type'] = desktop_entry.get('X-AWN-Type')
@@ -378,102 +432,13 @@ class awnBzr(gobject.GObject):
         struct['name'] = desktop_entry.get('Name')
         #TODO More to add
         struct['icon'] = desktop_entry.get('Icon')
-        struct['exec'] = desktop_entry.get('Exec')
+        struct['exec'] = desktop_entry.get('X-AWN-AppletExec')
         struct['applet_type'] = desktop_entry.get('X-AWN-AppletType')
         struct['applet_category'] = desktop_entry.get('X-AWN-AppletCategory').rsplit(",")
 
-        if desktop_entry.get('X-AWN-ThemeEffects') <> '':
-            struct['effects'] = [int(desktop_entry.get('X-AWN-ThemeEffects')),
-                                    defs.EFFECTS, defs.ICON_EFFECT]
-
-        if desktop_entry.get('X-AWN-ThemeOrientation') <> '':
-            struct['orientation'] = [int(desktop_entry.get('X-AWN-ThemeOrientation')),
-                                            defs.PANEL, defs.ORIENT]
-
-        if desktop_entry.get('X-AWN-ThemeSize') <> '':
-            struct['size'] = [int(desktop_entry.get('X-AWN-ThemeSize')),
-                                    defs.PANEL, defs.SIZE]
-
-        if desktop_entry.get('X-AWN-ThemeStyle') <> '':
-            struct['style'] = [int(desktop_entry.get('X-AWN-ThemeStyle')),
-                                    defs.PANEL, defs.STYLE]
-
-        if desktop_entry.get('X-AWN-ThemeGstep1') <> '':
-            struct['gstep1'] = [desktop_entry.get('X-AWN-ThemeGstep1'),
-                                    defs.THEME, defs.GSTEP1]
-
-        if desktop_entry.get('X-AWN-ThemeGstep2') <> '':
-            struct['gstep2'] = [desktop_entry.get('X-AWN-ThemeGstep2'),
-                                    defs.THEME, defs.GSTEP2]
-
-        if desktop_entry.get('X-AWN-ThemeGhistep1') <> '':
-            struct['ghistep1'] = [desktop_entry.get('X-AWN-ThemeGhistep1'),
-                                    defs.THEME, defs.GHISTEP1]
-
-        if desktop_entry.get('X-AWN-ThemeGhistep2') <> '':
-            struct['ghistep2'] = [desktop_entry.get('X-AWN-ThemeGhistep2'),
-                                    defs.THEME, defs.GHISTEP2]
-
-        if desktop_entry.get('X-AWN-ThemeBorder') <> '':
-            struct['border'] = [desktop_entry.get('X-AWN-ThemeBorder'),
-                                    defs.THEME, defs.BORDER]
-
-        if desktop_entry.get('X-AWN-ThemeHilight') <> '':
-            struct['hilight'] = [desktop_entry.get('X-AWN-ThemeHilight'),
-                                    defs.THEME, defs.HILIGHT]
-
-        if desktop_entry.get('X-AWN-ThemeCornerRadius') <> '':
-            struct['corner_radius'] = [float(desktop_entry.get('X-AWN-ThemeCornerRadius')),
-                                    defs.THEME, defs.CORNER_RADIUS]
-
-        if desktop_entry.get('X-AWN-ThemePanelAngle') <> '':
-            struct['panel_angle'] = [float(desktop_entry.get('X-AWN-ThemePanelAngle')),
-                                    defs.THEME, defs.PANEL_ANGLE]
-
-        if desktop_entry.get('X-AWN-ThemeCurvesSymmetry') <> '':
-            struct['curves_symmetry'] = [float(desktop_entry.get('X-AWN-ThemeCurvesSymmetry')),
-                                    defs.THEME, defs.CURVES_SYMMETRY]
-
-        if desktop_entry.get('X-AWN-ThemeCurviness') <> '':
-            struct['curviness'] = [float(desktop_entry.get('X-AWN-ThemeCurviness')),
-                                    defs.THEME, defs.CURVINESS]
-
         return struct
 
-    def load_element_from_desktop(self, file_path, parameter, read=True):
-        '''
-                Read a desktop file, and load the paramater setting.
-                file_path: the path of the desktop file or the read desktop file
-        '''
-        if read == True:
-            struct = self.read_desktop(file_path)
-        else:
-            struct = file_path
-        if struct['type'] == 'Theme':
-            #Read the settings
-            try:
-                if not struct[parameter][0] == '':
-                    if type(struct[parameter][0]) is int:
-                        self.client.set_int(struct[parameter][1],
-                                                struct[parameter][2],
-                                                struct[parameter][0])
-                    elif type(struct[parameter][0]) is float:
-                        self.client.set_float(struct[parameter][1],
-                                                struct[parameter][2],
-                                                struct[parameter][0])
-                    else: self.client.set_string(struct[parameter][1],
-                                                    struct[parameter][2],
-                                                    struct[parameter][0])
-            except IndexError:
-                # The key is not in the desktop file, just skip it.
-                pass
-
-            #TODO more type settings
-        else:
-            print (_("Error, the desktop file is not for a theme"))
-
-
-    def read_desktop_files_from_source(self, source, directories = defs.HOME_THEME_DIR):
+    def get_files_from_source(self, source, file_type, directories = defs.HOME_THEME_DIR):
         '''     Read all desktop file from a source
                 source is a list of 2 entries ('url','directory').
                 source is 1 line of the sources list.
@@ -484,21 +449,21 @@ class awnBzr(gobject.GObject):
             path= str(directories + "/" + source[1])
         try:
             list_files = os.listdir(path)
-            desktops =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] =='.desktop']
-            return desktops
+            files =  [path + "/" + elem for elem in list_files if os.path.splitext(elem)[1] ==file_type]
+            return files
         except:
             print(_("Error %s is missing on your system, please remove it from the sources.list") % path)
             return None
 
 
-    def catalog_from_sources_list(self):
+    def catalog_from_sources_list(self, file_type='.desktop'):
         '''
                 Return a catalog (list of desktop files from the sources list)
         '''
         catalog=[]
         sources_list = self.list_from_sources_list()
         for elem in sources_list:
-            desktops = self.read_desktop_files_from_source(elem)
+            desktops = self.get_files_from_source(elem, file_type)
             if desktops is not None:
                 [ catalog.append(i) for i in desktops ]
         return catalog
@@ -508,25 +473,56 @@ class awnBzr(gobject.GObject):
         Return a catalog of themes or applets (list of desktop files from the sources list)
         type_catalog is the type of catalog (Theme of Applets)
         '''
-        catalog = self.catalog_from_sources_list()
+        extension = '.awn-theme' if type_catalog == 'Theme' else '.desktop'
+        catalog = self.catalog_from_sources_list(extension)
+
         final_catalog = []
-        for elem in catalog:
-            desktop = DesktopEntry(elem)
-            if desktop.get('X-AWN-Type') == type_catalog:
-                final_catalog.append(elem)
+
+        if type_catalog == 'Theme':
+            final_catalog = catalog
+        else:
+            for elem in catalog:
+                desktop = DesktopEntry(elem)
+                if desktop.get('X-AWN-Type') == type_catalog:
+                    final_catalog.append(elem)
+                else:
+                    if desktop.get('X-AWN-AppletType') and type_catalog =='Applet':
+                        final_catalog.append(elem)
+
         return final_catalog
 
-    def load_all_settings_from_desktop(self, path):
-        '''     Load a desktop file and load all settings
+    def load_settings_from_theme(self, path):
+        '''     Load settings from desktop file
         '''
-        struct = self.read_desktop(path)
-        struct_items = struct.items()
-        if struct['type'] == 'Theme':
-            settings = [elem for elem in struct_items if elem[1] <> '' ]
-            new_struct = dict(settings)
+        parser = ConfigParser()
+        parser.read(path)
 
-        for k, v in new_struct.iteritems():
-            self.load_element_from_desktop(new_struct, k, read=False)
+        for section in parser.sections():
+            if section.startswith('config'):
+                ids = section.split('/')
+                group, instance_id = None, None
+                if len(ids) > 2:
+                    group = ids[1]
+                    instance_id = ids[2]
+                else:
+                    group = ids[1]
+
+                # once we support multiple panels use awn.config_get_defa...
+                # so far, self.client is OK
+                client = self.client
+
+                for key, value in parser.items(section):
+                    try:
+                        if value.isdigit(): value = int(value)
+                        elif len(value.split('.')) == 2: value = float(value)
+                        elif value in ['true', 'false']:
+                            value = True if value is 'true' else False
+                        elif value.startswith('#'): 
+                            client.set_string(group, key, value)
+                            continue
+                        client.set_value(group, key, value)
+                    except:
+                        print "Unable to set value %s for %s/%s" % (value, group, key)
 
     def list_applets_categories(self):
         '''     List all categories of applets
@@ -538,7 +534,7 @@ class awnBzr(gobject.GObject):
             for elem in applet['applet_category']:
                 if not elem in categories_list and elem is not "":
                     categories_list.append(elem)
-        categories_list.append("")
+        categories_list.append("All")
         return categories_list
 
     def applets_by_categories(self, categories = ""):
@@ -560,38 +556,63 @@ class awnBzr(gobject.GObject):
         '''     Make a row for a list of applets or launchers
                 path : path of the desktop file
         '''
+        icon = None
         text = ""
         name = ""
         try:
             if not os.path.exists(path):
                 raise IOError("Desktop file does not exist!")
-            item = DesktopEntry (path)
-            text = "<b>%s</b>\n%s" % (item.getName(), item.getComment())
-            name = path
-            icon_name = item.getIcon()
-            icon = self.make_icon(path)
+
+            if os.path.splitext(path)[1] == '.desktop':
+                item = DesktopEntry (path)
+                name = item.getName()
+                text = "<b>%s</b>\n%s" % (name, item.getComment())
+                icon_name = item.getIcon()
+                icon = self.make_icon(icon_name)
+            else:
+                parser = ConfigParser()
+                parser.read(path)
+                name = parser.get('theme-info', 'Name')
+                text = "<b>%s</b> %s" % (name,
+                                         parser.get('theme-info', 'Version'))
+                if parser.has_option('theme-info', 'Author'):
+                    text += "\n<span style='italic'>by</span> %s" % parser.get('theme-info', 'Author')
+                #icon = self.make_icon(parser.get('theme-info', 'Icon'))
+                icon = gdk.pixbuf_new_from_file(parser.get('theme-info', 'Icon'))
         except:
-            return None, "", ""
+            pass
         return icon, text, name
 
-    def make_icon (self,icon_path):
+    def make_icon (self, name, icon_size=32):
         ''' Extract an icon from a desktop file
         '''
         icon_final = None
         theme = gtk.icon_theme_get_default ()
-        desktop = DesktopEntry(icon_path)
-        name = desktop.getIcon()
         pixmaps_path = [os.path.join(p, "share", "pixmaps") for p in ("/usr", "/usr/local", defs.PREFIX)]
         applets_path = [os.path.join(p, "share", "avant-window-navigator","applets") for p in ("/usr", "/usr/local", defs.PREFIX)]
         list_icons = (
-                ('theme icon', self.search_icon(name, type_icon="theme")),
-                ('stock_icon', self.search_icon(name, type_icon="stock")),
-                ('file_icon', self.search_icon(name)),
-                ('pixmap_png_icon', self.search_icon(name, pixmaps_path, extension=".png")),
-                ('pixmap_icon', self.search_icon(name, pixmaps_path)),
-                ('applets_png_icon', self.search_icon(name, applets_path, extension=".png")),
-                ('applets_svg_icon', self.search_icon(name, applets_path, extension=".svg"))
-                        )
+            ('theme icon', self.search_icon(
+                name, type_icon="theme", size=icon_size)
+            ),
+            ('stock_icon', self.search_icon(
+                name, type_icon="stock", size=icon_size)
+            ),
+            ('file_icon', self.search_icon(
+                name, size=icon_size)
+            ),
+            ('pixmap_png_icon', self.search_icon(
+                name, pixmaps_path, extension=".png", size=icon_size)
+            ),
+            ('pixmap_icon', self.search_icon(
+                name, pixmaps_path, size=icon_size)
+            ),
+            ('applets_png_icon', self.search_icon(
+                name, applets_path, extension=".png", size=icon_size)
+            ),
+            ('applets_svg_icon', self.search_icon(
+                name, applets_path, extension=".svg", size=icon_size)
+            )
+        )
 
         for i in list_icons:
             if i[1] is not None:
@@ -600,45 +621,123 @@ class awnBzr(gobject.GObject):
         if icon_final is not None:
             return icon_final
         else:
-            return theme.load_icon('gtk-execute', 32, 0)
+            return theme.load_icon('gtk-execute', icon_size, 0)
 
-    def search_icon (self, name, path="", extension="", type_icon="pixmap"):
+    def search_icon (self, name, path="", extension="",
+                     type_icon="pixmap", size=32):
         ''' Search a icon'''
         theme = gtk.icon_theme_get_default ()
         icon = None
         if type_icon is "theme":
             try:
-                icon = theme.load_icon (name, 32, 0)
+                icon = theme.load_icon (name, size, 0)
             except:
                 icon = None
         elif type_icon is "stock":
             try:
-                image = gtk.image_new_from_stock(name, 32)
+                image = gtk.image_new_from_stock(name, size)
                 icon = image.get_pixbuf()
             except:
                 icon = None
         elif type_icon is "pixmap":
+            
             for i in path:
                 if os.path.exists(os.path.join(i,name+extension)):
                     try:
-                        icon = gdk.pixbuf_new_from_file_at_size(os.path.join(i,name+extension), 32, 32)
+                        icon = gdk.pixbuf_new_from_file_at_size(os.path.join(i,name+extension), size, size)
                     except:
                         icon = None
+
         return icon
 
-    def make_model(self, uris, treeview):
+    def add_uris_to_model(self, model, uris):
+        for uri in uris:
+            if os.path.isfile(uri):
+                icon, text, name = self.make_row (uri)
+                if len(text) > 2:
+                    row = model.append ()
+                    model.set_value (row, 0, icon)
+                    model.set_value (row, 1, text)
+                    model.set_value (row, 2, uri)
+                    model.set_value (row, 3, name)
 
-        model = model = gtk.ListStore(gdk.Pixbuf, str, str,str)
-        model.set_sort_column_id(2, gtk.SORT_ASCENDING)
+    def make_applet_model(self, uris, treeview):
+        self.applet_model = model = AwnListStore(gdk.Pixbuf, str, str, str)
         treeview.set_model (model)
-        treeview.set_search_column (3)
+
+        def deactivate_applet(applet_model, dest, selection_data):
+            model, src = selection_data.tree_get_row_drag_data()
+            itr = model.get_iter(src)
+            model.remove(itr)
+            self.apply_applet_list_changes()
+            
+            infobar = self.wTree.get_object("tm_infobar")
+            if self.check_for_task_manager():
+                infobar.hide_all()
+            else:
+                infobar.show_all()
+                
+
+        self.applet_model.connect("foreign-drop", deactivate_applet)
+
+        ren = gtk.CellRendererPixbuf()
+        col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
+        col.set_expand (False)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        ren.props.ellipsize = pango.ELLIPSIZE_END
+        col = gtk.TreeViewColumn ("Description", ren, markup=1)
+        col.set_expand (True)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Desktop", ren)
+        col.set_visible (False)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Name", ren)
+        col.set_visible (False)
+        treeview.append_column (col)
+
+        # Plus icon
+        #ren = gtk.CellRendererPixbuf()
+        #ren.props.icon_name = "gtk-add"
+        #ren.props.stock_size = gtk.ICON_SIZE_DND
+        #col = gtk.TreeViewColumn ("AddIcon", ren)
+        #col.set_expand (False)
+        #treeview.append_column (col)
+
+        self.add_uris_to_model(model, uris)
+
+        treeview.show()
+
+        return model
+
+    def make_launchers_model(self, uris, treeview):
+        model = AwnListStore(gdk.Pixbuf, str, str, str)
+        treeview.set_model (model)
+
+        def add_launcher(model, dest, selection):
+            data = urllib.unquote(selection.data)
+            data = data.replace("file://", "").replace("\r\n", "")
+            if data.endswith('.desktop'):
+                paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
+                paths.append(data)
+                self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
+            else:
+                print "This widget accepts only desktop files!"
+
+        model.connect('foreign-drop', add_launcher)
 
         ren = gtk.CellRendererPixbuf()
         col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
         treeview.append_column (col)
 
         ren = gtk.CellRendererText()
-        col = gtk.TreeViewColumn ("Name", ren, markup=1)
+        col = gtk.TreeViewColumn ("Description", ren, markup=1)
+        col.set_expand (True)
         treeview.append_column (col)
 
         ren = gtk.CellRendererText()
@@ -646,24 +745,41 @@ class awnBzr(gobject.GObject):
         col = gtk.TreeViewColumn ("Desktop", ren)
         treeview.append_column (col)
 
-#        self.last_uris = uris[:] # make a copy
-#        self.client.notify_add(defs.LAUNCHERS, defs.LAUNCHERS_LIST, self.refresh_launchers, self)
+        ren = gtk.CellRendererText()
+        ren.props.visible = False
+        col = gtk.TreeViewColumn ("Name", ren)
+        treeview.append_column (col)
 
-#               self.refresh_tree(uris, model)
-        for i in uris:
-            if os.path.isfile(i):
-                icon, text, name = self.make_row (i)
-                if len(text) > 2:
-                    row = model.append ()
-                    model.set_value (row, 0, icon)
-                    model.set_value (row, 1, text)
-                    model.set_value (row, 2, name)
-                if len(uris) == 0:
-                    if (self.idle_id != 0):
-                        gobject.source_remove(self.idle_id)
-                    self.idle_id = gobject.idle_add(self.check_changes, [])
+        self.add_uris_to_model(model, uris)
 
-        self.load_finished = True
+        treeview.show()
+
+        return model
+
+    def make_model(self, uris, treeview):
+        model = gtk.ListStore(gdk.Pixbuf, str, str, str)
+        treeview.set_model (model)
+
+        ren = gtk.CellRendererPixbuf()
+        col = gtk.TreeViewColumn ("Pixbuf", ren, pixbuf=0)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        col = gtk.TreeViewColumn ("Description", ren, markup=1)
+        col.set_expand (True)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        ren.props.visible = False
+        col = gtk.TreeViewColumn ("Desktop", ren)
+        treeview.append_column (col)
+
+        ren = gtk.CellRendererText()
+        ren.props.visible = False
+        col = gtk.TreeViewColumn ("Name", ren)
+        treeview.append_column (col)
+
+        self.add_uris_to_model(model, uris)
 
         treeview.show()
 
@@ -671,19 +787,7 @@ class awnBzr(gobject.GObject):
 
     def refresh_tree (self, uris, model):
         model.clear()
-        for i in uris:
-            if os.path.isfile(i):
-                icon, text, name = self.make_row (i)
-                if len(text) > 2:
-                    row = model.append ()
-                    model.set_value (row, 0, icon)
-                    model.set_value (row, 1, text)
-                    model.set_value (row, 2, name)
-                if len(uris) == 0:
-                    if (self.idle_id != 0):
-                        gobject.source_remove(self.idle_id)
-                    self.idle_id = gobject.idle_add(self.check_changes, [])
-        #model.show()
+        self.add_uris_to_model(model, uris)
 
     def create_dropdown(self, widget, entries, matrix_settings=False):
         '''     Create a dropdown.
@@ -699,78 +803,15 @@ class awnBzr(gobject.GObject):
         widget.pack_start(cell)
         widget.add_attribute(cell,'text',0)
 
+    def check_for_task_manager(self):
+		applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST)
+		for applet in applets:
+			tokens = applet.split("::")
+			if tokens[0].find('taskmanager.desktop') > 0:
+				return True
+		return False
+        
 class awnPreferences(awnBzr):
-    def setup_color(self, group, key, colorbut, show_opacity_scale = True):
-        self.load_color(group, key, colorbut, show_opacity_scale)
-        colorbut.connect("color-set", self.color_changed, (group, key))
-        self.client.notify_add(group, key, self.reload_color, (colorbut,show_opacity_scale))
-
-    def load_color(self, group, key, colorbut, show_opacity_scale = True):
-        try:
-            color, alpha = make_color(self.client.get_string(group, key))
-        except TypeError:
-            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
-	print ("color : ", color, " alpha : %s", alpha)
-        colorbut.set_color(color)
-        if show_opacity_scale:
-            colorbut.set_alpha(alpha)
-        else:
-            colorbut.set_use_alpha(False)
-
-    def reload_color(self, group, key, value, (colorbut,show_opacity_scale)):
-        self.load_color(group, key, colorbut, show_opacity_scale)
-
-    def color_changed(self, colorbut, groupkey):
-        group, key = groupkey
-        string =  make_color_string(colorbut.get_color(), colorbut.get_alpha())
-        self.client.set_string(group, key, string)
-
-    def setup_chooser(self, group, key, chooser):
-        """sets up png choosers"""
-        fil = gtk.FileFilter()
-        fil.set_name(_("PNG Files"))
-        fil.add_pattern("*.png")
-        fil.add_pattern("*.PNG")
-        chooser.add_filter(fil)
-        preview = gtk.Image()
-        chooser.set_preview_widget(preview)
-
-        self.load_chooser(group, key, chooser)
-        self.client.notify_add(group, key, self.reload_chooser, chooser)
-
-        chooser.connect("update-preview", self.update_preview, preview)
-        chooser.connect("selection-changed", self.chooser_changed, (group, key))
-
-    def load_chooser(self, group, key, chooser):
-        try:
-            filename = self.client.get_string(group, key)
-            if os.path.exists(filename):
-                chooser.set_uri(filename)
-            elif(filename != "~"):
-                self.client.set_string(group, key, "~")
-        except TypeError:
-            raise "\nKey: [%s]%s isn't set.\nRestarting AWN usually solves this issue\n" % (group, key)
-
-    def reload_chooser(self, group, key, value, chooser):
-        self.load_chooser(group, key, chooser)
-
-    def chooser_changed(self, chooser, groupkey):
-        group, key = groupkey
-        f = chooser.get_filename()
-        if f == None:
-            return
-        self.client.set_string(group, key, f)
-
-    def update_preview(self, chooser, preview):
-        f = chooser.get_preview_filename()
-        try:
-            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size(f, 128, 128)
-            preview.set_from_pixbuf(pixbuf)
-            have_preview = True
-        except:
-            have_preview = False
-        chooser.set_preview_widget_active(have_preview)
-
     def setup_font(self, group, key, font_btn):
         """sets up font chooser"""
         self.load_font(group, key, font_btn)
@@ -790,41 +831,16 @@ class awnPreferences(awnBzr):
         group, key = groupkey
         self.client.set_string(group, key, font_btn.get_font_name())
 
-    def setup_effect(self, group, key, dropdown):
-        model = gtk.ListStore(str)
-        model.append([_("Simple")])
-        model.append([_("Classic")])
-        model.append([_("Fade")])
-        model.append([_("Spotlight")])
-        model.append([_("Zoom")])
-        model.append([_("Squish")])
-        model.append([_("3D turn")])
-        model.append([_("3D turn with spotlight")])
-        model.append([_("Glow")])
-        dropdown.set_model(model)
-        cell = gtk.CellRendererText()
-        dropdown.pack_start(cell)
-        dropdown.add_attribute(cell,'text',0)
-
-        self.load_effect(group, key, dropdown)
-        dropdown.connect("changed", self.effect_changed, (group, key))
-
-        self.client.notify_add(group, key, self.reload_effect, dropdown)
-
     def load_effect(self, group, key, dropdown):
         dropdown.set_active(self.client.get_int(group, key))
 
     def reload_effect(self, group, key, value, dropdown):
         self.load_effect(group, key, dropdown)
 
-    def effect_changed(self, dropdown, groupkey):
-        group, key = groupkey
-        self.client.set_int(group, key, dropdown.get_active())
-
-    def setup_effect_custom(self, group, key):
+    def setup_custom_effects(self, group, key):
         self.effect_drop = []
-        for drop in ['hover', 'open', 'close', 'launch', 'attention']:
-            d = self.wTree.get_widget('effect_'+drop)
+        for drop in ['open', 'close', 'hover', 'launch', 'attention']:
+            d = self.wTree.get_object('effect_'+drop)
             self.effect_drop.append(d)
             model = gtk.ListStore(str)
             model.append([_("None")])
@@ -841,23 +857,26 @@ class awnPreferences(awnBzr):
             cell = gtk.CellRendererText()
             d.pack_start(cell)
             d.add_attribute(cell,'text',0)
+
         self.load_effect_custom(group,key)
         self.client.notify_add(group, key, self.reload_effect_custom)
-        for drop in ['hover', 'open', 'close', 'launch', 'attention']:
-            d = self.wTree.get_widget('effect_'+drop)
+        
+        for drop in ['open', 'close', 'hover', 'launch', 'attention']:
+            d = self.wTree.get_object('effect_'+drop)
             d.connect("changed", self.effect_custom_changed, (group, key))
 
     def load_effect_custom(self, group, key):
         effect_settings = self.client.get_int(group, key)
-        cnt = 0
-        for drop in ['hover', 'open', 'close', 'launch', 'attention']:
-            d = self.wTree.get_widget('effect_'+drop)
-            current_effect = (effect_settings & (15 << (cnt*4))) >> (cnt*4)
-            if(current_effect == 15):
+        effect_dict = {'open': 0xF, 'close': 0xF0, 'hover': 0xF00,
+                       'launch': 0xF000, 'attention': 0xF0000}
+        for drop in effect_dict.keys():
+            d = self.wTree.get_object('effect_'+drop)
+            current_effect = effect_settings & effect_dict[drop]
+            while current_effect > 15: current_effect >>= 4
+            if current_effect == 15:
                 d.set_active(0)
             else:
                 d.set_active(current_effect+1)
-            cnt = cnt+1
 
     def reload_effect_custom(self, group, key, value):
         self.load_effect_custom(group, key)
@@ -868,17 +887,83 @@ class awnPreferences(awnBzr):
             self.effects_dd.set_active(10) #Custom
             new_effects = self.get_custom_effects()
             self.client.set_int(group, key, new_effects)
-            print "effects set to: ", "%0.8X" % new_effects
+            print "Setting effects to:", "0x%0.8X" % new_effects
 
     def get_custom_effects(self):
         effects = 0
-        for drop in ['attention', 'launch', 'close', 'open', 'hover']:
-            d = self.wTree.get_widget('effect_'+drop)
+        dropdowns = ['open', 'close', 'hover', 'launch', 'attention']
+        dropdowns.reverse()
+        for drop in dropdowns:
+            d = self.wTree.get_object('effect_'+drop)
             if(d.get_active() == 0):
                 effects = effects << 4 | 15
             else:
                 effects = effects << 4 | int(d.get_active())-1
         return effects
+
+    def setup_effects(self, group, key, dropdown):
+        self.effects_dd = dropdown
+        model = gtk.ListStore(str)
+        model.append([_("None")])
+        model.append([_("Simple")])
+        model.append([_("Classic")])
+        model.append([_("Fade")])
+        model.append([_("Spotlight")])
+        model.append([_("Zoom")])
+        model.append([_("Squish")])
+        model.append([_("3D Turn")])
+        model.append([_("3D Spotlight Turn")])
+        model.append([_("Glow")])
+        model.append([_("Custom")]) ##Always last
+        dropdown.set_model(model)
+        cell = gtk.CellRendererText()
+        dropdown.pack_start(cell)
+        dropdown.add_attribute(cell,'text',0)
+
+        self.load_effect(group,key,dropdown)
+
+        dropdown.connect("changed", self.effect_changed, (group, key))
+        self.client.notify_add(group, key, self.reload_effect, dropdown)
+
+    def load_effect(self, group, key, dropdown):
+        effect_settings = self.client.get_int(group, key)
+        hover_effect = effect_settings & 15 # not really hover
+        bundle = 0
+        for i in range(5):
+            bundle = bundle << 4 | hover_effect
+
+        if (bundle == effect_settings):
+            if (hover_effect == 15):
+                active = 0
+            else:
+                active = hover_effect+1
+        else:
+            active = 10 #Custom
+            self.btn_edit_custom_effects.show()
+
+        dropdown.set_active(int(active))
+
+    def reload_effect(self, group, key, value, dropdown):
+        self.load_effect(group, key, dropdown)
+
+    def effect_changed(self, dropdown, groupkey):
+        group, key = groupkey
+        new_effects = 0
+        effect = 0
+        if dropdown.get_active() != 10: # not Custom
+            if dropdown.get_active() == 0:
+                effect = 15
+            else:
+                effect = dropdown.get_active() - 1
+            for i in range(5):
+                new_effects = new_effects << 4 | effect
+            self.client.set_int(group, key, new_effects)
+            self.btn_edit_custom_effects.hide()
+            print "Setting effects to: ", "0x%0.8X" % new_effects
+        else:
+            self.btn_edit_custom_effects.show()
+            response = self.custom_effects_dialog.run()
+            self.custom_effects_dialog.hide()
 
     def setup_autostart(self, check):
         """sets up checkboxes"""
@@ -937,31 +1022,14 @@ class awnPreferences(awnBzr):
             # create the autostart entry
             starter_item = DesktopEntry(autostart_file)
             starter_item.set('Name', 'Avant Window Navigator')
-            starter_item.set('Exec', 'avant-window-navigator')
+            starter_item.set('Exec', 'avant-window-navigator --startup')
+            starter_item.set('Icon', 'avant-window-navigator')
             starter_item.set('X-GNOME-Autostart-enabled', 'true')
             starter_item.write()
 
     def delete_autostarter(self):
         '''Delete the autostart entry for the dock.'''
         os.remove(self.get_autostart_file_path())
-
-#TODO Factorize *_orientation and *_style
-
-    def setup_freeze(self, toggle, freezed, parameter, data=None):
-        '''     Setup a "linked" toggle button
-                toggle : the gtk.ToggleButton
-                freezed : the gtkWidget to freeze
-        '''
-        toggle.connect("toggled", self.freeze_changed, freezed, parameter)
-
-    def freeze_changed(self, widget, freezed, parameter):
-        '''     Callback for the setup_freeze
-        '''
-        if widget.get_active() == True:
-            freezed.set_sensitive(False)
-            self.load_element_from_desktop(self.theme_desktop, parameter)
-        else:
-            freezed.set_sensitive(True)
 
     def test_bzr_themes(self, widget, data=None):
         if widget.get_active() == True:
@@ -972,16 +1040,39 @@ class awnPreferences(awnBzr):
             pass
 
 class awnManager:
-    def safe_load_icon(self, name, size, flags = 0):
-        try:
-            icon = self.theme.load_icon(name, size, flags)
-        except gobject.GError:
-            # must be on one line due to i18n
-            msg = _('Could not load the "%s" icon.  Make sure that the SVG loader for Gtk+ is installed. It usually comes with librsvg, or a package similarly named.') % name
-            dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, msg)
-            dialog.run()
-            dialog.destroy()
-            sys.exit(1)
+    def __init__(self):
+        self.theme = gtk.icon_theme_get_default()
+
+    def safe_load_icon(self, name, size, flags=0):
+        '''Loads an icon, with gtk-missing-image being the fallback.
+        :param name: Either the name of an icon, or a list of icon names.
+        :param size: The preferred size of the icon.
+        :param flags: The flags used to determine how the icon is loaded. See
+        gtk.IconLookupFlags for details.
+        :returns: a gdk.Pixbuf on success, None on failure.
+        '''
+        icon = None
+        if isinstance(name, (list, tuple)):
+            icons = list(name) + ['gtk-missing-image']
+            # Gtk.IconTheme.choose_icon() does not do what I want it to do...
+            for icon_name in icons:
+                if self.theme.has_icon(icon_name):
+                    try:
+                        icon = self.theme.load_icon(icon_name, size, flags)
+                        break
+                    except gobject.GError:
+                        pass
+            # if gtk-missing-image doesn't exist, we have a real problem...
+            if icon is None:
+                sys.stderr.write(_('Could not locate any of these icons: %s\n')
+                                 % ', '.join(icons))
+        else:
+            try:
+                icon = self.theme.load_icon(name, size, flags)
+            except gobject.GError:
+                icon = self.theme.load_icon('gtk-missing-image', size, flags)
+                sys.stderr.write(_('Could not locate the following icon: %s\n')
+                                 % name)
         return icon
 
     def make_menu_model(self):
@@ -1014,7 +1105,7 @@ class awnManager:
         if len(extra_version) > 0:
             version += extra_version
         self.about.set_version(version)
-        self.about.set_copyright("Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>")
+        self.about.set_copyright("Copyright (C) 2007-2009 Awn-core team")
         self.about.set_authors([
             'Neil Jagdish Patel <njpatel@gmail.com>',
             'haytjes <hv1989@gmail.com>',
@@ -1039,6 +1130,8 @@ _("You should have received a copy of the GNU General Public License along with 
         self.about.set_documenters(["More to come..."])
         self.about.set_artists(["More to come..."])
         #self.about.set_translator_credits()
+        if button is None:
+            self.about.set_skip_taskbar_hint(True)
         self.about.run()
         self.about.destroy()
 
@@ -1049,78 +1142,87 @@ _("You should have received a copy of the GNU General Public License along with 
         gtk.main()
 
 class awnLauncher(awnBzr):
-    def reordered(self, model, path, iterator, data=None):
-        cur_index = self.model.get_path(iterator)[0]
-        cur_uri = self.model.get_value (iterator, 2)
-        l = {}
-        it = self.model.get_iter_first ()
+    
+    def callback_launcher_selection(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.launcher_remove.set_sensitive(True)
+            self.launcher_edit.set_sensitive(True)
+        else:
+            if hasattr(self, 'launcher_remove'): 
+                self.launcher_remove.set_sensitive(False)
+            if hasattr(self, 'launcher_edit'): 
+                self.launcher_edit.set_sensitive(False)
+        
+    def launchers_reordered(self, model, path, iterator, data=None):
+        data = []
+        it = model.get_iter_first ()
         while (it):
-            uri = self.model.get_value (it, 2)
-            l[self.model.get_path(it)[0]] = uri
-            it = self.model.iter_next (it)
+            uri = model.get_value (it, 2)
+            data.append(uri)
+            it = model.iter_next (it)
 
-        remove = None
-        for item in l:
-            if l[item] == cur_uri and cur_index != item:
-                remove = item
-                break
-        if remove >= 0:
-            del l[remove]
+        data = filter(None, data)
 
-        launchers = []
-        for item in l:
-            launchers.append(l[item])
-
-        launchers = filter(None, launchers)
-
-        if self.load_finished:
-            if (self.idle_id != 0):
-                gobject.source_remove(self.idle_id)
-            self.idle_id = gobject.idle_add(self.check_changes, launchers)
-
-    def check_changes (self, data):
-        self.idle_id = 0
         if (self.last_uris != data):
             self.last_uris = data[:]
-            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, data)
+            self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, data)
 
-        return False
-
-    def refresh_launchers (self, entry, extra):
-        self.last_uris = entry['value']
-        self.refresh_tree (self.last_uris)
+    def refresh_launchers (self, group, key, value, extra):
+        self.last_uris = value
+        self.refresh_tree (self.last_uris, extra)
 
     #   Code below taken from:
     #   Alacarte Menu Editor - Simple fd.o Compliant Menu Editor
     #   Copyright (C) 2006  Travis Watkins
     #   Edited by Ryan Rushton
+    
+    def create_unique_launcher_file(self):
+        path = os.path.join(defs.HOME_LAUNCHERS_DIR,
+                            self.getUniqueFileId('awn_launcher', '.desktop'))
+        return vfs.File.for_path(path)
 
     def edit(self, button):
         selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
-        uri = model.get_value(iter, 2)
-        editor = awnLauncherEditor(uri, model, self)
-        editor.run()
+        path = model.get_value(iter, 2)
+        vfile = vfs.File.for_path(path)
+        if vfile.is_writable():
+            output = None
+        else:
+            output = self.create_unique_launcher_file()
+        editor = LauncherEditorDialog(vfile, output)
+        editor.show_all()
+        response = editor.run()
+        if response == gtk.RESPONSE_APPLY and output is not None:
+            paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
+            idx = paths.index(path)
+            paths[idx] = output.props.path
+            self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
 
     def add(self, button):
-        file_path = os.path.join(defs.HOME_LAUNCHERS_DIR, self.getUniqueFileId('awn_launcher', '.desktop'))
         selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
-        editor = awnLauncherEditor(file_path, model, self)
-        editor.run()
+        vfile = self.create_unique_launcher_file()
+        editor = LauncherEditorDialog(vfile, None)
+        editor.show_all()
+        response = editor.run()
+        if response == gtk.RESPONSE_APPLY:
+            paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
+            paths.append(vfile.props.path)
+            self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
 
     def remove(self, button):
         selection = self.treeview_launchers.get_selection()
         (model, iter) = selection.get_selected()
-        uri = model.get_value(iter, 2)
-        # TODO: don't check if it exists, perhaps it's invalid
-        if os.path.exists(uri):
-            uris = self.client.get_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST)
-            uris.remove(uri)
-            if uri.startswith(defs.HOME_LAUNCHERS_DIR):
-                os.remove(uri)
-            self.client.set_list(defs.LAUNCHERS, defs.LAUNCHERS_LIST, uris)
-            self.refresh_tree(uris, model)
+        path = model.get_value(iter, 2)
+
+        paths = self.client_taskman.get_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST)
+        paths.remove(path)
+        if os.path.exists(path) and path.startswith(defs.HOME_LAUNCHERS_DIR):
+            os.remove(path)
+        self.client_taskman.set_list(GROUP_DEFAULT, defs.LAUNCHERS_LIST, paths)
+        self.refresh_tree(paths, model)
 
     def getUniqueFileId(self, name, extension):
         append = 0
@@ -1216,7 +1318,7 @@ class awnApplet(awnBzr):
                 if do_apply:
                     uid = "%d" % int(time.time())
                     self.model.set_value (row, 3, uid)
-                    self._apply ()
+                    self.apply_applet_list_changes ()
                 else:
                     model.set_value (row, 3, name)
 
@@ -1230,8 +1332,8 @@ class awnApplet(awnBzr):
             success.run()
             success.destroy()
 
-    def activate_applet (self, button):
-        select = self.treeview_available.get_selection()
+    def activate_applet (self, treeview, path, col):
+        select = treeview.get_selection()
         if not select:
             print "no selection"
             return
@@ -1245,8 +1347,14 @@ class awnApplet(awnBzr):
 
         self.active_model.append([icon, path, uid, text])
 
-        self._apply ()
-
+        self.apply_applet_list_changes()
+        hs = self.scrollwindow1.get_hscrollbar()
+        ha = self.scrollwindow1.get_hadjustment()
+        hs.set_value(ha.upper - ha.page_size)
+    
+    def activate_applet_btn(self, widget, data=None):
+        self.activate_applet(self.treeview_available, None, None)
+        
     def row_active (self, q, w, e):
         self.activate_applet (None)
 
@@ -1254,7 +1362,7 @@ class awnApplet(awnBzr):
         if model.get_value (iterator, 2) == sel_path:
             self.active_found = True
             return True
-
+    
     def delete_applet(self,widget):
         self.active_found = False
         select = self.treeview_available.get_selection()
@@ -1284,21 +1392,21 @@ class awnApplet(awnBzr):
         result = dialog.run()
 
         if result == -3:
-            execpath = item.getExec()
+            execpath = item.get('X-AWN-AppletExec')
             fullpath = os.path.join(defs.HOME_APPLET_DIR, os.path.split(execpath)[0])
 
             if os.path.exists(fullpath) and ".config" in path:
                 model.remove (iterator)
                 self.remove_applet_dir(fullpath, path)
-                self._apply ()
+                self.apply_applet_list_changes()
                 dialog.destroy()
             else:
                 dialog.destroy()
                 self.popup_msg("Unable to Delete Applet")
         else:
             dialog.destroy()
-
-    def deactivate_applet (self, button):
+            
+    def deactivate_applet(self, button):
         cursor = self.icon_view.get_cursor()
         if not cursor:
             return
@@ -1308,7 +1416,7 @@ class awnApplet(awnBzr):
         #applet_client = awn.Config(name, uid)
         #applet_client.clear()
         self.active_model.remove(itr)
-        self._apply()
+        self.apply_applet_list_changes()
 
     def remove_applet_dir(self, dirPath, filename):
         namesHere = os.listdir(dirPath)
@@ -1322,7 +1430,7 @@ class awnApplet(awnBzr):
         if os.path.exists(filename):
             os.unlink(filename)
 
-    def _apply (self):
+    def apply_applet_list_changes (self):
         applets_list = []
         ua_list = []
 
@@ -1341,33 +1449,26 @@ class awnApplet(awnBzr):
         self.client.set_list(defs.PANEL, defs.APPLET_LIST, applets_list)
         self.client.set_list(defs.PANEL, defs.UA_LIST, ua_list)
 
-    def up_clicked (self, button):
-        select = self.treeview.get_selection()
-        model, iterator = select.get_selected ()
-        uri = model.get_value (iterator, 2)
-        prev = None
-        it = model.get_iter_first ()
-        while it:
-            if model.get_value (it, 2) == uri:
-                break
-            prev = it
-            it = model.iter_next (it)
+    def make_active_applets_model (self):
+        self.active_model = AwnListStore(gtk.gdk.Pixbuf, str, str, str)
+        self.active_model.connect("rows-reordered", self.applet_reorder)
 
-        if prev:
-            model.move_before (iterator, prev)
-        self._apply ()
-
-    def down_clicked (self, button):
-        select = self.treeview.get_selection()
-        model, iterator = select.get_selected ()
-        next = model.iter_next (iterator)
-        if next:
-            model.move_after (iterator, next)
-        self._apply ()
-
-    def make_active_model (self):
-        self.active_model = gtk.ListStore(gtk.gdk.Pixbuf, str, str, str)
-        self.active_model.connect("row-changed", self.applet_reorder)
+        def activate_applet(active_model, dst_row, selection_data):
+            model, src_row = selection_data.tree_get_row_drag_data()
+            iter = model.get_iter(src_row)
+            path = model.get_value (iter, 2)
+            icon, text, name = self.make_row (path)
+            uid = "%d" % int(time.time())
+            active_model.insert(dst_row, [icon, path, uid, text])
+            self.apply_applet_list_changes()
+            
+            infobar = self.wTree.get_object("tm_infobar")
+            if self.check_for_task_manager():
+                infobar.hide_all()
+            else:
+                infobar.show_all()
+            
+        self.active_model.connect("foreign-drop", activate_applet)
 
         self.icon_view = gtk.IconView(self.active_model)
         self.icon_view.set_pixbuf_column(0)
@@ -1377,22 +1478,23 @@ class awnApplet(awnBzr):
             self.icon_view.set_tooltip_column(3)
         self.icon_view.set_item_width(-1)
         self.icon_view.set_size_request(48, -1)
-        self.icon_view.set_reorderable(True)
         self.icon_view.set_columns(100)
-
+ 
         self.scrollwindow1.add(self.icon_view)
         self.scrollwindow1.show_all()
-
+        
+        self.icon_view.connect('selection-changed', self.callback_active_applet_selection)
+        
         applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST)
 
         ua_applets = self.client.get_list(defs.PANEL, defs.UA_LIST)
-	
+
         for ua in ua_applets:
             tokens = ua.split("::")
             applets.insert(int(tokens[1]), ua)
 
         self.refresh_icon_list (applets, self.active_model)
-
+        
     def refresh_icon_list (self, applets, model):
         for a in applets:
             tokens = a.split("::")
@@ -1414,9 +1516,15 @@ class awnApplet(awnBzr):
 
     def load_applets (self):
         applets = self.applets_by_categories()
-        self.make_model(applets, self.treeview_available)
+        model = self.make_applet_model(applets, self.treeview_available)
 
+        model.set_sort_column_id(1, gtk.SORT_ASCENDING)
+        self.treeview_available.set_search_column (3)
+
+        
     def update_applets(self, list_applets):
+        if list_applets == "All":
+            list_applets = ''
         applets = self.applets_by_categories(list_applets)
         self.refresh_tree(applets, self.treeview_available.get_model())
 
@@ -1428,47 +1536,205 @@ class awnApplet(awnBzr):
         success.destroy()
 
     def applet_reorder(self, model, path, iterator, data=None):
-        cur_index = model.get_path(iterator)[0]
-        cur_uri = model.get_value (iterator, 1)
-        cur_uid = model.get_value (iterator, 2)
-        cur_s = "%s::%s" % (cur_uri, cur_uid)
-        l = {}
-        it = model.get_iter_first ()
+        l = []
+        it = model.get_iter_root ()
         while (it):
             path = model.get_value (it, 1)
             uid = model.get_value (it, 2)
             s = "%s::%s" % (path, uid)
-            l[model.get_path(it)[0]] = s
+            l.append(s)
             it = model.iter_next (it)
 
-        remove = None
-        for item in l:
-            if l[item] == cur_s and cur_index != item:
-                remove = item
-                break
-        if remove >= 0:
-            del l[remove]
+        applets = l
+        applets = filter(None, applets)
 
-        applets = l.values()
+        applets_list = []
+        ua_list = []
+        for a in applets:
+            tokens = a.split("::")
+            path = tokens[0]
+            if path.endswith(".desktop"):
+                applets_list.append(a)
+            else:
+                position = applets.index(a)
+                ua = tokens[0] + "::" + str(position)
+                ua_list.append(ua)
 
-        if not None in applets and self.load_finished:
-            applets_list = []
-            ua_list = []
-            for a in applets:
-                tokens = a.split("::")
-                path = tokens[0]
-                if path.endswith(".desktop"):
-                    applets_list.append(a)
-                else:
-                    position = applets.index(a)
-                    ua = tokens[0] + "::" + str(position)
-                    ua_list.append(ua)
-
-            self.client.set_list(defs.PANEL, defs.APPLET_LIST, applets_list)
-            self.client.set_list(defs.PANEL, defs.UA_LIST, ua_list)
-
+        self.client.set_list(defs.PANEL, defs.APPLET_LIST, applets_list)
+        self.client.set_list(defs.PANEL, defs.UA_LIST, ua_list)
 
     def callback_widget_filter_applets(self, data=None):
         model = self.choose_categorie.get_model()
         select_cat = model.get_value(self.choose_categorie.get_active_iter(),0)
         self.update_applets(select_cat)
+
+    def callback_widget_filter_applets_view(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.update_applets(model.get_value(iter, 0))
+    
+    def callback_applet_selection(self, selection, data=None):
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            self.appletActivate.set_sensitive(True)
+            if os.access(model.get_value(iter, 2), os.W_OK):
+                self.btn_delete.set_sensitive(True)
+            else:
+                self.btn_delete.set_sensitive(False)
+        else:
+            self.btn_delete.set_sensitive(False)
+
+    def callback_active_applet_selection(self, iconview, data=None):
+        sel = iconview.get_selected_items()
+        if len(sel):
+            model = iconview.get_model()
+            iter = model.get_iter(sel[0])
+            if iter is not None:
+                self.appletDeactivate.set_sensitive(True)
+            else:
+                self.appletDeactivate.set_sensitive(False)
+        else:
+            self.appletDeactivate.set_sensitive(False)
+                
+class awnThemeCustomize(awnBzr):
+
+    def export_theme(self, config, filename, newfilename):
+        tmpdir = tempfile.gettempdir()
+        themedir = os.path.join(tmpdir, filename)
+        themefile = os.path.join(tmpdir, filename+'.awn-theme')
+        if os.path.exists(themefile):
+            os.remove(themefile)
+            if os.path.exists(themedir):
+                shutil.rmtree(themedir) 
+        if os.path.exists(themedir):
+            self.hide_export_dialog(None)
+            msg = themedir+" already exists, unable to export theme."
+            self.theme_message(msg)
+            return
+                    
+        os.mkdir(themedir)
+        
+        f = open(themefile, "w")
+        config.write(f)
+        f.close()	
+		
+        arrow_path = self.client.get_string(defs.EFFECTS, defs.ARROW_ICON)
+        if os.path.exists(arrow_path):
+            shutil.copy(arrow_path, themedir+'/arrow.png')
+		
+        self.get_dock_image(themedir)
+							
+        tarpath = os.path.join(tmpdir, filename+'.tgz')
+        tFile = tarfile.open(tarpath, "w:gz")
+        tFile.add(themedir, os.path.basename(themedir))
+        tFile.add(themefile, os.path.basename(themefile))
+        tFile.close()
+	
+        shutil.move(tarpath, newfilename)
+        shutil.rmtree(themedir)	
+        os.remove(themefile)
+        self.hide_export_dialog(None)
+        
+    def get_dock_image(self, themedir):
+        bus = dbus.SessionBus()
+        panel = bus.get_object('org.awnproject.Awn', '/org/awnproject/Awn/Panel1', 'org.awnproject.Awn.Panel')
+        data = panel.GetSnapshot(byte_arrays=True)
+        width, height, rowstride, has_alpha, bits_per_sample, n_channels, pixels = data
+        pixels = array.array('c', pixels)
+        surface = cairo.ImageSurface.create_for_data(pixels, cairo.FORMAT_ARGB32, width, height, rowstride)
+        # get only a subimage
+        newsurface = surface.create_similar(cairo.CONTENT_COLOR_ALPHA, 150, height)
+        cr = cairo.Context(newsurface)
+        cr.set_operator(cairo.OPERATOR_SOURCE)
+        cr.set_source_surface(surface)
+        cr.paint()
+        newsurface.write_to_png(themedir+'/thumb.png')
+            
+    def install_theme(self, file):
+        goodTheme = False
+        customArrow = False
+        if tarfile.is_tarfile(file):
+            tar = tarfile.open(file, "r:gz")
+            for member in tar.getmembers():
+                if member.name.endswith(".awn-theme"):
+                    goodTheme = member.name                        
+                elif member.name.endswith("arrow.png"):
+                    customArrow = member.name
+            
+            if goodTheme:
+                themefile = os.path.join(defs.HOME_THEME_DIR, goodTheme)
+                (filename, fileext) = os.path.splitext(goodTheme)
+                themedir = os.path.join(defs.HOME_THEME_DIR, filename)
+                
+                if os.path.exists(themefile):
+                    msg = "Theme already installed, do you wish to overwrite it?"
+                    message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_YES_NO, message_format=msg)
+                    resp = message.run()
+                    if resp != gtk.RESPONSE_YES:
+                        message.destroy()  
+                        return
+                    else:
+                        model = self.treeview_themes.get_model()
+                        model.foreach(self.search_treeview, themefile)
+                        message.destroy()
+                
+                tar.extractall(defs.HOME_THEME_DIR)
+                tar.close()
+                 
+                config = ConfigParser()
+                config.read(themefile)
+                self.check_version(config.get('theme-info', 'Awn-Theme-Version'))
+                
+                config.set('theme-info', 'Icon', themedir+'/thumb.png')
+                if customArrow:
+                    config.set("config/effects", 'arrow_icon', themedir+'/arrow.png')
+                f = open(themefile, "w")
+                config.write(f)
+                f.close()
+                self.add_uris_to_model(self.treeview_themes.get_model(),[themefile])
+            else:
+                msg = "This is an incompatible theme file."
+                self.theme_message(msg)
+                
+    def delete_theme(self):
+        model = self.treeview_themes.get_model()
+        selection = self.treeview_themes.get_selection()
+        (model, iter) = selection.get_selected()
+        if iter is not None:
+            themefile = model.get_value(iter, 2)
+            (themedir, fileExtension) = os.path.splitext(themefile)
+            if os.path.isdir(themedir):
+				shutil.rmtree(themedir)
+            if os.path.exists(themefile):
+                os.remove(themefile)
+            model.remove(iter)
+            self.deleteTheme.set_sensitive(False)
+    
+    def check_version(self, version):   
+        req_version = defs.THEME_VERSION.split('.')
+        version = version.split('.')
+        if version[0] < req_version[0]:
+            print "Major version is low"
+        else:
+            if version[1] < req_version[1]:
+                print "Minor version is low"
+            else:
+                if version[2] < req_version[2]:
+                    print "Micro version is low"
+        
+    def theme_message(self, msg):
+        message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE, message_format=msg)
+        resp = message.run()
+        if resp == gtk.RESPONSE_CLOSE:
+            message.destroy()
+    
+    def search_treeview(self, model, path, iter, filename=None):
+        if model.get_value(iter, 2) == filename:
+            model.remove(iter)
+            return True
+        
+                                   
+class awnTaskManager(awnBzr):
+    
+    def ding(self):
+        pass

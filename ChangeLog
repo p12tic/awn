@@ -1,3 +1,3182 @@
+2010-02-01  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* po/POTFILES.in:
+	Don't translate generated files.
+
+	* po/avant-window-navigator.pot:
+	* po/*.po:
+	Update gettext files.
+
+2010-01-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fixed assertion spam.  TaskLaunchers don't have a WnckWindow.
+
+2010-01-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-window.c:
+	Possible fix for 503106.
+	
+2010-01-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-manager.c:
+	Add icon_grouping.  If grouping is disabled we now spawn new
+	icons grouped together with those containing the same desktop.
+
+2010-01-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* src/awn-panel.c:
+	Fixed input shape mask on the scroll arrows.
+
+2010-01-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Don't check title for nautilus windows when doing special
+	casing.  Othere cases of title matching need to be reviewed
+	and removed where possible due to localization.
+
+2010-01-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	Make theming of AwnDialog via gtkrc possible.
+
+2010-01-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* src/awn-panel.c:
+	Added ability to specify outline color for the active rectangle.
+
+2010-01-11  Julien Lavergne <gilir@ubuntu.com>
+
+	* tests/Makefile.am:
+	Add missing EXTRA_DIST.
+
+2010-01-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/gseal-transition.h:
+	Fix build for GTK+ 2.12.
+
+2010-01-10  Julien Lavergne <gilir@ubuntu.com>
+
+	* applets/taskmanager/Makefile.am:
+	* bindings/vala/Makefile.am:
+	* libawn/Makefile.am:
+	* src/Makefile.am:
+	Adding missing EXTRA_DIST.
+
+2010-01-10  Julien Lavergne <gilir@ubuntu.com>
+
+	* COPYING.GPL3:
+	* libawn/anims/awn-effect-bounce.c:
+	* libawn/anims/awn-effect-bounce.h:
+	* libawn/anims/awn-effect-desaturate.c:
+	* libawn/anims/awn-effect-desaturate.h:
+	* libawn/anims/awn-effect-fade.c:
+	* libawn/anims/awn-effect-fade.h:
+	* libawn/anims/awn-effect-glow.c:
+	* libawn/anims/awn-effect-glow.h:
+	* libawn/anims/awn-effect-simple.c:
+	* libawn/anims/awn-effect-simple.h:
+	* libawn/anims/awn-effect-spotlight.c:
+	* libawn/anims/awn-effect-spotlight.h:
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effect-spotlight3d.h:
+	* libawn/anims/awn-effect-squish.c:
+	* libawn/anims/awn-effect-squish.h:
+	* libawn/anims/awn-effect-turn.c:
+	* libawn/anims/awn-effect-turn.h:
+	* libawn/anims/awn-effect-zoom.c:
+	* libawn/anims/awn-effect-zoom.h:
+	* libawn/anims/awn-effects-shared.c:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-alignment.c:
+	* libawn/awn-alignment.h:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-box.c:
+	* libawn/awn-box.h:
+	* libawn/awn-cairo-utils.c:
+	* libawn/awn-cairo-utils.h:
+	* libawn/awn-config.c:
+	* libawn/awn-config.h:
+	* libawn/awn-dbus-watcher.c:
+	* libawn/awn-dbus-watcher.h:
+	* libawn/awn-defines.h:
+	* libawn/awn-desktop-lookup-client.c:
+	* libawn/awn-desktop-lookup-client.h:
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-helpers.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects-ops-new.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon-box.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* libawn/awn-image.c:
+	* libawn/awn-image.h:
+	* libawn/awn-label.c:
+	* libawn/awn-label.h:
+	* libawn/awn-overlay-pixbuf-file.c:
+	* libawn/awn-overlay-pixbuf-file.h:
+	* libawn/awn-overlay-pixbuf.c:
+	* libawn/awn-overlay-pixbuf.h:
+	* libawn/awn-overlay-progress-circle.c:
+	* libawn/awn-overlay-progress-circle.h:
+	* libawn/awn-overlay-progress.c:
+	* libawn/awn-overlay-progress.h:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay-text.h:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay-themed-icon.h:
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay-throbber.h:
+	* libawn/awn-overlay.c:
+	* libawn/awn-overlay.h:
+	* libawn/awn-overlayable.c:
+	* libawn/awn-overlayable.h:
+	* libawn/awn-pixbuf-cache.c:
+	* libawn/awn-pixbuf-cache.h:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-themed-icon.h:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-tooltip.h:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	* libawn/gseal-transition.h:
+	* libawn/libawn.h:
+	* tests/test-awn-dialog.py:
+	* tests/test-awn-tooltip.py:
+	* tests/test-effects-scaling.py:
+	* tests/test-effects.py:
+	* tests/test-overlays.py:
+	* tests/test-taskmanager-dnd.py:
+	* tests/test-taskmanager-windows.py:
+	Add GPL v3 complete license
+	Reformat licence header of libawn, so licensecheck will correctly
+	identify the LGPL license.
+	Relicense libawn file to LGPL 
+	Complete copyright missing with bzr log.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Revert change mistakenly committed in rev 1881.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	wtf... Ubuntu is marking nautilus-browser.desktop with
+	NoDisplay = true???  Use nautilus-home.desktop if 
+	nautilus-browser.desktop is not available.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	When a special case is found a desktop filename must be 
+	an exact match.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Drag and drop fix for applets that disable AwnThemedIcon
+	drag and drop but chain to its handler in some situations.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Use the StartupWMClass value on match if it is available.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Check some widgets and make sure they're not NULL.
+
+2010-01-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Suppress one of those annoying GtkIconTheme spams.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	When ungrouped, do not show "Add as Launcher" in the
+	launcher list when the launcher is already in the list.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Don't proceed with trying to add contents of a dir if
+	it's not one.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	GHashTable does not like NULL keys.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+        * applets/taskmanager/awn-desktop-lookup-cached.h:
+        * applets/taskmanager/awn-desktop-lookup-gnome3.c:
+        * applets/taskmanager/awn-desktop-lookup-gnome3.h:
+        * applets/taskmanager/awn-desktop-lookup.c:
+        * applets/taskmanager/awn-desktop-lookup.h:
+        * libawn/awn-desktop-lookup-client.c:
+        * libawn/awn-desktop-lookup-client.h:
+        Add license/copyright info.
+
+2010-01-08  Julien Lavergne <gilir@ubuntu.com>
+
+	* po/POTFILES.in:
+	* po/POTFILES.skip:
+	Move desktop.in to POTFILES.skip.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+  	* applets/taskmanager/awn-desktop-lookup-cached.h:
+  	* applets/taskmanager/awn-desktop-lookup-gnome3.c:
+  	* applets/taskmanager/awn-desktop-lookup-gnome3.h:
+  	* applets/taskmanager/awn-desktop-lookup.c:
+  	* applets/taskmanager/awn-desktop-lookup.h:
+  	* libawn/awn-desktop-lookup-client.c:
+  	* libawn/awn-desktop-lookup-client.h:
+	Add license/copyright info.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c
+        Accept a desktop file with no Icon field.
+
+2010-01-08  Julien Lavergne <gilir@ubuntu.com>
+
+	* po/POTFILES.in:
+	Update with new files.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c
+	Accept a desktop file with no Icon field.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Ignore files that do not container ".desktop" in their name.
+	Ignore the existence of /var/lib/menu-xdg/applications/ on Debian.
+
+2010-01-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	Added:
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+  	* applets/taskmanager/awn-desktop-lookup-cached.h:
+  	* applets/taskmanager/awn-desktop-lookup-gnome3.c:
+  	* applets/taskmanager/awn-desktop-lookup-gnome3.h:
+  	* applets/taskmanager/awn-desktop-lookup.c:
+  	* applets/taskmanager/awn-desktop-lookup.h:
+  	* libawn/awn-desktop-lookup-client.c:
+  	* libawn/awn-desktop-lookup-client.h:
+	Modified:
+  	* applets/taskmanager/Makefile.am:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+  	* libawn/Makefile.am:
+	Merged in first significant bit of the desktop lookup work.
+	Faster, cleaner code.  Largely disentangled from task-manager.c
+	now.  Needs to be tested in preparation for the dbus 
+	client/server side of things.
+
+2010-01-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Fix viewport + panel_mode.
+
+2010-01-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-utils.c:
+	* src/awn-applet-manager.c:
+	* src/awn-background.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	Added viewport to deal with too many icons on the panel.
+
+2010-01-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/vala/awn.gi:
+  	* bindings/vala/awn.vapi:
+	Update bindings.
+
+2010-01-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+  	* libawn/awn-overlay-throbber.c:
+  	* libawn/awn-overlay-throbber.h:
+	Modified awn_overlay_throbber_new ().  Removed the need
+	to specify a widget.
+
+2010-01-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/vala/awn.gi:
+  	* bindings/vala/awn.vapi:
+	Update vala bindings.
+
+2010-01-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+  	* libawn/awn-overlay-themed-icon.c:
+  	* libawn/awn-overlay-themed-icon.h:
+	Modified awn_overlay_themed_icon_new ().  Removed a couple
+	props.
+
+2010-01-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix up some of the issues with grouped windows on different
+	workspaces (Metacity and possibly Compiz).
+
+2010-01-03  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-tooltip.c:
+	Use tooltip hint for AwnTooltip windows.
+
+2010-01-03  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix occasional bad frame after the widget with effects is hidden.
+
+2010-01-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	There might not be a main item after a workspace change if
+	show_all_windows = False.
+
+2010-01-02  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/control:
+	Remove not needed gir build depends.
+
+2010-01-02  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/changelog:
+	* debian/control:
+	Update to new lda packages name.
+
+2010-01-02  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Don't destroy the panel on delete-event - fixes bug #257689.
+
+2010-01-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/advanced.xml:
+  	* applets/taskmanager/menus/custom-example.xml:
+  	* applets/taskmanager/menus/simple.xml:
+  	* applets/taskmanager/menus/standard.xml:
+  	* applets/taskmanager/task-icon-build-context-menus.c:
+	Adjust the smart wnck menu items to be more consistent in layout
+	between grouped and single task situations.  Adjusted the menus
+	for such.
+
+2010-01-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/standard.xml:
+	Display a separator consistently after Launch item with grouped
+	and single task items.
+
+2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/custom-example.xml:
+	Add launch as root to custom-example.
+
+2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Slight adjustment due to previous commit.
+
+2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Make use of "drag-and-drop" = FALSE a bit less magical.
+
+2010-01-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	* src/awn-separator.c:
+	Make sure curve offsets are applied also to separators and throbber.
+
+2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fixes issues with scroll wheel not working when app minmized 
+	and Show all windows = False.  main_item could be NULL in this
+	situation (we should look for a main_item in this case instead
+	assuming there isn't one available)
+
+2010-01-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	Forgot to remove debug.
+
+2010-01-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Minor cleanup.
+
+2010-01-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/libawn-marshal.list:
+	* src/awn-marshal.list:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Add OffsetModifier and PathType to exported panel properties.
+
+2010-01-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Fix some of the fallout of the more agressive caching.
+
+2009-12-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Quiet the gtk icon them spam.  ensure icons every time
+	there's a theme change signal 
+
+2009-12-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Ellipsize the context menu task names.  Currently set to 
+	55 chars and middle.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/custom-example.xml:
+  	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-icon.c:
+	A couple minor fixes.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/custom-example.xml:
+	Some additions to custom-example.xml
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Invalidate the pixbuf cache any time there are 
+	modifications to the awn-theme dir.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/vala/awn.gi:
+  	* bindings/vala/awn.vapi:
+	Update vala bindings.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Provide the proper function name for the constructor.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fix the syntax for pixbufs for the AwnPixbufCache 
+	python bindings.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+        Some fixes for the AwnPixbufCache python bindings.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+	Python bindings for AwnPixbufCache.
+
+2009-12-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/libawn.h
+	Add awn-pixbuf-cache.h to libawn.h
+
+2009-12-30  Julien Lavergne  <gilir@ubuntu.com>
+
+	* debian/avant-window-navigator-trunk.install:
+	Include xml files for taskmanager.
+
+2009-12-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Fix build for GTK+ 2.12.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-pixbuf-cache.c:
+	Added a newline.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Workaround for glib <2.18.0.  Only one level of submenus are supported
+	in this case.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Set max pixbuf cache size to 32.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Should fix build error on older GTK+s.  Needs testing.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Remove code that appear to be no longer needed (will cause
+	GtkIconTheme to complain if I'm wrong).
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Make use of AwnPixbufCache where possible.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Small optimizations for the caching and no longer ref after
+	doing a lookup.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-pixbuf-cache.c:
+	Give a references in awn_pixbuf_cache_lookup*().
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Added awn_utils_get_gtk_icon_theme_name().
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	A correctness fix.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-pixbuf-cache.c:
+        * libawn/awn-pixbuf-cache.h:
+	Added awn_pixbuf_cache_insert_simple_key() and 
+	awn_pixbuf_cache_lookup_simple_key() for generic pixbuf 
+	caching purposes.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Taskmanager needs a significantly larger pixbuf cache than 
+	a standard applet.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Modify AwnThemedIcon to use AwnPixbufCache.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/Makefile.am:
+	Build system modifications for AwnPixbufCache.
+
+2009-12-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-pixbuf-cache.c:
+	* libawn/awn-pixbuf-cache.h:
+	Added AwnPixbufCache.
+
+2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/custom-example.xml:
+	Add a separator.
+
+2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Amended descrition of menu_filename key to indicate that 
+	an absolute path can be provided (for custom menus).
+
+2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/advanced.xml
+	* applets/taskmanager/menus/standard.xml
+	Add a separator in standard and remove a (redundant)
+	separator in advanced.
+
+2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/standard.xml
+	Added a speparator before Close all.
+	
+2009-12-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+Added:
+	* applets/taskmanager/menus/
+	* applets/taskmanager/menus/advanced.xml
+	* applets/taskmanager/menus/custom-example.xml
+	* applets/taskmanager/menus/simple.xml
+	* applets/taskmanager/menus/standard.xml
+	* applets/taskmanager/task-icon-build-context-menus.c
+	* applets/taskmanager/task-icon-build-context-menus.h
+	* applets/taskmanager/task-icon-private.h
+
+Modified:
+	* applets/taskmanager/Makefile.am
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in
+	* applets/taskmanager/task-icon.c
+	* applets/taskmanager/task-icon.h
+	* configure.in
+
+	Merged bzr+ssh://bazaar.launchpad.net/~rcryderman/awn/awn-taskman-editable-context-menus/
+	Allows definition of taskmanager context menus using xml (GMarkup) files.
+
+2009-12-28  Julien Lavergne  <gilir@ubuntu.com>
+
+	* debian/control:
+	Add build depends on libssl-dev to fix build failure on Ubuntu 10.04.
+	Recommends all applets packages to install all applets by default.
+
+2009-12-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-icon.c:
+	Fix a small leak.
+	Remove an incorrect comment.
+
+2009-12-27  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* src/awn-background.c:
+	Fix build for GTK+ 2.12.
+
+2009-12-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	reviewed by: mhr3
+	patch by: dolfje
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-dbus-watcher.c:
+	* libawn/awn-dbus-watcher.h:
+	Added AwnDBusWatcher.has_name method. (thanks to dolfje)
+
+2009-12-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	A couple of fixes for multiple panels.
+
+2009-12-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-helpers.h:
+	* libawn/awn-effects-ops-new.c:
+	Reimplement a couple of effect helpers to use different compositing
+	operators instead of image surfaces.
+
+2009-12-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-main.c:
+	* src/awn-panel.c:
+	Automatically inhibit autohide for a couple of seconds during startup.
+
+2009-12-22  h4writer <hv1989@gmail.com>
+
+	* src/awn-background-3d.c:
+	Added a function for drawing the input shape mask instead of just drawing the bar.
+	This because it failed when alpha of the colors were to low.
+
+2009-12-21 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Be a little bit more lenient about gtk_drag_dest_set().
+	Fixes issue with dolphin/konq.
+
+2009-12-15 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Suppress some unnecessary pixbuf cache invalidates.
+
+2009-12-14 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Free some lda color objects.
+
+2009-12-08 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Bad Desktop Files!  Bad!
+
+2009-12-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	* libawn/awn-applet.c:
+	Use DBus' GetAll method if one has dbus-glib-1 >= 0.80.
+
+2009-12-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* libawn/awn-alignment.c:
+	* libawn/awn-icon-box.c:
+	Add offset-multiplier property to AwnAlignment.
+	Allow stuffing AwnImage and AwnAlignment to AwnIconBox.
+
+2009-12-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Minor changes to Awn autostart desktop file.
+
+2009-12-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Use idle callback to set the strut. Fixes bug #491229.
+
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	Using server-side pixmap wasn't a good idea, that seems to slow 3d and
+	curved background rendering with patterns quite a lot.
+
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-3d.c:
+	* src/awn-background-curves.c:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	* src/awn-background.c:
+	Changes to rendering which speed up things when using patterns.
+	Helped a lot with flat, edgy & floaty, but not that much
+	with 3d and curved.
+
+2009-12-01 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Some comments.  Notes regarding post 0.4 code.
+
+2009-12-01  Hannes Verschore <hv1989@gmail.com>
+
+	* src/awn-background-3d.c:
+	Enable pattern support for 3D background
+
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-curves.c:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	Enable pattern support for backgrounds expect 3D.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make sure that if a launcher is added to the dialog after a 
+	window that the launcher is still placed at the top of the dialog.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Really commit the changes mentioned in the previous two commit
+	messages.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Do a less intensive search when we're searching for desktop file
+	due to a name change.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Minor correction to previous commit.
+	
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Sometimes it's just not possible to initially determine a
+	proper desktop file unless one also has the title (OO). 
+	Unfortuntely some apps (OO) do not provide the necessary info in the
+	Title in some circumstance until long after the window has 
+	opened.  So if a desktop lookup fails, then connect to the name
+	change signal and try to match up whenever the window titles 
+	change.
+	
+2009-12-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon.c:
+	Removed long-press signal from AppletSimple, this simplifies the
+	behavior for all applets - if applet doesn't connect to long-press
+	via AwnIcon, it will still emit standard clicked-signal.
+
+2009-11-30  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* libawn/awn-icon.c:
+	* src/awn-background.c:
+	* src/awn-defines.h:
+	Make glowing dot and active rectangle color configurable.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-panel.c:
+	X is insanely configurable...  This, I hope, fixes the strut
+	issues in all multiple monitor cases.
+
+2009-11-30  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/Makefile.am:
+	* debian/avant-window-navigator-data-trunk.install:
+	Removed icons from data/active directory, as these aren't used
+	anywhere.
+
+2009-11-30  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Fix monitor positioning using the quick-prefs applet.
+	* src/awn-background-flat.c:
+	Don't use padding when on screen edges. Fixes bug #490373.
+
+2009-11-30  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Quick-prefs: Don't close the docklet on mouse out.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed a small mistake, Replaced height with width.
+
+2009-11-30 Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/applet.c:
+  	* applets/taskmanager/task-drag-indicator.c:
+  	* applets/taskmanager/task-drag-indicator.h:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-item.h:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-launcher.h:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-manager.h:
+  	* applets/taskmanager/task-settings.c:
+  	* applets/taskmanager/task-settings.h:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Changed Taskmanager source from GPLv3 to 
+	GPLv2 with the agreement of:
+	Hannes Verschore <hv1989@gmail.com>,
+	Rodney Cryderman  <rcryderman@gmail.com>,
+	Michal Hruby  <michal.mhr@gmail.com>,
+	Neil Jagdish Patel <njpatel@gmail.com>
+
+2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Added Version to About menu item.
+
+2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+        Regroup under the new icon when "Add to Launcher List".
+
+2009-11-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* README:
+	Note that GNU Make is required.
+
+2009-11-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Remove obsolete check for gtk.glade.
+
+2009-11-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-window.c:
+	Fix build for GTK+ 2.12.
+
+2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-panel.c:
+	Forgot to press save...  Remove two debugs.
+
+2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-panel.c:
+	Attempt to resolve remaining issues with struts and multiple 
+	monitors.
+
+2009-11-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Keep a couple properties from being set on startup.
+	Enable a bit of debug spam.
+
+2009-11-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel.c:
+	Optimize the redraw during resizes.
+
+2009-11-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Quick-prefs - show docklet after clicking on the icon.
+
+2009-11-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-defines.h:
+	* src/awn-panel.c:
+	Added docklet-related AppletFlags.
+
+2009-11-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Code to use the "awn-window-fallback" icon once it
+	gets committed.
+
+2009-11-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Provide a visual indication of the active item.
+
+2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-app.c:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Change parameter for AwnPanel constructor.
+
+2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-config.c:
+	* src/awn-app.c:
+	* src/awn-applet-proxy.c:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Let's be better prepared for multiple panels.
+
+2009-11-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Try to do everything needed on composited-change.
+
+2009-11-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-manager.c:
+	Play closing animations for windows that become 
+	skip tasklist and minimized (seems it's common to
+	do something along these lines when minimizing to 
+	systray... the window is not closed according to
+	wnck)
+
+2009-11-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Remove a debug.
+
+2009-11-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* bindings/python/awn.defs:
+  	* libawn/awn-themed-icon.c:
+  	* libawn/awn-themed-icon.h:
+	Type of size arg should be gint not guint.
+	Do some additional checks on values of arguments.
+
+2009-11-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Invalidate the pixbuf cache on size changes.  This is not
+	future proof but it works fine at the moment.  The pixbuf
+	cache is slated for some work post 0.4.
+
+2009-11-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Reflect changes to panels/mouse_poll_delay immediately.
+
+2009-11-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-curves.c:
+	* src/awn-background.c:
+	Use radial gradients in curved background. 
+	Increase the default alpha when using gtk_theme_mode.
+
+2009-11-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Fixes to Vala bindings.
+
+2009-11-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-throbber.c:
+	Couple more optimizations.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	Added config keys for autohide delays.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix minor redraw issue when shadows are on.
+
+2009-11-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Do not show a fallback icon in the TaskIcon in any 
+	circumstance if there's a launcher icon available.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effects-shared.h:
+	* libawn/awn-effects-ops-new.c:
+	* libawn/awn-effects.c:
+	* libawn/awn-effects.h:
+	* src/awn-background-edgy.c:
+	* src/awn-panel.c:
+	Optimize drawing on a couple of places.
+
+2009-11-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-defines.h:
+	* src/awn-background.c:
+	Set text & outline color when gtk_theme_mode is on.
+
+2009-11-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-window.h:
+	Added task_window_get_icon_is_fallback().
+
+2009-11-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* Makefile.am:
+	* applets/quick-prefs/Makefile.am:
+	* applets/quick-prefs/applet.vala:
+	* applets/quick-prefs/quick-prefs.desktop.in.in:
+	* bindings/vala/build.vapi:
+	* bindings/vala/libintl.vapi:
+	* configure.in:
+	Added Preferences applet.
+
+2009-11-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-simple.c:
+	* libawn/anims/awn-effect-simple.h:
+	* libawn/awn-effects.c:
+	* libawn/awn-label.c:
+	Added opening and closing simple effects.
+
+2009-11-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Fix typo in previous commit and removed match checks involving
+	ppid, to determine if they're causing incorrect matches.
+
+2009-11-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-launcher.h:
+	Added task_launcher_get_exec().
+
+2009-11-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-dbus-watcher.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-panel.c:
+	Make the DestroyApplet signal work.
+
+2009-11-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Fix incorrect window in a grouped icon being activated on icon
+	click.
+
+2009-11-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* themes/thumbnails/dark-thumb.png:
+	Add alpha channel to theme preview image.
+
+2009-11-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+        Fix up code that only applies if a window goes from 
+        skip_tasklist = false to skip_tasklist = true...  which
+        is obviously a somewhat rare thing...  However, awn-settings
+        will do it if the prefs applet is running.
+
+2009-11-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* libawn/awn-tooltip.c:
+	* src/awn-panel.c:
+	Change GetSnapshot method to return image with alpha channel instead
+	of the window below.
+
+2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/awn-defines.h:
+	* src/awn-monitor.c:
+	Add panel/monitor_num key, which should help when monitors are
+	hotplugged.
+
+2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	* themes/Makefile.am:
+	* themes/dark.awn-theme:
+	Add thumbnail for our default theme.
+
+2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/awn-background.c:
+	* src/awn-separator.c:
+	* themes/default.awn-theme:
+	Modify separator rendering a bit - make it more sharp.
+
+2009-11-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-spotlight3d.c:
+	Fix close effect cleanup for spotlight3d.
+
+2009-11-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Docklet animation timer needs to have lower priority than redraw
+	event, so we don't skip frames.
+
+2009-11-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Use task_window_get_wm_client_name().  Which stores the client
+	machine names once it successfully retrieves it from X.
+
+2009-11-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Reverse change that was tested and found wanting.
+
+2009-11-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	We shouldn't forget to unref the pixmaps.
+
+2009-11-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-utils.h:
+	Add a newline.
+
+2009-11-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Animate docklet mode start/end.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-launcher.c:
+	Get rid of a couple static vars.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Test modification.  Need to confirm if previous issues with use
+	of gtk_icon_theme_load_icon () are resolved.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+  	* applets/taskmanager/xutils.c:
+	More plugging of leaks.  Also reducing the number of calls to X... 
+	Once the client machine name is retrieved it's save in TaskWindow.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	Plug some more leaks.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	Optimize group.
+	Regroup non-launchers.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+	Fix a leak.
+
+2009-11-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Do not hide the Icon after the closing effect unless we're really done.
+
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-item.c:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/task-window.c:
+	* libawn/awn-themed-icon.c:
+        Plug a variety of leaks, and potential leaks.
+        Still something rotten with TaskLauncher.
+
+2009-11-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* src/awn-applet-manager.c:
+	Don't run awn-applet binary for separator & expander, so we get rid of
+	throbber for them.
+
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-window.c:
+  	* libawn/awn-themed-icon.c:
+	Plug a variety of leaks, and potential leaks.
+	Still something rotten with TaskLauncher.
+
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Set the main_item on the the original ungrouped icon.
+
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Disconnect a missed signal when ungrouping.
+	Removed some #if 0 'd code.
+
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Do not try to copy a TaskLauncher on ungroup if there isn't one to
+	copy.
+
+2009-11-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Add DBusWatcher also to python bindings.
+
+2009-11-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/Makefile.am:
+	* libawn/awn-dbus-watcher.c:
+	* libawn/awn-dbus-watcher.h:
+	* libawn/libawn.h:
+	* src/Makefile.am:
+	* src/awn-panel.c:
+	Move AwnDBusWatcher to libawn.
+
+2009-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-launcher.h:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	No longer group windows with different WM_CLIENT_NAME by default.
+	There is a config key, as I'm expecting this will break in certain 
+	configurations.  The default will change if this occurs.
+	If no WM_CLIENT_NAME is available then the local hostname is assumed
+	(gethostname()). As consequence change of these changes, the  
+	constructor for TaskLauncher was changed and the applet prop of 
+	TaskIcon was made readable.
+
+2009-11-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	dbus interface for "visible" more or less behaves sanely.
+
+2009-11-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	Implemented the hidden list for visible.  Still buggy.  Some
+	aspects of behaviour need to be defined.
+
+2009-11-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+  	* applets/taskmanager/xutils.c:
+  	* applets/taskmanager/xutils.h:
+	Add the ability to retrive WM_CLIENT_NAME.
+
+2009-11-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* src/awn-panel.c:
+	Speed up the snapshotting in awn-settings.
+
+2009-11-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make sure we don't send a NULL to strlen.
+
+2009-11-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix for https://bugs.launchpad.net/awn/+bug/480851
+	If Icon = to a path in the desktop file then the customize icon menu
+	option fails.  
+
+2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	Initial, naive, implementation of the visible dbus key.
+
+2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Reworked some of the visibility code associated with the show_all_windows
+	config key.  Please watch for regressions, especially with 
+	show_all_windows = false.
+
+2009-11-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-app.c:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Added DBus method GetSnapshot(), which screenshots given panel.
+
+2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-manager.c:
+	Group/ungroup is now much more stable.  Does not regroup windows
+	without an associated desktop file.
+
+2009-11-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Fix a couple of leaks in the bindings.
+
+2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icons.c:
+	* applets/taskmanager/task-manager.h:
+	* applets/taskmanager/task-manager.c:
+	Immediately group when configuration changed. There's some 
+	strangeness that happens if one toggles back and forth quickly, 
+	It's beeing dealt with but I'm not happy with the "solution".  Will
+	revisit when I don't have a headache.
+
+2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icons.c:
+	Minor cleanup.
+
+2009-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icons.c:
+	Immediately ungroup when configuration changed.  Reverse not yet 
+	implemented.
+
+2009-11-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Fix python bindings for AppletSimple.set_icon_info().
+
+2009-11-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/__init__.py:
+	Add missing import statement.
+
+2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-dialog.c:
+	* libawn/awn-dialog.h:
+	Added AwnDialog.get_content_area() method. Fixes issues with removing
+	widgets from the dialog.
+
+2009-11-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Only check if the app/win icon should be displayed
+	if we have a TaskWindow.
+
+2009-11-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+        * applets/taskmanager/task-manager.h:
+	Preparation for getting group/ungroup working.
+	Ignore docks in the intellhide intersect check.
+
+2009-11-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	Add a "grouping-changed" signal to TaskManager.
+
+2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-app-dbus.xml:
+	* src/awn-app.c:
+	* src/awn-app.h:
+	Added DBus method to close a panel.
+
+2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	Revert 1674 and 1660 - revisions which added AwnIcon.get_click_event,
+	as the same thing can be done using gtk_get_current_event().
+
+2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnClass.py:
+	Always center the awn-settings dialog.
+
+2009-11-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Allow running awn-settings just to show About dialog.
+
+2009-11-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Change to MSE computation.
+
+2009-11-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Expand the description columns in our lists.
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-icon.c:
+	Updated documentation.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Reinstate the minimize/restore behaviour of the scrollwheel when
+	there is only one window.
+	When using scroll wheel, do not scroll to a window that is set
+	skip_taskbar.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Revise some comments due to previous commit.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fixed a longstanding bug which _mostly_ involved windows minimizing
+	to the systray.  Removes a leak, and some unexpected behaviours
+	with apps engaging in said behaviour.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	If there is more than one window demaning attention in 
+	a group, then update the main_item to point to the next item
+	demanding attention after the first one is acknowledged.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Check for require attention on window changes.  This should
+	resolve some corner cases where icons do not start/stop 
+	attention effect.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+        * applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Attention required nagging.  Defaults to every 60 seconds.
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Added overlay_applications_icons_swapped.
+	Significantly simplified the ref/unref login in 
+	task_icon_set_icon_pixbuf().
+
+2009-11-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Make sure the tooltipls are updated on mouse scroll also.
+	Let search_main_item do most of the work.
+
+2009-11-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Adjust the threshold up a bit for image comparison.  This may
+	result in an unacceptable level of false positives, please keep
+	an eye out for duplicate overlay images.
+
+2009-11-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Change the default to forcing app icon prop on.  A better 
+	choice due to some fun things that happen when the task-manager
+	is restarted.
+
+2009-11-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	Added AwnIcon.get_click_event() method.
+
+2009-11-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Save changes to launcher paths when TaskLaunchers are dragged
+	and dropped.
+
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Remove source ids for icon preloads if the icon is finalized 
+	with them pending.
+
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Pull the theme change counting logic out.  The issues it causes
+	are more or less a wash with the issues it fixes (at least with
+	the introduction of utils_gdk_pixbuf_similar_to()).  Therefore,
+	choose the simpler of the two.
+
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/task-icon.c:
+	Fix for gimp icon overlay  when it's opened from filemanager.
+	
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/util.h:
+	* applets/taskmanager/task-icon.c:
+	utils_gdk_pixbuf_similar_to() courtesy of Michal Hruby  
+	<michal.mhr@gmail.com>.
+	Allows TaskIcon to determine if an overlay icon is the same
+	as the Launcher Icon.
+
+2009-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix a problem with errant setting of requires attention under
+	Metacity.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Don't play launching effect when dragging a TaskIcon.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Deal with errant icon overlays appearing when theme change
+	signals fire.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Removed an assert that was inserted for debugging purposes.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Update the icon on scroll events.
+
+2009-11-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon-box.c:
+	* libawn/awn-icon-box.h:
+	Change AwnAppletSimple.get_icon method to return AwnIcon.
+
+2009-11-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	* src/xutils.c:
+	* src/xutils.h:
+	Fix issues with drag proxying.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/util.c:
+	Make sure that the demons of OO are exorcised.
+	Shut off some debugs.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+	Fixes ugly icon used by OO when opening through a file manager.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Fix typo.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Change some default values so they get tested.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-icon.c:
+	Added overlay_application_icons, overlay_application_icons_scale
+	overlay_application_icons_alpha.
+
+2009-11-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-window.h:
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/util.h:
+	Ability to special case hints about using app window icon.
+
+2009-10-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-applet.c:
+	Make the proper fix for not destroying the about dialog on close.
+
+2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Add use_win_icon prop to TaskWindow.
+
+2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	icon_change_behaviour = 1 is now roughly equivalent to
+	the old disable_icon_changes = false.  Need to add
+	special case info capability next.
+
+2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Icon theme "change" signals happen at the strangest times.
+	Handle theme change signals in TaskIcon instead of letting
+	AwnThemedIcon code deal with it (if we don't then AwnThemedIcon
+	will set our icon to a the desktop theme icon even when 
+	we want to use the App icon).
+
+2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Further reduction of number of locations where
+	awn_icon_set_from_pixbuf() is called.
+
+2009-10-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Simplified the icon change code further.
+
+2009-10-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-applet.c:
+	Don't destroy the about dialog when it is closed.
+
+2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* themes/default.awn-theme:
+	Change the separator color defaults.
+
+2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	* src/awn-separator.c:
+	Change separator color when gtk theme is changed.
+
+2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects-ops-new.c:
+	Disable the warning.
+
+2009-10-31  Michal Hruby  <michal.mhr@gmail.com>
+
+	* Makefile.am:
+	* applet-activation/main.c:
+	* applets/expander/applet.c:
+	* applets/expander/expander.desktop.in.in:
+	* applets/separator/Makefile.am:
+	* applets/separator/applet.c:
+	* applets/separator/separator.desktop.in.in:
+	* configure.in:
+	* src/Makefile.am:
+	* src/awn-applet-manager.c:
+	* src/awn-separator.c:
+	* src/awn-separator.h:
+	Added separator applet.
+
+2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Laid the foundation for the intermediary mode of icon change behaviour.
+	Renamed name from disable_icon_changes to icon_change_behavior. Type is int.
+
+2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-window.c:
+	Fixes the issues with disable_icon_changes = false and certain
+	applications (such as pidgin).  Also sees the return of the ugly
+	OpenOffice window icons.
+
+2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Deal with loss of sticky on the AwnDialog under some WMs.
+
+2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	Change default of icon_font_mode to 1.
+	
+2009-10-30  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Change the icon name for Launch menu item.
+
+2009-10-30  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/vala/awn-custom.vala:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Update Vala bindings.
+
+2009-10-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* po/avant-window-navigator.pot:
+	* po/*.po:
+	Update gettext files.
+
+2009-10-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	* po/POTFILES.in:
+	Make sure that 'make distcheck' works.
+
+2009-10-29  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/taskmanager/task-settings.c:
+	Fix compiler warning.
+
+2009-10-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+        Minor fix to match function.  If the WM_CLASS values
+        are 1 char in length then don't use them for a substing match.
+
+009-10-28  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	Fix the size groups.
+
+2009-10-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Minor fix to match function.  If the WM_CLASS values
+	are 1 char in length then don't use them for a substing match.
+
+2009-10-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* libawn/awn-themed-icon.c:
+	Fix so that the icon chooser dialog used by AwnThemedIcon/taskman
+	appears in the the taskmanager.
+
+2009-10-28  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-alignment.c:
+	Allow the dev to specify scale value.
+
+2009-10-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	Allow the docklets to expand in expand mode, even without active
+	expanders.
+
+2009-10-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Added hide-on-unfocus property, which will ease our lives.
+
+2009-10-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+	Monitor launcher desktop files for changes.
+
+2009-10-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Ensure tooltips are correct for launchers when 
+	show_all_windows=false.
+
+2009-10-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	Add image to 'Export theme'.
+
+2009-10-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-image.c:
+	Fix the FIXME.
+
+2009-10-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Add dialog for setting custom effects.
+
+2009-10-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-image.c:
+	Fix positioning when padding is set on the widget.
+
+2009-10-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* README:
+	Update for 0.4.
+	Reformat using the reStructuredText syntax.
+
+2009-10-24  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awnClass.py (awnManager.safe_load_icon):
+	Add support for selecting an icon from a list of acceptable icons.
+	Fall back to the "gtk-missing-image" stock icon if the specified
+	icon(s) cannot be found.
+	Add documentation.
+	* awn-settings/awnSettings.py.in (awnManagerMini.createMainMenu):
+	Add fallback icons for the "Launchers" item.
+	Fixes Launchpad bug #459706.
+
+2009-10-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-themed-icon.h:
+	Fix the code for awn_themed_icon_create_remove_custom_icon_item()
+	so it's useful for something other than TaskManager.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	When using gtk_theme_mode, try to load colors which are defined for
+	panel.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-defines.h:
+	Separate gtk_theme_mode and dialog_gtk_theme_mode.
+	* src/awn-panel.c:
+	Add always-show-image property to dock menu.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-image.c:
+	* libawn/awn-label.c:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay.c:
+	Fix line joins when using outlined font mode (AwnLabel and
+	AwnOverlayText).
+	Updated documentation.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/awn-icon.c:
+	Binded effects/active_background_icon key. Fixes bug #246356.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	Minor polishing of Flat, Edgy (now react to changes to corner_radius
+	key) & Floaty backgrounds.
+
+2009-10-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Add mark to monitor align scale to make it easy to hit 0.5.
+	* data/avant-window-navigator.schema-ini.in.in:
+	Fix default path.
+
+2009-10-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+ 	The drag types are already set removed redundant call.
+	Configure drag launch animation to time out.
+
+2009-10-22  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Rearrange the library linking order so that using libdesktop-agnostic
+	UI widgets via GtkBuilder does not generate runtime errors.
+
+2009-10-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awnClass.py:
+	Forgot to convert an import statement (see previous commit).
+
+2009-10-21  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettingsHelper.py:
+	Update to latest libdesktop-agnostic API change.
+
+2009-10-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Small cleanup, allow dropping of desktop files to launcher list.
+	Fixes bug #189115.
+
+2009-10-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Avoid compiler warning/error.
+
+2009-10-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Fix for themes with boolean config values.
+	* data/avant-window-navigator.schema-ini.in.in:
+	* themes/default.awn-theme:
+	Change the default hilight color.
+
+2009-10-21  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/rules:
+	Fix typo.
+
+2009-10-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Make the composited property read-only for outside world.
+
+2009-10-21  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/rules:
+	Use autogen.sh instead of configure.
+
+2009-10-21  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/control:
+	Add lsb-release and bzr to build-depends.
+
+2009-10-21  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/changelog:
+	Update version.
+	* debian/rules:
+	Run configure only once.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-applet.c:
+	Change the menu image for "Dock Preferences" from
+	stock preferences to "avant-window-navigotor" icon.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Use the proper value for the screen name.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* libawn/awn-utils.c:
+  	* libawn/awn-utils.h:
+	Added  awn_utils_show_menu_images().
+
+2009-10-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Remove extra underscore (fixes focus issue with compiz).
+
+2009-10-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Remove the plus icons.
+	* themes/default.awn-theme:
+	Make sure gtk_theme_mode is off.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* libawn/awn-applet.c:
+  	* libawn/awn-themed-icon.c:
+	A more complete/correct fix for images not being displayed
+	in menu items.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-launcher.c:
+	Show the menu icons.
+
+2009-10-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix removal of launchers.
+	Launch effect on drag over.
+
+  	* applets/taskmanager/task-launcher.c:
+	Startup notifications.
+
+2009-10-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	Fix the duplicate ids again...
+
+2009-10-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Make AwnThemedIcon drop handler a bit accepting of slightly 
+	malformed drop data.
+
+2009-10-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Taskmanager - Make sure we display something when desktop file doesn't
+	have Icon key.
+
+2009-10-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	awn-settings - minor fix.
+
+2009-10-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-curves.c:
+	Curved style - don't be so obvious that we're drawing half-sphere.
+
+2009-10-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-curves.c:
+	Some changes to curves_symmetry handling.
+
+2009-10-18  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/changelog:
+	* debian/control:
+	* debian/libawn1-trunk.install:
+	* debian/rules:
+	* libawn/Makefile.am:
+	SONAME bump to libawn1 and update debian/ to this.
+	Add build-depends on quilt
+	Pass correct flag to autogen.sh to avoid stupid FTBFS
+
+2009-10-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-3d.c:
+	Increase the padding size for 3d style.
+
+2009-10-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	patch by: onox
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	Changes to awn-settings, still needs reorganization.
+
+2009-10-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Merge ryancr's changes to awn-settings.
+
+2009-10-17  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/TODO:
+	* debian/pycompat:
+	Remove unnecessary files.
+
+2009-10-17  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/README.Debian:
+	* debian/avant-window-navigator.manpages:
+	* debian/awn-settings.1:
+	* debian/awn-settings.manpages:
+	* debian/compat:
+	* debian/control:
+	* debian/libawn-doc-trunk.install:
+	* debian/libawn-doc-trunk.links:
+	* debian/python-awn-trunk.preinst:
+	* debian/pyversions:
+	* debian/rules:
+	Update debian, with dh7, quilt and python-support
+
+2009-10-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Get rid of the "Activate" and "Deactivate" buttons.
+
+2009-10-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-applet-proxy.c:
+	* src/awn-applet-proxy.h:
+	* src/awn-panel.c:
+	Make sure applets are not displayed while in docklet mode.
+
+2009-10-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/main.c:
+	Check if the desktop file exists before sending DBus request.
+
+2009-10-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	Reflect changes to monitor keys in awn-settings.
+
+2009-10-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/awn-defines.h:
+	* src/awn-monitor.c:
+	* src/awn-monitor.h:
+	* src/awn-panel.c:
+	Implement both x-offset and y-offset for auto-detection and overriding
+	of monitor layout.
+
+2009-10-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-dbus-watcher.c:
+	Minor cleanup.
+
+2009-10-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-proxy.c:
+	* src/awn-dbus-watcher.c:
+	* src/awn-panel.c:
+	Optimization of AwnDbusWatcher.
+	Change the debug string when running applets.
+
+2009-10-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+        Remove the task matching strength spam.
+
+2009-10-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-utils.c:
+	Remove the source of some console spam when changing/restarting 
+	WMs.
+
+2009-10-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fix a couple more possible warnings.
+
+2009-10-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-overlayable.c:
+	* libawn/awn-overlayable.h:
+	Update bindings and gtk-doc.
+	Fix warning emitted while using taskmanager's DBus methods.
+
+2009-10-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+        * applets/taskmanager/task-manager.c:
+	Minor code cleanup.  Added a TODO comment.
+
+2009-10-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Remove check that is no longer needed after recent 
+	modificatins to AwnIcon.
+
+2009-10-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Fix for sporadic crashes in Taskmanager with simple/none
+	effect.
+
+2009-10-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/Makefile.am:
+	* applet-activation/main.c:
+	* applets/expander/expander.desktop.in.in:
+	* applets/taskmanager/taskmanager.desktop.in.in:
+	* awn-settings/awnClass.py:
+	* configure.in:
+	* debian/avant-window-navigator-trunk.install:
+	* debian/awn-applet.1:
+	* debian/rules:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-applet-proxy.c:
+	* src/awn-panel-dbus.xml:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Adapt awn-applet executable to support adding applets to panel.
+
+2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-tooltip.c:
+	Forgot to rename property in the constructor.
+
+2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix possible crash.
+
+2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Minor clickthrough fix.
+
+2009-10-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/main.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-icon.h:
+	* libawn/awn-label.c:
+	* libawn/awn-overlay-pixbuf-file.c:
+	* libawn/awn-overlay-pixbuf.c:
+	* libawn/awn-overlay-progress-circle.c:
+	* libawn/awn-overlay-progress.c:
+	* libawn/awn-overlay-text.c:
+	* libawn/awn-overlay-themed-icon.c:
+	* libawn/awn-overlay-throbber.c:
+	* libawn/awn-overlay.c:
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-tooltip.c:
+	Merge with a few selected changes from the mono-binding branch.
+
+2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Missed one of the updates to class name special case data for
+	OpenOffice.
+
+2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fix an issue with the desktop caching code that was resulting in
+	incorrect desktop files being associated with some windows (OOO).
+
+2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-icon.c:
+	Workaround for CSW bug introduced in gtk+ 2.17.3.
+	https://bugzilla.gnome.org/show_bug.cgi?id=597301
+
+2009-10-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix up launcher adding/editing.
+
+2009-10-04  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Seems that somewhere along the line the OO class names xprop
+	changed.
+
+2009-10-04  Julien Lavergne  <gilir@ubuntu.com>
+
+	* awn-settings/awnClass.py:
+	Search also for applets which have not the X-AWN-Type key in the
+	desktop file.
+
+2009-10-02  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	Fix a typo.
+
+2009-10-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/expander/applet.c:
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	Renamed AwnApplet.[gs]et_flags method to [gs]et_behavior. This fixes
+	problems in bindings.
+
+2009-09-29  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-icon.c:
+	unref the effects in finalize() instead of dispose().  Works as 
+	well and removes an possible source of error.
+
+2009-09-28  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	This should fix the various crashes associated with
+	changing/restarting WM.
+
+2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* doc/reference/libawn-sections.txt:
+	* libawn/awn-applet-simple.c:
+	* libawn/awn-applet-simple.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	Add also "middle-clicked" signal to both AwnIcon and AwnAppletSimple.
+
+2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Make the panel fade-out animation a bit faster.
+
+2009-09-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	patch by: Matt <sharkbaitbobby@gmail.com>
+
+	* ChangeLog:
+	* libawn/awn-dialog.c:
+	Fix color property setters.
+
+2009-09-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Make text overlay consistent with the default. 
+	Effects are not applied.
+
+2009-09-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix sort order in applets tab, make it searchable.
+	Launchers are now reorderable again.
+
+2009-09-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix key being bound to wrong property.
+
+2009-09-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/util.c:
+	Check that desktop files keys exist before 
+	attempting to access the "Exec" key.  
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	Make the flat & floaty backgrounds pixel perfect.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Removal of unused methods.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	* configure.in:
+	* themes/Makefile.am:
+	* themes/default.awn-theme:
+	Change the way we deal with themes.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	Decrease the priority of timer in long-press implementation.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix compiler warnings.
+
+2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	When dynamically generating regular expressions it's a good
+	idea to escape the source strings.  This may fix the reported
+	grouping issues with Eclipse.
+
+2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Remove a, no longer relevant, comment.
+
+2009-09-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Destroy the TaskIcon in the "animation-end" signal handler.  
+	Possible due to previous commit.
+
+2009-09-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effects-shared.c:
+	* libawn/awn-effects.c:
+	Fix issue with AwnEffects destruction inside "animation-end" signal
+	handler.
+
+2009-09-22  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	Fixed the non-unique ID... again...
+
+2009-09-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/task-icon.c:
+	Fixed a change in permission.
+
+2009-09-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Added a new special case for Amsn.
+
+2009-09-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Various fixes related to show_all_windows being false.  TaskIcons now
+	should ignore existence of tasks off the current workspace in this 
+	case.
+
+2009-09-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	* awn-settings/awnSettingsHelper.py:
+	Add a couple of ColorButtons to the advanced tab in awn-settings, so
+	that all colors used on the panel can be set through it.
+
+2009-09-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Fix up launcher editing a bit, now it at least watches the correct key
+	and Remove button is working.
+
+2009-09-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	* bindings/python/awn.defs:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/Makefile.am:
+	* src/awn-background-floaty.c:
+	* src/awn-background-floaty.h:
+	* src/awn-panel.c:
+	Added new background style: Floaty.
+
+2009-09-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	When config key show_all_windows config=false we do 
+	not want to play the closing animation on workspace
+	switches.
+
+2009-09-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-fade.c:
+	* libawn/anims/awn-effect-glow.c:
+	* libawn/anims/awn-effect-spotlight.c:
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effect-squish.c:
+	* libawn/anims/awn-effect-turn.c:
+	* libawn/anims/awn-effect-zoom.c:
+	Fix closing effects - make sure they properly reset properties they
+	use.
+
+2009-09-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+	Fix issues with using SOURCE operator with GdkPixbufs.
+
+2009-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-dialog.c (_on_origin_changed):
+	* libawn/awn-tooltip.c (awn_tooltip_show, on_button_press):
+	Fix compiler warnings.
+
+2009-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* configure.in:
+	Update maintainer mode CFLAGS.
+
+2009-09-19  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* m4/python.m4 (AC_PYTHON_DEVEL):
+	Update to the latest upstream macro code.
+
+2009-09-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Removed fix for disappearing task icons that turned out
+	to not be a fix.
+
+2009-09-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Removed a debug.
+
+2009-09-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fix for, occasional, disappearing icons issue on 
+	workspace switch.
+
+2009-09-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	* src/awn-applet-manager.c:
+	* src/awn-background-curves.c:
+	Change the equation for determining offset on the curve.
+
+2009-09-17  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Do not group two windows under a TaskIcon without a Launcher
+	when grouping is disabled.
+
+2009-09-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Do the redraw a bit differently - on the toplevel window.
+
+2009-09-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Do one more redraw, hopefully it's enough to cover that stupid fade-out
+	bug.
+
+2009-09-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-label.c:
+	Fixed missing unbind.
+
+2009-09-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Possible fix for disappearing icons when using fade-out autohide.
+
+2009-09-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-overlay-pixbuf.c:
+	Fix the scaling of AwnOverlayPixbuf.
+
+2009-09-16  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Don't invalidate the pixbuf cache when a new AwnThemedIcon
+	is created.
+
+2009-09-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-drag-indicator.c:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-settings.c:
+  	* applets/taskmanager/task-settings.h:
+  	* applets/taskmanager/task-window.c:
+	Changed task-settings as minimally as possible to get
+	the correct behaviour.
+	Call awn_themed_icon_set_size() on size changes to ensure
+	mis-sized icons do not occur when panel size is changed.
+
+2009-09-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Removed the experimental caching of desktop
+	lookup data to file.
+
+2009-09-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed sticky for openbox.
+
+	* applets/taskmanager/task-icon.c:
+	Fix various drag and drop issues.
+
+	* applets/taskmanager/task-manager.c:
+	Fixed up crash with the memory cache.	
+
+	* libawn/awn-overlay-pixbuf.c:
+	Potential fix for Pixbuf Overlay issue when
+	pixbuf is not square.
+
+2009-09-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	Fix the non-unique id problems.
+
+2009-09-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Add a memory cache or desktop lookups.
+
+2009-09-15  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* configure.in:
+	* themes/awn-default.desktop.in:
+	Update the theme keys to reflect the default, and make the theme
+	choosing in awn-settings work, though it could use complete rewrite,
+	why do we abuse desktop file for theme settings? How about some 
+	ini or xml?
+
+2009-09-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-applet-simple.c:
+	Fixed GdkEvent type for context-menu-popup signal.
+
+2009-09-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Change also clickthrough type when changing Behaviour.
+
+2009-09-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	Add a wnck_screen_force_update() on init to provide 
+	more consistent appearance of launcher/icons on start.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-applet.c (awn_applet_create_about_item):
+	Avoid a potential critical message.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-applet.c (awn_applet_create_about_item):
+	Fix formatting.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Fix the Vala binding for Applet.create_about_item().
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-plugins.svg:
+	* awn-settings/awn-settings-small.svg:
+	* awn-settings/awn-settings.svg:
+	* data/avant-window-navigator.svg:
+	Remove unused definitions from SVG files.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-settings.ui:
+	Remove duplicate IDs.
+
+2009-09-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* src/awn-panel.c:
+	Fixed loss of sticky.  This also seems to have fixed the
+	disappearing icons bug.  However, I am unable to test under
+	compiz, mhr3 has indicated sticky might cause issues with 
+	compiz.  If it does cause an issue then this will need to be
+	made into a config option.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* Makefile.schemas:
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	* configure.in:
+	* data/Makefile.am:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* po/POTFILES.in:
+	* po/avant-window-navigator.pot:
+	* po/*.po:
+	Make schema-ini files translatable.
+
+2009-09-13  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* po/POTFILES.in:
+	* po/avant-window-navigator.pot:
+	* po/*.po:
+	Update gettext files.
+
+2009-09-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Make the comparison of the Exec field of the desktop file
+	to the process command line a lot smarter.  Probably won't gain
+	a lot from it in practice bu it is an improvement.
+
+2009-09-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Special case the nautilus desktop...  there's a lot of variations 
+	on the nautilus desktop file, if the main desktop file is not called
+	nautilus.desktop then it's not obvious how to lookup the _correct_
+	one.
+
+2009-09-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Add a couple missing bindings.
+
+2009-09-11  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/python-awn-trunk.install:
+	Fix installation of the Python bindings, so that AutoPPA will work.
+
+2009-09-11  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/python-awn-trunk.install:
+	Fix installation of the Python bindings.
+
+2009-09-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	Add binding for ThemedIcon.set_info_append().
+	* libawn/awn-themed-icon.c:
+	* libawn/awn-themed-icon.h:
+	Fix parameter naming, so documentation is correct.
+
+2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix an incorrect argument introduced in the the last dnd
+	commit.
+
+2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Reflect changes in launcher_paths order in bar.
+
+2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+        Changed default of taskmanager drag_and_drop config option
+	false.
+
+2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Inhibit the TaskIcon drag when appropriate.
+
+2009-09-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/Makefile.am:
+	* configure.in:
+	Clean up the Python bindings build system code.
+
+2009-09-10  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/Makefile.am:
+	* configure.in:
+	* m4/python.m4:
+	Use AM_PATH_PYTHON for the install directories, as Ubuntu does some
+	non-standard install magic.
+
+2009-09-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini:
+	Changed defaults for taskmanager enable_long_press and 
+	disable_config_keys configuration keys to false and true
+	respectively.
+	
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Special cased Virtual Box desktop lookup.
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+        Disable some debugs.
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	disable some debugs.
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/util.c:
+	Fix for situation where a window that is demanding
+	attention is closed without becoming active.
+	Addition to the Thunderbird special case data.
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	In the intersection check code... check for 
+	DESKTOP type while interating through application
+	windows (nautilus can be the desktop)
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Tighten up requirements for matching the Exec
+	with the Command line in the fuzzy desktop 
+	lookup.
+
+2009-09-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-launcher-editor.in (removed):
+	* awn-settings/awnClass.py:
+	* awn-settings/awnLauncherEditor.py (removed):
+	* awn-settings/launcher-editor.ui (removed):
+	* configure.in:
+	* debian/awn-launcher-editor.1 (removed):
+	* debian/awn-settings-trunk.install:
+	* debian/rules:
+	Replace awn-launcher-editor with the libdesktop-agnostic
+	equivalent.
+
+2009-09-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* bindings/python/awn.defs:
+	* bindings/python/awn.override:
+	Add bindings for awn.applet.create_about_item*().
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Special case desktop lookup for tvtime
+
+2009-09-09  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	When comparing res names use g_strcmp0 not g_strstrlen.
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Input some info of OO Math and Base.
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/util.c:
+  	* applets/taskmanager/util.h:
+	Do the OpenOffice devs hate me?  Is it something personal?
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Remove a debug.
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+        * applets/taskmanager/util.c:
+        * applets/taskmanager/util.h:
+	Tweaked regex for OpenOffice to account for different Title when
+	opened through a document.
+	Added entries for Debian OpenOffice desktop files.
+	get_special_desktop_from_window_data() now returns a list of possible 
+	desktop files to account for various dists using different file names.
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Was destroying TaskIcons in some situation where they should
+	only be hidden.
+
+2009-09-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Tweaked the desktop lookup code.  Cuts Exec at "%" and 
+	does a fuzzy search using res_name.
+
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/util.c:
+	Fix an item amsn special case data, and added a new entry
+	for some newly discovered strangeness.
+
+2009-09-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-settings.ui:
+	Remove duplicate widget ID.
+
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Remove the signal so the signal handler does not get invoked 
+	after the TaskIcon has been destroyed.
+
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Add icon preview widget to customize icon dialog, 
+	Submitted by Matt <sharkbaitbobby@gmail.com>
+
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Use weak_ref instead of connecting to "unrealize".
+
+2009-09-07  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-manager.c:
+	This should allow closing animation and make sure Icon is disped
+	of.  For some reason the animation is not happening.
+
+2009-09-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/control:
+	Add bzr to the awn-settings dependencies.
+
+2009-09-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-manager/ (removed):
+	* libawn/awn-applet.c (AWN_SETTINGS_APP, _start_awn_settings,
+	  awn_applet_create_pref_item, awn_applet_create_default_menu):
+	* libawn/awn-effects.c (awn_effects_main_effect_loop):
+	Remove all references to awn-manager.
+
+2009-09-06  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* libawn/awn-effects.c (awn_effects_finalize):
+	Make sure the AwnEffects object removes any config bindings that it
+	may have when it is garbage collected.
+
+2009-09-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Removed redundant function.
+
+2009-09-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Reverted part of r1361, which screwed up effect setting.
+
+2009-09-05  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Make the logic of on_window_needs_attention_changed () a bit
+	more sane.
+
+2009-09-04  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/control:
+	* debian/libawn0-trunk.install:
+	* debian/rules:
+	Add awn-applets-c-core-trunk and awn-applets-python-core-trunk
+	as Recommends for avant-window-navigator.
+	Various little fixes.
+
+2009-09-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/control:
+	Fix the vala-awn-trunk dependencies.
+
+2009-09-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/avant-window-navigator.schema-ini.in:
+	Change the default orientation back to "bottom".
+
+2009-09-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Hook into the "state-changed" signal for Intellihide purposes
+	also.  It's wonderful how every WM behaves just a little bit 
+	different than the others.
+
+2009-09-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* libawn/awn-icon.c:
+	Removed some comments as the unexpected behaviour was
+	expected.
+
+2009-09-03  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* debian/avant-window-navigator-trunk.install:
+	Fix the Debian packaging to reflect the .ui change.
+
+2009-09-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* libawn/awn-icon.c:
+	Fixed up the dispose process that occurs when TaskIcons
+	disappear.  The fix seems somewhat incomplete/dubious 
+	(see comments).
+
+2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Ignore Desktop windows for Intellihide.
+
+2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Destroy the TaskIcons when they're no longer needed.
+
+2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Free a string in finalize(), not dispose().
+
+2009-09-02  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettingsHelper.py (get_widget_value,
+	  set_widget_value, get_widget_change_signal_name):
+	Replace Gtk.ColorButton widgets with DesktopAgnostic.GTK.ColorButton
+	widgets.
+
+2009-09-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-window.c:
+	Unbind the config keys on dispose().
+
+2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* awn-settings/Makefile.am:
+	* awn-settings/awn-settings.ui
+	* awn-settings/awnLauncherEditor.py:
+	* awn-settings/awnSettings.py.in:
+	* awn-settings/launcher-editor.ui:
+	* data/Makefile.am:
+	* data/awn-themed-icon.ui:
+	* libawn/awn-themed-icon.c:
+	* po/POTFILES.in:
+	Change the extension of GtkBuilder files to .ui.
+
+2009-08-31  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/task-manager.c:
+	Don't ignore skip taskbar windows for intellihide.
+
 2009-08-31  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/avant-window-navigator.pot:

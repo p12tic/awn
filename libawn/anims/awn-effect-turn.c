@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -355,6 +353,7 @@ turn_closing_effect(AwnEffectsAnimation * anim)
     priv->icon_depth = 0;
     priv->icon_depth_direction = 0;
     priv->width_mod = 1.0;
+    priv->alpha = 1.0;
     priv->flip = FALSE;
     /* check for repeating */
     repeat = awn_effect_handle_repeating(anim);

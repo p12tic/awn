@@ -40,6 +40,8 @@ namespace Awn {
 		public static GLib.ValueArray gslist_to_gvaluearray (GLib.SList list);
 		[CCode (cheader_filename = "libawn/awn-utils.h")]
 		public static void make_transparent_bg (Gtk.Widget widget);
+		[CCode (cheader_filename = "libawn/awn-utils.h")]
+		public static void show_menu_images (Gtk.Menu menu);
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Alignment : Gtk.Alignment, Atk.Implementor, Gtk.Buildable {
@@ -50,30 +52,34 @@ namespace Awn {
 		[NoAccessorMethod]
 		public Awn.Applet applet { owned get; set; }
 		public int offset_modifier { get; set construct; }
+		[NoAccessorMethod]
+		public float offset_multiplier { get; set; }
+		[NoAccessorMethod]
+		public float scale { get; set; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Applet : Gtk.Plug, Atk.Implementor, Gtk.Buildable {
-		public unowned Gtk.Widget create_about_item (string copyright, Awn.AppletLicense license, string version, string comments, string website, string website_label, string icon_name, string translator_credits, string authors, string artists, string documenters);
+		[CCode (has_construct_function = false)]
+		public Applet (string canonical_name, string uid, int panel_id);
+		public unowned Gtk.Widget create_about_item (string copyright, Awn.AppletLicense license, string version, string? comments, string? website, string? website_label, string? icon_name, string? translator_credits, [CCode (array_length = false)] string[]? authors, [CCode (array_length = false)] string[]? artists, [CCode (array_length = false)] string[]? documenters);
 		public unowned Gtk.Widget create_about_item_simple (string copyright, Awn.AppletLicense license, string version);
 		public unowned Gtk.Widget create_default_menu ();
 		public static unowned Gtk.Widget create_pref_item ();
 		[NoWrapper]
-		public virtual void deleted (string uid);
+		public virtual void deleted ();
 		public Gdk.NativeWindow docklet_request (int min_size, bool shrink, bool expand);
+		public Awn.AppletFlags get_behavior ();
 		public unowned string get_canonical_name ();
-		public Awn.AppletFlags get_flags ();
 		public int get_offset ();
 		public int get_offset_at (int x, int y);
 		public Awn.PathType get_path_type ();
 		public Gtk.PositionType get_pos_type ();
-		public uint get_size ();
+		public int get_size ();
 		public unowned string get_uid ();
 		public uint inhibit_autohide (string reason);
-		[CCode (has_construct_function = false)]
-		public Applet (string canonical_name, string uid, int panel_id);
 		[NoWrapper]
 		public virtual void panel_configure (Gdk.EventConfigure event);
-		public void set_flags (Awn.AppletFlags flags);
+		public void set_behavior (Awn.AppletFlags flags);
 		public void set_offset (int offset);
 		public void set_path_type (Awn.PathType path);
 		public void set_pos_type (Gtk.PositionType position);
@@ -101,7 +107,7 @@ namespace Awn {
 		public bool show_all_on_embed { get; set; }
 		public int size { get; set; }
 		public string uid { get; set construct; }
-		public virtual signal void applet_deleted (string p0);
+		public virtual signal void applet_deleted ();
 		public virtual signal void flags_changed (int flags);
 		public virtual signal void menu_creation (Gtk.Menu menu);
 		public virtual signal void offset_changed (int offset);
@@ -112,15 +118,15 @@ namespace Awn {
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class AppletSimple : Awn.Applet, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
-		public unowned Gtk.Widget get_icon ();
+		[CCode (type = "GtkWidget*", has_construct_function = false)]
+		public AppletSimple (string canonical_name, string uid, int panel_id);
+		public unowned Awn.Icon get_icon ();
 		public unowned string get_message ();
 		public float get_progress ();
 		public unowned string get_tooltip_text ();
-		[CCode (type = "GtkWidget*", has_construct_function = false)]
-		public AppletSimple (string canonical_name, string uid, int panel_id);
 		public void set_effect (Awn.Effect effect);
 		public void set_icon_context (Cairo.Context cr);
-		public void set_icon_info (string[] states, string[] icon_names);
+		public void set_icon_info ([CCode (array_length = false)] string[] states, [CCode (array_length = false)] string[] icon_names);
 		public void set_icon_name (string icon_name);
 		public void set_icon_pixbuf (Gdk.Pixbuf pixbuf);
 		public void set_icon_state (string state);
@@ -129,24 +135,32 @@ namespace Awn {
 		public void set_progress (float progress);
 		public void set_tooltip_text (string text);
 		public virtual signal void clicked ();
-		public virtual signal void context_menu_popup (Gdk.Event event);
-		public virtual signal void long_press ();
+		public virtual signal void context_menu_popup (Gdk.EventButton event);
+		public virtual signal void middle_clicked ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class Box : Gtk.Box, Gtk.Orientable, Atk.Implementor, Gtk.Buildable {
+	public class Box : Gtk.Box, Atk.Implementor, Gtk.Buildable, Gtk.Orientable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Box (Gtk.Orientation orient);
 		public void set_orientation (Gtk.Orientation orient);
 		public void set_orientation_from_pos_type (Gtk.PositionType pos_type);
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
+	public class DBusWatcher : GLib.Object {
+		public static unowned Awn.DBusWatcher get_default ();
+		public bool has_name (string name);
+		public virtual signal void name_appeared (string name);
+		public virtual signal void name_disappeared (string name);
+	}
+	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Dialog : Gtk.Window, Atk.Implementor, Gtk.Buildable {
+		[CCode (type = "GtkWidget*", has_construct_function = false)]
+		public Dialog ();
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Dialog.for_widget (Gtk.Widget widget);
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Dialog.for_widget_with_applet (Gtk.Widget widget, Awn.Applet applet);
-		[CCode (type = "GtkWidget*", has_construct_function = false)]
-		public Dialog ();
+		public unowned Gtk.Widget get_content_area ();
 		public void set_padding (int padding);
 		[NoAccessorMethod]
 		public Gtk.Widget anchor { set; }
@@ -162,6 +176,8 @@ namespace Awn {
 		public bool effects_hilight { get; set construct; }
 		[NoAccessorMethod]
 		public bool hide_on_esc { get; set construct; }
+		[NoAccessorMethod]
+		public bool hide_on_unfocus { get; set construct; }
 		[NoAccessorMethod]
 		public DesktopAgnostic.Color hilight { owned get; set construct; }
 		[NoAccessorMethod]
@@ -205,6 +221,8 @@ namespace Awn {
 		[NoAccessorMethod]
 		public bool active { get; set construct; }
 		[NoAccessorMethod]
+		public DesktopAgnostic.Color active_rect_color { owned get; set; }
+		[NoAccessorMethod]
 		public string arrow_png { owned get; set construct; }
 		[NoAccessorMethod]
 		public int arrows_count { get; set construct; }
@@ -214,6 +232,8 @@ namespace Awn {
 		public string custom_active_png { owned get; set construct; }
 		[NoAccessorMethod]
 		public bool depressed { get; set construct; }
+		[NoAccessorMethod]
+		public DesktopAgnostic.Color dot_color { owned get; set; }
 		[NoAccessorMethod]
 		public int effects { get; set construct; }
 		[NoAccessorMethod]
@@ -251,6 +271,8 @@ namespace Awn {
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Icon : Gtk.DrawingArea, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
+		[CCode (type = "GtkWidget*", has_construct_function = false)]
+		public Icon ();
 		public bool get_hover_effects ();
 		public int get_indicator_count ();
 		public bool get_is_active ();
@@ -266,8 +288,6 @@ namespace Awn {
 		public virtual void icon_padding2 ();
 		[NoWrapper]
 		public virtual void icon_padding3 ();
-		[CCode (type = "GtkWidget*", has_construct_function = false)]
-		public Icon ();
 		public void set_custom_paint (int width, int height);
 		public void set_effect (Awn.Effect effect);
 		public void set_from_context (Cairo.Context ctx);
@@ -288,16 +308,17 @@ namespace Awn {
 		[NoAccessorMethod]
 		public int long_press_timeout { get; set construct; }
 		public virtual signal void clicked ();
-		public virtual signal void context_menu_popup (Gdk.Event event);
+		public virtual signal void context_menu_popup (Gdk.EventButton event);
 		public virtual signal void long_press ();
+		public virtual signal void middle_clicked ();
 		public virtual signal void size_changed ();
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
-	public class IconBox : Awn.Box, Gtk.Orientable, Atk.Implementor, Gtk.Buildable {
-		[CCode (type = "GtkWidget*", has_construct_function = false)]
-		public IconBox.for_applet (Awn.Applet applet);
+	public class IconBox : Awn.Box, Atk.Implementor, Gtk.Buildable, Gtk.Orientable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public IconBox ();
+		[CCode (type = "GtkWidget*", has_construct_function = false)]
+		public IconBox.for_applet (Awn.Applet applet);
 		public void set_offset (int offset);
 		public void set_pos_type (Gtk.PositionType position);
 		public Awn.Applet applet { construct; }
@@ -322,11 +343,11 @@ namespace Awn {
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Overlay : GLib.InitiallyUnowned {
+		[CCode (has_construct_function = false)]
+		public Overlay ();
 		public bool get_apply_effects ();
 		public bool get_use_source_op ();
 		public void move_to (Cairo.Context cr, int icon_width, int icon_height, int overlay_width, int overlay_height, Awn.OverlayCoord coord_req);
-		[CCode (has_construct_function = false)]
-		public Overlay ();
 		public virtual void render (Gtk.Widget widget, Cairo.Context cr, int width, int height);
 		public void set_apply_effects (bool value);
 		public void set_use_source_op (bool value);
@@ -395,9 +416,9 @@ namespace Awn {
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class OverlayText : Awn.Overlay {
-		public void get_size (Gtk.Widget widget, string text, int size, int width, int height);
 		[CCode (has_construct_function = false)]
 		public OverlayText ();
+		public void get_size (Gtk.Widget widget, string text, int size, int width, int height);
 		[NoAccessorMethod]
 		public int font_mode { get; set; }
 		[NoAccessorMethod]
@@ -418,31 +439,41 @@ namespace Awn {
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class OverlayThemedIcon : Awn.Overlay {
 		[CCode (has_construct_function = false)]
-		public OverlayThemedIcon (Awn.ThemedIcon icon, string icon_name, string state);
+		public OverlayThemedIcon (string icon_name);
 		[NoAccessorMethod]
 		public double alpha { get; set construct; }
 		[NoAccessorMethod]
-		public Awn.ThemedIcon icon { owned get; set construct; }
-		[NoAccessorMethod]
 		public string icon_name { owned get; set construct; }
-		[NoAccessorMethod]
-		public string icon_state { owned get; set construct; }
 		[NoAccessorMethod]
 		public double scale { get; set construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class OverlayThrobber : Awn.Overlay {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
-		public OverlayThrobber (Gtk.Widget icon);
-		[NoAccessorMethod]
-		public Gtk.Widget icon { owned get; set construct; }
+		public OverlayThrobber ();
 		[NoAccessorMethod]
 		public double scale { get; set construct; }
 		[NoAccessorMethod]
 		public uint timeout { get; set construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
+	public class PixbufCache : GLib.Object {
+		[CCode (has_construct_function = false)]
+		public PixbufCache ();
+		public static unowned Awn.PixbufCache get_default ();
+		public void insert_null_result (string scope, string theme_name, string icon_name, int width, int height);
+		public void insert_pixbuf (Gdk.Pixbuf pbuf, string scope, string theme_name, string icon_name);
+		public void insert_pixbuf_simple_key (Gdk.Pixbuf pbuf, string simple_key);
+		public void invalidate ();
+		public unowned Gdk.Pixbuf lookup (string scope, string theme_name, string icon_name, int width, int height, bool null_result);
+		public unowned Gdk.Pixbuf lookup_simple_key (string simple_key, int width, int height);
+		[NoAccessorMethod]
+		public uint max_cache_size { get; set construct; }
+	}
+	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class ThemedIcon : Awn.Icon, Atk.Implementor, Gtk.Buildable, Awn.Overlayable {
+		[CCode (type = "GtkWidget*", has_construct_function = false)]
+		public ThemedIcon ();
 		public void clear_icons (int scope);
 		public void clear_info ();
 		public unowned Gtk.Widget create_custom_icon_item (string icon_name);
@@ -450,16 +481,14 @@ namespace Awn {
 		public static void drag_data_received (Gtk.Widget widget, Gdk.DragContext context, int x, int y, Gtk.SelectionData selection_data, uint info, uint evt_time);
 		public unowned Gtk.IconTheme get_awn_theme ();
 		public unowned string get_default_theme_name ();
-		public unowned Gdk.Pixbuf get_icon_at_size (uint size, string state);
+		public Gdk.Pixbuf get_icon_at_size (int size, string state);
 		public int get_size ();
 		public unowned string get_state ();
-		[CCode (type = "GtkWidget*", has_construct_function = false)]
-		public ThemedIcon ();
 		public void override_gtk_theme (string theme_name);
 		public void preload_icon (string state, int size);
 		public void set_applet_info (string applet_name, string uid);
-		public void set_info (string applet_name, string uid, string[] states, string[] icon_names);
-		public void set_info_append (string icon_name, string state);
+		public void set_info (string applet_name, string uid, [CCode (array_length = false)] string[] states, [CCode (array_length = false)] string[] icon_names);
+		public void set_info_append (string state, string icon_name);
 		public void set_info_simple (string applet_name, string uid, string icon_name);
 		public void set_size (int size);
 		public void set_state (string state);
@@ -486,7 +515,7 @@ namespace Awn {
 		public void update_position ();
 		public int delay { get; set construct; }
 		[NoAccessorMethod]
-		public Gtk.Widget focus { owned get; set; }
+		public Gtk.Widget focus_widget { owned get; set; }
 		[NoAccessorMethod]
 		public int offset { get; set construct; }
 		[NoAccessorMethod]
@@ -504,6 +533,7 @@ namespace Awn {
 	public interface Overlayable {
 		public void add_overlay (Awn.Overlay overlay);
 		public abstract unowned Awn.Effects get_effects ();
+		public unowned GLib.List get_overlays ();
 		public void remove_overlay (Awn.Overlay overlay);
 	}
 	[CCode (cprefix = "AWN_APPLET_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
@@ -513,7 +543,9 @@ namespace Awn {
 		EXPAND_MAJOR,
 		IS_EXPANDER,
 		IS_SEPARATOR,
-		HAS_SHAPE_MASK
+		HAS_SHAPE_MASK,
+		DOCKLET_HANDLES_POSITION_CHANGE,
+		DOCKLET_CLOSE_ON_MOUSE_OUT
 	}
 	[CCode (cprefix = "AWN_APPLET_LICENSE_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
 	public enum AppletLicense {
@@ -564,9 +596,13 @@ namespace Awn {
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public delegate bool EffectsOpfn (Awn.Effects fx, Gtk.Allocation alloc);
 	[CCode (cheader_filename = "libawn/libawn.h")]
+	public const int EFFECTS_ACTIVE_RECT_PADDING;
+	[CCode (cheader_filename = "libawn/libawn.h")]
 	public const int MAX_HEIGHT;
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public const int MIN_HEIGHT;
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public const int PANEL_ID_DEFAULT;
+	[CCode (cheader_filename = "libawn/libawn.h")]
+	public static unowned string utils_get_gtk_icon_theme_name (Gtk.IconTheme theme);
 }

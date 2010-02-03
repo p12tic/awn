@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __AWN_APPLET_SIMPLE_H__
@@ -23,7 +21,7 @@
 #include <gtk/gtk.h>
 
 #include "awn-applet.h"
-#include "awn-effects.h"
+#include "awn-icon.h"
 
 G_BEGIN_DECLS
 
@@ -61,7 +59,7 @@ struct _AwnAppletSimpleClass
 
   /* signals */
   void (*clicked)            (AwnAppletSimple *simple);
-  void (*long_press)         (AwnAppletSimple *simple);
+  void (*middle_clicked)     (AwnAppletSimple *simple);
   void (*context_menu_popup) (AwnAppletSimple *simple, GdkEventButton *event);
 
   /* padding */
@@ -111,7 +109,7 @@ void          awn_applet_simple_set_progress     (AwnAppletSimple  *applet,
 
 gfloat        awn_applet_simple_get_progress     (AwnAppletSimple  *applet);
 
-GtkWidget *   awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
+AwnIcon *     awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
 
 void          awn_applet_simple_set_effect       (AwnAppletSimple  *applet,
                                                   AwnEffect         effect);

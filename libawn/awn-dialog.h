@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __AWN_DIALOG_H__
@@ -76,6 +74,8 @@ GtkWidget* awn_dialog_new_for_widget_with_applet (GtkWidget *widget,
                                                   AwnApplet *applet);
 
 void       awn_dialog_set_padding (AwnDialog *dialog, gint padding);
+
+GtkWidget* awn_dialog_get_content_area (AwnDialog *dialog);
 
 G_END_DECLS
 

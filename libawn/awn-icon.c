@@ -1,14 +1,15 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License version 
- * 2 or later as published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -48,7 +49,8 @@ struct _AwnIconPrivate
 
   gboolean bind_effects;
   gboolean hover_effects_enable;
-  gboolean was_pressed;
+  gboolean left_was_pressed;
+  gboolean middle_was_pressed;
 
   gint long_press_timeout;
   gdouble press_start_x;
@@ -82,6 +84,7 @@ enum
   SIZE_CHANGED,
 
   CLICKED,
+  MIDDLE_CLICKED,
   LONG_PRESS,
   MENU_POPUP,
 
@@ -123,8 +126,18 @@ awn_icon_update_effects (GtkWidget *widget, gpointer data)
 
   if (gtk_widget_is_composited (widget))
   {
-    /* optimize the render speed */
+    /* optimize the render speed for GTK+ <2.17.3.*/
+    /*
+    TODO:
+    Once https://bugzilla.gnome.org/show_bug.cgi?id=597301 is resolve
+    we will need to set it back to FALSE for the fixed gtk versions
+    */
+#if GTK_CHECK_VERSION(2,17,3)
+    g_object_set (priv->effects, "indirect-paint", TRUE, NULL);
+#else
     g_object_set (priv->effects, "indirect-paint", FALSE, NULL);
+#endif
+
     if (priv->effects_backup_set)
     {
       g_object_set (priv->effects, "effects", priv->effects_backup, NULL);
@@ -206,11 +219,19 @@ awn_icon_long_press_timeout (gpointer data)
                                 priv->press_start_x, priv->press_start_y, 
                                 current_x, current_y) == FALSE)
   {
-    g_signal_emit (icon, _icon_signals[LONG_PRESS], 0);
+    if (g_signal_has_handler_pending (icon, 
+                                      _icon_signals[LONG_PRESS], 0, TRUE))
+    {
+      g_signal_emit (icon, _icon_signals[LONG_PRESS], 0);
+      priv->long_press_emitted = TRUE;
+    }
+  }
+  else
+  {
+    // if we're in drag we won't emit clicked either
+    priv->long_press_emitted = TRUE;
   }
 
-  // if we're in drag we won't emit clicked either
-  priv->long_press_emitted = TRUE;
   priv->long_press_timer = 0;
 
   return FALSE;
@@ -226,17 +247,24 @@ awn_icon_pressed (AwnIcon *icon, GdkEventButton *event, gpointer data)
   switch (event->button)
   {
     case 1:
-      priv->was_pressed = TRUE;
+      priv->left_was_pressed = TRUE;
       g_object_set (priv->effects, "depressed", TRUE, NULL);
       priv->long_press_emitted = FALSE;
       if (priv->long_press_timer == 0)
       {
         priv->press_start_x = event->x_root;
         priv->press_start_y = event->y_root;
-        priv->long_press_timer = g_timeout_add (priv->long_press_timeout, 
-                                                awn_icon_long_press_timeout,
-                                                icon);
+        // make sure the timer has lower priority than X-events
+        priv->long_press_timer = g_timeout_add_full (
+            G_PRIORITY_DEFAULT + 10,
+            priv->long_press_timeout,
+            awn_icon_long_press_timeout,
+            icon,
+            NULL);
       }
+      break;
+    case 2:
+      priv->middle_was_pressed = TRUE;
       break;
     case 3:
       g_signal_emit (icon, _icon_signals[MENU_POPUP], 0, event);
@@ -253,18 +281,32 @@ awn_icon_released (AwnIcon *icon, GdkEventButton *event, gpointer data)
 {
   AwnIconPrivate *priv = icon->priv;
 
-  if (priv->was_pressed && event->button == 1)
+  switch (event->button)
   {
-    priv->was_pressed = FALSE;
-    g_object_set (priv->effects, "depressed", FALSE, NULL);
-    if (priv->long_press_timer)
-    {
-      g_source_remove (priv->long_press_timer);
-      priv->long_press_timer = 0;
-    }
-    // emit clicked only if long-press wasn't emitted
-    if (priv->long_press_emitted == FALSE)
-      awn_icon_clicked (icon);
+    case 1:
+      if (priv->left_was_pressed)
+      {
+        priv->left_was_pressed = FALSE;
+        g_object_set (priv->effects, "depressed", FALSE, NULL);
+        if (priv->long_press_timer)
+        {
+          g_source_remove (priv->long_press_timer);
+          priv->long_press_timer = 0;
+        }
+        // emit clicked only if long-press wasn't emitted
+        if (priv->long_press_emitted == FALSE)
+          awn_icon_clicked (icon);
+      }
+      break;
+    case 2:
+      if (priv->middle_was_pressed)
+      {
+        priv->middle_was_pressed = FALSE;
+        awn_icon_middle_clicked (icon);
+      }
+      break;
+    default:
+      break;
   }
 
   return FALSE;
@@ -315,12 +357,29 @@ awn_icon_constructed (GObject *object)
                                        fx, "reflection-offset", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "active_rect_color",
+                                       fx, "active-rect-color", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "active_rect_outline",
+                                       fx, "active-rect-outline", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, "effects", "dot_color",
+                                       fx, "dot-color", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
   desktop_agnostic_config_client_bind (client, "effects", "show_shadows",
                                        fx, "make-shadow", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (client, "effects", "arrow_icon",
-                                       fx, "arrow_png", TRUE,
+                                       fx, "arrow-png", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (client, 
+                                       "effects", "active_background_icon",
+                                       fx, "custom-active-png", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }
@@ -415,10 +474,6 @@ awn_icon_dispose (GObject *object)
                                                           object, NULL);
   }
 
-  if (priv->effects)
-    g_object_unref (priv->effects);
-  priv->effects = NULL;
-
   if (priv->tooltip)
     gtk_widget_destroy (priv->tooltip);
   priv->tooltip = NULL;
@@ -433,6 +488,22 @@ awn_icon_dispose (GObject *object)
 
   G_OBJECT_CLASS (awn_icon_parent_class)->dispose (object);
 }
+
+static void
+awn_icon_finalize (GObject *object)
+{
+  AwnIconPrivate *priv;
+
+  g_return_if_fail (AWN_IS_ICON (object));
+  priv = AWN_ICON (object)->priv;
+
+  if (priv->effects)
+  {
+    g_object_unref (priv->effects);
+  }
+  G_OBJECT_CLASS (awn_icon_parent_class)->finalize (object);
+}
+
 
 static void
 awn_icon_overlayable_init (AwnOverlayableIface *iface)
@@ -450,6 +521,7 @@ awn_icon_class_init (AwnIconClass *klass)
   obj_class->get_property = awn_icon_get_property;
   obj_class->set_property = awn_icon_set_property;
   obj_class->dispose      = awn_icon_dispose;
+  obj_class->finalize     = awn_icon_finalize;
 
   wid_class->size_request       = awn_icon_size_request;
   wid_class->expose_event       = awn_icon_expose_event;
@@ -511,6 +583,15 @@ awn_icon_class_init (AwnIconClass *klass)
       g_cclosure_marshal_VOID__VOID,
       G_TYPE_NONE, 0);
 
+  _icon_signals[MIDDLE_CLICKED] =
+    g_signal_new ("middle-clicked",
+      G_OBJECT_CLASS_TYPE (obj_class),
+      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+      G_STRUCT_OFFSET (AwnIconClass, middle_clicked),
+      NULL, NULL,
+      g_cclosure_marshal_VOID__VOID,
+      G_TYPE_NONE, 0);
+
   _icon_signals[LONG_PRESS] =
     g_signal_new ("long-press",
       G_OBJECT_CLASS_TYPE (obj_class),
@@ -524,7 +605,7 @@ awn_icon_class_init (AwnIconClass *klass)
     g_signal_new ("context-menu-popup",
       G_OBJECT_CLASS_TYPE (obj_class),
       G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-      G_STRUCT_OFFSET (AwnIconClass, long_press),
+      G_STRUCT_OFFSET (AwnIconClass, context_menu_popup),
       NULL, NULL,
       g_cclosure_marshal_VOID__BOXED,
       G_TYPE_NONE, 1,
@@ -550,7 +631,6 @@ awn_icon_init (AwnIcon *icon)
   priv->tooltip = awn_tooltip_new_for_widget (GTK_WIDGET (icon));
 
   priv->effects = awn_effects_new_for_widget (GTK_WIDGET (icon));
-
   gtk_widget_add_events (GTK_WIDGET (icon), GDK_ALL_EVENTS_MASK);
 
   g_signal_connect (icon, "button-press-event",
@@ -980,6 +1060,47 @@ awn_icon_get_tooltip_text (AwnIcon *icon)
   return awn_tooltip_get_text (AWN_TOOLTIP (icon->priv->tooltip));
 }
 
+/**
+ * awn_icon_get_input_mask:
+ * @icon: an #AwnIcon.
+ *
+ * Gets the standard input shape mask which should be used for the widget. The
+ * called is responsible to destroying the newly created #GdkRegion.
+ *
+ * Returns: #GdkRegion with input shape mask of the widget (already offset by
+ * the widget allocation).
+ */
+GdkRegion*
+awn_icon_get_input_mask (AwnIcon *icon)
+{
+  AwnIconPrivate *priv;
+  GtkAllocation alloc;
+
+  g_return_val_if_fail (AWN_IS_ICON (icon), NULL);
+
+  priv = icon->priv;
+
+  gtk_widget_get_allocation (GTK_WIDGET (icon), &alloc);
+  switch (priv->position)
+  {
+    case GTK_POS_BOTTOM:
+      alloc.y = alloc.height - priv->icon_height - priv->offset;
+    case GTK_POS_TOP:
+      alloc.height = priv->icon_height + priv->offset;
+      break;
+    case GTK_POS_RIGHT:
+      alloc.x = alloc.width - priv->icon_width - priv->offset;
+    case GTK_POS_LEFT:
+      alloc.width = priv->icon_width + priv->offset;
+      break;
+    default:
+      g_assert_not_reached ();
+      break;
+  }
+
+  return gdk_region_rectangle (&alloc);
+}
+
 /*
  * ICON EMBLEMS
  */
@@ -1084,5 +1205,13 @@ awn_icon_clicked (AwnIcon *icon)
   g_return_if_fail (AWN_IS_ICON (icon));
 
   g_signal_emit (icon, _icon_signals[CLICKED], 0);
+}
+
+void
+awn_icon_middle_clicked (AwnIcon *icon)
+{
+  g_return_if_fail (AWN_IS_ICON (icon));
+
+  g_signal_emit (icon, _icon_signals[MIDDLE_CLICKED], 0);
 }
 

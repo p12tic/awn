@@ -33,10 +33,13 @@ public_headers = \
 	awn-box.h \
 	awn-cairo-utils.h \
 	awn-config.h \
+	awn-dbus-watcher.h \
+	awn-desktop-lookup-client.h \
 	awn-dialog.h \
 	awn-effects.h \
 	awn-icon.h \
 	awn-icon-box.h \
+	awn-pixbuf-cache.h \
 	awn-image.h \
 	awn-label.h \
 	awn-overlay.h \
@@ -99,6 +102,8 @@ source_c = \
 	awn-box.c \
 	awn-cairo-utils.c \
 	awn-config.c \
+	awn-dbus-watcher.c \
+	awn-desktop-lookup-client.c \
 	awn-dialog.c \
 	awn-effects.c \
 	awn-effects-ops-new.c \
@@ -116,6 +121,7 @@ source_c = \
 	awn-overlay-themed-icon.c \
 	awn-overlay-text.c \
 	awn-overlay-throbber.c \
+	awn-pixbuf-cache.c \
 	awn-themed-icon.c \
 	awn-tooltip.c \
 	awn-utils.c \
@@ -131,7 +137,7 @@ libawn_la_SOURCES = \
 	$(NULL)
 libawn_la_CFLAGS = $(WARNING_FLAGS)
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
-libawn_la_LDFLAGS = -version-info 0:1:0
+libawn_la_LDFLAGS = -version-info 1:1:0
 
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true
@@ -151,6 +157,12 @@ awn-enum-types.c: awn-enum-types.h
 	  $(source_h) ) >> xgen-cetc && \
 	cp xgen-cetc awn-enum-types.c && \
 	rm -f xgen-cetc
+
+EXTRA_DIST =				\
+	awn-enum-types.c.in		\
+	awn-enum-types.h.in		\
+	libawn-marshal.list		\
+	$(NULL)
 
 CLEANFILES = $(STAMPFILES) $(BUILT_SOURCES)
 

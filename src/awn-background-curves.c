@@ -47,9 +47,21 @@ static void awn_background_curves_draw (AwnBackground  *bg,
                                         GdkRectangle   *area);
 
 static void
+awn_background_curves_constructed (GObject *object)
+{
+    G_OBJECT_CLASS (awn_background_curves_parent_class)->constructed (object);
+
+    g_signal_connect (object, "notify::curves-symmetry",
+                      G_CALLBACK (awn_background_emit_padding_changed), NULL);
+}
+
+static void
 awn_background_curves_class_init (AwnBackgroundCurvesClass *klass)
 {
+  GObjectClass *obj_class = G_OBJECT_CLASS (klass);
   AwnBackgroundClass *bg_class = AWN_BACKGROUND_CLASS (klass);
+
+  obj_class->constructed = awn_background_curves_constructed;
 
   bg_class->draw = awn_background_curves_draw;
   bg_class->padding_request = awn_background_curves_padding_request;
@@ -98,8 +110,7 @@ draw_rect_path (AwnBackground  *bg,
                 gdouble         x,
                 gdouble         y,
                 gint            width,
-                gint            height,
-                gint            padding)
+                gint            height)
 {
   cairo_save (cr);
 
@@ -107,7 +118,7 @@ draw_rect_path (AwnBackground  *bg,
   cairo_scale (cr, width/2.0, height);
 
   cairo_move_to (cr, 0.0, 1.0);
-  cairo_arc_negative (cr, 0.0, 1.0, 1.0, 0.0, M_PI);
+  cairo_arc_negative (cr, 0.0, 1.2, 1.0, 0.0, M_PI);
 
   cairo_restore (cr);
 }
@@ -133,6 +144,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                             gint            height)
 {
   cairo_pattern_t *pat;
+  cairo_matrix_t matrix;
   gdouble curves_height;
 
   /* Basic set-up */
@@ -141,30 +153,79 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_translate (cr, 0.5, 0.5);
   width -= 1;
   curves_height = height;
-  if(bg->curviness < 1)
+  if (bg->curviness < 1.0)
+  {
     curves_height = height*bg->curviness;
+  }
 
   /* Drawing outer ellips */
-  pat = cairo_pattern_create_linear (0, height-curves_height, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  if (bg->enable_pattern && bg->pattern)
+  {
+    pat = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
+  }
+  else
+  {
+    // we need pat_xscale for scaling the spherical gradient to ellipse...
+    // why * 1.5 ? because it looks better :)
+    const gdouble pat_xscale = curves_height / width * 1.5;
 
-  draw_rect_path (bg, cr, 0, height-curves_height, width, curves_height, 0.5);
+    pat = cairo_pattern_create_radial (width / 2.0 * pat_xscale, height,
+                                       0.01,
+                                       width / 2.0 * pat_xscale, height,
+                                       curves_height);
+    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_2);
+    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_1);
+
+    // scale to ellipse
+    cairo_matrix_init_scale (&matrix, pat_xscale, 1.0);
+    cairo_pattern_set_matrix (pat, &matrix);
+  }
+
+  cairo_save (cr);
+
+  draw_rect_path (bg, cr, 0, height-curves_height, width, curves_height);
+  cairo_clip (cr);
   cairo_set_source (cr, pat);
-  cairo_fill (cr);
+  cairo_paint (cr);
+
+  cairo_restore (cr);
+
   cairo_pattern_destroy (pat);
+
+  /* Internal border */
+  awn_cairo_set_source_color (cr, bg->hilight_color);
+  draw_rect_path (bg, cr, 1.0, height-curves_height + 2.0,
+                  width-2.0, curves_height-2.0);
+  cairo_stroke (cr);
 
   /* External border */
   awn_cairo_set_source_color (cr, bg->border_color);
-  draw_rect_path (bg, cr, 0, height-curves_height,  width, curves_height, 0.5);
+  draw_rect_path (bg, cr, 0.0, height-curves_height, width, curves_height);
   cairo_stroke (cr);
 
   /* Drawing inner ellips */
-  gint width_inner = width*(1-bg->curves_symmetry*0.2);
-  pat = cairo_pattern_create_linear (0, height-curves_height/2.0, 0, height);
+  gint width_inner = width * 3 / 4;
+  const gdouble inner_pat_xscale = curves_height/2.0 / width_inner * 1.5;
+  
+  gdouble x_pos = (width-width_inner);
+  gdouble min = x_pos / 6;
+  x_pos = x_pos - min * 2;
+  x_pos = x_pos * (bg->curves_symmetry) + min;
+
+  pat = cairo_pattern_create_radial (
+    (x_pos + width_inner/2.0) * inner_pat_xscale, height, 0.01,
+    (x_pos + width_inner/2.0) * inner_pat_xscale, height, curves_height/2.0
+  );
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect_path (bg, cr, (width-width_inner)*bg->curves_symmetry*0.8, height-curves_height/2.0,  width_inner, curves_height/2.0, 0.5);
+
+  // scale to ellipse
+  cairo_matrix_init_scale (&matrix, inner_pat_xscale, 1.0);
+  cairo_pattern_set_matrix (pat, &matrix);
+
+  draw_rect_path (bg, cr, x_pos, height-curves_height/2.0,  width_inner, curves_height/2.0);
+
   cairo_set_source (cr, pat);
   cairo_fill (cr); 
   cairo_pattern_destroy (pat);
@@ -191,24 +252,31 @@ awn_background_curves_padding_request (AwnBackground *bg,
                                    guint *padding_left,
                                    guint *padding_right)
 {
-  gint padding = 20;
+  gfloat left = bg->curves_symmetry;
+  gfloat right = 1.0 - bg->curves_symmetry;
+  const gint BASE_PADDING = 20;
+  const gint INC_PADDING = 75;
 
   switch (position)
   {
     case GTK_POS_TOP:
       *padding_top  = 0; *padding_bottom = 0;
-      *padding_left = padding; *padding_right = padding;
+      *padding_left = BASE_PADDING + INC_PADDING * right;
+      *padding_right = BASE_PADDING + INC_PADDING * left;
       break;
     case GTK_POS_BOTTOM:
       *padding_top  = 0; *padding_bottom = 0;
-      *padding_left = padding; *padding_right = padding;
+      *padding_left = BASE_PADDING + INC_PADDING * left;
+      *padding_right = BASE_PADDING + INC_PADDING * right;
       break;
     case GTK_POS_LEFT:
-      *padding_top  = padding; *padding_bottom = padding;
+      *padding_top  = BASE_PADDING + INC_PADDING * left;
+      *padding_bottom = BASE_PADDING + INC_PADDING * right;
       *padding_left = 0; *padding_right = 0;
       break;
     case GTK_POS_RIGHT:
-      *padding_top  = padding; *padding_bottom = padding;
+      *padding_top  = BASE_PADDING + INC_PADDING * right;
+      *padding_bottom = BASE_PADDING + INC_PADDING * left;
       *padding_left = 0; *padding_right = 0;
       break;
     default:
@@ -222,7 +290,7 @@ AwnPathType awn_background_curves_get_path_type (AwnBackground *bg,
 {
   g_return_val_if_fail (AWN_IS_BACKGROUND (bg) && offset_mod, AWN_PATH_LINEAR);
 
-  *offset_mod = 1.5;
+  *offset_mod = 20.0;
   return AWN_PATH_ELLIPSE;
 }
 

@@ -53,7 +53,8 @@ struct _AwnMonitor {
 
   gint   width;
   gint   height;
-  gint   offset;
+  gint   x_offset;
+  gint   y_offset;
   gfloat align;
 
   /*< private >*/

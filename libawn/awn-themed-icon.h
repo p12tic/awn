@@ -2,14 +2,15 @@
  * Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License version 
- * 2 or later as published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -92,11 +93,11 @@ void          awn_themed_icon_set_info_simple    (AwnThemedIcon  *icon,
                                                   const gchar    *uid,
                                                   const gchar    *icon_name);
 
-void          awn_themed_icon_set_info_append     (AwnThemedIcon  *icon,
-                                                  const gchar    *icon_name,
-                                                  const gchar    * state);
+void          awn_themed_icon_set_info_append    (AwnThemedIcon  *icon,
+                                                  const gchar    *state,
+                                                  const gchar    *icon_name);
 
-void          awn_themed_icon_set_applet_info     (AwnThemedIcon  *icon,
+void          awn_themed_icon_set_applet_info    (AwnThemedIcon  *icon,
                                                   const gchar    *applet_name,
                                                   const gchar    *uid);
 
@@ -104,7 +105,7 @@ void          awn_themed_icon_override_gtk_theme (AwnThemedIcon *icon,
                                                   const gchar   *theme_name);
 
 GdkPixbuf *   awn_themed_icon_get_icon_at_size   (AwnThemedIcon *icon,
-                                                  guint          size,
+                                                  gint          size,
                                                   const gchar   *state);
 
 void          awn_themed_icon_clear_icons        (AwnThemedIcon *icon,
@@ -119,8 +120,7 @@ GtkIconTheme *awn_themed_icon_get_awn_theme     (AwnThemedIcon * icon);
 
 GtkWidget *   awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
                                                  const gchar * icon_name);
-GtkWidget *   awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon,
-                                                 const gchar * icon_name);
+GtkWidget *   awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon,const gchar *icon_name);
 
 void awn_themed_icon_drag_data_received (GtkWidget        *widget, 
                                     GdkDragContext   *context,

@@ -14,10 +14,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "awn-effects-ops-new.h"
@@ -257,7 +255,7 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
                                    gpointer user_data
                                    )
 {
-  #define PADDING 3
+  const int PADDING = AWN_EFFECTS_ACTIVE_RECT_PADDING;
   AwnEffectsPrivate *priv = fx->priv;
 
   if (fx->is_active || priv->simple_rect) {
@@ -297,7 +295,11 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
       }
       else
       {
-        if (style)
+        if (priv->active_rect_color)
+        {
+          awn_cairo_set_source_color (cr, priv->active_rect_color);
+        }
+        else if (style)
         {
           DesktopAgnosticColor *color;
           
@@ -307,13 +309,26 @@ gboolean awn_effects_post_op_active(AwnEffects * fx,
           g_object_unref (color);
         }
         else
+        {
           cairo_set_source_rgba (cr, 0.0, 0.0, 0.0, 0.3);
+        }
       }
       awn_cairo_rounded_rect (cr, x-PADDING, y-PADDING,
                               priv->icon_width+(2*PADDING),
                               priv->icon_height+(2*PADDING),
                               priv->icon_width / 8.0, ROUND_ALL);
-      cairo_fill (cr);
+      cairo_fill_preserve (cr);
+
+      cairo_set_line_width (cr, 1.0);
+      if (priv->active_rect_outline)
+      {
+        awn_cairo_set_source_color (cr, priv->active_rect_outline);
+      }
+      else
+      {
+        cairo_set_source_rgba (cr, 0, 0, 0, 0);
+      }
+      cairo_stroke (cr);
     }
     else
     {
@@ -427,24 +442,29 @@ gboolean awn_effects_post_op_arrow(AwnEffects * fx,
           const double DOT_RADIUS = 9.0;
           double r = 1.0, g = 1.0, b = 1.0;
 
-          if (fx->widget)
+          if (priv->dot_color)
+          {
+            desktop_agnostic_color_get_cairo_color (priv->dot_color,
+                                                    &r, &g, &b, NULL);
+          }
+          else if (fx->widget)
           {
             GdkColor c = gtk_widget_get_style (fx->widget)
                            ->light[GTK_STATE_SELECTED];
             r = c.red / 65535.0; g = c.green / 65535.0; b = c.blue / 65535.0;
-
-            if (priv->glow_amount > 0.0)
-            {
-              r = lighten_component (r * 255, priv->glow_amount, FALSE) / 255.0;
-              g = lighten_component (g * 255, priv->glow_amount, FALSE) / 255.0;
-              b = lighten_component (b * 255, priv->glow_amount, FALSE) / 255.0;
-            }
+          }
+          // lighten a bit if necessary
+          if (priv->glow_amount > 0.0)
+          {
+            r = lighten_component (r * 255, priv->glow_amount, FALSE) / 255.0;
+            g = lighten_component (g * 255, priv->glow_amount, FALSE) / 255.0;
+            b = lighten_component (b * 255, priv->glow_amount, FALSE) / 255.0;
           }
           paint_arrow_dot (cr, DOT_RADIUS, arrows_count, r, g ,b);
           break;
         }
         default:
-          g_warn_if_reached ();
+          // we're here if user isn't using valid png / doesn't want arrows
           break;
       }
     }
@@ -513,19 +533,18 @@ gboolean awn_effects_post_op_saturate(AwnEffects * fx,
 }
 
 gboolean awn_effects_post_op_glow(AwnEffects * fx,
-                               cairo_t * cr,
-                               GtkAllocation * ds,
-                               gpointer user_data
-                              )
+                                  cairo_t * cr,
+                                  GtkAllocation * ds,
+                                  gpointer user_data)
 {
   AwnEffectsPrivate *priv = fx->priv;
 
   if (priv->glow_amount > 0 || fx->depressed)
   {
-    gfloat amount = fx->depressed ? 30 : priv->glow_amount;
-    lighten_surface(cairo_get_target(cr),
-                    priv->window_width, priv->window_height,
-                    amount, fx->depressed);
+    gfloat amount = fx->depressed ? 1 : priv->glow_amount;
+    lighten_surface (cairo_get_target (cr),
+                     priv->window_width, priv->window_height,
+                     amount);
     return TRUE;
   }
   return FALSE;
@@ -608,18 +627,18 @@ gboolean awn_effects_post_op_shadow(AwnEffects * fx,
                                              CAIRO_CONTENT_COLOR_ALPHA,
                                              w,
                                              h);
-    blur_ctx = cairo_create(blur_srfc);
+    blur_ctx = cairo_create (blur_srfc);
 
     cairo_set_operator(blur_ctx, CAIRO_OPERATOR_SOURCE);
     cairo_set_source_surface(blur_ctx, cairo_get_target(cr), 0, 0);
     cairo_paint(blur_ctx);
 
-    darken_surface (blur_srfc, priv->window_width, priv->window_height);
+    darken_surface (blur_ctx, priv->window_width, priv->window_height);
     blur_surface_shadow (blur_srfc, priv->window_width, priv->window_height, 4);
 
     cairo_save(cr);
     cairo_set_operator(cr, CAIRO_OPERATOR_DEST_OVER);
-    const double SHADOW_SCALE = 1.0625;
+    const double SHADOW_SCALE = 1.0234375;
     cairo_scale(cr, SHADOW_SCALE, SHADOW_SCALE);
     cairo_set_source_surface(cr, blur_srfc, (w - w*SHADOW_SCALE)/2, (h - h*SHADOW_SCALE)/2);
     cairo_paint_with_alpha(cr, 0.5);

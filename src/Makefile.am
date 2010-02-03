@@ -40,9 +40,9 @@ avant_window_navigator_SOURCES =	\
 	awn-background-curves.h \
 	awn-background-edgy.c \
 	awn-background-edgy.h \
+	awn-background-floaty.c \
+	awn-background-floaty.h \
 	awn-defines.h \
-	awn-dbus-watcher.c \
-	awn-dbus-watcher.h \
 	$(builddir)/awn-marshal.c \
 	$(builddir)/awn-marshal.h \
 	awn-monitor.c \
@@ -50,6 +50,8 @@ avant_window_navigator_SOURCES =	\
 	awn-panel.c \
 	awn-panel.h \
 	awn-panel-glue.h \
+	awn-separator.c \
+	awn-separator.h \
 	awn-throbber.c \
 	awn-throbber.h \
 	awn-ua-alignment.c \
@@ -79,6 +81,7 @@ CLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = \
 	awn-app-dbus.xml \
 	awn-panel-dbus.xml \
+	awn-marshal.list \
 	$(NULL)
 
 # vim: set ts=8 sts=8 sw=8 :

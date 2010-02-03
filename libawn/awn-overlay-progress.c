@@ -1,14 +1,15 @@
 /*
  * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License version 
- * 2 or later as published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
@@ -101,7 +102,6 @@ static void
 awn_overlay_progress_class_init (AwnOverlayProgressClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GParamSpec   *pspec; 
 
   object_class->get_property = awn_overlay_progress_get_property;
   object_class->set_property = awn_overlay_progress_set_property;
@@ -114,15 +114,14 @@ awn_overlay_progress_class_init (AwnOverlayProgressClass *klass)
  * A property of type double.  Set to the completion percentage for the overlay.
  */    
   
-  pspec = g_param_spec_double ("percent-complete",
-                               "Percent Complete",
-                               "Percent Complete",
-                               0.0,
-                               G_MAXDOUBLE,
-                               0.0,
-                               G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                               G_PARAM_STATIC_STRINGS);
-  g_object_class_install_property (object_class, PROP_PERCENT_COMPLETE, pspec);     
+  g_object_class_install_property (object_class,
+    PROP_PERCENT_COMPLETE,
+    g_param_spec_double ("percent-complete",
+                         "Percent Complete",
+                         "Percent Complete",
+                         0.0, 100.0, 0.0,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
   
   g_type_class_add_private (klass, sizeof (AwnOverlayProgressPrivate));  
 }

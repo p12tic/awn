@@ -1,0 +1,15 @@
+<menu>
+  <menuitem type="Internal-Dock-Prefs"></menuitem>
+  <menuitem type="Internal-Customize-Icon"></menuitem>
+  <menuitem type="Internal-Remove-Customized-Icon"></menuitem>
+  <menuitem type="Internal-Add-To-Launcher-List"></menuitem>  
+  <menuitem type="Internal-Separator"></menuitem>
+  <menuitem type="Internal-Inline-Plugins"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>  
+  <menuitem type="External-Command" cmd="kill -9 $AWN_TASK_PID &amp;" icon="force-exit">Force Quit</menuitem>
+  <menuitem type="External-Command" icon="gksu-debian" cmd="gksudo $AWN_TASK_EXEC &amp;">Launch as root</menuitem>   
+  <menuitem type="Internal-Launch"></menuitem>  
+  <menuitem type="Internal-Separator"></menuitem> 
+  <menuitem type="Internal-Smart-Wnck-Menu"></menuitem>
+</menu>
+

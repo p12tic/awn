@@ -2,15 +2,15 @@ Source: avant-window-navigator-trunk
 Section: gnome
 Priority: optional
 Maintainer: Julien Lavergne <julien.lavergne@gmail.com>
-Build-Depends: 	debhelper (>= 5),
-		cdbs,
+Build-Depends: 	debhelper (>= 7),
+		quilt,
 		intltool,
 		libwnck-dev,
 		libdbus-glib-1-dev,
 		libxcomposite-dev,
 		libxdamage-dev,
 		libgtop2-dev,
-		python-central (>= 0.5.6),
+		python-support (>= 0.7.0),
 		python-dev,
 		python-all-dev (>= 2.4),
 		python-gtk2-dev (>= 2.12),
@@ -22,11 +22,13 @@ Build-Depends: 	debhelper (>= 5),
 		automake,
 		libdesktop-agnostic-dev,
 		libdesktop-agnostic-bin,
-		python-libdesktop-agnostic,
-		vala-libdesktop-agnostic
+		python-desktop-agnostic | python-libdesktop-agnostic,
+		vala-desktop-agnostic | vala-libdesktop-agnostic,
+		lsb-release,
+		bzr,
+		libssl-dev
 Standards-Version: 3.7.3
 Homepage: https://launchpad.net/avant-window-navigator/
-XS-Python-Version: >= 2.4
 
 Package: avant-window-navigator-trunk
 Section: gnome
@@ -38,9 +40,12 @@ Depends: 	${shlibs:Depends},
 		libdesktop-agnostic-vfs,
 		libdesktop-agnostic-fdo,
 		libdesktop-agnostic-cfg,
-		libgtop2-7,
 		dbus-x11 | dbus
 Recommends:	awn-settings-trunk (>= 0.2),
+			awn-applets-c-core-trunk,
+			awn-applets-python-core-trunk,
+			awn-applets-c-extras-trunk,
+			awn-applets-python-extras-trunk
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
 Conflicts: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing
 Replaces: avant-window-navigator-bzr, avant-window-navigator, avant-window-navigator-testing
@@ -60,15 +65,14 @@ Replaces: avant-window-navigator (<= 0.2.1-dfsg1-1), avant-window-navigator-data
 Description: Common files for avant-window-navigator
  This package contains all images and locales for avant-windows-navigator.
 
-Package: libawn0-trunk
+Package: libawn1-trunk
 Section: libs
 Architecture: any
 Depends: 	${shlibs:Depends},
 		${misc:Depends},
-		libdesktop-agnostic0,
 Suggests: 	metacity (>= 2.21.5) | xcompmgr | compiz | xfwm4 (>= 4.2)
-Conflicts: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
-Replaces: libawn0-bzr, libawn-bzr, libawn, libawn0, libawn0-testing
+Conflicts: libawn1-bzr, libawn-bzr, libawn, libawn1, libawn1-testing
+Replaces: libawn1-bzr, libawn-bzr, libawn, libawn1, libawn1-testing
 Description: library for avant-window-navigator
  This library is used by avant-window-navigator and its applets. It provides 
  functions to create the bar and the applets.
@@ -76,9 +80,9 @@ Description: library for avant-window-navigator
 Package: libawn-doc-trunk
 Section: doc
 Architecture: all
-Depends:	libawn0-trunk (>= ${source:Version})
-Conflicts: libawn0-doc-bzr, libawn-doc-bzr, libawn-doc, libawn0-doc, libawn0-doc-testing
-Replaces: libawn0-doc-bzr, libawn-doc-bzr, libawn-doc, libawn0-doc, libawn0-doc-testing
+Depends:	libawn1-trunk (>= ${source:Version})
+Conflicts: libawn1-doc-bzr, libawn-doc-bzr, libawn-doc, libawn1-doc, libawn1-doc-testing
+Replaces: libawn1-doc-bzr, libawn-doc-bzr, libawn-doc, libawn1-doc, libawn1-doc-testing
 Description: library for avant-window-navigator - development files
  This package contains documentation for avant-window-navigator and its library
  libawn to develop applets or the bar.
@@ -86,11 +90,11 @@ Description: library for avant-window-navigator - development files
 Package: libawn-dev-trunk
 Section: libdevel
 Architecture: any
-Depends:	libawn0-trunk (= ${binary:Version}),
+Depends:	libawn1-trunk (= ${binary:Version}),
 		${shlibs:Depends},
 		${misc:Depends},
 		libgtk2.0-dev,
-		libdesktop-agnostic-dev,
+		libdesktop-agnostic-dev
 Conflicts: libawn-dev-bzr, libawn-dev, libawn-testing-dev
 Replaces: libawn-dev-bzr, libawn-dev, libawn-testing-dev
 Description: library for avant-window-navigator - development files
@@ -105,8 +109,9 @@ Depends:	${python:Depends},
 		gnome-menus,
 		librsvg2-common,
 		python-awn-trunk,
-Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk
-Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn0-testing (<< 0.2.4), awn-manager-trunk
+		bzr,
+Conflicts: awn-manager-bzr, awn-manager, awn-manager-testing, libawn1-testing (<< 0.2.4), awn-manager-trunk, awn-settings
+Replaces: awn-manager-bzr, awn-manager, awn-manager-testing, libawn1-testing (<< 0.2.4), awn-manager-trunk, awn-settings
 XB-Python-Version: ${python:Versions}
 Description: A preferences manager for avant-window-navigator
  awn-settings provides a simple way to configure avant-window-navigator.
@@ -115,11 +120,11 @@ Description: A preferences manager for avant-window-navigator
 Package: python-awn-trunk
 Section: python
 Architecture: any
-Depends:	libawn0-trunk (= ${binary:Version}),
+Depends:	libawn1-trunk (= ${binary:Version}),
 		${shlibs:Depends},
 		${misc:Depends},
 		${python:Depends},
-		python-libdesktop-agnostic
+		python-desktop-agnostic | python-libdesktop-agnostic
 Provides: ${python:Provides}
 Conflicts: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
 Replaces: python-libawn0, python-libawn, python-libawn-bzr, python-awn, python-awn-testing
@@ -131,22 +136,22 @@ Description: Python bindings for avant-window-navigator library
 Package: vala-awn-trunk
 Section: gnome
 Architecture: all
-Depends: 	libawn0-trunk (>= ${source:Version}),
+Depends: 	libawn1-trunk (>= ${source:Version}),
 		${shlibs:Depends}, 
 		${misc:Depends},
-		valac (>= 0.5.4)
+		vala-desktop-agnostic | vala-libdesktop-agnostic 
 Conflicts: vala-awn-testing, vala-awn
 Replaces: vala-awn-testing, vala-awn
 Description: Vala bindings for avant-window-navigator library 
  This library is used by avant-window-navigator. It provides Vala bindings 
  to create and use Vala applets for avant-window-navigator.
 
-Package: libawn0-dbg-trunk
+Package: libawn1-dbg-trunk
 Section: libs
 Architecture: any
-Depends: 	libawn0-trunk (= ${binary:Version})
-Conflicts: libawn0-dbg-bzr, libawn-dbg-bzr, libawn-dbg, libawn0-dbg, libawn0-dbg-testing
-Replaces: libawn0-dbg-bzr, libawn-dbg-bzr, libawn-dbg, libawn0-dbg, libawn0-dbg-testing
+Depends: 	libawn1-trunk (= ${binary:Version})
+Conflicts: libawn1-dbg-bzr, libawn-dbg-bzr, libawn-dbg, libawn1-dbg, libawn1-dbg-testing
+Replaces: libawn1-dbg-bzr, libawn-dbg-bzr, libawn-dbg, libawn1-dbg, libawn1-dbg-testing
 Description: library for avant-window-navigator - debug package
  This library is used by avant-window-navigator and its applets. It provides 
  functions to create the bar and the applets.

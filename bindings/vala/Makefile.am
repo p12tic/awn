@@ -24,6 +24,10 @@ VAPIGEN_INPUT = \
 	awn-custom.vala \
 	$(NULL)
 
+EXTRA_DIST = \
+	build.vapi \
+	libintl.vapi
+
 if MAINTAINER_MODE
 awn.gi: awn.exclude awn.files awn.namespace
 	$(QUIET_GEN)$(VALA_GEN_INTROSPECT) awn $(srcdir)

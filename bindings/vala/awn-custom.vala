@@ -50,6 +50,7 @@ namespace Awn
     public static float get_offset_modifier_by_path_type (Awn.PathType path_type, Gtk.PositionType position, float offset_modifier, int pos_x, int pos_y, int width, int height);
     public static GLib.ValueArray gslist_to_gvaluearray (GLib.SList list);
     public static void make_transparent_bg (Gtk.Widget widget);
+    public static void show_menu_images (Gtk.Menu menu);
   }
 }
 

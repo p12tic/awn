@@ -12,10 +12,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authors: Michal Hruby (awn_utils_ensure_transparent_bg,
  *                        awn_utils_make_transparent_bg)
@@ -23,9 +21,47 @@
  */
 #include <math.h>
 #include <gdk/gdk.h>
+#include <gtk/gtk.h>
 
 #include "awn-utils.h"
 #include "gseal-transition.h"
+
+
+/*yes this is evil.  so sue me */
+struct _GtkIconThemePrivate
+{
+  guint custom_theme        : 1;
+  guint is_screen_singleton : 1;
+  guint pixbuf_supports_svg : 1;
+  guint themes_valid        : 1;
+  guint check_reload        : 1;
+  
+  char *current_theme;
+  char *fallback_theme;
+  char **search_path;
+  int search_path_len;
+
+  /* A list of all the themes needed to look up icons.
+   * In search order, without duplicates
+   */
+  GList *themes;
+  GHashTable *unthemed_icons;
+  
+  /* Note: The keys of this hashtable are owned by the
+   * themedir and unthemed hashtables.
+   */
+  GHashTable *all_icons;
+
+  /* GdkScreen for the icon theme (may be NULL)
+   */
+  GdkScreen *screen;
+  
+  /* time when we last stat:ed for theme changes */
+  long last_stat_time;
+  GList *dir_mtimes;
+
+  gulong reset_styles_idle;
+};
 
 void
 awn_utils_make_transparent_bg (GtkWidget *widget)
@@ -34,9 +70,14 @@ awn_utils_make_transparent_bg (GtkWidget *widget)
   GdkWindow *win;
 
   win = gtk_widget_get_window (widget);
-  g_return_if_fail (win != NULL);
 
-  if (gtk_widget_is_composited(widget))
+  /* This can happen on Window manager restarts/changes */
+  if (!win)
+  {
+    return;
+  }
+
+  if (gtk_widget_is_composited (widget))
   {
     if (pixmap == NULL)
     {
@@ -47,6 +88,12 @@ awn_utils_make_transparent_bg (GtkWidget *widget)
       cairo_destroy(cr);
     }
     gdk_window_set_back_pixmap (win, pixmap, FALSE);
+
+    if (GTK_IS_VIEWPORT (widget))
+    {
+      win = GTK_VIEWPORT (widget)->bin_window;
+      gdk_window_set_back_pixmap (win, pixmap, FALSE);
+    }
   }
 }
 
@@ -115,13 +162,14 @@ awn_utils_gslist_to_gvaluearray (GSList *list)
 gfloat
 awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
                                             GtkPositionType position,
+                                            gint offset,
                                             gfloat offset_modifier,
                                             gint pos_x, gint pos_y,
                                             gint width, gint height)
 {
-  gfloat result;
+  gfloat result, relative_pos;
 
-  if (width == 0 || height == 0) return 1.0f;
+  if (width == 0 || height == 0) return offset;
 
   switch (path_type)
   {
@@ -130,15 +178,46 @@ awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
       {
         case GTK_POS_LEFT:
         case GTK_POS_RIGHT:
-          result = sinf (M_PI * pos_y / height);
-          return result * result * offset_modifier + 1.0f;
+          relative_pos = pos_y * 1.0 / height;
+          break;
         default:
-          result = sinf (M_PI * pos_x / width);
-          return result * result * offset_modifier + 1.0f;
+          relative_pos = pos_x * 1.0 / width;
+          break;
       }
+      offset_modifier += sqrt (offset); // let the max raise with higher offset
+      result = sinf (M_PI * relative_pos);
+      return result * offset_modifier + offset;
       break;
     default:
-      return 1.0f;
+      return offset;
   }
 }
 
+void awn_utils_show_menu_images (GtkMenu * menu)
+{
+#if GTK_CHECK_VERSION (2,16,0)	
+  GList * i;
+  GList * children = gtk_container_get_children (GTK_CONTAINER(menu));
+  GtkWidget * submenu;
+  
+  for (i = children; i; i = g_list_next (i) )
+  {
+    if (GTK_IS_IMAGE_MENU_ITEM (i->data) )
+    {
+    	g_object_set (i->data,"always-show-image",TRUE,NULL);  
+    }
+    submenu = gtk_menu_item_get_submenu (i->data);
+    if (submenu)
+    {
+      awn_utils_show_menu_images (GTK_MENU(submenu));
+    }
+  }
+  g_list_free (children);
+#endif   
+}
+
+const gchar *
+awn_utils_get_gtk_icon_theme_name (GtkIconTheme * theme)
+{
+  return theme->priv->current_theme;
+}

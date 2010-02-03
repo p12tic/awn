@@ -1,18 +1,21 @@
 applets/expander/expander.desktop.in.in
+[type: gettext/ini]applets/taskmanager/awn-applet-taskmanager.schema-ini.in
 applets/taskmanager/task-launcher.c
 applets/taskmanager/task-icon.c
 applets/taskmanager/taskmanager.desktop.in.in
+applets/quick-prefs/applet.vala
+applets/quick-prefs/quick-prefs.desktop.in.in
+applets/separator/separator.desktop.in.in
+applets/taskmanager/task-icon-build-context-menus.c
 awn-settings/awn-settings.desktop.in
-awn-settings/awn-settings.xml
+awn-settings/awn-settings.ui
 awn-settings/awnClass.py
-awn-settings/awnLauncherEditor.py
 awn-settings/awnSettings.py.in
-awn-settings/launcher-editor.xml
 bindings/python/__init__.py
 data/avant-window-navigator.desktop.in
-data/awn-themed-icon-ui.xml
+[type: gettext/ini]data/avant-window-navigator.schema-ini.in.in
+data/awn-themed-icon.ui
 libawn/awn-applet.c
 libawn/awn-themed-icon.c
 src/awn-applet-proxy.c
 src/awn-panel.c
-themes/awn-default.desktop.in

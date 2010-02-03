@@ -11,6 +11,7 @@ SUBDIRS = \
 	awn-settings \
 	applets/taskmanager \
 	applets/expander \
+	applets/separator \
 	bindings/python \
 	bindings/vala \
 	po \
@@ -19,6 +20,10 @@ SUBDIRS = \
 	doc \
 	themes \
 	$(NULL)
+
+if HAVE_VALA
+SUBDIRS += applets/quick-prefs
+endif
 
 ACLOCAL_AMFLAGS = -I m4
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc

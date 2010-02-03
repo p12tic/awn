@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Author : Mark Lee <avant-wn@lazymalevolence.com>
  */
@@ -81,9 +79,17 @@ awn_config_get_default (gint panel_id, GError** error)
     char *schema_filename;
 
     schema_filename = g_build_filename (SCHEMADIR, "avant-window-navigator.schema-ini", NULL);
-    client = desktop_agnostic_config_client_new_for_instance (schema_filename,
-                                                              instance_id,
-                                                              error);
+    if (panel_id != 0)
+    {
+      client =
+        desktop_agnostic_config_client_new_for_instance (schema_filename,
+                                                         instance_id,
+                                                         error);
+    }
+    else
+    {
+      client = desktop_agnostic_config_client_new (schema_filename);
+    }
     g_free (schema_filename);
     if (error && *error != NULL)
     {

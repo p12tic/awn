@@ -1,8 +1,8 @@
-avant-window-navigator-trunk (0.3.9-1) UNRELEASED; urgency=low
+avant-window-navigator-trunk (0.3.9.1-1) experimental; urgency=low
 
   * New testing branch.
 
- -- Julien Lavergne <julien.lavergne@gmail.com>  Mon, 03 Mar 2008 01:10:38 +0100
+ -- Julien Lavergne <gilir@ubuntu.com>  Thu, 31 Dec 2009 00:09:20 +0100
 
 avant-window-navigator (0.2.6-1) unstable; urgency=low
 

@@ -1,20 +1,28 @@
 /*
  * Copyright (C) 2009 Michal Hruby <michal.mhr@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License version 
- * 2 or later as published by the Free Software Foundation.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authored by Michal Hruby <michal.mhr@gmail.com>
  *
+ */
+
+/**
+ * AwnImage:
+ *
+ * Widget derived from #GtkImage, implementing #AwnOverlayable, so it can be
+ * used with overlays, animations and other eye-candy (using #AwnEffects).
  */
 
 #include "awn-image.h"
@@ -60,11 +68,28 @@ awn_image_finalize (GObject *object)
 static void
 awn_image_size_request (GtkWidget *widget, GtkRequisition *req)
 {
+  gint xpad, ypad, offset;
+  GtkPositionType pos;
   GTK_WIDGET_CLASS (awn_image_parent_class)->size_request (widget, req);
 
   AwnImagePrivate *priv = AWN_IMAGE_GET_PRIVATE (widget);
 
-  awn_effects_set_icon_size (priv->effects, req->width, req->height, FALSE);
+  gtk_misc_get_padding (GTK_MISC (widget), &xpad, &ypad);
+  awn_effects_set_icon_size (priv->effects,
+                             req->width - xpad * 2,
+                             req->height - ypad * 2,
+                             FALSE);
+
+  g_object_get (priv->effects, "position", &pos, NULL);
+  if (pos == GTK_POS_TOP || pos == GTK_POS_BOTTOM)
+  {
+    offset = ypad;
+  }
+  else
+  {
+    offset = xpad;
+  }
+  g_object_set (priv->effects, "icon-offset", offset, NULL);
 }
 
 static gboolean
@@ -142,6 +167,13 @@ static void awn_image_overlayable_init (AwnOverlayableIface *iface)
   iface->get_effects = awn_image_get_effects;
 }
 
+/**
+ * awn_image_new:
+ *
+ * Creates new instance of #AwnImage.
+ *
+ * Returns: An instance of #AwnImage.
+ */
 AwnImage*
 awn_image_new (void)
 {

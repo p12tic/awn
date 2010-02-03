@@ -2,17 +2,19 @@
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
  * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as 
- * published by the Free Software Foundation.
- *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
+ * GNU Library General Public License for more details.
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
  *
  * Authored by Neil Jagdish Patel <njpatel@gmail.com>
  *             Hannes Verschore <hv1989@gmail.com>
@@ -32,8 +34,11 @@
 #undef G_DISABLE_SINGLE_INCLUDES
 #include <glibtop/procargs.h>
 #include <glibtop/procuid.h>
-
+#include <sys/types.h>
+#include <unistd.h>
 #include <libawn/libawn.h>
+#include <libawn/awn-utils.h>
+#include <libawn/awn-pixbuf-cache.h>
 
 #include "task-launcher.h"
 #include "task-window.h"
@@ -56,9 +61,11 @@ struct _TaskLauncherPrivate
 {
   gchar *path;
   DesktopAgnosticFDODesktopEntry *entry;
-
+  DesktopAgnosticVFSFile* file_vfs;
+  DesktopAgnosticVFSFileMonitor* monitor_vfs;
+  
   const gchar *name;
-  const gchar *exec;
+  gchar *exec;
   const gchar *icon_name;
   GPid   pid;
   glong timestamp;
@@ -71,6 +78,7 @@ struct _TaskLauncherPrivate
   GtkWidget *name_label;    /*name label*/
   GtkWidget *image;   /*placed in button (TaskItem) with label*/
   GtkWidget *launcher_image;
+
 };
 
 enum
@@ -142,6 +150,33 @@ task_launcher_set_property (GObject      *object,
 static void
 task_launcher_dispose (GObject *object)
 { 
+  TaskLauncherPrivate *priv = TASK_LAUNCHER_GET_PRIVATE (object);
+
+  if (priv->menu)
+  {
+    gtk_widget_destroy (priv->menu);
+    priv->menu = NULL;
+  }
+  if (priv->file_vfs)
+  {
+    g_object_unref (priv->file_vfs);
+    priv->file_vfs = NULL;
+  }
+  if (priv->monitor_vfs)
+  {
+    g_object_unref (priv->monitor_vfs);
+    priv->monitor_vfs=NULL;
+  }
+  if (priv->entry)
+  {
+    g_object_unref (priv->entry);
+    priv->entry = NULL;
+  }
+  if (priv->box)
+  {
+    gtk_widget_destroy (priv->box);
+    priv->box=NULL;
+  }
   G_OBJECT_CLASS (task_launcher_parent_class)->dispose (object);
 }
 
@@ -149,8 +184,10 @@ static void
 task_launcher_finalize (GObject *object)
 { 
   TaskLauncher *launcher = TASK_LAUNCHER (object);
+  TaskLauncherPrivate *priv = TASK_LAUNCHER_GET_PRIVATE (launcher);
 
-  g_free (launcher->priv->special_id);
+  g_free (priv->special_id);
+  g_free (priv->path);
   
   G_OBJECT_CLASS (task_launcher_parent_class)->finalize (object);
 }
@@ -196,7 +233,7 @@ task_launcher_init (TaskLauncher *launcher)
   GdkPixbuf           *launcher_pbuf;
   gint                icon_height;
   gint                icon_width;
-  	
+  GtkIconTheme        *theme;	
   priv = launcher->priv = TASK_LAUNCHER_GET_PRIVATE (launcher);
   
   priv->path = NULL;
@@ -226,26 +263,63 @@ task_launcher_init (TaskLauncher *launcher)
   gtk_box_pack_start (GTK_BOX (priv->box), priv->name_label, TRUE, TRUE, 10);
   
   priv->launcher_image = GTK_WIDGET (awn_image_new ());  
-  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&icon_width,&icon_height);  
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&icon_width,&icon_height);
   /*repress annoying gtk icon theme spam*/
-  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),"gtk_knows_best",16,0,NULL);
+  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
+                                          "gtk-knows-best",
+                                          icon_height,
+                                          GTK_ICON_LOOKUP_FORCE_SIZE,
+                                            NULL);
   if (launcher_pbuf)
   {
     g_object_unref (launcher_pbuf);
   }
-  launcher_pbuf = gtk_icon_theme_load_icon (awn_themed_icon_get_awn_theme (NULL),
-                                            "launcher-program",
-                                            icon_height,
-                                            GTK_ICON_LOOKUP_FORCE_SIZE,
-                                            NULL);
+
+  theme = awn_themed_icon_get_awn_theme (NULL);
+  launcher_pbuf = awn_pixbuf_cache_lookup (awn_pixbuf_cache_get_default(),
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(theme),
+                                      "launcher-program",
+                                      -1,
+                                      icon_height,
+                                      NULL);
   if (!launcher_pbuf)
   {
-    launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
+    launcher_pbuf = gtk_icon_theme_load_icon (theme,
                                             "launcher-program",
                                             icon_height,
                                             GTK_ICON_LOOKUP_FORCE_SIZE,
-                                            NULL);
+                                              NULL);
+    if (launcher_pbuf)
+    {
+      awn_pixbuf_cache_insert_pixbuf (awn_pixbuf_cache_get_default(),
+                                      launcher_pbuf,
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(theme),
+                                      "launcher-program");
+    }
   }
+  
+  if (!launcher_pbuf)
+  {
+    theme = gtk_icon_theme_get_default();
+    launcher_pbuf = awn_pixbuf_cache_lookup (awn_pixbuf_cache_get_default(),
+                                        NULL,
+                                        awn_utils_get_gtk_icon_theme_name(theme),
+                                        "launcher-program",
+                                        -1,
+                                        icon_height,
+                                        NULL);
+    if (launcher_pbuf)
+    {
+      awn_pixbuf_cache_insert_pixbuf (awn_pixbuf_cache_get_default(),
+                                      launcher_pbuf,
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(theme),
+                                      "launcher-program");
+    }  
+  }
+  
   if (launcher_pbuf)
   {
     gtk_image_set_from_pixbuf (GTK_IMAGE (priv->launcher_image), launcher_pbuf);
@@ -256,7 +330,7 @@ task_launcher_init (TaskLauncher *launcher)
 }
 
 TaskItem * 
-task_launcher_new_for_desktop_file (const gchar *path)
+task_launcher_new_for_desktop_file (AwnApplet * applet, const gchar *path)
 {
   TaskItem *item = NULL;
 
@@ -264,6 +338,7 @@ task_launcher_new_for_desktop_file (const gchar *path)
     return NULL;
 
   item = g_object_new (TASK_TYPE_LAUNCHER,
+                       "applet",applet,
                        "desktopfile", path,
                        NULL);
 
@@ -271,12 +346,94 @@ task_launcher_new_for_desktop_file (const gchar *path)
 }
 
 const gchar   * 
-task_launcher_get_desktop_path     (TaskLauncher *launcher)
+task_launcher_get_desktop_path (TaskLauncher *launcher)
 {
   g_return_val_if_fail (TASK_IS_LAUNCHER (launcher), NULL);
 
   return launcher->priv->path;
 }
+
+/*
+ TODO 
+ there's a fair amount of code duplication between this and 
+ task_launcher_set_desktop_file().  
+ */
+ 
+static void
+_desktop_changed (DesktopAgnosticVFSFileMonitor* monitor, 
+                       DesktopAgnosticVFSFile* self,                  
+                       DesktopAgnosticVFSFile* other, 
+                       DesktopAgnosticVFSFileMonitorEvent event,
+                       TaskLauncher * launcher
+                  )
+{
+  TaskLauncherPrivate *priv;
+  DesktopAgnosticFDODesktopEntry *entry;
+  GError * error = NULL;
+  gchar * needle;
+  gchar * exec_key; 
+  GdkPixbuf * pixbuf;
+  GdkPixbuf * scaled;  
+  gint height,width,scaled_width,scaled_height;
+  
+  g_return_if_fail (TASK_IS_LAUNCHER (launcher));
+
+  priv = launcher->priv;  
+  
+  entry = desktop_agnostic_fdo_desktop_entry_new_for_file (self, &error);
+  if (error)
+  {
+    g_critical ("Error when trying to load the launcher: %s", error->message);
+    g_error_free (error);
+    return;
+  }
+  if (!usable_desktop_entry (entry) )
+  {
+    g_critical ("%s: Invalid desktop file, retaining existing valid entries until applet shutdown",__func__);
+    return;
+  }
+
+  g_object_unref (priv->entry);    
+  g_free (priv->special_id);
+  priv->entry = entry;
+  priv->special_id = get_special_id_from_desktop(priv->entry);
+  priv->name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);  
+  task_item_emit_name_changed (TASK_ITEM (launcher), priv->name);
+
+  exec_key = g_strstrip (desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "Exec"));  
+  needle = strchr (exec_key,'%');
+  if (needle)
+  {
+          *needle = '\0';
+          g_strstrip (exec_key);
+  }
+  g_strstrip (exec_key);
+  priv->exec = exec_key;
+  
+  priv->icon_name = desktop_agnostic_fdo_desktop_entry_get_icon (priv->entry);
+
+  pixbuf = _get_icon (TASK_ITEM (launcher));
+  
+  height = gdk_pixbuf_get_height (pixbuf);
+  width = gdk_pixbuf_get_width (pixbuf);
+  gtk_icon_size_lookup (GTK_ICON_SIZE_BUTTON,&scaled_width,&scaled_height);  
+  if (height != scaled_height)
+  {
+    scaled = gdk_pixbuf_scale_simple (pixbuf,scaled_width,scaled_height,GDK_INTERP_BILINEAR);    
+  }
+  else
+  {
+    scaled = pixbuf;
+    g_object_ref (scaled);
+  }
+  gtk_image_set_from_pixbuf (GTK_IMAGE (priv->image), scaled);
+  g_object_unref (scaled);
+  
+  task_item_emit_icon_changed (TASK_ITEM (launcher), pixbuf);
+  g_object_unref (pixbuf);
+  task_item_emit_visible_changed (TASK_ITEM (launcher), TRUE);  
+}
+
 
 static void
 task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
@@ -285,7 +442,7 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   DesktopAgnosticVFSFile *file;
   GError *error = NULL;
   GdkPixbuf *pixbuf;
-  gchar * exec_key;
+  gchar * exec_key = NULL;
   gchar * needle;
   GdkPixbuf    *scaled;
   gint  height;
@@ -296,6 +453,10 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
   g_return_if_fail (TASK_IS_LAUNCHER (launcher));
   priv = launcher->priv;
 
+  if (priv->path)
+  {
+    g_free (priv->path);
+  }
   priv->path = g_strdup (path);
 
   file = desktop_agnostic_vfs_file_new_for_path (path, &error);
@@ -309,24 +470,67 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
 
   if (file == NULL || !desktop_agnostic_vfs_file_exists (file))
   {
+    if (file)
+    {
+      g_object_unref (file);
+    }
     g_critical ("File not found: '%s'", path);
     return;
   }
 
+  if (priv->entry)
+  {
+    g_object_unref (priv->entry);
+  }
   priv->entry = desktop_agnostic_fdo_desktop_entry_new_for_file (file, &error);
-
+  
   if (error)
   {
     g_critical ("Error when trying to load the launcher: %s", error->message);
     g_error_free (error);
+    g_object_unref (file);    
     return;
   }
 
+  if (!usable_desktop_entry (priv->entry) )
+  {
+    g_critical ("%s: Invalid desktop file for %s",__func__,path);
+    g_object_unref (priv->entry);
+    priv->entry = NULL;
+    return;
+  }
+
+  if (priv->file_vfs)
+  {
+    g_object_unref (priv->file_vfs);
+  }
+  priv->file_vfs = desktop_agnostic_vfs_file_new_for_path (path,&error);
+
+  if (error)
+  {
+    g_warning ("Unable to Monitor %s: %s",path, error->message);
+    g_error_free (error);
+  }
+  else
+  {
+    if (priv->monitor_vfs)
+    {
+      g_object_unref (priv->monitor_vfs);
+    }
+    priv->monitor_vfs = desktop_agnostic_vfs_file_monitor (priv->file_vfs);
+    g_signal_connect (G_OBJECT(priv->monitor_vfs),"changed", G_CALLBACK(_desktop_changed),launcher);
+  }
+  
+  g_object_unref (file);  
   if (priv->entry == NULL)
   {
     return;
   }
 
+  if (priv->special_id)
+  {
+    g_free (priv->special_id);
+  }
   priv->special_id = get_special_id_from_desktop(priv->entry);
   priv->name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);
 
@@ -345,6 +549,10 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
           g_strstrip (exec_key);
   }
   g_strstrip (exec_key);
+  if (priv->exec)
+  {
+    g_free (priv->exec);
+  }
   priv->exec = exec_key;
   
   priv->icon_name = desktop_agnostic_fdo_desktop_entry_get_icon (priv->entry);
@@ -392,34 +600,66 @@ task_launcher_get_icon_name (TaskItem *item)
   return TASK_LAUNCHER (item)->priv->icon_name;
 }
 
+const gchar * 
+task_launcher_get_exec (TaskItem *item)
+{
+  return TASK_LAUNCHER (item)->priv->exec;
+}
+
 static GdkPixbuf * 
 _get_icon (TaskItem *item)
 {
   TaskLauncherPrivate *priv = TASK_LAUNCHER (item)->priv;
-  TaskSettings *s = task_settings_get_default ();
+  TaskSettings *s = task_settings_get_default (NULL);
   GError *error = NULL;
   GdkPixbuf *pixbuf = NULL;
 
-  if (g_path_is_absolute (priv->icon_name))
+  if (priv->icon_name != NULL)
   {
-    pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->icon_name,
-                                                s->panel_size, s->panel_size,
-                                                TRUE, &error);
+    if (g_path_is_absolute (priv->icon_name))
+    {
+      pixbuf = gdk_pixbuf_new_from_file_at_scale (priv->icon_name,
+                                                  s->panel_size, s->panel_size,
+                                                  TRUE, &error);
+    }
   }
   else
   {
-    GtkIconTheme *icon_theme = gtk_icon_theme_get_default ();
+    // use fallback
+    priv->icon_name = g_strdup ("gtk-missing-image");
+  }
 
-    pixbuf = gtk_icon_theme_load_icon (icon_theme, priv->icon_name,
-                                       s->panel_size, 0, &error);
+  if (pixbuf == NULL)
+  {
+    GtkIconTheme *icon_theme = gtk_icon_theme_get_default ();
+    pixbuf = awn_pixbuf_cache_lookup (awn_pixbuf_cache_get_default(),
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(icon_theme),
+                                      priv->icon_name,
+                                      -1,
+                                      s->panel_size,
+                                      NULL);
+    if (!pixbuf)
+    {
+      pixbuf = gtk_icon_theme_load_icon (icon_theme, priv->icon_name,
+                                   s->panel_size, 0, &error);
+      if (pixbuf)
+      {
+        awn_pixbuf_cache_insert_pixbuf (awn_pixbuf_cache_get_default(),
+                                        pixbuf,
+                                        NULL,
+                                        awn_utils_get_gtk_icon_theme_name(icon_theme),
+                                        priv->icon_name);
+      }
+    }
   }
   if (error)
   {
     g_warning ("The launcher '%s' could not load the icon '%s': %s",
                priv->path, priv->icon_name, error->message);
     g_error_free (error);
-    return NULL;
   }
+
   return pixbuf;
 }
 
@@ -439,6 +679,7 @@ _is_visible (TaskItem *item)
 /*
 FIXME,  ugly.
 */
+
 static guint   
 _match (TaskItem *item,
         TaskItem *item_to_match)
@@ -451,16 +692,23 @@ _match (TaskItem *item,
   gchar   *res_name_lower = NULL;
   gchar   *class_name_lower = NULL;  
   gint     pid;
-  glibtop_proc_args buf;
   gchar   *cmd = NULL;
   gchar   *full_cmd = NULL;
   gchar   *search_result= NULL;
+  gchar * id = NULL;
+  
+  glibtop_proc_args buf;
   glibtop_proc_uid buf_proc_uid;
   glibtop_proc_uid ppid_buf_proc_uid;  
   glong   timestamp;
   GTimeVal timeval;
-  gchar * id = NULL;
   gint    result = 0;
+  gchar buffer[256];
+  gchar * client_name = NULL;
+  const gchar * client_name_to_match = NULL;
+  gchar * startup_wm_class = NULL;
+  
+  gboolean ignore_wm_client_name;
     
   g_return_val_if_fail (TASK_IS_LAUNCHER(item), 0);
 
@@ -475,6 +723,34 @@ _match (TaskItem *item,
   priv->timestamp = 0;
   window = TASK_WINDOW (item_to_match);
 
+  g_object_get (item,
+                "ignore_wm_client_name",&ignore_wm_client_name,
+                NULL);
+  if (!ignore_wm_client_name)
+  {
+    gethostname (buffer, sizeof(buffer));
+    buffer [sizeof(buffer) - 1] = '\0';
+    client_name = g_strdup (buffer);
+
+    client_name_to_match = task_window_get_client_name (TASK_WINDOW(item_to_match));    
+    if (!client_name_to_match)
+    {
+      /*
+       WM_CLIENT_NAME is not necessarily set... in those case we'll assume 
+       that it's the host
+       */
+      gethostname (buffer, sizeof(buffer));
+      buffer [sizeof(buffer) - 1] = '\0';
+      client_name_to_match = buffer;
+    }
+    if (g_strcmp0(client_name,client_name_to_match)!=0)
+    {
+      g_free (client_name);      
+      return 0;
+    }
+    g_free (client_name);  
+  }
+  
   pid = task_window_get_pid(window);
   glibtop_get_proc_uid (&buf_proc_uid,pid);
   glibtop_get_proc_uid (&ppid_buf_proc_uid,buf_proc_uid.ppid);  
@@ -507,7 +783,6 @@ _match (TaskItem *item,
    only comparision that will be done.  It's either a match or not on that 
    basis.
    */
-  
   if (priv->special_id && id)
   {
     if (g_strcmp0 (priv->special_id,id) == 0)
@@ -539,6 +814,9 @@ _match (TaskItem *item,
   /*
    Check the parent PID also
    */
+  /*
+   Removing to test if they're resulting in some incorrect matches*/   
+  /* 
 #ifdef DEBUG
   g_debug ("ppid of window pid = %d, launch pid = %d",buf_proc_uid.ppid,priv->pid);
 #endif    
@@ -549,7 +827,8 @@ _match (TaskItem *item,
       result = 92;
       goto finished;
     }
-  }
+
+      
 #ifdef DEBUG
   g_debug ("ppid of parent pid = %d, launch pid = %d",ppid_buf_proc_uid.ppid,priv->pid);
 #endif    
@@ -561,7 +840,19 @@ _match (TaskItem *item,
       goto finished;
     }
   }
+   */
 
+  if (desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,"StartupWMClass"))
+  {
+    startup_wm_class = desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "StartupWMClass");
+    if ( (g_strcmp0 (startup_wm_class,res_name)==0) || (g_strcmp0(startup_wm_class,class_name)==0))
+    {
+      g_free (startup_wm_class);
+      return 94;
+    }
+    g_free (startup_wm_class);
+  }
+  
   /*
    Does the command line of the process match exec exactly? 
    Not likely but damn likely to be the correct match if it does
@@ -585,7 +876,7 @@ _match (TaskItem *item,
 
   if (res_name_lower)
   {
-    if ( strlen(res_name_lower) && priv->exec)
+    if ( strlen(res_name_lower)>1 && priv->exec)
     {
       if ( g_strstr_len (priv->exec, strlen (priv->exec), res_name_lower) ||
            g_strstr_len (res_name_lower, strlen (res_name_lower), priv->exec))
@@ -601,7 +892,7 @@ _match (TaskItem *item,
    */
   if (class_name_lower)
   {
-    if (strlen(class_name_lower) && priv->exec)
+    if (strlen(class_name_lower)>1 && priv->exec)
     {
       if (g_strstr_len (priv->exec, strlen (priv->exec), class_name_lower))
       {
@@ -660,7 +951,6 @@ _match (TaskItem *item,
   }
 
 finished:
-  
   g_free (res_name);
   g_free (class_name);
   g_free (res_name_lower);
@@ -678,15 +968,66 @@ _left_click (TaskItem *item, GdkEventButton *event)
   TaskLauncher *launcher;
   GError *error = NULL;
   GTimeVal timeval;
+  gboolean startup_set = FALSE;
   
   g_return_if_fail (TASK_IS_LAUNCHER (item));
   
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
-  priv->pid = 
-    desktop_agnostic_fdo_desktop_entry_launch (priv->entry,
-                                               0, NULL, &error);
+  if (desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY))
+  {
+    GStrv tokens1;
+    GStrv tokens2;
+    gchar * screen_name = NULL;
+    gchar * id = g_strdup_printf("awn_task_manager_%u_TIME%u",getpid(),event->time);
+    gchar * display_name = gdk_screen_make_display_name (gdk_screen_get_default());
+    tokens1 = g_strsplit (display_name,":",2);
+    if (tokens1 && tokens1[1])
+    {
+      tokens2 = g_strsplit(tokens1[1],".",2);
+      g_strfreev (tokens1);
+      if (tokens2 && tokens2[1])
+      {
+        screen_name = g_strdup (tokens2[1]);
+        g_strfreev (tokens2);
+      }
+      else
+      {
+        if (tokens2)
+        {
+          g_strfreev (tokens2);
+          screen_name = g_strdup ("0");          
+        }
+      }
+    }
+    else
+    {
+      if (tokens1)
+      {
+        g_strfreev (tokens1);
+      }
+      screen_name = g_strdup ("0");
+    }
+    
+    gdk_x11_display_broadcast_startup_message (gdk_display_get_default(),
+                                               "new",
+                                               "ID",id,
+                                               "NAME",priv->name,
+                                               "SCREEN",screen_name,
+                                               NULL);
+    //                                               "PID",pid,
+    g_setenv ("DESKTOP_STARTUP_ID",id,TRUE);
+    startup_set = TRUE;
+    g_free (id);
+    g_free (screen_name);
+  }
+  priv->pid = desktop_agnostic_fdo_desktop_entry_launch (priv->entry,
+                                               0, NULL, &error);  
+  if (startup_set)
+  {
+    g_unsetenv ("DESKTOP_STARTUP_ID");
+  }
   g_get_current_time (&timeval);
   priv->timestamp = timeval.tv_sec;
 
@@ -711,21 +1052,36 @@ _right_click (TaskItem *item, GdkEventButton *event)
   GtkWidget *menu_item;
   gint width,height;  
   
-  static GdkPixbuf * launcher_pbuf = NULL;
+  GdkPixbuf * launcher_pbuf = NULL;
   
   g_return_val_if_fail (TASK_IS_LAUNCHER (item),NULL);
   
-  if (launcher_pbuf)
-  {
-    g_object_unref (launcher_pbuf);
-  }
   gtk_icon_size_lookup (GTK_ICON_SIZE_MENU,&width,&height);
-  launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
-                                              "launcher-program",
-                                              height,
-                                              GTK_ICON_LOOKUP_FORCE_SIZE,
-                                              NULL);
-  
+
+  launcher_pbuf = awn_pixbuf_cache_lookup (awn_pixbuf_cache_get_default(),
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(gtk_icon_theme_get_default()),
+                                      "launcher-program",
+                                      -1,
+                                      height,
+                                      NULL);
+  if (!launcher_pbuf)
+  {
+    launcher_pbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default(),
+                                            "launcher-program",
+                                            height,
+                                            GTK_ICON_LOOKUP_FORCE_SIZE,
+                                            NULL);
+    if (launcher_pbuf)
+    {
+      awn_pixbuf_cache_insert_pixbuf (awn_pixbuf_cache_get_default(),
+                                      launcher_pbuf,
+                                      NULL,
+                                      awn_utils_get_gtk_icon_theme_name(gtk_icon_theme_get_default()),
+                                      "launcher-program");
+    }
+  }
+
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
@@ -756,8 +1112,15 @@ _right_click (TaskItem *item, GdkEventButton *event)
                       G_CALLBACK(_middle_click),
                       item);        
   }
+
+#if GTK_CHECK_VERSION (2,16,0)	
+  /* null op if GTK+ < 2.16.0*/
+  awn_utils_show_menu_images (GTK_MENU(priv->menu));
+#endif
+  
   gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
                   NULL, NULL, event->button, event->time);
+  g_object_unref (launcher_pbuf);  
   return priv->menu;
 }
 

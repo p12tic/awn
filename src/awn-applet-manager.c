@@ -30,6 +30,7 @@
 #include "awn-ua-alignment.h"
 #include "awn-applet-proxy.h"
 #include "awn-throbber.h"
+#include "awn-separator.h"
 #include "xutils.h"
 
 #define MAX_UA_LIST_ENTRIES 50
@@ -85,6 +86,7 @@ enum
 enum
 {
   APPLET_EMBEDDED,
+  APPLET_REMOVED,
   SHAPE_MASK_CHANGED,
 
   LAST_SIGNAL
@@ -100,6 +102,9 @@ static void awn_applet_manager_set_pos_type (AwnAppletManager *manager,
                                              GtkPositionType   position);
 static void awn_applet_manager_set_offset   (AwnAppletManager *manager,
                                              gint              offset);
+static void on_icon_size_alloc              (GtkWidget *widget,
+                                             GtkAllocation *alloc,
+                                             AwnAppletManager *manager);
 static void free_list                       (GSList **list);
 
 /*
@@ -160,9 +165,9 @@ awn_applet_manager_constructed (GObject *object)
 
 static void
 awn_applet_manager_get_property (GObject    *object,
-                         guint       prop_id,
-                         GValue     *value,
-                         GParamSpec *pspec)
+                                 guint       prop_id,
+                                 GValue     *value,
+                                 GParamSpec *pspec)
 {
   AwnAppletManagerPrivate *priv;
 
@@ -193,7 +198,7 @@ awn_applet_manager_get_property (GObject    *object,
       g_value_take_boxed (value, awn_utils_gslist_to_gvaluearray (priv->ua_active_list));
       break;
     case PROP_EXPANDS:
-      g_value_set_boolean (value, priv->expands);
+      g_value_set_boolean (value, awn_applet_manager_get_expands (AWN_APPLET_MANAGER (object)));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -380,6 +385,15 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                  g_cclosure_marshal_VOID__OBJECT,
                  G_TYPE_NONE, 1, GTK_TYPE_WIDGET);
  
+  _applet_manager_signals[APPLET_REMOVED] =
+    g_signal_new("applet-removed",
+                 G_OBJECT_CLASS_TYPE(obj_class),
+                 G_SIGNAL_RUN_FIRST,
+                 G_STRUCT_OFFSET(AwnAppletManagerClass, applet_removed),
+                 NULL, NULL,
+                 g_cclosure_marshal_VOID__OBJECT,
+                 G_TYPE_NONE, 1, GTK_TYPE_WIDGET);
+ 
   _applet_manager_signals[SHAPE_MASK_CHANGED] =
     g_signal_new("shape-mask-changed",
                  G_OBJECT_CLASS_TYPE(obj_class),
@@ -422,6 +436,30 @@ awn_applet_manager_new_from_config (DesktopAgnosticConfigClient *client)
   return manager;
 }
 
+gchar*
+awn_applet_manager_generate_uid (AwnAppletManager *manager)
+{
+  AwnAppletManagerPrivate *priv;
+  gchar *new_uid = NULL;
+
+  g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager), NULL);
+
+  priv = manager->priv;
+
+  GTimeVal time_val;
+  g_get_current_time (&time_val);
+
+  new_uid = g_strdup_printf ("%ld", time_val.tv_sec);
+  while (g_hash_table_lookup (priv->applets, new_uid) != NULL)
+  {
+    gchar *non_unique_uid = new_uid;
+    new_uid = g_strdup_printf ("%s%d", non_unique_uid, rand() % 10);
+    g_free (non_unique_uid);
+  }
+
+  return new_uid;
+}
+
 void
 awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
                                      const gchar *uid,
@@ -448,33 +486,44 @@ awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
 
       g_hash_table_replace (priv->applets, g_strdup (uid), image);
       gtk_widget_destroy (GTK_WIDGET (applet));
+      applet = NULL;
 
       awn_applet_manager_refresh_applets (manager);
+    }
+    if ((flags & AWN_APPLET_IS_SEPARATOR) && AWN_IS_APPLET_PROXY (applet))
+    {
+      GtkWidget *image = awn_separator_new_from_config_with_values (
+          priv->client, priv->position, priv->size, priv->offset);
+      gtk_widget_show (image);
+      gtk_box_pack_start (GTK_BOX (manager), image, FALSE, TRUE, 0);
 
-      if (!priv->expands)
+      g_hash_table_replace (priv->applets, g_strdup (uid), image);
+      gtk_widget_destroy (GTK_WIDGET (applet));
+      applet = NULL;
+
+      awn_applet_manager_refresh_applets (manager);
+    }
+
+    if (applet)
+    {
+      if (flags & AWN_APPLET_HAS_SHAPE_MASK)
       {
-        priv->expands = TRUE;
-        g_object_notify (G_OBJECT (manager), "expands");
+        GdkWindow *win = GTK_WIDGET (applet)->window;
+        g_object_set_qdata_full (G_OBJECT (applet), priv->shape_mask_quark,
+                                 xutils_get_input_shape (win),
+                                 (GDestroyNotify) gdk_region_destroy);
+        g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED], 0);
       }
-    }
-    // FIXME: separators!
-    if (flags & AWN_APPLET_HAS_SHAPE_MASK)
-    {
-      GdkWindow *win = GTK_WIDGET (applet)->window;
-      g_object_set_qdata_full (G_OBJECT (applet), priv->shape_mask_quark,
-                               xutils_get_input_shape (win),
-                               (GDestroyNotify) gdk_region_destroy);
-      g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED], 0);
-    }
-    else
-    {
-      gpointer region = g_object_get_qdata (G_OBJECT (applet),
-                                            priv->shape_mask_quark);
-      if (region)
+      else
       {
-        g_object_set_qdata (G_OBJECT (applet), priv->shape_mask_quark, NULL);
-        g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED],
-                       0);
+        gpointer region = g_object_get_qdata (G_OBJECT (applet),
+                                              priv->shape_mask_quark);
+        if (region)
+        {
+          g_object_set_qdata (G_OBJECT (applet), priv->shape_mask_quark, NULL);
+          g_signal_emit (manager, _applet_manager_signals[SHAPE_MASK_CHANGED],
+                         0);
+        }
       }
     }
   }
@@ -487,7 +536,20 @@ awn_applet_manager_set_applet_flags (AwnAppletManager *manager,
 gboolean
 awn_applet_manager_get_expands (AwnAppletManager *manager)
 {
+  AwnAppletManagerPrivate *priv;
   g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager), FALSE);
+
+  priv = manager->priv;
+
+  if (priv->docklet_mode)
+  {
+    gint w = -1, h = -1;
+    // docklet will have size request set if the request specified
+    //   expand == false
+    gtk_widget_get_size_request (priv->docklet_widget, &w, &h);
+
+    return (w == -1 && h == -1);
+  }
 
   return manager->priv->expands;
 }
@@ -603,7 +665,29 @@ _applet_plug_added (AwnAppletManager *manager, GtkWidget *applet)
 {
   g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
 
+  if (AWN_IS_APPLET_PROXY (applet))
+  {
+    AwnAppletProxy *proxy = AWN_APPLET_PROXY (applet);
+    if (manager->priv->docklet_mode == FALSE)
+    {
+      gtk_widget_show (applet);
+    }
+    gtk_widget_hide (awn_applet_proxy_get_throbber (proxy));
+  }
+
   g_signal_emit (manager, _applet_manager_signals[APPLET_EMBEDDED], 0, applet);
+}
+
+static void
+_applet_crashed (AwnAppletManager *manager, AwnAppletProxy *proxy)
+{
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
+
+  gtk_widget_hide (GTK_WIDGET (proxy));
+  if (manager->priv->docklet_mode == FALSE)
+  {
+    gtk_widget_show (awn_applet_proxy_get_throbber (proxy));
+  }
 }
 
 static GtkWidget *
@@ -613,25 +697,62 @@ create_applet (AwnAppletManager *manager,
 {
   AwnAppletManagerPrivate *priv = manager->priv;
   GtkWidget               *applet;
-  GtkWidget               *notifier;
+  GtkWidget               *widget;
+  gboolean                 expand = FALSE;
+  gboolean                 fill = FALSE;
 
-  /*FIXME: Exception cases, i.e. separators */
-  
-  applet = awn_applet_proxy_new (path, uid, priv->position,
-                                 priv->offset, priv->size);
-  g_signal_connect_swapped (applet, "plug-added",
-                            G_CALLBACK (_applet_plug_added), manager);
-  notifier = awn_applet_proxy_get_throbber (AWN_APPLET_PROXY (applet));
+  /* Exception cases, i.e. separators */
+  if (g_str_has_suffix (path, "/separator.desktop"))
+  {
+    widget = applet = awn_separator_new_from_config_with_values (priv->client,
+        priv->position, priv->size, priv->offset);
+    g_signal_connect (widget, "size-allocate", 
+                      G_CALLBACK (on_icon_size_alloc), manager);
+    fill = TRUE;
+  }
+  else if (g_str_has_suffix (path, "/expander.desktop"))
+  {
+    widget = applet = gtk_image_new ();
 
-  gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (manager), notifier, FALSE, FALSE, 0);
-  gtk_widget_show (notifier);
+    priv->expander_count++;
 
-  g_object_set_qdata (G_OBJECT (applet), 
+    expand = TRUE;
+    fill = TRUE;
+  }
+  else
+  {
+    // standard applet
+    applet = awn_applet_proxy_new (path, uid, priv->position,
+                                   priv->offset, priv->size);
+    g_signal_connect_swapped (applet, "plug-added",
+                              G_CALLBACK (_applet_plug_added), manager);
+    g_signal_connect_swapped (applet, "applet-crashed",
+                              G_CALLBACK (_applet_crashed), manager);
+    widget = awn_applet_proxy_get_throbber (AWN_APPLET_PROXY (applet));
+    g_signal_connect (widget, "size-allocate", 
+                      G_CALLBACK (on_icon_size_alloc), manager);
+
+    gtk_box_pack_start (GTK_BOX (manager), applet, FALSE, FALSE, 0);
+
+    awn_applet_proxy_schedule_execute (AWN_APPLET_PROXY (applet));
+  }
+
+  gtk_box_pack_start (GTK_BOX (manager), widget, expand, fill, 0);
+
+  if (priv->docklet_mode == FALSE)
+  {
+    gtk_widget_show (widget);
+  }
+  else
+  {
+    // set as visible when show_applets will be called
+    g_object_set_qdata (G_OBJECT (widget),
+                        priv->visibility_quark, GINT_TO_POINTER (1));
+  }
+
+  g_object_set_qdata (G_OBJECT (applet),
                       priv->touch_quark, GINT_TO_POINTER (0));
   g_hash_table_insert (priv->applets, g_strdup (uid), applet);
-
-  awn_applet_proxy_schedule_execute (AWN_APPLET_PROXY (applet));
 
   return applet;
 }
@@ -664,9 +785,10 @@ delete_applets (gpointer key, GtkWidget *applet, AwnAppletManager *manager)
     if (AWN_IS_APPLET_PROXY (applet))
     {
       g_object_get (applet, "uid", &uid, NULL);
-      /* FIXME: Let the applet know it's about to be deleted ? */
+      g_signal_emit (manager, _applet_manager_signals[APPLET_REMOVED],
+                     0, applet);
     }
-    else if (GTK_IS_IMAGE (applet)) // expander
+    else if (GTK_IS_IMAGE (applet) && !AWN_IS_SEPARATOR (applet)) // expander
     {
       priv->expander_count--;
       if (priv->expander_count == 0 && priv->expands)
@@ -698,7 +820,10 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
   if (priv->applet_list == NULL)
   {
     g_debug ("No applets");
-    return; // FIXME: removing last applet doesn't work because of this
+    g_hash_table_foreach (priv->applets, (GHFunc)zero_applets, manager);
+    g_hash_table_foreach_remove (priv->applets, (GHRFunc)delete_applets, 
+                                 manager);
+    return;
   }
 
   guint applet_count = g_slist_length (priv->applet_list);
@@ -782,6 +907,12 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
 
   /* Delete applets that have been removed from the list */
   g_hash_table_foreach_remove (priv->applets, (GHRFunc)delete_applets, manager);
+
+  if (!priv->expands && priv->expander_count > 0)
+  {
+    priv->expands = TRUE;
+    g_object_notify (G_OBJECT (manager), "expands");
+  }
 }
 
 void
@@ -811,6 +942,45 @@ awn_applet_manager_remove_widget (AwnAppletManager *manager, GtkWidget *widget)
   if (g_hash_table_remove (priv->extra_widgets, widget))
   {
     gtk_container_remove (GTK_CONTAINER (manager), widget);
+  }
+}
+
+static void
+on_icon_size_alloc (GtkWidget *widget, GtkAllocation *alloc,
+                    AwnAppletManager *manager)
+{
+  AwnAppletManagerPrivate *priv;
+  GtkAllocation manager_alloc;
+  AwnPathType path_type;
+  gfloat offset_modifier;
+
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
+
+  priv = manager->priv;
+
+  if (!AWN_IS_SEPARATOR (widget) && !AWN_IS_ICON (widget)) return;
+
+  gtk_widget_get_allocation (GTK_WIDGET (manager), &manager_alloc);
+  g_object_get (gtk_widget_get_toplevel (GTK_WIDGET (manager)),
+                "path-type", &path_type, "offset-modifier", &offset_modifier,
+                NULL);
+
+  // get curve offset
+  gfloat temp = awn_utils_get_offset_modifier_by_path_type (path_type,
+             priv->position, priv->offset, offset_modifier,
+             alloc->x + alloc->width / 2 - manager_alloc.x,
+             alloc->y + alloc->height / 2 - manager_alloc.y,
+             manager_alloc.width,
+             manager_alloc.height);
+  gint offset = round (temp);
+
+  if (AWN_IS_ICON (widget))
+  {
+    awn_icon_set_offset (AWN_ICON (widget), offset);
+  }
+  else if (AWN_IS_SEPARATOR (widget))
+  {
+    g_object_set (widget, "offset", offset, NULL);
   }
 }
 
@@ -997,6 +1167,7 @@ awn_applet_manager_show_applets (AwnAppletManager *manager)
     }
   }
   priv->docklet_mode = FALSE;
+  g_object_notify (G_OBJECT (manager), "expands");
 
   g_list_free (list);
 }
@@ -1020,18 +1191,51 @@ awn_applet_manager_hide_applets (AwnAppletManager *manager)
     gtk_widget_hide (GTK_WIDGET (it->data));
   }
   priv->docklet_mode = TRUE;
+  g_object_notify (G_OBJECT (manager), "expands");
 
   g_list_free (list);
 }
 
+gboolean
+awn_applet_manager_get_docklet_mode (AwnAppletManager *manager)
+{
+  g_return_val_if_fail (AWN_IS_APPLET_MANAGER (manager), FALSE);
+
+  return manager->priv->docklet_mode;
+}
+
 void
-awn_applet_manager_set_docklet_widget (AwnAppletManager *manager,
-                                       GtkWidget *docklet)
+awn_applet_manager_add_docklet (AwnAppletManager *manager,
+                                GtkWidget *docklet)
 {
   g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
   AwnAppletManagerPrivate *priv = manager->priv;
 
   priv->docklet_widget = docklet;
+  g_object_add_weak_pointer (G_OBJECT (docklet), (gpointer)&priv->docklet_widget);
+  awn_applet_manager_add_widget (manager, docklet, 0);
+  // we will allow it to expand
+  gtk_box_set_child_packing (GTK_BOX (manager), priv->docklet_widget,
+                             TRUE, TRUE, 0, GTK_PACK_START);
+}
+
+void
+awn_applet_manager_redraw_throbbers (AwnAppletManager *manager)
+{
+  g_return_if_fail (AWN_IS_APPLET_MANAGER (manager));
+  //AwnAppletManagerPrivate *priv = manager->priv;
+  GList *list = gtk_container_get_children (GTK_CONTAINER (manager));
+
+  for (GList *it = list; it != NULL; it = it->next)
+  {
+    if ((AWN_IS_THROBBER (it->data) || AWN_IS_SEPARATOR (it->data))
+        && GTK_WIDGET_VISIBLE (it->data))
+    {
+      gtk_widget_queue_draw (GTK_WIDGET (it->data));
+    }
+  }
+
+  g_list_free (list);
 }
 
 GdkRegion*
@@ -1072,12 +1276,12 @@ awn_applet_manager_get_mask (AwnAppletManager *manager,
         gtk_widget_get_allocation (widget, &rect);
         // get curve offset
         gfloat temp = awn_utils_get_offset_modifier_by_path_type (path_type,
-                   priv->position, offset_modifier,
+                   priv->position, priv->offset, offset_modifier,
                    rect.x + rect.width / 2 - manager_alloc.x,
                    rect.y + rect.height / 2 - manager_alloc.y,
                    manager_alloc.width,
                    manager_alloc.height);
-        gint offset = round (temp * priv->offset);
+        gint offset = round (temp);
 
         gint size = priv->size + offset;
 

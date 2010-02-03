@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  Author : Neil Jagdish Patel <njpatel@gmail.com>
 */
@@ -60,17 +58,15 @@ struct _AwnAppletClass
 {
   GtkPlugClass parent_class;
 
-  /*<signals >*/
   void (*position_changed) (AwnApplet *applet, GtkPositionType position);
   void (*offset_changed)   (AwnApplet *applet, gint offset);
   void (*size_changed)     (AwnApplet *applet, gint size);
-  void (*deleted)          (AwnApplet *applet, const gchar *uid);
+  void (*deleted)          (AwnApplet *applet);
   void (*menu_creation)    (AwnApplet *applet, GtkMenu *menu);
   void (*flags_changed)    (AwnApplet *applet, AwnAppletFlags flags);
   void (*panel_configure)  (AwnApplet *applet, GdkEventConfigure *event);
   void (*origin_changed)   (AwnApplet *applet, GdkRectangle *rect);
 
-  /*< Future padding >*/
   void (*_applet0) (void);
   void (*_applet1) (void);
   void (*_applet2) (void);
@@ -127,7 +123,7 @@ gint               awn_applet_get_offset_at       (AwnApplet      *applet,
 void               awn_applet_set_offset          (AwnApplet      *applet,
                                                    gint           offset);
 
-guint              awn_applet_get_size            (AwnApplet      *applet);
+gint               awn_applet_get_size            (AwnApplet      *applet);
 void               awn_applet_set_size            (AwnApplet      *applet,
                                                    gint           size);
 
@@ -135,8 +131,8 @@ const gchar *      awn_applet_get_uid             (AwnApplet      *applet);
 void               awn_applet_set_uid             (AwnApplet      *applet,
                                                    const gchar    *uid);
 
-AwnAppletFlags     awn_applet_get_flags           (AwnApplet      *applet);
-void               awn_applet_set_flags           (AwnApplet      *applet, 
+AwnAppletFlags     awn_applet_get_behavior        (AwnApplet      *applet);
+void               awn_applet_set_behavior        (AwnApplet      *applet,
                                                    AwnAppletFlags  flags);
 
 GtkWidget*         awn_applet_create_default_menu (AwnApplet      *applet);

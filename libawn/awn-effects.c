@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2007 Michal Hruby <michal.mhr@gmail.com>
+ *  Copyright (C) 2007-2009 Michal Hruby <michal.mhr@gmail.com>
  *  Copyright (C) 2008 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -12,16 +12,15 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
+#include "awn-config.h"
 #include "awn-effects.h"
 #include "awn-effects-ops-new.h"
 #include "awn-enum-types.h"
@@ -94,6 +93,9 @@ enum {
   PROP_PROGRESS,
   PROP_BORDER_CLIP,
   PROP_SPOTLIGHT_ICON,
+  PROP_ACTIVE_RECT_COLOR,
+  PROP_ACTIVE_RECT_OUTLINE,
+  PROP_DOT_COLOR,
   PROP_ARROW_ICON,
   PROP_ARROWS_COUNT,
   PROP_CUSTOM_ACTIVE_ICON
@@ -106,12 +108,18 @@ static void
 awn_effects_dispose (GObject *object)
 {
   AwnEffects *fx = AWN_EFFECTS (object);
-  
+
   /* destroy animation timer */
   if (fx->priv->timer_id)
   {
     g_source_remove (fx->priv->timer_id);
     fx->priv->timer_id = 0;
+  }
+
+  if (fx->widget)
+  {
+    g_object_remove_weak_pointer ((GObject*)fx->widget, (gpointer*)&fx->widget);
+    fx->widget = NULL;
   }
 
   /* unref overlays in our overlay list */
@@ -135,7 +143,23 @@ awn_effects_dispose (GObject *object)
 static void
 awn_effects_finalize (GObject *object)
 {
+  GError *error = NULL;
+  DesktopAgnosticConfigClient *client;
   AwnEffects *fx = AWN_EFFECTS (object);
+
+  client = awn_config_get_default (AWN_PANEL_ID_DEFAULT, &error);
+
+  if (error)
+  {
+    g_warning ("An error occurred while trying to retrieve the configuration client: %s",
+               error->message);
+    g_error_free (error);
+  }
+  else
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (client,
+                                                          object, NULL);
+  }
 
   fx->widget = NULL;
 
@@ -239,12 +263,22 @@ awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
 }
 
 static void
+awn_effects_widget_hidden (AwnEffects *fx)
+{
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+
+  AwnEffectsPrivate *priv = AWN_EFFECTS_GET_PRIVATE (fx);
+
+  priv->already_exposed = FALSE;
+}
+
+static void
 awn_effects_get_property (GObject      *object,
                           guint         prop_id,
                           GValue *value,
                           GParamSpec   *pspec)
 {
-  AwnEffects *fx = AWN_EFFECTS(object);
+  AwnEffects *fx = AWN_EFFECTS (object);
 
   switch (prop_id) {
     case PROP_WIDGET:
@@ -304,6 +338,15 @@ awn_effects_get_property (GObject      *object,
     case PROP_CUSTOM_ACTIVE_ICON:
       g_value_set_string(value, g_quark_to_string(fx->custom_active_icon));
       break;
+    case PROP_ACTIVE_RECT_COLOR:
+      g_value_set_object (value, fx->priv->active_rect_color);
+      break;
+    case PROP_ACTIVE_RECT_OUTLINE:
+      g_value_set_object (value, fx->priv->active_rect_outline);
+      break;
+    case PROP_DOT_COLOR:
+      g_value_set_object (value, fx->priv->dot_color);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -316,11 +359,20 @@ awn_effects_set_property (GObject      *object,
                           const GValue *value,
                           GParamSpec   *pspec)
 {
-  AwnEffects *fx = AWN_EFFECTS(object);
+  AwnEffects *fx = AWN_EFFECTS (object);
+  AwnEffectsPrivate *priv = AWN_EFFECTS_GET_PRIVATE (object);
 
   switch (prop_id) {
     case PROP_WIDGET:
-      fx->widget = g_value_get_object(value);
+      if (fx->widget)
+      {
+        g_object_remove_weak_pointer ((GObject*)fx->widget,
+                                      (gpointer*)&fx->widget);
+      }
+      fx->widget = g_value_get_object (value);
+      g_object_add_weak_pointer ((GObject*)fx->widget, (gpointer*)&fx->widget);
+      g_signal_connect_swapped ((GObject*)fx->widget, "hide",
+                                G_CALLBACK (awn_effects_widget_hidden), fx);
       break;
     case PROP_NO_CLEAR:
       fx->no_clear = g_value_get_boolean(value);
@@ -381,6 +433,30 @@ awn_effects_set_property (GObject      *object,
       fx->custom_active_icon = 
         awn_effects_set_custom_icon (fx, g_value_get_string (value));
       break;
+    case PROP_ACTIVE_RECT_COLOR:
+      if (priv->active_rect_color)
+      {
+        g_object_unref (priv->active_rect_color);
+        priv->active_rect_color = NULL;
+      }
+      priv->active_rect_color = g_value_dup_object (value);
+      break;
+    case PROP_ACTIVE_RECT_OUTLINE:
+      if (priv->active_rect_outline)
+      {
+        g_object_unref (priv->active_rect_outline);
+        priv->active_rect_outline = NULL;
+      }
+      priv->active_rect_outline = g_value_dup_object (value);
+      break;
+    case PROP_DOT_COLOR:
+      if (priv->dot_color)
+      {
+        g_object_unref (priv->dot_color);
+        priv->dot_color = NULL;
+      }
+      priv->dot_color = g_value_dup_object (value);
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -396,12 +472,74 @@ awn_effects_prop_changed(GObject *object, GParamSpec *pspec)
   awn_effects_redraw (fx);
 }
 
+/**
+ * awn_effects_redraw:
+ * @fx: #AwnEffects instance.
+ *
+ * Schedules redraw of the managed widget. Contrary to #gtk_widget_queue_draw, 
+ * this function tries to minimize the area that needs to be redrawn.
+ */
 void
 awn_effects_redraw(AwnEffects *fx)
 {
   if (fx->widget && GTK_WIDGET_DRAWABLE (fx->widget))
   {
-    gtk_widget_queue_draw (fx->widget);
+    gint x, y, w, h;
+    gint dx = 0, dy = 0;
+    gint last_size = fx->priv->last_redraw_size;
+    gdouble icon_size;
+    GtkAllocation alloc;
+
+    gtk_widget_get_allocation (fx->widget, &alloc);
+    if (GTK_WIDGET_NO_WINDOW (fx->widget))
+    {
+      dx = alloc.x;
+      dy = alloc.y;
+    }
+    switch (fx->position)
+    {
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
+        icon_size = fx->is_active && fx->priv->height_mod <= 1.0 ?
+          fx->priv->icon_height :
+          fx->priv->icon_height * fx->priv->height_mod;
+        icon_size *= fx->make_shadow ? 1.0625 : 1.0;
+        w = alloc.width;
+        h = ceil (icon_size) +
+            fx->icon_offset + fx->priv->top_offset +
+            AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
+
+        fx->priv->last_redraw_size = h;
+        h = MAX (h, last_size == 0 ? fx->priv->icon_height : last_size);
+
+        x = dx;
+        y = fx->position == GTK_POS_TOP ? dy : alloc.height - h + dy;
+
+        gtk_widget_queue_draw_area (fx->widget, x, y, w, h);
+        break;
+
+      case GTK_POS_RIGHT:
+      case GTK_POS_LEFT:
+        icon_size = fx->is_active && fx->priv->width_mod <= 1.0 ?
+          fx->priv->icon_width :
+          fx->priv->icon_width * fx->priv->width_mod;
+        icon_size *= fx->make_shadow ? 1.0625 : 1.0;
+        w = ceil (icon_size) +
+            fx->icon_offset + fx->priv->top_offset +
+            AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
+        h = alloc.height;
+
+        fx->priv->last_redraw_size = w;
+        w = MAX (w, last_size == 0 ? fx->priv->icon_width : last_size);
+
+        x = fx->position == GTK_POS_LEFT ? dx : alloc.width - w + dx;
+        y = dy;
+
+        gtk_widget_queue_draw_area (fx->widget, x, y, w, h);
+        break;
+      default:
+        gtk_widget_queue_draw (fx->widget);
+    }
   }
 }
 
@@ -480,8 +618,8 @@ awn_effects_class_init(AwnEffectsClass *klass)
   klass->animations = g_ptr_array_sized_new(AWN_ANIMATIONS_PER_BUNDLE * 9); /* 5 animations per bundle, 9 effect bundles */
 
   awn_effects_register_effect_bundle(klass,
-    NULL,
-    NULL,
+    simple_opening_effect,
+    simple_closing_effect,
     simple_hover_effect,
     simple_attention_effect,
     simple_attention_effect
@@ -708,6 +846,31 @@ awn_effects_class_init(AwnEffectsClass *klass)
                          FALSE,
                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
                          G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property(
+    obj_class, PROP_ACTIVE_RECT_COLOR,
+    g_param_spec_object ("active-rect-color",
+                         "Active Rectangle Color",
+                         "Color used for painting active rectangle",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property(
+    obj_class, PROP_ACTIVE_RECT_OUTLINE,
+    g_param_spec_object ("active-rect-outline",
+                         "Active Rectangle Outline Color",
+                         "Color used for painting outline of active rectangle",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property(
+    obj_class, PROP_DOT_COLOR,
+    g_param_spec_object ("dot-color",
+                         "Glowing Dot Color",
+                         "Color used for painting glowing dot",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
   /**
    * AwnEffects:depressed:
    *
@@ -817,6 +980,7 @@ awn_effects_init(AwnEffects * fx)
 
   fx->priv->icon_width = 48;
   fx->priv->icon_height = 48;
+  fx->priv->last_redraw_size = 0;
 
   fx->priv->width_mod = 1.0;
   fx->priv->height_mod = 1.0;
@@ -924,6 +1088,8 @@ void
 awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
                      gboolean signal_start, gboolean signal_end)
 {
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+  
   if (effect == AWN_EFFECT_NONE || fx->widget == NULL)
   {
     return;
@@ -970,6 +1136,8 @@ awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
 void
 awn_effects_stop(AwnEffects * fx, const AwnEffect effect)
 {
+  g_return_if_fail (AWN_IS_EFFECTS (fx));
+  
   if (effect == AWN_EFFECT_NONE)
   {
     return;
@@ -1075,7 +1243,7 @@ awn_effects_main_effect_loop(AwnEffects * fx)
     (AwnEffectsAnimation *)(fx->priv->effect_queue->data);
 
   /* FIXME: simplifing the index to (topEffect->thisEffect-1) changed
-   *  the gconf key a bit -> update awn-manager's custom effect setting
+   *  the gconf key a bit -> update awn-settings's custom effect setting
    *  to reflect this change.
    */
 
@@ -1108,12 +1276,18 @@ awn_effects_main_effect_loop(AwnEffects * fx)
   }
   else
   {
+    /* the callbacks can try to destroy us, but we don't want to die... yet */
+    g_object_ref (fx);
+
     /* emit the signals */
     awn_effect_emit_anim_start(topEffect);
     awn_effect_emit_anim_end(topEffect);
 
     /* dispose AwnEffectsAnimation */
     awn_effects_stop(fx, topEffect->this_effect);
+
+    /* we can die now */
+    g_object_unref (fx);
   }
 }
 
@@ -1253,7 +1427,9 @@ cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
      * mentioned above if using cairo_xlib_surface_get_width/height)
      */
     if (!gtk_widget_get_has_window (fx->widget))
-      cairo_translate (cr, (double)(event->area.x), (double)(event->area.y));
+    {
+      cairo_translate (cr, (double)(alloc.x), (double)(alloc.y));
+    }
   }
 
   if (fx->priv->already_exposed == FALSE)

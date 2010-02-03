@@ -1,0 +1,362 @@
+# Avant Window Navigator configuration schema
+# -------------------------------------------
+# schema metadata
+[DEFAULT]
+single_instance = false
+
+# configuration options
+# PLEASE KEEP THIS ALPHABETIZED!
+[effects/active_background_icon]
+type = string
+default = 
+_description=Path to the png containing the active icon background.
+per_instance = false
+
+[effects/active_rect_color]
+type = color
+default = #90877966
+_description=Color of the active rectangle.
+per_instance = false
+
+[effects/active_rect_outline]
+type = color
+default = #00000000
+_description=Color of the outline of active rectangle.
+per_instance = false
+
+[effects/arrow_icon]
+type = string
+default = __awn_internal_arrow1
+_description=Path to the png containing the arrow icon.
+per_instance = false
+
+[effects/dot_color]
+type = color
+default = #71BDF6FF
+_description=Color of the glowing dot.
+per_instance = false
+
+[effects/icon_alpha]
+type = float
+default = 1.0
+_description=The opacity of the icons, from 0.0 to 1.0
+per_instance = false
+
+[effects/icon_effect]
+type = integer
+default = 0
+_description=A bitmask which stores the type of effect for each event
+per_instance = false
+
+[effects/reflection_alpha_multiplier]
+type = float
+default = 0.3
+_description=Reflection alpha as a multiple of the current alpha of the icon.
+per_instance = false
+
+[effects/reflection_offset]
+type = integer
+default = 0
+_description=The offset between the icon and it's reflection
+per_instance = false
+
+[effects/show_shadows]
+type = boolean
+default = false
+_description=Show shadows for icons.
+per_instance = false
+
+[panel/applet_list]
+type = list-string
+default = @APPLETDATADIR@/taskmanager.desktop::1
+_description=The list of applets for this panel ordered from left-to-right or top-to-bottom.
+
+[panel/clickthrough]
+type = integer
+default = 1
+_description=Provides possibility to click on windows behind the panel. (0 - never click through, 1 - click through when holding CTRL, 2 - always click through and interact with panel only when holding CTRL)
+
+[panel/dialog_offset]
+type = integer
+default = 15
+_description=Offset between the icons and their dialog.
+
+[panel/expand]
+type = boolean
+default = false
+_description=If true, the panel will expand to full monitor width/height.
+
+[panel/monitor_align]
+type = float
+default = 0.5
+_description=Alignment of a non-expanded panel on the monitor edge.
+
+[panel/monitor_num]
+type = integer
+default = -1
+_description=Monitor number where Awn is located (only takes effect when monitor_force is False, use -1 to automatically pick monitor).
+
+[panel/monitor_force]
+type = boolean
+default = false
+_description=Force monitor geometry.
+
+[panel/monitor_height]
+type = integer
+default = 768
+_description=The forced monitor height. Only used if monitor_force is true.
+
+[panel/monitor_width]
+type = integer
+default = 1024
+_description=The forced monitor width. Only used if monitor_force is true.
+
+[panel/monitor_x_offset]
+type = integer
+default = 0
+_description=An optional offset when you have more than 1 monitors.
+
+[panel/monitor_y_offset]
+type = integer
+default = 0
+_description=An optional offset when you have more than 1 monitors.
+
+[panel/offset]
+type = integer
+default = 10
+_description=Offset of the icons from window border.
+
+[panel/orient]
+type = integer
+default = 3
+_description=Orientation of Awn. (left=0, right=1, top=2 and bottom=3)
+
+[panel/panel_mode]
+type = boolean
+default = false
+_description=If true, maximised windows will not cover the panel.
+
+[panel/size]
+type = integer
+default = 48
+_description=The user-visible size of Awn.
+
+[panel/ua_active_list]
+type = list-string
+default = 
+_description=The active list UA Screenlets for this panel.
+
+[panel/ua_list]
+type = list-string
+default = 
+_description=The list of UA Screenlets that have been previous added in the form ScreeneletInstance::Position.
+
+[panel/autohide]
+type = integer
+default = 0
+_description=Auto hides the dock when the cursor is not on the dock (shouldn't be used together with panel_mode). (none=0, keep below=1, fade out=2, see through=3)
+
+[panel/style]
+type = integer
+default = 1
+_description=The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3, edgy=4, floaty=5)
+
+[panels/panel_list]
+type = list-integer
+default = 1
+_description=The list of panel instances.
+per_instance = false
+
+[panels/hide_delay]
+type = integer
+default = 1000
+_description=Delay between mouse leaving the panel and it hiding.
+per_instance = false
+
+[panels/mouse_poll_delay]
+type = integer
+default = 500
+_description=Delay for mouse position polling.
+per_instance = false
+
+[shared/dialog_focus_loss_behavior]
+type = boolean
+default = true
+_description=Whether to close dialogs on loss of focus.
+per_instance = false
+
+[shared/allow_generic_config_edit]
+type = boolean
+default = false
+_description=Determines if generic configuration editor is allowed for applets that do not have a customized preferences dialog.
+per_instance = false
+
+[shared/long_press_timeout]
+type = integer
+default = 750
+_description=Time in ms after which AwnIcon will emit long-press signal.
+per_instance = false
+
+[theme/border]
+type = color
+default = #000000CC
+_description=Main border color.
+per_instance = false
+
+[theme/corner_radius]
+type = float
+default = 10.0
+_description=Anything greater than 0 will draw a panel with corners. The greater the radius, the larger the corners.
+per_instance = false
+
+[theme/current_theme]
+type = string
+default = @PKGDATADIR@/themes/default.awn-theme
+_description=Path to the current desktop file theme.
+per_instance = false
+
+[theme/curves_symmetry]
+type = float
+default = 0.5
+_description=The symmetry of the curve in Curves mode.
+per_instance = false
+
+[theme/curviness]
+type = float
+default = 10.0
+_description=The curviness of the panel in Curves mode.
+per_instance = false
+
+[theme/dialog_gtk_mode]
+type = boolean
+default = true
+_description=Whether AwnDialog should use Gtk theme colors.
+per_instance = false
+
+[theme/dialog_bg]
+type = color
+default = #AAAAAAEE
+_description=Background color for AwnDialog.
+per_instance = false
+
+[theme/dialog_title_bg]
+type = color
+default = #FFFFFFFF
+_description=Background color for AwnDialog's title.
+per_instance = false
+
+[theme/ghistep1]
+type = color
+default = #0101018E
+_description=First highlight gradient step color.
+per_instance = false
+
+[theme/ghistep2]
+type = color
+default = #0101010A
+_description=Second highlight gradient step color.
+per_instance = false
+
+[theme/gstep1]
+type = color
+default = #454545C8
+_description=First gradient step color.
+per_instance = false
+
+[theme/gstep2]
+type = color
+default = #010101BE
+_description=Second gradient step color.
+per_instance = false
+
+[theme/gtk_theme_mode]
+type = boolean
+default = true
+_description=Whether to use colors from the current Gtk theme.
+per_instance = false
+
+[theme/hilight]
+type = color
+default = #FFFFFF11
+_description=Internal border color.
+per_instance = false
+
+[theme/icon_font_mode]
+type = integer
+default = 1
+_description=0 - solid, 1 - outline, 2 - outline, reversed.
+per_instance = false
+
+[theme/icon_text_color]
+type = color
+default =
+_description=Icon text color.  Leave empty to use gtk theme color.
+per_instance = false
+
+[theme/icon_text_outline_color]
+type = color
+default =
+_description=Icon text outline color.  Leave empty to use gtk theme color.
+per_instance = false
+
+[theme/icon_text_outline_width]
+type = float
+default = 2.5
+_description=width of icon text outline if outline mode is enabled.  Suggested values 1.0 - 5.0.
+per_instance = false
+
+[theme/panel_angle]
+type = float
+default = 45.0
+_description=The angle of the panel in 3D mode.
+per_instance = false
+
+[theme/pattern_alpha]
+type = float
+default = 0.5
+_description=The opacity of the pattern.
+per_instance = false
+
+[theme/pattern_filename]
+type = string
+default = None
+_description=The location of the pattern to draw.
+per_instance = false
+
+[theme/sep_color]
+type = color
+default = #AAAAAAA4
+_description=Separator color.
+per_instance = false
+
+[theme/show_sep]
+type = boolean
+default = true
+_description=Draw separators.
+per_instance = false
+
+[theme/draw_pattern]
+type = boolean
+default = false
+_description=Enable drawing of a pattern.
+per_instance = false
+
+[theme/tooltip_bg_color]
+type = color
+default = #000000B3
+_description=Background color of the tooltip
+per_instance = false
+
+[theme/tooltip_font_color]
+type = color
+default = #FFFFFFFF
+_description=Font color of the tooltip
+per_instance = false
+
+[theme/tooltip_font_name]
+type = string
+default = Sans 8
+_description=Font name of the tooltip
+per_instance = false
+
+# vim: set ft=cfg :

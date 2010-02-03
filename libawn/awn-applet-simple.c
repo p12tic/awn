@@ -12,10 +12,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -60,7 +58,7 @@ enum
 enum
 {
   CLICKED,
-  LONG_PRESS,
+  MIDDLE_CLICKED,
   MENU_POPUP,
 
   LAST_SIGNAL
@@ -122,9 +120,9 @@ on_icon_clicked (AwnAppletSimple *simple, AwnIcon *icon)
 }
 
 static void
-on_icon_long_press (AwnAppletSimple *simple, AwnIcon *icon)
+on_icon_middle_clicked (AwnAppletSimple *simple, AwnIcon *icon)
 {
-  g_signal_emit (simple, _simple_signals[LONG_PRESS], 0);
+  g_signal_emit (simple, _simple_signals[MIDDLE_CLICKED], 0);
 }
 
 static void
@@ -189,8 +187,8 @@ awn_applet_simple_constructed (GObject *object)
                        awn_applet_get_offset (AWN_APPLET (object)));
   g_signal_connect_swapped (priv->icon, "clicked", 
                             G_CALLBACK (on_icon_clicked), object);
-  g_signal_connect_swapped (priv->icon, "long-press", 
-                            G_CALLBACK (on_icon_long_press), object);
+  g_signal_connect_swapped (priv->icon, "middle-clicked", 
+                            G_CALLBACK (on_icon_middle_clicked), object);
   g_signal_connect_swapped (priv->icon, "context-menu-popup", 
                             G_CALLBACK (on_icon_menu_popup), object);
   gtk_container_add (GTK_CONTAINER (applet), priv->icon);
@@ -233,15 +231,23 @@ awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
       g_cclosure_marshal_VOID__VOID,
       G_TYPE_NONE, 0);
 
-  _simple_signals[LONG_PRESS] =
-    g_signal_new ("long-press",
+  _simple_signals[MIDDLE_CLICKED] =
+    g_signal_new ("middle-clicked",
       G_OBJECT_CLASS_TYPE (obj_class),
       G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-      G_STRUCT_OFFSET (AwnAppletSimpleClass, long_press),
+      G_STRUCT_OFFSET (AwnAppletSimpleClass, middle_clicked),
       NULL, NULL,
       g_cclosure_marshal_VOID__VOID,
       G_TYPE_NONE, 0);
 
+  /**
+   * AwnAppletSimple::context-menu-popup:
+   * @applet: the object which received the signal.
+   * @event: the #GdkEventButton which triggered this signal.
+   *
+   * The ::context-menu-popup signal will be emitted when right mouse button
+   * is pressed on the icon.
+   */
   _simple_signals[MENU_POPUP] =
     g_signal_new ("context-menu-popup",
       G_OBJECT_CLASS_TYPE (obj_class),
@@ -472,12 +478,12 @@ awn_applet_simple_get_progress (AwnAppletSimple  *applet)
   return 0.0f;
 }
 
-GtkWidget *  
+AwnIcon *  
 awn_applet_simple_get_icon (AwnAppletSimple  *applet)
 {
   g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
 
-  return applet->priv->icon;
+  return AWN_ICON (applet->priv->icon);
 }
 
 void  

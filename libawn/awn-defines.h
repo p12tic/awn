@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  Author : Neil Jagdish Patel <njpatel@gmail.com>
 */
@@ -44,8 +42,10 @@ typedef enum
   AWN_APPLET_EXPAND_MAJOR   = 1 << 1,
   AWN_APPLET_IS_EXPANDER    = 1 << 2,
   AWN_APPLET_IS_SEPARATOR   = 1 << 3,
-  AWN_APPLET_HAS_SHAPE_MASK = 1 << 4
+  AWN_APPLET_HAS_SHAPE_MASK = 1 << 4,
 
+  AWN_APPLET_DOCKLET_HANDLES_POSITION_CHANGE = 1 << 10,
+  AWN_APPLET_DOCKLET_CLOSE_ON_MOUSE_OUT = 1 << 11
 } AwnAppletFlags;
 
 /**

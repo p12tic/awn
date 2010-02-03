@@ -11,10 +11,8 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  Author : Neil Jagdish Patel <njpatel@gmail.com>
 */
@@ -29,6 +27,7 @@
 #include <libawn/awn-box.h>
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-config.h>
+#include <libawn/awn-dbus-watcher.h>
 #include <libawn/awn-defines.h>
 #include <libawn/awn-dialog.h>
 #include <libawn/awn-effects.h>
@@ -45,8 +44,10 @@
 #include <libawn/awn-overlay-themed-icon.h>
 #include <libawn/awn-overlay-text.h>
 #include <libawn/awn-overlay-throbber.h>
+#include <libawn/awn-pixbuf-cache.h>
 #include <libawn/awn-themed-icon.h>
-#include <libawn/awn-tooltip.h> 
+#include <libawn/awn-tooltip.h>
+#include <libawn/awn-utils.h>
 
 #endif /* < __LIBAWN_H__ /> */
 
