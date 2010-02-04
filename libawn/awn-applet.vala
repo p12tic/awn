@@ -239,7 +239,7 @@ namespace Awn
       if (window == null) return Gdk.FilterReturn.CONTINUE;
 
       // casting Gdk.Event to X.Event requires these incantations
-      Gdk.Event* xe_ptr = &gdk_xevent;
+      Gdk.XEvent* xe_ptr = &gdk_xevent;
       X.Event* xe = (X.Event*)xe_ptr;
 
       int pos_x = (int)xe->xclient.data.l[0];
