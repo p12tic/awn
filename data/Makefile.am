@@ -41,8 +41,6 @@ pkgdir = $(pkgdatadir)
 
 schema_in_files = avant-window-navigator.schema-ini.in
 
-dist_bin_SCRIPTS = awn-applets-migration
-
 # global
 
 install-data-local: install-gconf-schemas install-icons

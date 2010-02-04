@@ -1,3 +1,13 @@
+2010-02-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	* data/awn-applets-migration (deleted):
+	* data/awn-autostart (deleted):
+	* data/default-theme (deleted):
+	* debian/awn-applets-migration.1 (deleted):
+	* debian/awn-autostart.1 (deleted):
+	Remove obsolete files.
+
 2010-02-05  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/quick-prefs/applet.vala:
