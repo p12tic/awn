@@ -1,3 +1,8 @@
+2010-02-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Fix compability with Vala 0.7.10.
+
 2010-02-04  Michal Hruby  <michal.mhr@gmail.com>
 
 	* ChangeLog:
