@@ -1,3 +1,8 @@
+2010-02-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	Include gseal-transition header.
+
 2010-02-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-main.c:

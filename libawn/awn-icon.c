@@ -25,6 +25,8 @@
 #include "awn-utils.h"
 #include "awn-overlayable.h"
 
+#include "gseal-transition.h"
+
 #define APPLY_SIZE_MULTIPLIER(x)	(x)*6/5
 
 static void awn_icon_overlayable_init (AwnOverlayableIface *iface);
