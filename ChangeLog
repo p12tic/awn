@@ -1,3 +1,16 @@
+2010-02-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* ChangeLog:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/awn-icon.c:
+	* src/awn-main.c:
+	Merge from trunk-rewrite.
+
+2010-02-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	Include gseal-transition header.
+
 2010-02-01  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/POTFILES.in:
@@ -6,6 +19,16 @@
 	* po/avant-window-navigator.pot:
 	* po/*.po:
 	Update gettext files.
+
+2010-02-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-main.c:
+	Add startup-delay command-line parameter.
+
+2010-01-31  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	Finally added quick-prefs to list of default applets.
 
 2010-01-25  Rodney Cryderman  <rcryderman@gmail.com>
 

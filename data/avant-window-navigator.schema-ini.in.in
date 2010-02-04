@@ -68,7 +68,7 @@ per_instance = false
 
 [panel/applet_list]
 type = list-string
-default = @APPLETDATADIR@/taskmanager.desktop::1
+default = @APPLETDATADIR@/quick-prefs.desktop::1;@APPLETDATADIR@/separator.desktop::2;@APPLETDATADIR@/taskmanager.desktop::3;
 _description=The list of applets for this panel ordered from left-to-right or top-to-bottom.
 
 [panel/clickthrough]
