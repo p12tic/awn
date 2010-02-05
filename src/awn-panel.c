@@ -1743,7 +1743,9 @@ awn_panel_class_init (AwnPanelClass *klass)
   wid_class->size_request  = awn_panel_size_request;
   wid_class->button_press_event = awn_panel_button_press;
 
+#if !GTK_CHECK_VERSION(2, 19, 5)
   wid_class->drag_motion   = awn_panel_drag_motion;
+#endif
 
   /* Add properties to the class */
   g_object_class_install_property (obj_class,
