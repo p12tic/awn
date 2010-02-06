@@ -1,5 +1,12 @@
 2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	A few adjustments to Intellihide handling.
+
+2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-background-floaty.c:
 	Fix input shape mask for Floaty style. Fixes bug #517765.
 

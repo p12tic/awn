@@ -108,6 +108,7 @@ DRAG_AND_DROP           = "drag_and_drop"       #bool
 MATCH_STRENGTH          = "match_strength"      #int
 GROUPING                = "grouping"            #bool
 INTELLIHIDE             = "intellihide"         #bool
+INTELLIHIDE_TYPE        = "intellihide_mode"    #int
 LONG_PRESS              = "enable_long_press"   #bool
 OVERLAY_ICON            = "overlay_application_icons" #bool
 OVERLAY_ICON_SWAP       = "overlay_application_icons_swap" #bool

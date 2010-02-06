@@ -101,6 +101,9 @@ class awnPreferencesMini(awnPreferences):
     show_shadows = gobject.property(type=bool, default=False)
     match_strength = gobject.property(type=int, default=99)
 
+    intellihide = gobject.property(type=bool, default=True)
+    intellihide_type = gobject.property(type=int, default=1)
+
     def __init__(self, wTree):
         awnPreferences.__init__(self)
         
@@ -146,6 +149,11 @@ class awnPreferencesMini(awnPreferences):
                                         _("Autohide Keep below"),
                                         _("Autohide Fade out"),
                                         _("Transparency"), _("Custom")])
+
+        #setup autohide mode combo
+        dropdown = self.wTree.get_object("autohide_mode_combo")
+        self.create_dropdown(dropdown, [_("Always"), _("Intellihide"), 
+                                        _("Window dodge")])
 
         config_map_simple = [
             # General options
@@ -199,6 +207,7 @@ class awnPreferencesMini(awnPreferences):
 
         # Behaviour combobox
         self.choose_behavior = self.wTree.get_object("behaviorcombo")
+        self.choose_autohide_mode = self.wTree.get_object("autohide_mode_combo")
 
         def refresh_behaviour(*args):
             behaviour = (self.panel_mode, self.autohide_type, self.clickthrough)
@@ -216,6 +225,8 @@ class awnPreferencesMini(awnPreferences):
 
             if (self.choose_behavior.get_active() != new_active):
                 self.choose_behavior.set_active(new_active)
+                self.choose_autohide_mode.set_sensitive(new_active in [2, 3, 4])
+
 
         def choose_behavior_callback(widget, *args):
             if widget.get_active() == 0:
@@ -252,7 +263,44 @@ class awnPreferencesMini(awnPreferences):
         refresh_behaviour()
 
         self.choose_behavior.connect("changed", choose_behavior_callback)
-    
+
+        # Autohide mode combobox
+        def refresh_autohide_mode(*args):
+            new_active = 0
+            if self.intellihide:
+                if self.intellihide_type == 1:
+                    new_active = 1
+                else:
+                    new_active = 2
+
+            if (self.choose_autohide_mode.get_active() != new_active):
+                self.choose_autohide_mode.set_active(new_active)
+
+        def choose_autohide_mode_callback(widget, *args):
+            if widget.get_active() == 0:
+                if self.intellihide: self.intellihide = False
+            elif widget.get_active() == 1:
+                if not self.intellihide: self.intellihide = True
+                if self.intellihide_type != 1: self.intellihide_type = 1
+            elif widget.get_active() == 2:
+                if not self.intellihide: self.intellihide = True
+                if self.intellihide_type != 0: self.intellihide_type = 0
+
+        self.client_taskman.bind (GROUP_DEFAULT, defs.INTELLIHIDE,
+                                  self, "intellihide",
+                                  False, config.BIND_METHOD_FALLBACK)
+        self.client_taskman.bind (GROUP_DEFAULT, defs.INTELLIHIDE_TYPE,
+                                  self, "intellihide-type",
+                                  False, config.BIND_METHOD_FALLBACK)
+
+        self.connect("notify::intellihide", refresh_autohide_mode)
+        self.connect("notify::intellihide-type", refresh_autohide_mode)
+
+        refresh_autohide_mode()
+
+        self.choose_autohide_mode.connect("changed",
+                                          choose_autohide_mode_callback)
+
     def btn_edit_custom_effects_callback(self, widget, data=None):
         response = self.custom_effects_dialog.run()
         self.custom_effects_dialog.hide()
@@ -832,8 +880,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 class awnTaskManagerMini(awnTaskManager):
     launchers_only = gobject.property(type=bool, default=False)
     show_all_windows = gobject.property(type=bool, default=True)
-    intellihide = gobject.property(type=bool, default=True)
-    group_windows = gobject.property(type=bool, default=True)  
+    group_windows = gobject.property(type=bool, default=True)
     long_press = gobject.property(type=bool, default=True)
     drag_drop = gobject.property(type=bool, default=True)
     
@@ -855,10 +902,10 @@ class awnTaskManagerMini(awnTaskManager):
 			infobar.show_all()
         
         icon_behave = self.wTree.get_object("tm_icon_behave")
-        self.create_dropdown(icon_behave, [_("Use Window Icons"),
-										_("Use Launcher Icons"),
-                                        _("Overlay Window Icon"),
-                                        _("Overlay Window Icon - Reversed")])
+        self.create_dropdown(icon_behave, [_("Use application-specified icons"),
+										_("Use best quality icons"),
+                                        _("Overlay best quality icon with application icon"),
+                                        _("Overlay application icon with best quality icon")])
                                                                            
         config_map_simple = [
             (self.client_taskman, GROUP_DEFAULT, defs.ONLY_LAUNCHERS,
@@ -867,8 +914,6 @@ class awnTaskManagerMini(awnTaskManager):
                 "show-all-windows", "show_all_windows_config"),
             (self.client_taskman, GROUP_DEFAULT, defs.GROUPING,
                 "group-windows", "grouping_config"),
-            (self.client_taskman, GROUP_DEFAULT, defs.INTELLIHIDE,
-                "intellihide", "intellihide_config"), 
             (self.client_taskman, GROUP_DEFAULT, defs.LONG_PRESS,
                 "long-press", "tm_long_press"), 
             (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,
