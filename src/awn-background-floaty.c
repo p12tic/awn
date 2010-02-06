@@ -90,6 +90,7 @@ awn_background_floaty_class_init (AwnBackgroundFloatyClass *klass)
   bg_class->draw = awn_background_floaty_draw;
   bg_class->padding_request = awn_background_floaty_padding_request;
   bg_class->get_shape_mask = awn_background_floaty_get_shape_mask;
+  bg_class->get_input_shape_mask = awn_background_floaty_get_shape_mask;
 }
 
 
@@ -296,9 +297,9 @@ awn_background_floaty_draw (AwnBackground  *bg,
 
 static void 
 awn_background_floaty_get_shape_mask (AwnBackground  *bg,
-                                    cairo_t        *cr, 
-                                    GtkPositionType  position,
-                                    GdkRectangle   *area)
+                                      cairo_t        *cr, 
+                                      GtkPositionType  position,
+                                      GdkRectangle   *area)
 {
   gint temp;
   gint x = area->x, y = area->y;

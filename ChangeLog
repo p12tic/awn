@@ -1,3 +1,8 @@
+2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-floaty.c:
+	Fix input shape mask for Floaty style. Fixes bug #517765.
+
 2010-02-05  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:
