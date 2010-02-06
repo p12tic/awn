@@ -3,6 +3,16 @@
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnDefs.py.in:
 	* awn-settings/awnSettings.py.in:
+	* src/awn-background.c:
+	* src/awn-defines.h:
+	Expose more color settings in Theme editor. Automatically change
+	active rectangle color on theme changes (in gtk-theme mode).
+
+2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
 	A few adjustments to Intellihide handling.
 
 2010-02-06  Michal Hruby  <michal.mhr@gmail.com>

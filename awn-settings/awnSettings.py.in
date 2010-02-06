@@ -745,11 +745,14 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             (self.client, defs.THEME, defs.GHISTEP2, "theme_secondhighlight", True),
             (self.client, defs.THEME, defs.BORDER, "theme_outerborder", True),
             (self.client, defs.THEME, defs.HILIGHT, "theme_innerborder", True),
-            (self.client, defs.THEME, defs.ICON_TEXT_COLOR, "theme_icon_font_color", False),
-            (self.client, defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, "theme_icon_font_outline_color", False),
+            (self.client, defs.THEME, defs.ICON_TEXT_COLOR, "theme_icon_font_color", True),
+            (self.client, defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, "theme_icon_font_outline_color", True),
             (self.client, defs.THEME, defs.TOOLTIP_FONT_COLOR, "theme_tooltip_font_color", False),
             (self.client, defs.THEME, defs.TOOLTIP_BG_COLOR, "theme_tooltip_bg_color", False),
-            (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color", True)
+            (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color", True),
+            (self.client, defs.EFFECTS, defs.DOT_COLOR, "effects_dot_color", True),
+            (self.client, defs.EFFECTS, defs.ACTIVE_RECT_COLOR, "activerect_color", True),
+            (self.client, defs.EFFECTS, defs.ACTIVE_RECT_OUTLINE, "activerect_outline_color", True)
         ]
         
         for item in self.color_map:

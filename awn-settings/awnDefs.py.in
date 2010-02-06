@@ -98,8 +98,10 @@ ICON_ALPHA              = "icon_alpha"          #float
 REFLECTION_A_MULTIPLIER = "reflection_alpha_multiplier" #float
 SHOW_SHADOWS            = "show_shadows"        #bool
 ARROW_ICON              = "arrow_icon"          #string
+DOT_COLOR               = "dot_color"           #string
+ACTIVE_RECT_COLOR       = "active_rect_color"   #string
+ACTIVE_RECT_OUTLINE     = "active_rect_outline" #string
 #FRAME_RATE             = "frame_rate"          #int
-#ENABLE_ICON_DEPTH      = "enable_icon_depth"   #bool
 
 LAUNCHERS_LIST          = "launcher_paths"      #list-string
 ONLY_LAUNCHERS          = "only_show_launchers" #bool

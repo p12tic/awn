@@ -33,6 +33,8 @@
 /* FIXME: Move some of these out into libawn when we can */
 #define AWN_GROUP_EFFECTS          "effects"
 #define AWN_EFFECTS_DOT_COLOR      "dot_color"
+#define AWN_EFFECTS_RECT_COLOR     "active_rect_color"
+#define AWN_EFFECTS_RECT_OUTLINE   "active_rect_outline"
 
 #define AWN_GROUP_PANELS           "panels"
 #define AWN_PANELS_HIDE_DELAY      "hide_delay"

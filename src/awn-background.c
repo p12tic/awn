@@ -862,6 +862,10 @@ load_colours_from_widget (AwnBackground *bg, GtkWidget *widget)
 
   set_cfg_from_theme (&style->light[GTK_STATE_SELECTED], 255,
                       client, AWN_GROUP_EFFECTS, AWN_EFFECTS_DOT_COLOR);
+  set_cfg_from_theme (&style->bg[GTK_STATE_SELECTED], 127,
+                      client, AWN_GROUP_EFFECTS, AWN_EFFECTS_RECT_COLOR);
+  set_cfg_from_theme (&style->light[GTK_STATE_SELECTED], 0,
+                      client, AWN_GROUP_EFFECTS, AWN_EFFECTS_RECT_OUTLINE);
 
   /* Don't draw patterns */
   desktop_agnostic_config_client_set_bool (client,
