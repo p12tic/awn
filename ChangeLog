@@ -1,5 +1,10 @@
 2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-effects.c:
+	Fix artifacts visible when using side orientation & 3D turn animation.
+
+2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnDefs.py.in:
 	* awn-settings/awnSettings.py.in:
