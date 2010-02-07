@@ -1,3 +1,9 @@
+2010-02-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	Expose pattern setting in awn-settings.
+
 2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-effects.c:
