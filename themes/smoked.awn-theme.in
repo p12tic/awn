@@ -1,0 +1,40 @@
+[config/theme]
+icon_text_color = #ffffffffffffffff
+ghistep1 = #c4c4c2c2bdbd0000
+ghistep2 = #dcdcdadad5d50000
+gstep2 = #a318a318a3189e9e
+tooltip_font_color = #ffffffffffffffff
+gstep1 = #9ce79ce79ce7b0b0
+icon_text_outline_color = #000000000000ffff
+panel_angle = 45.0
+gtk_theme_mode = False
+corner_radius = 7.0
+tooltip_font_name = Sans 10
+tooltip_bg_color = #000000000000ffff
+curviness = 10.0
+hilight = #b3eaaf2daf2dffff
+icon_font_mode = 1
+border = #9c9c9a9a94940000
+sep_color = #ffffffffffff9b9b
+curves_symmetry = 0.5
+
+[config/effects]
+show_shadows = False
+icon_effect = 0
+arrow_icon = __awn_internal_arrow1
+active_rect_color = #8461846184618282
+active_rect_outline = #b3b3aeaeaeaeffff
+
+[theme-info]
+name = Smoked
+author = DanRabbit (modified by Awn-core team)
+version = 1.0
+icon = @PKGDATADIR@/themes/thumbnails/smoked-thumb.png
+awn-theme-version = 0.4.0
+
+[config/panel/1]
+style = 1
+orient = 3
+expand = False
+size = 48
+

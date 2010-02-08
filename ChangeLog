@@ -1,3 +1,13 @@
+2010-02-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	* themes/Makefile.am:
+	* themes/dark.awn-theme.in:
+	* themes/dust.awn-theme.in:
+	* themes/light.awn-theme.in:
+	* themes/smoked.awn-theme.in:
+	Add a couple of default themes.
+
 2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/avant-window-navigator.pot:

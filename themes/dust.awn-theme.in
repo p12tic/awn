@@ -1,0 +1,35 @@
+[config/theme]
+icon_text_color = #ffffffffffffffff
+ghistep1 = #4c4c41413c3cffff
+ghistep2 = #2626262624240000
+gstep2 = #1e1e1c1c1a1affff
+tooltip_font_color = #ffffffffffffffff
+gstep1 = #424240403c3cffff
+icon_text_outline_color = #000000000000ffff
+gtk_theme_mode = False
+tooltip_font_name = Sans 10
+tooltip_bg_color = #000000000000b3b3
+hilight = #8d8d84848181ffff
+icon_font_mode = 1
+border = #424240403c3cffff
+sep_color = #ffffffffffff7f7f
+
+[config/effects]
+show_shadows = False
+arrow_icon = __awn_internal_arrow1
+active_rect_color = #9090878779796666
+active_rect_outline = #0000000000000000
+
+[theme-info]
+name = Dust Theme
+author = Awn-core team
+version = 1.0
+awn-theme-version = 0.4.0
+icon = @PKGDATADIR@/themes/thumbnails/dust-thumb.png
+
+[config/panel/1]
+style = 1
+orient = 3
+expand = False
+size = 48
+

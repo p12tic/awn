@@ -1,0 +1,38 @@
+[config/theme]
+icon_text_color = #ffffffffffffffff
+ghistep1 = #c4c4c2c2bdbd0000
+ghistep2 = #dcdcdadad5d50000
+gstep2 = #dcdcdadad5d56464
+tooltip_font_color = #ffffffffffffffff
+gstep1 = #dcdcdadad5d5d2d2
+icon_text_outline_color = #000000000000ffff
+icon_font_mode = 1
+panel_angle = 45.0
+gtk_theme_mode = False
+corner_radius = 7.0
+tooltip_font_name = Sans 10
+tooltip_bg_color = #000000000000ffff
+curviness = 10.0
+hilight = #b3eaaf2daf2dffff
+border = #9c9c9a9a94940000
+sep_color = #ffffffffffff6464
+curves_symmetry = 0.5
+
+[config/effects]
+show_shadows = False
+active_rect_color = #9090878779796666
+active_rect_outline = #0000000000000000
+
+[theme-info]
+name = Light Theme
+author = 6205 (modified by Awn-core team)
+version = 1.0
+icon = @PKGDATADIR@/themes/thumbnails/light-thumb.png
+awn-theme-version = 0.4.0
+
+[config/panel/1]
+style = 1
+orient = 3
+expand = False
+size = 48
+
