@@ -2,28 +2,26 @@ NULL =
 
 if HAVE_VALA
 VALA_BINDINGS = bindings/vala
+QUICK_PREFS_APPLET = applets/quick-prefs
 endif
 
 SUBDIRS = \
 	libawn \
 	src \
 	applet-activation \
-	awn-settings \
-	applets/taskmanager \
-	applets/expander \
-	applets/separator \
 	bindings/python \
 	bindings/vala \
+	awn-settings \
+	applets/expander \
+	$(QUICK_PREFS_APPLET) \
+	applets/separator \
+	applets/taskmanager \
 	po \
 	data \
 	tests \
 	doc \
 	themes \
 	$(NULL)
-
-if HAVE_VALA
-SUBDIRS += applets/quick-prefs
-endif
 
 ACLOCAL_AMFLAGS = -I m4
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
@@ -37,16 +35,18 @@ i18n-update: po/POTFILES.in po/POTFILES.skip
 		intltool-update $$lang; \
 	done)
 
-EXTRA_DIST =				\
-	intltool-extract.in		\
-	intltool-merge.in		\
-	intltool-update.in		\
-	awn.pc.in			\
-	autogen.sh
+EXTRA_DIST = \
+	autogen.sh \
+	awn.pc.in \
+	intltool-extract.in \
+	intltool-merge.in \
+	intltool-update.in \
+	$(NULL)
 
-DISTCLEANFILES =			\
-	intltool-extract		\
-	intltool-merge			\
-	intltool-update			\
-	doltcompile			\
-	doltlibtool
+DISTCLEANFILES = \
+	doltcompile \
+	doltlibtool \
+	intltool-extract \
+	intltool-merge \
+	intltool-update \
+	$(NULL)

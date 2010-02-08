@@ -1,5 +1,10 @@
 2010-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* Makefile.am:
+	Reorganize, clean up.
+
+2010-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* Makefile.applet-common:
 	* Makefile.c-applet:
 	* Makefile.desktop-files:
