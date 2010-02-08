@@ -8,7 +8,12 @@ VALA_FILES = \
 	applet.vala \
 	$(NULL)
 
-AM_VALAFLAGS = --pkg=libwnck-1.0 --pkg=dbus-glib-1
+AM_VALAFLAGS = \
+	--pkg=build \
+	--pkg=dbus-glib-1 \
+	--pkg=libintl \
+	--pkg=libwnck-1.0 \
+	$(NULL)
 
 include $(top_srcdir)/Makefile.vala-applet
 

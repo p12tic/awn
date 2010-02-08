@@ -1,3 +1,15 @@
+2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* Makefile.vala-applet:
+	* applets/quick-prefs/Makefile.am:
+	* awn-settings/Makefile.am:
+	* configure.in:
+	* data/Makefile.am:
+	* po/POTFILES.skip:
+	* themes/Makefile.am:
+	Various build fixes.
+
 2010-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* Makefile.am:

@@ -65,7 +65,7 @@ AC_ARG_WITH(vala, AS_HELP_STRING([--with-vala],[Enables installation of the Vala
 if test "$with_vala" != "no"; then
   VALA_PROG_VALAC(0.5.4)
   if test -n "$VALAC"; then
-    if $USE_MAINTAINER_MODE = yes; then
+    if test "$USE_MAINTAINER_MODE" = "yes"; then
       AC_PATH_PROG(VALA_GEN_INTROSPECT, vala-gen-introspect, vala-gen-introspect, [])
       AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
     fi

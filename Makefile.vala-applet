@@ -16,9 +16,10 @@ VALA_C_FILES = $(VALA_FILES:.vala=.c)
 
 $(APPLET_NAME).vala.stamp: $(VALA_FILES)
 	$(QUIET_VALA)$(VALAC) -C $^ \
-		--vapidir=$(top_srcdir)/shared/vala --pkg=build \
 		--vapidir=$(LDA_VAPIDIR) \
-		--vapidir=$(AWN_VAPIDIR) --pkg=awn \
+		--vapidir=$(top_srcdir)/bindings/vala \
+		--vapidir=$(top_builddir)/bindings/vala \
+		--pkg=awn \
 		$(AM_VALAFLAGS) $(VALAFLAGS)
 	touch "$@"
 

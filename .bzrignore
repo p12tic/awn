@@ -10,6 +10,7 @@ Makefile.in
 *.loT
 *.schema-ini
 *.schemas*
+*.vala.stamp
 .libs
 .deps
 aclocal.m4
@@ -36,6 +37,7 @@ mkinstalldirs
 py-compile
 stamp-h1
 applet-activation/awn-applet
+applets/quick-prefs/applet.c
 awn-settings/awnDefs.py
 awn-settings/awnSettings.py
 bindings/python/awn.c

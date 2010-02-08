@@ -4,11 +4,19 @@ desktopdir = $(datarootdir)/applications
 include $(top_srcdir)/Makefile.app-icons
 include $(top_srcdir)/Makefile.desktop-files
 
+python_files = \
+	awnClass.py \
+	awnSettingsHelper.py \
+	$(NULL)
+
+generated_python_files = \
+	awnDefs.py \
+	awnSettings.py \
+	$(NULL)
+
 pyfiles_DATA = \
-	awnClass.py		\
-	awnDefs.py		\
-	awnSettings.py		\
-	awnSettingsHelper.py	\
+	$(python_files) \
+	$(generated_python_files) \
 	$(NULL)
 pyfilesdir = $(pkgdatadir)/awn-settings
 
@@ -45,6 +53,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-settings
 
 EXTRA_DIST += \
+	$(python_files) \
+	$(generated_python_files:.py=.py.in) \
 	$(ui_DATA) \
-	$(desktop_DATA:.desktop=.desktop.in.in) \
+	$(desktop_DATA:.desktop=.desktop.in) \
 	$(NULL)
