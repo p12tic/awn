@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:32-0800\n"
-"PO-Revision-Date: 2008-06-11 20:35+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 12:02+0000\n"
 "Last-Translator: Manuel Angel Varela <mvarela@cesga.es>\n"
 "Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Mostrar as ventás de tódolos escritorios"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "lanzando"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "lanzando"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,9 +191,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Icona des configurada: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Engadir e remover applets"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Cor do separador:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Engadir e borrar lanzadores"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Pechando"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -486,14 +479,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Agochar a barra cando non se empregue"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Transparencia:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -547,7 +538,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "AWN fornece unha barra de aplicativos entallable no escritorio"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -580,28 +571,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Cor de fondo:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Cor de fondo:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Cor de fondo:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Cor de fondo:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -626,29 +613,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Activar patrón"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Primeiro salto de cor:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Primeiro salto de cor:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Cor de fondo:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Cor de fondo:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -671,14 +653,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Borde interno:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Borde principal"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -718,19 +698,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Segundo salto de cor:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Segundo salto de cor:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Cor do separador:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -785,9 +762,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Activar patrón"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -846,168 +822,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Icona activa</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Preferenzas da Applet /b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Frechas</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Comportamento da barra</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Bordos</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Efectos personalizados</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Preferencias Xerais</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Degradado</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Resaltado</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Efectos das iconas</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Preferenzas do lanzador</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Aparencia </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Patrón</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Separador</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Texto</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Temas</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Ventás</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Activar"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Engadir e borrar lanzadores"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Engadir, borrar e salvar temas"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Avisar cando a fiestra da aplicación se actualice"
-
-#~ msgid "Attention"
-#~ msgstr "Atención"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Agochar a barra cando non se empregue"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Apariencia da Barra"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Angulo da barra "
-
-#~ msgid "Bar height: "
-#~ msgstr "Altura da barra "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Cambiar aparencia e comportamento do dock"
-
-#~ msgid "Color:"
-#~ msgstr "Cor:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Desactivar"
-
-#~ msgid "Delete"
-#~ msgstr "Borrar"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Activar esquinas redondeadas"
-
-#~ msgid "Font:"
-#~ msgstr "Fonte:"
-
-#~ msgid "General"
-#~ msgstr "Xeral"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Motor de vidro"
-
-#~ msgid "Hover"
-#~ msgstr "Liberacion"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "O efecto de atencion de icono será activado para advertir ós usuarios das "
-#~ "fiestras actualizadas"
-
-#~ msgid "Install"
-#~ msgstr "Instalar"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "manter por debaixo maximizado as fistras cando no están en uso"
-
-#~ msgid "Launching"
-#~ msgstr "lanzando"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "As ventás maximizadas non cubrirán a barra (precisa reiniciar)"
-
-#~ msgid "Opening"
-#~ msgstr "abrindo"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Motor de patróns"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Cor da sombra:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Mostrar un separador entre os accesos directos e as tarefas"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Apariencia das tarefas"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "As tarefas teñen frechas"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "A barra escondese automaticamente se non se emprega"
-
-#~ msgid "Transparency:"
-#~ msgstr "Transparencia:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "As ventás non solapan a barra se isto está activado"
-
-#~ msgid "page 1"
-#~ msgstr "paxina 1"
-
-#~ msgid "page 2"
-#~ msgstr "paxina 2"
-
-#~ msgid "page 3"
-#~ msgstr "paxina 3"
-
-#~ msgid "page 4"
-#~ msgstr "paxina 4"
-
-#~ msgid "Change Icon"
-#~ msgstr "Mudar icona"

@@ -1,13 +1,10 @@
 APP_ICON_NAME = avant-window-navigator
+DESKTOP_BASENAME = avant-window-navigator
+desktopdir = $(datarootdir)/applications
 include $(top_srcdir)/Makefile.app-icons
+include $(top_srcdir)/Makefile.desktop-files
 include $(top_srcdir)/Makefile.shave
 include $(top_srcdir)/Makefile.schemas
-
-# desktop file
-
-desktopdir   = $(datadir)/applications
-desktop_DATA = avant-window-navigator.desktop
-@INTLTOOL_DESKTOP_RULE@
 
 icons = avant-window-navigator-24.png avant-window-navigator-32.png
 
@@ -52,9 +49,9 @@ uninstall-local:
 EXTRA_DIST += \
 	$(icons) \
 	$(text_DATA) \
-	$(desktop_DATA).in \
+	$(desktop_DATA:.desktop=.desktop.in) \
 	$(schema_in_files:.schema-ini.in=.schema-ini.in.in) \
 	active/spotlight_png_inline.c \
 	$(NULL)
 
-CLEANFILES = $(desktop_DATA) $(schemas_DATA) $(schema_in_DATA) $(schema_DATA)
+CLEANFILES += $(schemas_DATA) $(schema_in_DATA) $(schema_DATA)

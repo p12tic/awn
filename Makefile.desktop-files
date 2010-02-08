@@ -1,0 +1,6 @@
+# vim: set ft=automake :
+
+desktop_DATA = $(DESKTOP_BASENAME).desktop
+@INTLTOOL_DESKTOP_RULE@
+
+CLEANFILES = $(desktop_DATA)

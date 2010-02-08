@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:33-0800\n"
-"PO-Revision-Date: 2008-04-25 15:33+0000\n"
-"Last-Translator: wariua <Unknown>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 10:28+0000\n"
+"Last-Translator: Mark Lee <Unknown>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "모든 작업 공간의 창을 표시"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -192,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "아이콘 위치: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "독 설정"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -216,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "애플릿을 추가 및 삭제합니다"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "구분자 색:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -241,9 +237,8 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "런처를 추가 및 삭제합니다"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
@@ -307,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Awn 설정, 런처, 애플릿, 테마를 관리합니다"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -326,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "없음"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -334,39 +329,39 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "클래식"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "사라짐"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "조명"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "확대"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "압착"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3차원 회전"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3차원 조명 회전"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "발광 효과"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "사용자 정의"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -374,16 +369,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"자동 생성이 실패했습니다. 직접 경로를 만들어주세요.\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "디렉토리 생성 확인"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"당신의 계정에 자동으로 시작하는 경로가 없습니다.\n"
+"자동으로 생성하시겠습니까?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -397,16 +396,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN이 성공적으로 새로고침 되었습니다"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "아반트 윈도우 내비게이터"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "독 방식의 다양한 설정이 가능한 그놈 윈도우 네비게이터"
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -415,6 +414,8 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"이 프로그램은 자유 소프트웨어입니다. 소프트웨어의 피양도자는 자유 소프트웨어 재단이 공표한 GNU 일반 공중 사용 허가서 2판 또는 그 "
+"이후 판을 임의로 선택해서, 그 규정에 따라 프로그램을 개작하거나 재배포할 수 있습니다."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -423,6 +424,8 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"이 프로그램은 유용할 것이라는 희망 아래 배포됩니다. 그러나 아무런 보증 없이; 심지어는 상업적인 보증을 암시하거나 특정 목적으로 맞게 "
+"가공하는 것 없이 배포됩니다. 자세한 사항은 GNU 일반 공중 허가서를 보십시오."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -430,6 +433,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"당신은 GNU 일반 공중 허가서의 복사본을 이 프로그램을 통해 받을 수 있습니다. 그렇지 못하면, 다음 주소로 편지를 보내주세요. "
+"Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA "
+"02110-1301 USA"
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -484,14 +490,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "사용하지 않을 때 자동으로 감추기"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "투명도:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -545,7 +549,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "독 방식의 윈도우 내비게이터"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -578,28 +582,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "배경 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "배경 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "배경 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "배경 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -624,29 +624,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "무늬 사용"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "첫 번째 단계 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "첫 번째 단계 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "배경 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "배경 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -669,14 +664,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "가장자리 내부:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "가장자리:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -716,19 +709,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "두 번째 단계 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "두 번째 단계 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "구분자 색:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -783,9 +773,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "무늬 사용"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -844,117 +833,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>활성화된 아이콘</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>애플릿 설정</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>화살표</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>막대 동작</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>가장자리</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>효과 설정</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>일반 설정</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>그래디언트</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>하일라이트</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>아이콘 효과</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>런처 설정</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>모양</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>무늬</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>구분자</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>텍스트</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>테마</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>창</b>"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "런처를 추가 및 삭제합니다"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "테마를 추가, 삭제, 저장합니다"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "프로그램 창이 변경되면 알려주기"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "사용하지 않을 때 자동으로 감추기"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "막대 모양"
-
-#~ msgid "Bar angle: "
-#~ msgstr "막대 각도: "
-
-#~ msgid "Bar height: "
-#~ msgstr "막대 높이: "
-
-#~ msgid "Color:"
-#~ msgstr "색:"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "모서리를 둥글게 처리"
-
-#~ msgid "General"
-#~ msgstr "일반"
-
-#~ msgid "Glass Engine"
-#~ msgstr "유리 엔진"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "최대화된 창이 막대를 가리지 않음 (재시작 필요)"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "무늬 엔진"
-
-#~ msgid "Shadow color:"
-#~ msgstr "그림자 색:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "실행기와 창 목록 사이에 구분자를 표시"
-
-#~ msgid "Task Appearance"
-#~ msgstr "창 목록 모양"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "창 목록에 화살표를 표시"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "사용하지 않을 때 자동으로 감추기"
-
-#~ msgid "Transparency:"
-#~ msgstr "투명도:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "이 항목을 설정하면 창이 막대를 가리지 않습니다"
-
-#~ msgid "Change Icon"
-#~ msgstr "아이콘 변경"

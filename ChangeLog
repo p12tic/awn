@@ -1,3 +1,95 @@
+2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* po/avant-window-navigator.pot:
+	Update POT file.
+
+2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* po/*.po:
+	Merge from <lp:~malept/awn/0.4-i18n>, revision 1459.
+
+2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* Makefile.vala-applet:
+	* applets/quick-prefs/Makefile.am:
+	* awn-settings/Makefile.am:
+	* configure.in:
+	* data/Makefile.am:
+	* po/POTFILES.skip:
+	* themes/Makefile.am:
+	Various build fixes.
+
+2010-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.am:
+	Reorganize, clean up.
+
+2010-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.applet-common:
+	* Makefile.c-applet:
+	* Makefile.desktop-files:
+	* Makefile.marshal:
+	* Makefile.vala-applet:
+	* applets/expander/Makefile.am:
+	* applets/quick-prefs/Makefile.am:
+	* applets/separator/Makefile.am:
+	* applets/taskmanager/Makefile.am:
+	* awn-settings/Makefile.am:
+	* configure.in:
+	* data/Makefile.am:
+	Refactor the applet build system, to make it more compatible with the
+	one in Awn Extras.
+
+2010-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	Clean up.
+
+2010-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* INSTALL:
+	Update.
+
+2010-02-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	Expose pattern setting in awn-settings.
+
+2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix artifacts visible when using side orientation & 3D turn animation.
+
+2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	* src/awn-background.c:
+	* src/awn-defines.h:
+	Expose more color settings in Theme editor. Automatically change
+	active rectangle color on theme changes (in gtk-theme mode).
+
+2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	A few adjustments to Intellihide handling.
+
+2010-02-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-floaty.c:
+	Fix input shape mask for Floaty style. Fixes bug #517765.
+
+2010-02-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Don't do the crazy DnD proxying with Gtk 2.19.5 and later.
+
 2010-02-04  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* data/Makefile.am:

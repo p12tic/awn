@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:32-0800\n"
-"PO-Revision-Date: 2008-11-08 11:20+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 11:47+0000\n"
 "Last-Translator: Yaron <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "הראה חלונות מכל שולחנות העבודה"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "טוען"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "טוען"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "צלמית אופסט: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "העדפות המעגן"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "הוסף והסר יישומים"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "צבע המפריד:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "הוסף והסר טוענים"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "סיום"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "נהל את העדפות Awn, משגרים, יישומונים וערכות נושא"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -328,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "ללא"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -336,39 +329,39 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "קלאסי"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "עמעום"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "זרקור"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "זום"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "מחיצה"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "סיבוב בתלת מימד"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "סיבוב תלת מימדי עם זרקור"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "הילה"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "מותאם אישית"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -376,16 +369,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"היצירה האוטומטית של התיקייה נכשלה. אנא צור את ידנית את התיקייה:\n"
+"%s."
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "אישור יצירת התיקייה"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"אין תיקיית הפעלה אוטומטית קיימת עבור חשבון המשתמש עדיין.\n"
+"האם ברצונך שאצור אותה אוטומטית כעת עבורך?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -399,16 +396,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "רענון AWN הושלם בהצלחה"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "נווט חלונות דמוי מעגן הניתן להתאמה אישית באופן מלא עבור GNOME."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -417,6 +414,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"תוכנית זו היא תוכנה חופשית; ניתן להפיצה מחדש ו/או לשנות אותה על־פי תנאי "
+"הרישיון הציבורי הכללי של GNU כפי שפורסם על ידי קרן התוכנה החופשית; בין אם "
+"גרסה 2 של הרישיון, ובין אם (נתון לבחירה) כל גרסה מאוחרת שלו."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -425,6 +425,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"תוכנה זו מופצת בתקווה שתהיה שימושית, אך ללא כל אחריות; אפילו לא אחריות "
+"מרומזת למסחר או התאמה לצרכים מסויימים. אנא פנה לרשיון הציבורי הכללי של GNU "
+"לפרטים נוספים."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -432,6 +435,8 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"תוכל להשיג עותק של הרשיון הציבורי הכללי של GNU עם תוכנה זו; אם לא,כתוב לקרן "
+"לתוכנה חופשית,רחוב Franklin 51, קומה חמישית, בוסטון, 02110-1301 ארה\"ב."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -486,14 +491,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "הסתר את הבר כאשר אינו בשימוש"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "שקיפות:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -547,7 +550,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "נווט חלונות דמוי מעגן."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -580,28 +583,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "צבע הרקע:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "צבע הרקע:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "צבע הרקע:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "צבע הרקע:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -626,29 +625,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "אפשר תבנית"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "צבע השלב ראשון:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "צבע השלב ראשון:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "צבע הרקע:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "צבע הרקע:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -671,14 +665,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "גבול פנימי:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "גבול ראשי:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -718,19 +710,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "צבע השלב השני:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "צבע השלב השני:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "צבע המפריד:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -785,9 +774,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "אפשר תבנית"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -846,168 +834,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>צלמית פעילה</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>מאפייני יישום</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>חצים</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>התנהגות הבר</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>גבולות</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>התאמה אישית של האפקטים</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>מאפיינים כללים</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>מדרוני</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>הדגשה</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>אפקטי צילמית</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>מאפייני טוען</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>מראה </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>תבנית</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>קו מפריד</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>טקסט</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>ערכות נושא</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>חלונות</b>"
-
-#~ msgid "Activate"
-#~ msgstr "הפעל"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "הוסף והסר טוענים"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "הוסף, הסר ושמור ערכות נושא"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "התראה כשר חלון יישום מעודכן"
-
-#~ msgid "Attention"
-#~ msgstr "תשומת לב"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "הסתר את הבר כאשר אינו בשימוש"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "תצוגת הבר"
-
-#~ msgid "Bar angle: "
-#~ msgstr "זוית סרגל: "
-
-#~ msgid "Bar height: "
-#~ msgstr "גובה סרגל: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "שנה את מראה והתנהגות הרציף"
-
-#~ msgid "Color:"
-#~ msgstr "צבע"
-
-#~ msgid "Deactivate"
-#~ msgstr "נטרל"
-
-#~ msgid "Delete"
-#~ msgstr "מחק"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "הפעלת פינות מועגלות"
-
-#~ msgid "Font:"
-#~ msgstr "גופן:"
-
-#~ msgid "General"
-#~ msgstr "כללי"
-
-#~ msgid "Glass Engine"
-#~ msgstr "מנוע שקיפות"
-
-#~ msgid "Hover"
-#~ msgstr "רחף"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "אפקט תשומת לב עבור הצלמית יופעל כדי להתריאה עבור המשתמש אודות חלונות "
-#~ "מעודכנים."
-
-#~ msgid "Install"
-#~ msgstr "התקן"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "השאר חלונות מוגדלים מאחור בזמן שהם אינם בשימוש"
-
-#~ msgid "Launching"
-#~ msgstr "טוען"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "חלונות מלאים לא מכסים את הבר (דורש הפעלה מחדש)"
-
-#~ msgid "Opening"
-#~ msgstr "פותח"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "מנוע תבניות"
-
-#~ msgid "Shadow color:"
-#~ msgstr "צבע צל:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "הצג מפריד בין משגרים לבין משימות"
-
-#~ msgid "Task Appearance"
-#~ msgstr "תצוגת משימות"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "למשימות יש חצים"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "הבר מוסתר כאשר אינו בשימוש"
-
-#~ msgid "Transparency:"
-#~ msgstr "שקיפות:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "חלונות לא חופפים עם הבר אם זה ניקבע"
-
-#~ msgid "page 1"
-#~ msgstr "עמוד 1"
-
-#~ msgid "page 2"
-#~ msgstr "עמוד 2"
-
-#~ msgid "page 3"
-#~ msgstr "עמוד 3"
-
-#~ msgid "page 4"
-#~ msgstr "עמוד 4"
-
-#~ msgid "Change Icon"
-#~ msgstr "החלפת צלמית"

@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: _avant-window-navigator-ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:31-0800\n"
-"PO-Revision-Date: 2009-02-03 11:47+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 08:39+0000\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
 "3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -63,8 +63,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -151,9 +151,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "اعرض النوافذ من جميع منافذ العرض"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -168,14 +167,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "يجري التنفيذ"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "يجري التنفيذ"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -196,9 +194,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "إزاحة الأيقونة: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -216,19 +213,16 @@ msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
-#, fuzzy
 msgid "Preferences applet"
-msgstr "التفضيلات"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "أضف وأزل البريمجات"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "لون الفاصل:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -246,14 +240,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "أضف وأزل المُطْلِقات"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "يجري الإغلاق"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -308,13 +300,12 @@ msgid "Move to Another _Workspace"
 msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
-#, fuzzy
 msgid "Awn Settings"
-msgstr "يجري بدء %s"
+msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr "يدير تفضيلات ومطْلِقات وبريمجات وسمات أون"
+msgstr "خصائص ادارة البرنامج , السيمات"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -427,8 +418,8 @@ msgid ""
 "any later version."
 msgstr ""
 "هذا البرنامج حر؛ تستطيع إعادة توزيعه و/أو تعديله تحت بنود رخصة جنو العمومية "
-"كما نشرت من مؤسسة البرمجيات الحرة، سواءً النسخة 2 من الرخصة، أو (على اختيارك) "
-"أي نسخة لاحقة."
+"كما نشرت من مؤسسة البرمجيات الحرة، سواءً النسخة 2 من الرخصة، أو (على "
+"اختيارك) أي نسخة لاحقة."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -437,9 +428,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
-"يوزّع البرنامج على أمل أن يكون مفيدًا لمن يستخدمه دون أدنى مسؤولية؛ ولا حتى أي "
-"ضمان يضمن صلاحية العرض في السوق أو توافقه مع أي استخدام محدد. يمكنك مراجعة "
-"الرخصة العمومية العامة لجنو لمزيد من التفاصيل."
+"يوزّع البرنامج على أمل أن يكون مفيدًا لمن يستخدمه دون أدنى مسؤولية؛ ولا حتى "
+"أي ضمان يضمن صلاحية العرض في السوق أو توافقه مع أي استخدام محدد. يمكنك "
+"مراجعة الرخصة العمومية العامة لجنو لمزيد من التفاصيل."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -452,9 +443,8 @@ msgstr ""
 "MA 02110-1301  USA."
 
 #: ../awn-settings/awnSettings.py.in:71
-#, fuzzy
 msgid "Awn Settings can't be run as root."
-msgstr "لا يمكن تشغيل أون بصلاحيات الجذر"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:135
 msgid "Left"
@@ -469,14 +459,12 @@ msgid "Top"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:136
-#, fuzzy
 msgid "Bottom"
-msgstr "تقريب"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
-#, fuzzy
 msgid "Flat"
-msgstr "شريط مسطح"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "3d"
@@ -491,9 +479,8 @@ msgid "Edgy"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:141
-#, fuzzy
 msgid "Floaty"
-msgstr "شريط مسطح"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Standard"
@@ -508,14 +495,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "أخفِ الشريط تلقائيا عندما لا يكون مستخدما"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "الشفافية:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -530,14 +515,12 @@ msgid "Outline, Reversed"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:858
-#, fuzzy
 msgid "Use Window Icons"
-msgstr "أأستخدم هذه الأيقونة؟"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:859
-#, fuzzy
 msgid "Use Launcher Icons"
-msgstr "أيقونة المطلق"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:860
 msgid "Overlay Window Icon"
@@ -604,28 +587,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "لون الخلفية:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "لون الخلفية:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "لون الخلفية:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "لون الخلفية:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -650,29 +629,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "مكّن النمط"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "لون الخطوة الأولى:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "لون الخطوة الأولى:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "لون الخلفية:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "لون الخلفية:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -695,14 +669,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "الحد الداخلي:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "الحد الرئيسي:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -742,19 +714,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "لون الخطوة الثانية:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "لون الخطوة الثانية:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "لون الفاصل:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -809,9 +778,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "مكّن النمط"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -848,19 +816,16 @@ msgid "Icons"
 msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1978
-#, fuzzy
 msgid "Choose Custom Icon"
-msgstr "أأمسح الأيقونات المخصصة؟"
+msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2065
-#, fuzzy
 msgid "Customize Icon"
-msgstr "أأمسح الأيقونات المخصصة؟"
+msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2152
-#, fuzzy
 msgid "Remove Customized Icon"
-msgstr "أأمسح الأيقونات المخصصة؟"
+msgstr ""
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
@@ -876,274 +841,3 @@ msgstr ""
 
 #~ msgid "PNG Files"
 #~ msgstr "ملفات بي إن جي"
-
-#~ msgid "3D turn"
-#~ msgstr "دوران ثلاثي الأبعاد"
-
-#~ msgid "3D turn with spotlight"
-#~ msgstr "دوران ثلاثي الأبعاد مع دائرة ضوء"
-
-#~ msgid "Select an Executable File"
-#~ msgstr "اختر ملفا تنفيذيا"
-
-#~ msgid "Please provide a name for the launcher in the \"%s\" field."
-#~ msgstr "من فضلك ضع اسما للمطلق في خانة \"%s\"."
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>الاسم:</b>"
-
-#~ msgid "Please provide a program to launch in the \"%s\" field."
-#~ msgstr "من فضلك ضع برنامجا للتنفيذ في خانة \"%s\"."
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>الأمر:</b>"
-
-#~ msgid "Couldn't save the launcher. Error: %s"
-#~ msgstr "تعذر حفظ المطلق. خطأ: %s"
-
-#~ msgid "Invalid launcher"
-#~ msgstr "مُطْلِق غير صحيح"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>الأيقونة النشطة</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>تفضيلات البريمج</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>الأسهم</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>سلوك الشريط</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>الحدود</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>خصّص التأثيرات</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>التفضيلات العامة</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>التدرج</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>الإبراز</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>تأثيرات الأيقونة</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>تفضيلات المُطلق</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>المظهر </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>نمط</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>فاصل</b>"
-
-#~ msgid "<b>Startup behaviour</b>"
-#~ msgstr "<b>سلوك البدء</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>نص</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>السمات</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>النوافذ</b>"
-
-#~ msgid "Activate"
-#~ msgstr "نشّط"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "أضف وأزل المُطْلِقات"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "أضف وأزل واحفظ السمات"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "نبّه عندما تُحدث نافذة تطبيق"
-
-#~ msgid "Arrow offset: "
-#~ msgstr "إزاحة السهم: "
-
-#~ msgid "Attention"
-#~ msgstr "الانتباه"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "أخفِ الشريط تلقائيا عندما لا يكون مستخدما"
-
-#~ msgid "Automatically start AWN on login."
-#~ msgstr "ابدء أون تلقائيا عند الولوج"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "مظهر الشريط"
-
-#~ msgid "Bar angle: "
-#~ msgstr "زاوية الشريط: "
-
-#~ msgid "Bar height: "
-#~ msgstr "ارتفاع الشريط: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "غيّر شكل وسلوك الإرساء"
-
-#~ msgid "Color:"
-#~ msgstr "لون:"
-
-#~ msgid "Deactivate"
-#~ msgstr "بطّل"
-
-#~ msgid "Delete"
-#~ msgstr "احذف"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "مكّن الزوايا المدوّرة"
-
-#~ msgid "Font:"
-#~ msgstr "الخط:"
-
-#~ msgid "General"
-#~ msgstr "عام"
-
-#~ msgid "Glass Engine"
-#~ msgstr "المحرك الزجاجي"
-
-#~ msgid "Hover"
-#~ msgstr "حوم"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr "تأثير انتباه الأيقونة سينشط لتنبيه المستخدم عن النوافذ المحدثة."
-
-#~ msgid "Install"
-#~ msgstr "ثبّت"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "ضع تحت النوافذ المكبرة حين لا يستخدم"
-
-#~ msgid "Launching"
-#~ msgstr "يجري التنفيذ"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "النوافذ المكبرة ﻻ تغطي الشريط (تحتاج إعادة التشغيل)"
-
-#~ msgid "Opening"
-#~ msgstr "يجري الفتح"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "محرك الأنماط"
-
-#~ msgid "Shadow color:"
-#~ msgstr "لون الظل:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "أظهر الفاصل بين المطلق والمهام"
-
-#~ msgid "Task Appearance"
-#~ msgstr "مظهر المهمة"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "مهام لها أسهم"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "يختفي الشريط تلقائيا عندما لا يستخدم"
-
-#~ msgid "Transparency:"
-#~ msgstr "الشفافية:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "لا تتداخل النوافذ مع الشريط إلى ضبط هذا"
-
-#~ msgid "page 1"
-#~ msgstr "صفحة 1"
-
-#~ msgid "page 2"
-#~ msgstr "صفحة 2"
-
-#~ msgid "page 3"
-#~ msgstr "صفحة 3"
-
-#~ msgid "page 4"
-#~ msgstr "صفحة 4"
-
-#~ msgid "Awn Manager"
-#~ msgstr "المدير أون"
-
-#~ msgid "3D look"
-#~ msgstr "مظهر ثلاثي الأبعاد"
-
-#~ msgid "<b>Description:</b>"
-#~ msgstr "<b>الوصف:</b>"
-
-#~ msgid "Directory:"
-#~ msgstr "الدليل:"
-
-#~ msgid "Launcher Editor"
-#~ msgstr "محرر المطلق"
-
-#~ msgid "Open..."
-#~ msgstr "افتح..."
-
-#~ msgid "Select A Folder"
-#~ msgstr "اختر مجلدا"
-
-#~ msgid "Select Icon"
-#~ msgstr "اختر أيقونة"
-
-#~ msgid "Stock/In Theme"
-#~ msgstr "مخرون السمات"
-
-#~ msgid "Expand bar to monitor width"
-#~ msgstr "مدد الشريط إلى عرض الشاشة"
-
-#~ msgid "File is not a valid .desktop file"
-#~ msgstr "الملف ليس ملف .desktop صحيح"
-
-#~ msgid "Unrecognized desktop file Version '%s'"
-#~ msgstr "إصدار ملف سطح مكتب غير متعرف عليه '%s'"
-
-#~ msgid "Application does not accept documents on command line"
-#~ msgstr "التطبيق لا يقبل المستندات عن طريق سطر الأوامر"
-
-#~ msgid "Unrecognized launch option: %d"
-#~ msgstr "خيار تنفيذ غير متعرف عليه: %d"
-
-#~ msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-#~ msgstr "لا يمكن تمرير مسارات المستتد إلى مدخلة سطح المكتب 'Type=Link'"
-
-#~ msgid "Not a launchable item"
-#~ msgstr "عنصر غير قابل للتنفيذ"
-
-#~ msgid "Clear all custom (applet) icons?"
-#~ msgstr "أأمسح كل أيقونات البريمجات؟"
-
-#~ msgid "Clear All Custom Icons"
-#~ msgstr "امسح الأيقونات المخصصة"
-
-#~ msgid "Change Icon?"
-#~ msgstr "أأغير الأيقونة؟"
-
-#~ msgid "Choose New Image..."
-#~ msgstr "اختر صورة جديدة"
-
-#~ msgid "Change Icon..."
-#~ msgstr "غيّر الأيقونة..."
-
-#~ msgid "Change Image..."
-#~ msgstr "غيّر الصورة..."
-
-#~ msgid "Change Icon"
-#~ msgstr "غيّر الأيقونة"
-
-#~ msgid "Starting avant-window-navigator"
-#~ msgstr "يبدأ ملاح النوافذ أفانت"
-
-#~ msgid "Don't show this message again."
-#~ msgstr "لا تظهر هذه الرّسالة مجدّدًا."

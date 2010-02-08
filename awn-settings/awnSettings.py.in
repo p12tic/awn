@@ -101,6 +101,9 @@ class awnPreferencesMini(awnPreferences):
     show_shadows = gobject.property(type=bool, default=False)
     match_strength = gobject.property(type=int, default=99)
 
+    intellihide = gobject.property(type=bool, default=True)
+    intellihide_type = gobject.property(type=int, default=1)
+
     def __init__(self, wTree):
         awnPreferences.__init__(self)
         
@@ -146,6 +149,11 @@ class awnPreferencesMini(awnPreferences):
                                         _("Autohide Keep below"),
                                         _("Autohide Fade out"),
                                         _("Transparency"), _("Custom")])
+
+        #setup autohide mode combo
+        dropdown = self.wTree.get_object("autohide_mode_combo")
+        self.create_dropdown(dropdown, [_("Always"), _("Intellihide"), 
+                                        _("Window dodge")])
 
         config_map_simple = [
             # General options
@@ -199,6 +207,7 @@ class awnPreferencesMini(awnPreferences):
 
         # Behaviour combobox
         self.choose_behavior = self.wTree.get_object("behaviorcombo")
+        self.choose_autohide_mode = self.wTree.get_object("autohide_mode_combo")
 
         def refresh_behaviour(*args):
             behaviour = (self.panel_mode, self.autohide_type, self.clickthrough)
@@ -216,6 +225,8 @@ class awnPreferencesMini(awnPreferences):
 
             if (self.choose_behavior.get_active() != new_active):
                 self.choose_behavior.set_active(new_active)
+                self.choose_autohide_mode.set_sensitive(new_active in [2, 3, 4])
+
 
         def choose_behavior_callback(widget, *args):
             if widget.get_active() == 0:
@@ -252,7 +263,44 @@ class awnPreferencesMini(awnPreferences):
         refresh_behaviour()
 
         self.choose_behavior.connect("changed", choose_behavior_callback)
-    
+
+        # Autohide mode combobox
+        def refresh_autohide_mode(*args):
+            new_active = 0
+            if self.intellihide:
+                if self.intellihide_type == 1:
+                    new_active = 1
+                else:
+                    new_active = 2
+
+            if (self.choose_autohide_mode.get_active() != new_active):
+                self.choose_autohide_mode.set_active(new_active)
+
+        def choose_autohide_mode_callback(widget, *args):
+            if widget.get_active() == 0:
+                if self.intellihide: self.intellihide = False
+            elif widget.get_active() == 1:
+                if not self.intellihide: self.intellihide = True
+                if self.intellihide_type != 1: self.intellihide_type = 1
+            elif widget.get_active() == 2:
+                if not self.intellihide: self.intellihide = True
+                if self.intellihide_type != 0: self.intellihide_type = 0
+
+        self.client_taskman.bind (GROUP_DEFAULT, defs.INTELLIHIDE,
+                                  self, "intellihide",
+                                  False, config.BIND_METHOD_FALLBACK)
+        self.client_taskman.bind (GROUP_DEFAULT, defs.INTELLIHIDE_TYPE,
+                                  self, "intellihide-type",
+                                  False, config.BIND_METHOD_FALLBACK)
+
+        self.connect("notify::intellihide", refresh_autohide_mode)
+        self.connect("notify::intellihide-type", refresh_autohide_mode)
+
+        refresh_autohide_mode()
+
+        self.choose_autohide_mode.connect("changed",
+                                          choose_autohide_mode_callback)
+
     def btn_edit_custom_effects_callback(self, widget, data=None):
         response = self.custom_effects_dialog.run()
         self.custom_effects_dialog.hide()
@@ -516,6 +564,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     angle = gobject.property(type=int, default=45)
     radius = gobject.property(type=int, default=10)
     gtk_theme_mode = gobject.property(type=bool, default=False)
+    pattern_mode = gobject.property(type=bool, default=False)
     icon_font_mode = gobject.property(type=int, default=0)
     tooltip_font_name = gobject.property(type=gobject.TYPE_STRING, default='Sans 8')
     arrow_type = gobject.property(type=str)
@@ -544,11 +593,29 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         
         self.custom_arrow_chooser_hbox = self.wTree.get_object("custom_arrow_chooser_hbox")
         self.custom_arrow_chooser = self.wTree.get_object("custom_arrow_chooser")
-        self.custom_arrow_chooser.connect('selection-changed', self.arrow_select_callback)
+        filename = self.client.get_string(defs.EFFECTS, defs.ARROW_ICON)
+        if os.path.exists(filename):
+            self.custom_arrow_chooser.set_filename(filename)
+        self.custom_arrow_chooser.connect('file-set', self.arrow_select_callback)
         filter = gtk.FileFilter()
         filter.set_name("PNG Image")
         filter.add_pattern("*.png")
         self.custom_arrow_chooser.add_filter(filter)
+        self.custom_arrow_chooser.set_filter(filter)
+
+        self.pattern_chooser = self.wTree.get_object("pattern_chooser")
+        filename = self.client.get_string(defs.THEME, defs.PATTERN_FILENAME)
+        if os.path.exists(filename):
+            self.pattern_chooser.set_filename(filename)
+        self.pattern_chooser.connect('file-set', self.pattern_select_callback)
+        filter = gtk.FileFilter()
+        filter.set_name("Images")
+        filter.add_pattern("*.png")
+        filter.add_pattern("*.svg")
+        filter.add_pattern("*.xpm")
+        filter.add_pattern("*.jpg")
+        self.pattern_chooser.add_filter(filter)
+        self.pattern_chooser.set_filter(filter)
         
         self.theme_list_panel = self.wTree.get_object("theme_list_panel")
         self.theme_customize_panel = self.wTree.get_object("theme_customize_panel")
@@ -697,11 +764,14 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             (self.client, defs.THEME, defs.GHISTEP2, "theme_secondhighlight", True),
             (self.client, defs.THEME, defs.BORDER, "theme_outerborder", True),
             (self.client, defs.THEME, defs.HILIGHT, "theme_innerborder", True),
-            (self.client, defs.THEME, defs.ICON_TEXT_COLOR, "theme_icon_font_color", False),
-            (self.client, defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, "theme_icon_font_outline_color", False),
+            (self.client, defs.THEME, defs.ICON_TEXT_COLOR, "theme_icon_font_color", True),
+            (self.client, defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, "theme_icon_font_outline_color", True),
             (self.client, defs.THEME, defs.TOOLTIP_FONT_COLOR, "theme_tooltip_font_color", False),
             (self.client, defs.THEME, defs.TOOLTIP_BG_COLOR, "theme_tooltip_bg_color", False),
-            (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color", True)
+            (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color", True),
+            (self.client, defs.EFFECTS, defs.DOT_COLOR, "effects_dot_color", True),
+            (self.client, defs.EFFECTS, defs.ACTIVE_RECT_COLOR, "activerect_color", True),
+            (self.client, defs.EFFECTS, defs.ACTIVE_RECT_OUTLINE, "activerect_outline_color", True)
         ]
         
         for item in self.color_map:
@@ -722,14 +792,14 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             (self.client, defs.THEME, defs.CORNER_RADIUS,
                 "radius", "theme_radius"),
             (self.client, defs.THEME, defs.TOOLTIP_FONT_NAME,
-                "tooltip-font-name", "theme_tooltip_font_name"),   
-        ]        
-                         
+                "tooltip-font-name", "theme_tooltip_font_name"),
+        ]
+
         for item in config_map_simple:
             client, group, key, prop_name, wtree_name = item
             bind_to_gtk_component (client, group, key, self, prop_name,
                                    self.wTree.get_object(wtree_name), False)
-                                   
+
         bind_to_gtk_component (self.client, defs.EFFECTS, defs.ARROW_ICON,
 					   self, "arrow-type",
 					   self.wTree.get_object("arrow_triangle_radio"),
@@ -741,7 +811,17 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                        self.wTree.get_object("theme_gtk_theme_mode"),
                        False,
                        self.disable_color_buttons, self.disable_color_buttons)
+
+        bind_to_gtk_component (self.client, defs.THEME, defs.DRAW_PATTERN,
+                       self, "pattern-mode",
+                       self.wTree.get_object("use_pattern_check"),
+                       False,
+                       self.pattern_mode_getter),
 					   
+    def pattern_mode_getter(self, enabled):
+        self.pattern_chooser.set_sensitive(enabled)
+        return enabled
+			
     def disable_color_buttons(self, state=False):
         for item in self.color_map:
             client, group, key, wtree_name, gtk_mode = item
@@ -808,7 +888,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     def delete_theme_callback(self, data=None):
 		self.delete_theme()
 		   
-    def arrow_type_getter(self, arrow_type):    
+    def arrow_type_getter(self, arrow_type):
         d = {"__awn_internal_arrow1": 0, "__awn_internal_arrow2": 1}
         if arrow_type in d: 
             self.custom_arrow_chooser_hbox.set_sensitive(False)
@@ -821,19 +901,23 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         d = {0:"__awn_internal_arrow1", 1:"__awn_internal_arrow2"}
         if arrow_type == 2:
             self.custom_arrow_chooser_hbox.set_sensitive(True)
-            return ''
+            return self.custom_arrow_chooser.get_filename() or ''
         else:
             self.custom_arrow_chooser_hbox.set_sensitive(False)
             return d[arrow_type]
 				
     def arrow_select_callback(self, widget, data=None):
-        self.client.set_string(defs.EFFECTS, defs.ARROW_ICON, widget.get_filename())
+        filename = widget.get_filename() or ''
+        self.client.set_string(defs.EFFECTS, defs.ARROW_ICON, filename)
+
+    def pattern_select_callback(self, widget, data=None):
+        filename = widget.get_filename() or ''
+        self.client.set_string(defs.THEME, defs.PATTERN_FILENAME, filename)
         
 class awnTaskManagerMini(awnTaskManager):
     launchers_only = gobject.property(type=bool, default=False)
     show_all_windows = gobject.property(type=bool, default=True)
-    intellihide = gobject.property(type=bool, default=True)
-    group_windows = gobject.property(type=bool, default=True)  
+    group_windows = gobject.property(type=bool, default=True)
     long_press = gobject.property(type=bool, default=True)
     drag_drop = gobject.property(type=bool, default=True)
     
@@ -855,10 +939,10 @@ class awnTaskManagerMini(awnTaskManager):
 			infobar.show_all()
         
         icon_behave = self.wTree.get_object("tm_icon_behave")
-        self.create_dropdown(icon_behave, [_("Use Window Icons"),
-										_("Use Launcher Icons"),
-                                        _("Overlay Window Icon"),
-                                        _("Overlay Window Icon - Reversed")])
+        self.create_dropdown(icon_behave, [_("Use application-specified icons"),
+										_("Use best quality icons"),
+                                        _("Overlay best quality icon with application icon"),
+                                        _("Overlay application icon with best quality icon")])
                                                                            
         config_map_simple = [
             (self.client_taskman, GROUP_DEFAULT, defs.ONLY_LAUNCHERS,
@@ -867,8 +951,6 @@ class awnTaskManagerMini(awnTaskManager):
                 "show-all-windows", "show_all_windows_config"),
             (self.client_taskman, GROUP_DEFAULT, defs.GROUPING,
                 "group-windows", "grouping_config"),
-            (self.client_taskman, GROUP_DEFAULT, defs.INTELLIHIDE,
-                "intellihide", "intellihide_config"), 
             (self.client_taskman, GROUP_DEFAULT, defs.LONG_PRESS,
                 "long-press", "tm_long_press"), 
             (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,

@@ -1,15 +1,12 @@
-include $(top_srcdir)/Makefile.shave
+APPLET_NAME = taskmanager
+APPLET_CFLAGS = \
+	$(TASKMANAGER_CFLAGS) \
+	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
+	$(NULL)
 MARSHAL_PREFIX = taskmanager
+include $(top_srcdir)/Makefile.c-applet
 include $(top_srcdir)/Makefile.marshal
 include $(top_srcdir)/Makefile.schemas
-
-AM_CPPFLAGS = \
-	$(STANDARD_CPPFLAGS) \
-	-I$(top_srcdir) \
-	-I$(srcdir) \
-	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
-	$(DISABLE_DEPRECATED_FLAGS) \
-	$(NULL)
 
 VALA_FILES = \
 	dock-manager-api.vala \
@@ -35,8 +32,6 @@ VALA_VAPI_FILES = \
 	$(VALAC) -C -H $(<:.vala=.h) $< $(VALA_VAPI_FILES) $(VALA_PKGS) && \
 	$(SED) -i -r 's/^#include <(task.+h)>$$/#include "\1"/' $(<:.vala=).[ch]
 
-appletdir = $(APPLETDIR)/taskmanager
-applet_datadir = $(APPLETDATADIR)/taskmanager
 applet_LTLIBRARIES = taskmanager.la
 taskmanager_la_SOURCES = \
 	applet.c \
@@ -79,8 +74,7 @@ taskmanager_la_LIBADD = \
 	$(top_builddir)/libawn/libawn.la \
 	$(TASKMANAGER_LIBS) \
 	$(NULL)
-taskmanager_la_CFLAGS = $(WARNING_FLAGS) $(TASKMANAGER_CFLAGS)
-taskmanager_la_LDFLAGS = -module -avoid-version
+taskmanager_la_LDFLAGS = $(APPLET_LINKER_FLAGS)
 
 # DBus glue
 DBUS_XML = task-manager-dbus.xml task-manager-api-wrapper-dbus.xml
@@ -90,11 +84,6 @@ task-manager-glue.h: task-manager-dbus.xml Makefile
 
 task-manager-api-wrapper-glue.h: task-manager-api-wrapper-dbus.xml Makefile
 	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager_api_wrapper --mode=glib-server --output=$@ $<
-
-# Desktop file
-desktopdir = $(pkgdatadir)/applets
-desktop_DATA = taskmanager.desktop
-@INTLTOOL_DESKTOP_RULE@
 
 schema_in_files = awn-applet-taskmanager.schema-ini.in
 
@@ -107,10 +96,10 @@ BUILT_SOURCES = \
 	$(MARSHALFILES) \
 	$(NULL)
 
-EXTRA_DIST = $(desktop_DATA).in.in $(schema_in_files) $(DBUS_XML) taskmanager-marshal.list
-CLEANFILES = $(desktop_DATA) $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
+EXTRA_DIST += $(schema_in_files) $(DBUS_XML) taskmanager-marshal.list
+CLEANFILES += $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
 
 taskmanager_menusdir = $(applet_datadir)/menus
-dist_taskmanager_menus_DATA =	\
+dist_taskmanager_menus_DATA = \
 	$(wildcard menus/*.xml) \
 	$(NULL)

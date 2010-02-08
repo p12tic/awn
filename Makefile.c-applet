@@ -1,0 +1,22 @@
+# vim: set ft=automake ts=8 sts=8 sw=8 :
+include $(top_srcdir)/Makefile.applet-common
+include $(top_srcdir)/Makefile.shave
+
+AM_CFLAGS = \
+	-I$(srcdir) \
+	-I$(top_srcdir) \
+	-I$(top_builddir) \
+	$(STANDARD_CPPFLAGS) \
+	$(DISABLE_DEPRECATED_FLAGS) \
+	$(WARNING_FLAGS) \
+	$(AWN_CFLAGS) \
+	$(APPLET_CFLAGS) \
+	$(NULL)
+
+APPLET_LINKER_FLAGS = -module -avoid-version
+
+appletdir = $(LIBAPPLETDIR)/$(APPLET_NAME)
+
+EXTRA_DIST += \
+	$(desktop_DATA:.desktop=.desktop.in.in) \
+	$(NULL)

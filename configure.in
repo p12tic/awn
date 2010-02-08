@@ -64,9 +64,13 @@ AC_ARG_WITH(vala, AS_HELP_STRING([--with-vala],[Enables installation of the Vala
 
 if test "$with_vala" != "no"; then
   VALA_PROG_VALAC(0.5.4)
-  if test $USE_MAINTAINER_MODE = yes; then
-    AC_PATH_PROG(VALA_GEN_INTROSPECT, vala-gen-introspect, vala-gen-introspect, [])
-    AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
+  if test -n "$VALAC"; then
+    if test "$USE_MAINTAINER_MODE" = "yes"; then
+      AC_PATH_PROG(VALA_GEN_INTROSPECT, vala-gen-introspect, vala-gen-introspect, [])
+      AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
+    fi
+  else
+    with_vala=no
   fi
 fi
 AM_CONDITIONAL(HAVE_VALA, test -n "$VALAC")
@@ -172,9 +176,10 @@ dnl ==============================================
 AS_AC_EXPAND([PKGDATADIR], [$datadir/$PACKAGE_NAME])
 AS_AC_EXPAND([DATADIR], [$datadir])
 AS_AC_EXPAND([LIBDIR], [$libdir])
-AS_AC_EXPAND([APPLETDIR], [$libdir/awn/applets])
-AS_AC_EXPAND([APPLETDATADIR], [$PKGDATADIR/applets])
-AC_DEFINE_UNQUOTED(APPLETDATADIR, "$APPLETDATADIR", [Applet's data dir])
+AS_AC_EXPAND([LIBAPPLETDIR], [$libdir/awn/applets])
+AS_AC_EXPAND([APPLETSDIR], [$PKGDATADIR/applets])
+AC_DEFINE_UNQUOTED(APPLETDATADIR, "$APPLETSDIR",
+                   [The base directory for applet data])
 
 
 SHAVE_INIT([shave], [enable])

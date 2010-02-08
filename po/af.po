@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:31-0800\n"
-"PO-Revision-Date: 2009-01-30 11:54+0000\n"
-"Last-Translator: Walter Leibbrandt <Unknown>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 08:41+0000\n"
+"Last-Translator: Mark Lee <Unknown>\n"
 "Language-Team: Translate.org.za\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Language: af\n"
 
@@ -61,8 +61,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -149,9 +149,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Vertoon venster van alle uitkykpunte"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -166,14 +165,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Besig om te lanseer"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Besig om te lanseer"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -194,9 +192,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Ikoon-verplasing: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -214,19 +211,16 @@ msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
-#, fuzzy
 msgid "Preferences applet"
-msgstr "Voorkeure"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Voeg by en verwyder mini-programme"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Skeierkleur:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -244,14 +238,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Voeg by en verwyder lanseerders"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Maak toe"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -306,9 +298,8 @@ msgid "Move to Another _Workspace"
 msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
-#, fuzzy
 msgid "Awn Settings"
-msgstr "Begin tans %s"
+msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -469,14 +460,12 @@ msgid "Top"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:136
-#, fuzzy
 msgid "Bottom"
-msgstr "Zoem"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
-#, fuzzy
 msgid "Flat"
-msgstr "Plat balk"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "3d"
@@ -491,9 +480,8 @@ msgid "Edgy"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:141
-#, fuzzy
 msgid "Floaty"
-msgstr "Plat balk"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Standard"
@@ -508,14 +496,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Versteek balk outomaties wanner nie in gebruik nie"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Deursigtigheid:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -534,9 +520,8 @@ msgid "Use Window Icons"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:859
-#, fuzzy
 msgid "Use Launcher Icons"
-msgstr "Lanseerderikoon"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:860
 msgid "Overlay Window Icon"
@@ -603,28 +588,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Agtergrond kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Agtergrond kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Agtergrond kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Agtergrond kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -649,29 +630,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Aktiveer patroon"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Eerste stap kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Eerste stap kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Agtergrond kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Agtergrond kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -694,14 +670,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Interne raam:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Hoof raam:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -741,19 +715,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Tweede stap kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Tweede stap kleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Skeierkleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -808,9 +779,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Aktiveer patroon"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -851,14 +821,12 @@ msgid "Choose Custom Icon"
 msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2065
-#, fuzzy
 msgid "Customize Icon"
-msgstr "Doelmaak:"
+msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2152
-#, fuzzy
 msgid "Remove Customized Icon"
-msgstr "Doelmaak:"
+msgstr ""
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
@@ -874,260 +842,3 @@ msgstr ""
 
 #~ msgid "PNG Files"
 #~ msgstr "PNG-lêers"
-
-#~ msgid "3D turn"
-#~ msgstr "3D draai"
-
-#~ msgid "3D turn with spotlight"
-#~ msgstr "3D draai met soeklig"
-
-#~ msgid "Select an Executable File"
-#~ msgstr "Selekteer 'n uitvoerbare lêer"
-
-#~ msgid "Please provide a name for the launcher in the \"%s\" field."
-#~ msgstr ""
-#~ "Verskaf asseblief 'n naam vir die programlanseerder in die \"%s\"-veld."
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>Naam:</b>"
-
-#~ msgid "Please provide a program to launch in the \"%s\" field."
-#~ msgstr "Verskaf asseblief 'n lanseerder of uit te voer in die \"%s\"-veld."
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>Opdrag:</b>"
-
-#~ msgid "Couldn't save the launcher. Error: %s"
-#~ msgstr "Kon nie die lanseerder stoor nie. Fout: %s"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Aktiewe Ikoon</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Mini-program voorkeure</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Pyle</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Balk gedrag</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Rame</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Pasmaak effekte</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Algemene voorkeure</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Gradiënt</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Lig uit</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Ikoon-effekte</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Lanseerder voorkeure</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Voorkoms </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Patroon</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Skeiding</b>"
-
-#~ msgid "<b>Startup behaviour</b>"
-#~ msgstr "<b>Begingedrag</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Teks</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Temas</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Venster</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktiveer"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Voeg by en verwyder lanseerders"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Voeg by, verwyder en stoor temas"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Waarsku as toepassingsvenster opdateer"
-
-#~ msgid "Arrow offset: "
-#~ msgstr "Pyl-verplasing: "
-
-#~ msgid "Attention"
-#~ msgstr "Aandag"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Versteek balk outomaties wanner nie in gebruik nie"
-
-#~ msgid "Automatically start AWN on login."
-#~ msgstr "Begin AWN outomaties op aanmelding."
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Balk Voorkoms"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Balkhoek: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Balkhoogte: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Verander die voorkoms en gedrag van die dok"
-
-#~ msgid "Color:"
-#~ msgstr "Kleur:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Deaktiveer"
-
-#~ msgid "Delete"
-#~ msgstr "Vee uit"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Aktiveer geronde hoeke"
-
-#~ msgid "Font:"
-#~ msgstr "Font:"
-
-#~ msgid "General"
-#~ msgstr "Algemeen"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Glas Enjin"
-
-#~ msgid "Hover"
-#~ msgstr "Sweef"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Ikoon aandageffek sal geaktiveer word om die gebruiker in kennis te stel "
-#~ "van upgedateerde vensters."
-
-#~ msgid "Install"
-#~ msgstr "Installeer"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Hou onder gemaksimeerde vensters wanneer nie in gebruik"
-
-#~ msgid "Launching"
-#~ msgstr "Besig om te lanseer"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Gemaksimeerde vensters maak nie die balk toe nie (benodig herbegin)"
-
-#~ msgid "Opening"
-#~ msgstr "Besig om oop te maak"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Patroonenjin"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Skadukleur:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Wys skeier tussen lanseerders en take"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Taak Voorkoms"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Take het pyle"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Die balk kruip outomaties weg wanneer nie gebruik word nie"
-
-#~ msgid "Transparency:"
-#~ msgstr "Deursigtigheid:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Vensters maak nie die balk toe as hierdie aangesit is nie"
-
-#~ msgid "page 1"
-#~ msgstr "bladsy 1"
-
-#~ msgid "page 2"
-#~ msgstr "bladsy 2"
-
-#~ msgid "page 3"
-#~ msgstr "bladsy 3"
-
-#~ msgid "page 4"
-#~ msgstr "bladsy 4"
-
-#~ msgid "Awn Manager"
-#~ msgstr "AWN bestuurder"
-
-#~ msgid "3D look"
-#~ msgstr "3D-voorkoms"
-
-#~ msgid "<b>Description:</b>"
-#~ msgstr "<b>Beskrywing:</b>"
-
-#~ msgid "Directory:"
-#~ msgstr "Gids:"
-
-#~ msgid "Launcher Editor"
-#~ msgstr "Lanseerderredigeerder"
-
-#~ msgid "Open..."
-#~ msgstr "Maak oop..."
-
-#~ msgid "Select A Folder"
-#~ msgstr "Kies 'n gids"
-
-#~ msgid "Select Icon"
-#~ msgstr "Kies ikoon"
-
-#~ msgid "Stock/In Theme"
-#~ msgstr "Voorraad/In tema"
-
-#~ msgid "Expand bar to monitor width"
-#~ msgstr "Brei balk uit tot monitorwydte"
-
-#~ msgid "File is not a valid .desktop file"
-#~ msgstr "Lêer is nie 'n geldige .desktop-lêer nie"
-
-#~ msgid "Unrecognized desktop file Version '%s'"
-#~ msgstr "Onbekende werkskerm-lêer weergawe '%s'"
-
-#~ msgid "Application does not accept documents on command line"
-#~ msgstr "Toepassing aanvaar nie dokumente op die opdraglyn nie"
-
-#~ msgid "Unrecognized launch option: %d"
-#~ msgstr "Onbekende lanseer-opsie: %d"
-
-#~ msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-#~ msgstr ""
-#~ "Kan nie dokument-URIs aanstuur na 'n 'Type=Link' werkskerminskrywing nie"
-
-#~ msgid "Not a launchable item"
-#~ msgstr "Nie 'n loopbare item nie"
-
-#~ msgid "Choose New Image..."
-#~ msgstr "Kies nuwe prent..."
-
-#~ msgid "Change Icon..."
-#~ msgstr "Verander ikoon..."
-
-#~ msgid "Change Image..."
-#~ msgstr "Verander prent..."
-
-#~ msgid "Change Icon"
-#~ msgstr "Verander Ikoon"

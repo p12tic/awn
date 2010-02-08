@@ -273,6 +273,56 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkHBox" id="hbox14">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkHBox" id="hbox18">
+                        <property name="visible">True</property>
+                        <child>
+                          <object class="GtkLabel" id="label55">
+                            <property name="visible">True</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">Autohide mode:</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image6">
+                            <property name="visible">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_text" translatable="yes">To use Intellihide or Window Dodge modes, you need to have Taskmanager applet active and Behavior has to be set to Autohide.</property>
+                            <property name="xalign">1</property>
+                            <property name="xpad">12</property>
+                            <property name="stock">gtk-info</property>
+                            <property name="icon-size">2</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="autohide_mode_combo">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkHBox" id="hbox17">
                     <property name="visible">True</property>
                     <property name="spacing">12</property>
@@ -313,7 +363,30 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="position">4</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkHBox" id="hbox26">
+                    <property name="visible">True</property>
+                    <property name="spacing">12</property>
+                    <child>
+                      <object class="GtkCheckButton" id="expand_config">
+                        <property name="label" translatable="yes">E_xpand the panel</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="use_underline">True</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">6</property>
                   </packing>
                 </child>
                 <child>
@@ -348,30 +421,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="position">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkHBox" id="hbox26">
-                    <property name="visible">True</property>
-                    <property name="spacing">12</property>
-                    <child>
-                      <object class="GtkCheckButton" id="expand_config">
-                        <property name="label" translatable="yes">E_xpand the panel</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                   </packing>
                 </child>
               </object>
@@ -581,7 +631,7 @@
                         <child>
                           <object class="GtkTable" id="table6">
                             <property name="visible">True</property>
-                            <property name="n_rows">17</property>
+                            <property name="n_rows">20</property>
                             <property name="n_columns">6</property>
                             <property name="column_spacing">5</property>
                             <child>
@@ -786,8 +836,8 @@
                               <packing>
                                 <property name="left_attach">2</property>
                                 <property name="right_attach">3</property>
-                                <property name="top_attach">6</property>
-                                <property name="bottom_attach">7</property>
+                                <property name="top_attach">8</property>
+                                <property name="bottom_attach">9</property>
                                 <property name="x_options"></property>
                               </packing>
                             </child>
@@ -802,8 +852,8 @@
                               <packing>
                                 <property name="left_attach">2</property>
                                 <property name="right_attach">3</property>
-                                <property name="top_attach">7</property>
-                                <property name="bottom_attach">8</property>
+                                <property name="top_attach">9</property>
+                                <property name="bottom_attach">10</property>
                                 <property name="x_options"></property>
                               </packing>
                             </child>
@@ -817,8 +867,8 @@
                               <packing>
                                 <property name="left_attach">5</property>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">6</property>
-                                <property name="bottom_attach">7</property>
+                                <property name="top_attach">8</property>
+                                <property name="bottom_attach">9</property>
                                 <property name="x_options"></property>
                               </packing>
                             </child>
@@ -832,8 +882,8 @@
                               <packing>
                                 <property name="left_attach">5</property>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">7</property>
-                                <property name="bottom_attach">8</property>
+                                <property name="top_attach">9</property>
+                                <property name="bottom_attach">10</property>
                                 <property name="x_options"></property>
                               </packing>
                             </child>
@@ -846,8 +896,8 @@
                               </object>
                               <packing>
                                 <property name="right_attach">2</property>
-                                <property name="top_attach">6</property>
-                                <property name="bottom_attach">7</property>
+                                <property name="top_attach">8</property>
+                                <property name="bottom_attach">9</property>
                               </packing>
                             </child>
                             <child>
@@ -859,8 +909,8 @@
                               </object>
                               <packing>
                                 <property name="right_attach">2</property>
-                                <property name="top_attach">7</property>
-                                <property name="bottom_attach">8</property>
+                                <property name="top_attach">9</property>
+                                <property name="bottom_attach">10</property>
                               </packing>
                             </child>
                             <child>
@@ -872,8 +922,8 @@
                               <packing>
                                 <property name="left_attach">3</property>
                                 <property name="right_attach">5</property>
-                                <property name="top_attach">6</property>
-                                <property name="bottom_attach">7</property>
+                                <property name="top_attach">8</property>
+                                <property name="bottom_attach">9</property>
                               </packing>
                             </child>
                             <child>
@@ -885,8 +935,8 @@
                               <packing>
                                 <property name="left_attach">3</property>
                                 <property name="right_attach">5</property>
-                                <property name="top_attach">7</property>
-                                <property name="bottom_attach">8</property>
+                                <property name="top_attach">9</property>
+                                <property name="bottom_attach">10</property>
                               </packing>
                             </child>
                             <child>
@@ -899,8 +949,8 @@
                               </object>
                               <packing>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">5</property>
-                                <property name="bottom_attach">6</property>
+                                <property name="top_attach">7</property>
+                                <property name="bottom_attach">8</property>
                               </packing>
                             </child>
                             <child>
@@ -913,8 +963,8 @@
                               </object>
                               <packing>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">8</property>
-                                <property name="bottom_attach">9</property>
+                                <property name="top_attach">10</property>
+                                <property name="bottom_attach">11</property>
                               </packing>
                             </child>
                             <child>
@@ -925,8 +975,8 @@
                                 <property name="label" translatable="yes">Font Mode</property>
                               </object>
                               <packing>
-                                <property name="top_attach">9</property>
-                                <property name="bottom_attach">10</property>
+                                <property name="top_attach">11</property>
+                                <property name="bottom_attach">12</property>
                               </packing>
                             </child>
                             <child>
@@ -940,8 +990,8 @@
                               <packing>
                                 <property name="left_attach">5</property>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">9</property>
-                                <property name="bottom_attach">10</property>
+                                <property name="top_attach">11</property>
+                                <property name="bottom_attach">12</property>
                                 <property name="x_options"></property>
                                 <property name="y_options"></property>
                               </packing>
@@ -957,8 +1007,8 @@
                               <packing>
                                 <property name="left_attach">3</property>
                                 <property name="right_attach">4</property>
-                                <property name="top_attach">9</property>
-                                <property name="bottom_attach">10</property>
+                                <property name="top_attach">11</property>
+                                <property name="bottom_attach">12</property>
                                 <property name="x_options"></property>
                                 <property name="y_options"></property>
                               </packing>
@@ -972,8 +1022,8 @@
                               <packing>
                                 <property name="left_attach">2</property>
                                 <property name="right_attach">3</property>
-                                <property name="top_attach">9</property>
-                                <property name="bottom_attach">10</property>
+                                <property name="top_attach">11</property>
+                                <property name="bottom_attach">12</property>
                               </packing>
                             </child>
                             <child>
@@ -983,8 +1033,8 @@
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
-                                <property name="top_attach">9</property>
-                                <property name="bottom_attach">10</property>
+                                <property name="top_attach">11</property>
+                                <property name="bottom_attach">12</property>
                                 <property name="x_options"></property>
                                 <property name="y_options"></property>
                               </packing>
@@ -998,8 +1048,8 @@
                               <packing>
                                 <property name="left_attach">4</property>
                                 <property name="right_attach">5</property>
-                                <property name="top_attach">9</property>
-                                <property name="bottom_attach">10</property>
+                                <property name="top_attach">11</property>
+                                <property name="bottom_attach">12</property>
                               </packing>
                             </child>
                             <child>
@@ -1012,8 +1062,8 @@
                               </object>
                               <packing>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">10</property>
-                                <property name="bottom_attach">11</property>
+                                <property name="top_attach">13</property>
+                                <property name="bottom_attach">14</property>
                               </packing>
                             </child>
                             <child>
@@ -1024,8 +1074,8 @@
                                 <property name="label" translatable="yes">Font</property>
                               </object>
                               <packing>
-                                <property name="top_attach">11</property>
-                                <property name="bottom_attach">12</property>
+                                <property name="top_attach">14</property>
+                                <property name="bottom_attach">15</property>
                               </packing>
                             </child>
                             <child>
@@ -1037,8 +1087,8 @@
                               <packing>
                                 <property name="left_attach">1</property>
                                 <property name="right_attach">2</property>
-                                <property name="top_attach">11</property>
-                                <property name="bottom_attach">12</property>
+                                <property name="top_attach">14</property>
+                                <property name="bottom_attach">15</property>
                                 <property name="x_options"></property>
                                 <property name="y_options"></property>
                               </packing>
@@ -1054,8 +1104,8 @@
                               <packing>
                                 <property name="left_attach">5</property>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">11</property>
-                                <property name="bottom_attach">12</property>
+                                <property name="top_attach">14</property>
+                                <property name="bottom_attach">15</property>
                                 <property name="x_options"></property>
                               </packing>
                             </child>
@@ -1070,8 +1120,8 @@
                               <packing>
                                 <property name="left_attach">3</property>
                                 <property name="right_attach">4</property>
-                                <property name="top_attach">11</property>
-                                <property name="bottom_attach">12</property>
+                                <property name="top_attach">14</property>
+                                <property name="bottom_attach">15</property>
                                 <property name="x_options"></property>
                               </packing>
                             </child>
@@ -1084,8 +1134,8 @@
                               <packing>
                                 <property name="left_attach">2</property>
                                 <property name="right_attach">3</property>
-                                <property name="top_attach">11</property>
-                                <property name="bottom_attach">12</property>
+                                <property name="top_attach">14</property>
+                                <property name="bottom_attach">15</property>
                               </packing>
                             </child>
                             <child>
@@ -1097,8 +1147,8 @@
                               <packing>
                                 <property name="left_attach">4</property>
                                 <property name="right_attach">5</property>
-                                <property name="top_attach">11</property>
-                                <property name="bottom_attach">12</property>
+                                <property name="top_attach">14</property>
+                                <property name="bottom_attach">15</property>
                               </packing>
                             </child>
                             <child>
@@ -1111,8 +1161,8 @@
                               </object>
                               <packing>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">12</property>
-                                <property name="bottom_attach">13</property>
+                                <property name="top_attach">15</property>
+                                <property name="bottom_attach">16</property>
                               </packing>
                             </child>
                             <child>
@@ -1139,7 +1189,7 @@
                                     <property name="visible">True</property>
                                     <property name="xalign">0</property>
                                     <property name="xpad">10</property>
-                                    <property name="label" translatable="yes">Select Custom Arrow</property>
+                                    <property name="label" translatable="yes">Custom Arrow Image</property>
                                   </object>
                                   <packing>
                                     <property name="position">0</property>
@@ -1159,8 +1209,8 @@
                               </object>
                               <packing>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">15</property>
-                                <property name="bottom_attach">16</property>
+                                <property name="top_attach">18</property>
+                                <property name="bottom_attach">19</property>
                               </packing>
                             </child>
                             <child>
@@ -1218,8 +1268,8 @@
                               <packing>
                                 <property name="left_attach">2</property>
                                 <property name="right_attach">6</property>
-                                <property name="top_attach">14</property>
-                                <property name="bottom_attach">15</property>
+                                <property name="top_attach">17</property>
+                                <property name="bottom_attach">18</property>
                                 <property name="x_options"></property>
                                 <property name="y_options"></property>
                               </packing>
@@ -1231,8 +1281,8 @@
                                 <property name="label" translatable="yes">Arrow type</property>
                               </object>
                               <packing>
-                                <property name="top_attach">14</property>
-                                <property name="bottom_attach">15</property>
+                                <property name="top_attach">17</property>
+                                <property name="bottom_attach">18</property>
                                 <property name="x_padding">10</property>
                               </packing>
                             </child>
@@ -1246,8 +1296,8 @@
                               </object>
                               <packing>
                                 <property name="right_attach">2</property>
-                                <property name="top_attach">13</property>
-                                <property name="bottom_attach">14</property>
+                                <property name="top_attach">16</property>
+                                <property name="bottom_attach">17</property>
                                 <property name="x_padding">10</property>
                               </packing>
                             </child>
@@ -1258,10 +1308,10 @@
                                 <property name="label" translatable="yes">Separator Color</property>
                               </object>
                               <packing>
-                                <property name="left_attach">4</property>
-                                <property name="right_attach">5</property>
-                                <property name="top_attach">13</property>
-                                <property name="bottom_attach">14</property>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">16</property>
+                                <property name="bottom_attach">17</property>
                               </packing>
                             </child>
                             <child>
@@ -1273,19 +1323,161 @@
                                 <property name="color">#000000000000</property>
                               </object>
                               <packing>
-                                <property name="left_attach">5</property>
-                                <property name="right_attach">6</property>
-                                <property name="top_attach">13</property>
-                                <property name="bottom_attach">14</property>
+                                <property name="left_attach">3</property>
+                                <property name="right_attach">4</property>
+                                <property name="top_attach">16</property>
+                                <property name="bottom_attach">17</property>
                                 <property name="x_options"></property>
                                 <property name="y_options"></property>
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="GtkLabel" id="label59">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Glowing dot color</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="right_attach">5</property>
+                                <property name="top_attach">16</property>
+                                <property name="bottom_attach">17</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder/>
+                              <object class="DesktopAgnosticUIColorButton" id="effects_dot_color">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_alpha">True</property>
+                                <property name="color">#000000000000</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">5</property>
+                                <property name="right_attach">6</property>
+                                <property name="top_attach">16</property>
+                                <property name="bottom_attach">17</property>
+                                <property name="x_options"></property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="DesktopAgnosticUIColorButton" id="activerect_color">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_alpha">True</property>
+                                <property name="color">#000000000000</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="right_attach">4</property>
+                                <property name="top_attach">12</property>
+                                <property name="bottom_attach">13</property>
+                                <property name="x_options"></property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="DesktopAgnosticUIColorButton" id="activerect_outline_color">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="use_alpha">True</property>
+                                <property name="color">#000000000000</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">5</property>
+                                <property name="right_attach">6</property>
+                                <property name="top_attach">12</property>
+                                <property name="bottom_attach">13</property>
+                                <property name="x_options"></property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label60">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Fill Color</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">12</property>
+                                <property name="bottom_attach">13</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label61">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="label" translatable="yes">Outline Color</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">4</property>
+                                <property name="right_attach">5</property>
+                                <property name="top_attach">12</property>
+                                <property name="bottom_attach">13</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="label62">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="xpad">10</property>
+                                <property name="label" translatable="yes">Active rectangle:</property>
+                              </object>
+                              <packing>
+                                <property name="right_attach">2</property>
+                                <property name="top_attach">12</property>
+                                <property name="bottom_attach">13</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="use_pattern_check">
+                                <property name="label" translatable="yes">Use Pattern as Background</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">False</property>
+                                <property name="draw_indicator">True</property>
+                              </object>
+                              <packing>
+                                <property name="right_attach">6</property>
+                                <property name="top_attach">5</property>
+                                <property name="bottom_attach">6</property>
+                                <property name="x_padding">10</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkHBox" id="hbox23">
+                                <property name="visible">True</property>
+                                <child>
+                                  <object class="GtkLabel" id="label63">
+                                    <property name="visible">True</property>
+                                    <property name="xalign">0</property>
+                                    <property name="xpad">10</property>
+                                    <property name="label" translatable="yes">Pattern Image</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkFileChooserButton" id="pattern_chooser">
+                                    <property name="visible">True</property>
+                                    <property name="create_folders">False</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="right_attach">6</property>
+                                <property name="top_attach">6</property>
+                                <property name="bottom_attach">7</property>
+                              </packing>
                             </child>
                             <child>
                               <placeholder/>
@@ -2290,135 +2482,121 @@
             <property name="visible">True</property>
             <property name="left_padding">10</property>
             <child>
-              <object class="GtkTable" id="table3">
+              <object class="GtkVBox" id="vbox6">
                 <property name="visible">True</property>
-                <property name="n_rows">4</property>
-                <property name="n_columns">3</property>
-                <property name="column_spacing">5</property>
-                <property name="row_spacing">5</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
                 <child>
-                  <object class="GtkCheckButton" id="show_all_windows_config">
-                    <property name="label" translatable="yes">Show all windows</property>
+                  <object class="GtkHBox" id="hbox20">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="tooltip_text" translatable="yes">Show windows from all workspaces</property>
-                    <property name="draw_indicator">True</property>
+                    <child>
+                      <object class="GtkLabel" id="label57">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Icons:</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="tm_icon_behave">
+                        <property name="visible">True</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                    <property name="y_options"></property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkCheckButton" id="grouping_config">
-                    <property name="label" translatable="yes">Group common windows</property>
+                  <object class="GtkTable" id="table3">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="tooltip_text" translatable="yes">Allow grouping of common windows under a single icon</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="n_rows">3</property>
+                    <property name="n_columns">2</property>
+                    <property name="column_spacing">5</property>
+                    <property name="row_spacing">5</property>
+                    <child>
+                      <object class="GtkCheckButton" id="show_all_windows_config">
+                        <property name="label" translatable="yes">Show all windows</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="grouping_config">
+                        <property name="label" translatable="yes">Group common windows</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="only_launchers_config">
+                        <property name="label" translatable="yes">Display launchers only</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="tm_drag_drop">
+                        <property name="label" translatable="yes">Drag and drop reordering</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="tm_long_press">
+                        <property name="label" translatable="yes">Show dialog after long press</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                        <property name="y_options"></property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
                   </object>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                    <property name="y_options"></property>
+                    <property name="position">1</property>
                   </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="only_launchers_config">
-                    <property name="label" translatable="yes">Display launchers only</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="tooltip_text" translatable="yes">Only show and manage launcher windows</property>
-                    <property name="draw_indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                    <property name="y_options"></property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="tm_drag_drop">
-                    <property name="label" translatable="yes">Drag and drop reordering</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="tooltip_text" translatable="yes">Enable reordering of windows by drag and drop </property>
-                    <property name="draw_indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
-                    <property name="y_options"></property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="tm_long_press">
-                    <property name="label" translatable="yes">Show dialog after long press</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="tooltip_text" translatable="yes">A 'long press' is required to show the Awn dialog. This allows you to interact with the icon without the dialog popping up right away</property>
-                    <property name="draw_indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                    <property name="y_options"></property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkComboBox" id="tm_icon_behave">
-                    <property name="visible">True</property>
-                    <property name="tooltip_text" translatable="yes">Sets the visual apperance of the icons</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label57">
-                    <property name="visible">True</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes">Icons</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="intellihide_config">
-                    <property name="label" translatable="yes">Intellihide</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="tooltip_text" translatable="yes">When auto hide is enabled for the panel, this will inhibit auto hide if there are no windows touching the panel.</property>
-                    <property name="draw_indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
                 </child>
               </object>
             </child>
@@ -2833,7 +3011,7 @@
               <object class="GtkLabel" id="label46">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Verson</property>
+                <property name="label" translatable="yes">Version</property>
               </object>
               <packing>
                 <property name="top_attach">2</property>
@@ -3040,6 +3218,7 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup_panel_labels">
     <widgets>
+      <widget name="autohide_mode_combo"/>
       <widget name="iconeffects"/>
       <widget name="monitor_align_hscale"/>
       <widget name="behaviorcombo"/>
