@@ -1,3 +1,11 @@
+2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* applets/expander/expander.desktop.in.in:
+	* applets/quick-prefs/quick-prefs.desktop.in.in:
+	* applets/separator/separator.desktop.in.in:
+	* applets/taskmanager/taskmanager.desktop.in.in:
+	Fix desktop files to handle the latest build system refactoring.
+
 2010-02-08  Michal Hruby  <michal.mhr@gmail.com>
 
 	* configure.in:
