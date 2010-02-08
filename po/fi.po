@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:32-0800\n"
-"PO-Revision-Date: 2009-01-25 11:27+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 12:31+0000\n"
 "Last-Translator: Elias Julkunen <elias.julkunen@gmail.com>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Näytä ikkunat kaikista työtiloista"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Käynnistetään"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Käynnistetään"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,9 +191,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Kuvakkeen etäisyys: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -213,19 +210,16 @@ msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
-#, fuzzy
 msgid "Preferences applet"
-msgstr "Asetukset"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Lisää ja poista sovelmia"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Erottimen väri:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -243,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Lisää ja poista käynnistimiä"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Suljetaan"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -305,9 +297,8 @@ msgid "Move to Another _Workspace"
 msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
-#, fuzzy
 msgid "Awn Settings"
-msgstr "Käynnistetään %s"
+msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -350,11 +341,11 @@ msgstr "Kohdevalo"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr "Zoomaus"
+msgstr "Suurennus"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Litistä"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
@@ -445,6 +436,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Tämän ohjelman mukana pitäisi tulla kopio GPL-lisenssistä; jos näin ei ole, "
+"kirjoita osoitteeseen Free Software Foundation, Inc., 51 Franklin St, Fifth "
+"Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -463,14 +457,12 @@ msgid "Top"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:136
-#, fuzzy
 msgid "Bottom"
-msgstr "Zoomaus"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
-#, fuzzy
 msgid "Flat"
-msgstr "Tasainen palkkki"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "3d"
@@ -485,9 +477,8 @@ msgid "Edgy"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:141
-#, fuzzy
 msgid "Floaty"
-msgstr "Tasainen palkkki"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Standard"
@@ -502,14 +493,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Piilota palkki automaattisesti"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Läpinäkyvyys:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -528,9 +517,8 @@ msgid "Use Window Icons"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:859
-#, fuzzy
 msgid "Use Launcher Icons"
-msgstr "Käynnistimen kuvake"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:860
 msgid "Overlay Window Icon"
@@ -597,28 +585,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Taustan väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Taustan väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Taustan väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Taustan väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -643,29 +627,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Ota kuvio käyttöön"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Ensisijainen väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Ensisijainen väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Taustan väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Taustan väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -688,14 +667,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Sisäreunus"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Pääreunus"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -735,19 +712,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Toissijainen väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Toissijainen väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Erottimen väri:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -802,9 +776,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Ota kuvio käyttöön"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -845,14 +818,12 @@ msgid "Choose Custom Icon"
 msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2065
-#, fuzzy
 msgid "Customize Icon"
-msgstr "Muokattu"
+msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2152
-#, fuzzy
 msgid "Remove Customized Icon"
-msgstr "Muokattu"
+msgstr ""
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
@@ -868,256 +839,3 @@ msgstr ""
 
 #~ msgid "PNG Files"
 #~ msgstr "PNG-tiedostot"
-
-#~ msgid "3D turn"
-#~ msgstr "3D-kääntyminen"
-
-#~ msgid "3D turn with spotlight"
-#~ msgstr "3D-kääntyminen kohdevalolla"
-
-#~ msgid "Select an Executable File"
-#~ msgstr "Valitse suoritettava tiedosto"
-
-#~ msgid "Please provide a name for the launcher in the \"%s\" field."
-#~ msgstr "Anna käynnistimen nimi kenttään \"%s\"."
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>Nimi:</b>"
-
-#~ msgid "Please provide a program to launch in the \"%s\" field."
-#~ msgstr "Syötä käynnistettävä sovellus kenttään \"%s\"."
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>Komento:</b>"
-
-#~ msgid "Couldn't save the launcher. Error: %s"
-#~ msgstr "Käynnistintä ei voitu tallentaa. Virhe: %s"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Aktiivinen kuvake</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Sovelmien asetukset</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Nuolet</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Palkin toiminta</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Reunukset</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Mukauta efektejä</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Yleiset asetukset</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Gradientti</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Korostus</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Kuvake-efektit</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "Käynnistinasetukset"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Tyyli</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Kuvio</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Erotin</b>"
-
-#~ msgid "<b>Startup behaviour</b>"
-#~ msgstr "<b>Käynnistyskäyttäytyminen</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Teksti</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Teemat</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Ikkunat</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Ota käyttöön"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Lisää ja poista käynnistimiä"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Lisää, poista ja tallenna teemoja"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Huomauta, kun sovelluksen ikkuna on päivittynyt"
-
-#~ msgid "Attention"
-#~ msgstr "Huomio"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Piilota palkki automaattisesti"
-
-#~ msgid "Automatically start AWN on login."
-#~ msgstr "Käynnistä AWN automaattisesti kirjautumisen yhteydessä."
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Palkin ulkonäkö"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Palkin kulma: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Palkin korkeus: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Muuta palkin ulkonäköä ja toimintaa"
-
-#~ msgid "Color:"
-#~ msgstr "Väri:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Poista käytöstä"
-
-#~ msgid "Delete"
-#~ msgstr "Poista"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Ota kulmien pyöristys käyttöön"
-
-#~ msgid "Font:"
-#~ msgstr "Fontti:"
-
-#~ msgid "General"
-#~ msgstr "Yleiset"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Lasitus"
-
-#~ msgid "Hover"
-#~ msgstr "Osoitus"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Kuvakkeen huomio-efektillä ilmoitetaan käyttäjälle päivittyneistä "
-#~ "ikkunoista."
-
-#~ msgid "Install"
-#~ msgstr "Asenna"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr ""
-#~ "Pidä palkki suurennettujen ikkunoiden takana, kun se ei ole käytössä"
-
-#~ msgid "Launching"
-#~ msgstr "Käynnistetään"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr ""
-#~ "Suurennetut ikkunat eivät peitä palkkia (vaatii uudelleenkäynnistyksen)"
-
-#~ msgid "Opening"
-#~ msgstr "Avataan"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Kuviointi"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Varjon väri:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Näytä erotin käynnistimien ja tehtävien välillä"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Tehtävän ulkoasu"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Prosessien alla on nuolet"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Palkki piilottuu automaattisesti kun sitä ei käytetä"
-
-#~ msgid "Transparency:"
-#~ msgstr "Läpinäkyvyys:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Ikkunat eivät peitä palkkia"
-
-#~ msgid "page 1"
-#~ msgstr "sivu 1"
-
-#~ msgid "page 2"
-#~ msgstr "sivu 2"
-
-#~ msgid "page 3"
-#~ msgstr "sivu 3"
-
-#~ msgid "page 4"
-#~ msgstr "sivu 4"
-
-#~ msgid "Awn Manager"
-#~ msgstr "Awn-hallinta"
-
-#~ msgid "3D look"
-#~ msgstr "3D-näkymä"
-
-#~ msgid "<b>Description:</b>"
-#~ msgstr "<b>Kuvaus:</b>"
-
-#~ msgid "Directory:"
-#~ msgstr "Hakemisto:"
-
-#~ msgid "Launcher Editor"
-#~ msgstr "Käynnistineditori"
-
-#~ msgid "Open..."
-#~ msgstr "Avaa..."
-
-#~ msgid "Select A Folder"
-#~ msgstr "Valitse kansio"
-
-#~ msgid "Select Icon"
-#~ msgstr "Valitse kuvake"
-
-#~ msgid "Expand bar to monitor width"
-#~ msgstr "Laajenna palkki näytön leveyteen"
-
-#~ msgid "File is not a valid .desktop file"
-#~ msgstr "Tiedosto ei ole kelvollinen .desktop-tiedosto"
-
-#~ msgid "Unrecognized desktop file Version '%s'"
-#~ msgstr "Tuntematon työpöytätiedoston versionumero \"%s\""
-
-#~ msgid "Application does not accept documents on command line"
-#~ msgstr "Sovellus ei hyväksy asiakirjoja komentoriviltä annettuna"
-
-#~ msgid "Unrecognized launch option: %d"
-#~ msgstr "Tuntematon käynnistysvalitsin: %d"
-
-#~ msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-#~ msgstr ""
-#~ "Asiakirjojen URI:a ei voi antaa \"Type=Link\"-muotoisille "
-#~ "työpöytälinkeille"
-
-#~ msgid "Not a launchable item"
-#~ msgstr "Ei käynnistettävä kohta"
-
-#~ msgid "Choose New Image..."
-#~ msgstr "Valitse uusi kuva..."
-
-#~ msgid "Change Icon..."
-#~ msgstr "Vaihda kuvaketta..."
-
-#~ msgid "Change Image..."
-#~ msgstr "Vaihda kuvaa..."
-
-#~ msgid "Change Icon"
-#~ msgstr "Vaihda kuvake"

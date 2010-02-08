@@ -1,4 +1,4 @@
-# Kabyle translation for awn
+# Azerbaijani translation for awn
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2009-10-29 20:48-0700\n"
-"PO-Revision-Date: 2010-01-27 00:12+0000\n"
-"Last-Translator: said026 (Said Ibrihen ) <sayid_2008@live.fr>\n"
-"Language-Team: Kabyle <kab@li.org>\n"
+"PO-Revision-Date: 2009-12-24 06:03+0000\n"
+"Last-Translator: Launchpad Translations Administrators "
+"<rosetta@launchpad.net>\n"
+"Language-Team: Azerbaijani <az@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-01-28 04:36+0000\n"
+"X-Launchpad-Export-Date: 2009-12-25 04:41+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -165,7 +166,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:825 ../awn-settings/awnClass.py:886
 msgid "Classic"
-msgstr ""
+msgstr "Klassik"
 
 #: ../awn-settings/awnClass.py:826 ../awn-settings/awnClass.py:887
 msgid "Fade"
@@ -177,7 +178,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:828 ../awn-settings/awnClass.py:889
 msgid "Zoom"
-msgstr ""
+msgstr "Yaxınlaşdır"
 
 #: ../awn-settings/awnClass.py:829 ../awn-settings/awnClass.py:890
 msgid "Squish"
@@ -228,12 +229,12 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1069
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN uğurla təzələndi"
 
 #: ../awn-settings/awnClass.py:1075
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr "Avant Window Navigator"
+msgstr ""
 
 #: ../awn-settings/awnClass.py:1093
 msgid "Fully customisable dock-like window navigator for GNOME."

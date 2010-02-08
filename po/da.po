@@ -7,20 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:31-0800\n"
-"PO-Revision-Date: 2008-04-20 15:12+0000\n"
-"Last-Translator: Jeppe Toustrup <launchpad@tenzer.dk>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 13:48+0000\n"
+"Last-Translator: Jeppe Toustrup <Unknown>\n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Udvider"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Vis vinduer fra alle virtuelle skriveborde"
+msgstr "Vis vinduer fra alle arbejdsområder"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Starter"
+msgstr "Kør"
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Starter"
+msgstr "Kør %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Ikon forskydning: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Dock-indstillinger"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Tilføj og fjern applets"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Separator farve:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Tilføj og fjern startere"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Afslutter"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Kontroller Awn indstillinger, opstartere, tilføjelser og temaer"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -328,47 +321,47 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Ingen"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
-msgstr ""
+msgstr "Simpel"
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Klassisk"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Falme"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Spotlys"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Svuppe"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3D-Drejning"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D-Spotlysdrejning"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Glød"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "Standard"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -376,16 +369,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Mappe kunne ikke oprettes. Opret mappen manuelt:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Bekræft oprettelse af mappe"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Der er endnu intet autostart-bibliotek for brugeren.\n"
+"Ønsker du at oprette den automatisk nu?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -399,16 +396,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN er blevet opdateret"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "En fuldt konfigurerbar dock-lignende vinduesnavigator til GNOME."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -417,6 +414,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Dette program er fri software: Du kan gendistribuere det og/eller ændre det "
+"under GNU General Public License's termer offentliggjort af the Free "
+"Software Foundation; enten version 2 af licensen eller (på dit ansvar) en "
+"senere version."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -425,6 +426,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Dette program blev distribueret i håbet om at gøre nytte, men UDEN GARANTI; "
+"selv uden den indebærende garanti af MERCHANTABILITY eller FITNESS FOR A "
+"PARTICULAR PURPOSE. Se GNU General Public License for flere detaljer."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -432,6 +436,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Du skulle have fået en kopi af GNU General Public License sammen med dette "
+"program. Hvis ikke, skriv til the Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -439,31 +446,31 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:135
 msgid "Left"
-msgstr ""
+msgstr "Venstre"
 
 #: ../awn-settings/awnSettings.py.in:135
 msgid "Right"
-msgstr ""
+msgstr "Højre"
 
 #: ../awn-settings/awnSettings.py.in:136
 msgid "Top"
-msgstr ""
+msgstr "Øverst"
 
 #: ../awn-settings/awnSettings.py.in:136
 msgid "Bottom"
-msgstr ""
+msgstr "Nederst"
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "Flat"
-msgstr ""
+msgstr "Flad"
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "3d"
-msgstr ""
+msgstr "3d"
 
 #: ../awn-settings/awnSettings.py.in:141
 msgid "Curved"
-msgstr ""
+msgstr "Kurvet"
 
 #: ../awn-settings/awnSettings.py.in:141
 msgid "Edgy"
@@ -475,7 +482,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Standard"
-msgstr ""
+msgstr "Standard"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Panel mode"
@@ -486,22 +493,20 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Skjul automatisk bjælke når den ikke benyttes"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Gennemsigtighed:"
+msgstr "Gennemsigtighed"
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
-msgstr ""
+msgstr "Massiv"
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Outline"
-msgstr ""
+msgstr "Omrids"
 
 #: ../awn-settings/awnSettings.py.in:691
 msgid "Outline, Reversed"
@@ -543,11 +548,11 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:133
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn Wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "En docklignende vinduesnavigator."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -555,11 +560,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -580,28 +585,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Baggrundsfarve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Baggrundsfarve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Baggrundsfarve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Baggrundsfarve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -626,29 +627,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Aktivér mønster"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Første trins farve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Første trins farve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Baggrundsfarve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Baggrundsfarve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -671,14 +667,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Indvendig ramme:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Hoved ramme:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -718,19 +712,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Andet trins farve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Andet trins farve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Separator farve:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -785,9 +776,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Aktivér mønster"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -821,7 +811,7 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
-msgstr ""
+msgstr "Ikoner"
 
 #: ../libawn/awn-themed-icon.c:1978
 msgid "Choose Custom Icon"
@@ -846,168 +836,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Aktivt ikon</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Applet indstillinger</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Pile</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Bjælke adfærd</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Kanter</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Tilpas effekter</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Generelle indstillinger</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Hældning</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Markér</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Ikon effekter</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Starter indstillinger</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Udseende</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Mønster</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Separator</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Tekst</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Temaer</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Vinduer</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktivér"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Tilføj og fjern startere"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Tilføj, fjern og gem temaer"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Advár når applikationsvinduet er opdateret"
-
-#~ msgid "Attention"
-#~ msgstr "Advarsel"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Skjul automatisk bjælke når den ikke benyttes"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Bjælke udseende"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Bjælke vinkel: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Bjælke højde: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Ændre udseendet og opførselen for dokken."
-
-#~ msgid "Color:"
-#~ msgstr "Farve:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Deaktivér"
-
-#~ msgid "Delete"
-#~ msgstr "Slet"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Aktivér afrundede hjørner"
-
-#~ msgid "Font:"
-#~ msgstr "Skrifttype:"
-
-#~ msgid "General"
-#~ msgstr "Generelt"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Glas motor"
-
-#~ msgid "Hover"
-#~ msgstr "Svæv"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Påmindelses effect for ikon vil blive aktiveret for at alarmere om "
-#~ "opdaterede vinduer."
-
-#~ msgid "Install"
-#~ msgstr "Installér"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Bliv under maksimerede vinduer når ikke i brug"
-
-#~ msgid "Launching"
-#~ msgstr "Starter"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Maksimerede vinduer skjuler ikke bjælken (kræver genstart)"
-
-#~ msgid "Opening"
-#~ msgstr "Åbner"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Mønster motor"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Skygge farve:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Vis separator mellem startere og opgaver"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Opgave udseende"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Opgaver har pile"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Bjælken skjules automatisk når den ikke benyttes"
-
-#~ msgid "Transparency:"
-#~ msgstr "Gennemsigtighed:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Vinduer overlapper ikke bjælken hvis dette er sat"
-
-#~ msgid "page 1"
-#~ msgstr "side 1"
-
-#~ msgid "page 2"
-#~ msgstr "side 2"
-
-#~ msgid "page 3"
-#~ msgstr "side 3"
-
-#~ msgid "page 4"
-#~ msgstr "side 4"
-
-#~ msgid "Change Icon"
-#~ msgstr "Skift ikon"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:33-0800\n"
-"PO-Revision-Date: 2009-01-24 15:59+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 11:04+0000\n"
 "Last-Translator: Mohd Syukor Abdul <msyukor@gmail.com>\n"
 "Language-Team: Malay <ms@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Tunjukkan tetingkap dari kesemua ports boleh lihat"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Memulakan"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Memulakan"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Bayang Ikon: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Tetapan Dock"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Tambah dan buang applets"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Warna pembahagi:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Tambah dan buang pemula aplikasi"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Tutup"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Uruskan tetapan Awn, pelancar Awn, applet Awn, dan tema Awn"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -328,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Tiada"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -340,35 +333,35 @@ msgstr "Klasik"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Pudar"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Lampu Sorot"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Merembes"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "Putar 3D"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Putaran Lampu Sorot 3D"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Seri"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "Buatan sendiri"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -376,16 +369,21 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Penciptaan secara automatik gagal. Sila cipta direktori secara manual:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Sahkan penciptaan direktori"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Masih tidak wujuk apa-apa direktori bermula secara automatik untuk akaun "
+"pengguna anda.\n"
+"Adakah anda ingin saya meciptakan satu untuk anda secara automatik?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -399,16 +397,18 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN telah berjaya dijernihkan"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Pengemudi Tetingkap Avant"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
+"Pengemudi tetingkap yang seperti dock yang dapat diubahsuai mengikut "
+"citarasa anda untuk GNOME."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -417,6 +417,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Program ini merupakan perisian percuma; and boleh mengedarkannya dan/atau "
+"mengubahnya dibawah terma GNU Genaral Public License sebagimana yang telah "
+"dikeluarkan oleh Free Software Foundation; samada versi ke-2 lesen, atau "
+"(mengikut pilihan anda) sebarang versi terkemudian."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -425,6 +429,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Program ini diedarkan dengan harapan ianya berguna tetapi TANPA SEBARANG "
+"JAMINAN; tanpa sebarang implakasi jaminan KEBOLEHDAGANGAN atau KESESUAIAN "
+"UNTUK SESUATU TUJUAN. Sila rujuk GNU General Public LIcense untuk keterangan "
+"lanjut."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -432,6 +440,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Anda sepatutnya telah menerima satu salinan GNU General Public License "
+"bersama-sama dengan program ini. Jika tidak, sila tulis kepada Free Software "
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -486,14 +497,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Sembunyikan bar secara auto apabila tidak digunakan"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Transparensi:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -547,7 +556,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Pengemudi tetingkap macam dock."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -580,28 +589,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Warna latar belakang:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Warna latar belakang:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Warna latar belakang:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Warna latar belakang:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -626,29 +631,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Aktifkan corak"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Warna langkah pertama:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Warna langkah pertama:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Warna latar belakang:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Warna latar belakang:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -671,14 +671,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Sempadan dalaman:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Sempadan Utama:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -718,19 +716,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Warna langkah kedua:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Warna langkah kedua:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Warna pembahagi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -785,9 +780,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Aktifkan corak"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -846,173 +840,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>Nama:</b>"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Ikon Aktif</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "Pilihan-pilihan Applet"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Anak Panah</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Tindakan Bar</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Sempadan</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Ubah Efek</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Pilihan-pilihan Umum</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Cerun</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Penyerlahan</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Efek Ikon</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Aplikasi Pilihan</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Lihat</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Corak</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Pembahagi</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Teks</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Tema</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Tetingkap</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktifkan"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Tambah dan buang pemula aplikasi"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Tambah, buang dan simpan tema"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Waspada apabila tetingkap aplikasi dikemaskini"
-
-#~ msgid "Attention"
-#~ msgstr "Perhatian"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Sembunyikan bar secara auto apabila tidak digunakan"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Penampilan Bar"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Sudut Bar: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Tinggi Bar: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Tukar wajah dan sifat dock"
-
-#~ msgid "Color:"
-#~ msgstr "Warna:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Nyahaktif"
-
-#~ msgid "Delete"
-#~ msgstr "Padam"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Aktifkan hujung berbentuk bulat"
-
-#~ msgid "Font:"
-#~ msgstr "Font:"
-
-#~ msgid "General"
-#~ msgstr "Umum"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Enjin Kekaca"
-
-#~ msgid "Hover"
-#~ msgstr "Lalu diatas"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Efek ikon maklumbalas akan diaktifkan untuk memaklumkan pengguna "
-#~ "tetingkap yang dikemaskini"
-
-#~ msgid "Install"
-#~ msgstr "Pasang"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Kekalkan dibawah tetingkap apabila tidak digunakan"
-
-#~ msgid "Launching"
-#~ msgstr "Memulakan"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr ""
-#~ "Penampilan tetingkap sepenuhnya tidak melindungi bar (memerlukan komputer "
-#~ "dimulakan kembali)"
-
-#~ msgid "Opening"
-#~ msgstr "Pembukaan"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Enjin Corak"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Warna bayang:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Tunjukkan pembahagi antara pelancar dan tugasan"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Penampilan Tugasan"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Tugasan miliki anak panah"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Bar secara automatik disembunyikan apabila tidak digunakan"
-
-#~ msgid "Transparency:"
-#~ msgstr "Transparensi:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Tetingkap tidak akan menindih bar apabila ini ditetapkan"
-
-#~ msgid "page 1"
-#~ msgstr "halaman 1"
-
-#~ msgid "page 2"
-#~ msgstr "halaman 2"
-
-#~ msgid "page 3"
-#~ msgstr "halaman 3"
-
-#~ msgid "page 4"
-#~ msgstr "halaman 4"
-
-#~ msgid "Change Icon"
-#~ msgstr "Tukar Ikon"

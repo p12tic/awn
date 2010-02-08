@@ -2,16 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: avant-window-navigator 0.2.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:31-0800\n"
-"PO-Revision-Date: 2008-04-04 17:16+0000\n"
-"Last-Translator: Hleb Valoshka <Unknown>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 08:38+0000\n"
+"Last-Translator: Mark Lee <Unknown>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -56,8 +56,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -144,9 +144,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Паказваць вокны з усіх працоўных прастор"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -161,14 +160,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Запусканьне"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Запусканьне"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -189,9 +187,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Зрушэньне значак: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -213,14 +210,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Дадаць/прыбраць аплеты"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Колер падзельніка:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -238,14 +233,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Дадаць/прыбраць запускальнікі"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Закрыцьцё"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -482,14 +475,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Хаваць панэль, калі яна не выкарыстоўваецца"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Празрыстасьць:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -576,28 +567,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Колер асноведзі:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Колер асноведзі:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Колер асноведзі:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Колер асноведзі:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -622,29 +609,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Задзейнічаць узор"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Пачатковы колер:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Пачатковы колер:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Колер асноведзі:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Колер асноведзі:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -667,14 +649,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Унутраная мяжа"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Галоўная мяжа:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -714,19 +694,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Канцавы колер:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Канцавы колер:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Колер падзельніка:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -781,9 +758,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Задзейнічаць узор"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -842,168 +818,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Актыўная значка</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Настаўленьні аплета</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Стрэлкі</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Паводзіны панэлі</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Межы</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Выбраць эфэкты</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Агульныя настаўленьні</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Градыент</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Падсьвечваньне</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Эфэкты значак</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Настаўленьні запускальніка</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Выгляд </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Узор</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Падзельнік</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Тэкст</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Тэмы</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Вокны</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Задзейнічаць"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Дадаць/прыбраць запускальнікі"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Дадаць/прыбраць і захаваць тэмы"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Папярэджваць, калі вакно дастасаваньня абнавілася"
-
-#~ msgid "Attention"
-#~ msgstr "Турбаваньне"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Хаваць панэль, калі яна не выкарыстоўваецца"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Выгляд панэлі"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Кут панэлі: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Вышыня панэлі: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Зьмяніць выгляд і паводзіны дока"
-
-#~ msgid "Color:"
-#~ msgstr "Колер:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Абязьдзейніць"
-
-#~ msgid "Delete"
-#~ msgstr "Выдаліць"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Задзейнічаць закругленыя куты"
-
-#~ msgid "Font:"
-#~ msgstr "Шрыфт:"
-
-#~ msgid "General"
-#~ msgstr "Асноўныя"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Рухавік люстэрка"
-
-#~ msgid "Hover"
-#~ msgstr "Пад курсорам"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Будзе задзенічаны эфэкт «пільная значка», каб папярэдзіць карыстальніка аб "
-#~ "абноўленых вокнах."
-
-#~ msgid "Install"
-#~ msgstr "Усталяваць"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Трымаць пад разгорнутымі вокнамі, калі не выкарыстоўваецца"
-
-#~ msgid "Launching"
-#~ msgstr "Запусканьне"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Разгорнутыя вокны не перакрываюць панэль (патрэбны перазапуск)"
-
-#~ msgid "Opening"
-#~ msgstr "Адкрыцьцё"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Рухавік узораў"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Колер ценю:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Паказваць падзельнік між запускальнікамі й задачамі"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Выгляд панэлі"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Задачы маюць стрэлкі"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Хаваць панэль, калі яна не ва ўжытку"
-
-#~ msgid "Transparency:"
-#~ msgstr "Празрыстасьць:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Вокны не перакрываюць панэль, калі тут задзейнічана"
-
-#~ msgid "page 1"
-#~ msgstr "Старонка 1"
-
-#~ msgid "page 2"
-#~ msgstr "Старонка 2"
-
-#~ msgid "page 3"
-#~ msgstr "Старонка 3"
-
-#~ msgid "page 4"
-#~ msgstr "Старонка 4"
-
-#~ msgid "Change Icon"
-#~ msgstr "Зьмяніць значку"

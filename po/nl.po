@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:34-0800\n"
-"PO-Revision-Date: 2009-01-20 16:17+0000\n"
-"Last-Translator: haytjes <Unknown>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 10:11+0000\n"
+"Last-Translator: Mark Lee <Unknown>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Vensters van alle werkbladen laten zien"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Starten"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Starten"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Afstand van de rand tot het icoon (herstart vereist): "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Dock voorkeuren"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Applets toevoegen en verwijderen"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Kleur afscheiding:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Starters toevoegen en verwijderen"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Afsluiten"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Beheer AWN voorkeuren, starters, applets en thema's"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -344,7 +337,7 @@ msgstr "Vervagen"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Spotlight"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
@@ -356,11 +349,11 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3D draaien"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D Sptlicht Draai"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
@@ -376,16 +369,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Automatisch aanmaken mislukt. Maak de map\n"
+"%s handmatig aan."
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Aanmaken van map bevestigen"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Er is nog geen autostartmap voor jouw gebruikersaccount.\n"
+"Wil je er één automatisch creëren?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -399,7 +396,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN werd succesvol herladen"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -440,6 +437,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Je zou een kopie van de GNU General Public License moeten hebben ontvangen. "
+"Indien dit niet zo is, schrijf dan naar de Free Software Foundation, Inc., "
+"51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -458,9 +458,8 @@ msgid "Top"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:136
-#, fuzzy
 msgid "Bottom"
-msgstr "Zoom"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "Flat"
@@ -495,14 +494,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Balk automatisch verbergen indien niet in gebruik"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Transparantie:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -556,7 +553,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Een window navigator als een dock"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -589,28 +586,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Achtergrondkleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Achtergrondkleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Achtergrondkleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Achtergrondkleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -635,29 +628,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Gebruik patroon"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Kleur 1:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Kleur 1:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Achtergrondkleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Achtergrondkleur:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -680,14 +668,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Binnenste rand:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Buitenste rand:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -727,19 +713,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Kleur 2:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Kleur 2:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Kleur afscheiding:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -794,9 +777,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Gebruik patroon"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -837,14 +819,12 @@ msgid "Choose Custom Icon"
 msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2065
-#, fuzzy
 msgid "Customize Icon"
-msgstr "Aangepast"
+msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2152
-#, fuzzy
 msgid "Remove Customized Icon"
-msgstr "Aangepast"
+msgstr ""
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
@@ -857,183 +837,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>Naam:</b>"
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>Opdracht:</b>"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Actief Icoon</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Applet Eigenschappen</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Pijlen</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Gedrag</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Randen</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Aangepaste Effecten</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Algemene Eigenschappen</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Overgang</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Markeer</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Icoon Effecten</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Starter Eigenschappen</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Uiterlijk</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Patroon</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Afscheiding</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Tekst</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Thema's</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Vensters</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Activeer"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Starters toevoegen en verwijderen"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Voeg toe, verwijder en bewaar thema's"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Waarschuw als applicatie venster vernieuwt"
-
-#~ msgid "Attention"
-#~ msgstr "Attentie"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Balk automatisch verbergen indien niet in gebruik"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Uiterlijk van de balk"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Hoek van de balk: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Hoogte van de balk: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Verander het uiterlijk en gedrag van de balk"
-
-#~ msgid "Color:"
-#~ msgstr "Kleur:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Deactiveren"
-
-#~ msgid "Delete"
-#~ msgstr "Verwijderen"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Afgeronde hoeken gebruiken"
-
-#~ msgid "Font:"
-#~ msgstr "Lettertype:"
-
-#~ msgid "General"
-#~ msgstr "Algemeen"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Achtergrond balk"
-
-#~ msgid "Hover"
-#~ msgstr "Muisover"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Het attentie-effect zal worden geactiveerd om gebruikers op de hoogte te "
-#~ "stellen van geupdate vensters."
-
-#~ msgid "Install"
-#~ msgstr "Installeren"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Onder gemaximaliseerde vensters houden wanneer niet in gebruik"
-
-#~ msgid "Launching"
-#~ msgstr "Starten"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Gemaximaliseerde vensters bedekken de balk niet (herstart vereist)"
-
-#~ msgid "Opening"
-#~ msgstr "Aan het openen"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Patroon balk"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Schaduwkleur:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Laat scheiding tussen starters en taken zien"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Uiterlijk taken"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Taken bevatten pijlen"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "De balk verbergt zich automatisch indien niet in gebruik"
-
-#~ msgid "Transparency:"
-#~ msgstr "Transparantie:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Vensters overlappen de balk niet als dit ingesteld is"
-
-#~ msgid "page 1"
-#~ msgstr "pagina 1"
-
-#~ msgid "page 2"
-#~ msgstr "pagina 2"
-
-#~ msgid "page 3"
-#~ msgstr "pagina 3"
-
-#~ msgid "page 4"
-#~ msgstr "pagina 4"
-
-#~ msgid "3D look"
-#~ msgstr "3D-uiterlijk"
-
-#~ msgid "<b>Description:</b>"
-#~ msgstr "<b>Beschrijving:</b>"
-
-#~ msgid "Open..."
-#~ msgstr "Openen..."
-
-#~ msgid "Change Icon"
-#~ msgstr "Icoon wijzigen"

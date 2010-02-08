@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:31-0800\n"
-"PO-Revision-Date: 2008-05-14 21:26+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 09:02+0000\n"
 "Last-Translator: Nikola Kasabov <nikola.kasabov@gmail.com>\n"
 "Language-Team: Bulgarian <bg@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Показване на прозорците от всички работни плотове"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Стартиране"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Стартиране"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Отместване на иконките: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Настройки на дока"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Добавяне и премахване на аплети"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Цвят на разделителя:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Добавяне и премахване на стартери"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Затваряне"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Управлява настройките, препратките, аплетите и темите на Awn"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -328,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Без"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -336,19 +329,19 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Класически"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Изчезване"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Прожектор"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Увеличаване"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
@@ -356,19 +349,19 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3D завъртане"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D завъртане с прожектор"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Блясък"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "Потребителски"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -376,10 +369,12 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Автоматичното създаване е неуспешно. Моля ръчно създайте директорията:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Потвърждение за създаване на директория"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
@@ -399,16 +394,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN беше успешно обновен"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Напълно променим док-подобен навигатор на прозорци за GNOME."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -417,6 +412,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Тази програма е свободен софтуер; можете да я разпространявате и/или "
+"променяте според условията на GNU General Public License, публикувани от "
+"Free Software Foundation; включително версия 2 на лиценза или по усмотрение "
+"на всяка следваща версия."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -425,6 +424,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Тази програма се разпространява с надеждата, че ще бъде полезна, но БЕЗ "
+"НИКАКВИ ГАРАНЦИИ, дори и косвените за ПРОДАЖБА или СЪОТВЕТСТВИЕ С КАКВАТО И "
+"ДА Е УПОТРЕБА. За подробности погледнете Общия публичен лиценз на GNU."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -486,14 +488,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Автоматично скриване на лентата, когато не се ползва"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Прозрачност:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -547,7 +547,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Док-подобен навигатор на прозорци"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -580,28 +580,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Цвят за фон:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Цвят за фон:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Цвят за фон:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Цвят за фон:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -626,29 +622,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Използване на плочки"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Цвят на първото ниво:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Цвят на първото ниво:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Цвят за фон:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Цвят за фон:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -671,14 +662,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Вътрешна рамка:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Основна рамка:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -718,19 +707,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Цвят на второто ниво:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Цвят на второто ниво:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Цвят на разделителя:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -785,9 +771,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Използване на плочки"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -846,168 +831,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Активна иконка</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Настройки на аплетите</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Стрелки</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Поведение на лентата</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Рамки</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Настройване на ефектите</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Общи настройки</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Преливане</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Маркиране</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Ефекти на иконките</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Настройки на стартерите</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Изглед </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Плочка</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Разделител</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Текст</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Теми</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Прозорци</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Активиране"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Добавяне и премахване на стартери"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Добавяне, премахване и запазване на теми"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Предупреждение при обновяване на прозореца на приложението"
-
-#~ msgid "Attention"
-#~ msgstr "Внимание"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Автоматично скриване на лентата, когато не се ползва"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Изглед на лентата"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Ъгъл на скосяване на лентата: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Височина на лентата: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Променете изгледа и поведението на лентата"
-
-#~ msgid "Color:"
-#~ msgstr "Цвят:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Деактивиране"
-
-#~ msgid "Delete"
-#~ msgstr "Изтриване"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Заоблени ъгли"
-
-#~ msgid "Font:"
-#~ msgstr "Шрифт:"
-
-#~ msgid "General"
-#~ msgstr "Общи"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Машина на прозрачността"
-
-#~ msgid "Hover"
-#~ msgstr "Посочване (с мишката)"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Ефект, който привлича вниманието към иконката, ще бъде задействан, за да "
-#~ "предупреди потребителя за обновени прозорци."
-
-#~ msgid "Install"
-#~ msgstr "Инсталиране"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Под максимизираните прозорци, когато не се ползва"
-
-#~ msgid "Launching"
-#~ msgstr "Стартиране"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Максимизираните прозорци не закриват лентата (изисква рестартиране)"
-
-#~ msgid "Opening"
-#~ msgstr "Отваряне"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Машина на плочките"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Цвят на сянката:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Разделител между стартерите и задачите"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Изглед на задачите"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Стрелки на задачите"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Лентата се скрива атоматично, когато не се ползва"
-
-#~ msgid "Transparency:"
-#~ msgstr "Прозрачност:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Ако не е зададено, прозорците няма да закриват лентата"
-
-#~ msgid "page 1"
-#~ msgstr "страница 1"
-
-#~ msgid "page 2"
-#~ msgstr "страница 2"
-
-#~ msgid "page 3"
-#~ msgstr "страница 3"
-
-#~ msgid "page 4"
-#~ msgstr "страница 3"
-
-#~ msgid "Change Icon"
-#~ msgstr "Смяна на иконката"

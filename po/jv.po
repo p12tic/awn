@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:33-0800\n"
-"PO-Revision-Date: 2008-12-22 10:01+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 10:14+0000\n"
 "Last-Translator: Fakhrul Rijal <frijal@gmail.com>\n"
 "Language-Team: Javanese <jv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -321,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Ora ana"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -329,7 +329,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Klasik"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
@@ -397,7 +397,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
@@ -822,24 +822,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Ikon sing aktif</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Setelane Tombol</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Tondo</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Rupane Bar</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Pinggirane</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Setelane Kabeh</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Setelane Surungan</b>"
