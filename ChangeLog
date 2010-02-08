@@ -1,5 +1,10 @@
 2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* Makefile.vala-applet:
+	Remove generated C files when running make clean.
+
+2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* applets/expander/expander.desktop.in.in:
 	* applets/quick-prefs/quick-prefs.desktop.in.in:
 	* applets/separator/separator.desktop.in.in:
