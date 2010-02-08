@@ -1,0 +1,15 @@
+# vim: set ft=automake ts=8 sts=8 sw=8 :
+NULL = 
+applet_datadir = $(APPLETSDIR)/$(APPLET_NAME)
+
+# for now, assume that icons = SVG
+icon_DATA = $(APPLET_ICONS)
+icondir = $(datadir)/icons/hicolor/scalable/apps
+
+desktopdir = $(APPLETSDIR)
+DESKTOP_BASENAME = $(APPLET_NAME)
+include $(top_srcdir)/Makefile.desktop-files
+
+EXTRA_DIST = \
+	$(icon_DATA) \
+	$(NULL)

@@ -1,13 +1,9 @@
 APP_ICON_NAME = avant-window-navigator
+DESKTOP_BASENAME = avant-window-navigator
+desktopdir = $(datarootdir)/applications
 include $(top_srcdir)/Makefile.app-icons
 include $(top_srcdir)/Makefile.shave
 include $(top_srcdir)/Makefile.schemas
-
-# desktop file
-
-desktopdir   = $(datadir)/applications
-desktop_DATA = avant-window-navigator.desktop
-@INTLTOOL_DESKTOP_RULE@
 
 icons = avant-window-navigator-24.png avant-window-navigator-32.png
 
@@ -57,4 +53,4 @@ EXTRA_DIST += \
 	active/spotlight_png_inline.c \
 	$(NULL)
 
-CLEANFILES = $(desktop_DATA) $(schemas_DATA) $(schema_in_DATA) $(schema_DATA)
+CLEANFILES = $(schemas_DATA) $(schema_in_DATA) $(schema_DATA)

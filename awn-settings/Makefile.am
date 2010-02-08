@@ -1,5 +1,8 @@
 APP_ICON_NAME = awn-settings
+DESKTOP_BASENAME = awn-settings
+desktopdir = $(datarootdir)/applications
 include $(top_srcdir)/Makefile.app-icons
+include $(top_srcdir)/Makefile.desktop-files
 
 pyfiles_DATA = \
 	awnClass.py		\
@@ -14,10 +17,6 @@ ui_DATA = \
 	$(NULL)
 
 uidir = $(pkgdatadir)/awn-settings
-
-desktopdir   = $(datadir)/applications
-desktop_DATA = 	awn-settings.desktop
-@INTLTOOL_DESKTOP_RULE@
 
 # icon-related
 
@@ -45,13 +44,7 @@ install-exec-local:
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-settings
 
-EXTRA_DIST +=			\
-	$(ui_DATA)		\
-	*.py			\
-	$(desktop_DATA).in	\
+EXTRA_DIST += \
+	$(ui_DATA) \
+	$(desktop_DATA:.desktop=.desktop.in.in) \
 	$(NULL)
-
-DISTCLEANFILES = awn-settings.desktop
-
-clean:
-	rm -f *.pyo *.pyc *.bak $(desktop_DATA)

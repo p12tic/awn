@@ -1,5 +1,22 @@
 2010-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* Makefile.applet-common:
+	* Makefile.c-applet:
+	* Makefile.desktop-files:
+	* Makefile.marshal:
+	* Makefile.vala-applet:
+	* applets/expander/Makefile.am:
+	* applets/quick-prefs/Makefile.am:
+	* applets/separator/Makefile.am:
+	* applets/taskmanager/Makefile.am:
+	* awn-settings/Makefile.am:
+	* configure.in:
+	* data/Makefile.am:
+	Refactor the applet build system, to make it more compatible with the
+	one in Awn Extras.
+
+2010-02-07  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* .bzrignore:
 	Clean up.
 
