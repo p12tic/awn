@@ -1,3 +1,15 @@
+2010-02-08  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-launcher.h:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-manager.h:
+	Added task_manager_get_icons (), task_manager_get_icons_by_wmclass ()
+	and task_manager_get_icons_by_desktop().
+
 2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
 
 	* po/*.po:

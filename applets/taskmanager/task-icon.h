@@ -80,7 +80,7 @@ GtkWidget*      task_icon_new               (AwnApplet     *applet);
 
 gboolean        task_icon_is_visible        (TaskIcon      *icon);
 gboolean        task_icon_contains_launcher (TaskIcon      *icon);
-TaskItem  *     task_icon_get_launcher      (TaskIcon      *icon);
+const TaskItem  *     task_icon_get_launcher      (TaskIcon      *icon);
 
 guint           task_icon_count_items       (TaskIcon      *icon);
 guint           task_icon_count_ephemeral_items (TaskIcon * icon);

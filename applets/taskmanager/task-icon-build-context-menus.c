@@ -503,7 +503,7 @@ task_icon_get_menu_item_add_to_launcher_list (TaskIcon * icon)
   TaskIconPrivate * priv = TASK_ICON_GET_PRIVATE(icon);
   GValueArray *launcher_paths;
   GValue val = {0,};
-  TaskItem * launcher = task_icon_get_launcher (icon);
+  const TaskItem * launcher = task_icon_get_launcher (icon);
   gboolean found = FALSE;
   if (launcher)
   {
@@ -825,7 +825,7 @@ task_icon_get_menu_item_launch (TaskIcon * icon)
   gint width;
   gint height;
   item = gtk_image_menu_item_new_with_label (_("Launch"));
-  TaskItem * launcher = task_icon_get_launcher (icon);
+  const TaskItem * launcher = task_icon_get_launcher (icon);
 
   if (!launcher)
   {
@@ -846,7 +846,7 @@ task_icon_get_menu_item_launch (TaskIcon * icon)
   gtk_widget_show (item);
   g_signal_connect_swapped (item,"activate",
                 G_CALLBACK(task_item_middle_click),
-                launcher);
+                (gpointer)launcher);
   g_object_unref (launcher_pbuf);
   return item;
 }
@@ -1374,7 +1374,7 @@ menu_parse_start_element (GMarkupParseContext *context,
     case EXTERNAL_COMMAND:
       {
         const TaskItem * mainitem = task_icon_get_main_item (icon);
-        TaskItem * launcher = task_icon_get_launcher (icon);
+        const TaskItem * launcher = task_icon_get_launcher (icon);
         if (!mainitem || !TASK_IS_WINDOW (mainitem))
         {
           break;

@@ -601,7 +601,7 @@ task_launcher_get_icon_name (TaskItem *item)
 }
 
 const gchar * 
-task_launcher_get_exec (TaskItem *item)
+task_launcher_get_exec (const TaskItem *item)
 {
   return TASK_LAUNCHER (item)->priv->exec;
 }

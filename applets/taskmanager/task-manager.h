@@ -84,8 +84,9 @@ void task_manager_remove_task_icon    (TaskManager  *manager, GtkWidget *icon);
 
 void task_manager_add_icon            (TaskManager *manager, TaskIcon * icon);
 
-GSList * task_manager_get_icons       (TaskManager * manager);
-
+const GSList * task_manager_get_icons       (TaskManager * manager);
+GSList * task_manager_get_icons_by_wmclass (TaskManager * manager, const gchar * name);
+GSList * task_manager_get_icons_by_desktop (TaskManager * manager,const gchar * desktop);
 
 #endif /* _TASK_MANAGER_H_ */
 

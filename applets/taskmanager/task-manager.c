@@ -1172,7 +1172,7 @@ task_manager_add_icon(TaskManager *manager, TaskIcon * icon)
   gtk_container_add (GTK_CONTAINER (priv->box), GTK_WIDGET(icon));
   if (priv->icon_grouping)
   {
-    TaskItem * launcher = task_icon_get_launcher (icon);
+    const TaskItem * launcher = task_icon_get_launcher (icon);
     if (launcher)
     {
       const gchar * desktop = task_launcher_get_desktop_path (TASK_LAUNCHER (launcher));
@@ -1254,7 +1254,7 @@ task_manager_find_icon_containing_desktop (TaskManager * manager,const gchar * d
     {
       continue;
     }
-    TaskItem * launcher = task_icon_get_launcher (icon_iter->data);
+    const TaskItem * launcher = task_icon_get_launcher (icon_iter->data);
     if (launcher)
     {
       if (g_strcmp0 (desktop, task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)))==0)
@@ -1269,6 +1269,7 @@ task_manager_find_icon_containing_desktop (TaskManager * manager,const gchar * d
   }
   return res;
 }
+
 static TaskIcon *
 task_manager_find_window (TaskManager * manager, WnckWindow * window)
 {
@@ -2099,7 +2100,11 @@ task_manager_set_grouping (TaskManager *manager,
   g_signal_emit (manager,_taskman_signals[GROUPING_CHANGED],0,grouping);
 }
 
-GSList *
+/*
+ Returns the full list of TaskIcons.  Neither the list nor it's contents are
+ owned by the caller.
+ */
+const GSList *
 task_manager_get_icons (TaskManager * manager)
 {
   g_return_val_if_fail (TASK_IS_MANAGER (manager),NULL);
@@ -2107,6 +2112,80 @@ task_manager_get_icons (TaskManager * manager)
   TaskManagerPrivate *priv = manager->priv;
   return priv->icons;
 }
+
+/*
+ Returns a list of TaskIcons that have a matching resource or class name.
+ The caller owns the list and should free it with g_slist_free ().  The caller
+ does not own the contents of the list.
+ */
+
+GSList * 
+task_manager_get_icons_by_wmclass (TaskManager * manager, const gchar * name)
+{
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),NULL);
+
+  GSList * l = NULL;
+  GSList * i;
+  GSList * j;
+  TaskManagerPrivate *priv = manager->priv;
+
+  for (i = priv->icons; i ; i = i->next)
+  {
+    GSList * items = task_icon_get_items (i->data);
+    for ( j = items; j ; j = j->next)
+    {
+      WnckWindow * win;
+      gchar * res_name = NULL;
+      gchar * class_name = NULL;
+      if (!TASK_IS_WINDOW(j->data))
+      {
+        continue;
+      }
+      win = task_window_get_window (j->data);
+      _wnck_get_wmclass (wnck_window_get_xid (win),&res_name, &class_name);
+      if ( (g_strcmp0 (res_name, name) == 0) || (g_strcmp0 (class_name, name) == 0) )
+      {
+        l = g_slist_append (l, i->data);
+        g_free (res_name);
+        g_free (class_name);
+        break;
+      }
+      g_free (res_name);
+      g_free (class_name);
+    }
+  }
+  return l;
+}
+
+/*
+ Returns a list of TaskIcons that have a matching desktop file.
+ The caller owns the list and should free it with g_slist_free ().  The caller
+ does not own the contents of the list.
+ */
+
+GSList *
+task_manager_get_icons_by_desktop (TaskManager * manager,const gchar * desktop)
+{
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),NULL);
+  
+  TaskManagerPrivate *priv;
+  priv = manager->priv;
+  GSList * l = NULL;
+  
+  for (GSList *i = priv->icons; i ;i = i->next)
+  {
+    const TaskItem * launcher = task_icon_get_launcher (i->data);
+    if (launcher)
+    {
+      if (g_strcmp0 (desktop, task_launcher_get_desktop_path(TASK_LAUNCHER(launcher)))==0)
+      {
+        l = g_slist_append (l, i->data);
+      }
+    }
+  }
+  return l;
+}
+
 /**
  * D-BUS functionality
  */
@@ -2999,7 +3078,7 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
             continue;
           }
           g_assert (TASK_IS_ICON (iter->data) );
-          TaskItem * item = task_icon_get_launcher (iter->data);
+          const TaskItem * item = task_icon_get_launcher (iter->data);
           if (!item || task_icon_count_ephemeral_items (iter->data))
           {
             continue;

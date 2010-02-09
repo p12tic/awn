@@ -180,7 +180,7 @@ static void     task_icon_active_window_changed (WnckScreen *screen,
 
 static void     size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon);
 static gint     task_icon_count_require_attention (TaskIcon *icon);
-static void     task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item);
+static void     task_icon_set_icon_pixbuf (TaskIcon * icon,const TaskItem *item);
 static void     task_icon_set_draggable_state (TaskIcon *icon, gboolean draggable);
 
 static void     theme_changed_cb (GtkIconTheme *icon_theme,TaskIcon * icon);
@@ -1600,7 +1600,7 @@ task_icon_get_main_item (TaskIcon * icon)
   return priv->main_item;
 }
 
-TaskItem *
+const TaskItem *
 task_icon_get_launcher (TaskIcon      *icon)
 {
   TaskIconPrivate *priv;
@@ -1730,10 +1730,10 @@ task_icon_match_item (TaskIcon      *icon,
 
 
 static void
-task_icon_set_icon_pixbuf (TaskIcon * icon,TaskItem *item)
+task_icon_set_icon_pixbuf (TaskIcon * icon,const TaskItem *item)
 {
   TaskIconPrivate *priv;
-  TaskItem * launcher;
+  const TaskItem * launcher;
   GdkPixbuf * launcher_icon = NULL;
   GdkPixbuf * app_icon = NULL;
   gboolean fallback_used = TASK_IS_WINDOW (item) && task_window_get_icon_is_fallback (TASK_WINDOW(item));
