@@ -2556,7 +2556,7 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
     {
       GSList * iter;
       GSList * next;
-      TaskItem *launcher = NULL;
+      const TaskItem *launcher = NULL;
 
       /*
        Find a launcher if there is one

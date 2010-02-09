@@ -2186,6 +2186,75 @@ task_manager_get_icons_by_desktop (TaskManager * manager,const gchar * desktop)
   return l;
 }
 
+/*
+ Returns a list of TaskIcons that have a matching PID.
+ The caller owns the list and should free it with g_slist_free ().  The caller
+ does not own the contents of the list.
+ */
+
+GSList *
+task_manager_get_icons_by_pid (TaskManager * manager, int pid)
+{
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),NULL);
+  g_return_val_if_fail (pid,NULL);
+  
+  TaskManagerPrivate *priv;
+  priv = manager->priv;
+  GSList * l = NULL;
+  
+  for (GSList *i = priv->icons; i ;i = i->next)
+  {
+    GSList * items = task_icon_get_items (i->data);
+    for (GSList *j = items; j ; j = j->next)
+    {
+      /*
+       Look through all the items in the TaskIcon.  In most cases it's going
+       to be a shared PID but not all so we need to check all the windows*/
+      if (!TASK_IS_WINDOW(j->data))
+      {
+        continue;
+      }
+      if (task_window_get_pid (j->data) == pid)
+      {
+        l = g_slist_append (l, i->data);
+        break;
+      }
+    }
+  }
+  return l;
+}
+/*
+ Returns the TaskIcon that contains a TaskWindow with a matching xid.
+ */
+const TaskIcon *
+task_manager_get_icon_by_xid (TaskManager * manager, gint64 xid)
+{
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),NULL);
+  g_return_val_if_fail (xid,NULL);
+  
+  TaskManagerPrivate *priv;
+  priv = manager->priv;
+  
+  for (GSList *i = priv->icons; i ;i = i->next)
+  {
+    GSList * items = task_icon_get_items (i->data);
+    for (GSList *j = items; j ; j = j->next)
+    {
+      /*
+       Look through all the items in the TaskIcon for our XID.  There should
+       only be one instance*/
+      if (!TASK_IS_WINDOW(j->data))
+      {
+        continue;
+      }
+      if ( (gint64)task_window_get_xid (j->data) == xid)
+      {
+        return i->data;
+      }
+    }
+  }
+  return NULL;
+}
 /**
  * D-BUS functionality
  */
