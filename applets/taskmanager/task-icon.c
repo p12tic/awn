@@ -980,8 +980,8 @@ on_main_item_icon_changed (TaskItem   *item,
 #ifdef DEBUG
   g_debug ("%s, icon width = %d, height = %d",__func__,gdk_pixbuf_get_width(pixbuf), gdk_pixbuf_get_height(pixbuf));
 #endif
-  if ( (priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))!=USE_NEVER) || 
-      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && (priv->icon || task_window_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS)))
+  if ( (priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_get_use_win_icon(TASK_WINDOW(item))!=USE_NEVER) || 
+      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && (priv->icon || task_window_get_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS)))
   {
     task_icon_set_icon_pixbuf (TASK_ICON(icon),priv->main_item);    
   }
@@ -999,8 +999,8 @@ on_desktop_icon_changed (TaskItem   *item,
 
   priv = icon->priv;
   if ( 
-      ( (priv->icon_change_behavior==0) && task_window_use_win_icon (TASK_WINDOW(priv->main_item))==USE_NEVER) ||
-      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(priv->main_item) && (!priv->icon || task_window_use_win_icon(TASK_WINDOW(priv->main_item))==USE_NEVER))||    
+      ( (priv->icon_change_behavior==0) && task_window_get_use_win_icon (TASK_WINDOW(priv->main_item))==USE_NEVER) ||
+      (priv->icon_change_behavior==1 && TASK_IS_WINDOW(priv->main_item) && (!priv->icon || task_window_get_use_win_icon(TASK_WINDOW(priv->main_item))==USE_NEVER))||    
       (priv->icon_change_behavior==2) || 
       TASK_IS_LAUNCHER (priv->main_item) 
        )
@@ -1444,7 +1444,7 @@ task_icon_count_require_attention (TaskIcon *icon)
 
     if (!TASK_IS_WINDOW (item)) continue;
     if (!task_item_is_visible (item)) continue;
-    if (!task_window_needs_attention (TASK_WINDOW (item))) continue;
+    if (!task_window_get_needs_attention (TASK_WINDOW (item))) continue;
 
     count++;
   }
@@ -1747,13 +1747,13 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,const TaskItem *item)
    */
   if ( 
       !item ||
-      ( priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))==USE_NEVER ) ||
-      ( priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && ( task_window_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS?FALSE:(task_window_get_icon_changes(TASK_WINDOW(item))<2))) ||      
+      ( priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_get_use_win_icon(TASK_WINDOW(item))==USE_NEVER ) ||
+      ( priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && ( task_window_get_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS?FALSE:(task_window_get_icon_changes(TASK_WINDOW(item))<2))) ||      
       ( priv->icon_change_behavior==2) ||
       fallback_used
     )
   {
-    if ( TASK_IS_WINDOW(item) && task_window_use_win_icon(TASK_WINDOW(item))!=USE_NEVER)
+    if ( TASK_IS_WINDOW(item) && task_window_get_use_win_icon(TASK_WINDOW(item))!=USE_NEVER)
     {
       if (launcher)
       {

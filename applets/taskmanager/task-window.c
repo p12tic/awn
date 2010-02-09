@@ -926,7 +926,7 @@ task_window_set_is_active  (TaskWindow    *window,
 }
 
 gboolean 
-task_window_needs_attention (TaskWindow    *window)
+task_window_get_needs_attention (TaskWindow    *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
 
@@ -1493,7 +1493,7 @@ _match (TaskItem *item,
 }
 
 WinIconUse
-task_window_use_win_icon (TaskWindow * item)
+task_window_get_use_win_icon (TaskWindow * item)
 {
   TaskWindowPrivate *priv;
   g_return_val_if_fail (TASK_IS_WINDOW(item),0);
