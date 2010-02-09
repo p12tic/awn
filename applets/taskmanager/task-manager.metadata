@@ -1,0 +1,10 @@
+TaskManager cheader_filename="task-manager.h"
+TaskItem cheader_filename="task-item.h"
+TaskIcon cheader_filename="task-icon.h"
+TaskWindow cheader_filename="task-window.h"
+TaskLauncher cheader_filename="task-launcher.h"
+WinIconUse cheader_filename="task-defines.h"
+
+task_manager_get_icons_by_desktop transfer_ownership="1"
+task_manager_get_icons_by_pid transfer_ownership="1"
+task_manager_get_icons_by_wmclass transfer_ownership="1"
