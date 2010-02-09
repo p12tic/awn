@@ -1,53 +1,56 @@
 [theme-info]
-Name=Dark Theme
-Icon=@PKGDATADIR@/themes/thumbnails/dark-thumb.png
-Author=Awn-core team
-Version=1.0
+name = Dark Theme
+icon = @PKGDATADIR@/themes/thumbnails/dark-thumb.png
+author = Awn-core team
+version = 1.0
+awn-theme-version = 0.4.0
 
 [config/panel/1]
-#Orientation of Awn, left=0, right=1, top=2 and bottom=3
-orient=3
-#The user-visible size of Awn (minus the offset)
-size=48
-#The style of the bar, none=0, flat bar=1, 3d bar=2, curved bar=3
-style=1
-#Default offset
-offset=10
+# Orientation of Awn, left=0, right=1, top=2 and bottom=3
+orient = 3
+# The user-visible size of Awn (minus the offset)
+size = 48
+# The style of the bar, none=0, flat bar=1, 3d bar=2, curved bar=3
+style = 1
+# Default offset
+offset = 10
 
 [config/effects]
-#A bitmask which stores the type of effect for each event
-icon_effect=69905
-#Use triangles as arrows
-arrow_icon=__awn_internal_arrow1
-#Show reflections
-reflection_alpha_multiplier=0.3
-#No shadows
-show_shadows=false
+# Use triangles as arrows
+arrow_icon = __awn_internal_arrow1
+# Show reflections
+reflection_alpha_multiplier = 0.3
+# No shadows
+show_shadows = false
+# Active rectangle color
+active_rect_color = #9090878779796666
+# Active rectangle outline color
+active_rect_outline = #0000000000000000
 
 [config/theme]
-#Don't use gtk theme mode.
-gtk_theme_mode=false
-#But use gtk theme mode for dialog.
-dialog_gtk_mode=true
-#First gradient step color.
-gstep1=#454545454545c8c8
-#Second gradient step color.
-gstep2=#010101010101bebe
-#First highlight gradient step color.
-ghistep1=#0101010101018ebe
-#Second highlight gradient step color.
-ghistep2=#0101010101010a0a
-#Main border color.
-border=#000000000000cccc
-#Internal border color.
-hilight=#ffffffffffff1111
-#Corner radius of the background. Set to 0 to disable rounded corners.
-corner_radius=10
-#The angle of the panel in 3D mode.
-panel_angle=45
-#The symmetry of the curve in Curves mode.
-curves_symmetry=0.5
-#The curviness of the panel in Curves mode.
-curviness=10
-#Separator color
-sep_color=#aaaaaaaaaaaaa400
+# Don't use gtk theme mode.
+gtk_theme_mode = false
+# But use gtk theme mode for dialog.
+dialog_gtk_mode = true
+# First gradient step color.
+gstep1 = #454545454545c8c8
+# Second gradient step color.
+gstep2 = #010101010101bebe
+# First highlight gradient step color.
+ghistep1 = #0101010101018ebe
+# Second highlight gradient step color.
+ghistep2 = #0101010101010a0a
+# Main border color.
+border = #000000000000cccc
+# Internal border color.
+hilight = #ffffffffffff1111
+# Corner radius of the background. Set to 0 to disable rounded corners.
+corner_radius = 10
+# The angle of the panel in 3D mode.
+panel_angle = 45
+# The symmetry of the curve in Curves mode.
+curves_symmetry = 0.5
+# The curviness of the panel in Curves mode.
+curviness = 10
+# Separator color
+sep_color = #aaaaaaaaaaaaa400

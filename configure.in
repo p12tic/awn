@@ -217,6 +217,9 @@ shave/shave-libtool
 src/Makefile
 tests/Makefile
 themes/dark.awn-theme
+themes/dust.awn-theme
+themes/light.awn-theme
+themes/smoked.awn-theme
 themes/Makefile
 ])
 
