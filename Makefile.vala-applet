@@ -17,9 +17,11 @@ VALA_C_FILES = $(VALA_FILES:.vala=.c)
 $(APPLET_NAME).vala.stamp: $(VALA_FILES)
 	$(QUIET_VALA)$(VALAC) -C $^ \
 		--vapidir=$(LDA_VAPIDIR) \
+		--pkg=desktop-agnostic \
+		--pkg=desktop-agnostic-cfg \
 		--vapidir=$(top_srcdir)/bindings/vala \
 		--vapidir=$(top_builddir)/bindings/vala \
-		--pkg=awn \
+		$(top_srcdir)/bindings/vala/awn.vapi \
 		$(AM_VALAFLAGS) $(VALAFLAGS)
 	touch "$@"
 

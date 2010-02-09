@@ -1,3 +1,8 @@
+2010-02-09  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* Makefile.vala-applet:
+	Make sure to use the bundled Awn VAPI file when building applets.
+
 2010-02-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon-build-context-menus.c:
