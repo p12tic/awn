@@ -1,5 +1,10 @@
 2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
 
+	* po/*.po:
+	Merge from <lp:~malept/awn/0.4-i18n>, revision 1460.
+
+2010-02-08  Mark Lee  <avant-wn@lazymalevolence.com>
+
 	* Makefile.vala-applet:
 	Remove generated C files when running make clean.
 
