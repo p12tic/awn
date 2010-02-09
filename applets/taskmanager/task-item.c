@@ -417,7 +417,7 @@ task_item_get_name (TaskItem    *item)
 }
 
 GdkPixbuf *
-task_item_get_icon (TaskItem    *item)
+task_item_get_icon ( const TaskItem *item)
 {
   TaskItemClass *klass;
 
@@ -426,7 +426,7 @@ task_item_get_icon (TaskItem    *item)
   klass = TASK_ITEM_GET_CLASS (item);
   g_return_val_if_fail (klass->get_icon, NULL);
         
-  return klass->get_icon (item);
+  return klass->get_icon ((TaskItem*)item);
 }
 
 gboolean

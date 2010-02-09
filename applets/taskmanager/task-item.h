@@ -90,7 +90,7 @@ struct _TaskItemClass
 GType           task_item_get_type        (void) G_GNUC_CONST;
 
 const gchar * task_item_get_name      (TaskItem *item);
-GdkPixbuf   * task_item_get_icon      (TaskItem *item);
+GdkPixbuf   * task_item_get_icon      (const TaskItem *item);
 gboolean      task_item_is_visible    (TaskItem *item);
 void          task_item_left_click    (TaskItem *item, GdkEventButton *event);
 GtkWidget   * task_item_right_click   (TaskItem *item, GdkEventButton *event);
