@@ -21,13 +21,8 @@
 
 #include <libawn/libawn.h>
 #include <libdesktop-agnostic/fdo.h>
+#include "task-defines.h"
 
-
-typedef enum{
-  USE_DEFAULT=0,
-  USE_ALWAYS=1,
-  USE_NEVER=2
-}WinIconUse;
 
 gchar * get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry *entry);
 
