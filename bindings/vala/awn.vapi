@@ -371,7 +371,7 @@ namespace Awn {
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class OverlayPixbufFile : Awn.OverlayPixbuf {
 		[CCode (has_construct_function = false)]
-		public OverlayPixbufFile (string file_name);
+		public OverlayPixbufFile (string? file_name);
 		[NoAccessorMethod]
 		public string file_name { owned get; set construct; }
 	}

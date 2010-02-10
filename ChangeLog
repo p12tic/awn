@@ -1,3 +1,19 @@
+2010-02-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Minor fix in bindings.
+
+2010-02-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/task-defines.h:
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-window.c:
+	* applets/taskmanager/task-window.h:
+	* applets/taskmanager/util.h:
+	Cherrypick changes from core-icons R1914.
+
 2010-02-08  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
