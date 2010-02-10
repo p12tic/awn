@@ -38,3 +38,5 @@ awn_applet_create_about_item.translator_credits nullable="1"
 awn_applet_create_about_item.authors is_array="1" array_null_terminated="1" nullable="1"
 awn_applet_create_about_item.artists is_array="1" array_null_terminated="1" nullable="1"
 awn_applet_create_about_item.documenters is_array="1" array_null_terminated="1" nullable="1"
+
+awn_overlay_pixbuf_file_new.file_name nullable="1"

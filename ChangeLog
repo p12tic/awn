@@ -1,5 +1,11 @@
 2010-02-10  Michal Hruby  <michal.mhr@gmail.com>
 
+	* bindings/vala/awn.metadata:
+	* bindings/vala/awn.vapi:
+	Minor fix in bindings.
+
+2010-02-10  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applets/taskmanager/Makefile.am:
 	* applets/taskmanager/task-defines.h:
 	* applets/taskmanager/task-icon.c:
