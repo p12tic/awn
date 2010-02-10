@@ -48,9 +48,6 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 {
   public Task.Manager manager { get; construct; }
 
-  // TODO: remove!
-  private TaskIconDispatcher test_item;
-
   public TaskManagerDispatcher (Task.Manager manager)
   {
     GLib.Object (manager: manager);
@@ -65,21 +62,31 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     var conn = Bus.get (BusType.SESSION);
     string obj_path = "/org/freedesktop/DockManager";
     conn.register_object (obj_path, this);
+  }
 
-    test_item = new TaskIconDispatcher ();
+  private static ObjectPath[] list_to_object_path_array (SList<Task.Icon> list)
+  {
+    ObjectPath[] result = new ObjectPath[list.length ()];
+    int i = 0;
+    foreach (unowned Task.Icon icon in list)
+    {
+      unowned TaskIconDispatcher dispatcher;
+      dispatcher = icon.get_dbus_dispatcher () as TaskIconDispatcher;
+      result[i++] = new ObjectPath (dispatcher.object_path);
+    }
+
+    return result;
   }
 
   public string[] get_capabilities () throws DBus.Error
   {
-    string[] capabilities = {""};
+    string[] capabilities = {"x-awn-0.4"};
     return capabilities;
   }
 
   public ObjectPath[] get_items () throws DBus.Error
   {
-    ObjectPath[] paths = new ObjectPath[1];
-    paths[0] = new ObjectPath (test_item.object_path);
-    return paths;
+    return list_to_object_path_array (this.manager.get_icons ());
   }
 
   public ObjectPath[] get_items_by_name (string name) throws DBus.Error
@@ -89,44 +96,77 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 
   public ObjectPath[] get_items_by_desktop_file (string desktop_file) throws DBus.Error
   {
-    unowned SList<Task.Icon> icons = manager.get_icons ();
+    unowned SList<unowned Task.Icon> icons = this.manager.get_icons ();
+    SList<unowned Task.Icon> matches = new SList<unowned Task.Icon> ();
 
-    foreach (Task.Icon icon in icons)
+    foreach (unowned Task.Icon icon in icons)
     {
       unowned Task.Launcher? launcher = icon.get_launcher () as Task.Launcher;
       if (launcher != null)
       {
-        if (desktop_file == launcher.get_desktop_path ())
+        if (launcher.get_desktop_path ().has_suffix (desktop_file))
         {
-          debug ("desktop_file match: %p", icon);
-          // TODO: add to a list
+          matches.append (icon);
         }
       }
     }
-    return null;
+
+    return list_to_object_path_array (matches);
   }
 
   public ObjectPath[] get_items_by_pid (int pid) throws DBus.Error
   {
-    return null;
+    unowned SList<unowned Task.Icon> icons = this.manager.get_icons ();
+    SList<unowned Task.Icon> matches = new SList<unowned Task.Icon> ();
+
+    foreach (unowned Task.Icon icon in icons)
+    {
+      foreach (unowned Task.Item item in icon.get_items ())
+      {
+        if (item is Task.Window)
+        {
+          unowned Task.Window window = item as Task.Window;
+          if (window.get_pid () == pid)
+          {
+            matches.append (icon);
+            break;
+          }
+        }
+      }
+    }
+
+    return list_to_object_path_array (matches);
   }
 
   public ObjectPath get_item_by_xid (int64 xid) throws DBus.Error
   {
+    unowned Task.Icon? icon = this.manager.get_icon_by_xid (xid);
+
+    if (icon != null)
+    {
+      unowned TaskIconDispatcher dispatcher;
+      dispatcher = icon.get_dbus_dispatcher () as TaskIconDispatcher;
+
+      return new ObjectPath (dispatcher.object_path);
+    }
+
     return null;
   }
 }
 
 public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
 {
+  private unowned Task.Icon icon;
   public string object_path { get; set; }
 
   // FIXME: if TaskManagerDispatcher had only get_default constructor without
   //   parameters, we could just emit its item_added signal in our constructor
-  public TaskIconDispatcher ()
+  public TaskIconDispatcher (Task.Icon icon)
   {
+    this.icon = icon;
+
     var conn = Bus.get (BusType.SESSION);
-    this.object_path = "/org/freedesktop/DockItem/%p".printf (this);
+    this.object_path = "/org/freedesktop/DockItem/%p".printf (icon);
     conn.register_object (this.object_path, this);
   }
 
@@ -152,13 +192,120 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
 
   public void update_dock_item (HashTable<string, Value?> hints) throws DBus.Error
   {
-    debug ("called update_dock_item method");
     HashTableIter<string, Value?> iter = HashTableIter<string, Value?> (hints);
     unowned string key;
     unowned Value? value;
     while (iter.next (out key, out value))
     {
-      debug ( "%s: %s", key, value.strdup_contents ());
+      if (key == "message")
+      {
+        if (!value.holds (typeof (string)))
+        {
+          warning ("Invalid type for property \"%s\"", key);
+          continue;
+        }
+
+        unowned SList<unowned Task.Item> items = this.icon.get_items ();
+        foreach (unowned Task.Item item in items)
+        {
+          if (item is Task.Launcher) continue;
+
+          if (item.text_overlay == null)
+          {
+            item.text_overlay = new Awn.OverlayText ();
+            item.text_overlay.font_sizing = 15;
+
+            unowned Awn.Overlayable over;
+            over = item.get_image_widget () as Awn.Overlayable;
+            over.add_overlay (item.text_overlay);
+          }
+
+          unowned string text = (string)value;
+          item.text_overlay.active = text.size () > 0;
+          item.text_overlay.text = text;
+
+          // this refreshes the overlays on TaskIcon
+          item.set_task_icon (item.get_task_icon ());
+        }
+      }
+      else if (key == "progress")
+      {
+        if (!value.holds (typeof (int)))
+        {
+          warning ("Invalid type for property \"%s\"", key);
+          continue;
+        }
+
+        unowned SList<unowned Task.Item> items = this.icon.get_items ();
+        foreach (unowned Task.Item item in items)
+        {
+          if (item is Task.Launcher) continue;
+
+          if (item.progress_overlay == null)
+          {
+            item.progress_overlay = new Awn.OverlayProgressCircle ();
+            
+            unowned Awn.Overlayable over;
+            over = item.get_image_widget () as Awn.Overlayable;
+            over.add_overlay (item.progress_overlay);
+          }
+
+          int percent = (int)value;
+          item.progress_overlay.active = percent != -1;
+
+          if (percent != -1)
+          {
+            item.progress_overlay.percent_complete = percent;
+          }
+
+          // this refreshes the overlays on TaskIcon
+          item.set_task_icon (item.get_task_icon ());
+        }
+      }
+      else if (key == "icon-file")
+      {
+        if (!value.holds (typeof (string)))
+        {
+          warning ("Invalid type for property \"%s\"", key);
+          continue;
+        }
+
+        unowned SList<unowned Task.Item> items = this.icon.get_items ();
+        foreach (unowned Task.Item item in items)
+        {
+          if (item is Task.Launcher) continue;
+
+          if (item.icon_overlay == null)
+          {
+            item.icon_overlay = new Awn.OverlayPixbufFile (null);
+            item.icon_overlay.use_source_op = true;
+            item.icon_overlay.scale = 1.0;
+
+            unowned Awn.Overlayable over;
+            over = item.get_image_widget () as Awn.Overlayable;
+            over.add_overlay (item.progress_overlay);
+          }
+
+          unowned string filename = (string)value;
+          item.icon_overlay.active = filename.size () > 0;
+
+          if (filename.size () > 0)
+          {
+            item.icon_overlay.file_name = filename;
+          }
+        }
+      }
+      else
+      {
+        debug ("Unsupported key: \"%s\"", key);
+      }
+      /*else if (key == "attention")
+      {
+      }
+      else if (key == "waiting")
+      {
+      }*/
     }
   }
 }
+
