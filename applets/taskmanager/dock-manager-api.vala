@@ -93,7 +93,26 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 
   public ObjectPath[] get_items_by_name (string name) throws DBus.Error
   {
-    return null;
+    unowned SList<unowned Task.Icon> icons = this.manager.get_icons ();
+    SList<unowned Task.Icon> matches = new SList<unowned Task.Icon> ();
+
+    foreach (unowned Task.Icon icon in icons)
+    {
+      foreach (unowned Task.Item item in icon.get_items ())
+      {
+        unowned Task.Window? window = item as Task.Window;
+        if (window != null)
+        {
+          if (window.matches_wmclass (name))
+          {
+            matches.append (icon);
+            break;
+          }
+        }
+      }
+    }
+
+    return list_to_object_path_array (matches);
   }
 
   public ObjectPath[] get_items_by_desktop_file (string desktop_file) throws DBus.Error

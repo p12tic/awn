@@ -163,6 +163,7 @@ namespace Task {
 		public bool is_hidden ();
 		public bool is_on_workspace (Wnck.Workspace space);
 		public bool is_visible ();
+		public bool matches_wmclass (string name);
 		public void minimize ();
 		public unowned Gtk.Widget popup_context_menu (Gdk.EventButton event);
 		[NoWrapper]
