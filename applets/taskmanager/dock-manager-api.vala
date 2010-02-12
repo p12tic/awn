@@ -41,6 +41,8 @@ public interface DockItemDBusInterface: GLib.Object
   public abstract void remove_menu_item (int id) throws DBus.Error;
   public abstract void update_dock_item (HashTable<string, Value?> hints) throws DBus.Error;
 
+  public abstract string desktop_file { owned get; }
+
   public signal void menu_item_activated (int id);
 }
 
@@ -157,7 +159,23 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
 {
   private unowned Task.Icon icon;
+
   public string object_path { get; set; }
+
+  public string desktop_file
+  {
+    owned get
+    {
+      string path = "";
+      unowned Task.Launcher? launcher;
+      launcher = this.icon.get_launcher () as Task.Launcher;
+      if (launcher != null)
+      {
+        path = launcher.get_desktop_path ();
+      }
+      return path;
+    }
+  }
 
   // FIXME: if TaskManagerDispatcher had only get_default constructor without
   //   parameters, we could just emit its item_added signal in our constructor
