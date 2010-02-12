@@ -1,3 +1,9 @@
+2010-02-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* src/awn-throbber.c:
+	Moving the code around a bit...
+
 2010-02-11  Rodney Cryderman  <rcryderman@gmail.com>
 
         * applets/taskmanager/task-window.h:
