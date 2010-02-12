@@ -133,6 +133,8 @@ void            task_window_set_icon_geometry (TaskWindow     *window,
 
 gboolean        task_window_get_is_running      (TaskWindow     *window);
 
+gboolean        task_window_matches_wmclass     (TaskWindow * task_window,
+                                                 const gchar * name);
 WinIconUse      task_window_get_use_win_icon    (TaskWindow * window);
 
 WinIconUse      task_window_get_icon_changes    (TaskWindow * window);
