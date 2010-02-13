@@ -1,0 +1,15 @@
+TaskManager cheader_filename="task-manager.h"
+TaskItem cheader_filename="task-item.h"
+TaskIcon cheader_filename="task-icon.h"
+TaskWindow cheader_filename="task-window.h"
+TaskLauncher cheader_filename="task-launcher.h"
+WinIconUse cheader_filename="task-defines.h"
+
+task_manager_get_icons_by_desktop type_arguments="Icon" transfer_ownership="1"
+task_manager_get_icons_by_pid type_arguments="Icon" transfer_ownership="1"
+task_manager_get_icons_by_wmclass type_arguments="Icon" transfer_ownership="1"
+task_icon_get_items type_arguments="Item"
+
+TaskItem.icon_overlay weak="0"
+TaskItem.progress_overlay weak="0"
+TaskItem.text_overlay weak="0"

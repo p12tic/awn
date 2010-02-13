@@ -22,6 +22,8 @@
  *
  */
 
+#include "dock-manager-api.h"
+
 #define TASK_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_ICON, \
   TaskIconPrivate))
@@ -100,4 +102,5 @@ struct _TaskIconPrivate
   gdouble   overlay_application_icons_scale;
   gboolean  overlay_application_icons_swap;
 
+  TaskIconDispatcher *dbus_proxy;
 };

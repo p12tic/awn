@@ -393,6 +393,11 @@ task_icon_finalize (GObject *object)
    */
   g_assert (!priv->items);
 
+  if (priv->dbus_proxy)
+  {
+    g_object_unref (priv->dbus_proxy);
+  }
+
   if (priv->menu_filename)
   {
     g_free (priv->menu_filename);
@@ -567,6 +572,15 @@ task_icon_constructed (GObject *object)
                      drop_types, n_drop_types,
                      GDK_ACTION_COPY | GDK_ACTION_MOVE);
 
+  priv->dbus_proxy = task_icon_dispatcher_new ((TaskIcon*)object);
+}
+
+GObject*
+task_icon_get_dbus_dispatcher (TaskIcon *icon)
+{
+  g_return_val_if_fail (TASK_IS_ICON (icon), NULL);
+
+  return (GObject*)icon->priv->dbus_proxy;
 }
 
 static void
