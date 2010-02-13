@@ -120,5 +120,7 @@ const TaskItem *task_icon_get_main_item (TaskIcon * icon);
 
 const gchar *   task_icon_get_custom_name (TaskIcon * icon);
 
+GObject*        task_icon_get_dbus_dispatcher (TaskIcon *icon);
+
 #endif /* _TASK_ICON_H_ */
 
