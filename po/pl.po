@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-11 11:32+0000\n"
+"PO-Revision-Date: 2010-02-13 23:50+0000\n"
 "Last-Translator: Grzegorz Śliwiński <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-02-12 04:52+0000\n"
+"X-Launchpad-Export-Date: 2010-02-14 05:01+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -467,7 +467,7 @@ msgstr "Dół"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Płaski"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
@@ -475,7 +475,7 @@ msgstr "3d"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Zakrzywiony"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
@@ -483,11 +483,11 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Uniesiony"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Standard"
-msgstr ""
+msgstr "Standardowe"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
@@ -495,23 +495,23 @@ msgstr "Tryb panelu"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Autohide Keep below"
-msgstr ""
+msgstr "Autoukrywanie - pod spód"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Autohide Fade out"
-msgstr ""
+msgstr "Autoukrywanie - zanikanie"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Transparency"
-msgstr ""
+msgstr "Przeźroczystość"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Always"
-msgstr ""
+msgstr "Zawsze"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
-msgstr ""
+msgstr "Ukrywanie inteligentne"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Window dodge"

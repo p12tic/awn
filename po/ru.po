@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-12 14:50+0000\n"
-"Last-Translator: avdyushin.g <avdyushin.g@gmail.com>\n"
+"PO-Revision-Date: 2010-02-13 10:04+0000\n"
+"Last-Translator: Lortonix <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-02-13 04:58+0000\n"
+"X-Launchpad-Export-Date: 2010-02-14 05:01+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -303,11 +303,11 @@ msgstr "Переместить на рабочее место с_права"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:954
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Переместить на рабочее место вверх"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:964
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Переместить на рабочее место вниз"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
@@ -327,7 +327,7 @@ msgstr "Ошибка, sources.list уже существует."
 
 #: ../awn-settings/awnClass.py:335
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Ошибка, каталог пуст или уже существует"
 
 #: ../awn-settings/awnClass.py:455
 #, python-format
@@ -464,19 +464,19 @@ msgstr "Настройки Awn не могут быть запущены от п
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Влево"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Вправо"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "Вверх"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "Вниз"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
@@ -500,7 +500,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Standard"
-msgstr ""
+msgstr "Стандарт"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
@@ -516,11 +516,11 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Transparency"
-msgstr ""
+msgstr "Прозрачность"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Always"
-msgstr ""
+msgstr "Всегда"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
@@ -548,7 +548,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:943
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Ипользовать иконки высокого качества"
 
 #: ../awn-settings/awnSettings.py.in:944
 msgid "Overlay best quality icon with application icon"
@@ -578,7 +578,7 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:133
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn Вики"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -683,6 +683,8 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
+"Цвет текста около иконки. Оставьте поле пустым для использования стандартной "
+"GTK темы."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
@@ -841,11 +843,11 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
-msgstr ""
+msgstr "Иконки"
 
 #: ../libawn/awn-themed-icon.c:1978
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Выбрать другую иконку"
 
 #: ../libawn/awn-themed-icon.c:2065
 msgid "Customize Icon"
@@ -857,11 +859,11 @@ msgstr ""
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
-msgstr ""
+msgstr "Загрузка апплета..."
 
 #: ../src/awn-applet-proxy.c:371 ../src/awn-applet-proxy.c:472
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Упс. Апплет упал. Кликните для перезагрузки."
 
 #: ../src/awn-panel.c:3898
 msgid "Close docklet"
