@@ -1,3 +1,8 @@
+2010-02-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	Don't treat unused function as error.
+
 2010-02-13  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnClass.py:
