@@ -7,5 +7,6 @@ separator_la_SOURCES = \
 	$(NULL)
 separator_la_LIBADD = \
 	$(top_builddir)/libawn/libawn.la \
+	$(AWN_LIBS) \
 	$(NULL)
 separator_la_LDFLAGS = $(APPLET_LINKER_FLAGS)

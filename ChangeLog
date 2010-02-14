@@ -1,3 +1,14 @@
+2010-02-14  Julien Lavergne <gilir@ubuntu.com>
+
+	patch by: Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/expander/Makefile.am:
+	* applets/separator/Makefile.am:
+	Fix linking for expander applet
+
+	* debian/control:
+	Build-depends on Vala (>= 0.7.9)
+
 2010-02-14  Michal Hruby  <michal.mhr@gmail.com>
 
 	* configure.in:
