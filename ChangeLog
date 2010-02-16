@@ -1,3 +1,8 @@
+2010-02-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	Fix the schema keys after build system refactoring.
+
 2010-02-14  Julien Lavergne <gilir@ubuntu.com>
 
 	patch by: Michal Hruby  <michal.mhr@gmail.com>
