@@ -196,35 +196,62 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
     }
   }
 
-  // FIXME: if TaskManagerDispatcher had only get_default constructor without
-  //   parameters, we could just emit its item_added signal in our constructor
+  static int counter = 1;
+
   public TaskIconDispatcher (Task.Icon icon)
   {
     this.icon = icon;
 
     var conn = Bus.get (BusType.SESSION);
-    this.object_path = "/org/freedesktop/DockItem/%p".printf (icon);
+    this.object_path = "/org/freedesktop/DockManager/Item%d".printf (counter++);
     conn.register_object (this.object_path, this);
   }
 
   public int add_menu_item (HashTable<string, Value?> menu_hints) throws DBus.Error
   {
-    debug ("called add_menu_item method");
+    Gtk.ImageMenuItem? item = null;
+    Gtk.Image? image = null;
+
     HashTableIter<string, Value?> iter =
       HashTableIter<string, Value?>(menu_hints);
     unowned string key;
     unowned Value? value;
     while (iter.next (out key, out value))
     {
-      debug ( "%s: %s", key, value.strdup_contents ());
+      if (key == "label")
+      {
+        item = new Gtk.ImageMenuItem.with_label (value.get_string ());
+      }
+      else if (key == "icon-name")
+      {
+        image = new Gtk.Image.from_icon_name (value.get_string (),
+                                              Gtk.IconSize.MENU);
+      }
+      else if (key == "uri")
+      {
+      }
     }
 
-    int id = 12345;
-    return id;
+    if (item != null)
+    {
+      if (image != null) item.set_image (image);
+      int id = this.icon.add_menu_item (item);
+      item.show ();
+
+      item.activate.connect ((w) =>
+      {
+        this.menu_item_activated (id);
+      });
+
+      return id;
+    }
+
+    return 0;
   }
 
   public void remove_menu_item (int id) throws DBus.Error
   {
+    this.icon.remove_menu_item (id);
   }
 
   public void update_dock_item (HashTable<string, Value?> hints) throws DBus.Error
