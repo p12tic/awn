@@ -1,3 +1,11 @@
+2010-02-17  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-icon-private.h:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+	Dbus context menu code.
+
 2010-02-16  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/avant-window-navigator.schema-ini.in.in:

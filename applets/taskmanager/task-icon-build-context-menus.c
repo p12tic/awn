@@ -1137,6 +1137,20 @@ task_icon_inline_action_menu_active (TaskIcon * icon,GtkMenu * menu)
   }
 }
 
+static void
+task_icon_insert_plugin_menu_items (TaskIcon * icon,GtkMenu * menu)
+{
+  TaskIconPrivate * priv = TASK_ICON_GET_PRIVATE (icon);
+  GList * i;
+
+  for (i=priv->plugin_menu_items;i;i=i->next)
+  {
+    g_debug ("Appending plugin menu item");
+    gtk_widget_show (i->data);
+    gtk_menu_shell_append(GTK_MENU_SHELL(menu), i->data);
+  }
+}
+
 typedef enum{
       DBUS_SIGNAL,
       EXTERNAL_COMMAND,
@@ -1444,7 +1458,7 @@ menu_parse_start_element (GMarkupParseContext *context,
       task_icon_inline_action_menu_active (icon,GTK_MENU(menu));
       break;
     case INTERNAL_INLINE_PLUGINS:
-      g_message ("%s: stub... plugin support not present",__func__);
+      task_icon_insert_plugin_menu_items (icon, GTK_MENU (menu));
       break;
     case INTERNAL_INLINE_SUBMENUS_ACTION_MENU_INACTIVES:
       task_icon_get_menu_item_submenu_action_menu_inactives (icon,GTK_MENU(menu));

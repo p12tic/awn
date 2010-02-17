@@ -102,5 +102,8 @@ struct _TaskIconPrivate
   gdouble   overlay_application_icons_scale;
   gboolean  overlay_application_icons_swap;
 
+  /*Plugin menu items*/
+  GList * plugin_menu_items;
+
   TaskIconDispatcher *dbus_proxy;
 };
