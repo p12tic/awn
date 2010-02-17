@@ -56,7 +56,6 @@ taskmanager_la_SOURCES = \
 	task-launcher.h \
 	task-manager.c \
 	task-manager.h \
-	task-manager-glue.h \
 	task-manager-api-wrapper.c \
 	task-manager-api-wrapper.h \
 	task-manager-api-wrapper-glue.h \
@@ -79,10 +78,7 @@ taskmanager_la_LIBADD = \
 taskmanager_la_LDFLAGS = $(APPLET_LINKER_FLAGS)
 
 # DBus glue
-DBUS_XML = task-manager-dbus.xml task-manager-api-wrapper-dbus.xml
-
-task-manager-glue.h: task-manager-dbus.xml Makefile
-	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager --mode=glib-server --output=$@ $<
+DBUS_XML = task-manager-api-wrapper-dbus.xml
 
 task-manager-api-wrapper-glue.h: task-manager-api-wrapper-dbus.xml Makefile
 	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager_api_wrapper --mode=glib-server --output=$@ $<
@@ -93,7 +89,6 @@ install-data-local: install-gconf-schemas
 
 BUILT_SOURCES = \
 	$(VALA_GENERATED_FILES) \
-	task-manager-glue.h \
 	task-manager-api-wrapper-glue.h \
 	$(MARSHALFILES) \
 	$(NULL)

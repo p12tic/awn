@@ -30,6 +30,10 @@ public interface DockManagerDBusInterface: GLib.Object
   public abstract ObjectPath[] get_items_by_pid (int pid) throws DBus.Error;
   public abstract ObjectPath get_item_by_xid (int64 xid) throws DBus.Error;
 
+  // Awn-specific methods
+  public abstract void awn_set_visibility (string win_name, bool visible) throws DBus.Error;
+  public abstract ObjectPath awn_register_proxy_item (string desktop_file, string uri) throws DBus.Error;
+
   public signal void item_added (ObjectPath path);
   public signal void item_removed (ObjectPath path);
 }
@@ -42,6 +46,7 @@ public interface DockItemDBusInterface: GLib.Object
   public abstract void update_dock_item (HashTable<string, Value?> hints) throws DBus.Error;
 
   public abstract string desktop_file { owned get; }
+  public abstract string uri { owned get; }
 
   public signal void menu_item_activated (int id);
 }
@@ -82,7 +87,8 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 
   public string[] get_capabilities () throws DBus.Error
   {
-    string[] capabilities = {"x-awn-0.4"};
+    string[] capabilities = {"x-awn-set-visibility",
+                             "x-awn-register-proxy-item"};
     return capabilities;
   }
 
@@ -173,6 +179,23 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 
     return null;
   }
+
+  public void 
+  awn_set_visibility (string win_name, bool visible) throws DBus.Error
+  {
+    HashTable<string, unowned Value?> hints;
+    hints = new HashTable<string, unowned Value?> (str_hash, str_equal);
+    hints.insert ("visible", visible);
+ 
+    this.manager.update (win_name, hints);
+  }
+
+  public ObjectPath 
+  awn_register_proxy_item (string desktop_file, string uri) throws DBus.Error
+  {
+    // TODO: implement
+    return new ObjectPath ("/not/yet/implemented");
+  }
 }
 
 public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
@@ -193,6 +216,14 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
         path = launcher.get_desktop_path ();
       }
       return path;
+    }
+  }
+
+  public string uri
+  {
+    owned get
+    {
+      return "";
     }
   }
 

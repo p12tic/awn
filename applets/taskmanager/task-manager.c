@@ -48,7 +48,6 @@
 #include "awn-desktop-lookup-cached.h"
 #include "task-manager.h"
 #include "dock-manager-api.h"
-#include "task-manager-glue.h"
 
 #include "task-drag-indicator.h"
 #include "task-icon.h"
@@ -610,9 +609,6 @@ task_manager_class_init (TaskManagerClass *klass)
             G_TYPE_BOOLEAN);
 
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
-
-  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
-                                   &dbus_glib_task_manager_object_info);
 
   dbus_g_error_domain_register (task_manager_error_quark (), NULL, 
                                 task_manager_error_get_type ());
