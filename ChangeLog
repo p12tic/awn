@@ -1,3 +1,10 @@
+2010-02-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* applets/taskmanager/Makefile.am:
+	Clean up the taskmanager portion of the build system. Also fixes
+	parallel builds.
+
 2010-02-17  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/quick-prefs/applet.vala:
