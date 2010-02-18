@@ -1,6 +1,11 @@
 2010-02-18  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Fix no launch animation bug #509175.
+
+2010-02-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Do not continue searching after finding and removing menu item.
 	
 2010-02-18  Rodney Cryderman  <rcryderman@gmail.com>

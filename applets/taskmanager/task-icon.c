@@ -2473,7 +2473,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
         {
           /*it's a launcher*/
           awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                            AWN_EFFECT_HOVER, 10, FALSE, FALSE);
+                            AWN_EFFECT_LAUNCHING, 10, FALSE, FALSE);
           task_item_left_click (item,event);
         }
         else
