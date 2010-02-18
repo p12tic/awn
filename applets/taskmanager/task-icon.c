@@ -2295,7 +2295,7 @@ task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *item)
   }
   else
   {
-    cookie =  GPOINTER_TO_INT (g_object_get_qdata ( G_OBJECT(item),g_quark_from_static_string (TASK_ICON_PLUGIN_MENU_ITEM)));
+    cookie =  GPOINTER_TO_INT (g_object_get_qdata ( G_OBJECT(item),q));
     g_assert (cookie);
     g_warning ("%s: Duplicate menu item added.  Returning original id",__func__);
   }
@@ -2319,8 +2319,10 @@ task_icon_remove_menu_item(TaskIcon * icon,gint id)
     {
       priv->plugin_menu_items = g_list_remove (priv->plugin_menu_items,item);
 //      g_object_unref (item);
+      return;
     }
   }
+  g_warning ("%s: Failed to removed menu item ( id = %d ).",__func__,id);
 }
 
 static gboolean
