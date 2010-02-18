@@ -126,5 +126,7 @@ gint            task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *);
 
 void            task_icon_remove_menu_item(TaskIcon * icon,gint id);
 
+AwnApplet *task_icon_get_applet (TaskIcon * icon);
+
 #endif /* _TASK_ICON_H_ */
 

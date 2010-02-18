@@ -1615,6 +1615,17 @@ task_icon_get_main_item (TaskIcon * icon)
   return priv->main_item;
 }
 
+AwnApplet *
+task_icon_get_applet (TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), NULL);
+  priv = icon->priv;
+
+  return priv->applet;
+}
+
 const TaskItem *
 task_icon_get_launcher (TaskIcon      *icon)
 {

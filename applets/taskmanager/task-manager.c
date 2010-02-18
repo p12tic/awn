@@ -1345,11 +1345,24 @@ search_for_desktop (TaskIcon * icon,TaskItem *item,gboolean thorough)
 static void
 window_name_changed_cb  (TaskWindow *item,const gchar *name, TaskIcon * icon)
 {
+  const gchar *found_desktop = NULL;
+
   g_return_if_fail (TASK_IS_WINDOW(item));
   g_return_if_fail (TASK_IS_ICON(icon));
-  if (search_for_desktop (TASK_ICON(icon),TASK_ITEM(item),FALSE))
+
+  found_desktop = search_for_desktop (TASK_ICON(icon),TASK_ITEM(item),FALSE);
+  if (found_desktop)
   {
     g_signal_handlers_disconnect_by_func(item, window_name_changed_cb, icon);
+    if (found_desktop)
+    {
+      TaskManager * manager = TASK_MANAGER(task_icon_get_applet (icon));
+      TaskItem * launcher = get_launcher (manager,found_desktop);
+      if (launcher)
+      {
+        task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+      }
+    }          
   }
 }
 
@@ -1368,7 +1381,7 @@ process_window_opened (WnckWindow    *window,
   TaskIcon *match      = NULL;
   gint match_score     = 0;
   gint max_match_score = 0;
-  const gchar         *found_desktop = FALSE;
+  const gchar         *found_desktop = NULL;
   TaskIcon            *containing_icon = NULL;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
