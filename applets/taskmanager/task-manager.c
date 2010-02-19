@@ -2310,11 +2310,24 @@ _match_name (TaskManager *manager, const gchar* window)
   for (w = priv->windows; w; w = w->next)
   {
     TaskWindow *taskwindow = w->data;
+    gchar * res_name = NULL;
+    gchar * class_name = NULL;
 
     if (!TASK_IS_WINDOW (taskwindow)) 
     {
       continue;
     }
+
+    _wnck_get_wmclass (task_window_get_xid (taskwindow),&res_name, &class_name);
+    if ( (g_strcmp0 (window, res_name) == 0) ||(g_strcmp0 (window, class_name) == 0) )
+    {
+      g_free (res_name);
+      g_free (class_name);
+      return taskwindow;
+    }
+    g_free (res_name);
+    g_free (class_name);
+    
     wnck_app = task_window_get_application (taskwindow);
     if (WNCK_IS_APPLICATION(wnck_app))
     {

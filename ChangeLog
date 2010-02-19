@@ -1,5 +1,10 @@
 2010-02-18  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Add WM_CLASS matching into the old dbus API support.
+
+2010-02-18  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Fix no launch animation bug #509175.
 
