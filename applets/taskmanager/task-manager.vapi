@@ -6,6 +6,7 @@ namespace Task {
 	public class Icon : Awn.ThemedIcon, Gtk.Buildable, Atk.Implementor, Awn.Overlayable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Icon (Awn.Applet applet);
+		public int add_menu_item (Gtk.MenuItem p2);
 		public void append_ephemeral_item (Task.Item item);
 		public void append_item (Task.Item item);
 		public bool contains_launcher ();
@@ -13,6 +14,7 @@ namespace Task {
 		public uint count_items ();
 		public uint count_tasklist_windows ();
 		public void decrement_ephemeral_count ();
+		public unowned Awn.Applet get_applet ();
 		public unowned string get_custom_name ();
 		public unowned GLib.Object get_dbus_dispatcher ();
 		public unowned Gtk.Widget get_dialog ();
@@ -25,6 +27,7 @@ namespace Task {
 		public void moving_item (Task.Icon src, Task.Item item);
 		public void refresh_icon (uint size);
 		public void remove_item (Task.Item item);
+		public void remove_menu_item (int id);
 		public void schedule_geometry_refresh ();
 		public void set_draggable (bool draggable);
 		public void set_inhibit_focus_loss (bool val);
@@ -81,6 +84,7 @@ namespace Task {
 		public virtual void name_change (string name);
 		public virtual unowned Gtk.Widget right_click (Gdk.EventButton event);
 		public void set_task_icon (Task.Icon icon);
+		public void update_overlay (string key, GLib.Value value);
 		[NoAccessorMethod]
 		public Awn.Applet applet { owned get; set construct; }
 		[NoAccessorMethod]
@@ -101,12 +105,13 @@ namespace Task {
 		public string desktopfile { owned get; set; }
 	}
 	[CCode (cheader_filename = "task-manager.h")]
-	public class Manager : Awn.Applet, Gtk.Buildable, Atk.Implementor, Awn.PanelConnector {
+	public class Manager : Awn.Applet, Gtk.Buildable, Atk.Implementor {
 		[CCode (type = "AwnApplet*", has_construct_function = false)]
 		public Manager (string name, string uid, int panel_id);
 		public void add_icon (Task.Icon icon);
 		public void append_launcher (string launcher_path);
 		public bool get_capabilities (string[] supported_keys) throws GLib.Error;
+		public unowned GLib.Object get_dbus_dispatcher ();
 		public unowned Task.Icon get_icon_by_xid (int64 xid);
 		public unowned GLib.SList get_icons ();
 		public GLib.SList<Task.Icon> get_icons_by_desktop (string desktop);

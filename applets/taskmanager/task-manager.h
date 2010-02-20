@@ -77,6 +77,8 @@ gboolean task_manager_update (TaskManager *manager,
                               GHashTable *hints, /* mappings from string to GValue */
                               GError **error);
 
+GObject* task_manager_get_dbus_dispatcher (TaskManager *manager);
+
 void task_manager_append_launcher     (TaskManager  *manager, 
                                       const gchar * launcher_path);
 

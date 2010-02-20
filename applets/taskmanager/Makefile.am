@@ -3,35 +3,29 @@ APPLET_CFLAGS = \
 	$(TASKMANAGER_CFLAGS) \
 	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
 	$(NULL)
-MARSHAL_PREFIX = taskmanager
-include $(top_srcdir)/Makefile.c-applet
-include $(top_srcdir)/Makefile.marshal
-include $(top_srcdir)/Makefile.schemas
-
 VALA_FILES = \
 	dock-manager-api.vala \
 	$(NULL)
+MARSHAL_PREFIX = taskmanager
+include $(top_srcdir)/Makefile.vala-applet
+include $(top_srcdir)/Makefile.marshal
+include $(top_srcdir)/Makefile.schemas
 
-VALA_GENERATED_FILES = \
-	$(VALA_FILES:.vala=.c) \
+VALA_H_FILES = \
 	$(VALA_FILES:.vala=.h) \
 	$(NULL)
 
-VALA_PKGS = \
+AM_VALAFLAGS = \
+	$(foreach header,$(VALA_H_FILES),-H $(header)) \
 	--pkg dbus-glib-1 \
-	--pkg gtk+-2.0 \
-	--pkg desktop-agnostic-cfg \
 	--pkg libwnck-1.0 \
+	$(srcdir)/task-manager.vapi \
 	$(NULL)
 
-VALA_VAPI_FILES = \
-	$(top_builddir)/bindings/vala/awn.vapi \
-	task-manager.vapi \
+VALA_GENERATED_FILES = \
+	$(VALA_C_FILES) \
+	$(VALA_H_FILES) \
 	$(NULL)
-
-.vala.c:
-	$(VALAC) -C -H $(<:.vala=.h) $< $(VALA_VAPI_FILES) $(VALA_PKGS) && \
-	$(SED) -i -r 's/^#include <(task.+h)>$$/#include "\1"/' $(<:.vala=).[ch]
 
 applet_LTLIBRARIES = taskmanager.la
 taskmanager_la_SOURCES = \
@@ -56,7 +50,6 @@ taskmanager_la_SOURCES = \
 	task-launcher.h \
 	task-manager.c \
 	task-manager.h \
-	task-manager-glue.h \
 	task-manager-api-wrapper.c \
 	task-manager-api-wrapper.h \
 	task-manager-api-wrapper-glue.h \
@@ -79,29 +72,30 @@ taskmanager_la_LIBADD = \
 taskmanager_la_LDFLAGS = $(APPLET_LINKER_FLAGS)
 
 # DBus glue
-DBUS_XML = task-manager-dbus.xml task-manager-api-wrapper-dbus.xml
-
-task-manager-glue.h: task-manager-dbus.xml Makefile
-	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager --mode=glib-server --output=$@ $<
+DBUS_XML = task-manager-api-wrapper-dbus.xml
 
 task-manager-api-wrapper-glue.h: task-manager-api-wrapper-dbus.xml Makefile
 	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=task_manager_api_wrapper --mode=glib-server --output=$@ $<
+
+# config
 
 schema_in_files = awn-applet-taskmanager.schema-ini.in
 
 install-data-local: install-gconf-schemas
 
-BUILT_SOURCES = \
-	$(VALA_GENERATED_FILES) \
-	task-manager-glue.h \
+# menus
+
+taskmanager_menusdir = $(applet_datadir)/menus
+dist_taskmanager_menus_DATA = \
+	$(wildcard menus/*.xml) \
+	$(NULL)
+
+# miscellaneous
+
+BUILT_SOURCES += \
 	task-manager-api-wrapper-glue.h \
 	$(MARSHALFILES) \
 	$(NULL)
 
 EXTRA_DIST += $(schema_in_files) $(DBUS_XML) taskmanager-marshal.list
 CLEANFILES += $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
-
-taskmanager_menusdir = $(applet_datadir)/menus
-dist_taskmanager_menus_DATA = \
-	$(wildcard menus/*.xml) \
-	$(NULL)

@@ -52,7 +52,7 @@
 #include "config.h"
 
 //#define DEBUG 1
-
+#define TASK_ICON_PLUGIN_MENU_ITEM "TASK_ICON_PLUGIN_MENU_ITEM"
 enum{
   DESKTOP_COPY_ALL=0,
   DESKTOP_COPY_OWNER,
@@ -379,6 +379,17 @@ task_icon_dispose (GObject *object)
     gtk_widget_destroy (priv->menu);
     priv->menu=NULL;
   }
+
+  if (priv->plugin_menu_items)
+  {
+    for (GList *i=priv->plugin_menu_items; i; i=i->next)
+    {
+      gtk_widget_destroy (GTK_WIDGET (i->data));
+    }
+    g_list_free (priv->plugin_menu_items);
+    priv->plugin_menu_items = NULL;
+  }
+
   G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  
 }
 
@@ -914,6 +925,7 @@ task_icon_init (TaskIcon *icon)
   priv->visible = FALSE;
   priv->overlay_text = NULL;
   priv->ephemeral_count = 0;
+  priv->plugin_menu_items = NULL;
 
   priv->overlay_app_icon = awn_overlay_pixbuf_new ();
   awn_overlayable_add_overlay (AWN_OVERLAYABLE (icon), 
@@ -1614,6 +1626,17 @@ task_icon_get_main_item (TaskIcon * icon)
   return priv->main_item;
 }
 
+AwnApplet *
+task_icon_get_applet (TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_ICON (icon), NULL);
+  priv = icon->priv;
+
+  return priv->applet;
+}
+
 const TaskItem *
 task_icon_get_launcher (TaskIcon      *icon)
 {
@@ -2261,6 +2284,58 @@ task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val)
   priv->inhibit_focus_loss = val;
 }
 
+gint
+task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *item)
+{
+  TaskIconPrivate *priv;
+  static gint cookie = 0;
+  GList * needle = NULL;
+  GQuark q = g_quark_from_static_string (TASK_ICON_PLUGIN_MENU_ITEM);
+  
+  g_return_val_if_fail (TASK_IS_ICON (icon),-1);
+  g_return_val_if_fail (GTK_IS_MENU_ITEM (item),-1);
+  priv = icon->priv;
+
+  needle = g_list_find (priv->plugin_menu_items,item);
+  if (!needle )
+  {
+    cookie++;
+    priv->plugin_menu_items = g_list_append (priv->plugin_menu_items,
+                                             g_object_ref_sink (item));
+    g_object_set_qdata (G_OBJECT(item), q, GINT_TO_POINTER (cookie));
+  }
+  else
+  {
+    cookie =  GPOINTER_TO_INT (g_object_get_qdata ( G_OBJECT(item),q));
+    g_assert (cookie);
+    g_warning ("%s: Duplicate menu item added.  Returning original id",__func__);
+  }
+  return cookie;
+}
+
+void
+task_icon_remove_menu_item(TaskIcon * icon,gint id)
+{
+  TaskIconPrivate *priv;
+  GList * i = NULL;
+  GQuark q = g_quark_from_static_string (TASK_ICON_PLUGIN_MENU_ITEM);
+  
+  g_return_if_fail (TASK_IS_ICON (icon));
+  priv = icon->priv;
+
+  for (i=priv->plugin_menu_items;i;i=i->next)
+  {
+    GtkMenuItem * item = i->data;
+    if ( id == GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT(item), q) ) )
+    {
+      priv->plugin_menu_items = g_list_remove (priv->plugin_menu_items, item);
+      gtk_widget_destroy (GTK_WIDGET (item));
+      return;
+    }
+  }
+  g_warning ("%s: Failed to removed menu item ( id = %d ).",__func__,id);
+}
+
 static gboolean
 task_icon_scroll_event (GtkWidget *widget, GdkEventScroll *event, TaskIcon *icon)
 {
@@ -2409,7 +2484,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
         {
           /*it's a launcher*/
           awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
-                            AWN_EFFECT_HOVER, 10, FALSE, FALSE);
+                            AWN_EFFECT_LAUNCHING, 10, FALSE, FALSE);
           task_item_left_click (item,event);
         }
         else
@@ -2735,6 +2810,23 @@ task_icon_button_press_event (GtkWidget *widget,GdkEventButton *event)
 
   if (priv->menu)
   {
+    /*FIXME:
+     do this unparenting somewhere else
+     */
+    GList *menu_children, *i;
+
+    menu_children = gtk_container_get_children (GTK_CONTAINER (priv->menu));
+
+    for (i=priv->plugin_menu_items;i;i=i->next)
+    {
+      if (g_list_find (menu_children, i->data) != NULL)
+      {
+        gtk_container_remove (GTK_CONTAINER (priv->menu), i->data);
+      }
+    }
+
+    g_list_free (menu_children);
+
     gtk_widget_destroy (priv->menu);
     priv->menu = NULL;
   }

@@ -1029,7 +1029,9 @@ class awnPreferences(awnBzr):
 
     def delete_autostarter(self):
         '''Delete the autostart entry for the dock.'''
-        os.remove(self.get_autostart_file_path())
+        autostart_file = self.get_autostart_file_path()
+        if os.path.isfile(autostart_file):
+            os.remove(autostart_file)
 
     def test_bzr_themes(self, widget, data=None):
         if widget.get_active() == True:
@@ -1105,7 +1107,7 @@ class awnManager:
         if len(extra_version) > 0:
             version += extra_version
         self.about.set_version(version)
-        self.about.set_copyright("Copyright (C) 2007-2009 Awn-core team")
+        self.about.set_copyright("Copyright (C) 2007-2010 Awn-core team")
         self.about.set_authors([
             'Neil Jagdish Patel <njpatel@gmail.com>',
             'haytjes <hv1989@gmail.com>',

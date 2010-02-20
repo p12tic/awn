@@ -54,6 +54,55 @@ awn_throbber_dispose (GObject *object)
   G_OBJECT_CLASS (awn_throbber_parent_class)->dispose (object);
 }
 
+static void
+paint_sad_face (cairo_t *cr)
+{
+  /* sad face */
+  const gfloat EYE_SIZE = 0.04;
+  gfloat EYE_POS_X, EYE_POS_Y;
+
+  awn_cairo_rounded_rect(cr, 0.05, 0.05, 0.9, 0.9, 0.05, ROUND_ALL);
+  cairo_stroke(cr);
+
+  #define MINI_RECT(cr, x, y) \
+    cairo_rectangle (cr, x, y, EYE_SIZE, EYE_SIZE); \
+    cairo_fill (cr);
+
+  EYE_POS_X = 0.25;
+  EYE_POS_Y = 0.30;
+
+  /* left eye */
+  MINI_RECT(cr, EYE_POS_X, EYE_POS_Y);
+  MINI_RECT(cr, EYE_POS_X, EYE_POS_Y + 2*EYE_SIZE);
+  MINI_RECT(cr, EYE_POS_X + EYE_SIZE, EYE_POS_Y + EYE_SIZE);
+  MINI_RECT(cr, EYE_POS_X + 2*EYE_SIZE, EYE_POS_Y);
+  MINI_RECT(cr, EYE_POS_X + 2*EYE_SIZE, EYE_POS_Y + 2*EYE_SIZE);
+
+  /* right eye */
+  EYE_POS_X = 0.65;
+
+  MINI_RECT(cr, EYE_POS_X, EYE_POS_Y);
+  MINI_RECT(cr, EYE_POS_X, EYE_POS_Y + 2*EYE_SIZE);
+  MINI_RECT(cr, EYE_POS_X + EYE_SIZE, EYE_POS_Y + EYE_SIZE);
+  MINI_RECT(cr, EYE_POS_X + 2*EYE_SIZE, EYE_POS_Y);
+  MINI_RECT(cr, EYE_POS_X + 2*EYE_SIZE, EYE_POS_Y + 2*EYE_SIZE);
+
+  #undef MINI_RECT
+
+  /* nose */
+  cairo_curve_to(cr, 0.45, 0.48,
+                     0.5, 0.53,
+                     0.55, 0.48);
+  cairo_stroke(cr);
+
+  /* mouth */
+  cairo_curve_to(cr, 0.25, 0.73,
+                     0.5, 0.62,
+                     0.77, 0.77);
+  cairo_stroke(cr);
+
+}
+
 static gboolean
 awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
 {
@@ -120,59 +169,18 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
     }
     case AWN_THROBBER_TYPE_SAD_FACE:
     {
-      const gfloat EYE_SIZE = 0.04;
+      GdkColor c;
+      double r, g, b;
 
-      GdkColor c = gtk_widget_get_style (widget)->fg[GTK_STATE_NORMAL];
-      double r = c.red / 65535.0;
-      double g = c.green / 65535.0;
-      double b = c.blue / 65535.0;
+      c = gtk_widget_get_style (widget)->fg[GTK_STATE_NORMAL];
+      r = c.red / 65535.0;
+      g = c.green / 65535.0;
+      b = c.blue / 65535.0;
 
-      gfloat EYE_POS_X, EYE_POS_Y;
-      /* sad face */
-      cairo_set_source_rgb(cr, r, g, b);
-      cairo_set_line_width(cr, 0.03);
+      cairo_set_source_rgb (cr, r, g, b);
+      cairo_set_line_width (cr, 0.03);
+      paint_sad_face (cr);
 
-      awn_cairo_rounded_rect(cr, 0.05, 0.05, 0.9, 0.9, 0.05, ROUND_ALL);
-      cairo_stroke(cr);
-
-      EYE_POS_X = 0.25;
-      EYE_POS_Y = 0.30;
-      /* left eye */
-      cairo_rectangle(cr, EYE_POS_X, EYE_POS_Y, EYE_SIZE, EYE_SIZE);
-      cairo_fill(cr);
-      cairo_rectangle(cr, EYE_POS_X, EYE_POS_Y + 2*EYE_SIZE, EYE_SIZE, EYE_SIZE);
-      cairo_fill(cr);
-      cairo_rectangle(cr, EYE_POS_X + EYE_SIZE, EYE_POS_Y + EYE_SIZE, EYE_SIZE, EYE_SIZE);
-      cairo_fill(cr);
-      cairo_rectangle(cr, EYE_POS_X + 2*EYE_SIZE, EYE_POS_Y, EYE_SIZE, EYE_SIZE);
-      cairo_fill(cr);
-      cairo_rectangle(cr, EYE_POS_X + 2*EYE_SIZE, EYE_POS_Y + 2*EYE_SIZE, EYE_SIZE, EYE_SIZE);
-      cairo_fill(cr);
-
-      EYE_POS_X = 0.65;
-      /* right eye */
-      cairo_rectangle(cr, EYE_POS_X, EYE_POS_Y, EYE_SIZE, EYE_SIZE);
-      cairo_fill(cr);
-      cairo_rectangle(cr, EYE_POS_X, EYE_POS_Y + 2*EYE_SIZE, EYE_SIZE, EYE_SIZE);
-      cairo_fill(cr);
-      cairo_rectangle(cr, EYE_POS_X + EYE_SIZE, EYE_POS_Y + EYE_SIZE, EYE_SIZE, EYE_SIZE);
-      cairo_fill(cr);
-      cairo_rectangle(cr, EYE_POS_X + 2*EYE_SIZE, EYE_POS_Y, EYE_SIZE, EYE_SIZE);;
-      cairo_fill(cr);
-      cairo_rectangle(cr, EYE_POS_X + 2*EYE_SIZE, EYE_POS_Y + 2*EYE_SIZE, EYE_SIZE, EYE_SIZE);
-      cairo_fill(cr);
-
-      /* nose */
-      cairo_curve_to(cr, 0.45, 0.48,
-                         0.5, 0.53,
-                         0.55, 0.48);
-      cairo_stroke(cr);
-
-      /* mouth */
-      cairo_curve_to(cr, 0.25, 0.73,
-                         0.5, 0.62,
-                         0.77, 0.77);
-      cairo_stroke(cr);
       break;
     }
     case AWN_THROBBER_TYPE_ARROW_1:
