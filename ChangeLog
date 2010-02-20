@@ -1,5 +1,13 @@
 2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/dock-manager-api.vala:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	* applets/taskmanager/task-manager.vapi:
+	Fix the ItemAdded and ItemRemoved DBus signals.
+
+2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnClass.py:
 	Check if the autostart file exists when deleting it.
 	Fixes bug #334454.

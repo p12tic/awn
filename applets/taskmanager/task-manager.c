@@ -2751,6 +2751,17 @@ task_manager_set_windows_visibility (TaskManager *manager,const gchar * name,gbo
   }
 }
 
+GObject*
+task_manager_get_dbus_dispatcher (TaskManager *manager)
+{
+  TaskManagerPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_MANAGER (manager), NULL);
+
+  priv = manager->priv;
+  return G_OBJECT (priv->dbus_proxy);
+}
+
 gboolean
 task_manager_update (TaskManager *manager,
                      GValue *window,

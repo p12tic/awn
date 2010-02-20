@@ -236,6 +236,37 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
     var conn = Bus.get (BusType.SESSION);
     this.object_path = "/org/freedesktop/DockManager/Item%d".printf (counter++);
     conn.register_object (this.object_path, this);
+
+    this.emit_item_added ();
+  }
+
+  private unowned TaskManagerDispatcher? get_manager_proxy ()
+  {
+    unowned TaskManagerDispatcher? proxy;
+    unowned Task.Manager manager = this.icon.get_applet () as Task.Manager;
+    proxy = manager.get_dbus_dispatcher () as TaskManagerDispatcher;
+
+    return proxy;
+  }
+
+  private void emit_item_added ()
+  {
+    unowned TaskManagerDispatcher? proxy = this.get_manager_proxy ();
+
+    if (proxy != null)
+    {
+      proxy.item_added (new ObjectPath(this.object_path));
+    }
+  }
+
+  ~TaskIconDispatcher ()
+  {
+    unowned TaskManagerDispatcher? proxy = this.get_manager_proxy ();
+
+    if (proxy != null)
+    {
+      proxy.item_removed (new ObjectPath(this.object_path));
+    }
   }
 
   public int add_menu_item (HashTable<string, Value?> menu_hints) throws DBus.Error

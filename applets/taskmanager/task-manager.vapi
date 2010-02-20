@@ -14,6 +14,7 @@ namespace Task {
 		public uint count_items ();
 		public uint count_tasklist_windows ();
 		public void decrement_ephemeral_count ();
+		public unowned Awn.Applet get_applet ();
 		public unowned string get_custom_name ();
 		public unowned GLib.Object get_dbus_dispatcher ();
 		public unowned Gtk.Widget get_dialog ();
@@ -109,6 +110,7 @@ namespace Task {
 		public void add_icon (Task.Icon icon);
 		public void append_launcher (string launcher_path);
 		public bool get_capabilities (string[] supported_keys) throws GLib.Error;
+		public unowned GLib.Object get_dbus_dispatcher ();
 		public unowned Task.Icon get_icon_by_xid (int64 xid);
 		public unowned GLib.SList get_icons ();
 		public GLib.SList<Task.Icon> get_icons_by_desktop (string desktop);
