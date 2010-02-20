@@ -289,8 +289,13 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
         image = new Gtk.Image.from_icon_name (value.get_string (),
                                               Gtk.IconSize.MENU);
       }
+      else if (key == "icon-file")
+      {
+        image = new Gtk.Image.from_file (value.get_string ());
+      }
       else if (key == "uri")
       {
+        // TODO: implement
       }
     }
 
@@ -323,114 +328,12 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
     unowned Value? value;
     while (iter.next (out key, out value))
     {
-      if (key == "message")
+      unowned SList<unowned Task.Item> items = this.icon.get_items ();
+      foreach (unowned Task.Item item in items)
       {
-        if (!value.holds (typeof (string)))
-        {
-          warning ("Invalid type for property \"%s\"", key);
-          continue;
-        }
-
-        unowned SList<unowned Task.Item> items = this.icon.get_items ();
-        foreach (unowned Task.Item item in items)
-        {
-          if (item is Task.Launcher) continue;
-
-          if (item.text_overlay == null)
-          {
-            item.text_overlay = new Awn.OverlayText ();
-            item.text_overlay.font_sizing = 15;
-
-            unowned Awn.Overlayable over;
-            over = item.get_image_widget () as Awn.Overlayable;
-            over.add_overlay (item.text_overlay);
-          }
-
-          unowned string text = (string)value;
-          item.text_overlay.active = text.size () > 0;
-          item.text_overlay.text = text;
-
-          // this refreshes the overlays on TaskIcon
-          item.set_task_icon (item.get_task_icon ());
-        }
+        if (item is Task.Launcher) continue;
+        item.update_overlay (key, value);
       }
-      else if (key == "progress")
-      {
-        if (!value.holds (typeof (int)))
-        {
-          warning ("Invalid type for property \"%s\"", key);
-          continue;
-        }
-
-        unowned SList<unowned Task.Item> items = this.icon.get_items ();
-        foreach (unowned Task.Item item in items)
-        {
-          if (item is Task.Launcher) continue;
-
-          if (item.progress_overlay == null)
-          {
-            item.progress_overlay = new Awn.OverlayProgressCircle ();
-            
-            unowned Awn.Overlayable over;
-            over = item.get_image_widget () as Awn.Overlayable;
-            over.add_overlay (item.progress_overlay);
-          }
-
-          int percent = (int)value;
-          item.progress_overlay.active = percent != -1;
-
-          if (percent != -1)
-          {
-            item.progress_overlay.percent_complete = percent;
-          }
-
-          // this refreshes the overlays on TaskIcon
-          item.set_task_icon (item.get_task_icon ());
-        }
-      }
-      else if (key == "icon-file")
-      {
-        if (!value.holds (typeof (string)))
-        {
-          warning ("Invalid type for property \"%s\"", key);
-          continue;
-        }
-
-        unowned SList<unowned Task.Item> items = this.icon.get_items ();
-        foreach (unowned Task.Item item in items)
-        {
-          if (item is Task.Launcher) continue;
-
-          if (item.icon_overlay == null)
-          {
-            item.icon_overlay = new Awn.OverlayPixbufFile (null);
-            item.icon_overlay.use_source_op = true;
-            item.icon_overlay.scale = 1.0;
-
-            unowned Awn.Overlayable over;
-            over = item.get_image_widget () as Awn.Overlayable;
-            over.add_overlay (item.progress_overlay);
-          }
-
-          unowned string filename = (string)value;
-          item.icon_overlay.active = filename.size () > 0;
-
-          if (filename.size () > 0)
-          {
-            item.icon_overlay.file_name = filename;
-          }
-        }
-      }
-      else
-      {
-        debug ("Unsupported key: \"%s\"", key);
-      }
-      /*else if (key == "attention")
-      {
-      }
-      else if (key == "waiting")
-      {
-      }*/
     }
   }
 }

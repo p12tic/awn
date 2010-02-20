@@ -1,6 +1,15 @@
 2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/dock-manager-api.vala:
+	* applets/taskmanager/task-item.c:
+	* applets/taskmanager/task-item.h:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.vapi:
+	Move overlay setting to one place.
+
+2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
 	* applets/taskmanager/task-manager.c:
 	* applets/taskmanager/task-manager.h:
 	* applets/taskmanager/task-manager.vapi:

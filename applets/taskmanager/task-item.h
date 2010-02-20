@@ -100,6 +100,10 @@ guint         task_item_match         (TaskItem *item, TaskItem *item_to_match);
 void          task_item_set_task_icon (TaskItem *item, TaskIcon *icon);
 TaskIcon    * task_item_get_task_icon (TaskItem *item);
 
+void          task_item_update_overlay (TaskItem *item,
+                                        const gchar *key,
+                                        GValue *value);
+
 GtkWidget   * task_item_get_image_widget (TaskItem *item);
 
 //TODO: 2nd round: implement

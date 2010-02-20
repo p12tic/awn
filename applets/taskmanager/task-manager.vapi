@@ -84,6 +84,7 @@ namespace Task {
 		public virtual void name_change (string name);
 		public virtual unowned Gtk.Widget right_click (Gdk.EventButton event);
 		public void set_task_icon (Task.Icon icon);
+		public void update_overlay (string key, GLib.Value value);
 		[NoAccessorMethod]
 		public Awn.Applet applet { owned get; set construct; }
 		[NoAccessorMethod]
