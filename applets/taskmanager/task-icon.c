@@ -379,6 +379,17 @@ task_icon_dispose (GObject *object)
     gtk_widget_destroy (priv->menu);
     priv->menu=NULL;
   }
+
+  if (priv->plugin_menu_items)
+  {
+    for (GList *i=priv->plugin_menu_items; i; i=i->next)
+    {
+      gtk_widget_destroy (GTK_WIDGET (i->data));
+    }
+    g_list_free (priv->plugin_menu_items);
+    priv->plugin_menu_items = NULL;
+  }
+
   G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  
 }
 
@@ -2289,9 +2300,9 @@ task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *item)
   if (!needle )
   {
     cookie++;
-    priv->plugin_menu_items = g_list_append (priv->plugin_menu_items,item);
-//    g_object_ref (item);
-    g_object_set_qdata (G_OBJECT(item), q,GINT_TO_POINTER (cookie) );
+    priv->plugin_menu_items = g_list_append (priv->plugin_menu_items,
+                                             g_object_ref_sink (item));
+    g_object_set_qdata (G_OBJECT(item), q, GINT_TO_POINTER (cookie));
   }
   else
   {
@@ -2315,10 +2326,10 @@ task_icon_remove_menu_item(TaskIcon * icon,gint id)
   for (i=priv->plugin_menu_items;i;i=i->next)
   {
     GtkMenuItem * item = i->data;
-    if ( id == GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT(item),q) ) )
+    if ( id == GPOINTER_TO_INT (g_object_get_qdata (G_OBJECT(item), q) ) )
     {
-      priv->plugin_menu_items = g_list_remove (priv->plugin_menu_items,item);
-//      g_object_unref (item);
+      priv->plugin_menu_items = g_list_remove (priv->plugin_menu_items, item);
+      gtk_widget_destroy (GTK_WIDGET (item));
       return;
     }
   }
@@ -2802,12 +2813,20 @@ task_icon_button_press_event (GtkWidget *widget,GdkEventButton *event)
     /*FIXME:
      do this unparenting somewhere else
      */
-    GList * i;
+    GList *menu_children, *i;
+
+    menu_children = gtk_container_get_children (GTK_CONTAINER (priv->menu));
+
     for (i=priv->plugin_menu_items;i;i=i->next)
     {
-      g_object_ref (i->data);
-      gtk_container_remove (GTK_CONTAINER (priv->menu),i->data);
+      if (g_list_find (menu_children, i->data) != NULL)
+      {
+        gtk_container_remove (GTK_CONTAINER (priv->menu), i->data);
+      }
     }
+
+    g_list_free (menu_children);
+
     gtk_widget_destroy (priv->menu);
     priv->menu = NULL;
   }
