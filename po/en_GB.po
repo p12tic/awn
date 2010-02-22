@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-08 12:27+0000\n"
-"Last-Translator: Jen Ockwell <jenfraggleubuntu@googlemail.com>\n"
+"PO-Revision-Date: 2010-02-15 21:37+0000\n"
+"Last-Translator: Robert Readman <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-02-16 04:53+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -31,12 +31,16 @@ msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Allow grouping of windows together that have different WM_CLIENT_NAME "
+"values."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Controls the alpha of the overlay if overlay_application_icons is true. "
+"Valid range 0.0 to 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -46,23 +50,33 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" Controls the display of window icons in the Task Icon. 0) Alway display "
+"application provided window icons when window is active (except for a very "
+"few special cases). 1) Attempt to only display application provided icons "
+"when they are likely to provide useful/context info. 2) Ignore all "
+"application provide icons and only display the Lauuncher icon"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Controls the size of the overlay if overlay_application_icons is true. "
+"Valid range 0.2 to 0.7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Group icons with the same launcher, if the grouping of windows is disabled."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
 " If overlay_application_icons is true, this key will reverse the "
 "overlay/overlayee if set to true."
 msgstr ""
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -70,6 +84,9 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" If true then application window icons will be overlayed on the Launcher "
+"icon instead of replacing according to the behaviour defined by "
+"icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
@@ -84,6 +101,8 @@ msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Context menu definition.  Will look in the awn menu installation directory "
+"unless a absolutely path is provided."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
@@ -99,7 +118,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr "Enable long press to open Dialog."
+msgstr "Enable long press to open Dialogue."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
@@ -158,6 +177,8 @@ msgid ""
 "Number of seconds to wait before nagging again, by inhibiting autohide, if "
 "attention is required by any windows. A value of 0 disables."
 msgstr ""
+"Number of seconds to wait before nagging again, by inhibiting autohide, if "
+"attention is required by any windows. A value of 0 disables."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
@@ -202,16 +223,16 @@ msgstr "Launcher/Taskmanager applet"
 #: ../applets/quick-prefs/applet.vala:118
 #: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
 msgid "About Awn"
-msgstr ""
+msgstr "About Awn"
 
 #: ../applets/quick-prefs/applet.vala:289
 #: ../applets/quick-prefs/applet.vala:465
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Drag to change panel orientation"
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
-msgstr ""
+msgstr "Icon size:"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -221,99 +242,99 @@ msgstr "Dock Preferences"
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Could not open Awn settings: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "Applet used to control the dock and launch Awn preferences."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Preferences applet"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Adds a separator between applets"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Separator"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Workspace %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Workspace 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Workspace %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Add as Launcher"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
-msgstr ""
+msgstr "_Close"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
-msgstr ""
+msgstr "_Close All"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:743
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ximise"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:748
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Unma_ximise"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:777
 msgid "Always on _Top"
-msgstr ""
+msgstr "Always on _Top"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:801
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Mi_nimise"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:806
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Unmi_nimise"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Always on Visible Workspace"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:864
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Only on This Workspace"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Move to Workspace _Left"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:944
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Move to Workspace _Right"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:954
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Move to Workspace _Up"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:964
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Move to Workspace _Down"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Move to Another _Workspace"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
@@ -523,15 +544,15 @@ msgstr "Transparency"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Always"
-msgstr ""
+msgstr "Always"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
-msgstr ""
+msgstr "Intellihide"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Window dodge"
-msgstr ""
+msgstr "Window dodge"
 
 #: ../awn-settings/awnSettings.py.in:757
 msgid "Solid"
@@ -547,19 +568,19 @@ msgstr "Outline, Reversed"
 
 #: ../awn-settings/awnSettings.py.in:942
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Use application-specified icons"
 
 #: ../awn-settings/awnSettings.py.in:943
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Use best quality icons"
 
 #: ../awn-settings/awnSettings.py.in:944
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Overlay best quality icon with application icon"
 
 #: ../awn-settings/awnSettings.py.in:945
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Overlay application icon with best quality icon"
 
 #: ../bindings/python/__init__.py:118
 #, python-format
@@ -634,11 +655,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog's title."
-msgstr "Background colour for AwnDialog's title."
+msgstr "Background colour for AwnDialogue's title."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color for AwnDialog."
-msgstr "Background colour for AwnDialog."
+msgstr "Background colour for AwnDialogue."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Background color of the tooltip"
@@ -646,23 +667,23 @@ msgstr "Background colour of the tooltip"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Colour of the active rectangle."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Colour of the glowing dot."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Colour of the outline of active rectangle."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
-msgstr ""
+msgstr "Delay between mouse leaving the panel and it hiding."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Delay for mouse position polling."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid ""
@@ -670,7 +691,7 @@ msgid ""
 "not have a customized preferences dialog."
 msgstr ""
 "Determines if generic configuration editor is allowed for applets that do "
-"not have a customised preferences dialog."
+"not have a customised preferences dialogue."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Draw separators."
@@ -729,6 +750,8 @@ msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
+"Monitor number where Awn is located (only takes effect when monitor_force is "
+"False, use -1 to automatically pick monitor)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset between the icons and their dialog."
@@ -782,7 +805,7 @@ msgstr "Show shadows for icons."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "The active list UA Screenlets for this panel."
-msgstr ""
+msgstr "The active list UA Screenlets for this panel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The angle of the panel in 3D mode."
@@ -818,7 +841,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid "The list of panel instances."
-msgstr ""
+msgstr "The list of panel instances."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The location of the pattern to draw."
@@ -850,7 +873,7 @@ msgstr "Time in ms after which AwnIcon will emit long-press signal."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr "Whether AwnDialog should use GTK theme colours."
+msgstr "Whether AwnDialogue should use GTK theme colours."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "Whether to close dialogs on loss of focus."

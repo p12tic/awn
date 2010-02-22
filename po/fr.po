@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-08 13:07+0000\n"
-"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
+"PO-Revision-Date: 2010-02-14 20:57+0000\n"
+"Last-Translator: Nicolas Delvaux <Unknown>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:11+0000\n"
+"X-Launchpad-Export-Date: 2010-02-15 04:49+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -32,12 +32,15 @@ msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Permet de grouper des fenêtres ayant des valeurs WM_CLIENT_NAME différentes."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Contrôle l'opacité de la sur-couche si overlay_application_icons est vrai. "
+"Valeurs de 0.0 à 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -58,6 +61,8 @@ msgstr ""
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Regroupe les icônes ayant le même lanceur, si le regroupement des fenêtres "
+"est désactivé."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
@@ -136,6 +141,8 @@ msgstr ""
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
+"Nombre maximum d'indicateurs de taches à afficher sous les icônes. Les "
+"valeurs possibles vont de 0 à 3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
@@ -189,7 +196,7 @@ msgstr "Applet lanceur/gestionnaire de fenêtres"
 #: ../applets/quick-prefs/applet.vala:118
 #: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
 msgid "About Awn"
-msgstr ""
+msgstr "À propos de Awn"
 
 #: ../applets/quick-prefs/applet.vala:289
 #: ../applets/quick-prefs/applet.vala:465
@@ -198,7 +205,7 @@ msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
-msgstr ""
+msgstr "Taille de l'icône :"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -208,7 +215,7 @@ msgstr "Préférences du dock"
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Impossible d'ouvrir le Gestionnaire Awn : %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
@@ -217,90 +224,90 @@ msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Applet préférences"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Ajouter un séparateur entre les applets"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Séparateur"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Espace de travail %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Espace de travail 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Espace de travail %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Ajouter en tant que lanceur"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
-msgstr ""
+msgstr "_Fermer"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
-msgstr ""
+msgstr "_Fermer tout"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:743
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ximiser"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:748
 msgid "Unma_ximize"
-msgstr ""
+msgstr "R_estaurer"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:777
 msgid "Always on _Top"
-msgstr ""
+msgstr "Toujours au pre_mier plan"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:801
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Mi_nimiser"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:806
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "R_estaurer"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Toujours sur l'espace de travail visible"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:864
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Uniquement sur cet espace de travail"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Déplacer vers l'espace de travail de _gauche"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:944
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Déplacer vers l'espace de travail de _droite"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:954
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Déplacer vers l'espace de travail du _dessus"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:964
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Déplacer vers l'espace de travail du dess_ous"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Déplacer vers un autre _espace de travail"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
@@ -514,11 +521,11 @@ msgstr "Transparence"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Always"
-msgstr ""
+msgstr "Toujours"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
-msgstr ""
+msgstr "Masquage intelligent"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Window dodge"
@@ -538,19 +545,19 @@ msgstr "Contour, inversé"
 
 #: ../awn-settings/awnSettings.py.in:942
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Utiliser les icônes des applications"
 
 #: ../awn-settings/awnSettings.py.in:943
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Utiliser les icônes de meilleures qualités"
 
 #: ../awn-settings/awnSettings.py.in:944
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Superposer les meilleures icônes avec celles des applications"
 
 #: ../awn-settings/awnSettings.py.in:945
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Superposer les icônes des applications avec les meilleures"
 
 #: ../bindings/python/__init__.py:118
 #, python-format
@@ -607,7 +614,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
+msgstr "Alignement d'une barre non étendue avec le coin de l'écran."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid "An optional offset when you have more than 1 monitors."
@@ -635,11 +642,11 @@ msgstr "Couleur de fond des infobulles"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Couleur du rectangle actif."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Couleur du point lumineux."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -647,7 +654,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
-msgstr ""
+msgstr "Délai entre le moment ou la souris quitte la barre et le masquage."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "Delay for mouse position polling."
@@ -696,6 +703,8 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
+"Couleur du contours du texte. Laissez vide pour utiliser la couleur du thème "
+"gtk."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, maximised windows will not cover the panel."
@@ -818,7 +827,7 @@ msgstr "Opacité de l'icône, de 0.0 à 1.0"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Opacité du modèle."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -835,7 +844,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
+msgstr "Si AwnDialog doit utiliser les couleurs du thème Gtk."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "Whether to close dialogs on loss of focus."
