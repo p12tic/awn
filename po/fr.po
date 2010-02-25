@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-23 22:29+0000\n"
+"PO-Revision-Date: 2010-02-24 23:53+0000\n"
 "Last-Translator: Nicolas Delvaux <Unknown>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-02-24 04:57+0000\n"
+"X-Launchpad-Export-Date: 2010-02-25 04:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -50,6 +50,12 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" Règle l'affichage des icônes de fenêtres dans l'icône de tâche. 0) Toujours "
+"afficher les icônes de fenêtres fournies par l'application (sauf en de très "
+"rares cas). 1) Essayer d'afficher les icônes de fenêtres fournies par "
+"l'application lorsqu'elles fournissent des informations contextuelles "
+"potentiellement utiles. 2) Ignorer toutes les icônes fournies par "
+"l'application et afficher uniquement l'icône du lanceur."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
@@ -80,6 +86,8 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" Si vrai, l'icône de la fenêtre sera superposée à l'icône du lanceur au lieu "
+"de la remplacer suivant le comportement défini par icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
@@ -109,6 +117,9 @@ msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"Comportement de la copie du bureau pour le glisser-déposer de fichiers "
+"desktop. 0.. Copier tous, 1.. Copier si l'utilisateur est le propriétaire, "
+"2.. Ne pas copier."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
@@ -128,6 +139,9 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
+"Avec quelle exactitude la correspondance est appliquée pour le regroupement. "
+"La valeur devrait être entre 0 et 99. 0 reviens à ne rien regrouper. 99 "
+"regroupera quasiment tout."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -135,6 +149,9 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
+"Liste des fenêtres dont l'intersection avec la barre doit être testée si le "
+"masquage « intelligent » est actif. 0.. utiliser les fenêtres de l'espace de "
+"travail actif, 1.. utiliser les fenêtres de l'application active."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -142,6 +159,9 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
+"Masquage « intelligent » si le masquage est activé pour la barre. Cela "
+"empêchera le masquage automatique de la barre si aucune des fenêtres de la "
+"liste de fenêtres correspondante ne la recouvre."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
@@ -155,6 +175,8 @@ msgid ""
 "Number of seconds to inhibit autohide when a application requests attention. "
 "A value of 0 disables."
 msgstr ""
+"Durée en secondes de la désactivation du masquage automatique lorsqu'une "
+"application demande l'attention. Une valeur de 0 désactive."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
@@ -177,12 +199,16 @@ msgstr "Afficher les fenêtres de tous les espaces de travail"
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
 msgstr ""
+"Seuil à partir duquel le compteur de fenêtres commence à être affiché. "
+"Intervalle valide 1.."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"Une liste de chemins vers les fichiers .desktop que le gestionnaire de "
+"tâches doit utiliser pour créer ses lanceurs."
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
@@ -230,6 +256,7 @@ msgstr "Impossible d'ouvrir le Gestionnaire Awn : %s"
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
+"Applet utiliser pour contrôler la barre et lancer « Préférences de Awn »."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -534,11 +561,11 @@ msgstr "Toujours"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
-msgstr "Masquage intelligent"
+msgstr "Masquage « intelligent »"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Window dodge"
-msgstr ""
+msgstr "Évitement de fenêtre"
 
 #: ../awn-settings/awnSettings.py.in:757
 msgid "Solid"
@@ -619,7 +646,7 @@ msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgstr "Masque binaire enregistrant le type d'effet pour chaque évènement"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid "Alignment of a non-expanded panel on the monitor edge."
@@ -659,7 +686,7 @@ msgstr "Couleur du point lumineux."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Couleur de la bordure externe du rectangle actif."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
@@ -667,13 +694,15 @@ msgstr "Délai entre le moment ou la souris quitte la barre et le masquage."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Delai d'interrogation de la position de souris."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Détermine si l'éditeur de configuration générique est autorisé pour les "
+"applets ne disposant pas de leur propre boite de dialogue."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Draw separators."
@@ -681,15 +710,15 @@ msgstr "Dessiner les séparateurs."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Activer le dessin d'un modèle."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First gradient step color."
-msgstr ""
+msgstr "Première couleur du dégradé."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "Première couleur du dégradé de mise en surbrillance."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font color of the tooltip"
@@ -736,6 +765,9 @@ msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
+"Numéro du moniteur où Awn doit être situé (prend seulement effet si "
+"monitor_force est faux, utilisez -1 pour que le moniteur soit choisi "
+"automatiquement)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset between the icons and their dialog."
@@ -747,15 +779,15 @@ msgstr "Écart entre les icônes et le bord de la fenêtre."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Chemin vers le fichier du thème de bureau courant."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Chemin vers le .png de l'arrière plan des icônes actives."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Chemin vers le .png de l'icône de flèche."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid ""
@@ -770,15 +802,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
-msgstr ""
+msgstr "Alpha de réflexion comme un multiple de l'alpha courant de l'icône."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Second gradient step color."
-msgstr ""
+msgstr "Deuxième couleur du dégradé."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "Deuxième couleur du dégradé de mise en surbrillance."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Separator color."
@@ -790,7 +822,7 @@ msgstr "Afficher l'ombre des icônes"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "The active list UA Screenlets for this panel."
-msgstr ""
+msgstr "Liste des UA Screenlets actifs pour cette barre."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The angle of the panel in 3D mode."
@@ -803,16 +835,20 @@ msgstr "Arrondi de la barre en mode incurvé."
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
+"La hauteur forcée du moniteur. Utilisée uniquement si monitor_force est vrai."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
+"La largeur forcée du moniteur. Utilisée uniquement si monitor_force est vrai."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
+"Liste des UA Screenlets ayant été rajoutés depuis "
+"ScreeneletInstance::Position."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
@@ -828,7 +864,7 @@ msgstr "La liste des instances de la barre."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The location of the pattern to draw."
-msgstr ""
+msgstr "Emplacement du modèle à dessiner."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The offset between the icon and it's reflection"
@@ -872,6 +908,8 @@ msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
+"Largeur de la bordure du texte si le mode bordure est activé. Valeurs "
+"suggérées 1.0 - 5.0."
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
@@ -899,4 +937,4 @@ msgstr "Oups ! L'applet a planté. Cliquez pour le redémarrer."
 
 #: ../src/awn-panel.c:3898
 msgid "Close docklet"
-msgstr ""
+msgstr "Fermer le docklet"
