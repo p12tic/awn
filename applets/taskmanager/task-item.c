@@ -607,11 +607,28 @@ task_item_update_overlay (TaskItem *item, const gchar *key, GValue *value)
     if (item->text_overlay == NULL)
     {
       item->text_overlay = awn_overlay_text_new ();
-      g_object_set (G_OBJECT (item->text_overlay),
-                    "font-sizing", AWN_FONT_SIZE_LARGE, NULL);
       GtkWidget *image = task_item_get_image_widget (item);
       AwnOverlayable *over = AWN_OVERLAYABLE (image);
       awn_overlayable_add_overlay (over, AWN_OVERLAY (item->text_overlay));
+    }
+
+    if (strcmp ("badge", key) == 0)
+    {
+      g_object_set (G_OBJECT (item->text_overlay),
+                    "font-sizing", AWN_FONT_SIZE_MEDIUM,
+                    "apply-effects", TRUE,
+                    "gravity", GDK_GRAVITY_NORTH_EAST, 
+                    "x-adj", -0.05,
+                    "y-adj", +0.05, NULL);
+    }
+    else
+    {
+      g_object_set (G_OBJECT (item->text_overlay),
+                    "font-sizing", AWN_FONT_SIZE_LARGE,
+                    "apply-effects", FALSE,
+                    "gravity", GDK_GRAVITY_CENTER,
+                    "x-adj", 0.0,
+                    "y-adj", 0.0, NULL);
     }
 
     const gchar* text = g_value_get_string (value);

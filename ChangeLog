@@ -1,3 +1,8 @@
+2010-02-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	Treat the "badge" and "message" key a bit differently.
+
 2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
