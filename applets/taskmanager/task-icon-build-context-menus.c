@@ -461,11 +461,6 @@ _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
   gchar * shell_value = g_object_get_qdata (G_OBJECT (menuitem),g_quark_from_static_string("shell_value"));
   GError * err = NULL;
   
-  g_debug ("%s:  cmd_env_env = %p",__func__,cmd_and_envs);
-  for (int i=0; i<7;i++)
-  {
-    g_debug ("%s: [%d] = %s",__func__,i,cmd_and_envs[i]);
-  }
   g_setenv ("AWN_TASK_MENU_CMD",cmd_and_envs[0],TRUE);
   g_setenv ("AWN_TASK_PID",cmd_and_envs[1],TRUE);
   g_setenv ("AWN_TASK_XID",cmd_and_envs[2],TRUE);
@@ -474,7 +469,6 @@ _spawn_menu_cmd_cb (GtkMenuItem *menuitem, GStrv cmd_and_envs)
   g_setenv ("AWN_TASK_DEBUG_TASKMAN_PID",cmd_and_envs[5],TRUE);
   g_setenv ("AWN_TASK_LEADER_XID",cmd_and_envs[6],TRUE);
   //Want access to shell variables...
-  g_debug ("shell value = %s",shell_value);
   if (g_strcmp0 (shell_value, "yes")==0 || g_strcmp0 (shell_value, "true")==0)
   {
     if (system (cmd_and_envs[0]) ==-1)
@@ -1145,7 +1139,6 @@ task_icon_insert_plugin_menu_items (TaskIcon * icon,GtkMenu * menu)
 
   for (i=priv->plugin_menu_items;i;i=i->next)
   {
-    g_debug ("Appending plugin menu item");
     gtk_widget_show (i->data);
     gtk_menu_shell_append(GTK_MENU_SHELL(menu), i->data);
   }
@@ -1265,7 +1258,7 @@ static void menu_parse_error (GMarkupParseContext *context,
                               GError              *error,
                               gpointer             user_data)
 {
-  g_debug ("%s:",__func__);
+//  g_debug ("%s:",__func__);
 }
 
 GMarkupParser sub_markup_parser = {menu_parse_start_element,
@@ -1632,7 +1625,7 @@ menu_parse_start_element (GMarkupParseContext *context,
         gint line_number;
         gint char_number;
         g_markup_parse_context_get_position (context,&line_number,&char_number);
-        g_debug ("%s: Unknown item type, element_name = %s, line = %d",__func__, element_name,line_number);
+        g_warning ("%s: Unknown item type, element_name = %s, line = %d",__func__, element_name,line_number);
       }
       break;
     default:

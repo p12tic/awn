@@ -1,5 +1,11 @@
 2010-02-25  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-manager.c:
+	Remove some debugs.
+
+2010-02-25  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/awn-desktop-lookup-cached.c:
 	Various fixes for desktop lookup.  Check the correct 
 	hash table for desktop files, and attempt t deal with apps that 

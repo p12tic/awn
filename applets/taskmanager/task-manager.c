@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2008 Neil Jagdish Patel <njpatel@gmail.com>
- * Copyright (C) 2009 Rodney Cryderman <rcryderman@gmail.com>
+ * Copyright (C) 2009, 2010 Rodney Cryderman <rcryderman@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -488,9 +488,7 @@ task_manager_constructed (GObject *object)
   g_signal_connect (priv->screen,"active-workspace-changed",
                     G_CALLBACK(task_manager_active_workspace_changed_cb),object);
 
-  g_debug ("Feeding the cache");
   priv->desktop_lookup = awn_desktop_lookup_cached_new ();
-  g_debug ("Done Feeding the cache");
 
   /* DBus interface */
   priv->dbus_proxy = task_manager_dispatcher_new (TASK_MANAGER (object));
@@ -2649,7 +2647,6 @@ task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
   WnckWorkspace       *space;
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
- 
   if (!priv->intellihide)
   {
 /*    g_warning ("%s: Intellihide callback invoked with Intellihide off",__func__);*/
