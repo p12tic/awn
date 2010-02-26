@@ -8,19 +8,19 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-08 13:16+0000\n"
-"Last-Translator: Mark Lee <Unknown>\n"
+"PO-Revision-Date: 2010-02-25 19:59+0000\n"
+"Last-Translator: Ernesto2k <boramism@gmail.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-02-26 04:50+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "확장기"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
@@ -149,7 +149,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "모든 작업 공간의 창 표시"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,34 +165,34 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
 msgid "Launch"
-msgstr ""
+msgstr "실행"
 
 #: ../applets/taskmanager/task-launcher.c:1186
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "%s 실행"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "실행기/작업 관리자"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "실행기/작업 관리자 애플릿"
 
 #: ../applets/quick-prefs/applet.vala:118
 #: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
 msgid "About Awn"
-msgstr ""
+msgstr "AWN 정보"
 
 #: ../applets/quick-prefs/applet.vala:289
 #: ../applets/quick-prefs/applet.vala:465
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "끌기로 패널 위치를 바꿀 수 있습니다"
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
-msgstr ""
+msgstr "아이콘 크기:"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -202,103 +202,103 @@ msgstr "독 설정"
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "AWN 설정을 열 수 없습니다: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "독을 조작하고 AWN 기본 설정을 조정하는데 사용되는 애플릿"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "애플릿 기본 설정"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "애플릿 사이에 구분선을 추가합니다"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "구분선"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "작업공간 %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "작업 공간 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "작업 공간 %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
-msgstr ""
+msgstr "실행기로 추가"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
-msgstr ""
+msgstr "닫기(_C)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
-msgstr ""
+msgstr "모두 닫기(_C)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:743
 msgid "Ma_ximize"
-msgstr ""
+msgstr "최대화(_X)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:748
 msgid "Unma_ximize"
-msgstr ""
+msgstr "최대화 취소(_X)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:777
 msgid "Always on _Top"
-msgstr ""
+msgstr "항상 위(_T)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:801
 msgid "Mi_nimize"
-msgstr ""
+msgstr "최소화(_N)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:806
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "최소화 취소(_N)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "항상 현재 작업 공간에 놓기"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:864
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "이 작업 공간에만 놓기"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "왼쪽 작업 공간으로 옮기기(_L)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:944
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "오른쪽 작업 공간으로 옮기기(_R)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:954
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "위쪽 작업 공간으로 옮기기(_U)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:964
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "아래쪽 작업 공간으로 옮기기(_D)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "다른 작업 공간으로 옮기기(_W)"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
-msgstr ""
+msgstr "AWN 설정"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -325,11 +325,11 @@ msgstr "없음"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
-msgstr ""
+msgstr "간단히"
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr "클래식"
+msgstr "고전"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
@@ -374,7 +374,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr "디렉토리 생성 확인"
+msgstr "디렉터리 생성 확인"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
@@ -387,12 +387,12 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1067
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "이 아이콘 가운데 어떤 것도 찾을 수 없습니다: %s\n"
 
 #: ../awn-settings/awnClass.py:1074
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "다음 아이콘을 찾을 수 없습니다: %s\n"
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
@@ -439,35 +439,35 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "AWN 설정은 관리자 권한으로 실행할 수 없습니다."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "왼쪽"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "오른쪽"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "위쪽"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "아래쪽"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "평평함"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3D"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "곡선 모양"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
@@ -479,31 +479,31 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Standard"
-msgstr ""
+msgstr "표준"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
-msgstr ""
+msgstr "패널 모드"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Autohide Keep below"
-msgstr ""
+msgstr "항상 아래에 두고 자동 숨김"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Autohide Fade out"
-msgstr ""
+msgstr "패이드 아웃 자동 숨기기"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Transparency"
-msgstr ""
+msgstr "투명도"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Always"
-msgstr ""
+msgstr "항상 표시"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
-msgstr ""
+msgstr "똑똑한 숨기기"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Window dodge"
@@ -511,31 +511,31 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:757
 msgid "Solid"
-msgstr ""
+msgstr "채움"
 
 #: ../awn-settings/awnSettings.py.in:757
 msgid "Outline"
-msgstr ""
+msgstr "외곽선"
 
 #: ../awn-settings/awnSettings.py.in:758
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "외곽선, 뒤집힘"
 
 #: ../awn-settings/awnSettings.py.in:942
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "특정한 응용 프로그램 아이콘 사용"
 
 #: ../awn-settings/awnSettings.py.in:943
 msgid "Use best quality icons"
-msgstr ""
+msgstr "최고 품질의 아이콘 사용"
 
 #: ../awn-settings/awnSettings.py.in:944
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "최고 품질의 아이콘을 응용 프로그램 아이콘으로 덮어 씌우기"
 
 #: ../awn-settings/awnSettings.py.in:945
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "응용 프로그램 아이콘을 최고 품질의 아이콘으로 덮어 씌우기"
 
 #: ../bindings/python/__init__.py:118
 #, python-format
@@ -557,7 +557,7 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:133
 msgid "Awn Wiki"
-msgstr ""
+msgstr "AWN 위키"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -565,7 +565,7 @@ msgstr "독 방식의 윈도우 내비게이터"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr ""
+msgstr "0 - 채움, 1 - 외곽선, 2 - 외곽선, 뒤집힘"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
@@ -595,15 +595,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "AWN 대화 상자의 제목 배경 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "AWN 대화 상자 배경 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "툴팁 배경 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
@@ -611,7 +611,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "빛나는 점 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -633,27 +633,27 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Draw separators."
-msgstr ""
+msgstr "구분선 그리기"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "무늬 그리기"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First gradient step color."
-msgstr ""
+msgstr "첫 번째 그라디언트 단계 색."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "첫 번째 하이라이트 그라디언트 단계 색."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "툴팁 글꼴 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "툴팁 글꼴 이름"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -661,11 +661,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "아이콘 글자 색. GTK 테마 색을 사용하시려면 비워두십시오."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "아이콘 글자 외곽선 색. GTK 테마 색을 사용하시려면 비워두십시오."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, maximised windows will not cover the panel."
@@ -681,7 +681,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid "Main border color."
-msgstr ""
+msgstr "주 경계 색."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -691,15 +691,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "아이콘과 아이콘 대화 상자 사이의 빈 공간 크기."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "아이콘과 창 경계 사이의 빈 공간 크기."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "현재 데스크톱 파일 테마 경로."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the png containing the active icon background."
