@@ -1,3 +1,10 @@
+2010-02-28  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Add infobar about required compositing to Theme tab.
+
 2010-02-27  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:

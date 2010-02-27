@@ -591,6 +591,13 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             os.mkdir(defs.HOME_THEME_DIR)
 				
         self.wTree = wTree
+
+        infobar = self.wTree.get_object("composite_infobar")
+        infobar.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#F7F7BD"))
+
+        if gtk.gdk.screen_get_default().is_composited() == False:
+            infobar.get_parent().show_all()
+		
         self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
         self.view_themes_scroll = self.wTree.get_object("list_themes_scroll")
         self.treeview_themes = self.wTree.get_object("list_themes_view")
@@ -949,10 +956,10 @@ class awnTaskManagerMini(awnTaskManager):
         
         infobar = self.wTree.get_object("tm_infobar")
         infobar.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#F7F7BD"))
-		
+
         if not self.check_for_task_manager():
-			infobar.show_all()
-        
+			infobar.get_parent().show_all()
+
         icon_behave = self.wTree.get_object("tm_icon_behave")
         self.create_dropdown(icon_behave, [_("Use application-specified icons"),
 										_("Use best quality icons"),

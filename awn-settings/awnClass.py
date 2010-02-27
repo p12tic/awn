@@ -673,9 +673,9 @@ class awnBzr(gobject.GObject):
             
             infobar = self.wTree.get_object("tm_infobar")
             if self.check_for_task_manager():
-                infobar.hide_all()
+                infobar.get_parent().hide_all()
             else:
-                infobar.show_all()
+                infobar.get_parent().show_all()
                 
 
         self.applet_model.connect("foreign-drop", deactivate_applet)
@@ -1466,9 +1466,9 @@ class awnApplet(awnBzr):
             
             infobar = self.wTree.get_object("tm_infobar")
             if self.check_for_task_manager():
-                infobar.hide_all()
+                infobar.get_parent().hide_all()
             else:
-                infobar.show_all()
+                infobar.get_parent().show_all()
             
         self.active_model.connect("foreign-drop", activate_applet)
 
