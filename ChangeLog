@@ -1,3 +1,9 @@
+2010-02-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	Change layout of awn-settings' Behavior preference.
+
 2010-02-26  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:

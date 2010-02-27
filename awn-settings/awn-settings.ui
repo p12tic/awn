@@ -245,13 +245,35 @@
                     <property name="visible">True</property>
                     <property name="spacing">12</property>
                     <child>
-                      <object class="GtkLabel" id="label8">
+                      <object class="GtkHBox" id="hbox25">
                         <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes">_Behavior:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">behaviorcombo</property>
-                        <property name="max_width_chars">0</property>
+                        <child>
+                          <object class="GtkLabel" id="label8">
+                            <property name="visible">True</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">_Behavior:</property>
+                            <property name="use_underline">True</property>
+                            <property name="mnemonic_widget">behaviorcombo</property>
+                            <property name="max_width_chars">0</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkImage" id="image6">
+                            <property name="visible">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_text" translatable="yes">To use Intellihide or Window Dodge modes, you need to have Taskmanager applet active.</property>
+                            <property name="xalign">1</property>
+                            <property name="stock">gtk-dialog-info</property>
+                            <property name="icon-size">2</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="position">0</property>
@@ -273,36 +295,13 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkHBox" id="hbox14">
+                  <object class="GtkHBox" id="autohide_mode_hbox">
                     <property name="visible">True</property>
                     <child>
-                      <object class="GtkHBox" id="hbox18">
+                      <object class="GtkLabel" id="label55">
                         <property name="visible">True</property>
-                        <child>
-                          <object class="GtkLabel" id="label55">
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="label" translatable="yes">Autohide mode:</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkImage" id="image6">
-                            <property name="visible">True</property>
-                            <property name="has_tooltip">True</property>
-                            <property name="tooltip_text" translatable="yes">To use Intellihide or Window Dodge modes, you need to have Taskmanager applet active and Behavior has to be set to Autohide.</property>
-                            <property name="xalign">1</property>
-                            <property name="xpad">12</property>
-                            <property name="stock">gtk-info</property>
-                            <property name="icon-size">2</property>
-                          </object>
-                          <packing>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes">Autohide mode:</property>
                       </object>
                       <packing>
                         <property name="position">0</property>

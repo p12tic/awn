@@ -145,15 +145,16 @@ class awnPreferencesMini(awnPreferences):
 
         #setup behaviour combo
         dropdown = self.wTree.get_object("behaviorcombo")
-        self.create_dropdown(dropdown, [_("Standard"), _("Panel mode"),
-                                        _("Autohide Keep below"),
-                                        _("Autohide Fade out"),
-                                        _("Transparency"), _("Custom")])
+        self.create_dropdown(dropdown, [_("Panel mode"),
+                                        _("Always visible"),
+                                        _("Intellihide"),
+                                        _("Window dodge"),
+                                        _("Custom")])
 
         #setup autohide mode combo
         dropdown = self.wTree.get_object("autohide_mode_combo")
-        self.create_dropdown(dropdown, [_("Always"), _("Intellihide"), 
-                                        _("Window dodge")])
+        self.create_dropdown(dropdown, [_("Fade out"), _("Transparency"),
+                                        _("Keep below")])
 
         config_map_simple = [
             # General options
@@ -208,84 +209,66 @@ class awnPreferencesMini(awnPreferences):
         # Behaviour combobox
         self.choose_behavior = self.wTree.get_object("behaviorcombo")
         self.choose_autohide_mode = self.wTree.get_object("autohide_mode_combo")
+        self.autohide_mode_hbox = self.wTree.get_object("autohide_mode_hbox")
 
         def refresh_behaviour(*args):
-            behaviour = (self.panel_mode, self.autohide_type, self.clickthrough)
-            new_active = 5
-            if behaviour == (False, 0, 1):
-                new_active = 0
-            elif behaviour == (True, 0, 0):
-                new_active = 1
-            elif behaviour == (False, 1, 0):
-                new_active = 2
-            elif behaviour == (False, 2, 0):
-                new_active = 3
-            elif behaviour == (False, 3, 0):
-                new_active = 4
+            behaviour = (self.intellihide_type, self.panel_mode, self.clickthrough)
+            is_autohiding = self.autohide_type != 0
+            # "Panel mode" - (x, True,  0)
+            # "No autohide" - (x, False, 1)
+            # "Intellihide" - (1, False, 0)
+            # "Window dodge" - (0, False, 0)
+            # "Custom" - otherwise
+            new_active = 5 # custom
+            if is_autohiding:
+                if behaviour == (1, False, 0):
+                    new_active = 2
+                elif behaviour == (0, False, 0):
+                    new_active = 3
+            else:
+                if behaviour in [(0, True, 0), (1, True, 0)]:
+                    new_active = 0
+                elif behaviour in [(0, False, 1), (1, False, 1)]:
+                    new_active = 1
 
             if (self.choose_behavior.get_active() != new_active):
                 self.choose_behavior.set_active(new_active)
-                self.choose_autohide_mode.set_sensitive(new_active in [2, 3, 4])
+                if is_autohiding:
+                    self.autohide_mode_hbox.show()
+                else:
+                    self.autohide_mode_hbox.hide()
 
 
         def choose_behavior_callback(widget, *args):
+            # "Panel mode" - (x, True,  0)
+            # "No autohide" - (x, False, 1)
+            # "Intellihide" - (1, False, 0)
+            # "Window dodge" - (0, False, 0)
             if widget.get_active() == 0:
-                if self.panel_mode: self.panel_mode = False
-                if self.clickthrough != 1: self.clickthrough = 1
-                self.autohide_type = 0
-            elif widget.get_active() == 1:
                 if not self.panel_mode: self.panel_mode = True
                 if self.clickthrough != 0: self.clickthrough = 0
-                self.autohide_type = 0
+                if self.autohide_type != 0: self.autohide_type = 0
+            elif widget.get_active() == 1:
+                if self.panel_mode: self.panel_mode = False
+                if self.clickthrough != 1: self.clickthrough = 1
+                if self.autohide_type != 0: self.autohide_type = 0
             elif widget.get_active() == 2:
                 if self.panel_mode: self.panel_mode = False
                 if self.clickthrough != 0: self.clickthrough = 0
-                self.autohide_type = 1
+                if self.autohide_type == 0: self.autohide_type = 2
+                self.intellihide = True
+                self.intellihide_type = 1
             elif widget.get_active() == 3:
                 if self.panel_mode: self.panel_mode = False
                 if self.clickthrough != 0: self.clickthrough = 0
-                self.autohide_type = 2
-            elif widget.get_active() == 4:
-                if self.panel_mode: self.panel_mode = False
-                if self.clickthrough != 0: self.clickthrough = 0
-                self.autohide_type = 3
+                if self.autohide_type == 0: self.autohide_type = 2
+                self.intellihide = True
+                self.intellihide_type = 0
 
         self.client.bind (defs.PANEL, defs.PANEL_MODE, self, "panel-mode",
                           False, config.BIND_METHOD_FALLBACK)
         self.client.bind (defs.PANEL, defs.AUTOHIDE, self, "autohide-type",
                           False, config.BIND_METHOD_FALLBACK)
-        # clickthough is already bound
-
-        self.connect("notify::panel-mode", refresh_behaviour)
-        self.connect("notify::autohide-type", refresh_behaviour)
-        self.connect("notify::clickthrough", refresh_behaviour)
-
-        refresh_behaviour()
-
-        self.choose_behavior.connect("changed", choose_behavior_callback)
-
-        # Autohide mode combobox
-        def refresh_autohide_mode(*args):
-            new_active = 0
-            if self.intellihide:
-                if self.intellihide_type == 1:
-                    new_active = 1
-                else:
-                    new_active = 2
-
-            if (self.choose_autohide_mode.get_active() != new_active):
-                self.choose_autohide_mode.set_active(new_active)
-
-        def choose_autohide_mode_callback(widget, *args):
-            if widget.get_active() == 0:
-                if self.intellihide: self.intellihide = False
-            elif widget.get_active() == 1:
-                if not self.intellihide: self.intellihide = True
-                if self.intellihide_type != 1: self.intellihide_type = 1
-            elif widget.get_active() == 2:
-                if not self.intellihide: self.intellihide = True
-                if self.intellihide_type != 0: self.intellihide_type = 0
-
         self.client_taskman.bind (GROUP_DEFAULT, defs.INTELLIHIDE,
                                   self, "intellihide",
                                   False, config.BIND_METHOD_FALLBACK)
@@ -293,8 +276,40 @@ class awnPreferencesMini(awnPreferences):
                                   self, "intellihide-type",
                                   False, config.BIND_METHOD_FALLBACK)
 
-        self.connect("notify::intellihide", refresh_autohide_mode)
-        self.connect("notify::intellihide-type", refresh_autohide_mode)
+        # clickthough is already bound
+
+        self.connect("notify::panel-mode", refresh_behaviour)
+        self.connect("notify::autohide-type", refresh_behaviour)
+        self.connect("notify::clickthrough", refresh_behaviour)
+        self.connect("notify::intellihide-type", refresh_behaviour)
+
+        refresh_behaviour()
+
+        self.choose_behavior.connect("changed", choose_behavior_callback)
+
+        # Autohide mode combobox
+        def refresh_autohide_mode(*args):
+            new_active = -1
+            autohide_type = self.autohide_type
+            if autohide_type == 2:
+                new_active = 0
+            elif autohide_type == 3:
+                new_active = 1
+            elif autohide_type == 1:
+                new_active = 2
+
+            if (self.choose_autohide_mode.get_active() != new_active):
+                self.choose_autohide_mode.set_active(new_active)
+
+        def choose_autohide_mode_callback(widget, *args):
+            if widget.get_active() == 0:
+                if self.autohide_type != 2: self.autohide_type = 2
+            elif widget.get_active() == 1:
+                if self.autohide_type != 3: self.autohide_type = 3
+            elif widget.get_active() == 2:
+                if self.autohide_type != 1: self.autohide_type = 1
+
+        self.connect("notify::autohide-type", refresh_autohide_mode)
 
         refresh_autohide_mode()
 
