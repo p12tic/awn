@@ -8,19 +8,19 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-08 13:08+0000\n"
-"Last-Translator: Manuel Angel Varela <mvarela@cesga.es>\n"
+"PO-Revision-Date: 2010-02-26 21:07+0000\n"
+"Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:11+0000\n"
+"X-Launchpad-Export-Date: 2010-02-27 04:49+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Expandir"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
@@ -149,7 +149,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Mostrar as xanelas de todos os espazos de traballo"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,12 +165,12 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
 msgid "Launch"
-msgstr ""
+msgstr "Iniciar"
 
 #: ../applets/taskmanager/task-launcher.c:1186
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "Iniciar %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -183,7 +183,7 @@ msgstr ""
 #: ../applets/quick-prefs/applet.vala:118
 #: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
 msgid "About Awn"
-msgstr ""
+msgstr "Acerca de AWN"
 
 #: ../applets/quick-prefs/applet.vala:289
 #: ../applets/quick-prefs/applet.vala:465
@@ -192,12 +192,12 @@ msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
-msgstr ""
+msgstr "Tamaño da icona:"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Preferencias do entallado"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -224,49 +224,49 @@ msgstr ""
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Espazo de traballo %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Espazo de traballo 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Espazo de traballo %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Engadir como iniciador"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
-msgstr ""
+msgstr "_Pechar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
-msgstr ""
+msgstr "_Pechar todas"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:743
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ximizar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:748
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Res_taurar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:777
 msgid "Always on _Top"
-msgstr ""
+msgstr "Sempre en_riba"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:801
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Mi_nimizar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:806
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Res_taurar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
@@ -278,35 +278,36 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Mover ao espazo de traballo da _esquerda"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:944
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Mover ao espazo de traballo da _dereita"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:954
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Mover ao espazo de traballo de e_nriba"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:964
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Mover ao espazo de traballo de em_baixo"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Mover a outro espa_zo de traballo"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
-msgstr ""
+msgstr "Configuración de Awn"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
+"Xestiona as preferencias de AWN, iniciadores, miniaplicativos e temas"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Erro, xa existe un sources.list"
 
 #: ../awn-settings/awnClass.py:335
 msgid "Error, the path is empty or already exist"
@@ -321,47 +322,47 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:143
 msgid "None"
-msgstr ""
+msgstr "Ningún"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
-msgstr ""
+msgstr "Simple"
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Clásico"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Esvaecemento"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Foco luminoso"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Aplastar"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "Xiro en 3D"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Xiro 3D con foco de luz"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Resplandor"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:151
 msgid "Custom"
-msgstr ""
+msgstr "Personalizado"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -369,16 +370,22 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Produciuse un erro na creación automática. Por favor, ténte crear o "
+"directorio manualmente:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Confirme a creación do directorio"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Aínda non existe un directorio de inicio automático para a súa conta de "
+"usuario.\n"
+"Quere que se cree un automaticamente para vostede?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -392,16 +399,17 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN renovouse satisfactoriamente"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
+"Un navegador de xanelas entallable para GNOME totalmente personalizábel."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -410,6 +418,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Este programa é software libre; pode redistribuílo ou modificalo baixo as "
+"condicións da Licenza pública xeral GNU, tal como a publica a Free Software "
+"Foundation; tanto na versión 2 da Licenza como (segundo o seu criterio) en "
+"calquera versión posterior."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -418,6 +430,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Este programa distribúese coa intención de que sexa útil, mais SEN NINGUNHA "
+"GARANTIA, nin sequera a garantía implícita de VALOR COMERCIAL ou ADECUACIÓN "
+"A UN FIN ESPECÍFICO. Consulte a Licenza pública xeral de GNU para máis "
+"información."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -425,6 +441,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Debería ter recibido unha copia da Licenza publica Xeral (GPL) xunto con "
+"este programa; se non foi así, escriba á Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -432,31 +451,31 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Esquerda"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Dereita"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "Arriba"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "Abaixo"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Plano"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3D"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Curvado"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
@@ -468,7 +487,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Standard"
-msgstr ""
+msgstr "Estándar"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
@@ -484,15 +503,15 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Transparency"
-msgstr ""
+msgstr "Transparencia"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Always"
-msgstr ""
+msgstr "Sempre"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
-msgstr ""
+msgstr "Agochar de xeito intelixente"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Window dodge"
@@ -500,23 +519,23 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:757
 msgid "Solid"
-msgstr ""
+msgstr "Sólido"
 
 #: ../awn-settings/awnSettings.py.in:757
 msgid "Outline"
-msgstr ""
+msgstr "Contorno"
 
 #: ../awn-settings/awnSettings.py.in:758
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "Contorno, invertido"
 
 #: ../awn-settings/awnSettings.py.in:942
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Empregar as iconas específicas do aplicativo"
 
 #: ../awn-settings/awnSettings.py.in:943
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Empregar iconas da mellor calidade"
 
 #: ../awn-settings/awnSettings.py.in:944
 msgid "Overlay best quality icon with application icon"
@@ -554,15 +573,15 @@ msgstr "AWN fornece unha barra de aplicativos entallable no escritorio"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr ""
+msgstr "0 - sólido, 1 - contorno, 2 - contorno, invertido."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -670,7 +689,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid "Main border color."
-msgstr ""
+msgstr "Cor do bordo principal"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -719,11 +738,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Separator color."
-msgstr ""
+msgstr "Cor do separador."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Mostrar sombras para as iconas."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "The active list UA Screenlets for this panel."
@@ -809,28 +828,28 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
-msgstr ""
+msgstr "Iconas"
 
 #: ../libawn/awn-themed-icon.c:1978
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Elixir icona personalizada"
 
 #: ../libawn/awn-themed-icon.c:2065
 msgid "Customize Icon"
-msgstr ""
+msgstr "Personalizar a icona"
 
 #: ../libawn/awn-themed-icon.c:2152
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Eliminar a icona personalizada"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
-msgstr ""
+msgstr "Cargando o miniaplicativo..."
 
 #: ../src/awn-applet-proxy.c:371 ../src/awn-applet-proxy.c:472
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Uups! O miniaplicativo estragouse. Prema para reiniciarlo."
 
 #: ../src/awn-panel.c:3898
 msgid "Close docklet"
-msgstr ""
+msgstr "Pechar o entallamento"
