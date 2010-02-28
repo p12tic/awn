@@ -1,3 +1,9 @@
+2010-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	* data/awn-window-fallback.svg:
+	Add/install the window fallback icon.
+
 2010-02-28  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awnClass.py:
