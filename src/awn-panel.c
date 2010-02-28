@@ -106,6 +106,7 @@ struct _AwnPanelPrivate
   gint old_x;
   gint old_y;
   guint strut_update_id;
+  guint masks_update_id;
 
   /* animated resizing */
   gint draw_width;
@@ -343,6 +344,8 @@ static void     awn_panel_refresh_padding   (AwnPanel *panel,
 static void     awn_panel_update_masks      (GtkWidget *panel, 
                                              gint real_width, 
                                              gint real_height);
+
+static void     awn_panel_queue_masks_update(AwnPanel *panel);
 
 static void     awn_panel_docklet_destroy   (AwnPanel *panel);
 
@@ -1007,13 +1010,15 @@ awn_panel_resize_timeout (gpointer data)
   // without this there are some artifacts on sad face & throbbers
   awn_applet_manager_redraw_throbbers (AWN_APPLET_MANAGER (priv->manager));
 
-  // FIXME: should this really be done on every animation step?
-  awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
+  // Don't update the input masks here, it gets called too often and some
+  // drivers really don't like it. (LP bug #478790)
 
   if (resize_done)
   {
     gtk_widget_queue_resize (GTK_WIDGET (panel));
     priv->resize_timer_id = 0;
+
+    awn_panel_queue_masks_update (panel);
   }
 
   return !resize_done;
@@ -2426,8 +2431,7 @@ awn_panel_update_masks (GtkWidget *panel,
   if (priv->clickthrough && priv->composited)
   {
     GdkRegion *region = gdk_region_new ();
-    GdkWindow *win;
-    win = gtk_widget_get_window (GTK_WIDGET (panel));
+    GdkWindow *win = gtk_widget_get_window (GTK_WIDGET (panel));
     gdk_window_input_shape_combine_region (win, region, 0, 0);
     gdk_region_destroy (region);
   }
@@ -2490,6 +2494,32 @@ awn_panel_update_masks (GtkWidget *panel,
     }
 
     g_object_unref (shaped_bitmap);
+  }
+}
+
+static gboolean
+masks_update_scheduler (AwnPanel *panel)
+{
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+
+  AwnPanelPrivate *priv = panel->priv;
+
+  priv->masks_update_id = 0;
+
+  awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
+
+  return FALSE;
+}
+
+static void
+awn_panel_queue_masks_update (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->masks_update_id == 0)
+  {
+    priv->masks_update_id = g_idle_add ((GSourceFunc)masks_update_scheduler,
+                                        panel);
   }
 }
 
@@ -3247,7 +3277,7 @@ on_manager_size_alloc (GtkWidget *manager, GtkAllocation *alloc,
   {
     awn_panel_queue_strut_update (panel);
   }
-  awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
+  awn_panel_queue_masks_update (panel);
 }
 
 static gboolean

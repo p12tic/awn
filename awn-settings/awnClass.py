@@ -44,6 +44,7 @@ from xdg.DesktopEntry import DesktopEntry
 
 from awnSettingsHelper import bind_to_gtk_component
 
+import awn
 import awnDefs as defs
 from desktopagnostic import config
 from desktopagnostic import vfs
@@ -507,9 +508,10 @@ class awnBzr(gobject.GObject):
                 else:
                     group = ids[1]
 
-                # once we support multiple panels use awn.config_get_defa...
-                # so far, self.client is OK
                 client = self.client
+
+                if instance_id is not None:
+                    client = awn.config_get_default(int(instance_id))
 
                 for key, value in parser.items(section):
                     try:
