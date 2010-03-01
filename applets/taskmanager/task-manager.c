@@ -207,6 +207,9 @@ static void task_manager_active_workspace_changed_cb (WnckScreen    *screen,
                                                       TaskManager * manager);
 static void task_manager_win_geom_changed_cb (WnckWindow *window, 
                                               TaskManager * manager);
+static void task_manager_win_closed_cb (WnckScreen *screen,
+                                        WnckWindow *window, 
+                                        TaskManager * manager);
 static void task_manager_win_state_changed_cb (WnckWindow * window,
                                                WnckWindowState changed_mask,
                                                WnckWindowState new_state,
@@ -649,6 +652,10 @@ task_manager_init (TaskManager *manager)
                     G_CALLBACK (on_window_opened), manager);
   g_signal_connect (priv->screen, "active-window-changed",  
                     G_CALLBACK (on_active_window_changed), manager);
+
+  /* Used for Intellihide */
+  g_signal_connect (priv->screen,"window-closed",
+                    G_CALLBACK(task_manager_win_closed_cb),manager);
 
   /* connect to our origin-changed signal for updating icon geometry */
   g_signal_connect (manager, "origin-changed",
@@ -1408,7 +1415,6 @@ process_window_opened (WnckWindow    *window,
                   G_CALLBACK(task_manager_win_geom_changed_cb),manager);
   g_signal_connect (window,"state-changed",
                     G_CALLBACK(task_manager_win_state_changed_cb),manager);
-  
   switch (type)
   {
     case WNCK_WINDOW_DESKTOP:
@@ -2628,8 +2634,33 @@ task_manager_active_workspace_changed_cb (WnckScreen    *screen,
   
   app = wnck_window_get_application (win);
   space = wnck_screen_get_active_workspace (screen);
-
   task_manager_check_for_intersection (manager,space,app);
+}
+
+static void
+task_manager_win_closed_cb (WnckScreen *screen,WnckWindow *window, TaskManager * manager)
+{
+  TaskManagerPrivate  *priv;
+  WnckWindow          *win;
+  WnckApplication     *app;
+  WnckWorkspace       *space;
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+  if (!priv->intellihide)
+  {
+/*    g_warning ("%s: Intellihide callback invoked with Intellihide off",__func__);*/
+    return;
+  }
+  win = wnck_screen_get_active_window (priv->screen);
+  if (!win)
+  {
+    g_debug ("%s: No active windw",__func__);
+    return;
+  }
+  app = wnck_window_get_application (win);
+  space = wnck_screen_get_active_workspace (priv->screen);
+  task_manager_check_for_intersection (manager,space,app);  
+  
 }
 /*
  A window's geometry has channged.  If Intellihide is active then check for

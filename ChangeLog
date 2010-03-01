@@ -1,3 +1,12 @@
+2010-03-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fix intellihide behaviour in certain WMs (Compiz)
+	where unhide was not occurring with close of an 
+	overlapping window in certain circumstances.  Check
+	for window closes in addition to change of active 
+	window.
+
 2010-03-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/quick-prefs/applet.vala:
