@@ -1,3 +1,8 @@
+2010-03-01  Julien Lavergne  <gilir@ubuntu.com>
+
+	* debian/avant-window-navigator-data-trunk.install:
+	Add the fallback icon to the debian package.
+
 2010-03-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
