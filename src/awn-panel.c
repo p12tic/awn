@@ -2187,7 +2187,8 @@ awn_panel_init (AwnPanel *panel)
   priv->box = awn_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_container_add (GTK_CONTAINER (priv->alignment), priv->box);
 
-  priv->arrow1 = awn_throbber_new ();
+  priv->arrow1 = awn_throbber_new_with_config (
+      awn_config_get_default (0, NULL));
   awn_throbber_set_type (AWN_THROBBER (priv->arrow1),
                          AWN_THROBBER_TYPE_ARROW_1);
   g_signal_connect_swapped (priv->arrow1, "enter-notify-event",
@@ -2196,7 +2197,8 @@ awn_panel_init (AwnPanel *panel)
                             G_CALLBACK (awn_panel_arrow_out), panel);
   gtk_box_pack_start (GTK_BOX (priv->box), priv->arrow1, FALSE, TRUE, 0);
 
-  priv->arrow2 = awn_throbber_new ();
+  priv->arrow2 = awn_throbber_new_with_config (
+      awn_config_get_default (0, NULL));
   awn_throbber_set_type (AWN_THROBBER (priv->arrow2),
                          AWN_THROBBER_TYPE_ARROW_2);
   g_signal_connect_swapped (priv->arrow2, "enter-notify-event",
@@ -3920,7 +3922,7 @@ awn_panel_docklet_request (AwnPanel *panel,
 
   if (!priv->docklet_closer)
   {
-    priv->docklet_closer = awn_throbber_new ();
+    priv->docklet_closer = awn_throbber_new_with_config (priv->client);
     awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
                            AWN_THROBBER_TYPE_CLOSE_BUTTON);
     awn_icon_set_hover_effects (AWN_ICON (priv->docklet_closer), TRUE);

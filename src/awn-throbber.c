@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Michal Hruby <michal.mhr@gmail.com>
+ * Copyright (C) 2009-2010 Michal Hruby <michal.mhr@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License version 
@@ -19,10 +19,12 @@
 #include <gdk/gdkx.h>
 #include <math.h>
 
-#include "awn-throbber.h"
 #include <libawn/awn-utils.h>
 #include <libawn/awn-cairo-utils.h>
 #include <libawn/awn-overlayable.h>
+
+#include "awn-defines.h"
+#include "awn-throbber.h"
 
 G_DEFINE_TYPE (AwnThrobber, awn_throbber, AWN_TYPE_ICON)
 
@@ -37,6 +39,19 @@ struct _AwnThrobberPrivate
 
   gint        counter;
   guint       timer_id;
+
+  DesktopAgnosticConfigClient *client;
+  DesktopAgnosticColor *fill_color;
+  DesktopAgnosticColor *outline_color;
+};
+
+enum
+{
+  PROP_0,
+
+  PROP_CLIENT,
+  PROP_FILL_COLOR,
+  PROP_OUTLINE_COLOR
 };
 
 /* GObject stuff */
@@ -52,6 +67,114 @@ awn_throbber_dispose (GObject *object)
   }
 
   G_OBJECT_CLASS (awn_throbber_parent_class)->dispose (object);
+}
+
+static void
+awn_throbber_finalize (GObject *object)
+{
+  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE (object);
+
+  if (priv->client)
+  {
+    desktop_agnostic_config_client_unbind_all_for_object (priv->client,
+                                                          object, NULL);
+  }
+
+  if (priv->fill_color)
+  {
+    g_object_unref (priv->fill_color);
+  }
+
+  if (priv->outline_color)
+  {
+    g_object_unref (priv->outline_color);
+  }
+
+  G_OBJECT_CLASS (awn_throbber_parent_class)->finalize (object);
+}
+
+static void
+awn_throbber_constructed (GObject *object)
+{
+  AwnThrobberPrivate *priv = AWN_THROBBER_GET_PRIVATE (object);
+
+  g_return_if_fail (priv->client);
+
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_THEME, AWN_THEME_TEXT_COLOR,
+                                       object, "fill-color", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+
+  desktop_agnostic_config_client_bind (priv->client,
+                                       AWN_GROUP_THEME, AWN_THEME_OUTLINE_COLOR,
+                                       object, "outline-color", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+}
+
+static void
+awn_throbber_get_property (GObject    *object,
+                           guint       prop_id,
+                           GValue     *value,
+                           GParamSpec *pspec)
+{
+  AwnThrobberPrivate *priv;
+
+  g_return_if_fail (AWN_IS_THROBBER (object));
+  priv = AWN_THROBBER (object)->priv;
+
+  switch (prop_id)
+  {
+    case PROP_CLIENT:
+      g_value_set_object (value, priv->client);
+      break;
+    case PROP_FILL_COLOR:
+      g_value_set_object (value, priv->fill_color);
+      break;
+    case PROP_OUTLINE_COLOR:
+      g_value_set_object (value, priv->outline_color);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
+}
+
+static void
+awn_throbber_set_property (GObject      *object,
+                           guint         prop_id,
+                           const GValue *value,
+                           GParamSpec   *pspec)
+{
+  AwnThrobberPrivate *priv;
+
+  g_return_if_fail (AWN_IS_THROBBER (object));
+  priv = AWN_THROBBER (object)->priv;
+
+  switch (prop_id)
+  {
+    case PROP_CLIENT:
+      priv->client = g_value_get_object (value);
+      break;
+    case PROP_FILL_COLOR:
+      if (priv->fill_color)
+      {
+        g_object_unref (priv->fill_color);
+      }
+      priv->fill_color = g_value_dup_object (value);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
+      break;
+    case PROP_OUTLINE_COLOR:
+      if (priv->outline_color)
+      {
+        g_object_unref (priv->outline_color);
+      }
+      priv->outline_color = g_value_dup_object (value);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+  }
 }
 
 static void
@@ -131,54 +254,55 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
       const gint COUNT = 8;
       const gint counter = priv->counter;
 
-      cairo_translate(cr, 0.5, 0.5);
-      cairo_scale(cr, 1, -1);
+      cairo_set_line_width (cr, 1. / priv->size);
+      cairo_translate (cr, 0.5, 0.5);
+      cairo_scale (cr, 1, -1);
 
-      cairo_set_source_rgba(cr, 1, 1, 1, ((counter+0) % COUNT) / (float)COUNT);
-      cairo_arc(cr, 0, DIST, RADIUS, 0, 2*M_PI);
-      cairo_fill(cr);
+      #define PAINT_CIRCLE(cr, x, y, cnt) \
+        awn_cairo_set_source_color_with_alpha_multiplier (cr, \
+            priv->fill_color, ((counter+cnt) % COUNT) / (float)COUNT); \
+        cairo_arc (cr, x, y, RADIUS, 0, 2*M_PI); \
+        cairo_fill_preserve (cr); \
+        awn_cairo_set_source_color_with_alpha_multiplier (cr, \
+            priv->outline_color, ((counter+cnt) % COUNT) / (float)COUNT); \
+        cairo_stroke (cr);
 
-      cairo_set_source_rgba(cr, 1, 1, 1, ((counter+1) % COUNT) / (float)COUNT);
-      cairo_arc(cr, OTHER, OTHER, RADIUS, 0, 2*M_PI);
-      cairo_fill(cr);
+      PAINT_CIRCLE (cr, 0, DIST, 0);
+      PAINT_CIRCLE (cr, OTHER, OTHER, 1);
+      PAINT_CIRCLE (cr, DIST, 0, 2);
+      PAINT_CIRCLE (cr, OTHER, -OTHER, 3);
+      PAINT_CIRCLE (cr, 0, -DIST, 4);
+      PAINT_CIRCLE (cr, -OTHER, -OTHER, 5);
+      PAINT_CIRCLE (cr, -DIST, 0, 6);
+      PAINT_CIRCLE (cr, -OTHER, OTHER, 7);
 
-      cairo_set_source_rgba(cr, 1, 1, 1, ((counter+2) % COUNT) / (float)COUNT);
-      cairo_arc(cr, DIST, 0, RADIUS, 0, 2*M_PI);
-      cairo_fill(cr);
+      #undef PAINT_CIRCLE
 
-      cairo_set_source_rgba(cr, 1, 1, 1, ((counter+3) % COUNT) / (float)COUNT);
-      cairo_arc(cr, OTHER, -OTHER, RADIUS, 0, 2*M_PI);
-      cairo_fill(cr);
-
-      cairo_set_source_rgba(cr, 1, 1, 1, ((counter+4) % COUNT) / (float)COUNT);
-      cairo_arc(cr, 0, -DIST, RADIUS, 0, 2*M_PI);
-      cairo_fill(cr);
-
-      cairo_set_source_rgba(cr, 1, 1, 1, ((counter+5) % COUNT) / (float)COUNT);
-      cairo_arc(cr, -OTHER, -OTHER, RADIUS, 0, 2*M_PI);
-      cairo_fill(cr);
-
-      cairo_set_source_rgba(cr, 1, 1, 1, ((counter+6) % COUNT) / (float)COUNT);
-      cairo_arc(cr, -DIST, 0, RADIUS, 0, 2*M_PI);
-      cairo_fill(cr);
-
-      cairo_set_source_rgba(cr, 1, 1, 1, ((counter+7) % COUNT) / (float)COUNT);
-      cairo_arc(cr, -OTHER, OTHER, RADIUS, 0, 2*M_PI);
-      cairo_fill(cr);
       break;
     }
     case AWN_THROBBER_TYPE_SAD_FACE:
     {
-      GdkColor c;
-      double r, g, b;
-
-      c = gtk_widget_get_style (widget)->fg[GTK_STATE_NORMAL];
-      r = c.red / 65535.0;
-      g = c.green / 65535.0;
-      b = c.blue / 65535.0;
-
-      cairo_set_source_rgb (cr, r, g, b);
       cairo_set_line_width (cr, 0.03);
+
+      if (priv->fill_color == NULL)
+      {
+        GdkColor c;
+        double r, g, b;
+
+        c = gtk_widget_get_style (widget)->fg[GTK_STATE_NORMAL];
+        r = c.red / 65535.0;
+        g = c.green / 65535.0;
+        b = c.blue / 65535.0;
+
+        cairo_set_source_rgb (cr, r, g, b);
+      }
+      else
+      {
+        awn_cairo_set_source_color_with_alpha_multiplier (cr,
+                                                          priv->fill_color,
+                                                          0.75);
+      }
+      
       paint_sad_face (cr);
 
       break;
@@ -190,30 +314,50 @@ awn_throbber_expose_event (GtkWidget *widget, GdkEventExpose *event)
     case AWN_THROBBER_TYPE_ARROW_2:
     {
       pos_type = awn_icon_get_pos_type (AWN_ICON (widget));
-      cairo_set_line_width (cr, 1.75 / priv->size);
-
-      GdkColor c = gtk_widget_get_style (widget)->fg[GTK_STATE_NORMAL];
-      double r = c.red / 65535.0;
-      double g = c.green / 65535.0;
-      double b = c.blue / 65535.0;
-
-      cairo_set_source_rgb (cr, r, g, b);
 
       if (pos_type == GTK_POS_LEFT || pos_type == GTK_POS_RIGHT)
       {
         cairo_rotate (cr, 0.5 * M_PI);
         cairo_translate (cr, 0.0, -1.0);
       }
-      cairo_move_to (cr, 0.125, 0.4);
+
+      if (priv->outline_color)
+      {
+        cairo_set_line_width (cr, 3.5 / priv->size);
+        awn_cairo_set_source_color (cr, priv->outline_color);
+
+        cairo_move_to (cr, 0.125, 0.375);
+        cairo_line_to (cr, 0.875, 0.5);
+        cairo_line_to (cr, 0.125, 0.625);
+        cairo_stroke (cr);
+      }
+
+      cairo_set_line_width (cr, 1.75 / priv->size);
+      
+      if (priv->fill_color == NULL)
+      {
+        GdkColor c = gtk_widget_get_style (widget)->fg[GTK_STATE_NORMAL];
+        double r = c.red / 65535.0;
+        double g = c.green / 65535.0;
+        double b = c.blue / 65535.0;
+
+        cairo_set_source_rgb (cr, r, g, b);
+      }
+      else
+      {
+        awn_cairo_set_source_color (cr, priv->fill_color);
+      }
+
+      cairo_move_to (cr, 0.125, 0.375);
       cairo_line_to (cr, 0.875, 0.5);
-      cairo_line_to (cr, 0.125, 0.6);
+      cairo_line_to (cr, 0.125, 0.625);
       cairo_stroke (cr);
 
       break;
     }
     case AWN_THROBBER_TYPE_CLOSE_BUTTON:
     {
-      cairo_set_line_width (cr, 1./priv->size);
+      cairo_set_line_width (cr, 1. / priv->size);
 
       cairo_pattern_t *pat = cairo_pattern_create_linear (0.0, 0.0, 0.5, 1.0);
       cairo_pattern_add_color_stop_rgb (pat, 0.0, 0.97254, 0.643137, 0.403921);
@@ -296,14 +440,44 @@ awn_throbber_hide (GtkWidget *widget, gpointer user_data)
 static void
 awn_throbber_class_init (AwnThrobberClass *klass)
 {
-  GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
+  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GtkWidgetClass *wid_class = GTK_WIDGET_CLASS (klass);
 
-  obj_class->dispose      = awn_throbber_dispose;
+  object_class->dispose      = awn_throbber_dispose;
+  object_class->finalize     = awn_throbber_finalize;
+  object_class->constructed  = awn_throbber_constructed;
+  object_class->get_property = awn_throbber_get_property;
+  object_class->set_property = awn_throbber_set_property;
 
   wid_class->expose_event = awn_throbber_expose_event;
 
-  g_type_class_add_private (obj_class, sizeof (AwnThrobberPrivate));
+  /* Add properties to the class */
+  g_object_class_install_property (object_class,
+    PROP_CLIENT,
+    g_param_spec_object ("client",
+                         "Client",
+                         "The configuration client",
+                         DESKTOP_AGNOSTIC_CONFIG_TYPE_CLIENT,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class,
+    PROP_FILL_COLOR,
+    g_param_spec_object ("fill-color",
+                         "Fill Color",
+                         "The fill color for the throbber",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class,
+    PROP_OUTLINE_COLOR,
+    g_param_spec_object ("outline-color",
+                         "Outline Color",
+                         "The outline color for the throbber",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
+  g_type_class_add_private (object_class, sizeof (AwnThrobberPrivate));
 }
 
 static void
@@ -336,6 +510,18 @@ awn_throbber_new (void)
   GtkWidget *throbber = NULL;
 
   throbber = g_object_new (AWN_TYPE_THROBBER, "bind-effects", FALSE, NULL);
+
+  return throbber;
+}
+
+GtkWidget*
+awn_throbber_new_with_config (DesktopAgnosticConfigClient *client)
+{
+  GtkWidget *throbber = NULL;
+
+  throbber = g_object_new (AWN_TYPE_THROBBER, 
+                           "bind-effects", FALSE,
+                           "client", client, NULL);
 
   return throbber;
 }
@@ -398,11 +584,11 @@ awn_throbber_set_size (AwnThrobber *throbber, gint size)
       is_horizontal = pos_type == GTK_POS_TOP || pos_type == GTK_POS_BOTTOM;
       if (is_horizontal)
       {
-        awn_icon_set_custom_paint (AWN_ICON (throbber), size / 5, size);
+        awn_icon_set_custom_paint (AWN_ICON (throbber), size / 4, size);
       }
       else
       {
-        awn_icon_set_custom_paint (AWN_ICON (throbber), size, size / 5);
+        awn_icon_set_custom_paint (AWN_ICON (throbber), size, size / 4);
       }
       priv->size = size;
       break;
