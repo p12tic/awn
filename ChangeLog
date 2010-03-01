@@ -1,5 +1,11 @@
 2010-03-01  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/quick-prefs/applet.vala:
+	* applets/taskmanager/task-icon.c:
+	Rework panel repositioning via quick-prefs applet.
+
+2010-03-01  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-applet-proxy.c:
 	* src/awn-panel.c:
 	* src/awn-throbber.c:

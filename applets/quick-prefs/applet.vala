@@ -83,7 +83,12 @@ public class PrefsApplet : AppletSimple
     
     Gtk.drag_source_set (icon, Gdk.ModifierType.BUTTON1_MASK,
                          targets, Gdk.DragAction.LINK);
-    Gtk.drag_source_set_icon_name (icon, "avant-window-navigator");
+
+    // we don't want any icon when repositioning the panel
+    Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB, true, 8, 1, 1);
+    pixbuf.fill (0);
+    Gtk.drag_source_set_icon_pixbuf (icon, pixbuf);
+
     this.set_tooltip_text ("Avant Window Navigator");
 
     this.initialize_menu ();
@@ -222,46 +227,21 @@ public class PrefsApplet : AppletSimple
     int default_mon = screen.get_monitor_at_point (0, 0);
     screen.get_monitor_geometry (monitor_num, out rect);
 
-    // divide monitors into 4 parts (shaped like X)
-    Gdk.Point center = Gdk.Point();
-    center.x = rect.x + rect.width / 2;
-    center.y = rect.y + rect.height / 2;
-
-    Gdk.Point[] top_points = new Gdk.Point[3];
-    // top left
-    top_points[0].x = rect.x;
-    top_points[0].y = rect.y;
-    // top right
-    top_points[1].x = rect.x + rect.width;
-    top_points[1].y = rect.y;
-    top_points[2] = center;
-    Gdk.Region top = Gdk.Region.polygon (top_points,
-                                         Gdk.FillRule.EVEN_ODD_RULE);
-
-    Gdk.Point[] bottom_points = new Gdk.Point[3];
-    // bottom left
-    bottom_points[0].x = rect.x;
-    bottom_points[0].y = rect.y + rect.height;
-    // bottom right
-    bottom_points[1].x = rect.x + rect.width;
-    bottom_points[1].y = rect.y + rect.height;
-    bottom_points[2] = center;
-    Gdk.Region bot = Gdk.Region.polygon (bottom_points,
-                                         Gdk.FillRule.EVEN_ODD_RULE);
+    float rel_x = (mouse_x - rect.x) / (float)rect.width;
+    float rel_y = (mouse_y - rect.y) / (float)rect.height;
 
     Gtk.PositionType pos;
-    bool is_top = top.point_in (mouse_x, mouse_y);
+    bool is_top = rel_y <= 0.15 && rel_y >= 0;
+    bool is_bottom = rel_y >= 0.85 && rel_y <= 1;
+    bool is_left = rel_x <= 0.15 && rel_x >= 0;
+    bool is_right = rel_x >= 0.85 && rel_x <= 1;
+    bool on_edge = is_top || is_bottom || is_left || is_right;
 
-    if (!is_top && !bot.point_in (mouse_x, mouse_y))
-    {
-      // not in top part, nor bottom
-      pos = mouse_x < center.x ? 
-        Gtk.PositionType.LEFT : Gtk.PositionType.RIGHT;
-    }
-    else
-    {
-      pos = is_top ? Gtk.PositionType.TOP : Gtk.PositionType.BOTTOM;
-    }
+    if (is_bottom) pos = Gtk.PositionType.BOTTOM;
+    else if (is_top) pos = Gtk.PositionType.TOP;
+    else if (is_left) pos = Gtk.PositionType.LEFT;
+    else if (is_right) pos = Gtk.PositionType.RIGHT;
+    else pos = Gtk.PositionType.BOTTOM;
 
     try
     {
@@ -276,7 +256,10 @@ public class PrefsApplet : AppletSimple
         }
       }
       // finally set panel orientation
-      this.panel_client.set_int ("panel", "orient", (int)pos);
+      if (on_edge)
+      {
+        this.panel_client.set_int ("panel", "orient", (int)pos);
+      }
     }
     catch (GLib.Error e)
     {

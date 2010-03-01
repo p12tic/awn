@@ -3089,6 +3089,15 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
   }
   else
   {
+    // special case changing panel position via quick-prefs applet
+    for (GList* it = context->targets; it; it = it->next)
+    {
+      if (g_strcmp0 ("awn/awn-panel", gdk_atom_name (it->data)) == 0)
+      {
+        return FALSE;
+      }
+    }
+
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (widget)), 
                   AWN_EFFECT_LAUNCHING, 1, FALSE, FALSE); 
     
