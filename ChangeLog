@@ -1,3 +1,9 @@
+2010-03-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix for "visible" == False. TaskIcon gets destroyed
+	when app window closes.
+
 2010-03-01  Julien Lavergne  <gilir@ubuntu.com>
 
 	* debian/avant-window-navigator-data-trunk.install:
