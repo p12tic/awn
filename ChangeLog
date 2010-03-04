@@ -1,3 +1,9 @@
+2010-03-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	* libawn/awn-overlay-progress-circle.c:
+	Fix progress overlay not taking gravity into consideration.
+
 2010-03-04  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-applet.c:

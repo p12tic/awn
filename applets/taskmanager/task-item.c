@@ -583,6 +583,9 @@ task_item_update_overlay (TaskItem *item, const gchar *key, GValue *value)
     if (item->progress_overlay == NULL)
     {
       item->progress_overlay = awn_overlay_progress_circle_new ();
+      g_object_set (G_OBJECT (item->progress_overlay),
+                    "gravity", GDK_GRAVITY_SOUTH_EAST,
+                    "scale", 0.5, NULL);
       GtkWidget *image = task_item_get_image_widget (item);
       AwnOverlayable *over = AWN_OVERLAYABLE (image);
       awn_overlayable_add_overlay (over,
