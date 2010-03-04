@@ -456,6 +456,9 @@ public class PrefsApplet : AppletSimple
     icon.drag_failed.connect (this.on_drag_failed);
     Gtk.drag_source_set (icon, Gdk.ModifierType.BUTTON1_MASK,
                          targets, Gdk.DragAction.LINK);
+    Gdk.Pixbuf pixbuf = new Gdk.Pixbuf(Gdk.Colorspace.RGB, true, 8, 1, 1);
+    pixbuf.fill (0);
+    Gtk.drag_source_set_icon_pixbuf (icon, pixbuf);
     this.docklet_icons.append (icon);
     box.add (icon);
 

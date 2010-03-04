@@ -1,3 +1,8 @@
+2010-03-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Fix d&d icon when dragging the docklet icon.
+
 2010-03-03  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
