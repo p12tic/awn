@@ -3050,7 +3050,7 @@
               <object class="GtkLabel" id="label12">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Name</property>
+                <property name="label" translatable="yes">Name:</property>
               </object>
               <packing>
                 <property name="x_options">GTK_FILL</property>
@@ -3061,7 +3061,7 @@
               <object class="GtkLabel" id="label42">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Author</property>
+                <property name="label" translatable="yes">Author:</property>
               </object>
               <packing>
                 <property name="top_attach">1</property>
@@ -3074,7 +3074,7 @@
               <object class="GtkLabel" id="label46">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Version</property>
+                <property name="label" translatable="yes">Version:</property>
               </object>
               <packing>
                 <property name="top_attach">2</property>
@@ -3087,7 +3087,9 @@
               <object class="GtkEntry" id="theme_export_name">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
+                <property name="has_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -3143,13 +3145,16 @@
                     <property name="n_columns">2</property>
                     <child>
                       <object class="GtkCheckButton" id="theme_export_style">
-                        <property name="label" translatable="yes">Panel Style and Effects</property>
+                        <property name="label" translatable="yes">Panel Style &amp; Size</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
-                        <property name="active">True</property>
                         <property name="draw_indicator">True</property>
                       </object>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                      </packing>
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="theme_export_icons">
@@ -3167,7 +3172,17 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="theme_export_colors">
-                        <property name="label" translatable="yes">Panel Colors</property>
+                        <property name="label" translatable="yes">Panel Background Colors</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkCheckButton" id="theme_export_extras">
+                        <property name="label" translatable="yes">Extra Options</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -3182,22 +3197,8 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkCheckButton" id="theme_export_extras">
-                        <property name="label" translatable="yes">Extra Options</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="active">True</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkCheckButton" id="theme_export_size">
-                        <property name="label" translatable="yes">Panel Size Options</property>
+                        <property name="label" translatable="yes">Panel Look Refinements</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -3210,7 +3211,19 @@
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkCheckButton" id="theme_export_effects">
+                        <property name="label" translatable="yes">Configured Effects</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="draw_indicator">True</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                      </packing>
                     </child>
                   </object>
                 </child>
@@ -3281,13 +3294,13 @@
   </object>
   <object class="GtkSizeGroup" id="sizegroup_panel_labels">
     <widgets>
-      <widget name="hbox2"/>
-      <widget name="orientationcombo"/>
-      <widget name="stylecombo"/>
-      <widget name="behaviorcombo"/>
-      <widget name="monitor_align_hscale"/>
-      <widget name="iconeffects"/>
       <widget name="autohide_mode_combo"/>
+      <widget name="iconeffects"/>
+      <widget name="monitor_align_hscale"/>
+      <widget name="behaviorcombo"/>
+      <widget name="stylecombo"/>
+      <widget name="orientationcombo"/>
+      <widget name="hbox2"/>
     </widgets>
   </object>
   <object class="GtkAdjustment" id="adj_curviness">

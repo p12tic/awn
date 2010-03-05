@@ -32,6 +32,8 @@ active_rect_outline = #0000000000000000
 gtk_theme_mode = false
 # But use gtk theme mode for dialog.
 dialog_gtk_mode = true
+# Don't use patterns.
+draw_pattern = False
 # First gradient step color.
 gstep1 = #454545454545c8c8
 # Second gradient step color.

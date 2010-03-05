@@ -664,20 +664,22 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         self.themeExportIcons = self.wTree.get_object('theme_export_icons')
         self.themeExportColors = self.wTree.get_object('theme_export_colors')
         self.themeExportExtras = self.wTree.get_object('theme_export_extras')
+        self.themeExportEffects = self.wTree.get_object('theme_export_effects')
         
         self.ui_setup()
 		
 		
     def export_save_theme(self, widget):
 		
-		style = color = icon = extra = size = False
+		colors = sizes = icon = extra = style = effects = False
 		
-		if self.themeExportStyle.get_active(): style = True
-		if self.themeExportSize.get_active(): size = True
+		if self.themeExportColors.get_active(): colors = True
+		if self.themeExportSize.get_active(): sizes = True
 		if self.themeExportIcons.get_active(): icon = True
-		if self.themeExportColors.get_active(): color = True
 		if self.themeExportExtras.get_active(): extra = True
-		
+		if self.themeExportStyle.get_active(): style = True
+		if self.themeExportEffects.get_active(): effects = True
+
 		config = ConfigParser()
 		config.add_section("theme-info")
 		config.add_section("config/panel/1")
@@ -695,34 +697,40 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 		config.set("theme-info", "Author", author)
 		config.set("theme-info", "Version", version)
 		config.set("theme-info", "Awn-Theme-Version", defs.THEME_VERSION)
-		
+
+		pattern_mode = self.client.get_value(defs.THEME, defs.DRAW_PATTERN)
+
 		#Write config file
 		theme_settings = [
 		    (defs.PANEL, defs.ORIENT, 'int', style),
 		    (defs.PANEL, defs.SIZE, 'int', style),
 		    (defs.PANEL, defs.STYLE, 'int', style),
 		    (defs.PANEL, defs.EXPAND, 'bool', style),
-			(defs.THEME, defs.GSTEP1, 'str', color),              
-			(defs.THEME, defs.GSTEP2, 'str', color),                  
-			(defs.THEME, defs.GHISTEP1, 'str', color),                
-			(defs.THEME, defs.GHISTEP2, 'str', color),                
-			(defs.THEME, defs.ICON_TEXT_COLOR, 'str', icon),         
-			(defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, 'str', icon), 
-			(defs.THEME, defs.ICON_FONT_MODE, 'int', icon),          
-			(defs.THEME, defs.BORDER, 'str', color),                  
-			(defs.THEME, defs.HILIGHT, 'str', color),                               
-			(defs.THEME, defs.SEP_COLOR, 'str', extra),                     
-			(defs.THEME, defs.GTK_THEME_MODE, 'bool', color),          
-			(defs.THEME, defs.CORNER_RADIUS, 'float', size),           
-			(defs.THEME, defs.PANEL_ANGLE, 'float', size),             
-			(defs.THEME, defs.CURVINESS, 'float', size),               
-			(defs.THEME, defs.CURVES_SYMMETRY, 'float', size),         
-			(defs.THEME, defs.TOOLTIP_FONT_NAME, 'str', icon),       
-			(defs.THEME, defs.TOOLTIP_FONT_COLOR, 'str', icon),      
+			(defs.THEME, defs.GSTEP1, 'str', colors),
+			(defs.THEME, defs.GSTEP2, 'str', colors),
+			(defs.THEME, defs.GHISTEP1, 'str', colors),
+			(defs.THEME, defs.GHISTEP2, 'str', colors),
+			(defs.THEME, defs.DRAW_PATTERN, 'bool', colors),
+			(defs.THEME, defs.PATTERN_ALPHA, 'float', colors and pattern_mode),
+			(defs.THEME, defs.ICON_TEXT_COLOR, 'str', icon),
+			(defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, 'str', icon),
+			(defs.THEME, defs.ICON_FONT_MODE, 'int', icon),
+			(defs.THEME, defs.BORDER, 'str', colors),
+			(defs.THEME, defs.HILIGHT, 'str', colors),
+			(defs.THEME, defs.SEP_COLOR, 'str', extra),
+			(defs.THEME, defs.GTK_THEME_MODE, 'bool', colors),
+			(defs.THEME, defs.CORNER_RADIUS, 'float', sizes),
+			(defs.THEME, defs.PANEL_ANGLE, 'float', sizes),
+			(defs.THEME, defs.CURVINESS, 'float', sizes),
+			(defs.THEME, defs.CURVES_SYMMETRY, 'float', sizes),
+			(defs.THEME, defs.TOOLTIP_FONT_NAME, 'str', icon),
+			(defs.THEME, defs.TOOLTIP_FONT_COLOR, 'str', icon),
 			(defs.THEME, defs.TOOLTIP_BG_COLOR, 'str', icon),
+			(defs.EFFECTS, defs.ACTIVE_RECT_COLOR, 'str', icon),
+			(defs.EFFECTS, defs.ACTIVE_RECT_OUTLINE, 'str', icon),
 			(defs.EFFECTS, defs.ARROW_ICON, 'str', extra),
 			(defs.EFFECTS, defs.SHOW_SHADOWS, 'bool', extra),
-			(defs.EFFECTS, defs.ICON_EFFECT, 'int', style)   
+			(defs.EFFECTS, defs.ICON_EFFECT, 'int', effects)
 		]
 
 		for item in theme_settings:
@@ -754,7 +762,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 		if response == gtk.RESPONSE_OK:
 			result = fc.get_filename()
 			fc.destroy()
-			self.export_theme(config, filename, result)
+			self.export_theme(config, filename, result, save_pattern=pattern_mode)
 		else:
 			fc.destroy()
 			self.hide_export_dialog(None)	

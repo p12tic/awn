@@ -9,6 +9,7 @@ icon_text_outline_color = #000000000000ffff
 icon_font_mode = 1
 panel_angle = 45.0
 gtk_theme_mode = False
+draw_pattern = False
 corner_radius = 7.0
 tooltip_font_name = Sans 10
 tooltip_bg_color = #000000000000ffff
