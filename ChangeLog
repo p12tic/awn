@@ -1,5 +1,10 @@
 2010-03-06  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-app.c:
+	Bail out if panel_list is empty.
+
+2010-03-06  Michal Hruby  <michal.mhr@gmail.com>
+
 	* Makefile.vala-applet:
 	* applets/taskmanager/Makefile.am:
 	* data/Makefile.am:

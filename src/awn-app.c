@@ -125,10 +125,24 @@ awn_app_init (AwnApp *app)
 
   if (error)
   {
-    g_warning ("Unable to retrieve panels config value: %s",
-               error->message);
+    g_error ("Unable to retrieve panels config value: %s",
+             error->message);
     g_error_free (error);
-    gtk_main_quit ();
+    return;
+  }
+
+  if (panels->n_values == 0)
+  {
+    gboolean is_gconf = FALSE;
+    GType config_type = desktop_agnostic_config_get_type (NULL);
+
+    if (config_type)
+    {
+      const gchar *config_backend = g_type_name (config_type);
+      is_gconf = strstr (config_backend, "GConf") != NULL;
+    }
+    g_error ("No panels to create! %s", is_gconf ?
+             "You might want to try running `killall gconfd-2`." : "");
     return;
   }
 
