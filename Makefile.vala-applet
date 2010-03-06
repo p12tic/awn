@@ -25,5 +25,5 @@ $(APPLET_NAME).vala.stamp: $(VALA_FILES)
 		$(AM_VALAFLAGS) $(VALAFLAGS)
 	touch "$@"
 
-EXTRA_DIST += $(VALA_FILES)
+EXTRA_DIST += $(VALA_FILES) $(APPLET_NAME).vala.stamp
 CLEANFILES += $(APPLET_NAME).vala.stamp $(VALA_C_FILES)

@@ -1,3 +1,10 @@
+2010-03-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* Makefile.vala-applet:
+	* applets/taskmanager/Makefile.am:
+	* data/Makefile.am:
+	A few distcheck fixes.
+
 2010-03-05  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:

@@ -97,5 +97,11 @@ BUILT_SOURCES += \
 	$(MARSHALFILES) \
 	$(NULL)
 
-EXTRA_DIST += $(schema_in_files) $(DBUS_XML) taskmanager-marshal.list
+EXTRA_DIST += \
+	$(schema_in_files) \
+	$(DBUS_XML) \
+	taskmanager-marshal.list \
+	task-manager.vapi \
+	$(NULL)
+
 CLEANFILES += $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
