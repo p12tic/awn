@@ -1,5 +1,14 @@
 2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-panel.c:
+	Fix background drawing in RTL environments.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-background.c:
 	* src/awn-panel.c:
 	Possible fix for bug #499556.

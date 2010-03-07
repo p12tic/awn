@@ -266,33 +266,42 @@ void awn_background_flat_padding_request (AwnBackground *bg,
   #define TOP_PADDING 2
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
-  const gint side_padding = expand ? 0 : MAX (6, bg->corner_radius * 3 / 4);
+  gint side_padding = expand ? 0 : MAX (6, bg->corner_radius * 3 / 4);
+  gint zero_padding = 0;
 
   gfloat align = awn_background_get_panel_alignment (bg);
+  if (awn_background_do_rtl_swap (bg))
+  {
+    if (align <= 0.0 || align >= 1.0)
+    {
+      zero_padding = side_padding;
+      side_padding = 0;
+    }
+  }
 
   switch (position)
   {
     case GTK_POS_TOP:
       *padding_top  = 0;
       *padding_bottom = TOP_PADDING;
-      *padding_left = align == 0.0 ? 0 : side_padding;
-      *padding_right = align == 1.0 ? 0 : side_padding;
+      *padding_left = align == 0.0 ? zero_padding : side_padding;
+      *padding_right = align == 1.0 ? zero_padding : side_padding;
       break;
     case GTK_POS_BOTTOM:
       *padding_top  = TOP_PADDING;
       *padding_bottom = 0;
-      *padding_left = align == 0.0 ? 0 : side_padding;
-      *padding_right = align == 1.0 ? 0 : side_padding;
+      *padding_left = align == 0.0 ? zero_padding : side_padding;
+      *padding_right = align == 1.0 ? zero_padding : side_padding;
       break;
     case GTK_POS_LEFT:
-      *padding_top  = align == 0.0 ? 0 : side_padding;
-      *padding_bottom = align == 1.0 ? 0 : side_padding;
+      *padding_top  = align == 0.0 ? zero_padding : side_padding;
+      *padding_bottom = align == 1.0 ? zero_padding : side_padding;
       *padding_left = 0;
       *padding_right = TOP_PADDING;
       break;
     case GTK_POS_RIGHT:
-      *padding_top  = align == 0.0 ? 0 : side_padding;
-      *padding_bottom = align == 1.0 ? 0 : side_padding;
+      *padding_top  = align == 0.0 ? zero_padding : side_padding;
+      *padding_bottom = align == 1.0 ? zero_padding : side_padding;
       *padding_left = TOP_PADDING;
       *padding_right = 0;
       break;

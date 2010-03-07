@@ -90,6 +90,19 @@ awn_background_edgy_radius_changed (AwnBackgroundEdgy *bg)
   awn_background_emit_padding_changed (AWN_BACKGROUND (bg));
 }
 
+static gint
+awn_background_edgy_separator_pos (AwnBackgroundEdgy *bg, gfloat align)
+{
+  if (awn_background_do_rtl_swap ((AwnBackground*)bg))
+  {
+    return align == 0.0 ? -1 :1;
+  }
+  else
+  {
+    return align == 0.0 ? 1: -1;
+  }
+}
+
 static void
 awn_background_edgy_align_changed (AwnBackgroundEdgy *bg) // has more params...
 {
@@ -116,7 +129,7 @@ awn_background_edgy_align_changed (AwnBackgroundEdgy *bg) // has more params...
     AwnAppletManager *manager;
     g_object_get (AWN_BACKGROUND (bg)->panel, "applet-manager", &manager, NULL);
     awn_applet_manager_add_widget (manager, bg->priv->separator,
-                                   align == 0.0 ? 1: -1);
+                                   awn_background_edgy_separator_pos (bg, align));
     awn_background_emit_padding_changed (AWN_BACKGROUND (bg));
   }
 }
@@ -155,10 +168,8 @@ awn_background_edgy_constructed (GObject *object)
 
   if (bg->priv->in_corner)
   {
-    if (align == 1.0)
-    {
-      awn_applet_manager_add_widget (manager, bg->priv->separator, -1);
-    }
+    awn_applet_manager_add_widget (manager, bg->priv->separator,
+                                   awn_background_edgy_separator_pos (bg, align));
     gtk_widget_show (bg->priv->separator);
   }
 
@@ -356,7 +367,7 @@ void awn_background_edgy_padding_request (AwnBackground *bg,
     return;
   }
 
-  gint base_side_pad;
+  gint base_side_pad, zero_pad = 0;
   guint dummy, left, right;
 
   AWN_BACKGROUND_CLASS (awn_background_edgy_parent_class)->padding_request (
@@ -366,26 +377,32 @@ void awn_background_edgy_padding_request (AwnBackground *bg,
   const gint req = AWN_BACKGROUND_EDGY (bg)->priv->top_pad;
   gboolean bottom_left = awn_background_get_panel_alignment (bg) == 0.0;
 
+  if (awn_background_do_rtl_swap (bg))
+  {
+    zero_pad = base_side_pad;
+    base_side_pad = 0;
+  }
+
   switch (position)
   {
     case GTK_POS_TOP:
       *padding_top  = 0; *padding_bottom = req;
-      *padding_left = bottom_left ? 0 : base_side_pad;
-      *padding_right = bottom_left ? base_side_pad : 0;
+      *padding_left = bottom_left ? zero_pad : base_side_pad;
+      *padding_right = bottom_left ? base_side_pad : zero_pad;
       break;
     case GTK_POS_BOTTOM:
       *padding_top  = req; *padding_bottom = 0;
-      *padding_left = bottom_left ? 0 : base_side_pad;
-      *padding_right = bottom_left ? base_side_pad : 0;
+      *padding_left = bottom_left ? zero_pad : base_side_pad;
+      *padding_right = bottom_left ? base_side_pad : zero_pad;
       break;
     case GTK_POS_LEFT:
-      *padding_top  = bottom_left ? 0 : base_side_pad;
-      *padding_bottom = bottom_left ? base_side_pad : 0;
+      *padding_top  = bottom_left ? zero_pad : base_side_pad;
+      *padding_bottom = bottom_left ? base_side_pad : zero_pad;
       *padding_left = 0; *padding_right = req;
       break;
     case GTK_POS_RIGHT:
-      *padding_top  = bottom_left ? 0 : base_side_pad;
-      *padding_bottom = bottom_left ? base_side_pad : 0;
+      *padding_top  = bottom_left ? zero_pad : base_side_pad;
+      *padding_bottom = bottom_left ? base_side_pad : zero_pad;
       *padding_left = req; *padding_right = 0;
       break;
     default:

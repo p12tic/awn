@@ -173,6 +173,7 @@ void awn_background_emit_padding_changed (AwnBackground *bg);
 void awn_background_emit_changed (AwnBackground *bg);
 
 gfloat awn_background_get_panel_alignment (AwnBackground *bg);
+gboolean awn_background_do_rtl_swap (AwnBackground *bg);
 
 G_END_DECLS
 

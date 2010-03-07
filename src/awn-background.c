@@ -776,6 +776,24 @@ awn_background_emit_changed (AwnBackground *bg)
   g_signal_emit (bg, _bg_signals[CHANGED], 0);
 }
 
+gboolean
+awn_background_do_rtl_swap (AwnBackground *bg)
+{
+  g_return_val_if_fail (AWN_IS_BACKGROUND (bg) && bg->panel, FALSE);
+
+  if (gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL)
+  {
+    GtkPositionType position;
+    g_object_get (bg->panel, "position", &position, NULL);
+    if (position == GTK_POS_TOP || position == GTK_POS_BOTTOM)
+    {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
+}
+
 gfloat
 awn_background_get_panel_alignment (AwnBackground *bg)
 {
@@ -788,7 +806,7 @@ awn_background_get_panel_alignment (AwnBackground *bg)
 
   g_object_get (monitor, "monitor_align", &alignment, NULL);
 
-  if (gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL)
+  if (awn_background_do_rtl_swap (bg))
   {
     alignment = 1.0 - alignment;
   }

@@ -1062,6 +1062,8 @@ awn_panel_refresh_alignment (AwnPanel *panel)
                          0.5, align, 1.0, expand);
       break;
   }
+
+  awn_panel_queue_masks_update (panel);
 }
 
 static
@@ -1200,7 +1202,8 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 
   gint paintable_size = priv->offset + priv->size + priv->extra_padding;
   align = priv->monitor->align;
-  if (gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL)
+  if (gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL &&
+      (priv->position == GTK_POS_TOP || priv->position == GTK_POS_BOTTOM))
   {
     align = 1.0 - align;
   }
