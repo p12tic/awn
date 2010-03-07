@@ -1,5 +1,16 @@
 2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
 
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-tooltip.h:
+	Refresh bindings. Add possibility to specify outline color for
+	tooltips.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
 	* data/avant-window-navigator.schema-ini.in.in:
 	Change a couple of defaults.
 

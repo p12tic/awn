@@ -347,6 +347,12 @@ default = #000000B3
 _description=Background color of the tooltip
 per_instance = false
 
+[theme/tooltip_outline_color]
+type = color
+default = #000000A8
+_description=Outline color of the tooltip
+per_instance = false
+
 [theme/tooltip_font_color]
 type = color
 default = #FFFFFFFF
