@@ -1,3 +1,8 @@
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	Change a couple of defaults.
+
 2010-03-06  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-app.c:
