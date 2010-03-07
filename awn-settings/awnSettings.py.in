@@ -726,6 +726,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 			(defs.THEME, defs.TOOLTIP_FONT_NAME, 'str', icon),
 			(defs.THEME, defs.TOOLTIP_FONT_COLOR, 'str', icon),
 			(defs.THEME, defs.TOOLTIP_BG_COLOR, 'str', icon),
+			(defs.THEME, defs.TOOLTIP_OUTLINE_COLOR, 'str', icon),
 			(defs.EFFECTS, defs.ACTIVE_RECT_COLOR, 'str', icon),
 			(defs.EFFECTS, defs.ACTIVE_RECT_OUTLINE, 'str', icon),
 			(defs.EFFECTS, defs.ARROW_ICON, 'str', extra),

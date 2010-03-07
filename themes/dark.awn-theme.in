@@ -56,3 +56,10 @@ curves_symmetry = 0.5
 curviness = 10
 # Separator color
 sep_color = #aaaaaaaaaaaaa400
+# Tooltip font
+tooltip_font_name = Sans 10
+# Tooltip background
+tooltip_bg_color = #000000000000b3b3
+# Tooltip outline
+tooltip_outline_color = #000000000000a8a8
+

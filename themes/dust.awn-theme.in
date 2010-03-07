@@ -10,6 +10,8 @@ gtk_theme_mode = False
 draw_pattern = False
 tooltip_font_name = Sans 10
 tooltip_bg_color = #000000000000b3b3
+tooltip_outline_color = #000000000000a8a8
+
 hilight = #8d8d84848181ffff
 icon_font_mode = 1
 border = #424240403c3cffff

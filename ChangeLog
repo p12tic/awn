@@ -1,5 +1,15 @@
 2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	* themes/dark.awn-theme.in:
+	* themes/dust.awn-theme.in:
+	* themes/light.awn-theme.in:
+	* themes/smoked.awn-theme.in:
+	Fine-tunning of the default themes.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
 	* bindings/python/awn.defs:
 	* bindings/vala/awn.gi:
 	* bindings/vala/awn.vapi:
