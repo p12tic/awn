@@ -1,5 +1,10 @@
 2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/dock-manager-api.vala:
+	Make GetCapabilities method return what we really support.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnDefs.py.in:
 	* awn-settings/awnSettings.py.in:
 	* themes/dark.awn-theme.in:
