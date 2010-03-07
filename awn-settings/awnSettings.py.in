@@ -219,12 +219,13 @@ class awnPreferencesMini(awnPreferences):
             # "Intellihide" - (1, False, 0)
             # "Window dodge" - (0, False, 0)
             # "Custom" - otherwise
-            new_active = 5 # custom
+            new_active = 4 # custom
             if is_autohiding:
-                if behaviour == (1, False, 0):
-                    new_active = 2
-                elif behaviour == (0, False, 0):
-                    new_active = 3
+                if self.intellihide:
+                    if behaviour == (1, False, 0):
+                        new_active = 2
+                    elif behaviour == (0, False, 0):
+                        new_active = 3
             else:
                 if behaviour in [(0, True, 0), (1, True, 0)]:
                     new_active = 0
@@ -281,6 +282,7 @@ class awnPreferencesMini(awnPreferences):
         self.connect("notify::panel-mode", refresh_behaviour)
         self.connect("notify::autohide-type", refresh_behaviour)
         self.connect("notify::clickthrough", refresh_behaviour)
+        self.connect("notify::intellihide", refresh_behaviour)
         self.connect("notify::intellihide-type", refresh_behaviour)
 
         refresh_behaviour()

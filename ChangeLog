@@ -1,5 +1,10 @@
 2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awnSettings.py.in:
+	Fix custom combobox for behavior.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applets/taskmanager/dock-manager-api.vala:
 	Make GetCapabilities method return what we really support.
 
