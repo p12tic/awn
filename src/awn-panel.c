@@ -1179,6 +1179,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 {
   AwnPanelPrivate *priv = panel->priv;
   GtkAllocation alloc;
+  gfloat align;
 
   /* 
    * We provide a param for width & height, cause for example
@@ -1198,6 +1199,11 @@ awn_panel_get_draw_rect (AwnPanel *panel,
   }
 
   gint paintable_size = priv->offset + priv->size + priv->extra_padding;
+  align = priv->monitor->align;
+  if (gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL)
+  {
+    align = 1.0 - align;
+  }
 
   switch (priv->position)
   {
@@ -1207,7 +1213,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 
       if (priv->animated_resize && !priv->expand)
       {
-        area->x = ROUND ((width - priv->draw_width) * priv->monitor->align);
+        area->x = ROUND ((width - priv->draw_width) * align);
         area->width = priv->draw_width;
       }
       else
@@ -1223,7 +1229,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 
       if (priv->animated_resize && !priv->expand)
       {
-        area->x = ROUND ((width - priv->draw_width) * priv->monitor->align);
+        area->x = ROUND ((width - priv->draw_width) * align);
         area->width = priv->draw_width;
       }
       else
@@ -1239,7 +1245,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 
       if (priv->animated_resize && !priv->expand)
       {
-        area->y = ROUND ((height - priv->draw_height) * priv->monitor->align);
+        area->y = ROUND ((height - priv->draw_height) * align);
         area->height = priv->draw_height;
       }
       else
@@ -1256,7 +1262,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 
       if (priv->animated_resize && !priv->expand)
       {
-        area->y = ROUND ((height - priv->draw_height) * priv->monitor->align);
+        area->y = ROUND ((height - priv->draw_height) * align);
         area->height = priv->draw_height;
       }
       else

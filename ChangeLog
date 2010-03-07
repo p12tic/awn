@@ -1,5 +1,11 @@
 2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
 
+	* src/awn-background.c:
+	* src/awn-panel.c:
+	Possible fix for bug #499556.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnSettings.py.in:
 	Fix custom combobox for behavior.
 

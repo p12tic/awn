@@ -788,6 +788,11 @@ awn_background_get_panel_alignment (AwnBackground *bg)
 
   g_object_get (monitor, "monitor_align", &alignment, NULL);
 
+  if (gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL)
+  {
+    alignment = 1.0 - alignment;
+  }
+
   return alignment;
 }
 
