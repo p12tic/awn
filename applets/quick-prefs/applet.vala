@@ -567,6 +567,7 @@ public class PrefsApplet : AppletSimple
       string msg;
       msg = Gettext._ ("Could not open Awn settings: %s")
             .printf (err.message);
+      warning ("%s", msg);
     }
   }
 

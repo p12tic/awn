@@ -1,5 +1,10 @@
 2010-03-08  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/quick-prefs/applet.vala:
+	Constructing error message is nice, but displaying it is more useful.
+
+2010-03-08  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnSettings.py.in:
 	Expose a few more theme-related settings in theme customization dialog.
