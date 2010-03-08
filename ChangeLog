@@ -1,3 +1,9 @@
+2010-03-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	Expose a few more theme-related settings in theme customization dialog.
+
 2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background-edgy.c:

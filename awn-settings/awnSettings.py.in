@@ -584,6 +584,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     pattern_mode = gobject.property(type=bool, default=False)
     icon_font_mode = gobject.property(type=int, default=0)
     tooltip_font_name = gobject.property(type=gobject.TYPE_STRING, default='Sans 8')
+    pattern_alpha = gobject.property(type=float, default=1)
     arrow_type = gobject.property(type=str)
             
     def __init__(self, wTree):
@@ -628,6 +629,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         self.custom_arrow_chooser.set_filter(filter)
 
         self.pattern_chooser = self.wTree.get_object("pattern_chooser")
+        self.pattern_alpha_spin = self.wTree.get_object("pattern_alpha_spin")
         filename = self.client.get_string(defs.THEME, defs.PATTERN_FILENAME)
         if os.path.exists(filename):
             self.pattern_chooser.set_filename(filename)
@@ -801,6 +803,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             (self.client, defs.THEME, defs.ICON_TEXT_OUTLINE_COLOR, "theme_icon_font_outline_color", True),
             (self.client, defs.THEME, defs.TOOLTIP_FONT_COLOR, "theme_tooltip_font_color", False),
             (self.client, defs.THEME, defs.TOOLTIP_BG_COLOR, "theme_tooltip_bg_color", False),
+            (self.client, defs.THEME, defs.TOOLTIP_OUTLINE_COLOR, "theme_tooltip_outline_color", False),
             (self.client, defs.THEME, defs.SEP_COLOR, "theme_separator_color", True),
             (self.client, defs.EFFECTS, defs.DOT_COLOR, "effects_dot_color", True),
             (self.client, defs.EFFECTS, defs.ACTIVE_RECT_COLOR, "activerect_color", True),
@@ -826,6 +829,8 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                 "radius", "theme_radius"),
             (self.client, defs.THEME, defs.TOOLTIP_FONT_NAME,
                 "tooltip-font-name", "theme_tooltip_font_name"),
+            (self.client, defs.THEME, defs.PATTERN_ALPHA,
+                "pattern-alpha", "pattern_alpha_spin"),
         ]
 
         for item in config_map_simple:
@@ -853,6 +858,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 					   
     def pattern_mode_getter(self, enabled):
         self.pattern_chooser.set_sensitive(enabled)
+        self.pattern_alpha_spin.set_sensitive(enabled)
         return enabled
 			
     def disable_color_buttons(self, state=False):
