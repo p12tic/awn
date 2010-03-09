@@ -20,6 +20,7 @@ sep_color = #ffffffffffff7f7f
 [config/effects]
 show_shadows = False
 arrow_icon = __awn_internal_arrow1
+active_background_icon =
 active_rect_color = #9090878779796666
 active_rect_outline = #0000000000000000
 

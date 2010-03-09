@@ -102,6 +102,7 @@ ARROW_ICON              = "arrow_icon"          #string
 DOT_COLOR               = "dot_color"           #string
 ACTIVE_RECT_COLOR       = "active_rect_color"   #string
 ACTIVE_RECT_OUTLINE     = "active_rect_outline" #string
+ACTIVE_RECT_ICON        = "active_background_icon" #string
 #FRAME_RATE             = "frame_rate"          #int
 
 LAUNCHERS_LIST          = "launcher_paths"      #list-string

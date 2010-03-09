@@ -1,3 +1,13 @@
+2010-03-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnDefs.py.in:
+	* themes/dark.awn-theme.in:
+	* themes/dust.awn-theme.in:
+	* themes/light.awn-theme.in:
+	* themes/smoked.awn-theme.in:
+	Support themes with custom active rectangle icon.
+
 2010-03-08  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/quick-prefs/applet.vala:

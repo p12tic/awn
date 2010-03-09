@@ -22,6 +22,8 @@ arrow_icon = __awn_internal_arrow1
 reflection_alpha_multiplier = 0.3
 # No shadows
 show_shadows = false
+# Don't use custom active icon
+active_background_icon = 
 # Active rectangle color
 active_rect_color = #9090878779796666
 # Active rectangle outline color

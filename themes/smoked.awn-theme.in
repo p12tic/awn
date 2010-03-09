@@ -24,6 +24,7 @@ curves_symmetry = 0.5
 show_shadows = False
 icon_effect = 0
 arrow_icon = __awn_internal_arrow1
+active_background_icon =
 active_rect_color = #8461846184618282
 active_rect_outline = #b3b3aeaeaeaeffff
 

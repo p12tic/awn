@@ -1598,6 +1598,10 @@ class awnThemeCustomize(awnBzr):
             root, ext = os.path.splitext(pattern_path)
             shutil.copy(pattern_path, "%s/pattern%s" % (themedir, ext))
 
+        active_icon_path = self.client.get_string(defs.EFFECTS, defs.ACTIVE_RECT_ICON)
+        if active_icon_path and os.path.exists(active_icon_path):
+            shutil.copy(active_icon_path, themedir+'/active_icon.png')
+
         self.get_dock_image(themedir)
 
         tarpath = os.path.join(tmpdir, filename+'.tgz')
@@ -1631,6 +1635,7 @@ class awnThemeCustomize(awnBzr):
     def install_theme(self, file):
         goodTheme = False
         customArrow = False
+        customActiveIcon = False
         pattern = False
         if tarfile.is_tarfile(file):
             tar = tarfile.open(file, "r:gz")
@@ -1639,6 +1644,8 @@ class awnThemeCustomize(awnBzr):
                     goodTheme = member.name
                 elif member.name.endswith("arrow.png"):
                     customArrow = member.name
+                elif member.name.endswith("active_icon.png"):
+                    customActiveIcon = member.name
                 elif member.name.find("pattern.") >= 0:
                     pattern = member.name
             
@@ -1668,10 +1675,15 @@ class awnThemeCustomize(awnBzr):
                 
                 config.set('theme-info', 'Icon', themedir+'/thumb.png')
                 if customArrow:
-                    config.set("config/effects", 'arrow_icon', themedir+'/arrow.png')
+                    config.set("config/effects", 'arrow_icon',
+                               themedir+'/arrow.png')
+                if customActiveIcon:
+                    config.set("config/effects", 'active_background_icon',
+                               themedir+'/active_icon.png')
                 if pattern:
                     index = pattern.find('/pattern.')
-                    config.set("config/theme", 'pattern_filename', themedir+pattern[index:])
+                    config.set("config/theme", 'pattern_filename',
+                               themedir+pattern[index:])
                 f = open(themefile, "w")
                 config.write(f)
                 f.close()

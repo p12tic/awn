@@ -22,6 +22,7 @@ curves_symmetry = 0.5
 
 [config/effects]
 show_shadows = False
+active_background_icon =
 active_rect_color = #9090878779796666
 active_rect_outline = #0000000000000000
 
