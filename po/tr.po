@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-08 13:43+0000\n"
-"Last-Translator: Furkan KARA <kingofthepixels@gmail.com>\n"
+"PO-Revision-Date: 2010-03-07 09:58+0000\n"
+"Last-Translator: Murat Cimen <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-03-08 05:37+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Genişletici"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Genişleme modunda panel üzerindeki boşluğu doldur"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
@@ -76,6 +76,9 @@ msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Farklı bir çalışma alanındaki pencere etkinleştirildiğinde davranış. (0 - "
+"Varsayılan, 1 - Etkin çalışma alanını değiştir, 2 - Geçerli çalışma alanına "
+"taşı)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
@@ -149,7 +152,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Tüm çalışma yerlerinden pencereler göster"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,16 +168,16 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
 msgid "Launch"
-msgstr ""
+msgstr "Çalıştır"
 
 #: ../applets/taskmanager/task-launcher.c:1186
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "%s çalıştır"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Çalıştır/Görevyönetici"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
@@ -183,16 +186,16 @@ msgstr ""
 #: ../applets/quick-prefs/applet.vala:118
 #: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
 msgid "About Awn"
-msgstr ""
+msgstr "Awn Hakkında"
 
 #: ../applets/quick-prefs/applet.vala:289
 #: ../applets/quick-prefs/applet.vala:465
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Panel yönelimini değiştirmek için sürükle"
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
-msgstr ""
+msgstr "Simge boyutu:"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -202,7 +205,7 @@ msgstr ""
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Awn ayarları açılamıyor : %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
@@ -219,86 +222,86 @@ msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Ayraç"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Çalışma alanı %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Çalışma Alanı 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Çalışma Alanı %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Çalıştırıcı olarak ekle"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
-msgstr ""
+msgstr "_Kapat"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
-msgstr ""
+msgstr "_Tümünü Kapat"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:743
 msgid "Ma_ximize"
-msgstr ""
+msgstr "_Büyüt"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:748
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Büyüt_meyi geri al"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:777
 msgid "Always on _Top"
-msgstr ""
+msgstr "Her zaman en _Üstte"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:801
 msgid "Mi_nimize"
-msgstr ""
+msgstr "_Küçült"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:806
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Küçült_meyi geri al"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Her zaman görünür Çalışma Alanının üstünde"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:864
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Sadece bu Çalışma alanının üstünde"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "_Soldaki Çalışma Alanına Taşı"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:944
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Sağ_daki Çalışma Alanına Taşı"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:954
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "_Üstteki Çalışma Alanına Taşı"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:964
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "_Alttaki Çalışma Alanına Taşı"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "_Başka bir Çalışma Alanına Taşı"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
-msgstr ""
+msgstr "Awn Ayarları"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -306,17 +309,17 @@ msgstr "Awn tercihlerini, başlatıcıları, uygulamaları ve temaları  yöneti
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Hata, sources.list zaten mevcut"
 
 #: ../awn-settings/awnClass.py:335
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "hata, dosya yolu boş yada zaten mevcut"
 
 #: ../awn-settings/awnClass.py:455
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
-msgstr ""
+msgstr "Hata, sisteminizde %s kayıp, lütfen source.list'ten çıkartın"
 
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:143
@@ -325,7 +328,7 @@ msgstr "Hiçbiri"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
-msgstr ""
+msgstr "Basit"
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
@@ -345,7 +348,7 @@ msgstr "Yakınlaş"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Ez"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
@@ -387,12 +390,12 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1067
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Belirtilen simgeler konumlandırılamıyor: %s\n"
 
 #: ../awn-settings/awnClass.py:1074
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Takip eden simgeler konumlandırılamıyor: %s\n"
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
@@ -442,95 +445,95 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "Awn Ayarları root yetkisindeyken çalışmaz."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Sol"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Sağ"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "En üst"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "En alt"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Düz"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3d"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Kavisli"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Belirgin"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Kayan"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Standard"
-msgstr ""
+msgstr "Temel"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
-msgstr ""
+msgstr "Pano tarz"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Autohide Keep below"
-msgstr ""
+msgstr "Otomatik gizle Aşağıda tut"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Autohide Fade out"
-msgstr ""
+msgstr "Otomatik gizle Azaltarak"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Transparency"
-msgstr ""
+msgstr "Şeffaflık"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Always"
-msgstr ""
+msgstr "Her zaman"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
-msgstr ""
+msgstr "Akıllı gizleme"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Window dodge"
-msgstr ""
+msgstr "Pencere kenar uyumu"
 
 #: ../awn-settings/awnSettings.py.in:757
 msgid "Solid"
-msgstr ""
+msgstr "Katı"
 
 #: ../awn-settings/awnSettings.py.in:757
 msgid "Outline"
-msgstr ""
+msgstr "Anahat"
 
 #: ../awn-settings/awnSettings.py.in:758
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "Anahat, Ters çevrilmiş"
 
 #: ../awn-settings/awnSettings.py.in:942
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Belirlenmiş uygulama ikonunu kullan"
 
 #: ../awn-settings/awnSettings.py.in:943
 msgid "Use best quality icons"
-msgstr ""
+msgstr "En iyi kalite ikonları kullan"
 
 #: ../awn-settings/awnSettings.py.in:944
 msgid "Overlay best quality icon with application icon"
@@ -560,27 +563,27 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:133
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn Wiki'si"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Yuva benzeri pencere gezgini"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr ""
+msgstr "0 - katı, 1 - dışhat, 2 - dışhat, ters çevrilmiş."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgstr "Her eylem için bir tür etki barındıran Bitmask"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid "Alignment of a non-expanded panel on the monitor edge."
@@ -588,7 +591,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
+msgstr "1'den fazla monitör için seçimsel denkleştirme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid ""
@@ -598,19 +601,19 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "AwnDialog başlıkları için arkaplan rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "AwnDialog için arkaplan rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "İpuçları için arkaplan rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Etkin diktörtgen rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
@@ -618,11 +621,12 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Etkin diktörtgen anahat rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
 msgstr ""
+"Fare imlecinin panel dışına çıkması ile saklanması arasındaki gecikme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "Delay for mouse position polling."
@@ -636,11 +640,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Draw separators."
-msgstr ""
+msgstr "Çizim ayraçları"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Desen çizimini etkinleştirme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First gradient step color."
@@ -652,39 +656,41 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Tooltip yazıtipi rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Tooltip yazıtipi ismi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
-msgstr ""
+msgstr "Ekran konumunu zorla."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "İkon yazısı rengi. GTK temasının rengini kullanmak için boş bırakın."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
+"İkon yazısı dışhat rengi. GTK temasının rengini kullanmak için boş bırakın."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "Eğer doğruysa; büyütülmüş pencere, paneli kapsamıyor."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Eğer doğruysa; panel, tüm ekran genişliği/yüksekliği kadar genişleyecek."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Internal border color."
-msgstr ""
+msgstr "Dahili kenar rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid "Main border color."
-msgstr ""
+msgstr "Ana kenar rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -702,15 +708,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Mevcut temanın dosya yolu"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Aktif ikon arkaplanı için png içeren yol."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Ok ikonu için png içeren yol."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid ""
@@ -725,27 +731,27 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Second gradient step color."
-msgstr ""
+msgstr "İkinci değişim adımı rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "İkinci vurgulanmış değişim adımı rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Separator color."
-msgstr ""
+msgstr "Ayraç rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "İkonlar için gölgeleri göster."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "The active list UA Screenlets for this panel."
-msgstr ""
+msgstr "Bu panel için aktif UA Screnlet'lerin listesi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "3D kipinde panel açısı."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The curviness of the panel in Curves mode."
@@ -785,11 +791,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "İkonlar için donukluk, 0.0 ile 1.0 arası"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Desen donukluğu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -823,28 +829,28 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
-msgstr ""
+msgstr "İkonlar"
 
 #: ../libawn/awn-themed-icon.c:1978
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Özelleştirilmiş ikon Tercihi"
 
 #: ../libawn/awn-themed-icon.c:2065
 msgid "Customize Icon"
-msgstr ""
+msgstr "İkon Özelleştir"
 
 #: ../libawn/awn-themed-icon.c:2152
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Özelleştirilmiş İkonu Kaldır"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
-msgstr ""
+msgstr "Yuva yükleniyor"
 
 #: ../src/awn-applet-proxy.c:371 ../src/awn-applet-proxy.c:472
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Hoppala! Yuva çöktü. Yeniden başlatmak için tıklayın"
 
 #: ../src/awn-panel.c:3898
 msgid "Close docklet"
-msgstr ""
+msgstr "Yuvayı kapat"

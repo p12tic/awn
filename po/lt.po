@@ -7,37 +7,40 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:35-0800\n"
-"PO-Revision-Date: 2010-02-02 10:33+0000\n"
-"Last-Translator: zolookas <zolookas@delfi.lt>\n"
+"POT-Creation-Date: 2010-02-08 02:31-0800\n"
+"PO-Revision-Date: 2010-02-22 20:36+0000\n"
+"Last-Translator: Darius Kulikauskas <Unknown>\n"
 "Language-Team: Lithuanian <lt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "(n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
+"X-Launchpad-Export-Date: 2010-02-23 05:06+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Išskleistukas"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Užpildo erdvę panelėje išskleisties režime"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Leisti grupuoti langus, kurie turi skirtingas WM_CLIENT_NAME reikšmes."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Valdo apdangalo alfa reikšmes, jei įjungtas overlay_application_icons. "
+"Tinkamos reikšmės nuo 0.0 iki 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -47,23 +50,35 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" Valdo langų piktogramų rodymą Užduoties piktogramoje.. 0) Visada rodyti "
+"programų pateiktas lango piktogramas, kai jie yra aktyvūs (išskyrus keletą "
+"išimčių). 1) Bandyti rodyti tik programos pateiktas piktogramas, kai "
+"tikėtina, kad jie pateiks vertingo informacijos ar sudarys naudingą "
+"kontekstą. 2) Nekreipti dėmesio į programų teikiamas piktogramas ir rodyti "
+"tik Paleistuko ikoną"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Valdo apdangalo dydį, kai įjungtas nustatymas overlay_application_icon. "
+"Tinkamos reikšmės yra nuo 0.2 iki 0.7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Grupuoti piktogramas iš to paties paleistuko, jei langų grupavimas yra "
+"išjungtas."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
 " If overlay_application_icons is true, this key will reverse the "
 "overlay/overlayee if set to true."
 msgstr ""
+" Šis raktas apkeis apdangalą/apdengtąjį, kai jis ir nustatymas "
+"overlay_application_icon yra įjungti."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -71,40 +86,48 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" Jei įjungta, programų langų piktogramos bus uždengtos  Paleistuko "
+"piktograma vietoj pakeitimo, numatyto pagal icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Elgesys, kai langai yra skirtinguose darbalaukiuose. (0 - elgesys pagal "
+"nutylėjimą, 1 - pakeis aktyvųjį darbalaukį, 2 - atkels į aktyvųjį darbalaukį)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Kontekstinio meniu apibrėžimas. Bus ieškoma awn meniu įdiegimo aplanke, kol "
+"nebus nurodytas visas kelias."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
+msgstr "Uždelsti prieš aktyvuojant langą, kai tempiama piktograma."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"Elgsena kopijuojant, kai tempiami ir numetami darbastalio failai. 0.. "
+"Kopijuos viską, 1.. Kopijuos, jei vartotojas bus savininkas, 2.. Nekopijuos."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "Įjungti ilgąjį paspaudimą Dialogo atidarymui."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Įjungti langų pergrupavimą tempiant ir numetant "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Įjungti užduočių grupes."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -112,6 +135,9 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
+"Kaip radikaliai bandoma grupuoti, kai jis įjungtas. Nustatymo vertė turėtų "
+"būti tarp 0 ir 99. 0 reikš tą patį, ką išjungtas grupavimas. 99 sugrupuos "
+"praktiškai viską."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -119,6 +145,9 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
+"Kaip kurti patikrintų dėl susikirtimo langų sąrašą, kai Protingslėpimis yra "
+"įjungtas. 0.. naudos langus aktyviame darbalaukyje, 1.. naudos priešakinės "
+"programos langus."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -126,243 +155,256 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
+"Naudoti Protingslėpimį, jei panelės slėpimas įjungtas. Šis nustatymas įjungs "
+"automatinį panelės paslėpimą, kai nebus susikertančių langų atitinkamame "
+"langų sąraše (žr. intellihide_mode)."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
+"Maksimalus rodomų užduočių indikatorių po piktogramomis skaičius. Tinkamos "
+"reikšmės yra 0..3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
 "Number of seconds to inhibit autohide when a application requests attention. "
 "A value of 0 disables."
 msgstr ""
+"Po kiek sekundžių turi prasidėti automatinis slėpimas, kai programa paprašo "
+"dėmesio. Reikšmė 0 išjungia."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
 "Number of seconds to wait before nagging again, by inhibiting autohide, if "
 "attention is required by any windows. A value of 0 disables."
 msgstr ""
+"Kiek sekundžių laukti prieš vėl kimbant, įjungiant automatinį slėpimą, jei "
+"dėmesio prašo bet kuris iš langų. Reikšmė 0 išjungia."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Rodyti tik ir valdytojo paleistuko langus"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Rodyti langus iš visų darbalaukių"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
 msgstr ""
+"Slenkstis, nuo kurio prasideda teksto skaičiavimas rodymui. Tinkamos "
+"reikšmės 1.."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"Kelių į .desktop failus sąrašas, iš kurių užduočių valdyklė turėtų sukurti "
+"savo paleistukus"
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
 msgid "Launch"
-msgstr ""
+msgstr "Paleisti"
 
 #: ../applets/taskmanager/task-launcher.c:1186
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "Paleisti %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Paleistukas/Užduočių valdyklė"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Paleistukas/Užduočių valdyklės programėlė"
 
 #: ../applets/quick-prefs/applet.vala:118
 #: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
 msgid "About Awn"
-msgstr ""
+msgstr "Apie Awn"
 
 #: ../applets/quick-prefs/applet.vala:289
 #: ../applets/quick-prefs/applet.vala:465
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Tempti, kad būtų pakeista panelės orientacija"
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
-msgstr ""
+msgstr "Piktogramos dydis"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Juostos nustatymai"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Nepavyko atidaryti Awn nustatymų: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "Juostos valdymui ir Awn nustatymui paleidimui naudojama programėlė."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Nustatymų programėlė"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Skirtuku atskiria programėles"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Skirtukas"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Darbalaukis %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "1_0-tas darbalaukis"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Darbalaukis %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Pridėti kaip Paleistuką"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
-msgstr ""
+msgstr "_Uždaryti"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
-msgstr ""
+msgstr "_Uždaryti visus"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:743
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Iš_didinti"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:748
 msgid "Unma_ximize"
-msgstr ""
+msgstr "_Sumažinti"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:777
 msgid "Always on _Top"
-msgstr ""
+msgstr "Visada _viršuje"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:801
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Sumaž_inti"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:806
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Išdidi_nti"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Visada Matomame darbalaukyje"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:864
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Tik Šiame darbalaukyje"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Perkelti į _kairįjį darbalaukį"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:944
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Perkelti į _dešinįjį darbalaukį"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:954
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Perkelti į _viršutinįjį darbalaukį"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:964
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Perkelti į _žemutinįjį darbalaukį"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Perkelti į kitą _Darbalaukį"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
-msgstr ""
+msgstr "Awn nustatymai"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Tvarkyti Awn nustatymus, paleidėjus, pusprogrames ir temas"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Klaida, sources.list jau egzistuoja"
 
 #: ../awn-settings/awnClass.py:335
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Klaida, kelias yra nenurodytas arba jau egzistuoja"
 
 #: ../awn-settings/awnClass.py:455
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
-msgstr ""
+msgstr "Klaida,  %s nėra sistemoje, pašalinkite jį iš sources.list"
 
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
-#: ../awn-settings/awnSettings.py.in:140
+#: ../awn-settings/awnSettings.py.in:143
 msgid "None"
-msgstr ""
+msgstr "Joks"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
-msgstr ""
+msgstr "Paprastas"
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Klasikinė"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Išnykimas"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Apšvietimas"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Išdidinimas"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Tąsus"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3D sukimasis"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D sukimasis su apšvietimu"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Švytėjimas"
 
-#: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
+#: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:151
 msgid "Custom"
-msgstr ""
+msgstr "Savas"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -370,39 +412,44 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Automatinis sukūrimas nepavyko. Prašome rankiniu būdu sukurti aplanką:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Patvirtinkite aplanko sukūrimą"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Jūsų vartotojui automatinio paleidimo aplankas dar nėra sukurtas.\n"
+"Ar norite, kad jis Jums būtų automatiškai sukurtas?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Nepavyko rasti nė vienos iš šių piktogramų: %s\n"
 
 #: ../awn-settings/awnClass.py:1074
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Nepavyko rasti šios piktogramos: %s\n"
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN sėkmingai atnaujintas"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant langų tvarkytuvas"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
+"Visapusiškai konfigūruojamas juostos tipo langų tvarkytuvas GNOME aplinkai."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -411,6 +458,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Ši programa yra laisva programinė įranga; galite ją platinti ir / arba "
+"modifikuoti GNU bendrosios viešosios licencijos sąlygomis, paskelbtomis "
+"Laisvosios programinės įrangos fondo; 2-osios arba (savo pasirinkimu) bet "
+"kurios vėlesnės licencijos versijos sąlygomis."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -419,6 +470,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Ši programa yra platinama tikintis, kad ji bus naudinga, tačiau BE JOKIŲ "
+"GARANTIJŲ; netgi be numanomų PARDAVIMO arba TINKAMUMO TAM TIKRAM TIKSLUI "
+"garantijų. Išsamesnę informaciją rasite GNU bendrojoje viešojoje licencijoje."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -426,94 +480,109 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Jūs turėjote gauti GNU bendrąją viešąją licenciją kartu su šia programa; jei "
+"ne, parašykite Nemokamos programinės įrangos fondui adresu: 51 Franklin St, "
+"Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "Awn nustatymų neįmanoma paleisti kaip root."
 
-#: ../awn-settings/awnSettings.py.in:135
+#: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Kairė"
 
-#: ../awn-settings/awnSettings.py.in:135
+#: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Dešinė"
 
-#: ../awn-settings/awnSettings.py.in:136
+#: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "Viršus"
 
-#: ../awn-settings/awnSettings.py.in:136
+#: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "Apačia"
 
-#: ../awn-settings/awnSettings.py.in:140
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Plokščias"
 
-#: ../awn-settings/awnSettings.py.in:140
+#: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "Trimatis"
 
-#: ../awn-settings/awnSettings.py.in:141
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Lenktas"
 
-#: ../awn-settings/awnSettings.py.in:141
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Kampuotas"
 
-#: ../awn-settings/awnSettings.py.in:141
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:145
-msgid "Standard"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:145
-msgid "Panel mode"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:146
-msgid "Autohide Keep below"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:147
-msgid "Autohide Fade out"
-msgstr ""
+msgstr "Plūduriuojantis"
 
 #: ../awn-settings/awnSettings.py.in:148
+msgid "Standard"
+msgstr "Standartinis"
+
+#: ../awn-settings/awnSettings.py.in:148
+msgid "Panel mode"
+msgstr "Panelės režimas"
+
+#: ../awn-settings/awnSettings.py.in:149
+msgid "Autohide Keep below"
+msgstr "Automatinį slėpimą laikyti žemiau"
+
+#: ../awn-settings/awnSettings.py.in:150
+msgid "Autohide Fade out"
+msgstr "Automatinis slėpimas išnykimu"
+
+#: ../awn-settings/awnSettings.py.in:151
 msgid "Transparency"
-msgstr ""
+msgstr "Permatomumas"
 
-#: ../awn-settings/awnSettings.py.in:690
+#: ../awn-settings/awnSettings.py.in:155
+msgid "Always"
+msgstr "Visada"
+
+#: ../awn-settings/awnSettings.py.in:155
+msgid "Intellihide"
+msgstr "Protingslėpmis"
+
+#: ../awn-settings/awnSettings.py.in:156
+msgid "Window dodge"
+msgstr "Langų išvengimas"
+
+#: ../awn-settings/awnSettings.py.in:757
 msgid "Solid"
-msgstr ""
+msgstr "Kietas"
 
-#: ../awn-settings/awnSettings.py.in:690
+#: ../awn-settings/awnSettings.py.in:757
 msgid "Outline"
-msgstr ""
+msgstr "Kontūras"
 
-#: ../awn-settings/awnSettings.py.in:691
+#: ../awn-settings/awnSettings.py.in:758
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "Kontūras, Išvirkščias"
 
-#: ../awn-settings/awnSettings.py.in:858
-msgid "Use Window Icons"
-msgstr ""
+#: ../awn-settings/awnSettings.py.in:942
+msgid "Use application-specified icons"
+msgstr "Naudoti programų nurodytas piktogramas"
 
-#: ../awn-settings/awnSettings.py.in:859
-msgid "Use Launcher Icons"
-msgstr ""
+#: ../awn-settings/awnSettings.py.in:943
+msgid "Use best quality icons"
+msgstr "Naudoti geriausios kokybės piktogramas"
 
-#: ../awn-settings/awnSettings.py.in:860
-msgid "Overlay Window Icon"
-msgstr ""
+#: ../awn-settings/awnSettings.py.in:944
+msgid "Overlay best quality icon with application icon"
+msgstr "Uždengti geriausios kokybės piktogramą su programos piktograma"
 
-#: ../awn-settings/awnSettings.py.in:861
-msgid "Overlay Window Icon - Reversed"
-msgstr ""
+#: ../awn-settings/awnSettings.py.in:945
+msgid "Overlay application icon with best quality icon"
+msgstr "Uždengti programos piktogramą  su geriausios kokybės piktograma"
 
 #: ../bindings/python/__init__.py:118
 #, python-format
@@ -532,160 +601,184 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Šie Phyton moduliai negalėjo būti rasti: %s. Tai įvyko dėl kelių galimų\n"
+"priežasčių:\n"
+"\n"
+"1. Jūs neturite šio Phyton modulio įsidiegę į savo sistemą. Šiuo atveju, "
+"Jums reikėtų\n"
+"aplankyti AWN wiki programėlių sekciją ir išsiaiškinti tikslų paketo "
+"pavadinimą\n"
+"savo distribucijai, kurie Jums teikia modulį.\n"
+"\n"
+"2. Įdiegtas modulis yra nestandartinėje vietoje. Taip paprastai būna,\n"
+"kai rankiniu būdu įrašomas paketas, t. y. ne per distributioriaus paketų "
+"valdyklę.\n"
+"Ši situacija yra paaiškinta wiki DUK sekcijoje.\n"
 
 #: ../bindings/python/__init__.py:133
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Juostos tipo langų tvarkytuvas"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr ""
+msgstr "0 - kietas, 1 - kontūras, 2 - kontūras, išvirkščias."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgstr "Dvejetainė reikšmė, kuri išsaugo efektą kiekvienam įvykiui"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
+msgstr "Neišskleistos panelės lygiavimas vaizduoklio kampe."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
+msgstr "Pasirinktinis atidėjimas, kai turite daugiau nei 1 vaizduoklį."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"Visos reikšmės, didesnės už 0, vaizduos panelę su kampais. Kuo didesnis "
+"spindulys, tuo didesni kampai."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "AwnDialogo pavadinimo fono spalva"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "AwnDialogo fono spalva"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "Patarimo lentelės fono spalva"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Aktyvaus stačiakampio spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Švytinčio taško spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Aktyvaus stačiakampio kontūro spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
-msgstr ""
+msgstr "Uždelsimas iki paslėpimo, kai pelė palieka panelę."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Uždelsimas po pelės užvedimo."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Nustato, ar nustatymų redaktorius leidžiamas programėlėms, kurios neturi "
+"specifinio nustatymų dialogo."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Draw separators."
-msgstr ""
+msgstr "Piešti skirtukus."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Įjungti rašto piešimą."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First gradient step color."
-msgstr ""
+msgstr "Pirmojo gradienot žingsnio spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "Pirmojo paryškinto gradiento žingsnio spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Patarimo šrifto spalva"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Patarimų šrifto pavadinimas"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
-msgstr ""
+msgstr "Priverstinė vaizduoklio geometrija."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
+"Piktogramos teksto spalva. Palikite tuščią, jei norite, kad būtų naudojamos "
+"gtk temos spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
+"Piktogramos teksto kontūro spalva. Palikite tuščią, jei norite, kad būtų "
+"naudojama gtk temos spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "Jei įjungta, išdidinti langai neuždengs panelės."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "If true, the panel will expand to full monitor width/height."
-msgstr ""
+msgstr "Jei įjungta, panelė išsiplės per visą vaizduoklio plotį ar aukštį."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Internal border color."
-msgstr ""
+msgstr "Vidinė kraštinės spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid "Main border color."
-msgstr ""
+msgstr "Pagrindinės kraštinės spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
+"Vaizduoklio numeris, kuriame yra Awn (veikia tik tuo atveju, kai "
+"monitor_force yra išjungtas, naudoti -1, kad būtų parinktas vaizduoklis "
+"automatiškai)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "Tarpas tarp piktogramų ir jų dialogo."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Tarpas tarp piktogramų ir lango kraštiniės."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Kelias iki naudojamos darbstalio failo temos."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Kelias iki png, kuriame yra aktyvi fono piktograma."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Kelias į png, kuriame yra rodyklės piktograma."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid ""
@@ -693,133 +786,148 @@ msgid ""
 "through, 1 - click through when holding CTRL, 2 - always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
+"Suteikia galimyę paspausti ant lango už panelės. (0 - niekada neleisti "
+"spausti kiaurai, 1 - spausti kiaurai, kai laikomas CTRL, 2 - visada spausti "
+"kiaurai ir sąveikauti su panele tik laikant CTRL)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
-msgstr ""
+msgstr "Atspindžio alfa kaip piktogramos naudojamosios alfos daugėtas."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Second gradient step color."
-msgstr ""
+msgstr "Antrojo gradiento žingsnio spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "Antrojo žingsnio išryškinto gradiento spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Separator color."
-msgstr ""
+msgstr "Skirtuko spalva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Rodyti šešėlius po piktogramomis."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "The active list UA Screenlets for this panel."
-msgstr ""
+msgstr "Aktyvus sąrašas UA ekranprogramių šiai panelei."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "Panelės pasvirimo kampas trimačiame režime."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The curviness of the panel in Curves mode."
-msgstr ""
+msgstr "Panelės išlenktumas išlenktumo režime."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
+"Priverstojo vaizduoklio aukštis. Naudojama tik tada, kai monitor_force yra "
+"įjungta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
+"Priverstinis vaizduoklio plotis. Naudojamas tik tada, kai monitor_force yra "
+"įjungta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
+"Prieš tai pridėtų UA ekranprogramėlių sąrašas formoje "
+"ScreeneletInstance::Position."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
+"Iš kairės į dešinę ar iš viršaus į apačią surūšiuotų surūšiuotų panelės "
+"programėlių sąrašas."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid "The list of panel instances."
-msgstr ""
+msgstr "Panelės instancijų sąrašas."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The location of the pattern to draw."
-msgstr ""
+msgstr "Nupiešimui skirto rašto vieta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Atstumas tarp piktogramos ir jos atspindžio."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "Piktogramų permatomumas, nuo 0.0 iki 1.0"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Rašto permatomumas."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
-msgstr ""
+msgstr "Įlinkio simetsrija išlenkimo režime."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The user-visible size of Awn."
-msgstr ""
+msgstr "Vartotojui matomo Awn dydis."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
+"Laikas milisekundėmis, po kurio AwnPiktograma išsiųs ilgojo paspaudimo "
+"signalą."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
+msgstr "Nurodo, ar AwnDialogas turėtų naudoti Gtk temos spalvas."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "Whether to close dialogs on loss of focus."
-msgstr ""
+msgstr "Nurodo, ar reikia uždaryti dialogus jiems tapus neaktyviais."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgstr "Nurodo, ar naudoti spalvas iš sistemos Gtk temos."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
+"piktogramos teksto kontūro plotis, jei kontūro režimas įjungtas. Patariamos "
+"reikšmės nuo 1.0 iki 5.0."
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
-msgstr ""
+msgstr "Piktogramos"
 
 #: ../libawn/awn-themed-icon.c:1978
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Nustatyti pasirinktiną piktogramą"
 
 #: ../libawn/awn-themed-icon.c:2065
 msgid "Customize Icon"
-msgstr ""
+msgstr "Tinkinti piktogramą"
 
 #: ../libawn/awn-themed-icon.c:2152
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Pašalinti pasirinktiną piktogramą"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
-msgstr ""
+msgstr "Įkraunama programėlė..."
 
 #: ../src/awn-applet-proxy.c:371 ../src/awn-applet-proxy.c:472
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Ups! Programėlė užstrigo. Paspauskite, kad paleistumėte ją iš naujo."
 
-#: ../src/awn-panel.c:3896
+#: ../src/awn-panel.c:3898
 msgid "Close docklet"
-msgstr ""
+msgstr "Uždaryti juostuką"
