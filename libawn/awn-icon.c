@@ -46,9 +46,6 @@ struct _AwnIconPrivate
   AwnEffects   *effects;
   GtkWidget    *tooltip;
 
-  guint effects_backup;
-  gboolean effects_backup_set;
-
   gboolean bind_effects;
   gboolean hover_effects_enable;
   gboolean left_was_pressed;
@@ -125,31 +122,43 @@ static void
 awn_icon_update_effects (GtkWidget *widget, gpointer data)
 {
   AwnIconPrivate *priv = AWN_ICON (widget)->priv;
+  DesktopAgnosticConfigClient *client = 
+      awn_config_get_default (AWN_PANEL_ID_DEFAULT, NULL);
+  GObject *fx = G_OBJECT (priv->effects);
 
   if (gtk_widget_is_composited (widget))
   {
     /* optimize the render speed for GTK+ <2.17.3.*/
-    /*
-    TODO:
-    Once https://bugzilla.gnome.org/show_bug.cgi?id=597301 is resolve
-    we will need to set it back to FALSE for the fixed gtk versions
-    */
+    /* TODO:
+     * We need to fix various image operations in awn-effects-ops to be able
+     * to use indirect painting for Gtk's CSW.
+     * See https://bugzilla.gnome.org/show_bug.cgi?id=597301.
+     */
 #if GTK_CHECK_VERSION(2,17,3)
     g_object_set (priv->effects, "indirect-paint", TRUE, NULL);
 #else
     g_object_set (priv->effects, "indirect-paint", FALSE, NULL);
 #endif
 
-    if (priv->effects_backup_set)
+    if (priv->bind_effects)
     {
-      g_object_set (priv->effects, "effects", priv->effects_backup, NULL);
+      desktop_agnostic_config_client_bind (
+          client, "effects", "icon_effect",
+          fx, "effects", TRUE,
+          DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK, NULL
+      );
     }
   }
   else
   {
-    /* remember which effects did we use */
-    g_object_get (priv->effects, "effects", &priv->effects_backup, NULL);
-    priv->effects_backup_set = TRUE;
+    if (priv->bind_effects)
+    {
+      desktop_agnostic_config_client_unbind (
+          client, "effects", "icon_effect",
+          fx, "effects", TRUE,
+          DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK, NULL
+      );
+    }
 
     g_object_set (priv->effects,
                   "effects", 0,
@@ -158,7 +167,6 @@ awn_icon_update_effects (GtkWidget *widget, gpointer data)
      * the icon in our small window
      */
   }
-
 }
 
 static gboolean
@@ -343,10 +351,13 @@ awn_icon_constructed (GObject *object)
 
   GObject *fx = G_OBJECT (priv->effects);
 
-  desktop_agnostic_config_client_bind (client, "effects", "icon_effect",
-                                       fx, "effects", TRUE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
+  if (gtk_widget_is_composited (GTK_WIDGET (object)))
+  {
+    desktop_agnostic_config_client_bind (client, "effects", "icon_effect",
+                                         fx, "effects", TRUE,
+                                         DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                         NULL);
+  }
   desktop_agnostic_config_client_bind (client, "effects", "icon_alpha",
                                        fx, "icon-alpha", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
