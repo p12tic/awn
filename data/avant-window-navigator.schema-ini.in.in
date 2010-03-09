@@ -289,13 +289,13 @@ per_instance = false
 
 [theme/icon_text_color]
 type = color
-default =
+default = #FFFFFFFFFFFFFFFF
 _description=Icon text color.  Leave empty to use gtk theme color.
 per_instance = false
 
 [theme/icon_text_outline_color]
 type = color
-default =
+default = #000000000000FFFF
 _description=Icon text outline color.  Leave empty to use gtk theme color.
 per_instance = false
 

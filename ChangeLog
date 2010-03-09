@@ -1,5 +1,10 @@
 2010-03-09  Michal Hruby  <michal.mhr@gmail.com>
 
+	* data/avant-window-navigator.schema-ini.in.in:
+	Provide defaults for icon text colors.
+
+2010-03-09  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnClass.py:
 	* awn-settings/awnDefs.py.in:
 	* themes/dark.awn-theme.in:
