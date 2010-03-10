@@ -1,3 +1,8 @@
+2010-03-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-manager.h:
+	Fix build failure when using glib < 2.18.
+
 2010-03-09  Michal Hruby  <michal.mhr@gmail.com>
 
 	* Makefile.am:
