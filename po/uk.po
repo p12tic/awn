@@ -8,20 +8,20 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-08 13:43+0000\n"
-"Last-Translator: Mark Lee <Unknown>\n"
+"PO-Revision-Date: 2010-03-10 15:42+0000\n"
+"Last-Translator: naker.ua <Unknown>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-03-11 05:06+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Розширювач"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
@@ -150,7 +150,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Показувати вікна з усіх робочих областей"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -166,12 +166,12 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
 msgid "Launch"
-msgstr ""
+msgstr "Запуск"
 
 #: ../applets/taskmanager/task-launcher.c:1186
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "Запустити %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,7 +193,7 @@ msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
-msgstr ""
+msgstr "Розмір піктограми:"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -220,22 +220,22 @@ msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Розділювач"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Робоча область %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Робоча область 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Робоча область %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
@@ -243,31 +243,31 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
-msgstr ""
+msgstr "_Закрити"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
-msgstr ""
+msgstr "_Закрити все"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:743
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Розгорнути на весь _екран"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:748
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Відновити п_опередній розмір"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:777
 msgid "Always on _Top"
-msgstr ""
+msgstr "Завжди з_гори"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:801
 msgid "Mi_nimize"
-msgstr ""
+msgstr "З_горути"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:806
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Р_озгорнути"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
@@ -279,7 +279,7 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Перемістити у робочу область _ліворуч"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:944
 msgid "Move to Workspace _Right"
@@ -287,15 +287,15 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:954
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Перемістити у робочу область в_горі"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:964
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Перемістити у робочу область в_низу"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Перемістити у іншу робочу _область"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
@@ -322,11 +322,11 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:143
 msgid "None"
-msgstr "Немає"
+msgstr "Нічого"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
-msgstr ""
+msgstr "Простий"
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
