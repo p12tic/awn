@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-03-12 05:23+0000\n"
-"Last-Translator: Eleanor Chen <chenyueg@gmail.com>\n"
+"PO-Revision-Date: 2010-03-14 03:54+0000\n"
+"Last-Translator: Heling Yao <Unknown>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-03-13 04:51+0000\n"
+"X-Launchpad-Export-Date: 2010-03-14 05:03+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -216,7 +216,7 @@ msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "在小程序之间添加分隔符"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -555,7 +555,7 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:133
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn 维基"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
