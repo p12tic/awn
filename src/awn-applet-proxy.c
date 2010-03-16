@@ -311,7 +311,8 @@ awn_applet_proxy_init (AwnAppletProxy *proxy)
   priv->running = TRUE;
   priv->crashed = FALSE;
 
-  priv->throbber = awn_throbber_new ();
+  priv->throbber = awn_throbber_new_with_config (
+      awn_config_get_default (0, NULL));
 
   awn_icon_set_tooltip_text (AWN_ICON (priv->throbber),
                              _("Loading applet..."));

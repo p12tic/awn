@@ -1,3 +1,218 @@
+2010-03-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-manager.h:
+	Fix build failure when using glib < 2.18.
+
+2010-03-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* Makefile.am:
+	* configure.in:
+	Bump version to 0.4.0~rc1. Require desktop-agnostic >= 0.3.9.
+
+2010-03-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	Unshelve the bind patch on composited state change.
+
+2010-03-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	Provide defaults for icon text colors.
+
+2010-03-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* awn-settings/awnDefs.py.in:
+	* themes/dark.awn-theme.in:
+	* themes/dust.awn-theme.in:
+	* themes/light.awn-theme.in:
+	* themes/smoked.awn-theme.in:
+	Support themes with custom active rectangle icon.
+
+2010-03-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Constructing error message is nice, but displaying it is more useful.
+
+2010-03-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	Expose a few more theme-related settings in theme customization dialog.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-panel.c:
+	Fix background drawing in RTL environments.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	* src/awn-panel.c:
+	Possible fix for bug #499556.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Fix custom combobox for behavior.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	Make GetCapabilities method return what we really support.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	* themes/dark.awn-theme.in:
+	* themes/dust.awn-theme.in:
+	* themes/light.awn-theme.in:
+	* themes/smoked.awn-theme.in:
+	Fine-tunning of the default themes.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-tooltip.h:
+	Refresh bindings. Add possibility to specify outline color for
+	tooltips.
+
+2010-03-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	Change a couple of defaults.
+
+2010-03-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-app.c:
+	Bail out if panel_list is empty.
+
+2010-03-06  Michal Hruby  <michal.mhr@gmail.com>
+
+	* Makefile.vala-applet:
+	* applets/taskmanager/Makefile.am:
+	* data/Makefile.am:
+	A few distcheck fixes.
+
+2010-03-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	* themes/dark.awn-theme.in:
+	* themes/dust.awn-theme.in:
+	* themes/light.awn-theme.in:
+	* themes/smoked.awn-theme.in:
+	Properly support pattern-based themes.
+
+2010-03-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	* libawn/awn-overlay-progress-circle.c:
+	Fix progress overlay not taking gravity into consideration.
+
+2010-03-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-applet.c:
+	Automatically inhibit autohide when applet menu is shown.
+
+2010-03-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Fix d&d icon when dragging the docklet icon.
+
+2010-03-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix for "visible" == False. TaskIcon gets destroyed
+	when app window closes.
+
+2010-03-01  Julien Lavergne  <gilir@ubuntu.com>
+
+	* debian/avant-window-navigator-data-trunk.install:
+	Add the fallback icon to the debian package.
+
+2010-03-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fix intellihide behaviour in certain WMs (Compiz)
+	where unhide was not occurring with close of an 
+	overlapping window in certain circumstances.  Check
+	for window closes in addition to change of active 
+	window.
+
+2010-03-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	* applets/taskmanager/task-icon.c:
+	Rework panel repositioning via quick-prefs applet.
+
+2010-03-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-applet-proxy.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	* src/awn-throbber.h:
+	Bind throbber colors to config keys.
+
+2010-02-28  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	* data/awn-window-fallback.svg:
+	Add/install the window fallback icon.
+
+2010-02-28  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* src/awn-panel.c:
+	Try to workaround the performance problems on some intel graphics.
+	Fixes LP bug #478790.
+
+2010-02-28  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Add infobar about required compositing to Theme tab.
+
+2010-02-27  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	Change layout of awn-settings' Behavior preference.
+
+2010-02-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Special case moovida.
+
+2010-02-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-manager.c:
+	Remove some debugs.
+
+2010-02-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Various fixes for desktop lookup.  Check the correct 
+	hash table for desktop files, and attempt t deal with apps that 
+	set the WM_CLASS values to use an extension.
+
+2010-02-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-item.c:
+	Treat the "badge" and "message" key a bit differently.
+
 2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-icon.c:

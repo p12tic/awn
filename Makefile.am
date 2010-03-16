@@ -2,7 +2,6 @@ NULL =
 
 if HAVE_VALA
 VALA_BINDINGS = bindings/vala
-QUICK_PREFS_APPLET = applets/quick-prefs
 endif
 
 SUBDIRS = \
@@ -13,7 +12,7 @@ SUBDIRS = \
 	bindings/vala \
 	awn-settings \
 	applets/expander \
-	$(QUICK_PREFS_APPLET) \
+	applets/quick-prefs \
 	applets/separator \
 	applets/taskmanager \
 	po \

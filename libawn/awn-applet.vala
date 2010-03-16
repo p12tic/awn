@@ -36,6 +36,7 @@ namespace Awn
     private int pos_y = 0;
     private int panel_width = 0;
     private int panel_height = 0;
+    private uint menu_inhibit_cookie = 0;
     private AppletFlags behavior_flags;
 
     private string _canonical_name;
@@ -460,6 +461,23 @@ namespace Awn
     public Gtk.Widget create_default_menu ()
     {
       Gtk.Menu menu = new Gtk.Menu ();
+
+      /* Inhibit autohide when the menu is shown */
+      menu.show.connect ((m) =>
+      {
+        if (menu_inhibit_cookie == 0)
+        {
+          menu_inhibit_cookie = inhibit_autohide ("Displaying applet menu");
+        }
+      });
+      menu.hide.connect ((m) =>
+      {
+        if (menu_inhibit_cookie != 0)
+        {
+          uninhibit_autohide (menu_inhibit_cookie);
+          menu_inhibit_cookie = 0;
+        }
+      });
 
       menu.append (this.create_pref_item () as Gtk.MenuItem);
 

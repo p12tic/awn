@@ -44,6 +44,7 @@ from xdg.DesktopEntry import DesktopEntry
 
 from awnSettingsHelper import bind_to_gtk_component
 
+import awn
 import awnDefs as defs
 from desktopagnostic import config
 from desktopagnostic import vfs
@@ -59,41 +60,6 @@ from bzrlib.builtins import cmd_branch, cmd_pull
 from bzrlib.plugins.launchpad.lp_directory import LaunchpadDirectory
 
 defs.i18nize(globals())
-
-def dec2hex(n):
-    """return the hexadecimal string representation of integer n"""
-    n = int(n)
-    if n == 0:
-        return "00"
-    return "%0.2X" % n
-
-def hex2dec(s):
-    """return the integer value of a hexadecimal string s"""
-    return int(s, 16)
-
-def make_color(hexi):
-    """returns a gtk.gdk.Color from a hex string RRGGBBAA"""
-    try:
-        color = gtk.gdk.color_parse('#' + hexi[:6])
-    except:
-	color = gtk.gdk.color_parse(hexi[:13])
-    alpha = hex2dec(hexi[4:])
-    alpha = float(alpha)/65535
-    return color, int(alpha)
-
-def make_color_string(color, alpha):
-    """makes avant-readable string from gdk.color & alpha (0-65535) """
-    string = ""
-
-    string = string + dec2hex(int( (float(color.red) / 65535)*255))
-    string = string + dec2hex(int( (float(color.green) / 65535)*255))
-    string = string + dec2hex(int( (float(color.blue) / 65535)*255))
-    string = string + dec2hex(int( (float(alpha) / 65535)*255))
-
-    #hack
-    return string
-
-EMPTY = "none";
 
 class AwnListStore(gtk.ListStore, gtk.TreeDragSource, gtk.TreeDragDest):
 
@@ -507,17 +473,20 @@ class awnBzr(gobject.GObject):
                 else:
                     group = ids[1]
 
-                # once we support multiple panels use awn.config_get_defa...
-                # so far, self.client is OK
                 client = self.client
+
+                if instance_id is not None:
+                    client = awn.config_get_default(int(instance_id))
 
                 for key, value in parser.items(section):
                     try:
-                        if value.isdigit(): value = int(value)
-                        elif len(value.split('.')) == 2: value = float(value)
-                        elif value in ['true', 'false']:
-                            value = True if value is 'true' else False
-                        elif value.startswith('#'): 
+                        if value.isdigit():
+                            value = int(value)
+                        elif len(value.split('.')) == 2:
+                            value = float(value)
+                        elif value.lower() in ['true', 'false']:
+                            value = True if value.lower() == 'true' else False
+                        elif value.startswith('#'):
                             client.set_string(group, key, value)
                             continue
                         client.set_value(group, key, value)
@@ -673,9 +642,9 @@ class awnBzr(gobject.GObject):
             
             infobar = self.wTree.get_object("tm_infobar")
             if self.check_for_task_manager():
-                infobar.hide_all()
+                infobar.get_parent().hide_all()
             else:
-                infobar.show_all()
+                infobar.get_parent().show_all()
                 
 
         self.applet_model.connect("foreign-drop", deactivate_applet)
@@ -1466,9 +1435,9 @@ class awnApplet(awnBzr):
             
             infobar = self.wTree.get_object("tm_infobar")
             if self.check_for_task_manager():
-                infobar.hide_all()
+                infobar.get_parent().hide_all()
             else:
-                infobar.show_all()
+                infobar.get_parent().show_all()
             
         self.active_model.connect("foreign-drop", activate_applet)
 
@@ -1600,32 +1569,41 @@ class awnApplet(awnBzr):
                 
 class awnThemeCustomize(awnBzr):
 
-    def export_theme(self, config, filename, newfilename):
+    def export_theme(self, config, filename, newfilename, save_pattern):
         tmpdir = tempfile.gettempdir()
         themedir = os.path.join(tmpdir, filename)
         themefile = os.path.join(tmpdir, filename+'.awn-theme')
         if os.path.exists(themefile):
             os.remove(themefile)
             if os.path.exists(themedir):
-                shutil.rmtree(themedir) 
+                shutil.rmtree(themedir)
         if os.path.exists(themedir):
             self.hide_export_dialog(None)
             msg = themedir+" already exists, unable to export theme."
             self.theme_message(msg)
             return
-                    
+
         os.mkdir(themedir)
-        
+
         f = open(themefile, "w")
         config.write(f)
-        f.close()	
-		
+        f.close()
+
         arrow_path = self.client.get_string(defs.EFFECTS, defs.ARROW_ICON)
         if os.path.exists(arrow_path):
             shutil.copy(arrow_path, themedir+'/arrow.png')
-		
+
+        pattern_path = self.client.get_string(defs.THEME, defs.PATTERN_FILENAME)
+        if save_pattern and os.path.exists(pattern_path):
+            root, ext = os.path.splitext(pattern_path)
+            shutil.copy(pattern_path, "%s/pattern%s" % (themedir, ext))
+
+        active_icon_path = self.client.get_string(defs.EFFECTS, defs.ACTIVE_RECT_ICON)
+        if active_icon_path and os.path.exists(active_icon_path):
+            shutil.copy(active_icon_path, themedir+'/active_icon.png')
+
         self.get_dock_image(themedir)
-							
+
         tarpath = os.path.join(tmpdir, filename+'.tgz')
         tFile = tarfile.open(tarpath, "w:gz")
         tFile.add(themedir, os.path.basename(themedir))
@@ -1633,13 +1611,15 @@ class awnThemeCustomize(awnBzr):
         tFile.close()
 	
         shutil.move(tarpath, newfilename)
-        shutil.rmtree(themedir)	
+        shutil.rmtree(themedir)
         os.remove(themefile)
         self.hide_export_dialog(None)
-        
+
     def get_dock_image(self, themedir):
         bus = dbus.SessionBus()
-        panel = bus.get_object('org.awnproject.Awn', '/org/awnproject/Awn/Panel1', 'org.awnproject.Awn.Panel')
+        panel = bus.get_object('org.awnproject.Awn',
+                               '/org/awnproject/Awn/Panel1',
+                               'org.awnproject.Awn.Panel')
         data = panel.GetSnapshot(byte_arrays=True)
         width, height, rowstride, has_alpha, bits_per_sample, n_channels, pixels = data
         pixels = array.array('c', pixels)
@@ -1655,13 +1635,19 @@ class awnThemeCustomize(awnBzr):
     def install_theme(self, file):
         goodTheme = False
         customArrow = False
+        customActiveIcon = False
+        pattern = False
         if tarfile.is_tarfile(file):
             tar = tarfile.open(file, "r:gz")
             for member in tar.getmembers():
                 if member.name.endswith(".awn-theme"):
-                    goodTheme = member.name                        
+                    goodTheme = member.name
                 elif member.name.endswith("arrow.png"):
                     customArrow = member.name
+                elif member.name.endswith("active_icon.png"):
+                    customActiveIcon = member.name
+                elif member.name.find("pattern.") >= 0:
+                    pattern = member.name
             
             if goodTheme:
                 themefile = os.path.join(defs.HOME_THEME_DIR, goodTheme)
@@ -1673,7 +1659,7 @@ class awnThemeCustomize(awnBzr):
                     message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_YES_NO, message_format=msg)
                     resp = message.run()
                     if resp != gtk.RESPONSE_YES:
-                        message.destroy()  
+                        message.destroy()
                         return
                     else:
                         model = self.treeview_themes.get_model()
@@ -1689,7 +1675,15 @@ class awnThemeCustomize(awnBzr):
                 
                 config.set('theme-info', 'Icon', themedir+'/thumb.png')
                 if customArrow:
-                    config.set("config/effects", 'arrow_icon', themedir+'/arrow.png')
+                    config.set("config/effects", 'arrow_icon',
+                               themedir+'/arrow.png')
+                if customActiveIcon:
+                    config.set("config/effects", 'active_background_icon',
+                               themedir+'/active_icon.png')
+                if pattern:
+                    index = pattern.find('/pattern.')
+                    config.set("config/theme", 'pattern_filename',
+                               themedir+pattern[index:])
                 f = open(themefile, "w")
                 config.write(f)
                 f.close()

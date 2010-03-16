@@ -10,6 +10,12 @@ icons = avant-window-navigator-24.png avant-window-navigator-32.png
 
 # icon-related
 
+# I have no idea where else to put it.
+fallbackicondir = $(datadir)/icons/hicolor/scalable/apps
+fallbackicon_DATA = \
+	awn-window-fallback.svg \
+	$(NULL)
+
 install-icons:
 	mkdir -p $(DESTDIR)$(datadir)/icons/hicolor/24x24/apps
 	mkdir -p $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps
@@ -52,6 +58,7 @@ EXTRA_DIST += \
 	$(desktop_DATA:.desktop=.desktop.in) \
 	$(schema_in_files:.schema-ini.in=.schema-ini.in.in) \
 	active/spotlight_png_inline.c \
+	awn-window-fallback.svg \
 	$(NULL)
 
 CLEANFILES += $(schemas_DATA) $(schema_in_DATA) $(schema_DATA)

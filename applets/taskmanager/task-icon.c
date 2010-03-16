@@ -909,7 +909,6 @@ static void
 task_icon_init (TaskIcon *icon)
 {
   TaskIconPrivate *priv;
-  	
   priv = icon->priv = TASK_ICON_GET_PRIVATE (icon);
 
   priv->icon = NULL;
@@ -1338,7 +1337,6 @@ task_icon_refresh_visible (TaskIcon *icon)
   guint count_windows = 0;
 
   g_return_if_fail (TASK_IS_ICON (icon));
-
   priv = icon->priv;
 
   for (w = priv->items; w; w = w->next)
@@ -1402,10 +1400,13 @@ task_icon_refresh_visible (TaskIcon *icon)
       
       priv->visible = TRUE;
     }
-
     g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
   }
-
+  else if ( count<=1 && !count_windows)  /*FIXME  this sort of thing will be resolved early in 0.6.  
+                                      FTM makes sure TaskIcons get destroyed if the icon is visible*/
+  {
+    g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
+  }
   priv->shown_items = count;
 }
 
@@ -2742,7 +2743,6 @@ window_closed_cb (WnckScreen *screen,WnckWindow *window,TaskIcon * icon)
   TaskWindow * taskwin = NULL;
   GSList * iter;
   TaskIconPrivate *priv;
-  
   g_return_if_fail (TASK_IS_ICON (icon));
   priv = icon->priv;  
   for (iter = priv->items; iter; iter=iter->next)
@@ -3089,6 +3089,15 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
   }
   else
   {
+    // special case changing panel position via quick-prefs applet
+    for (GList* it = context->targets; it; it = it->next)
+    {
+      if (g_strcmp0 ("awn/awn-panel", gdk_atom_name (it->data)) == 0)
+      {
+        return FALSE;
+      }
+    }
+
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (widget)), 
                   AWN_EFFECT_LAUNCHING, 1, FALSE, FALSE); 
     

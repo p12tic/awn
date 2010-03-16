@@ -246,10 +246,11 @@ _awn_overlay_progress_circle_render (AwnOverlay* _overlay,
 {
   AwnOverlayProgressCircle * overlay = AWN_OVERLAY_PROGRESS_CIRCLE(_overlay);
   AwnOverlayProgressCirclePrivate *priv;
-  DesktopAgnosticColor * fg_color; 
+  DesktopAgnosticColor * fg_color;
   DesktopAgnosticColor * bg_color;
   DesktopAgnosticColor * outline_color;  
-  gdouble percent_complete;
+  gdouble percent_complete, x_pos, y_pos;
+  AwnOverlayCoord coord;
 
   priv =  AWN_OVERLAY_PROGRESS_CIRCLE_GET_PRIVATE (overlay); 
 
@@ -287,20 +288,41 @@ _awn_overlay_progress_circle_render (AwnOverlay* _overlay,
                                                G_MAXUSHORT);
   }
 
-  cairo_save (cr);
-  cairo_scale (cr,width,height);
-  cairo_arc (cr, 0.5, 0.5, priv->scale/2.0, 0, 2 * M_PI);
-  cairo_clip (cr);
-  awn_cairo_set_source_color (cr,bg_color);  
-  cairo_paint (cr);
+  awn_overlay_move_to (_overlay, cr,  width, height,
+                       width * priv->scale, height * priv->scale,
+                       &coord);
+  x_pos = coord.x / width + priv->scale / 2.0;
+  y_pos = coord.y / height + priv->scale / 2.0;
 
-  cairo_arc (cr, 0.5, 0.5, priv->scale/2.0,
-             -0.5 * M_PI, 
-             2 * (percent_complete/100.0) * M_PI -0.5 * M_PI );
-  cairo_line_to (cr,0.5,0.5);
-  cairo_close_path (cr);
-  awn_cairo_set_source_color (cr,fg_color);  
+  cairo_save (cr);
+  cairo_scale (cr, width, height);
+  cairo_set_line_width (cr, 2. / (width + height));
+
+  awn_cairo_set_source_color (cr,bg_color);
+  cairo_arc (cr, x_pos, y_pos, priv->scale/2.0, 0, 2 * M_PI);
   cairo_fill (cr);
+
+  cairo_arc (cr, x_pos, y_pos, priv->scale/2.0, -0.5 * M_PI, 
+             2 * (percent_complete/100.0) * M_PI -0.5 * M_PI );
+  cairo_line_to (cr, x_pos, y_pos);
+  cairo_close_path (cr);
+  awn_cairo_set_source_color (cr,fg_color);
+  cairo_fill (cr);
+
+  if (percent_complete > 0)
+  {
+    cairo_arc (cr, x_pos, y_pos, priv->scale/2.0, -0.5 * M_PI,
+               2 * (percent_complete/100.0) * M_PI -0.5 * M_PI );
+
+    if (percent_complete < 100)
+    {
+      cairo_line_to (cr, x_pos, y_pos);
+      cairo_close_path (cr);
+    }
+    awn_cairo_set_source_color (cr, outline_color);
+    cairo_stroke (cr);
+  }
+
   cairo_restore (cr);
   g_object_unref (fg_color);
   g_object_unref (bg_color);

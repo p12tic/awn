@@ -27,6 +27,14 @@
 #include <libawn/libawn.h>
 #include "task-icon.h"
 
+/* Fixes build failure from the generated vala code
+ * TODO: drop when we require glib >= 2.18 
+ */
+#if (!GLIB_CHECK_VERSION(2, 18, 0))
+  #define g_set_error_literal(err, domain, code, msg) \
+    g_set_error (err, domain, code, "%s", msg)
+#endif
+
 #define TASK_TYPE_MANAGER (task_manager_get_type ())
 
 #define TASK_MANAGER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\

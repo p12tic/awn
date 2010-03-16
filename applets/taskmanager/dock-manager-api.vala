@@ -87,8 +87,18 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 
   public string[] get_capabilities () throws DBus.Error
   {
-    string[] capabilities = {"x-awn-set-visibility",
-                             "x-awn-register-proxy-item"};
+    string[] capabilities =
+    {
+      "dock-item-badge",
+      "dock-item-message",
+      "dock-item-progress",
+      "dock-item-icon-file",
+      "menu-item-with-label",
+      "menu-item-icon-name",
+      "menu-item-icon-file",
+      "x-awn-set-visibility"
+      // "x-awn-register-proxy-item" // TODO: later
+    };
     return capabilities;
   }
 

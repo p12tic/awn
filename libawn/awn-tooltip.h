@@ -87,6 +87,9 @@ void          awn_tooltip_set_font_name        (AwnTooltip *tooltip,
 void          awn_tooltip_set_font_color       (AwnTooltip           *tooltip,
                                                 DesktopAgnosticColor *font_color);
 
+void          awn_tooltip_set_outline_color    (AwnTooltip           *tooltip,
+                                                DesktopAgnosticColor *outline);
+
 void          awn_tooltip_set_background_color (AwnTooltip           *tooltip,
                                                 DesktopAgnosticColor *bg_color);
 
