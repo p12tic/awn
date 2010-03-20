@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-03-11 19:03+0000\n"
-"Last-Translator: RomuX <Unknown>\n"
+"PO-Revision-Date: 2010-03-19 19:07+0000\n"
+"Last-Translator: Sergey Sedov <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-03-12 04:52+0000\n"
+"X-Launchpad-Export-Date: 2010-03-20 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -224,11 +224,11 @@ msgstr "Не могу открыть настройки Awn: %s"
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "Апплет настроек панели и конфигурация AWN"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Апплет конфигурации"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
@@ -246,7 +246,7 @@ msgstr "Рабочее место %d"
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Рабочее место 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
@@ -423,7 +423,7 @@ msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr "Полностью настраевыемый dock подобный оконный навигатор для GNOME."
+msgstr "Полностью настраиваемая панель навигации окон для GNOME."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -481,7 +481,7 @@ msgstr "Вниз"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Плоский"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
@@ -525,7 +525,7 @@ msgstr "Всегда"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
-msgstr ""
+msgstr "Интеллектуальное"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Window dodge"
@@ -545,7 +545,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:942
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Использовать значки приложений"
 
 #: ../awn-settings/awnSettings.py.in:943
 msgid "Use best quality icons"
@@ -758,7 +758,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Показать тень иконок."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "The active list UA Screenlets for this panel."
@@ -844,7 +844,7 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
-msgstr "Иконки"
+msgstr "Значки"
 
 #: ../libawn/awn-themed-icon.c:1978
 msgid "Choose Custom Icon"
@@ -856,7 +856,7 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2152
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Значок по умолчанию"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
@@ -868,7 +868,7 @@ msgstr "Упс. Апплет упал. Кликните для перезагр�
 
 #: ../src/awn-panel.c:3898
 msgid "Close docklet"
-msgstr ""
+msgstr "Закрыть панель"
 
 #~ msgid "PNG Files"
 #~ msgstr "PNG файлы"
