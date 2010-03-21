@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: _avant-window-navigator-ar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-03-09 15:24+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-03-20 18:16+0000\n"
+"Last-Translator: someone <Unknown>\n"
 "Language-Team: Arabic\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
 "3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
-"X-Launchpad-Export-Date: 2010-03-10 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-03-21 04:43+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -152,7 +152,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "إظهار النوافذ من جميع أماكن العمل"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -168,12 +168,12 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
 msgid "Launch"
-msgstr ""
+msgstr "تشغيل"
 
 #: ../applets/taskmanager/task-launcher.c:1186
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "تشغيل %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -181,7 +181,7 @@ msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "أيقونة مشغل\\مدير المهمات"
 
 #: ../applets/quick-prefs/applet.vala:118
 #: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
@@ -195,7 +195,7 @@ msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
-msgstr ""
+msgstr "حجم الأيقونة:"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -222,22 +222,22 @@ msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "فاصل"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "مساحة العمل %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "مساحة العمل 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "مساحة العمل %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
@@ -245,19 +245,19 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
-msgstr ""
+msgstr "_إغلاق"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
-msgstr ""
+msgstr "أ_غلق الكل"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:743
 msgid "Ma_ximize"
-msgstr ""
+msgstr "_تكبير"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:748
 msgid "Unma_ximize"
-msgstr ""
+msgstr "إلغاء الت_كبير"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:777
 msgid "Always on _Top"
@@ -265,11 +265,11 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:801
 msgid "Mi_nimize"
-msgstr ""
+msgstr "ت_صغير"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:806
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "إلغاء الت_صغير"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
@@ -281,23 +281,23 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "انقل لمساحة العمل نحو ال_يسار"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:944
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "انقل لمساحة العمل نحو ال_يمين"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:954
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "انقل لمساحة العمل إلى ال_أعلى"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:964
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "انقل لمساحة العمل إلى الأ_سفل"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "انقل ل_مساحة عمل أخرى"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
@@ -328,7 +328,7 @@ msgstr "لا شيء"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
-msgstr ""
+msgstr "بسيط"
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
@@ -448,27 +448,27 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "اليسار"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "اليمين"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "أعلى"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "أسفل"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "مسطح"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "ثلاثي أبعاد"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
@@ -484,7 +484,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Standard"
-msgstr ""
+msgstr "معياري"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
@@ -500,11 +500,11 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Transparency"
-msgstr ""
+msgstr "الشفافية"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Always"
-msgstr ""
+msgstr "دائماً"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
@@ -532,7 +532,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:943
 msgid "Use best quality icons"
-msgstr ""
+msgstr "إستخدام أيقونات عالية الجودة"
 
 #: ../awn-settings/awnSettings.py.in:944
 msgid "Overlay best quality icon with application icon"
@@ -574,11 +574,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "٣)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "٥)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -825,19 +825,19 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
-msgstr ""
+msgstr "الأيقونات"
 
 #: ../libawn/awn-themed-icon.c:1978
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "إختيار أيقونة مخصصة"
 
 #: ../libawn/awn-themed-icon.c:2065
 msgid "Customize Icon"
-msgstr ""
+msgstr "تخصيص أيقونة"
 
 #: ../libawn/awn-themed-icon.c:2152
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "حذف الأيقونة المخصصة"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
