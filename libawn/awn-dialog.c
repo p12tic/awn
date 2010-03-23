@@ -534,7 +534,7 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
     awn_cairo_rounded_rect_shadow (cr, BORDER, BORDER,
                                    w - BORDER*2, h - BORDER*2,
                                    ROUND_RADIUS, ROUND_ALL,
-                                   SHADOW_RADIUS, 0.6);
+                                   SHADOW_RADIUS, 0.4);
 
     cairo_restore (cr);
   }
