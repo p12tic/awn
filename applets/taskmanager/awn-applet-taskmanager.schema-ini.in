@@ -25,7 +25,7 @@ _description=Number of seconds to wait before nagging again, by inhibiting autoh
 
 [DEFAULT/drag_and_drop]
 type = boolean
-default = false
+default = true
 _description=Enable reordering of windows by drag and drop 
 
 [DEFAULT/drag_and_drop_hover_delay]

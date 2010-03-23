@@ -1,3 +1,8 @@
+2010-03-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Default drag and drop to true as was intended.
+
 2010-03-10  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-manager.h:
