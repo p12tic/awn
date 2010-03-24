@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-25 14:51+0000\n"
+"PO-Revision-Date: 2010-03-14 03:54+0000\n"
 "Last-Translator: Heling Yao <Unknown>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-02-26 04:50+0000\n"
+"X-Launchpad-Export-Date: 2010-03-15 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -189,7 +189,7 @@ msgstr "关于 Awn"
 #: ../applets/quick-prefs/applet.vala:289
 #: ../applets/quick-prefs/applet.vala:465
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "拖拽以改变面板方向"
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
@@ -216,7 +216,7 @@ msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "在小程序之间添加分隔符"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -239,7 +239,7 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
-msgstr ""
+msgstr "添加为启动器"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
@@ -307,11 +307,11 @@ msgstr "管理 Awn 首选项、启动器、小程序和主题"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "出错，sources.list已经存在。"
 
 #: ../awn-settings/awnClass.py:335
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "出错，路径为空或者已经存在。"
 
 #: ../awn-settings/awnClass.py:455
 #, python-format
@@ -493,7 +493,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Transparency"
-msgstr ""
+msgstr "透明度"
 
 #: ../awn-settings/awnSettings.py.in:155
 msgid "Always"
@@ -555,7 +555,7 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:133
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn 维基"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
