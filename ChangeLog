@@ -1,3 +1,9 @@
+2010-03-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+  	* applets/taskmanager/task-manager.c:
+	Removed two debugs from standard build.
+
 2010-03-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* libawn/awn-tooltip.c:

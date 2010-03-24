@@ -1481,11 +1481,9 @@ process_window_opened (WnckWindow    *window,
       match = taskicon;
     }
   }
-#define DEBUG
 #ifdef DEBUG
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
 #endif  
-#undef DEBUG
   /*
    if match is not 0
    and 

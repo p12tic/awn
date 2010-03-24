@@ -800,11 +800,12 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     hit_method ++;
   }
   result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
-  
+#ifdef DEBUG  
   if (hit_method)
   {
     g_message ("%s: Hit method = %d",__func__,hit_method);
   }
+#endif
   g_free (full_cmd);
   g_free (cmd);
   g_free (cmd_basename);
