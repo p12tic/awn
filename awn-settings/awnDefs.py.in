@@ -24,7 +24,7 @@ from desktopagnostic.config import GROUP_DEFAULT
 
 PREFIX = "@prefix@"
 
-LOCALEDIR = os.path.join (PREFIX, "share", "locale")
+LOCALEDIR = '@LOCALEDIR@'
 PKGDATADIR = '@PKGDATADIR@'
 
 HOME_CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "awn")
@@ -119,7 +119,7 @@ OVERLAY_ICON_SWAP       = "overlay_application_icons_swap" #bool
 ICON_BEHAVIOR           = "icon_change_behavior" #int
 
 # i18n-related
-I18N_DOMAIN = "avant-window-navigator"
+I18N_DOMAIN = '@GETTEXT_PACKAGE@'
 
 def i18nize(symbol_table):
     import locale

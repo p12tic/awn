@@ -179,9 +179,14 @@ AS_AC_EXPAND([DATADIR], [$datadir])
 AS_AC_EXPAND([LIBDIR], [$libdir])
 AS_AC_EXPAND([LIBAPPLETDIR], [$libdir/awn/applets])
 AS_AC_EXPAND([APPLETSDIR], [$PKGDATADIR/applets])
+AS_AC_EXPAND([localedir_intermediate], [$localedir])
+AS_AC_EXPAND([LOCALEDIR], [$localedir_intermediate])
+
 AC_DEFINE_UNQUOTED(APPLETDATADIR, "$APPLETSDIR",
                    [The base directory for applet data])
 
+AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEDIR", [Locale directory])
+AC_SUBST(LOCALEDIR)
 
 SHAVE_INIT([shave], [enable])
 
@@ -206,6 +211,7 @@ awn-settings/Makefile
 awn-settings/awnDefs.py
 awn-settings/awnSettings.py
 bindings/python/Makefile
+bindings/python/__init__.py
 bindings/vala/Makefile
 data/Makefile
 data/avant-window-navigator.schema-ini.in

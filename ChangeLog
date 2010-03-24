@@ -1,6 +1,18 @@
 2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applet-activation/Makefile.am:
+	* applets/quick-prefs/Makefile.am:
+	* awn-settings/awnDefs.py.in:
+	* bindings/python/Makefile.am:
+	* bindings/python/__init__.py.in:
+	* configure.in:
+	* src/Makefile.am:
+	More i18n fixes - make sure libawn calls get correct translation even
+	when they're called from python.
+
+2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/Makefile.am:
 	* applet-activation/main.c:
 	* applets/quick-prefs/applet.vala:
 	* applets/taskmanager/applet.c:

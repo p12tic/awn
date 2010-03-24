@@ -25,7 +25,7 @@ common_ldflags = -module -avoid-version
 
 AWN_DEFS = awn.defs
 CLEANFILES = awn.c
-EXTRA_DIST = $(AWN_DEFS) awn.override
+EXTRA_DIST = $(AWN_DEFS) awn.override __init__.py.in
 awn.c: $(AWN_DEFS) awn.override
 
 awn_la_LDFLAGS = $(common_ldflags) -export-symbols-regex initawn

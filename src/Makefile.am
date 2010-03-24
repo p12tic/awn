@@ -9,7 +9,6 @@ AM_CPPFLAGS =				\
 	$(AWN_CFLAGS)			\
 	$(DOCK_CFLAGS)			\
 	-DLIBDIR=\""$(libdir)"\"	\
-	-DLOCALEDIR=\""$(datadir)/locale"\"	\
 	-I$(top_srcdir)			\
 	-I$(builddir)			\
 	$(NULL)
