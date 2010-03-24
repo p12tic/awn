@@ -3,6 +3,7 @@ INCLUDES =		\
 	-I$(top_srcdir) \
 	$(AWN_CFLAGS)	\
 	$(NULL)
+AM_CPPFLAGS = -DLOCALEDIR=\""$(datadir)/locale"\"
 
 bin_PROGRAMS = awn-applet
 

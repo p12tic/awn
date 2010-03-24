@@ -1077,7 +1077,8 @@ awn_applet_create_pref_item (void)
 {
 	GtkWidget *item;
   
-  item = gtk_image_menu_item_new_with_label (_("Dock Preferences"));
+  item = gtk_image_menu_item_new_with_label (dgettext (GETTEXT_PACKAGE,
+                                                       "Dock Preferences"));
 #if GTK_CHECK_VERSION (2,16,0)	
 	g_object_set (item,"always-show-image",TRUE,NULL);  
 #endif

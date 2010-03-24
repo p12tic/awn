@@ -18,10 +18,12 @@
  */
 
 #include <libawn/libawn.h>
+#include <config.h>
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
 #include <libwnck/libwnck.h>
+#include <libintl.h>
 
 #include "task-manager.h"
 #include "task-manager-api-wrapper.h"
@@ -73,6 +75,8 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
     dbus_g_connection_unref (connection);
     connection = NULL;
   }
+
+  textdomain (GETTEXT_PACKAGE);
 
   applet = task_manager_new (name, uid, panel_id);
   

@@ -601,8 +601,6 @@ public class PrefsApplet : AppletSimple
 public Applet
 awn_applet_factory_initp (string canonical_name, string uid, int panel_id)
 {
-  Intl.setlocale (LocaleCategory.ALL, "");
-  Gettext.bindtextdomain (Build.GETTEXT_PACKAGE, Build.LOCALEDIR);
   Gettext.textdomain (Build.GETTEXT_PACKAGE);
 
   Applet applet = new PrefsApplet (canonical_name, uid, panel_id);
