@@ -1,3 +1,10 @@
+2010-03-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* po/ku.po:
+	* po/sq.po:
+	* po/tr.po:
+	Manually update a couple of translations.
+
 2010-03-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-desktop-lookup-cached.c:

@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the "
-"overlay/overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the overlay/"
+"overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -200,7 +200,7 @@ msgstr "Simge boyutu:"
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Yuva Tercihleri"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -625,8 +625,7 @@ msgstr "Etkin diktörtgen anahat rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
-msgstr ""
-"Fare imlecinin panel dışına çıkması ile saklanması arasındaki gecikme."
+msgstr "Fare imlecinin panel dışına çıkması ile saklanması arasındaki gecikme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "Delay for mouse position polling."
