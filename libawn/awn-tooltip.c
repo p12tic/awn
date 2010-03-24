@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <gdk/gdkx.h>
 
 #include "awn-tooltip.h"
 
@@ -229,6 +230,29 @@ _on_composited_changed (GtkWidget *widget)
 }
 
 static void
+awn_tooltip_set_type_hint (GtkWidget *widget)
+{
+  if (GTK_WIDGET_VISIBLE (widget)) return;
+
+  GdkScreen *screen = gtk_widget_get_screen (widget);
+  if (gdk_screen_is_composited (screen) &&
+      strcmp (gdk_x11_screen_get_window_manager_name (screen), 
+              "Metacity") == 0)
+  {
+    // metacity shows a nasty shadow around our nice tooltip if we say
+    // we're a tooltip window, so pretend we aren't tooltip to fool it
+    // FIXME: always set the hint once noone cares about metacity
+    gtk_window_set_type_hint (GTK_WINDOW (widget),
+                              GDK_WINDOW_TYPE_HINT_DND);
+  }
+  else
+  {
+    gtk_window_set_type_hint (GTK_WINDOW (widget),
+                              GDK_WINDOW_TYPE_HINT_TOOLTIP);
+  }
+}
+
+static void
 awn_tooltip_constructed (GObject *object)
 {
   AwnTooltip        *tooltip = AWN_TOOLTIP (object);
@@ -271,6 +295,9 @@ awn_tooltip_constructed (GObject *object)
 
   g_signal_connect (tooltip, "leave-notify-event",
                     G_CALLBACK (awn_tooltip_hide), NULL);
+  g_signal_connect (tooltip, "composited-changed",
+                    G_CALLBACK (awn_tooltip_set_type_hint), NULL);
+  awn_tooltip_set_type_hint (GTK_WIDGET (tooltip));
 }
 
 static void
@@ -591,7 +618,6 @@ awn_tooltip_new_for_widget (GtkWidget *widget)
 
   tooltip = g_object_new (AWN_TYPE_TOOLTIP,
                           "type", GTK_WINDOW_POPUP,
-                          "type-hint", GDK_WINDOW_TYPE_HINT_TOOLTIP,
                           "decorated", FALSE,
                           "skip-pager-hint", TRUE,
                           "skip-taskbar-hint", TRUE,

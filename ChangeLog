@@ -1,5 +1,10 @@
 2010-03-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-tooltip.c:
+	Workaround bug in metacity compositor (LP bug #524153).
+
+2010-03-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/awn-dialog.c:
 	Make shadow on the dialog a bit less sharp.
 
