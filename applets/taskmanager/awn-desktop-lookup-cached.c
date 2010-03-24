@@ -270,7 +270,7 @@ awn_desktop_lookup_cached_constructed (GObject *object)
       g_free (applications_dir);
       continue;
     }
-    g_message ("Adding %s",applications_dir);
+//    g_message ("Adding %s",applications_dir);
     awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),applications_dir);
 
     file_vfs = desktop_agnostic_vfs_file_new_for_path (applications_dir,&error);

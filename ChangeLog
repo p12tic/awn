@@ -1,6 +1,11 @@
 2010-03-24  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Remove a debug.
+
+2010-03-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
   	* applets/taskmanager/task-manager.c:
 	Removed two debugs from standard build.
 
