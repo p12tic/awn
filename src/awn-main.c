@@ -27,7 +27,6 @@
 #include <unistd.h>
 
 #include <gtk/gtk.h>
-#include <locale.h>
 #include <libintl.h>
 
 #include <dbus/dbus-glib.h>
@@ -144,7 +143,6 @@ main (gint argc, gchar *argv[])
   if (is_startup) sleep (startup_delay);
 
   /* Set localization stuff */
-  setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   textdomain (GETTEXT_PACKAGE);
 

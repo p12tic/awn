@@ -1,5 +1,12 @@
 2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applet-activation/main.c:
+	* bindings/python/__init__.py.in:
+	* src/awn-main.c:
+	Remove unnecessary setlocale calls (gtk_init calls it automatically).
+
+2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applet-activation/Makefile.am:
 	* applets/quick-prefs/Makefile.am:
 	* awn-settings/awnDefs.py.in:

@@ -26,7 +26,6 @@
 #include <unistd.h>
 
 #include <gtk/gtk.h>
-#include <locale.h>
 #include <libintl.h>
 
 #include <libdesktop-agnostic/fdo.h>
@@ -234,7 +233,6 @@ main(gint argc, gchar **argv)
   }
 
   /* Set locale stuff */
-  setlocale (LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
 
   /* Extract canonical-name from exec */
