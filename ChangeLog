@@ -1,5 +1,11 @@
 2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
 
+	* data/awn-themed-icon.ui:
+	* po/POTFILES.in:
+	Make sure our ui files are translatable.
+
+2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applet-activation/main.c:
 	* bindings/python/__init__.py.in:
 	* src/awn-main.c:
