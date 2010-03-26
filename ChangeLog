@@ -1,3 +1,8 @@
+2010-03-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	Bump version to ~rc2, since rc1 was already released.
+
 2010-03-26  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-desktop-lookup-cached.c:
