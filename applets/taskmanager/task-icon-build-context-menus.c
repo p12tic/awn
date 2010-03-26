@@ -1287,6 +1287,7 @@ menu_parse_start_element (GMarkupParseContext *context,
   const gchar * args_value = NULL;
   const gchar * text_value = NULL;
   const gchar * shell_value = NULL;
+  const gchar * custom_name = NULL;
   GtkWidget *submenu = NULL;
   AwnApplet * applet = NULL;
   gint height;
@@ -1442,7 +1443,11 @@ menu_parse_start_element (GMarkupParseContext *context,
       menuitem = task_icon_get_menu_item_close_all (icon);
       break;
     case INTERNAL_CUSTOMIZE_ICON:
-      menuitem = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),task_icon_get_custom_name(icon));
+      custom_name = task_icon_get_custom_name(icon);
+      if (custom_name)
+      {
+        menuitem = awn_themed_icon_create_custom_icon_item (AWN_THEMED_ICON(icon),custom_name);
+      }
       break;
     case INTERNAL_DOCK_PREFS:
       menuitem = awn_applet_create_pref_item();

@@ -1,3 +1,14 @@
+2010-03-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	check we have a custom name before attempt to get a customize
+	icon menu item.
+
+2010-03-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Check res_name and class_name for NULL.
+
 2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
 
 	* po/af.po:
