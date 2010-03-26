@@ -237,7 +237,6 @@ _data_dir_changed (DesktopAgnosticVFSFileMonitor* monitor,
                   )
 {
   gchar * path = desktop_agnostic_vfs_file_get_path (self);
-  g_debug ("%s: refresh %s",__func__,path);
   if ( g_file_test (path,G_FILE_TEST_IS_DIR))
   {
     awn_desktop_lookup_cached_add_dir (lookup, path);
@@ -459,7 +458,7 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     gchar * search = NULL;
     if (res_name)
     {
-      search = search = g_strrstr_len (res_name,-1,*i);
+      search = g_strrstr_len (res_name,-1,*i);
       if ( search )
       {
         if ( strlen (res_name)>(strlen(*i)+3) &&  (strlen (search) == strlen (*i)) )

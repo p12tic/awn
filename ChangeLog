@@ -1,3 +1,8 @@
+2010-03-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Remove a debug and fix a warning.
+
 2010-03-25  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
