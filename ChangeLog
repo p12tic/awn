@@ -1,5 +1,10 @@
 2010-03-25  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Removed a debug.
+
+2010-03-25  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon-build-context-menus.c:
 	check we have a custom name before attempt to get a customize
 	icon menu item.

@@ -2652,13 +2652,11 @@ task_manager_win_closed_cb (WnckScreen *screen,WnckWindow *window, TaskManager *
   win = wnck_screen_get_active_window (priv->screen);
   if (!win)
   {
-    g_debug ("%s: No active windw",__func__);
     return;
   }
   app = wnck_window_get_application (win);
   space = wnck_screen_get_active_workspace (priv->screen);
-  task_manager_check_for_intersection (manager,space,app);  
-  
+  task_manager_check_for_intersection (manager,space,app);
 }
 /*
  A window's geometry has channged.  If Intellihide is active then check for
