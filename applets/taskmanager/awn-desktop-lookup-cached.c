@@ -456,22 +456,29 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
   }
   for (gchar **i= (gchar **)extensions; *i; i++)
   {
-    gchar * search = search = g_strrstr_len (res_name,-1,*i);
-    if ( search )
+    gchar * search = NULL;
+    if (res_name)
     {
-      if ( strlen (res_name)>(strlen(*i)+3) &&  (strlen (search) == strlen (*i)) )
+      search = search = g_strrstr_len (res_name,-1,*i);
+      if ( search )
       {
-        res_name_no_ext = g_strdup (res_name);
-        res_name_no_ext [strlen (res_name_no_ext) - strlen(*i)]='\0';
+        if ( strlen (res_name)>(strlen(*i)+3) &&  (strlen (search) == strlen (*i)) )
+        {
+          res_name_no_ext = g_strdup (res_name);
+          res_name_no_ext [strlen (res_name_no_ext) - strlen(*i)]='\0';
+        }
       }
     }
-    search = g_strrstr_len (class_name,-1,*i);
-    if ( search )
+    if (class_name)
     {
-      if ( strlen (class_name)>(strlen(*i)+3) &&  (strlen (search) == strlen (*i)) )
+      search = g_strrstr_len (class_name,-1,*i);
+      if ( search )
       {
-        class_name_no_ext = g_strdup (class_name);
-        class_name_no_ext [strlen (class_name_no_ext) - strlen(*i)]='\0';
+        if ( strlen (class_name)>(strlen(*i)+3) &&  (strlen (search) == strlen (*i)) )
+        {
+          class_name_no_ext = g_strdup (class_name);
+          class_name_no_ext [strlen (class_name_no_ext) - strlen(*i)]='\0';
+        }
       }
     }
   }
