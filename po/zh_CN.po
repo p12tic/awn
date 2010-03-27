@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-03-25 14:24+0000\n"
-"Last-Translator: 英华 <wantinghard@gmail.com>\n"
+"PO-Revision-Date: 2010-03-26 10:48+0000\n"
+"Last-Translator: Eleanor Chen <chenyueg@gmail.com>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-03-26 04:49+0000\n"
+"X-Launchpad-Export-Date: 2010-03-27 05:00+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -414,7 +414,7 @@ msgstr "背景："
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
-msgstr ""
+msgstr "鼠标穿透"
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Close animation:"
