@@ -1,3 +1,8 @@
+2010-03-30  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	Make sure the dock links to lXext.
+
 2010-03-26  Michal Hruby  <michal.mhr@gmail.com>
 
 	* configure.in:
