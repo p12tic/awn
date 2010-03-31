@@ -132,7 +132,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
             /*
              Be careful.  Not duplicating these strings for each data structure
              */
-            gchar * name = desktop_agnostic_fdo_desktop_entry_get_name (entry);
+            gchar * name = _desktop_entry_get_localized_name (entry);
             gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
             gchar * copy_path = NULL;
             gchar * search = NULL;

@@ -397,7 +397,7 @@ _desktop_changed (DesktopAgnosticVFSFileMonitor* monitor,
   g_free (priv->special_id);
   priv->entry = entry;
   priv->special_id = get_special_id_from_desktop(priv->entry);
-  priv->name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);  
+  priv->name = _desktop_entry_get_localized_name (priv->entry);
   task_item_emit_name_changed (TASK_ITEM (launcher), priv->name);
 
   exec_key = g_strstrip (desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "Exec"));  
@@ -532,7 +532,7 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
     g_free (priv->special_id);
   }
   priv->special_id = get_special_id_from_desktop(priv->entry);
-  priv->name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);
+  priv->name = _desktop_entry_get_localized_name (priv->entry);
 
   exec_key = g_strstrip (desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "Exec"));
   
@@ -929,7 +929,7 @@ _match (TaskItem *item,
       /* is the launcher pid set?*/
       if (priv->pid)
       {
-        gchar *name = desktop_agnostic_fdo_desktop_entry_get_name (priv->entry);
+        gchar *name = _desktop_entry_get_localized_name (priv->entry);
         GStrv tokens = g_strsplit (name, " ",-1);
         if (tokens && tokens[0] && (strlen (tokens[0])>5) )
         {
