@@ -1,3 +1,8 @@
+2010-04-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Fix compatibility with vala 0.8.0.
+
 2010-04-05  Julien Lavergne <gilir@ubuntu.com>
 
 	* debian/rules:

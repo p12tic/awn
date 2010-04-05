@@ -411,7 +411,8 @@ public class PrefsApplet : AppletSimple
       unowned Awn.ThemedIcon loader = this.get_icon () as Awn.ThemedIcon;
       foreach (unowned Gtk.Widget widget in this.docklet_icons)
       {
-        icon_name = (string) widget.get_data ("icon-name");
+        void *ptr = widget.get_data ("icon-name");
+        icon_name = (string) ptr;
         if (icon_name != null)
         {
           unowned Awn.Icon it_icon = widget as Awn.Icon;
