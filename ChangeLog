@@ -1,3 +1,8 @@
+2010-04-05  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/rules:
+	Disable maintainer mode and re-run configure to fix FTBFS on Hardy.
+
 2010-03-31  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/awn-desktop-lookup-cached.c:
