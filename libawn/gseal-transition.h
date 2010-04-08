@@ -39,5 +39,14 @@
 #define gtk_widget_get_visible(x) GTK_WIDGET_VISIBLE(x)
 #endif
 
+#if !GTK_CHECK_VERSION(2,17,10)
+#define gtk_widget_is_drawable(w) GTK_WIDGET_DRAWABLE(w)
+#endif
+
+#if !GTK_CHECK_VERSION(2,19,5)
+#define gtk_widget_get_realized(w) GTK_WIDGET_REALIZED(w)
+#define gtk_widget_get_mapped(w) GTK_WIDGET_MAPPED(w)
+#endif
+
 #endif
 /* vim: set ts=2 sts=2 sw=2 ai cindent : */

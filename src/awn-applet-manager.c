@@ -814,7 +814,7 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
   gint                     i = 0;
   gint                     applet_num = 0;
 
-  if (!GTK_WIDGET_REALIZED (manager))
+  if (!gtk_widget_get_realized (GTK_WIDGET (manager)))
     return;
 
   if (priv->applet_list == NULL)
@@ -1229,7 +1229,7 @@ awn_applet_manager_redraw_throbbers (AwnAppletManager *manager)
   for (GList *it = list; it != NULL; it = it->next)
   {
     if ((AWN_IS_THROBBER (it->data) || AWN_IS_SEPARATOR (it->data))
-        && GTK_WIDGET_VISIBLE (it->data))
+        && gtk_widget_get_visible (GTK_WIDGET (it->data)))
     {
       gtk_widget_queue_draw (GTK_WIDGET (it->data));
     }

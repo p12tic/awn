@@ -733,7 +733,7 @@ ensure_tooltip (AwnTooltip *tooltip)
   g_free (color);
   g_free (markup);
 
-  if (GTK_WIDGET_MAPPED (tooltip) && GTK_IS_WIDGET (priv->focus))
+  if (gtk_widget_get_mapped (GTK_WIDGET (tooltip)) && GTK_IS_WIDGET (priv->focus))
   {
     awn_tooltip_update_position (tooltip);
   }
@@ -1049,7 +1049,7 @@ awn_tooltip_set_position_hint(AwnTooltip *tooltip,
   priv->position = position;
   priv->size = size;
 
-  if (GTK_WIDGET_MAPPED (tooltip) && GTK_IS_WIDGET (priv->focus))
+  if (gtk_widget_get_mapped (GTK_WIDGET (tooltip)) && GTK_IS_WIDGET (priv->focus))
   {
     awn_tooltip_update_position (tooltip);
   }

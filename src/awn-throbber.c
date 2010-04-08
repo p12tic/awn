@@ -26,6 +26,8 @@
 #include "awn-defines.h"
 #include "awn-throbber.h"
 
+#include "libawn/gseal-transition.h"
+
 G_DEFINE_TYPE (AwnThrobber, awn_throbber, AWN_TYPE_ICON)
 
 #define AWN_THROBBER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
@@ -540,7 +542,7 @@ awn_throbber_set_type (AwnThrobber *throbber, AwnThrobberType type)
   switch (type)
   {
     case AWN_THROBBER_TYPE_NORMAL:
-      if (!priv->timer_id && GTK_WIDGET_MAPPED (GTK_WIDGET (throbber)))
+      if (!priv->timer_id && gtk_widget_get_mapped (GTK_WIDGET (throbber)))
       {
         // we want lower prio than HIGH_IDLE
         priv->timer_id = g_timeout_add_full (G_PRIORITY_DEFAULT_IDLE, 

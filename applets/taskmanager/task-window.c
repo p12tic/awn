@@ -630,7 +630,7 @@ on_window_state_changed (WnckWindow      *wnckwin,
     visible = FALSE;
   }
   
-  if ( GTK_WIDGET_VISIBLE(window) != visible )
+  if (gtk_widget_get_visible (GTK_WIDGET (window)) != visible)
   {
     if (!visible || priv->hidden)
     {
@@ -641,7 +641,7 @@ on_window_state_changed (WnckWindow      *wnckwin,
       gtk_widget_show (GTK_WIDGET(window));
     }
 
-    if (priv->in_workspace && visible && GTK_WIDGET_VISIBLE(window) && !priv->hidden)
+    if (priv->in_workspace && visible && gtk_widget_get_visible (GTK_WIDGET (window)) && !priv->hidden)
       task_item_emit_visible_changed (TASK_ITEM (window), TRUE);
     else
       task_item_emit_visible_changed (TASK_ITEM (window), FALSE);      
@@ -961,7 +961,7 @@ task_window_is_hidden (TaskWindow    *window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), FALSE);
 
-  return !GTK_WIDGET_VISIBLE(window);
+  return !gtk_widget_get_visible (GTK_WIDGET (window));
 }
 
 /*hidden should be a prop*/
@@ -1283,7 +1283,7 @@ _is_visible (TaskItem *item)
 {
   TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;
   
-  return priv->in_workspace && !priv->hidden && GTK_WIDGET_VISIBLE(item);
+  return priv->in_workspace && !priv->hidden && gtk_widget_get_visible (GTK_WIDGET (item));
 }
 
 static GtkWidget *
