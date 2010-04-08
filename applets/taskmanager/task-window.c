@@ -31,6 +31,7 @@
 #include <gdk/gdkx.h>
 
 #include <libwnck/libwnck.h>
+#include "libawn/gseal-transition.h"
 
 #undef G_DISABLE_SINGLE_INCLUDES
 #include <glibtop/procargs.h>
