@@ -142,7 +142,8 @@ awn_app_init (AwnApp *app)
       is_gconf = strstr (config_backend, "GConf") != NULL;
     }
     g_error ("No panels to create! %s", is_gconf ?
-             "You might want to try running `killall gconfd-2`." : "");
+             "\n**  Please check that the gconf-schema is installed."
+             "\n**  You might also try to run `killall gconfd-2`." : "");
     return;
   }
 

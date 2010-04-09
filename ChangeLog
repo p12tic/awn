@@ -1,3 +1,10 @@
+2010-04-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Fix LP bug #557778.
+	* src/awn-app.c:
+	Provide more precise error message.
+
 2010-04-09  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-window.c:
