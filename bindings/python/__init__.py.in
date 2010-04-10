@@ -34,6 +34,7 @@ if _version < (2, 11, 1):
 import gtk
 
 from awn import *
+import desktopagnostic.vfs
 
 uid = "0"
 window = 0
@@ -49,6 +50,8 @@ def init(argv):
     global window
     global panel_id
 
+    desktopagnostic.vfs.init()
+    
     try:
         opts, args = getopt.getopt(argv, "u:w:i:",
                                    ["uid=", "window=", "panel-id="])
