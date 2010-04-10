@@ -749,11 +749,10 @@ task_icon_get_menu_item_maximize (TaskIcon * icon,WnckWindow *win)
   if (menuitem)
   {
     gtk_widget_show (menuitem);
-  }
-  g_signal_connect (menuitem,"activate",
+    g_signal_connect (menuitem,"activate",
                 G_CALLBACK(_maximize_window_cb),
                 win);
-    
+  }
   return menuitem;
 }
 

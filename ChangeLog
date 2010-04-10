@@ -1,3 +1,8 @@
+2010-04-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Fix some CRITICAL spam when a window is minimized.
+
 2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/python/__init__.py.in:
