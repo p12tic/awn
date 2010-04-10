@@ -1418,7 +1418,7 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
 static gboolean 
 alpha_blend_hide (gpointer data)
 {
-  const int HIDE_COUNTER_MAX = 10;
+  const int HIDE_COUNTER_MAX = 8;
   g_return_val_if_fail (AWN_IS_PANEL (data), FALSE);
 
   AwnPanel *panel = AWN_PANEL (data);

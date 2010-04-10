@@ -1,3 +1,11 @@
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effect-squish.c:
+	* libawn/anims/awn-effect-turn.c:
+	* src/awn-panel.c:
+	Make a couple of animations faster.
+
 2010-04-10  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:

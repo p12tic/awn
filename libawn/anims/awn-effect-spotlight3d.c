@@ -41,7 +41,7 @@ spotlight3D_hover_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
   }
 
-  const gint PERIOD = 44;
+  const gint PERIOD = 36;
 
   const gdouble ALPHA_STEP = 0.04;
 
@@ -161,7 +161,7 @@ spotlight3D_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
   }
 
-  const gint PERIOD = 44;
+  const gint PERIOD = 36;
 
   const gdouble ALPHA_STEP = 0.04;
 
@@ -275,7 +275,7 @@ spotlight3D_opening_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
   }
 
-  const gint PERIOD = 44;
+  const gint PERIOD = 36;
 
   const gint MAX_OFFSET = priv->icon_height / 2;
 
@@ -457,7 +457,7 @@ spotlight3D_closing_effect(AwnEffectsAnimation * anim)
   }
   else
   {
-    priv->spotlight_alpha -= 2.0 / PERIOD;
+    priv->spotlight_alpha -= 4.0 / PERIOD;
   }
 
   priv->glow_amount = priv->spotlight_alpha;
