@@ -1,3 +1,8 @@
+2010-04-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Really fix bug #550541.
+
 2010-04-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:
