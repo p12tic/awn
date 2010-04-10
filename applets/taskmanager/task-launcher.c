@@ -980,7 +980,7 @@ _left_click (TaskItem *item, GdkEventButton *event)
     GStrv tokens1;
     GStrv tokens2;
     gchar * screen_name = NULL;
-    gchar * id = g_strdup_printf("awn_task_manager_%u_TIME%u",getpid(),event->time);
+    gchar * id = g_strdup_printf("awn_task_manager_%u_TIME%u",getpid(),event->time?event->time:gtk_get_current_event_time ());
     gchar * display_name = gdk_screen_make_display_name (gdk_screen_get_default());
     tokens1 = g_strsplit (display_name,":",2);
     if (tokens1 && tokens1[1])

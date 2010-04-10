@@ -1309,7 +1309,7 @@ static void
 _left_click (TaskItem *item, GdkEventButton *event)
 {
   TaskWindowPrivate *priv = TASK_WINDOW (item)->priv;  
-  guint timestamp = event?event->time:gdk_event_get_time(NULL);
+  guint timestamp = event?event->time:gtk_get_current_event_time ();
   
   if ( (priv->window == priv->last_active_non_taskmanager_window) && 
       !wnck_window_is_minimized(priv->last_active_non_taskmanager_window))
