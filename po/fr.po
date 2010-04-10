@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-25 14:14+0200\n"
-"PO-Revision-Date: 2010-03-09 13:18+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"POT-Creation-Date: 2010-03-25 14:15+0200\n"
+"PO-Revision-Date: 2010-04-04 14:53+0000\n"
+"Last-Translator: Pierre Slamich <pierre.slamich@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-03-10 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-04-05 03:53+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -74,8 +74,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 " Si overlay_application_icons est vraie, cette clé inversera la "
 "superposition (si elle est également vraie)."
@@ -356,23 +356,23 @@ msgstr "Gérer les préférences, les lanceurs, les applets et les thèmes AWN"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr ""
+msgstr "Angle 3D"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Applets actifs</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Applets disponibles</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>Catégories</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>Effets</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
@@ -380,7 +380,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>Compléments</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
@@ -388,11 +388,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>Icônes</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr ""
+msgstr "<b>Lanceurs</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
@@ -404,7 +404,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>Tableau de bord</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
@@ -412,7 +412,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>Paramètres</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
@@ -424,7 +424,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Info-bulles</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
@@ -437,9 +437,8 @@ msgid "Activate applet"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:21
-#, fuzzy
 msgid "Active rectangle:"
-msgstr "Couleur du rectangle actif."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
@@ -451,16 +450,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Auteur :"
 
 #: ../awn-settings/awn-settings.ui.h:25
-#, fuzzy
 msgid "Autohide mode:"
-msgstr "Masquage automatique : fondu"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Arrière-plan :"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
@@ -483,9 +481,8 @@ msgid "Curves Symmetry"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:33
-#, fuzzy
 msgid "Curviness"
-msgstr "Incurvé"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:34 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:152
@@ -497,14 +494,12 @@ msgid "Custom Arrow Image"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:36
-#, fuzzy
 msgid "Customize effects"
-msgstr "Personnaliser l'icône"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:37
-#, fuzzy
 msgid "Customize..."
-msgstr "Personnaliser l'icône"
+msgstr "Personnaliser..."
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
@@ -524,34 +519,31 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
-msgstr ""
+msgstr "Exporter le thème..."
 
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Extra Options"
-msgstr ""
+msgstr "Options supplémentaires"
 
 #: ../awn-settings/awn-settings.ui.h:44
 msgid "Fill Color"
-msgstr ""
+msgstr "Couleur de remplissage"
 
 #: ../awn-settings/awn-settings.ui.h:45
-#, fuzzy
 msgid "First Gradient Color"
-msgstr "Première couleur du dégradé."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:46
-#, fuzzy
 msgid "First Highlight Color"
-msgstr "Première couleur du dégradé de mise en surbrillance."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:47
-#, fuzzy
 msgid "Font"
-msgstr "Flottant"
+msgstr "Police de caractères"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Font Color"
-msgstr ""
+msgstr "Couleur de la police"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Font Mode"
@@ -562,9 +554,8 @@ msgid "Font Outline Color"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:51
-#, fuzzy
 msgid "Force monitor mode ?"
-msgstr "Forcer la géométrie de l'écran."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Glowing dot"
@@ -595,18 +586,16 @@ msgid "Icons and Tooltips"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:59
-#, fuzzy
 msgid "Icons:"
-msgstr "Icônes"
+msgstr "Icônes:"
 
 #: ../awn-settings/awn-settings.ui.h:60
-#, fuzzy
 msgid "Inner Border Color"
-msgstr "Couleur de la bordure interne."
+msgstr "Couleur de la bordure intérieure"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Install..."
-msgstr ""
+msgstr "Installer..."
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Launch animation:"
@@ -634,25 +623,23 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Name:"
-msgstr ""
+msgstr "Nom :"
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Offset"
-msgstr ""
+msgstr "Décalage"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Open animation:"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:71
-#, fuzzy
 msgid "Outer Border Color"
-msgstr "Couleur de la bordure interne."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:72
-#, fuzzy
 msgid "Outline Color"
-msgstr "Contour"
+msgstr "Couleur du bord extérieur"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Panel Background Colors"
@@ -687,23 +674,20 @@ msgid "Repositories"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:81
-#, fuzzy
 msgid "Second Gradient Color"
-msgstr "Deuxième couleur du dégradé."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:82
-#, fuzzy
 msgid "Second Highlight Color"
-msgstr "Deuxième couleur du dégradé de mise en surbrillance."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Select Custom Arrow"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:84
-#, fuzzy
 msgid "Separator Color"
-msgstr "Couleur du séparateur."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
@@ -714,9 +698,8 @@ msgid "Show dialog after long press"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:87
-#, fuzzy
 msgid "Show shadows"
-msgstr "Afficher l'ombre des icônes"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "St_yle:"
@@ -955,9 +938,8 @@ msgid "Panel mode"
 msgstr "Mode panneau"
 
 #: ../awn-settings/awnSettings.py.in:149
-#, fuzzy
 msgid "Always visible"
-msgstr "Toujours sur l'espace de travail visible"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
@@ -968,18 +950,16 @@ msgid "Window dodge"
 msgstr "Évitement de fenêtre"
 
 #: ../awn-settings/awnSettings.py.in:156
-#, fuzzy
 msgid "Fade out"
-msgstr "Fondu"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
 msgstr "Transparence"
 
 #: ../awn-settings/awnSettings.py.in:157
-#, fuzzy
 msgid "Keep below"
-msgstr "Masquage automatique : maintenir en dessous"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Solid"
@@ -1192,9 +1172,8 @@ msgid "Offset of the icons from window border."
 msgstr "Écart entre les icônes et le bord de la fenêtre."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
-#, fuzzy
 msgid "Outline color of the tooltip"
-msgstr "Couleur de la police des infobulles"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
@@ -1266,8 +1245,8 @@ msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
-"Liste des UA Screenlets ayant été rajoutés depuis ScreeneletInstance::"
-"Position."
+"Liste des UA Screenlets ayant été rajoutés depuis "
+"ScreeneletInstance::Position."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
@@ -1307,7 +1286,8 @@ msgstr "Taille de Awn visible par l'utilisateur."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "Time in ms after which AwnIcon will emit long-press signal."
-msgstr "Temps en ms avant que AwnIcon considère le clic comme étant « long »."
+msgstr ""
+"Temps en ms avant que AwnIcon considère le clic comme étant « long »."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "Whether AwnDialog should use Gtk theme colors."
@@ -1338,9 +1318,8 @@ msgid ""
 msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
-#, fuzzy
 msgid "Customise Applet"
-msgstr "Personnaliser l'icône"
+msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"

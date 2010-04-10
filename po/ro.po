@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-03-09 15:06+0000\n"
+"PO-Revision-Date: 2010-03-25 17:43+0000\n"
 "Last-Translator: Manuel R. Ciosici <manuelciosici@yahoo.com>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
 "== 0) && (n != 0))) ? 2: 1));\n"
-"X-Launchpad-Export-Date: 2010-03-10 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-03-26 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -61,8 +61,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -451,9 +451,8 @@ msgid "Customize effects"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:37
-#, fuzzy
 msgid "Customize..."
-msgstr "Personalizat"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
@@ -902,9 +901,8 @@ msgid "Window dodge"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
-#, fuzzy
 msgid "Fade out"
-msgstr "Estompare"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"

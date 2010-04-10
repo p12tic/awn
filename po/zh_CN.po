@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-03-14 03:54+0000\n"
-"Last-Translator: Heling Yao <Unknown>\n"
+"PO-Revision-Date: 2010-03-26 10:48+0000\n"
+"Last-Translator: Eleanor Chen <chenyueg@gmail.com>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-03-15 04:48+0000\n"
+"X-Launchpad-Export-Date: 2010-03-27 05:00+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -61,8 +61,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -100,11 +100,11 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "允许通过拖放对窗口重新排序 "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "允许对任务分组。"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -150,7 +150,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "显示所有工作区中的窗口"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -166,16 +166,16 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:821
 msgid "Launch"
-msgstr ""
+msgstr "启动"
 
 #: ../applets/taskmanager/task-launcher.c:1186
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "启动 %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "启动器/任务管理器"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
@@ -193,7 +193,7 @@ msgstr "拖拽以改变面板方向"
 
 #: ../applets/quick-prefs/applet.vala:468
 msgid "Icon size:"
-msgstr ""
+msgstr "图标尺寸"
 
 #: ../applets/quick-prefs/applet.vala:504 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:676
@@ -225,7 +225,7 @@ msgstr "分隔符"
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "工作区 %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
@@ -235,7 +235,7 @@ msgstr ""
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "工作区 %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:522
 msgid "Add as Launcher"
@@ -243,31 +243,31 @@ msgstr "添加为启动器"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:540
 msgid "_Close"
-msgstr ""
+msgstr "关闭(_C)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:568
 msgid "_Close All"
-msgstr ""
+msgstr "全部关闭(_C)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:737
 msgid "Ma_ximize"
-msgstr ""
+msgstr "最大化(_X)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:742
 msgid "Unma_ximize"
-msgstr ""
+msgstr "恢复(_X)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:771
 msgid "Always on _Top"
-msgstr ""
+msgstr "总在最前(_T)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:795
 msgid "Mi_nimize"
-msgstr ""
+msgstr "最小化(_N)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:800
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "恢复(_N)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:854
 msgid "Always on Visible Workspace"
@@ -279,7 +279,7 @@ msgstr "仅在此工作区"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:928
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "移动到左侧工作区(_L)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:938
 msgid "Move to Workspace _Right"
@@ -287,15 +287,15 @@ msgstr "移动到右侧工作区(_R)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:948
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "移动到上侧工作区(_U)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:958
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "移动到下侧工作区(_D)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:967
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "移动到另一工作区(_W)"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
@@ -312,19 +312,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>启用的小程序</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>可用的小程序</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>分类</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>效果</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
@@ -336,15 +336,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>常规</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>图标</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr ""
+msgstr "<b>启动器</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
@@ -352,11 +352,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>面板颜色</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>面板</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
@@ -364,19 +364,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>设置</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>任务管理器</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
-msgstr ""
+msgstr "<b>这些选项需要任务管理器小程序开启才有效。 </b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>小提示</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
@@ -386,7 +386,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "启用小程序"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
@@ -402,31 +402,31 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "作者："
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "自动隐藏模式："
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "背景："
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
-msgstr ""
+msgstr "鼠标穿透"
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Close animation:"
-msgstr ""
+msgstr "关闭动画："
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Configured Effects"
-msgstr ""
+msgstr "已配置的效果"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Corner Radius"
-msgstr ""
+msgstr "圆角半径"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Curves Symmetry"
@@ -447,32 +447,31 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Customize effects"
-msgstr ""
+msgstr "自定义效果"
 
 #: ../awn-settings/awn-settings.ui.h:37
-#, fuzzy
 msgid "Customize..."
-msgstr "自定义"
+msgstr "自定义..."
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
-msgstr ""
+msgstr "禁用小程序"
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Display launchers only"
-msgstr ""
+msgstr "只显示启动器"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "拖放重新排序"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "扩展面板(_X)"
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
-msgstr ""
+msgstr "导出主题..."
 
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Extra Options"
@@ -639,9 +638,8 @@ msgid "Select Custom Arrow"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:84
-#, fuzzy
 msgid "Separator Color"
-msgstr "分隔符"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
@@ -814,9 +812,7 @@ msgid ""
 "under the terms of the GNU General Public License as published by the Free "
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
-msgstr ""
-"该程序是自由软件；您可以在自由软件基金会 GNU 通用公共许可证版本 2 (或其后继版"
-"本)的条款下重新分发或修改它。"
+msgstr "该程序是自由软件；您可以在自由软件基金会 GNU 通用公共许可证版本 2 (或其后继版本)的条款下重新分发或修改它。"
 
 #: ../awn-settings/awnClass.py:1095
 msgid ""
@@ -825,8 +821,8 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
-"本程序发布的目的是希望它能够对您有用，但我们没有任何保证；对于以任何用途使用"
-"它所造成的任何直接或间接后果都不承担任何责任。请参看 GNU GPL 协议中的细节。"
+"本程序发布的目的是希望它能够对您有用，但我们没有任何保证；对于以任何用途使用它所造成的任何直接或间接后果都不承担任何责任。请参看 GNU GPL "
+"协议中的细节。"
 
 #: ../awn-settings/awnClass.py:1097
 msgid ""
@@ -834,8 +830,8 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
-"您应该收到与本程序在一起的一份 GNU 通用公共许可证；如果没有，请致信美国马萨诸"
-"塞州 02110-1301 波士顿富兰克林大街 51 号 5 层自由软件基金会。"
+"您应该收到与本程序在一起的一份 GNU 通用公共许可证；如果没有，请致信美国马萨诸塞州 02110-1301 波士顿富兰克林大街 51 号 5 "
+"层自由软件基金会。"
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -882,9 +878,8 @@ msgid "Panel mode"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:149
-#, fuzzy
 msgid "Always visible"
-msgstr "总是在可见工作区"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
@@ -895,9 +890,8 @@ msgid "Window dodge"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
-#, fuzzy
 msgid "Fade out"
-msgstr "淡入淡出"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
@@ -1260,9 +1254,6 @@ msgstr ""
 msgid "Close docklet"
 msgstr ""
 
-#~ msgid "Standard"
-#~ msgstr "标准"
-
 #~ msgid "Arrow offset (requires restart): "
 #~ msgstr "箭头偏移(需要重启程序)： "
 
@@ -1277,3 +1268,6 @@ msgstr ""
 
 #~ msgid "gtk-refresh"
 #~ msgstr "gtk-刷新"
+
+#~ msgid "Standard"
+#~ msgstr "标准"

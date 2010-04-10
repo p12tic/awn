@@ -8,29 +8,29 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-03-09 14:00+0000\n"
-"Last-Translator: Ernesto2k <boramism@gmail.com>\n"
+"PO-Revision-Date: 2010-04-03 03:59+0000\n"
+"Last-Translator: Hyungchul Kim <Unknown>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-03-10 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-04-04 03:53+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr "확장기"
+msgstr "확장하기"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "확장 모드에서 패널의 빈 공간 채우기"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
-msgstr ""
+msgstr " 서로 다른 WM_CLIENT_NAME 값을 가지는 윈도우들을 묶는 것을 허용"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -95,11 +95,11 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "오래누르기로 다이얼로그를 열기"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "드래그앤드롭으로 윈도우를 재배열 "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
@@ -129,7 +129,7 @@ msgstr ""
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
-msgstr ""
+msgstr "아이콘 아래에 표시할 작업표시기의 최대 개수 (0 부터 3)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
@@ -307,23 +307,23 @@ msgstr "Awn 설정, 런처, 애플릿, 테마를 관리합니다"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr ""
+msgstr "3D 앵글"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>사용중인 애플릿</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>사용 가능한 애플릿</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>분류</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>효과</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
@@ -331,19 +331,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>기타</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>일반</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>아이콘</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr ""
+msgstr "<b>실행기</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
@@ -351,66 +351,65 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>패널 색상</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>패널</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>저장소</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>설정</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>작업관리자</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
-msgstr ""
+msgstr "<b>이 설정은 작업관리자 애플릿이 필요합니다. </b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>툴팁</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
-msgstr ""
+msgstr "<b>테마를 사용하기 위해서는 데스크탑 이펙트(컴포지터)를 활성화 해야합니다.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "애플릿 사용"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "직사각형 활성:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "화살표 형식"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "주의끌기 애니메이션:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "제작자:"
 
 #: ../awn-settings/awn-settings.ui.h:25
-#, fuzzy
 msgid "Autohide mode:"
-msgstr "패이드 아웃 자동 숨기기"
+msgstr "자동숨기기 방식:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "배경:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
@@ -418,100 +417,96 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Close animation:"
-msgstr ""
+msgstr "닫기 애니메이션:"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Configured Effects"
-msgstr ""
+msgstr "설정된 효과"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Corner Radius"
-msgstr ""
+msgstr "모서리 반경"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "곡선 대칭"
 
 #: ../awn-settings/awn-settings.ui.h:33
-#, fuzzy
 msgid "Curviness"
-msgstr "곡선 모양"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:34 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Custom"
-msgstr "사용자 정의"
+msgstr "사용자 지정"
 
 #: ../awn-settings/awn-settings.ui.h:35
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "사용자 지정 화살표 이미지"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Customize effects"
-msgstr ""
+msgstr "사용자 정의 효과"
 
 #: ../awn-settings/awn-settings.ui.h:37
-#, fuzzy
 msgid "Customize..."
-msgstr "사용자 정의"
+msgstr "사용자 정의..."
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
-msgstr ""
+msgstr "애플릿 사용하지 않기"
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Display launchers only"
-msgstr ""
+msgstr "실행기만 표시"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "드래그앤드롭 재정렬"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "패널 확장(_X)"
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
-msgstr ""
+msgstr "테마 내보내기..."
 
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Extra Options"
-msgstr ""
+msgstr "추가 옵션"
 
 #: ../awn-settings/awn-settings.ui.h:44
 msgid "Fill Color"
-msgstr ""
+msgstr "채우기 색"
 
 #: ../awn-settings/awn-settings.ui.h:45
-#, fuzzy
 msgid "First Gradient Color"
-msgstr "첫 번째 그라디언트 단계 색."
+msgstr "첫번째 그라디언트 색"
 
 #: ../awn-settings/awn-settings.ui.h:46
-#, fuzzy
 msgid "First Highlight Color"
-msgstr "첫 번째 하이라이트 그라디언트 단계 색."
+msgstr "첫번째 강조색"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Font"
-msgstr ""
+msgstr "글꼴"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Font Color"
-msgstr ""
+msgstr "글꼴 색"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Font Mode"
-msgstr ""
+msgstr "글꼴 방식"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "Font Outline Color"
-msgstr ""
+msgstr "글꼴 외각선 색"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "모니터 모드 강제하기 ?"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Glowing dot"
@@ -523,41 +518,39 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Group common windows"
-msgstr ""
+msgstr "그룹 공통 창"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Hover animation:"
-msgstr ""
+msgstr "지나가기 애니메이션"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Icon _effects:"
-msgstr ""
+msgstr "아이콘 효과(_E):"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Icon alpha"
-msgstr ""
+msgstr "아이콘 투명도"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "아이콘과 툴팁"
 
 #: ../awn-settings/awn-settings.ui.h:59
-#, fuzzy
 msgid "Icons:"
-msgstr "아이콘 크기:"
+msgstr "아이콘:"
 
 #: ../awn-settings/awn-settings.ui.h:60
-#, fuzzy
 msgid "Inner Border Color"
-msgstr "주 경계 색."
+msgstr "안쪽 테두리 색깔"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Install..."
-msgstr ""
+msgstr "설치..."
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Launch animation:"
-msgstr ""
+msgstr "실행 애니메이션:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Matching strength"
@@ -565,45 +558,43 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "모니터 X-오프셋"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "모니터 Y-오프셋"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Monitor height"
-msgstr ""
+msgstr "화면 높이"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Monitor width"
-msgstr ""
+msgstr "화면 넓이"
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Name:"
-msgstr ""
+msgstr "이름:"
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Offset"
-msgstr ""
+msgstr "오프셋"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Open animation:"
-msgstr ""
+msgstr "열기 애니메이션:"
 
 #: ../awn-settings/awn-settings.ui.h:71
-#, fuzzy
 msgid "Outer Border Color"
-msgstr "주 경계 색."
+msgstr "바깥쪽 테두리 색"
 
 #: ../awn-settings/awn-settings.ui.h:72
-#, fuzzy
 msgid "Outline Color"
-msgstr "외곽선"
+msgstr "외곽선 색"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "패널 배경색"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Panel Look Refinements"
@@ -611,15 +602,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "패널 스타일 및 크기"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "패턴 투명도"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Pattern Image"
-msgstr ""
+msgstr "패턴 그림"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Reflection alpha multiplier"
@@ -627,52 +618,51 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Reflection offset"
-msgstr ""
+msgstr "반사 오프셋"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Repositories"
-msgstr ""
+msgstr "저장소"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "두번째 그라디언트 색"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "두번째 강조색"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "화살표 사용자 선택"
 
 #: ../awn-settings/awn-settings.ui.h:84
-#, fuzzy
 msgid "Separator Color"
-msgstr "구분선"
+msgstr "구분자 색상"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
-msgstr ""
+msgstr "모든 윈도우 보기"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "오래누르기로 다이얼로그 보이기"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Show shadows"
-msgstr ""
+msgstr "그림자 보기"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "St_yle:"
-msgstr ""
+msgstr "모양(_Y):"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "AWN 자동 시작하기(_A)"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Theme Export"
-msgstr ""
+msgstr "테마 내보내기"
 
 #: ../awn-settings/awn-settings.ui.h:91
 msgid ""
@@ -682,19 +672,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Triangle"
-msgstr ""
+msgstr "삼각형"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Gtk 테마색 사용"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "패턴을 배경으로 사용"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
-msgstr ""
+msgstr "버전:"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "_Behavior:"
@@ -702,33 +692,33 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "_Orientation:"
-msgstr ""
+msgstr "방향(_O):"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "화면에서 위치(_P):"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "_Size of icons:"
-msgstr ""
+msgstr "아이콘 크기(_S):"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "pixels"
-msgstr ""
+msgstr "픽셀"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "오류, sources.list가 이미 존재"
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "오류, 경로가 없거나 이미 존재"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
-msgstr ""
+msgstr "오류, %s(이)가 없습니다. sources.list에서 제거해 주십시오."
 
 #: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
@@ -822,9 +812,8 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
-"이 프로그램은 자유 소프트웨어입니다. 소프트웨어의 피양도자는 자유 소프트웨어 "
-"재단이 공표한 GNU 일반 공중 사용 허가서 2판 또는 그 이후 판을 임의로 선택해"
-"서, 그 규정에 따라 프로그램을 개작하거나 재배포할 수 있습니다."
+"이 프로그램은 자유 소프트웨어입니다. 소프트웨어의 피양도자는 자유 소프트웨어 재단이 공표한 GNU 일반 공중 사용 허가서 2판 또는 그 "
+"이후 판을 임의로 선택해서, 그 규정에 따라 프로그램을 개작하거나 재배포할 수 있습니다."
 
 #: ../awn-settings/awnClass.py:1095
 msgid ""
@@ -833,9 +822,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
-"이 프로그램은 유용할 것이라는 희망 아래 배포됩니다. 그러나 아무런 보증 없이; "
-"심지어는 상업적인 보증을 암시하거나 특정 목적으로 맞게 가공하는 것 없이 배포"
-"됩니다. 자세한 사항은 GNU 일반 공중 허가서를 보십시오."
+"이 프로그램은 유용하게 사용될 수 있으리라는 희망에서 배포되고 있지만, 특정한 목적에 맞는 적합성 여부나 판매용으로 사용할 수 있으리라는 "
+"묵시적인 보증을 포함한 어떠한 형태의 보증도 제공하지 않습니다. 보다 자세한 사항에 대해서는 GNU 일반 공중 사용 허가서를 참고하시기 "
+"바랍니다."
 
 #: ../awn-settings/awnClass.py:1097
 msgid ""
@@ -843,9 +832,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
-"당신은 GNU 일반 공중 허가서의 복사본을 이 프로그램을 통해 받을 수 있습니다. "
-"그렇지 못하면, 다음 주소로 편지를 보내주세요. Free Software Foundation, "
-"Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA"
+"당신은 GNU 일반 공중 허가서의 복사본을 이 프로그램을 통해 받을 수 있습니다. 그렇지 못하면, 다음 주소로 편지를 보내주세요. "
+"Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA "
+"02110-1301 USA"
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -881,7 +870,7 @@ msgstr "곡선 모양"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "엣지"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
@@ -892,9 +881,8 @@ msgid "Panel mode"
 msgstr "패널 모드"
 
 #: ../awn-settings/awnSettings.py.in:149
-#, fuzzy
 msgid "Always visible"
-msgstr "항상 현재 작업 공간에 놓기"
+msgstr "항상 보임"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
@@ -902,21 +890,19 @@ msgstr "똑똑한 숨기기"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Window dodge"
-msgstr ""
+msgstr "창 피하기"
 
 #: ../awn-settings/awnSettings.py.in:156
-#, fuzzy
 msgid "Fade out"
-msgstr "사라짐"
+msgstr "점점 흐릿하게"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
 msgstr "투명도"
 
 #: ../awn-settings/awnSettings.py.in:157
-#, fuzzy
 msgid "Keep below"
-msgstr "항상 아래에 두고 자동 숨김"
+msgstr "하위 유지"
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Solid"
@@ -978,11 +964,11 @@ msgstr "0 - 채움, 1 - 외곽선, 2 - 외곽선, 뒤집힘"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -1016,7 +1002,7 @@ msgstr "툴팁 배경 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "사용하는 사각형의 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
@@ -1024,7 +1010,7 @@ msgstr "빛나는 점 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "사용하는 사각형의 외곽선 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
@@ -1078,19 +1064,19 @@ msgstr "아이콘 글자 외곽선 색. GTK 테마 색을 사용하시려면 비
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "사실이면 창이 최대여도 패널을 덥지 않을것입니다."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "If true, the panel will expand to full monitor width/height."
-msgstr ""
+msgstr "패널을 전체 모니터로 확장합니다."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Internal border color."
-msgstr ""
+msgstr "내부 테두리 색."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid "Main border color."
-msgstr "주 경계 색."
+msgstr "메인 테두리 색."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -1107,9 +1093,8 @@ msgid "Offset of the icons from window border."
 msgstr "아이콘과 창 경계 사이의 빈 공간 크기."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
-#, fuzzy
 msgid "Outline color of the tooltip"
-msgstr "툴팁 글꼴 색"
+msgstr "툴팁의 외곽선 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
@@ -1136,19 +1121,19 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
-msgstr ""
+msgstr "두번째 그래디언트 색상"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "두번째 강조 그래디언트 색상"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "구분기호 색"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "아이콘 그림자 표시"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
@@ -1156,7 +1141,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "3D 모드에서 패널의 각도"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
@@ -1184,11 +1169,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
-msgstr ""
+msgstr "패널 목록"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
-msgstr ""
+msgstr "패턴을 그리는 위치"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
@@ -1196,11 +1181,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "아이콘의 불투명도 (0.0 부터 1.0)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "패턴의 불투명도"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The symmetry of the curve in Curves mode."
@@ -1212,7 +1197,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "Time in ms after which AwnIcon will emit long-press signal."
-msgstr ""
+msgstr "AwnIcon 이 오래누르기 신호를 표시하기까지 시간 (millisec)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "Whether AwnDialog should use Gtk theme colors."
@@ -1224,7 +1209,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgstr "현재 Gtk 테마의 색상을 사용"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid ""
@@ -1242,38 +1227,38 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "사용자 정의 애플릿"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "아이콘"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "사용자 정의 아이콘을 선택"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "사용자 정의 아이콘"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "사용자 정의 아이콘 제거"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "애플릿 불러오는 중..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "우웁스! 애플릿이 충돌했습니다. 클릭하면 다시 시작합니다."
 
 #: ../src/awn-panel.c:3939
 msgid "Close docklet"
-msgstr ""
-
-#~ msgid "Standard"
-#~ msgstr "표준"
+msgstr "독렛 닫기"
 
 #~ msgid "Always"
 #~ msgstr "항상 표시"
+
+#~ msgid "Standard"
+#~ msgstr "표준"

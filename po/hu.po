@@ -8,29 +8,31 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-02-08 13:11+0000\n"
-"Last-Translator: Pittmann Tamás <zaivaldi@ubuntu.hu>\n"
+"PO-Revision-Date: 2010-04-09 15:45+0000\n"
+"Last-Translator: DCWM <Unknown>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-04-10 03:49+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Kiterjesztő"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Hely kitöltése a panelen kiterjesztett módban"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Megengedi azon ablakok csoportosítását, amelyek különböző WM_CLIENT_NAME "
+"értékekkel rendelkeznek."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
@@ -57,11 +59,13 @@ msgstr ""
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Ugyanazon indítóval rendelkező ikonok csoportosítása, ha az ablakok "
+"csoportosítása nincs engedélyezve."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -85,7 +89,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
+msgstr "Eltérés, mielőtt aktiválja az ablakot amikor ráhúzunk egy ikont."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -451,9 +455,8 @@ msgid "Customize effects"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:37
-#, fuzzy
 msgid "Customize..."
-msgstr "Egyéni"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
@@ -540,9 +543,8 @@ msgid "Icons and Tooltips"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:59
-#, fuzzy
 msgid "Icons:"
-msgstr "Ikonok"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Inner Border Color"
@@ -901,9 +903,8 @@ msgid "Window dodge"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
-#, fuzzy
 msgid "Fade out"
-msgstr "Elhalványítás"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"

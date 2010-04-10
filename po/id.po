@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-02-08 13:12+0000\n"
-"Last-Translator: Fakhrul Rijal <frijal@gmail.com>\n"
+"PO-Revision-Date: 2010-03-26 03:07+0000\n"
+"Last-Translator: Abdul Munif Hanafi <Unknown>\n"
 "Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-03-27 05:00+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -449,9 +449,8 @@ msgid "Customize effects"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:37
-#, fuzzy
 msgid "Customize..."
-msgstr "Penyesuaian"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
@@ -813,8 +812,8 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
-"Program ini adalah perangkat lunak bebas; anda dapat mendistribusikannya dan/"
-"atau memodifikasinya mengikuti ketentuan GNU General Public License "
+"Program ini adalah perangkat lunak bebas; anda dapat mendistribusikannya "
+"dan/atau memodifikasinya mengikuti ketentuan GNU General Public License "
 "sebagaimana dipublikasikan oleh Free Software Foundation; baik Lisensi versi "
 "2, atau (sesuai pilihan anda) versi berikutnya."
 
@@ -897,9 +896,8 @@ msgid "Window dodge"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
-#, fuzzy
 msgid "Fade out"
-msgstr "Pudar"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
@@ -1236,7 +1234,7 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "Ikon"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"

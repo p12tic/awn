@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-03-09 15:01+0000\n"
+"PO-Revision-Date: 2010-03-25 17:36+0000\n"
 "Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-03-10 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-03-26 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -64,8 +64,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -393,9 +393,8 @@ msgid "Activate applet"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:21
-#, fuzzy
 msgid "Active rectangle:"
-msgstr "Kolor aktywnego prostokąta."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
@@ -410,9 +409,8 @@ msgid "Author:"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:25
-#, fuzzy
 msgid "Autohide mode:"
-msgstr "Autoukrywanie - zanikanie"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -439,9 +437,8 @@ msgid "Curves Symmetry"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:33
-#, fuzzy
 msgid "Curviness"
-msgstr "Zakrzywiony"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:34 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:152
@@ -457,9 +454,8 @@ msgid "Customize effects"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:37
-#, fuzzy
 msgid "Customize..."
-msgstr "Użytkownika"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
@@ -498,9 +494,8 @@ msgid "First Highlight Color"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:47
-#, fuzzy
 msgid "Font"
-msgstr "Uniesiony"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Font Color"
@@ -547,9 +542,8 @@ msgid "Icons and Tooltips"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:59
-#, fuzzy
 msgid "Icons:"
-msgstr "Ikony"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Inner Border Color"
@@ -648,9 +642,8 @@ msgid "Select Custom Arrow"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:84
-#, fuzzy
 msgid "Separator Color"
-msgstr "Separator"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
@@ -661,9 +654,8 @@ msgid "Show dialog after long press"
 msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:87
-#, fuzzy
 msgid "Show shadows"
-msgstr "Pokaż cienie ikon."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "St_yle:"
@@ -825,8 +817,8 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
-"Niniejszy program jest wolnym oprogramowaniem; można go rozprowadzać dalej i/"
-"lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
+"Niniejszy program jest wolnym oprogramowaniem; można go rozprowadzać dalej "
+"i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
 "przez Fundację Wolnego Oprogramowania - według wersji drugiej tej Licencji "
 "lub którejś z późniejszych wersji."
 
@@ -897,9 +889,8 @@ msgid "Panel mode"
 msgstr "Tryb panelu"
 
 #: ../awn-settings/awnSettings.py.in:149
-#, fuzzy
 msgid "Always visible"
-msgstr "Zawsze na widocznym obszarze roboczym"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
@@ -910,18 +901,16 @@ msgid "Window dodge"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
-#, fuzzy
 msgid "Fade out"
-msgstr "Zanikanie"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
 msgstr "Przeźroczystość"
 
 #: ../awn-settings/awnSettings.py.in:157
-#, fuzzy
 msgid "Keep below"
-msgstr "Autoukrywanie - pod spód"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Solid"
