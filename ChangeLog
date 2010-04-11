@@ -1,5 +1,10 @@
 2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/dock-manager-api.vala:
+	Make sure we don't have double slashes in DesktopFile.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnSettings.py.in:
 	Set translation domain before loading ui file.
 

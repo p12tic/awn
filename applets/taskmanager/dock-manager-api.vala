@@ -224,6 +224,7 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
       if (launcher != null)
       {
         path = launcher.get_desktop_path ();
+        path = path.replace ("//", "/");
       }
       return path;
     }
