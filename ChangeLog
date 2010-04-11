@@ -1,6 +1,11 @@
 2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
 
 	* configure.in:
+	Post-release version bump.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
 	Bump version to 0.4.0.
 
 2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
