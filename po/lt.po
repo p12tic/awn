@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-03-09 14:12+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-04-11 13:41+0000\n"
+"Last-Translator: Darius Kulikauskas <Unknown>\n"
 "Language-Team: Lithuanian <lt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
-"100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-03-10 05:12+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"(n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2010-04-11 14:00+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -74,8 +74,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 " Šis raktas apkeis apdangalą/apdengtąjį, kai jis ir nustatymas "
 "overlay_application_icon yra įjungti."
@@ -350,136 +350,136 @@ msgstr "Tvarkyti Awn nustatymus, paleidėjus, pusprogrames ir temas"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr ""
+msgstr "3D kampas"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Aktyvios programėlės</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Prieinamos programėlės</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>Kategorijos</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>Efektai</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Eksportuoti nustatymų grupes</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>Papildomi</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Bendrieji</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>Piktogramos</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr ""
+msgstr "<b>Paleistukai</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr ""
+msgstr "<b>Skaitiniai nustatymai<b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Panelės spalvos</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>Panelė</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Saugyklos</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>Nustatymai</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>Užduočių tvarkytuvai</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
+"<b>Šiems nustatymams reikia aktyvuotos Užduočių tvarkytuvo programėlės.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Patarimai</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
+"<b>Jums reikia įjungti darbastalio efektus (kompoziciją), kad galėtumėte "
+"taikyti pasirinktinas temas.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Aktyvuoti programėlę"
 
 #: ../awn-settings/awn-settings.ui.h:21
-#, fuzzy
 msgid "Active rectangle:"
-msgstr "Aktyvaus stačiakampio spalva."
+msgstr "Aktyvus keturkampis:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Rodyklės tipas"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Dėmesio animacija:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Autorius:"
 
 #: ../awn-settings/awn-settings.ui.h:25
-#, fuzzy
 msgid "Autohide mode:"
-msgstr "Automatinis slėpimas išnykimu"
+msgstr "Automatinio paslėpimo režimas:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Fonas:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
-msgstr ""
+msgstr "Spaudimas „kiaurai“"
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Close animation:"
-msgstr ""
+msgstr "Uždarymo animacija:"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Configured Effects"
-msgstr ""
+msgstr "Nustatytieji efektai"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Corner Radius"
-msgstr ""
+msgstr "Kampų spindulys"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Kreivių simetrija"
 
 #: ../awn-settings/awn-settings.ui.h:33
-#, fuzzy
 msgid "Curviness"
-msgstr "Lenktas"
+msgstr "Kreivumas"
 
 #: ../awn-settings/awn-settings.ui.h:34 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:152
@@ -488,283 +488,271 @@ msgstr "Savas"
 
 #: ../awn-settings/awn-settings.ui.h:35
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "Pasirinktinis rodyklės paveiksliukas"
 
 #: ../awn-settings/awn-settings.ui.h:36
-#, fuzzy
 msgid "Customize effects"
-msgstr "Tinkinti piktogramą"
+msgstr "Pasirinkti efektus"
 
 #: ../awn-settings/awn-settings.ui.h:37
-#, fuzzy
 msgid "Customize..."
-msgstr "Tinkinti piktogramą"
+msgstr "Pasirinkti..."
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Išjungti programėlę"
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Display launchers only"
-msgstr ""
+msgstr "Rodyti tik paleistukus"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "„Tempti ir paleisti“ pertvarkymas"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "Išskle_isti panelę"
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
-msgstr ""
+msgstr "Eksportuoti temą..."
 
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Extra Options"
-msgstr ""
+msgstr "Papildomi nustatymai"
 
 #: ../awn-settings/awn-settings.ui.h:44
 msgid "Fill Color"
-msgstr ""
+msgstr "Užpildo spalva"
 
 #: ../awn-settings/awn-settings.ui.h:45
-#, fuzzy
 msgid "First Gradient Color"
-msgstr "Pirmojo gradienot žingsnio spalva."
+msgstr "Pirmoji gradiento spalva"
 
 #: ../awn-settings/awn-settings.ui.h:46
-#, fuzzy
 msgid "First Highlight Color"
-msgstr "Pirmojo paryškinto gradiento žingsnio spalva."
+msgstr "Pirmoji paryškinimo spalva"
 
 #: ../awn-settings/awn-settings.ui.h:47
-#, fuzzy
 msgid "Font"
-msgstr "Plūduriuojantis"
+msgstr "Šriftas"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Font Color"
-msgstr ""
+msgstr "Šrifto spalva"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Font Mode"
-msgstr ""
+msgstr "Šrifto režimas"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Šrifto kontūrų spalba"
 
 #: ../awn-settings/awn-settings.ui.h:51
-#, fuzzy
 msgid "Force monitor mode ?"
-msgstr "Priverstinė vaizduoklio geometrija."
+msgstr "Priverstinai taikyti vaizduoklio režimą?"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Glowing dot"
-msgstr ""
+msgstr "Švytinti taškas"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Glowing dot color"
-msgstr ""
+msgstr "Švytinčio taško spalva"
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Group common windows"
-msgstr ""
+msgstr "Grupuoti vienarūšius langus"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Hover animation:"
-msgstr ""
+msgstr "Užvedimo animacija:"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Icon _effects:"
-msgstr ""
+msgstr "Piktogramos _efektai:"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Icon alpha"
-msgstr ""
+msgstr "Piktogramos alfa"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "Piktogramos ir patarimai"
 
 #: ../awn-settings/awn-settings.ui.h:59
-#, fuzzy
 msgid "Icons:"
-msgstr "Piktogramos"
+msgstr "Piktogramos:"
 
 #: ../awn-settings/awn-settings.ui.h:60
-#, fuzzy
 msgid "Inner Border Color"
-msgstr "Vidinė kraštinės spalva."
+msgstr "Vidinio rėmelio spalva"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Install..."
-msgstr ""
+msgstr "Įdiegti..."
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Launch animation:"
-msgstr ""
+msgstr "Paleidimo animacija:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Matching strength"
-msgstr ""
+msgstr "Priderinimo stiprumas"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Vaizduoklio X-atidėjimas"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Vaizduoklio Y-atidėjimas"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Monitor height"
-msgstr ""
+msgstr "Vaizduoklio aukštis"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Monitor width"
-msgstr ""
+msgstr "Vaizduoklio plotis"
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Name:"
-msgstr ""
+msgstr "Pavadinimas:"
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Offset"
-msgstr ""
+msgstr "Atidėjimas"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Open animation:"
-msgstr ""
+msgstr "Atidarymo animacija:"
 
 #: ../awn-settings/awn-settings.ui.h:71
-#, fuzzy
 msgid "Outer Border Color"
-msgstr "Vidinė kraštinės spalva."
+msgstr "Išorinio rėmelio spalva"
 
 #: ../awn-settings/awn-settings.ui.h:72
-#, fuzzy
 msgid "Outline Color"
-msgstr "Kontūras"
+msgstr "Kontūro spalva"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "Panelės fono spalva"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Panel Look Refinements"
-msgstr ""
+msgstr "Panelės išvaizdos nudailinimas"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Panelės stilius ir dydis"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Rašto alfa"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Pattern Image"
-msgstr ""
+msgstr "Rašto paveikslėlis"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "atspindžio alfa daugiklis"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Reflection offset"
-msgstr ""
+msgstr "Atspindžio atidėjimas"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Repositories"
-msgstr ""
+msgstr "Saugyklos"
 
 #: ../awn-settings/awn-settings.ui.h:81
-#, fuzzy
 msgid "Second Gradient Color"
-msgstr "Antrojo gradiento žingsnio spalva."
+msgstr "Antroji gradiento spalva"
 
 #: ../awn-settings/awn-settings.ui.h:82
-#, fuzzy
 msgid "Second Highlight Color"
-msgstr "Antrojo žingsnio išryškinto gradiento spalva."
+msgstr "antroji paryškinimo spalva"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Pasirinktinė rodyklė"
 
 #: ../awn-settings/awn-settings.ui.h:84
-#, fuzzy
 msgid "Separator Color"
-msgstr "Skirtuko spalva."
+msgstr "Skirtuko spalva"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
-msgstr ""
+msgstr "Rodyti visus langus"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Rodyti dialogą po ilgo paspaudimo"
 
 #: ../awn-settings/awn-settings.ui.h:87
-#, fuzzy
 msgid "Show shadows"
-msgstr "Rodyti šešėlius po piktogramomis."
+msgstr "Rodyti šešėlius"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "St_yle:"
-msgstr ""
+msgstr "St_ilius:"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "Paleisti _Awn automatiškai"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Theme Export"
-msgstr ""
+msgstr "Temos eksportavimas"
 
 #: ../awn-settings/awn-settings.ui.h:91
 msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
 msgstr ""
+"Kad galėtumėte naudoti Protingąjį paslėpimą arba Langų išvengimo režimus "
+"reikia aktyvios Užduočių tvarkytuvo programėlės."
 
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Triangle"
-msgstr ""
+msgstr "Trikampis"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Naudoti Gtk temos spalvas"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Naudoti raštą kaip foną"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
-msgstr ""
+msgstr "Versija:"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "_Behavior:"
-msgstr ""
+msgstr "El_gesys:"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "_Orientation:"
-msgstr ""
+msgstr "_Orientacija:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_Pozicionuoti ekrane:"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "_Size of icons:"
-msgstr ""
+msgstr "Piktogramų dydi_s:"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "pixels"
-msgstr ""
+msgstr "taškai"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
@@ -944,9 +932,8 @@ msgid "Panel mode"
 msgstr "Panelės režimas"
 
 #: ../awn-settings/awnSettings.py.in:149
-#, fuzzy
 msgid "Always visible"
-msgstr "Visada Matomame darbalaukyje"
+msgstr "Visada matomas"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
@@ -957,7 +944,6 @@ msgid "Window dodge"
 msgstr "Langų išvengimas"
 
 #: ../awn-settings/awnSettings.py.in:156
-#, fuzzy
 msgid "Fade out"
 msgstr "Išnykimas"
 
@@ -966,9 +952,8 @@ msgid "Transparency"
 msgstr "Permatomumas"
 
 #: ../awn-settings/awnSettings.py.in:157
-#, fuzzy
 msgid "Keep below"
-msgstr "Automatinį slėpimą laikyti žemiau"
+msgstr "Laikyti žemiau"
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Solid"
@@ -1183,9 +1168,8 @@ msgid "Offset of the icons from window border."
 msgstr "Tarpas tarp piktogramų ir lango kraštiniės."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
-#, fuzzy
 msgid "Outline color of the tooltip"
-msgstr "Patarimo šrifto spalva"
+msgstr "Patarimo kontūro spalva"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
@@ -1258,8 +1242,8 @@ msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
-"Prieš tai pridėtų UA ekranprogramėlių sąrašas formoje ScreeneletInstance::"
-"Position."
+"Prieš tai pridėtų UA ekranprogramėlių sąrašas formoje "
+"ScreeneletInstance::Position."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
@@ -1330,11 +1314,14 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
+"<b>Temos panelės piktograma</b>\n"
+"Jūs pasirinkote pakeisti panelės piktogramą. Pasirinkite, ar šis pakeitimas "
+"turi paveikti tik šią programėlę, visas tokio tipo programėles, ar kiekvieną "
+"piktogramą tokio tipo panelėje."
 
 #: ../data/awn-themed-icon.ui.h:3
-#, fuzzy
 msgid "Customise Applet"
-msgstr "Tinkinti piktogramą"
+msgstr "Pasirinktinai derinti programėlę"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"

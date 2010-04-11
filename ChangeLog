@@ -1,5 +1,12 @@
 2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
 
+	* configure.in:
+	* po/ja.po:
+	* po/lt.po:
+	Manually import latest translations from LP.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
 	* libawn/anims/awn-effect-bounce.c:
 	Make classic attention effect jump higher.
