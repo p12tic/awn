@@ -1,5 +1,10 @@
 2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/anims/awn-effect-spotlight3d.c:
+	Make the spotlight 3D animation loop again (fixes bug #496349).
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applets/taskmanager/dock-manager-api.vala:
 	Make sure we don't have double slashes in DesktopFile.
 

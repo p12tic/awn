@@ -43,7 +43,7 @@ spotlight3D_hover_effect(AwnEffectsAnimation * anim)
 
   const gint PERIOD = 36;
 
-  const gdouble ALPHA_STEP = 0.04;
+  const gdouble ALPHA_STEP = 0.06;
 
   if (awn_effect_check_top_effect(anim, NULL))
   {
@@ -111,18 +111,6 @@ spotlight3D_hover_effect(AwnEffectsAnimation * anim)
 
   /* repaint widget */
   awn_effects_redraw(anim->effects);
-
-  if (priv->count >= PERIOD)
-  {
-    /* suspend */
-    if (awn_effect_check_top_effect(anim, NULL))
-    {
-      priv->width_mod = 1.0;
-      priv->icon_depth = 0;
-      return awn_effect_suspend_animation(anim,
-               (GSourceFunc)spotlight3D_hover_effect);
-    }
-  }
 
   gboolean repeat = TRUE;
 
