@@ -1,5 +1,12 @@
 2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	* libawn/anims/awn-effect-bounce.c:
+	Make classic attention effect jump higher.
+	Change default nagging timer to two minutes.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
 	* libawn/anims/awn-effect-spotlight3d.c:
 	Make the spotlight 3D animation loop again (fixes bug #496349).
 
