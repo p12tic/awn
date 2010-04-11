@@ -232,7 +232,7 @@ _on_composited_changed (GtkWidget *widget)
 static void
 awn_tooltip_set_type_hint (GtkWidget *widget)
 {
-  if (GTK_WIDGET_VISIBLE (widget)) return;
+  if (gtk_widget_get_visible (widget)) return;
 
   GdkScreen *screen = gtk_widget_get_screen (widget);
   if (gdk_screen_is_composited (screen) &&
