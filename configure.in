@@ -1,4 +1,4 @@
-AC_INIT([avant-window-navigator], [0.4.0~rc1], [https://bugs.launchpad.net/awn])
+AC_INIT([avant-window-navigator], [0.4.1], [https://bugs.launchpad.net/awn])
 
 EXTRA_VERSION=
 AC_ARG_ENABLE([extra-version],
@@ -109,7 +109,7 @@ dnl ==============================================
 GETTEXT_PACKAGE=avant-window-navigator
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Gettext package])
-ALL_LINGUAS="af ar be bg bn bs ca csb cs da de el en_AU en_CA en_GB eo es et eu fa fi fr ga gl gu he hi hr hu id is it ja jv ka ko ku lt lv mk mr ms nb nds nl nn oc pl pt_BR pt ro ru sk sl sq sr sv ta te th tr uk vi zh_CN zh_HK zh_TW"
+ALL_LINGUAS="af ar ast az be bg bn bs ca crh csb cs cy da de dv el en_AU en_CA en_GB eo es et eu fa fi fr ga gl gu he hi hr hu id is it ja jv kab ka ko ku lt lv mk ml mn mr ms nb nds ne nl nn oc pl pt_BR pt ro ru si sk sl sq sr sv ta te th tr uk vi zh_CN zh_HK zh_TW"
 
 IT_PROG_INTLTOOL([0.34])
 AM_GLIB_GNU_GETTEXT
@@ -129,7 +129,7 @@ MIN_LDA_VERSION=0.3.9
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, glib-genmarshal)
 
 LIBRARY_MODULES="glib-2.0 >= $MIN_GLIB_VERSION gthread-2.0 gobject-2.0 desktop-agnostic >= $MIN_LDA_VERSION gtk+-2.0 >= $MIN_GTK_VERSION gdk-2.0 >= $MIN_GTK_VERSION dbus-glib-1"
-DOCK_MODULES="x11 xproto xcomposite xrender"
+DOCK_MODULES="x11 xproto xcomposite xrender xext"
 TASKMANAGER_MODULES="libwnck-1.0 >= $MIN_WNCK_VERSION x11 libgtop-2.0 xext"
 AC_SUBST(LIBRARY_MODULES)
 
@@ -179,9 +179,14 @@ AS_AC_EXPAND([DATADIR], [$datadir])
 AS_AC_EXPAND([LIBDIR], [$libdir])
 AS_AC_EXPAND([LIBAPPLETDIR], [$libdir/awn/applets])
 AS_AC_EXPAND([APPLETSDIR], [$PKGDATADIR/applets])
+AS_AC_EXPAND([localedir_intermediate], [$localedir])
+AS_AC_EXPAND([LOCALEDIR], [$localedir_intermediate])
+
 AC_DEFINE_UNQUOTED(APPLETDATADIR, "$APPLETSDIR",
                    [The base directory for applet data])
 
+AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEDIR", [Locale directory])
+AC_SUBST(LOCALEDIR)
 
 SHAVE_INIT([shave], [enable])
 
@@ -206,6 +211,7 @@ awn-settings/Makefile
 awn-settings/awnDefs.py
 awn-settings/awnSettings.py
 bindings/python/Makefile
+bindings/python/__init__.py
 bindings/vala/Makefile
 data/Makefile
 data/avant-window-navigator.schema-ini.in

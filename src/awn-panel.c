@@ -1319,7 +1319,7 @@ awn_panel_get_mask (AwnPanel *panel)
   gdk_region_intersect (region, viewport_region);
   gdk_region_destroy (viewport_region);
 
-  if (GTK_WIDGET_VISIBLE (priv->arrow1))
+  if (gtk_widget_get_visible (GTK_WIDGET (priv->arrow1)))
   {
     GdkRegion *icon_mask1, *icon_mask2;
 
@@ -1423,7 +1423,7 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
 static gboolean 
 alpha_blend_hide (gpointer data)
 {
-  const int HIDE_COUNTER_MAX = 10;
+  const int HIDE_COUNTER_MAX = 8;
   g_return_val_if_fail (AWN_IS_PANEL (data), FALSE);
 
   AwnPanel *panel = AWN_PANEL (data);
@@ -1572,7 +1572,7 @@ poll_mouse_position (gpointer data)
         g_signal_emit (panel, _panel_signals[AUTOHIDE_END], 0);
       }
     }
-    else if (GTK_WIDGET_MAPPED (widget))
+    else if (gtk_widget_get_mapped (GTK_WIDGET (widget)))
     {
       /* mouse is away, panel should start hiding */
       if (priv->autohide_start_timer_id == 0  && !priv->autohide_started)
@@ -2059,7 +2059,7 @@ viewport_size_req (GtkWidget *widget, GtkRequisition *req, gpointer data)
 
   if (arrows_visible)
   {
-    if (!GTK_WIDGET_VISIBLE (priv->arrow1))
+    if (!gtk_widget_get_visible (GTK_WIDGET (priv->arrow1)))
     {
       gtk_widget_show (priv->arrow1);
       gtk_widget_show (priv->arrow2);
@@ -2069,7 +2069,7 @@ viewport_size_req (GtkWidget *widget, GtkRequisition *req, gpointer data)
   }
   else
   {
-    if (GTK_WIDGET_VISIBLE (priv->arrow1))
+    if (gtk_widget_get_visible (GTK_WIDGET (priv->arrow1)))
     {
       gtk_widget_hide (priv->arrow1);
       gtk_widget_hide (priv->arrow2);
@@ -2551,7 +2551,7 @@ position_window (AwnPanel *panel)
   AwnMonitor      *monitor = priv->monitor;
   gint             ww = 0, hh = 0, x = 0, y = 0;
 
-  if (!GTK_WIDGET_REALIZED (panel))
+  if (!gtk_widget_get_realized (GTK_WIDGET (panel)))
     return FALSE;
 
   gtk_window_get_size (GTK_WINDOW (window), &ww, &hh);
@@ -2955,7 +2955,7 @@ awn_panel_set_pos_type (AwnPanel *panel, GtkPositionType position)
 
   awn_panel_refresh_padding (panel, NULL);
 
-  if (!GTK_WIDGET_REALIZED (panel))
+  if (!gtk_widget_get_realized (GTK_WIDGET (panel)))
     return;
 
   if (priv->docklet && priv->docklet_close_on_pos_change)
@@ -2988,7 +2988,7 @@ awn_panel_set_size (AwnPanel *panel, gint size)
   
   priv->size = size;
 
-  if (!GTK_WIDGET_REALIZED (panel))
+  if (!gtk_widget_get_realized (GTK_WIDGET (panel)))
     return;
   
   g_signal_emit (panel, _panel_signals[SIZE_CHANGED], 0, priv->size);
@@ -3232,12 +3232,12 @@ awn_panel_set_panel_mode (AwnPanel *panel, gboolean  panel_mode)
     /* Check if panel is already realized. So it has an GdkWindow.
      * If it's not, the strut will get set when the position and dimension get set. 
      */
-    if (GTK_WIDGET_REALIZED (panel))
+    if (gtk_widget_get_realized (GTK_WIDGET (panel)))
       awn_panel_queue_strut_update (panel);
   }
   else
   {
-    if (GTK_WIDGET_REALIZED (panel))
+    if (gtk_widget_get_realized (GTK_WIDGET (panel)))
       awn_panel_remove_strut (panel);
   }
 

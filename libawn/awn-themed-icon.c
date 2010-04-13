@@ -27,6 +27,10 @@
  user changes to the directory
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <glib/gstdio.h>
 #include <string.h>
 #include <gio/gio.h>
@@ -1973,9 +1977,10 @@ _select_icon (GtkMenuItem *menuitem,gchar * dest_filename_minus_ext)
 
   gtk_file_filter_add_pattern (filter, "*.png");
   gtk_file_filter_add_pattern (filter, "*.svg");
-  gtk_file_filter_set_name (filter, _("Icons"));
+  gtk_file_filter_set_name (filter, dgettext (GETTEXT_PACKAGE, "Icons"));
   
-  dialog = gtk_file_chooser_dialog_new ( _("Choose Custom Icon"),
+  dialog = gtk_file_chooser_dialog_new (dgettext (GETTEXT_PACKAGE, 
+                                                  "Choose Custom Icon"),
                                         NULL,
                                         GTK_FILE_CHOOSER_ACTION_OPEN,
 				                                GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -2062,7 +2067,8 @@ awn_themed_icon_create_custom_icon_item (AwnThemedIcon * icon,
                                   "awn-theme", "scalable",
                                   icon_name, NULL);
   
-  item = gtk_image_menu_item_new_with_label (_("Customize Icon"));
+  item = gtk_image_menu_item_new_with_label (dgettext (GETTEXT_PACKAGE,
+                                                       "Customize Icon"));
 #if GTK_CHECK_VERSION (2,16,0)	
 	g_object_set (item,"always-show-image",TRUE,NULL);  
 #endif 
@@ -2149,7 +2155,7 @@ awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon, const gcha
     }
     priv->custom_icon_name = g_strdup (icon_name);
   }
-  priv->remove_custom_icon_item = gtk_image_menu_item_new_with_label (_("Remove Customized Icon"));
+  priv->remove_custom_icon_item = gtk_image_menu_item_new_with_label (dgettext (GETTEXT_PACKAGE, "Remove Customized Icon"));
 #if GTK_CHECK_VERSION (2,16,0)	
   g_object_set( priv->remove_custom_icon_item,"always-show-image",TRUE,NULL);      
  #endif

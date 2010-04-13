@@ -482,7 +482,7 @@ awn_effects_prop_changed(GObject *object, GParamSpec *pspec)
 void
 awn_effects_redraw(AwnEffects *fx)
 {
-  if (fx->widget && GTK_WIDGET_DRAWABLE (fx->widget))
+  if (fx->widget && gtk_widget_is_drawable (GTK_WIDGET (fx->widget)))
   {
     gint x, y, w, h;
     gint dx = 0, dy = 0;
@@ -491,7 +491,7 @@ awn_effects_redraw(AwnEffects *fx)
     GtkAllocation alloc;
 
     gtk_widget_get_allocation (fx->widget, &alloc);
-    if (GTK_WIDGET_NO_WINDOW (fx->widget))
+    if (!gtk_widget_get_has_window (GTK_WIDGET (fx->widget)))
     {
       dx = alloc.x;
       dy = alloc.y;
@@ -507,7 +507,7 @@ awn_effects_redraw(AwnEffects *fx)
         w = alloc.width;
         h = ceil (icon_size) +
             fx->icon_offset + fx->priv->top_offset +
-            AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
+            AWN_EFFECTS_ACTIVE_RECT_PADDING + 2;
 
         fx->priv->last_redraw_size = h;
         h = MAX (h, last_size == 0 ? fx->priv->icon_height : last_size);
@@ -527,7 +527,7 @@ awn_effects_redraw(AwnEffects *fx)
         icon_size *= fx->make_shadow ? 1.0625 : 1.0;
         w = ceil (icon_size) +
             fx->icon_offset + fx->priv->top_offset +
-            AWN_EFFECTS_ACTIVE_RECT_PADDING + 1;
+            AWN_EFFECTS_ACTIVE_RECT_PADDING + 2;
         h = alloc.height;
 
         fx->priv->last_redraw_size = w;

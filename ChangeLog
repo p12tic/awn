@@ -1,3 +1,301 @@
+2010-04-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* libawn/awn-applet-simple.c:
+	Bad unitialized pointer! Bad!
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	Post-release version bump.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	Bump version to 0.4.0.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-tooltip.c:
+	Get rid of missed GTK_WIDGET_VISIBLE macro.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	* po/ja.po:
+	* po/lt.po:
+	Manually import latest translations from LP.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	* libawn/anims/awn-effect-bounce.c:
+	Make classic attention effect jump higher.
+	Change default nagging timer to two minutes.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-spotlight3d.c:
+	Make the spotlight 3D animation loop again (fixes bug #496349).
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	Make sure we don't have double slashes in DesktopFile.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	Set translation domain before loading ui file.
+
+2010-04-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Fix some CRITICAL spam when a window is minimized.
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* bindings/python/__init__.py.in:
+	Call also desktopagnostic.vfs.init() in awn.init().
+
+2010-04-11  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/anims/awn-effect-spotlight3d.c:
+	* libawn/anims/awn-effect-squish.c:
+	* libawn/anims/awn-effect-turn.c:
+	* src/awn-panel.c:
+	Make a couple of animations faster.
+
+2010-04-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+	Really fix bug #550541.
+
+2010-04-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-window.c:
+	Should fix bug 550541.  Sometimes event is NULL.
+
+2010-04-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Fix LP bug #557778.
+	* src/awn-app.c:
+	Provide more precise error message.
+
+2010-04-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-window.c:
+	Fix build failure.
+
+2010-04-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	* applets/taskmanager/task-window.c:
+	* libawn/awn-dialog.c:
+	* libawn/awn-tooltip.c:
+	* libawn/awn-utils.c:
+	* libawn/gseal-transition.h:
+	* src/awn-applet-manager.c:
+	* src/awn-background.c:
+	* src/awn-panel.c:
+	* src/awn-throbber.c:
+	Add a few more methods to gseal-transition.
+
+2010-04-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-effects.c:
+	Fix bug #558456.
+
+2010-04-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Fix compatibility with vala 0.8.0.
+
+2010-04-05  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/rules:
+	Disable maintainer mode and re-run configure to fix FTBFS on Hardy.
+
+2010-03-31  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	* applets/taskmanager/task-launcher.c:
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/util.h:
+	Make sure localization works fine in taskmanager.
+
+2010-03-30  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	Make sure the dock links to lXext.
+
+2010-03-26  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	Bump version to ~rc2, since rc1 was already released.
+
+2010-03-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Remove a debug and fix a warning.
+
+2010-03-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Removed a debug.
+
+2010-03-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	check we have a custom name before attempt to get a customize
+	icon menu item.
+
+2010-03-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Check res_name and class_name for NULL.
+
+2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* po/af.po:
+	* po/ar.po:
+	* po/avant-window-navigator.pot:
+	* po/be.po:
+	* po/bg.po:
+	* po/bn.po:
+	* po/bs.po:
+	* po/ca.po:
+	* po/cs.po:
+	* po/csb.po:
+	* po/da.po:
+	* po/de.po:
+	* po/el.po:
+	* po/en_AU.po:
+	* po/en_CA.po:
+	* po/en_GB.po:
+	* po/eo.po:
+	* po/es.po:
+	* po/et.po:
+	* po/eu.po:
+	* po/fa.po:
+	* po/fi.po:
+	* po/fr.po:
+	* po/ga.po:
+	* po/gl.po:
+	* po/gu.po:
+	* po/he.po:
+	* po/hi.po:
+	* po/hr.po:
+	* po/hu.po:
+	* po/id.po:
+	* po/is.po:
+	* po/it.po:
+	* po/ja.po:
+	* po/jv.po:
+	* po/ka.po:
+	* po/ko.po:
+	* po/ku.po:
+	* po/lt.po:
+	* po/lv.po:
+	* po/mk.po:
+	* po/mr.po:
+	* po/ms.po:
+	* po/nb.po:
+	* po/nds.po:
+	* po/nl.po:
+	* po/nn.po:
+	* po/oc.po:
+	* po/pl.po:
+	* po/pt.po:
+	* po/pt_BR.po:
+	* po/ro.po:
+	* po/ru.po:
+	* po/sk.po:
+	* po/sl.po:
+	* po/sq.po:
+	* po/sr.po:
+	* po/sv.po:
+	* po/ta.po:
+	* po/te.po:
+	* po/th.po:
+	* po/tr.po:
+	* po/uk.po:
+	* po/vi.po:
+	* po/zh_CN.po:
+	* po/zh_HK.po:
+	* po/zh_TW.po:
+	Update translation template and translations.
+
+2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/awn-themed-icon.ui:
+	* po/POTFILES.in:
+	Make sure our ui files are translatable.
+
+2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/main.c:
+	* bindings/python/__init__.py.in:
+	* src/awn-main.c:
+	Remove unnecessary setlocale calls (gtk_init calls it automatically).
+
+2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/Makefile.am:
+	* applets/quick-prefs/Makefile.am:
+	* awn-settings/awnDefs.py.in:
+	* bindings/python/Makefile.am:
+	* bindings/python/__init__.py.in:
+	* configure.in:
+	* src/Makefile.am:
+	More i18n fixes - make sure libawn calls get correct translation even
+	when they're called from python.
+
+2010-03-25  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applet-activation/Makefile.am:
+	* applet-activation/main.c:
+	* applets/quick-prefs/applet.vala:
+	* applets/taskmanager/applet.c:
+	* libawn/awn-applet.c:
+	* libawn/awn-themed-icon.c:
+	* src/awn-main.c:
+	A few i18n fixes.
+
+2010-03-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* po/ku.po:
+	* po/sq.po:
+	* po/tr.po:
+	Manually update a couple of translations.
+
+2010-03-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	Remove a debug.
+
+2010-03-24  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+  	* applets/taskmanager/task-manager.c:
+	Removed two debugs from standard build.
+
+2010-03-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-tooltip.c:
+	Workaround bug in metacity compositor (LP bug #524153).
+
+2010-03-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-dialog.c:
+	Make shadow on the dialog a bit less sharp.
+
+2010-03-23  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Default drag and drop to true as was intended.
+
 2010-03-10  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/task-manager.h:

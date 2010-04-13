@@ -314,7 +314,7 @@ namespace Awn
     public static Gtk.Widget create_pref_item ()
     {
       Gtk.ImageMenuItem item;
-      item = new Gtk.ImageMenuItem.with_label ("Dock Preferences"); // FIXME: i18n
+      item = new Gtk.ImageMenuItem.with_label ("Dock Preferences"); // FIXME: i18n with domain
 
       item.always_show_image = true;
       item.set_image (new Gtk.Image.from_icon_name ("avant-window-navigator",

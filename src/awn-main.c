@@ -27,6 +27,7 @@
 #include <unistd.h>
 
 #include <gtk/gtk.h>
+#include <libintl.h>
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
@@ -140,6 +141,10 @@ main (gint argc, gchar *argv[])
   }
 
   if (is_startup) sleep (startup_delay);
+
+  /* Set localization stuff */
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  textdomain (GETTEXT_PACKAGE);
 
   /* Launch Awn */
   app = awn_application_get_default ();

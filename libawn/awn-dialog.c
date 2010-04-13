@@ -218,7 +218,7 @@ awn_dialog_paint_border_path(AwnDialog *dialog, cairo_t *cr,
     a_center_point.x += aw/2;
     a_center_point.y += ah/2;
 
-    if (GTK_WIDGET_REALIZED (dialog))
+    if (gtk_widget_get_realized (GTK_WIDGET (dialog)))
     {
       gdk_window_get_origin (gtk_widget_get_window (GTK_WIDGET (dialog)),
                              &o_center_point.x, &o_center_point.y);
@@ -534,7 +534,7 @@ _expose_event (GtkWidget *widget, GdkEventExpose *expose)
     awn_cairo_rounded_rect_shadow (cr, BORDER, BORDER,
                                    w - BORDER*2, h - BORDER*2,
                                    ROUND_RADIUS, ROUND_ALL,
-                                   SHADOW_RADIUS, 0.6);
+                                   SHADOW_RADIUS, 0.4);
 
     cairo_restore (cr);
   }

@@ -625,7 +625,7 @@ task_icon_refresh_geometry (TaskIcon *icon)
 
   priv->update_geometry_id = 0;
 
-  if (!GTK_WIDGET_DRAWABLE (widget)) return FALSE;
+  if (!gtk_widget_is_drawable (GTK_WIDGET (widget))) return FALSE;
 
   win = gtk_widget_get_window (widget);
   g_return_val_if_fail (win != NULL, FALSE);
@@ -3006,10 +3006,10 @@ task_icon_source_drag_begin (GtkWidget      *widget,
 
   priv->gets_dragged = TRUE;
   
-  if (GTK_WIDGET_VISIBLE(priv->dialog))
+  if (gtk_widget_get_visible (GTK_WIDGET (priv->dialog)))
   {
     gtk_widget_hide (priv->dialog);
-    task_icon_set_draggable_state (TASK_ICON(widget), priv->draggable);
+    task_icon_set_draggable_state (TASK_ICON (widget), priv->draggable);
   }
 
   settings = task_settings_get_default (NULL);

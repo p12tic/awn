@@ -20,6 +20,7 @@
 
 import sys
 from gettext import gettext as _
+import locale
 import getopt
 
 # load the required modules:
@@ -33,17 +34,24 @@ if _version < (2, 11, 1):
 import gtk
 
 from awn import *
+import desktopagnostic.vfs
 
 uid = "0"
 window = 0
 panel_id = 0
 
+# i18n support
+LOCALEDIR = '@LOCALEDIR@'
+TEXTDOMAIN = '@GETTEXT_PACKAGE@'
+locale.bindtextdomain(TEXTDOMAIN, LOCALEDIR)
 
 def init(argv):
     global uid
     global window
     global panel_id
 
+    desktopagnostic.vfs.init()
+    
     try:
         opts, args = getopt.getopt(argv, "u:w:i:",
                                    ["uid=", "window=", "panel-id="])
