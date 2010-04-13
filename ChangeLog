@@ -1,3 +1,11 @@
+2010-04-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-launcher.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+	Fix issue with multiple wine apps.  If the WM_CLASS
+	value is Wine then ignore it, it's useless for us.
+	
 2010-04-11  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-applet-simple.c:

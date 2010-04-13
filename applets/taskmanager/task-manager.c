@@ -1483,7 +1483,7 @@ process_window_opened (WnckWindow    *window,
   }
 #ifdef DEBUG
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
-#endif  
+#endif
   /*
    if match is not 0
    and 
