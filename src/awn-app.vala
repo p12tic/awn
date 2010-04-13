@@ -61,7 +61,8 @@ namespace Awn
             is_gconf = config_type.name ().str ("GConf") != null;
           }
           error ("No panels to create! %s", is_gconf ?
-            "You might want to try running `killall gconfd-2`." : "");
+            "\n**  Please check that the gconf-schema is installed." +
+            "\n**  You might want to try running `killall gconfd-2`." : "");
         }
 
         foreach (Value val in panel_ids)
