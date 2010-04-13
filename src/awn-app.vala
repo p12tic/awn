@@ -40,7 +40,8 @@ namespace Awn
 
     private Application ()
     {
-      this.panels = new HashTable<string, Panel> (str_hash, str_equal);
+      this.panels = new HashTable<string, Panel>.full (str_hash, str_equal,
+                                                       g_free, g_object_unref);
       this.client = Config.get_default (0);
 
       Gtk.Window.set_default_icon_name ("avant-window-navigator");
@@ -76,10 +77,48 @@ namespace Awn
 
           panel.show ();
         }
+
+        this.client.notify_add ("panels", "panel_list", this.panels_changed);
       }
       catch (GLib.Error e)
       {
         error ("Unable to retrieve panels config value: %s", e.message);
+      }
+    }
+
+    private void panels_changed (string key, string group, Value val)
+    {
+      List<unowned Panel> untouched_panels = new List<unowned Panel> ();
+      foreach (var p in this.panels.get_values ())
+      {
+        untouched_panels.append (p);
+      }
+
+      unowned ValueArray arr = (ValueArray) val.get_boxed ();
+      foreach (Value v in arr)
+      {
+        int panel_id = v.get_int ();
+        string path = "/org/awnproject/Awn/Panel%d".printf (panel_id);
+        unowned Panel? p = this.panels.lookup (path);
+
+        if (p == null)
+        {
+          var panel = new Panel.with_panel_id (panel_id);
+          this.panels.insert ((owned)path, panel);
+
+          panel.show ();
+        }
+        else
+        {
+          untouched_panels.remove (p);
+        }
+      }
+
+      foreach (unowned Panel p in untouched_panels)
+      {
+        string path = "/org/awnproject/Awn/Panel%d".printf (p.panel_id);
+        this.panels.remove (path);
+        p.destroy ();
       }
     }
 
