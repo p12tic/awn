@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-10 22:15+0000\n"
-"Last-Translator: Pierre Slamich <pierre.slamich@gmail.com>\n"
+"PO-Revision-Date: 2010-04-12 12:00+0000\n"
+"Last-Translator: Nicolas Delvaux <Unknown>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-04-12 03:54+0000\n"
+"X-Launchpad-Export-Date: 2010-04-13 03:34+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -376,7 +376,7 @@ msgstr "<b>Effets</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Exportation des options des groupes</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
@@ -384,7 +384,7 @@ msgstr "<b>Compléments</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Général</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
@@ -396,11 +396,11 @@ msgstr "<b>Lanceurs</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr ""
+msgstr "<b>Configuration numérique>/b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Paneau de couleurs </b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
@@ -408,7 +408,7 @@ msgstr "<b>Tableau de bord</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Dépôts</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
@@ -416,11 +416,13 @@ msgstr "<b>Paramètres</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>Gestionnaire de tâches</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
+"<b>Ces paramètres requièrent que l'applet « Gestionnaire de tâches » soit "
+"actif.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -431,22 +433,24 @@ msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
+"<b>Vous devez activer les effets visuels (compositeur) pour appliquer et "
+"personnaliser les thèmes.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Activer l'applet"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "Rectangle actif :"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Type de flèche"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Animation de demande d'attention :"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
@@ -454,7 +458,7 @@ msgstr "Auteur :"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Mode de masquage automatique :"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -462,27 +466,27 @@ msgstr "Arrière-plan :"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
-msgstr ""
+msgstr "Cliquer à travers"
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Close animation:"
-msgstr ""
+msgstr "Animation de fermeture :"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Configured Effects"
-msgstr ""
+msgstr "Effets configurés"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Corner Radius"
-msgstr ""
+msgstr "Arrondie du coin"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Symétrie de la courbure"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curviness"
-msgstr ""
+msgstr "Courbure"
 
 #: ../awn-settings/awn-settings.ui.h:34 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:152
@@ -491,11 +495,11 @@ msgstr "Personnalisé"
 
 #: ../awn-settings/awn-settings.ui.h:35
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "Image de fléche personnalisée"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Customize effects"
-msgstr ""
+msgstr "Personnaliser les effets"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize..."
@@ -503,19 +507,19 @@ msgstr "Personnaliser..."
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Désactiver l'applet"
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Display launchers only"
-msgstr ""
+msgstr "Afficher uniquement les lanceurs"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "Réorganisation par glissé-déposé"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "Étendre la barre"
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
@@ -531,11 +535,11 @@ msgstr "Couleur de remplissage"
 
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "First Gradient Color"
-msgstr ""
+msgstr "Première couleur du dégradé"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "First Highlight Color"
-msgstr ""
+msgstr "Première couleur de surbrillance"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Font"
@@ -547,43 +551,43 @@ msgstr "Couleur de la police"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Font Mode"
-msgstr ""
+msgstr "Style de la police"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Couleur de la bordure externe de la police"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Forcer le mode écran ?"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Glowing dot"
-msgstr ""
+msgstr "Point brillant"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Glowing dot color"
-msgstr ""
+msgstr "Couleur du point brillant"
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Group common windows"
-msgstr ""
+msgstr "Grouper les fenêtres communes"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Hover animation:"
-msgstr ""
+msgstr "Animation de survol :"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Icon _effects:"
-msgstr ""
+msgstr "Effets d'icônes :"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Icon alpha"
-msgstr ""
+msgstr "Transparence des icônes"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "Icônes et infobulles"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Icons:"
@@ -599,27 +603,27 @@ msgstr "Installer..."
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Launch animation:"
-msgstr ""
+msgstr "Animation de lancement :"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Matching strength"
-msgstr ""
+msgstr "Force des correspondances"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Alignement selon X"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Alignement selon Y"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Monitor height"
-msgstr ""
+msgstr "Hauteur de l'écran"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Monitor width"
-msgstr ""
+msgstr "Largeur de l'écran"
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Name:"
@@ -631,11 +635,11 @@ msgstr "Décalage"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Open animation:"
-msgstr ""
+msgstr "Animation au démarrage :"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Outer Border Color"
-msgstr ""
+msgstr "Couleur de la bordure extérieure"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Outline Color"
@@ -643,117 +647,119 @@ msgstr "Couleur du bord extérieur"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "Couleur de l'arrière plan de la barre"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Panel Look Refinements"
-msgstr ""
+msgstr "Raffinements de l'apparence de la barre"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Style et taille de la barre"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Transparence du modèle"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Pattern Image"
-msgstr ""
+msgstr "Modèle d'image"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "Multiplicateur de la transparence de la réflexion"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Reflection offset"
-msgstr ""
+msgstr "Hauteur du reflet"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Repositories"
-msgstr ""
+msgstr "Dépôts"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Deuxième couleur du dégradé"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Deuxième couleur de surbrillance"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Selectionner une flèche personnalisée"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Separator Color"
-msgstr ""
+msgstr "Couleur du séparateur"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
-msgstr ""
+msgstr "Montrer toutes les fenêtres"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Montrer la boite de dialogue après un appui long"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Show shadows"
-msgstr ""
+msgstr "Montrer les ombres"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "St_yle:"
-msgstr ""
+msgstr "St_yle :"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "Lancer _Awn au démarrage"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Theme Export"
-msgstr ""
+msgstr "Exportation du thème"
 
 #: ../awn-settings/awn-settings.ui.h:91
 msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
 msgstr ""
+"L'applet « Lanceur/Gestionnaire de taches » doit être actif pour les modes "
+"« Masquage intelligent » et « Évitement des fenêtres »."
 
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Triangle"
-msgstr ""
+msgstr "Triangle"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Utiliser les couleurs du thème GTK"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Utiliser le modèle comme arrière-plan"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
-msgstr ""
+msgstr "Version :"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "_Behavior:"
-msgstr ""
+msgstr "_Comportement :"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "_Orientation:"
-msgstr ""
+msgstr "_Orientation :"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_Position sur l'écran :"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "_Size of icons:"
-msgstr ""
+msgstr "_Taille des icônes :"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "pixels"
-msgstr ""
+msgstr "pixels"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
@@ -939,7 +945,7 @@ msgstr "Mode panneau"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Always visible"
-msgstr ""
+msgstr "Toujours visible"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
@@ -947,11 +953,11 @@ msgstr "Masquage « intelligent »"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Window dodge"
-msgstr "Évitement de fenêtre"
+msgstr "Évitement des fenêtres"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Fade out"
-msgstr ""
+msgstr "Fondu en sortie"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
@@ -959,7 +965,7 @@ msgstr "Transparence"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Keep below"
-msgstr ""
+msgstr "Garder en dessous"
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Solid"
@@ -1173,7 +1179,7 @@ msgstr "Écart entre les icônes et le bord de la fenêtre."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
-msgstr ""
+msgstr "Couleur de la ligne externe de l'infobulle"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
@@ -1316,10 +1322,14 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
+"<b>Thème d'icône de la barre</b>\n"
+"Vous avez choisi de remplacer une icône de la barre. Veuillez indiquer si "
+"vous souhaitez que ce changement affecte uniquement cet applet, tous les "
+"applets de ce type ou toutes les icône de ce type (dans la barre)."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "Personnaliser l'applet"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"

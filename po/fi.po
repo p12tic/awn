@@ -7,20 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-08 13:01+0000\n"
-"Last-Translator: Elias Julkunen <elias.julkunen@gmail.com>\n"
+"POT-Creation-Date: 2010-03-25 14:15+0200\n"
+"PO-Revision-Date: 2010-04-12 16:04+0000\n"
+"Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:11+0000\n"
+"X-Launchpad-Export-Date: 2010-04-13 03:34+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Laajennin"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
@@ -149,7 +149,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Näytä kaikkien työtilojen ikkunat"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -163,14 +163,14 @@ msgid ""
 msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
-#: ../applets/taskmanager/task-icon-build-context-menus.c:827
+#: ../applets/taskmanager/task-icon-build-context-menus.c:821
 msgid "Launch"
-msgstr ""
+msgstr "Käynnistä"
 
 #: ../applets/taskmanager/task-launcher.c:1186
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "Käynnistä %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -180,29 +180,29 @@ msgstr ""
 msgid "Launcher/Taskmanager applet"
 msgstr ""
 
-#: ../applets/quick-prefs/applet.vala:118
-#: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
+#: ../applets/quick-prefs/applet.vala:123
+#: ../applets/quick-prefs/applet.vala:517 ../src/awn-panel.c:692
 msgid "About Awn"
-msgstr ""
+msgstr "Tietoja Awn:stä"
 
-#: ../applets/quick-prefs/applet.vala:289
-#: ../applets/quick-prefs/applet.vala:465
+#: ../applets/quick-prefs/applet.vala:276
+#: ../applets/quick-prefs/applet.vala:452
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Raahaa vaihtaaksesi paneelin sijaintia"
 
-#: ../applets/quick-prefs/applet.vala:478
+#: ../applets/quick-prefs/applet.vala:468
 msgid "Icon size:"
-msgstr ""
+msgstr "Kuvakkeiden koko:"
 
-#: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
-#: ../src/awn-panel.c:673
+#: ../applets/quick-prefs/applet.vala:504 ../libawn/awn-applet.c:1081
+#: ../src/awn-panel.c:676
 msgid "Dock Preferences"
 msgstr "Telakan asetukset"
 
-#: ../applets/quick-prefs/applet.vala:578
+#: ../applets/quick-prefs/applet.vala:568
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Awn-asetuksien avaus epäonnistui: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
@@ -211,159 +211,557 @@ msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Asetukset-sovelma"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Lisää erottimen sovelmien väliin"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Erotin"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Työtila %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Työtila 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Työtila %s%d"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:528
+#: ../applets/taskmanager/task-icon-build-context-menus.c:522
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Lisää käynnistimenä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:546
+#: ../applets/taskmanager/task-icon-build-context-menus.c:540
 msgid "_Close"
-msgstr ""
+msgstr "_Sulje"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:574
+#: ../applets/taskmanager/task-icon-build-context-menus.c:568
 msgid "_Close All"
-msgstr ""
+msgstr "Sulje _kaikki"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:743
+#: ../applets/taskmanager/task-icon-build-context-menus.c:737
 msgid "Ma_ximize"
-msgstr ""
+msgstr "S_uurenna"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:748
+#: ../applets/taskmanager/task-icon-build-context-menus.c:742
 msgid "Unma_ximize"
-msgstr ""
+msgstr "_Palauta koko"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:777
+#: ../applets/taskmanager/task-icon-build-context-menus.c:771
 msgid "Always on _Top"
-msgstr ""
+msgstr "Aina pää_llimmäisenä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:801
+#: ../applets/taskmanager/task-icon-build-context-menus.c:795
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Pie_nennä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:806
+#: ../applets/taskmanager/task-icon-build-context-menus.c:800
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Palau_ta"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:860
+#: ../applets/taskmanager/task-icon-build-context-menus.c:854
 msgid "Always on Visible Workspace"
 msgstr ""
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:864
+#: ../applets/taskmanager/task-icon-build-context-menus.c:858
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Vain tässä työtilassa"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:934
+#: ../applets/taskmanager/task-icon-build-context-menus.c:928
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Siirrä _vasemmalla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:944
+#: ../applets/taskmanager/task-icon-build-context-menus.c:938
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Siirrä _oikealla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:954
+#: ../applets/taskmanager/task-icon-build-context-menus.c:948
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Siirrä _yllä olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:964
+#: ../applets/taskmanager/task-icon-build-context-menus.c:958
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Siirrä _alla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:973
+#: ../applets/taskmanager/task-icon-build-context-menus.c:967
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Siirrä toiseen _työtilaan"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
+#: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr ""
+msgstr "Awn-asetukset"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Hallitse awn:n asetuksia, käynnistimiä, sovelmia ja teemoja"
 
-#: ../awn-settings/awnClass.py:267
-msgid "Error, a sources.list already exist"
+#: ../awn-settings/awn-settings.ui.h:1
+msgid "3D Angle"
+msgstr "3D-kulma"
+
+#: ../awn-settings/awn-settings.ui.h:2
+msgid "<b>Active Applets</b>"
+msgstr "<b>Aktiiviset sovelmat</b>"
+
+#: ../awn-settings/awn-settings.ui.h:3
+msgid "<b>Available Applets</b>"
+msgstr "<b>Tarjolla olevat sovelmat</b>"
+
+#: ../awn-settings/awn-settings.ui.h:4
+msgid "<b>Categories</b>"
+msgstr "<b>Luokat</b>"
+
+#: ../awn-settings/awn-settings.ui.h:5
+msgid "<b>Effects</b>"
+msgstr "<b>Tehosteet</b>"
+
+#: ../awn-settings/awn-settings.ui.h:6
+msgid "<b>Export Option Groups</b>"
+msgstr "<b>Vientiasetukset</b>"
+
+#: ../awn-settings/awn-settings.ui.h:7
+msgid "<b>Extras</b>"
+msgstr "<b>Lisäasetukset</b>"
+
+#: ../awn-settings/awn-settings.ui.h:8
+msgid "<b>General</b>"
+msgstr "<b>Yleisasetukset</b>"
+
+#: ../awn-settings/awn-settings.ui.h:9
+msgid "<b>Icons</b>"
+msgstr "<b>Kuvakkeet</b>"
+
+#: ../awn-settings/awn-settings.ui.h:10
+msgid "<b>Launchers</b>"
+msgstr "<b>Käynnistimet</b>"
+
+#: ../awn-settings/awn-settings.ui.h:11
+msgid "<b>Numeric Settings</b>"
+msgstr "<b>Numeeriset asetukset</b>"
+
+#: ../awn-settings/awn-settings.ui.h:12
+msgid "<b>Panel Colors</b>"
+msgstr "<b>Paneelin värit</b>"
+
+#: ../awn-settings/awn-settings.ui.h:13
+msgid "<b>Panel</b>"
+msgstr "<b>Paneeli</b>"
+
+#: ../awn-settings/awn-settings.ui.h:14
+msgid "<b>Repositories</b>"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:335
+#: ../awn-settings/awn-settings.ui.h:15
+msgid "<b>Settings</b>"
+msgstr "<b>Asetukset</b>"
+
+#: ../awn-settings/awn-settings.ui.h:16
+msgid "<b>Taskmanagers</b>"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:17
+msgid "<b>These settings require the Task Manager applet to be active. </b>"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:18
+msgid "<b>Tooltips</b>"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:19
+msgid ""
+"<b>You need to enable desktop effects (compositor) to apply and customize "
+"themes.</b>"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:20
+msgid "Activate applet"
+msgstr "Ota sovelma käyttöön"
+
+#: ../awn-settings/awn-settings.ui.h:21
+msgid "Active rectangle:"
+msgstr "Aktiivinen neliö:"
+
+#: ../awn-settings/awn-settings.ui.h:22
+msgid "Arrow type"
+msgstr "Nuolen tyyppi"
+
+#: ../awn-settings/awn-settings.ui.h:23
+msgid "Attention animation:"
+msgstr "Huomioanimaatio:"
+
+#: ../awn-settings/awn-settings.ui.h:24
+msgid "Author:"
+msgstr "Tekijä:"
+
+#: ../awn-settings/awn-settings.ui.h:25
+msgid "Autohide mode:"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:27
+msgid "Background:"
+msgstr "Tausta:"
+
+#: ../awn-settings/awn-settings.ui.h:28
+msgid "Clickthrough"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:29
+msgid "Close animation:"
+msgstr "Sulkemisanimaatio:"
+
+#: ../awn-settings/awn-settings.ui.h:30
+msgid "Configured Effects"
+msgstr "Määritellyt tehosteet"
+
+#: ../awn-settings/awn-settings.ui.h:31
+msgid "Corner Radius"
+msgstr "Kulmien säde"
+
+#: ../awn-settings/awn-settings.ui.h:32
+msgid "Curves Symmetry"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:33
+msgid "Curviness"
+msgstr "Käyryys"
+
+#: ../awn-settings/awn-settings.ui.h:34 ../awn-settings/awnClass.py:886
+#: ../awn-settings/awnSettings.py.in:152
+msgid "Custom"
+msgstr "Muokattu"
+
+#: ../awn-settings/awn-settings.ui.h:35
+msgid "Custom Arrow Image"
+msgstr "Omavalintainen nuolen kuva"
+
+#: ../awn-settings/awn-settings.ui.h:36
+msgid "Customize effects"
+msgstr "Muokkaa tehosteita"
+
+#: ../awn-settings/awn-settings.ui.h:37
+msgid "Customize..."
+msgstr "Muokkaa..."
+
+#: ../awn-settings/awn-settings.ui.h:38
+msgid "Deactivate applet"
+msgstr "Poista sovelma käytöstä"
+
+#: ../awn-settings/awn-settings.ui.h:39
+msgid "Display launchers only"
+msgstr "Näytä vain käynnistimet"
+
+#: ../awn-settings/awn-settings.ui.h:40
+msgid "Drag and drop reordering"
+msgstr "Järjestä kuvakkeet napsauttamalla ja raahaamalla"
+
+#: ../awn-settings/awn-settings.ui.h:41
+msgid "E_xpand the panel"
+msgstr "_Laajenna paneeli"
+
+#: ../awn-settings/awn-settings.ui.h:42
+msgid "Export Theme..."
+msgstr "Vie teema..."
+
+#: ../awn-settings/awn-settings.ui.h:43
+msgid "Extra Options"
+msgstr "Lisävalinnat"
+
+#: ../awn-settings/awn-settings.ui.h:44
+msgid "Fill Color"
+msgstr "Täyttöväri"
+
+#: ../awn-settings/awn-settings.ui.h:45
+msgid "First Gradient Color"
+msgstr "Ensimmäinen liukuväri"
+
+#: ../awn-settings/awn-settings.ui.h:46
+msgid "First Highlight Color"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:47
+msgid "Font"
+msgstr "Kirjasin"
+
+#: ../awn-settings/awn-settings.ui.h:48
+msgid "Font Color"
+msgstr "Kirjasimen väri"
+
+#: ../awn-settings/awn-settings.ui.h:49
+msgid "Font Mode"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:50
+msgid "Font Outline Color"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:51
+msgid "Force monitor mode ?"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:52
+msgid "Glowing dot"
+msgstr "Hohtava piste"
+
+#: ../awn-settings/awn-settings.ui.h:53
+msgid "Glowing dot color"
+msgstr "Hohtavan pisteen väri"
+
+#: ../awn-settings/awn-settings.ui.h:54
+msgid "Group common windows"
+msgstr "Ryhmitä samankaltaiset ikkunat"
+
+#: ../awn-settings/awn-settings.ui.h:55
+msgid "Hover animation:"
+msgstr "Kohdistusanimaatio:"
+
+#: ../awn-settings/awn-settings.ui.h:56
+msgid "Icon _effects:"
+msgstr "Kuvakkeiden t_ehosteet:"
+
+#: ../awn-settings/awn-settings.ui.h:57
+msgid "Icon alpha"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:58
+msgid "Icons and Tooltips"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:59
+msgid "Icons:"
+msgstr "Kuvakkeet:"
+
+#: ../awn-settings/awn-settings.ui.h:60
+msgid "Inner Border Color"
+msgstr "Sisemmän reunan väri"
+
+#: ../awn-settings/awn-settings.ui.h:61
+msgid "Install..."
+msgstr "Asenna..."
+
+#: ../awn-settings/awn-settings.ui.h:62
+msgid "Launch animation:"
+msgstr "Käynnistysanimaatio:"
+
+#: ../awn-settings/awn-settings.ui.h:63
+msgid "Matching strength"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:64
+msgid "Monitor X-offset"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:65
+msgid "Monitor Y-offset"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:66
+msgid "Monitor height"
+msgstr "Näytön korkeus"
+
+#: ../awn-settings/awn-settings.ui.h:67
+msgid "Monitor width"
+msgstr "Näytön leveys"
+
+#: ../awn-settings/awn-settings.ui.h:68
+msgid "Name:"
+msgstr "Nimi:"
+
+#: ../awn-settings/awn-settings.ui.h:69
+msgid "Offset"
+msgstr "Siirtymä"
+
+#: ../awn-settings/awn-settings.ui.h:70
+msgid "Open animation:"
+msgstr "Avausanimaatio:"
+
+#: ../awn-settings/awn-settings.ui.h:71
+msgid "Outer Border Color"
+msgstr "Ulomman reunan väri"
+
+#: ../awn-settings/awn-settings.ui.h:72
+msgid "Outline Color"
+msgstr "Reunuksen väri"
+
+#: ../awn-settings/awn-settings.ui.h:73
+msgid "Panel Background Colors"
+msgstr "Paneelin taustaväriasetukset"
+
+#: ../awn-settings/awn-settings.ui.h:74
+msgid "Panel Look Refinements"
+msgstr "Paneelin ulkoasuun vaikuttavat hienosäädöt"
+
+#: ../awn-settings/awn-settings.ui.h:75
+msgid "Panel Style & Size"
+msgstr "Paneelin tyyli ja koko"
+
+#: ../awn-settings/awn-settings.ui.h:76
+msgid "Pattern Alpha"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:77
+msgid "Pattern Image"
+msgstr "Kuvion kuvatiedosto"
+
+#: ../awn-settings/awn-settings.ui.h:78
+msgid "Reflection alpha multiplier"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:79
+msgid "Reflection offset"
+msgstr "Peilikuvan etäisyys"
+
+#: ../awn-settings/awn-settings.ui.h:80
+msgid "Repositories"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:81
+msgid "Second Gradient Color"
+msgstr "Toinen liukuväri"
+
+#: ../awn-settings/awn-settings.ui.h:82
+msgid "Second Highlight Color"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:83
+msgid "Select Custom Arrow"
+msgstr "Valitse omavalintainen nuoli"
+
+#: ../awn-settings/awn-settings.ui.h:84
+msgid "Separator Color"
+msgstr "Erottimen väri"
+
+#: ../awn-settings/awn-settings.ui.h:85
+msgid "Show all windows"
+msgstr "Näytä kaikki ikkunat"
+
+#: ../awn-settings/awn-settings.ui.h:86
+msgid "Show dialog after long press"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:87
+msgid "Show shadows"
+msgstr "Näytä varjot"
+
+#: ../awn-settings/awn-settings.ui.h:88
+msgid "St_yle:"
+msgstr "Tyyl_i:"
+
+#: ../awn-settings/awn-settings.ui.h:89
+msgid "Start _Awn automatically"
+msgstr "Käy_nnistä Awn automaattisesti"
+
+#: ../awn-settings/awn-settings.ui.h:90
+msgid "Theme Export"
+msgstr "Teeman vienti"
+
+#: ../awn-settings/awn-settings.ui.h:91
+msgid ""
+"To use Intellihide or Window Dodge modes, you need to have Taskmanager "
+"applet active."
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:92
+msgid "Triangle"
+msgstr "Kolmio"
+
+#: ../awn-settings/awn-settings.ui.h:93
+msgid "Use Gtk theme colors"
+msgstr "Käytä Gtk-teeman värejä"
+
+#: ../awn-settings/awn-settings.ui.h:94
+msgid "Use Pattern as Background"
+msgstr "Käytä kuviota taustana"
+
+#: ../awn-settings/awn-settings.ui.h:95
+msgid "Version:"
+msgstr "Versio:"
+
+#: ../awn-settings/awn-settings.ui.h:96
+msgid "_Behavior:"
+msgstr "Toi_mintatila:"
+
+#: ../awn-settings/awn-settings.ui.h:97
+msgid "_Orientation:"
+msgstr "_Sijainti:"
+
+#: ../awn-settings/awn-settings.ui.h:98
+msgid "_Position on the screen:"
+msgstr "S_ijainti näytön laidassa:"
+
+#: ../awn-settings/awn-settings.ui.h:99
+msgid "_Size of icons:"
+msgstr "_Kuvakkeiden koko:"
+
+#: ../awn-settings/awn-settings.ui.h:100
+msgid "pixels"
+msgstr "pikseliä"
+
+#: ../awn-settings/awnClass.py:233
+msgid "Error, a sources.list already exist"
+msgstr "Virhe, sources.list-tiedosto on jo olemassa"
+
+#: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:455
+#: ../awn-settings/awnClass.py:421
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
+#: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
 msgid "None"
-msgstr "Ei mikään"
+msgstr "Ei asetettu"
 
-#: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
+#: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:877
 msgid "Simple"
-msgstr ""
+msgstr "Yksinkertainen"
 
-#: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
+#: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:878
 msgid "Classic"
 msgstr "Perinteinen"
 
-#: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
+#: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:879
 msgid "Fade"
 msgstr "Häivytys"
 
-#: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
+#: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:880
 msgid "Spotlight"
 msgstr "Kohdevalo"
 
-#: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
+#: ../awn-settings/awnClass.py:820 ../awn-settings/awnClass.py:881
 msgid "Zoom"
 msgstr "Suurennus"
 
-#: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
+#: ../awn-settings/awnClass.py:821 ../awn-settings/awnClass.py:882
 msgid "Squish"
 msgstr "Litistä"
 
-#: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
+#: ../awn-settings/awnClass.py:822 ../awn-settings/awnClass.py:883
 msgid "3D Turn"
 msgstr "3D-kääntyminen"
 
-#: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
+#: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
 msgid "3D Spotlight Turn"
 msgstr "3D-kääntyminen kohdevalolla"
 
-#: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
+#: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
 msgid "Glow"
 msgstr "Hehku"
 
-#: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:151
-msgid "Custom"
-msgstr "Muokattu"
-
-#: ../awn-settings/awnClass.py:997
+#: ../awn-settings/awnClass.py:966
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -372,11 +770,11 @@ msgstr ""
 "Automaattinen luonti epäonnistui. Luo hakemisto käsin:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:1007
+#: ../awn-settings/awnClass.py:976
 msgid "Confirm directory creation"
 msgstr "Vahvista hakemiston luonti"
 
-#: ../awn-settings/awnClass.py:1008
+#: ../awn-settings/awnClass.py:977
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -384,30 +782,30 @@ msgstr ""
 "Käyttäjätunnuksellesi ei ole vielä automaattikäynnistyshakemistoa.\n"
 "Luodaanko sellainen sinulle?"
 
-#: ../awn-settings/awnClass.py:1067
+#: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Seuraavia kuvakkeita ei löytynyt: %s\n"
 
-#: ../awn-settings/awnClass.py:1074
+#: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Seuraavaa kuvaketta ei löytynyt: %s\n"
 
-#: ../awn-settings/awnClass.py:1096
+#: ../awn-settings/awnClass.py:1067
 msgid "AWN has been successfully refreshed"
 msgstr "AWN on virkistetty onnistuneesti"
 
-#: ../awn-settings/awnClass.py:1102
+#: ../awn-settings/awnClass.py:1073
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
-#: ../awn-settings/awnClass.py:1120
+#: ../awn-settings/awnClass.py:1091
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "Täysin muokattava telakkatyylinen ikkunanavigaattori Gnomelle."
 
-#: ../awn-settings/awnClass.py:1122
+#: ../awn-settings/awnClass.py:1093
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -418,7 +816,7 @@ msgstr ""
 "lisenssin sopimusehtojen mukaisesti sellaisina kun Free Software Foundation "
 "on ne julkaissut. Voit soveltaa lisenssin versiota 2 tai myöhempää."
 
-#: ../awn-settings/awnClass.py:1124
+#: ../awn-settings/awnClass.py:1095
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -430,7 +828,7 @@ msgstr ""
 "SOVELTUMISESTA TIETTYYN ERITYISEEN TARKOITUKSEEN. Yksityiskohtien osalta "
 "katso GNU:n GPL-lisenssiä."
 
-#: ../awn-settings/awnClass.py:1126
+#: ../awn-settings/awnClass.py:1097
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -442,35 +840,35 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "Awn-asetuksia ei voi suorittaa pääkäyttäjän oikeuksin."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Vasemmalla"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Oikealla"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "Ylhäällä"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "Alhaalla"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Litteä"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3D"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Kaari"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
@@ -478,69 +876,65 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:148
-msgid "Standard"
-msgstr ""
+msgstr "Leijuva"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
-msgstr ""
+msgstr "Paneelitila"
 
 #: ../awn-settings/awnSettings.py.in:149
-msgid "Autohide Keep below"
-msgstr ""
+msgid "Always visible"
+msgstr "Aina näkyvissä"
 
 #: ../awn-settings/awnSettings.py.in:150
-msgid "Autohide Fade out"
-msgstr ""
+msgid "Intellihide"
+msgstr "Piilota aktiivisen ikkunan edestä"
 
 #: ../awn-settings/awnSettings.py.in:151
-msgid "Transparency"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:155
-msgid "Always"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:155
-msgid "Intellihide"
-msgstr ""
+msgid "Window dodge"
+msgstr "Väistä ikkunoita"
 
 #: ../awn-settings/awnSettings.py.in:156
-msgid "Window dodge"
+msgid "Fade out"
+msgstr "Häivytä"
+
+#: ../awn-settings/awnSettings.py.in:156
+msgid "Transparency"
+msgstr "Läpinäkyvyys"
+
+#: ../awn-settings/awnSettings.py.in:157
+msgid "Keep below"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:757
+#: ../awn-settings/awnSettings.py.in:792
 msgid "Solid"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:757
+#: ../awn-settings/awnSettings.py.in:792
 msgid "Outline"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:758
+#: ../awn-settings/awnSettings.py.in:793
 msgid "Outline, Reversed"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:942
+#: ../awn-settings/awnSettings.py.in:981
 msgid "Use application-specified icons"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:943
+#: ../awn-settings/awnSettings.py.in:982
 msgid "Use best quality icons"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:944
+#: ../awn-settings/awnSettings.py.in:983
 msgid "Overlay best quality icon with application icon"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:945
+#: ../awn-settings/awnSettings.py.in:984
 msgid "Overlay application icon with best quality icon"
 msgstr ""
 
-#: ../bindings/python/__init__.py:118
+#: ../bindings/python/__init__.py:123
 #, python-format
 msgid ""
 "The following Python modules could not be found: %s.  There are a few "
@@ -558,9 +952,9 @@ msgid ""
 "wiki.\n"
 msgstr ""
 
-#: ../bindings/python/__init__.py:133
+#: ../bindings/python/__init__.py:138
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn-wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -572,11 +966,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -610,11 +1004,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Aktiivisen neliön (kuvakkeen) väri."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Hohtavan pisteen väri."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -636,7 +1030,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Draw separators."
-msgstr ""
+msgstr "Piirrä erottimet."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "Enable drawing of a pattern."
@@ -665,6 +1059,7 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
+"Kuvaketekstin väri. Jätä tyhjäksi, jos haluat käyttää gtk-teeman väriä."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
@@ -698,156 +1093,172 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Kuvakkeiden etäisyys ikkunan reunasta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
-msgid "Path to the current desktop file theme."
+msgid "Outline color of the tooltip"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
-msgid "Path to the png containing the active icon background."
+msgid "Path to the current desktop file theme."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
-msgid "Path to the png containing the arrow icon."
+msgid "Path to the png containing the active icon background."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
+msgid "Path to the png containing the arrow icon."
+msgstr "Polku, josta löytyy nuolen png-muodossa oleva kuvake."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
 "Provides possibility to click on windows behind the panel. (0 - never click "
 "through, 1 - click through when holding CTRL, 2 - always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:37
+#: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:38
+#: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:39
+#: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Second highlight gradient step color."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:40
+#: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:41
-msgid "Show shadows for icons."
-msgstr ""
-
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
+msgid "Show shadows for icons."
+msgstr "Näytä kuvakkeiden varjot."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:43
-msgid "The angle of the panel in 3D mode."
-msgstr ""
-
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
+msgid "The angle of the panel in 3D mode."
+msgstr "Paneelin kulma 3D-tilassa."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:45
+#: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:46
+#: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:47
+#: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:48
+#: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:49
+#: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:50
+#: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:51
+#: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:52
+#: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:53
+#: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the pattern."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:54
+#: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The symmetry of the curve in Curves mode."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:55
+#: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid "The user-visible size of Awn."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:56
+#: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:57
+#: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "Whether AwnDialog should use Gtk theme colors."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:58
+#: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "Whether to close dialogs on loss of focus."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:59
-msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
-
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
+msgid "Whether to use colors from the current Gtk theme."
+msgstr "Käytetäänkö nykyisen Gtk-teeman värejä."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
 
-#: ../libawn/awn-themed-icon.c:1976
+#: ../data/awn-themed-icon.ui.h:1
+msgid ""
+"<b>Theme Panel Icon</b>\n"
+"You have chosen to replace an icon on the panel. Please select whether this "
+"change should effect only this applet, all applets of this type, or every "
+"icon on the panel of this type."
+msgstr ""
+
+#: ../data/awn-themed-icon.ui.h:3
+msgid "Customise Applet"
+msgstr "Muokkaa sovelmaa"
+
+#: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "Kuvakkeet"
 
-#: ../libawn/awn-themed-icon.c:1978
+#: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Valitse oma kuvake"
 
-#: ../libawn/awn-themed-icon.c:2065
+#: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Muokkaa kuvaketta"
 
-#: ../libawn/awn-themed-icon.c:2152
+#: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Poista muokattu kuvake"
 
-#: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
+#: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "Ladataan sovelmaa..."
 
-#: ../src/awn-applet-proxy.c:371 ../src/awn-applet-proxy.c:472
+#: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Sovelma sulkeutui yllättäen. Napsauta käynnistääksesi sen uudelleen."
 
-#: ../src/awn-panel.c:3898
+#: ../src/awn-panel.c:3939
 msgid "Close docklet"
-msgstr ""
+msgstr "Sulje telakan asetukset"
 
 #~ msgid "PNG Files"
 #~ msgstr "PNG-tiedostot"

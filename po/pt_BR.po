@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-10 22:12+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-04-12 23:04+0000\n"
+"Last-Translator: Douglas Santos <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-04-11 04:14+0000\n"
+"X-Launchpad-Export-Date: 2010-04-13 03:34+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -153,7 +153,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Exibir janelas de todas as áreas de trabalho"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -196,7 +196,7 @@ msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:468
 msgid "Icon size:"
-msgstr ""
+msgstr "Tamanho dos ícones:"
 
 #: ../applets/quick-prefs/applet.vala:504 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:676
@@ -223,22 +223,22 @@ msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Separador"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Área de trabalho %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Área de trabalho  1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Espaço de trabalho %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:522
 msgid "Add as Launcher"
@@ -246,31 +246,31 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:540
 msgid "_Close"
-msgstr ""
+msgstr "_Fechar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:568
 msgid "_Close All"
-msgstr ""
+msgstr "_Fechar todos"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:737
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ximizar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:742
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Restaurar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:771
 msgid "Always on _Top"
-msgstr ""
+msgstr "Sempre no _topo"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:795
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Mi_nimizar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:800
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Desfazer mi_nimizar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:854
 msgid "Always on Visible Workspace"
@@ -278,11 +278,11 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:858
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Apenas nesta área de trabalho"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:928
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Mover para a área de trabalho à _esquerda"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:938
 msgid "Move to Workspace _Right"
@@ -298,7 +298,7 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:967
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Mover para _outra área de trabalho"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
@@ -339,11 +339,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Geral</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>Ícones</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
@@ -359,7 +359,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>Painel</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
@@ -367,7 +367,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>Configurações</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
@@ -379,7 +379,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Dicas de ferramenta</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
@@ -405,15 +405,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Autor:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Modo de auto ocultação"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Fundo:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
@@ -421,7 +421,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Close animation:"
-msgstr ""
+msgstr "Animação de fechamento"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Configured Effects"
@@ -454,7 +454,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize..."
-msgstr ""
+msgstr "Personalizar..."
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
@@ -474,15 +474,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
-msgstr ""
+msgstr "Exportar tema..."
 
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Extra Options"
-msgstr ""
+msgstr "Opções extras"
 
 #: ../awn-settings/awn-settings.ui.h:44
 msgid "Fill Color"
-msgstr ""
+msgstr "Cor de preenchimento"
 
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "First Gradient Color"
@@ -494,11 +494,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Font"
-msgstr ""
+msgstr "Fonte"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Font Color"
-msgstr ""
+msgstr "Cor da fonte"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Font Mode"
@@ -542,7 +542,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Icons:"
-msgstr ""
+msgstr "Ícones:"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Inner Border Color"
@@ -550,7 +550,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Install..."
-msgstr ""
+msgstr "Instalar..."
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Launch animation:"
@@ -578,7 +578,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Name:"
-msgstr ""
+msgstr "Nome:"
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Offset"
@@ -586,7 +586,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Open animation:"
-msgstr ""
+msgstr "Animação de abertura:"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Outer Border Color"
@@ -626,7 +626,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Repositories"
-msgstr ""
+msgstr "Repositórios"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Second Gradient Color"
@@ -658,7 +658,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "St_yle:"
-msgstr ""
+msgstr "Es_tilo:"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Start _Awn automatically"
@@ -666,7 +666,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Theme Export"
-msgstr ""
+msgstr "Exportar tema"
 
 #: ../awn-settings/awn-settings.ui.h:91
 msgid ""
@@ -680,7 +680,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Usar cores do tema Gtk"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Use Pattern as Background"
@@ -688,7 +688,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
-msgstr ""
+msgstr "Versão:"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "_Behavior:"
@@ -696,7 +696,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "_Orientation:"
-msgstr ""
+msgstr "_Orientação:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "_Position on the screen:"
@@ -708,7 +708,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "pixels"
-msgstr ""
+msgstr "pixels"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
@@ -888,11 +888,11 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Always visible"
-msgstr ""
+msgstr "Sempre visível"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
-msgstr ""
+msgstr "Ocultar inteligentemente"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Window dodge"
@@ -900,11 +900,11 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Fade out"
-msgstr ""
+msgstr "Esvanecer"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
-msgstr ""
+msgstr "Transparência"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Keep below"
@@ -970,11 +970,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
