@@ -925,7 +925,8 @@ task_icon_init (TaskIcon *icon)
   priv->overlay_text = NULL;
   priv->ephemeral_count = 0;
   priv->plugin_menu_items = NULL;
-
+  priv->autohide_cookie = 0;
+  
   priv->overlay_app_icon = awn_overlay_pixbuf_new ();
   awn_overlayable_add_overlay (AWN_OVERLAYABLE (icon), 
                                AWN_OVERLAY (priv->overlay_app_icon));
@@ -2786,6 +2787,22 @@ theme_changed_cb (GtkIconTheme *icon_theme,TaskIcon * icon)
   }
 }
 
+static void 
+_context_menu_closed (GtkMenuShell *menu,TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+  
+  g_return_if_fail (TASK_IS_ICON (icon));  
+  priv = icon->priv;
+
+  if (priv->autohide_cookie)
+  {     
+    awn_applet_uninhibit_autohide (AWN_APPLET (priv->applet), priv->autohide_cookie);
+    priv->autohide_cookie = 0;
+  }
+}
+
+
 /**
  * Whenever there is a press event on the TaskIcon it will do the proper actions.
  * right click: - show the context menu 
@@ -2797,7 +2814,7 @@ theme_changed_cb (GtkIconTheme *icon_theme,TaskIcon * icon)
 static gboolean  
 task_icon_button_press_event (GtkWidget *widget,GdkEventButton *event)
 {
- TaskIconPrivate *priv;
+  TaskIconPrivate *priv;
   TaskIcon *icon;
   
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
@@ -2844,7 +2861,14 @@ task_icon_button_press_event (GtkWidget *widget,GdkEventButton *event)
                     NULL, NULL, event->button, event->time);
     
     g_signal_connect_swapped (priv->menu,"deactivate", 
-                              G_CALLBACK(gtk_widget_hide),priv->dialog);      
+                              G_CALLBACK(gtk_widget_hide),priv->dialog);
+    g_signal_connect (priv->menu,"deactivate", 
+                              G_CALLBACK(_context_menu_closed),icon);
+    if (!priv->autohide_cookie)
+    {
+      priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(priv->applet), "TaskmanContextMenuUp");
+    }
+
   }
 
   return FALSE;  

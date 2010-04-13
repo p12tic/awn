@@ -60,7 +60,8 @@ struct _TaskIconPrivate
 
   /*context menu*/
   GtkWidget * menu;
-  gchar * menu_filename;
+  guint       autohide_cookie;
+  gchar *   menu_filename;
 
   gboolean draggable;
   gboolean gets_dragged;

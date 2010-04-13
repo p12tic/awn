@@ -1,5 +1,12 @@
 2010-04-13  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon-private.h:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Inhibit autohide when taskmanager context menus are open.
+
+2010-04-13  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-launcher.c:
   	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/task-window.c:

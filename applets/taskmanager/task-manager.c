@@ -76,7 +76,7 @@ struct _TaskManagerPrivate
   WnckScreen      *screen;
 
   /*Used by Intellihide*/
-  guint           autohide_cookie;  
+  guint           autohide_cookie;
   GdkWindow       *awn_gdk_window;
   GdkRegion       * awn_gdk_region;
   
