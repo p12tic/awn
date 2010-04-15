@@ -296,7 +296,9 @@ static gboolean awn_panel_button_press      (GtkWidget      *widget,
                                              GdkEventButton *event);
 static gboolean awn_panel_resize_timeout    (gpointer data);
 
-static void     awn_panel_add               (GtkContainer   *window, 
+static void     awn_panel_add               (GtkContainer   *window,
+                                             GtkWidget      *widget);
+static void     awn_panel_remove            (GtkContainer   *window,
                                              GtkWidget      *widget);
 
 static void     awn_panel_set_offset        (AwnPanel *panel,
@@ -361,6 +363,11 @@ static gboolean awn_panel_dnd_check         (gpointer data);
 
 static gboolean awn_panel_set_drag_proxy    (AwnPanel *panel,
                                              gboolean check_mouse_pos);
+
+static void     dbus_inhibitor_lost         (AwnDBusWatcher *watcher,
+                                             gchar *name,
+                                             AwnInhibitItem *item);
+
 
 /*
  * GOBJECT CODE 
@@ -1286,6 +1293,11 @@ static void free_inhibit_item (gpointer data)
 {
   AwnInhibitItem *item = data;
 
+  // remove the dbus watcher
+  g_signal_handlers_disconnect_by_func (awn_dbus_watcher_get_default (),
+                                        G_CALLBACK (dbus_inhibitor_lost),
+                                        item);
+
   if (item->description) g_free (item->description);
 
   g_free (item);
@@ -1339,7 +1351,7 @@ awn_panel_get_mask (AwnPanel *panel)
 static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
                                            MouseCheckType check_type)
 {
-  g_return_val_if_fail(AWN_IS_PANEL(panel), FALSE);
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
 
   GtkWidget *widget = GTK_WIDGET (panel);
   AwnPanelPrivate *priv = panel->priv;
@@ -1348,8 +1360,14 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
 
   gint x, y, window_x, window_y, width, height;
   /* FIXME: probably needs some love to work on multiple monitors */
-  gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, NULL);
   panel_win = gtk_widget_get_window (widget);
+
+  if (!panel_win)
+  {
+    return FALSE;
+  }
+
+  gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, NULL);
   gdk_window_get_root_origin (panel_win, &window_x, &window_y);
 
   switch (check_type)
@@ -1522,7 +1540,7 @@ static void transparentize_end (AwnPanel *panel, gpointer data)
 static gboolean
 autohide_start_timeout (gpointer data)
 {
-  g_return_val_if_fail(AWN_IS_PANEL(data), FALSE);
+  g_return_val_if_fail (AWN_IS_PANEL (data), FALSE);
   gboolean signal_ret = FALSE;
 
   AwnPanel *panel = AWN_PANEL (data);
@@ -1720,6 +1738,12 @@ awn_panel_dispose (GObject *object)
     priv->resize_timer_id = 0;
   }
 
+  if (priv->dbus_proxy)
+  {
+    g_object_unref (priv->dbus_proxy);
+    priv->dbus_proxy = NULL;
+  }
+
   desktop_agnostic_config_client_unbind_all_for_object (priv->client,
                                                         object, NULL);
 
@@ -1737,10 +1761,10 @@ awn_panel_finalize (GObject *object)
     priv->inhibits = NULL;
   }
 
-  if (priv->dbus_proxy)
+  if (priv->monitor)
   {
-    g_object_unref (priv->dbus_proxy);
-    priv->dbus_proxy = NULL;
+    g_object_unref (priv->monitor);
+    priv->monitor = NULL;
   }
 
   G_OBJECT_CLASS (awn_panel_parent_class)->finalize (object);
@@ -1760,6 +1784,7 @@ awn_panel_class_init (AwnPanelClass *klass)
   obj_class->set_property  = awn_panel_set_property;
     
   cont_class->add          = awn_panel_add;
+  cont_class->remove       = awn_panel_remove;
   
   wid_class->expose_event  = awn_panel_expose;
   wid_class->show          = awn_panel_show;
@@ -2915,6 +2940,28 @@ awn_panel_add (GtkContainer *window, GtkWidget *widget)
 }
 
 static void
+awn_panel_remove (GtkContainer *panel, GtkWidget *widget)
+{
+  AwnPanelPrivate *priv;
+
+  g_return_if_fail (AWN_IS_PANEL (panel));
+  g_return_if_fail (GTK_IS_WIDGET (widget));
+  priv = AWN_PANEL (panel)->priv;
+
+  if (widget == priv->eventbox)
+  {
+    /* the eventbox was added using the base method,
+         so it also has to be removed using that way */
+    GtkContainerClass *klass = GTK_CONTAINER_CLASS (awn_panel_parent_class);
+    klass->remove (GTK_CONTAINER (panel), widget);
+  }
+  else
+  {
+    gtk_container_remove (GTK_CONTAINER (priv->viewport), widget);
+  }
+}
+
+static void
 on_theme_changed (AwnBackground *bg, AwnPanel *panel)
 {
   g_return_if_fail (AWN_IS_BACKGROUND (bg));
@@ -3691,11 +3738,6 @@ awn_panel_uninhibit_autohide  (AwnPanel *panel, guint cookie)
                                               GINT_TO_POINTER (cookie));
 
   if (!item) return TRUE; // we could set an error
-
-  // remove the dbus watcher
-  g_signal_handlers_disconnect_by_func (awn_dbus_watcher_get_default (),
-                                        G_CALLBACK (dbus_inhibitor_lost),
-                                        item);
 
   g_hash_table_remove (priv->inhibits, GINT_TO_POINTER (cookie));
 

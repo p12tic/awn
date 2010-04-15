@@ -58,7 +58,7 @@ namespace Awn
 
   public class PanelDispatcher: Object, PanelDBusInterface
   {
-    public Panel panel { get; construct; }
+    public unowned Panel panel { get; construct; }
 
     public PanelDispatcher (Panel panel)
     {
