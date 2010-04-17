@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-13 14:14+0000\n"
+"PO-Revision-Date: 2010-04-16 19:29+0000\n"
 "Last-Translator: Bundo <bundo@bundo.biz>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-04-14 03:50+0000\n"
+"X-Launchpad-Export-Date: 2010-04-17 04:22+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -36,7 +36,7 @@ msgstr " 서로 다른 WM_CLIENT_NAME 값을 가지는 윈도우들을 묶는 �
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
-msgstr ""
+msgstr " overlay_application_icons 를 사용시에 오버레이의 투명도 조절 (0.0 부터 1.0)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -51,7 +51,7 @@ msgstr ""
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
-msgstr ""
+msgstr " overlay_application_icons 를 사용시에 오버레이의 크기 조절 (0.2 부터 0.7)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
@@ -103,7 +103,7 @@ msgstr "드래그앤드롭으로 윈도우를 재배열 "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "작업 묶기 사용"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -174,11 +174,11 @@ msgstr "%s 실행"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr "실행기/작업 관리자"
+msgstr "실행아이콘/작업 관리자"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr "실행기/작업 관리자 애플릿"
+msgstr "실행아이콘/작업 관리자 애플릿"
 
 #: ../applets/quick-prefs/applet.vala:123
 #: ../applets/quick-prefs/applet.vala:517 ../src/awn-panel.c:692
@@ -238,7 +238,7 @@ msgstr "작업 공간 %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:522
 msgid "Add as Launcher"
-msgstr "실행기로 추가"
+msgstr "실행아이콘으로 추가"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:540
 msgid "_Close"
@@ -343,7 +343,7 @@ msgstr "<b>아이콘</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr "<b>실행기</b>"
+msgstr "<b>실행아이콘</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
@@ -458,7 +458,7 @@ msgstr "애플릿 사용하지 않기"
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Display launchers only"
-msgstr "실행기만 표시"
+msgstr "실행아이콘만 표시"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
@@ -522,7 +522,7 @@ msgstr "그룹 공통 창"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Hover animation:"
-msgstr "지나가기 애니메이션"
+msgstr "지나가기 애니메이션:"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Icon _effects:"
@@ -767,12 +767,12 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
-"자동 생성이 실패했습니다. 직접 경로를 만들어주세요.\n"
+"자동 만들기에 실패했습니다. 직접 경로를 만들어주세요.\n"
 "%s"
 
 #: ../awn-settings/awnClass.py:976
 msgid "Confirm directory creation"
-msgstr "디렉터리 생성 확인"
+msgstr "디렉터리 만들기 확인"
 
 #: ../awn-settings/awnClass.py:977
 msgid ""
@@ -780,7 +780,7 @@ msgid ""
 "Do you want me to automatically create it for you?"
 msgstr ""
 "당신의 계정에 자동으로 시작하는 경로가 없습니다.\n"
-"자동으로 생성하시겠습니까?"
+"자동으로 만들겠습니까?"
 
 #: ../awn-settings/awnClass.py:1038
 #, python-format
