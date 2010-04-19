@@ -1,4 +1,11 @@
-2010-04-13  Rodney Cryderman  <rcryderman@gmail.com>
+2010-04-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Remove check for name field in desktop file for OpenOffice
+	special casing.  Do not check localized desktop name field
+	when doing special casing checks.
+
+2010-04-19  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
 	Fix issue with show all windows = false and grouped

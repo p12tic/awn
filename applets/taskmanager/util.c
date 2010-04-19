@@ -110,12 +110,12 @@ typedef gchar *(*fn_gen_id)(const gchar *,const gchar*,const gchar*,const gchar*
  */
 static DesktopMatch desktop_regexes[] = 
 {
-  {".*ooffice.*-writer.*",".*OpenOffice.*",NULL,"OpenOffice-Writer"},
-  {".*ooffice.*-draw.*",".*OpenOffice.*",NULL,"OpenOffice-Draw"},
-  {".*ooffice.*-impress.*",".*OpenOffice.*",NULL,"OpenOffice-Impress"},
-  {".*ooffice.*-calc.*",".*OpenOffice.*",NULL,"OpenOffice-Calc"},
-  {".*ooffice.*-math.*",".*OpenOffice.*",NULL,"OpenOffice-Math"},
-  {".*ooffice.*-base.*",".*OpenOffice.*",NULL,"OpenOffice-Base"},  
+  {".*ooffice.*-writer.*",NULL,NULL,"OpenOffice-Writer"},
+  {".*ooffice.*-draw.*",NULL,NULL,"OpenOffice-Draw"},
+  {".*ooffice.*-impress.*",NULL,NULL,"OpenOffice-Impress"},
+  {".*ooffice.*-calc.*",NULL,NULL,"OpenOffice-Calc"},
+  {".*ooffice.*-math.*",NULL,NULL,"OpenOffice-Math"},
+  {".*ooffice.*-base.*",NULL,NULL,"OpenOffice-Base"},  
   {".*amsn.*","aMSN",".*amsn.*desktop.*","aMSN"},
   {".*prism-google-calendar",".*Google.*Calendar.*","prism-google-calendar","prism-google-calendar"},
   {".*prism-google-analytics",".*Google.*Analytics.*","prism-google-analytics","prism-google-analytics"},
@@ -300,9 +300,19 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
     }
     if (iter->name)
     {
-      gchar * name = desktop_agnostic_fdo_desktop_entry_get_name (entry);
+      gchar * name = NULL;
+      /*We do not want localized values*/
+      if (desktop_agnostic_fdo_desktop_entry_key_exists (entry,"Name"))
+      {
+        name = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Name");
+      }
+      else
+      {
+        continue;
+      }
+        
 #ifdef DEBUG      
-      g_debug ("%s: iter->name = %s, name = %s",__func__,iter->name,name);      
+        g_debug ("%s: iter->name = %s, name = %s",__func__,iter->name,name);      
 #endif
       match = g_regex_match_simple(iter->name, name,0,0);
       g_free (name);
