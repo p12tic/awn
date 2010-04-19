@@ -1792,7 +1792,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,const TaskItem *item)
       fallback_used
     )
   {
-    if ( TASK_IS_WINDOW(item) && task_window_get_use_win_icon(TASK_WINDOW(item))!=USE_NEVER)
+    if ( TASK_IS_WINDOW(item))
     {
       if (launcher)
       {

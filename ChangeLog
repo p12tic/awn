@@ -1,5 +1,11 @@
 2010-04-19  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Fix incorrect icon displayed for Open Office when icon overlay
+	is disabled.
+
+2010-04-19  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/util.c:
 	Remove check for name field in desktop file for OpenOffice
 	special casing.  Do not check localized desktop name field
