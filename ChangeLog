@@ -1,5 +1,11 @@
 2010-04-13  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon.c:
+	Fix issue with show all windows = false and grouped
+	applications.  lp:565378.
+
+2010-04-13  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon-private.h:
   	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:

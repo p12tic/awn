@@ -2481,7 +2481,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
         TaskItem *item = w->data;
 
         if (!task_item_is_visible (item)) continue;
-        
+
         if (!TASK_IS_WINDOW(item))
         {
           /*it's a launcher*/
@@ -2544,6 +2544,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
       TaskItem *item = w->data;
 
       if (!TASK_IS_WINDOW (item) ) continue;
+      if (!task_item_is_visible (item)) continue;
       
       if (task_window_is_active (TASK_WINDOW(item)))
       {
