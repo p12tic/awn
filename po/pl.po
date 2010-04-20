@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-11 15:02+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-04-19 21:16+0000\n"
+"Last-Translator: skrzat <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-04-12 03:54+0000\n"
+"X-Launchpad-Export-Date: 2010-04-20 03:33+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -247,15 +247,15 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:540
 msgid "_Close"
-msgstr ""
+msgstr "_Zamknij"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:568
 msgid "_Close All"
-msgstr ""
+msgstr "_Zamknij wszystko"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:737
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ksymalizuj"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:742
 msgid "Unma_ximize"
@@ -267,7 +267,7 @@ msgstr "Zawsze na _wierzchu"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:795
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Mi_nimalizuj"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:800
 msgid "Unmi_nimize"
@@ -324,11 +324,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>Kategorie</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>Efekty</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
@@ -344,7 +344,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>Ikony</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
@@ -360,15 +360,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>Panel</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Repozytoria</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>Ustawienia</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
@@ -406,7 +406,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Autor:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
@@ -414,7 +414,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Tło:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"

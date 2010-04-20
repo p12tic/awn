@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-16 19:29+0000\n"
-"Last-Translator: Bundo <bundo@bundo.biz>\n"
+"PO-Revision-Date: 2010-04-19 08:11+0000\n"
+"Last-Translator: yang jinseok <Unknown>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-04-17 04:22+0000\n"
+"X-Launchpad-Export-Date: 2010-04-20 03:33+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -76,6 +76,7 @@ msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"다른 작업 영역에서 창이 활성화 될 때의 행동 ( 0 - 기본적용 , 1 - 작업공간 바꾸기  , 2 - 현재 작업 영역으로 이동)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
@@ -327,7 +328,7 @@ msgstr "<b>효과</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>내보내기 옵션 그룹</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
@@ -347,7 +348,7 @@ msgstr "<b>실행아이콘</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr ""
+msgstr "<b>숫자 설정</b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
@@ -413,7 +414,7 @@ msgstr "배경:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
-msgstr ""
+msgstr "클릭 수"
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Close animation:"
@@ -433,7 +434,7 @@ msgstr "곡선 대칭"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curviness"
-msgstr ""
+msgstr "곡선"
 
 #: ../awn-settings/awn-settings.ui.h:34 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:152
