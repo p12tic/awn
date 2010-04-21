@@ -152,6 +152,7 @@ main (gint argc, gchar *argv[])
                                        AWN_DBUS_APP_PATH,
                                        G_OBJECT (app));
 
+  g_unsetenv ("DESKTOP_AUTOSTART_ID");
   gtk_main ();
 
   g_object_unref (app);
