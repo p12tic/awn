@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-19 21:16+0000\n"
+"PO-Revision-Date: 2010-04-23 20:03+0000\n"
 "Last-Translator: skrzat <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-04-20 03:33+0000\n"
+"X-Launchpad-Export-Date: 2010-04-24 03:53+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -336,7 +336,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>Dodatki</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
@@ -398,7 +398,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Typ strzałki"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
@@ -410,7 +410,7 @@ msgstr "Autor:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Tryb autoukrywania:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -426,7 +426,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Configured Effects"
-msgstr ""
+msgstr "Skonfigurowane efekty"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Corner Radius"
@@ -479,7 +479,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Extra Options"
-msgstr ""
+msgstr "Opcje dodatkowe"
 
 #: ../awn-settings/awn-settings.ui.h:44
 msgid "Fill Color"
@@ -495,15 +495,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Font"
-msgstr ""
+msgstr "Czcionka"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Font Color"
-msgstr ""
+msgstr "Kolor czcionki"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Font Mode"
-msgstr ""
+msgstr "Tryb czcionki"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "Font Outline Color"
@@ -543,7 +543,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Icons:"
-msgstr ""
+msgstr "Ikony:"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Inner Border Color"
@@ -551,7 +551,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Install..."
-msgstr ""
+msgstr "Instaluj..."
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Launch animation:"
@@ -579,7 +579,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Name:"
-msgstr ""
+msgstr "Nazwa:"
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Offset"
@@ -627,7 +627,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Repositories"
-msgstr ""
+msgstr "Repozytoria"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Second Gradient Color"
@@ -647,7 +647,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
-msgstr ""
+msgstr "Pokaż wszystkie okna"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Show dialog after long press"
@@ -655,11 +655,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Show shadows"
-msgstr ""
+msgstr "Pokaż cienie"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "St_yle:"
-msgstr ""
+msgstr "St_yl:"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Start _Awn automatically"
@@ -677,7 +677,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Triangle"
-msgstr ""
+msgstr "Trójkąt"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Use Gtk theme colors"
@@ -689,23 +689,23 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
-msgstr ""
+msgstr "Wersja:"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "_Behavior:"
-msgstr ""
+msgstr "_Zachowanie:"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "_Orientation:"
-msgstr ""
+msgstr "_Orientacja:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_Położenie na ekranie:"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "_Size of icons:"
-msgstr ""
+msgstr "_Rozmiar ikon:"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "pixels"
@@ -890,7 +890,7 @@ msgstr "Tryb panelu"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Always visible"
-msgstr ""
+msgstr "Zawsze widoczny"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"

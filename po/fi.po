@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-12 16:04+0000\n"
+"PO-Revision-Date: 2010-04-23 07:44+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-04-13 03:34+0000\n"
+"X-Launchpad-Export-Date: 2010-04-24 03:53+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -24,7 +24,7 @@ msgstr "Laajennin"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Täyttää paneelin tyhjää tilaa laajennetussa tilassa"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
@@ -359,7 +359,7 @@ msgstr "<b>Paneeli</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Ohjelmistolähteet</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
@@ -375,7 +375,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Työkaluohjeet</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
@@ -405,7 +405,7 @@ msgstr "Tekijä:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Automaattisen piilotuksen tapa:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -534,7 +534,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "Kuvakkeet ja työkaluohjeet"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Icons:"
@@ -558,11 +558,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Näytön X-siirtymä"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Näytön Y-siirtymä"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Monitor height"
@@ -622,7 +622,7 @@ msgstr "Peilikuvan etäisyys"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Repositories"
-msgstr ""
+msgstr "Ohjelmalähteet"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Second Gradient Color"
@@ -712,7 +712,7 @@ msgstr "Virhe, sources.list-tiedosto on jo olemassa"
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Virhe - polku on tyhjä tai se on jo olemassa"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
@@ -982,7 +982,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
+msgstr "Valinnainen siirtymä, kun sinulla useampi kuin yksi näyttö."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid ""
@@ -1000,7 +1000,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "Työkaluohjeen taustaväri"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
@@ -1046,11 +1046,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Työkaluohjeen kirjasimen väri"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Työkaluohjeen kirjasimen nimi"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -1067,7 +1067,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "Jos tosi, suurennetut ikkunat eivät peitä paneelia."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "If true, the panel will expand to full monitor width/height."
@@ -1132,7 +1132,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "Erottimen väri."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
