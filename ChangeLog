@@ -1,3 +1,9 @@
+2010-04-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnDefs.py.in:
+	Don't call setlocale ourselves, GTK does it for us.
+	Also fixes bug #563449.
+
 2010-04-22  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-main.c:
