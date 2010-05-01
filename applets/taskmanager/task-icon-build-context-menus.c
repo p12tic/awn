@@ -306,8 +306,8 @@ _move_window_to_index (GtkMenuItem *menuitem, WnckWindow * win)
     dest_col = workspace_index % cols;
     dest_row = workspace_index / cols;
     wnck_window_get_geometry (win,&x,&y,&w,&h);
-    delta_x = (dest_col * screen_width) - viewport_x + x;
-    delta_y = (dest_row * screen_height) - viewport_y + y;
+    delta_x = (dest_col * screen_width) - viewport_x + (x % screen_width);
+    delta_y = (dest_row * screen_height) - viewport_y + (y % screen_height);
 
     wnck_window_set_geometry (win,
                               WNCK_WINDOW_GRAVITY_STATIC,

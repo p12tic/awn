@@ -1,6 +1,11 @@
 2010-05-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon-build-context-menus.c:
+	Fix viewport math.
+
+2010-05-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
 	Return the move window to workspace menu options to the context
 	menu when Compiz is being used.
 
