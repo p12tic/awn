@@ -1,6 +1,12 @@
 2010-05-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon-build-context-menus.c:
+	If Compiz, if we're sending the window to another 
+	"workspace" then choose some other window to activate.
+
+2010-05-01  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
 	Fix viewport math.
 
 2010-05-01  Rodney Cryderman  <rcryderman@gmail.com>
