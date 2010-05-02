@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-28 08:10+0000\n"
-"Last-Translator: fh39fkd <Unknown>\n"
+"PO-Revision-Date: 2010-05-01 09:01+0000\n"
+"Last-Translator: Bashtannik Andrew S. <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-04-29 03:53+0000\n"
+"X-Launchpad-Export-Date: 2010-05-02 03:57+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -74,6 +74,8 @@ msgid ""
 " If overlay_application_icons is true, this key will reverse the "
 "overlay/overlayee if set to true."
 msgstr ""
+" Если значение overlay_application_icons истинно, этот ключ отменит "
+"наложение, если оно включено."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -190,13 +192,15 @@ msgstr "Показывать окна всех рабочих мест"
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
-msgstr ""
+msgstr "Порог, при котором текст будет отображаться. Верное значение 1.."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"Список путей к файлам .desktop из которых менеджер задач должен создать их "
+"кнопки запуска."
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:821
@@ -210,11 +214,11 @@ msgstr "Запустить %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Кнопки запуска/Работающие приложения"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Апплет, отображающий кнопоки запуска/работающие приложения"
 
 #: ../applets/quick-prefs/applet.vala:123
 #: ../applets/quick-prefs/applet.vala:517 ../src/awn-panel.c:692
@@ -636,27 +640,27 @@ msgstr "Цвет фона панели"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Panel Look Refinements"
-msgstr ""
+msgstr "Детали отображения панели"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Стиль и размер панели"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Альфа-канал шаблона"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Pattern Image"
-msgstr ""
+msgstr "Картинка шаблона"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "Коэффициент альфа-канала отражения"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Reflection offset"
-msgstr ""
+msgstr "Смещение отражения"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Repositories"
@@ -664,19 +668,19 @@ msgstr "Репозитории"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Второй цвет градиента"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Второй цвет выделения"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Выбрать собственную стрелку"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Separator Color"
-msgstr ""
+msgstr "Цвет разделителя"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
@@ -684,7 +688,7 @@ msgstr "Показать все окна"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Отображать диалог после длительного нажатия"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Show shadows"
@@ -700,13 +704,15 @@ msgstr "Запускать Awn при загрузке"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Theme Export"
-msgstr ""
+msgstr "Экспорт темы"
 
 #: ../awn-settings/awn-settings.ui.h:91
 msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
 msgstr ""
+"Чтобы использовать режим Intellihide или Window Dodge необходимо "
+"активировать апплет Открытые приложения."
 
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Triangle"
@@ -718,7 +724,7 @@ msgstr "Использовать цвета темы Gtk"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Использовать шаблон в качестве фона"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
@@ -910,7 +916,7 @@ msgstr "3D"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Изогнутый"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
@@ -970,11 +976,11 @@ msgstr "Ипользовать иконки высокого качества"
 
 #: ../awn-settings/awnSettings.py.in:983
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Накладывать высококачественные иконки на значок приложения"
 
 #: ../awn-settings/awnSettings.py.in:984
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Накладывать значок приложения на высококачественную иконку"
 
 #: ../bindings/python/__init__.py:123
 #, python-format
@@ -993,6 +999,15 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Следующие Python модули не найдены: %s. Возможные причины:\n"
+"\n"
+"1. У вас не установлен этот Python модуль. В этом случае вы должны\n"
+"посетить AWN Wiki, раздел \"Апплеты\", чтобы выяснить имя пакета\n"
+"для вашей сборки, который предоставляет этот модуль.\n"
+"\n"
+"2. Модуль установлен в нестандартном месте. Обычно это возникает,\n"
+"когда вы вручную устанавливаете пакет, не через менеджер пакетов.\n"
+"Эта ситуация объясняется в разделе Wiki \"FAQ\".\n"
 
 #: ../bindings/python/__init__.py:138
 msgid "Awn Wiki"
@@ -1016,7 +1031,7 @@ msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgstr "Битовая маска, которая хранит тип эффекта для каждого события"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid "Alignment of a non-expanded panel on the monitor edge."
