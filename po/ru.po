@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-05-01 09:01+0000\n"
+"PO-Revision-Date: 2010-05-02 10:44+0000\n"
 "Last-Translator: Bashtannik Andrew S. <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-05-02 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-05-03 04:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -67,7 +67,8 @@ msgstr ""
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
-" Группировать иконки с одинаковым ярлыком, если группировка окон отключена."
+" Группировать иконки с одинаковой кнопкой запуска, если группировка окон "
+"отключена."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
@@ -83,8 +84,9 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
-" Если true, то иконка приложения будет наложена на Ярлык вместо его замены, "
-"в соответствии с режимом наложения, определенным в icon_change_behavior."
+" Если true, то иконка приложения будет наложена на кнопку запуска вместо ее "
+"замены, в соответствии с режимом наложения, определенным в "
+"icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
@@ -278,7 +280,7 @@ msgstr "Рабочее место %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:522
 msgid "Add as Launcher"
-msgstr "Закрепить на панели"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:540
 msgid "_Close"
@@ -504,7 +506,7 @@ msgstr "Отображать только кнопки запуска"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
-msgstr "Переопределение Drag and Drop"
+msgstr "Упорядочивание перетаскиванием"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
@@ -920,11 +922,11 @@ msgstr "Изогнутый"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Резкий"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Парящий"
 
 #: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
@@ -940,7 +942,7 @@ msgstr "Интеллектуальное"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Window dodge"
-msgstr ""
+msgstr "Window dodge"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Fade out"
@@ -1035,7 +1037,7 @@ msgstr "Битовая маска, которая хранит тип эффек
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
+msgstr "Выравнивание не расширенной панели по краю монитора."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid "An optional offset when you have more than 1 monitors."
@@ -1051,11 +1053,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "Цвет фона заголовка AwnDialog."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "Цвет фона AwnDialog."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Background color of the tooltip"
@@ -1063,19 +1065,19 @@ msgstr "Цвет фона для подсказок"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Цвет активного прямоугольника."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Свет светящейся точки."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Цвет контура активного прямоугольника."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
-msgstr ""
+msgstr "Задержка между покиданием курсора панели и ее скрытием."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "Delay for mouse position polling."
@@ -1086,22 +1088,24 @@ msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Определяет если общий редактор конфигурации разрешен для апплетов, которые "
+"не имеют собственного диалога настроек."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Draw separators."
-msgstr ""
+msgstr "Рисовать разделители."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Разрешить рисование шаблона."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First gradient step color."
-msgstr ""
+msgstr "Первый цвет градиента."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "Первый цвет градиента выделения."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font color of the tooltip"
@@ -1152,7 +1156,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "Промежуток между иконками и их диалогом."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Offset of the icons from window border."
@@ -1160,7 +1164,7 @@ msgstr "Смещение иконок от границ окон."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
-msgstr ""
+msgstr "Цвет контура подсказки"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
@@ -1168,11 +1172,11 @@ msgstr "Путь к текущей теме рабочего стола."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Путь к PNG с фоном активного значка."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Путь к PNG с изображением стрелки."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
@@ -1180,6 +1184,9 @@ msgid ""
 "through, 1 - click through when holding CTRL, 2 - always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
+"Предоставляет возможность нажимать на окна за панелью. (0 - никогда не "
+"нажимать, 1 - нажимать когда удерживается CTRL, 2 - всегда нажимать и "
+"взаимодействовать с панелью только когда удерживается CTRL)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
@@ -1187,15 +1194,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
-msgstr ""
+msgstr "Второй цвет градиента."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "Второй цвет градиента выделения."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "Цвет разделителя"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
@@ -1203,11 +1210,11 @@ msgstr "Показать тень иконок."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
-msgstr ""
+msgstr "Список активных UA Screenlets для этой панели."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "Угол наклона панели в режиме 3D."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
@@ -1226,20 +1233,24 @@ msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
+"Список UA Screenlets, которые были добавлены ранее в форме "
+"ScreeneletInstance::Position."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
+"Список апплетов для этой панели, упорядоченных с лева на право или сверху "
+"вниз."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
-msgstr ""
+msgstr "Список экзмпляров панели."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
-msgstr ""
+msgstr "Расположение шаблона."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
@@ -1251,11 +1262,11 @@ msgstr "Прозрачность значков. Значение от 0.0 до 
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Прозрачность шаблона."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The symmetry of the curve in Curves mode."
-msgstr ""
+msgstr "Симметрия кривой в режиме Кривых."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid "The user-visible size of Awn."
@@ -1264,24 +1275,27 @@ msgstr "размер панели AWN"
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
+"Время в миллисекундах которое AwnIcon будет имитировать долгое нажатие."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
+msgstr "AwnDialog использовать цвета Gtk темы."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "Whether to close dialogs on loss of focus."
-msgstr ""
+msgstr "Закрыть окно при потере фокуса"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgstr "Использовать цвета из текущей темы Gtk."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
+"Ширина контура текста иконки если режим контура включен. Допустимые значения "
+"1.0 - 5.0."
 
 #: ../data/awn-themed-icon.ui.h:1
 msgid ""
@@ -1290,6 +1304,10 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
+"<b>Иконка темы панели</b>\n"
+"Вы собираетесь заменить иконкиу на панели. Пожалуйста, укажите если это "
+"изменение должно затронуть только этот апплет, все апплеты этого вида, или "
+"каждую иконку панели этого типа."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
