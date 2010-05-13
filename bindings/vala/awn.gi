@@ -136,6 +136,20 @@
 				<parameter name="menu" type="GtkMenu*"/>
 			</parameters>
 		</function>
+		<callback name="AwnAppletInitFunc">
+			<return-type type="gboolean"/>
+			<parameters>
+				<parameter name="applet" type="AwnApplet*"/>
+			</parameters>
+		</callback>
+		<callback name="AwnAppletInitPFunc">
+			<return-type type="AwnApplet*"/>
+			<parameters>
+				<parameter name="canonical_name" type="char*"/>
+				<parameter name="uid" type="char*"/>
+				<parameter name="panel_id" type="gint"/>
+			</parameters>
+		</callback>
 		<callback name="AwnEffectsOpfn">
 			<return-type type="gboolean"/>
 			<parameters>
@@ -230,9 +244,9 @@
 		</object>
 		<object name="AwnApplet" parent="GtkPlug" type-name="AwnApplet" get-type="awn_applet_get_type">
 			<implements>
-				<interface name="AwnPanelConnector"/>
 				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AwnPanelConnector"/>
 			</implements>
 			<method name="construct" symbol="awn_applet_construct">
 				<return-type type="AwnApplet*"/>
@@ -248,7 +262,7 @@
 				<parameters>
 					<parameter name="self" type="AwnApplet*"/>
 					<parameter name="copyright" type="char*"/>
-					<parameter name="license" type="gint"/>
+					<parameter name="license" type="AwnAppletLicense"/>
 					<parameter name="version" type="char*"/>
 					<parameter name="comments" type="char*"/>
 					<parameter name="website" type="char*"/>
@@ -265,7 +279,7 @@
 				<parameters>
 					<parameter name="self" type="AwnApplet*"/>
 					<parameter name="copyright" type="char*"/>
-					<parameter name="license" type="gint"/>
+					<parameter name="license" type="AwnAppletLicense"/>
 					<parameter name="version" type="char*"/>
 				</parameters>
 			</method>
@@ -305,12 +319,36 @@
 					<parameter name="self" type="AwnApplet*"/>
 				</parameters>
 			</method>
+			<method name="get_max_size" symbol="awn_applet_get_max_size">
+				<return-type type="gint"/>
+				<parameters>
+					<parameter name="self" type="AwnApplet*"/>
+				</parameters>
+			</method>
 			<method name="get_offset_at" symbol="awn_applet_get_offset_at">
 				<return-type type="gint"/>
 				<parameters>
 					<parameter name="self" type="AwnApplet*"/>
 					<parameter name="x" type="gint"/>
 					<parameter name="y" type="gint"/>
+				</parameters>
+			</method>
+			<method name="get_offset_modifier" symbol="awn_applet_get_offset_modifier">
+				<return-type type="float"/>
+				<parameters>
+					<parameter name="self" type="AwnApplet*"/>
+				</parameters>
+			</method>
+			<method name="get_panel_xid" symbol="awn_applet_get_panel_xid">
+				<return-type type="gint64"/>
+				<parameters>
+					<parameter name="self" type="AwnApplet*"/>
+				</parameters>
+			</method>
+			<method name="get_path_type" symbol="awn_applet_get_path_type">
+				<return-type type="AwnPathType"/>
+				<parameters>
+					<parameter name="self" type="AwnApplet*"/>
 				</parameters>
 			</method>
 			<method name="get_pos_type" symbol="awn_applet_get_pos_type">
@@ -353,6 +391,27 @@
 					<parameter name="value" type="char*"/>
 				</parameters>
 			</method>
+			<method name="set_max_size" symbol="awn_applet_set_max_size">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="self" type="AwnApplet*"/>
+					<parameter name="value" type="gint"/>
+				</parameters>
+			</method>
+			<method name="set_offset_modifier" symbol="awn_applet_set_offset_modifier">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="self" type="AwnApplet*"/>
+					<parameter name="value" type="float"/>
+				</parameters>
+			</method>
+			<method name="set_path_type" symbol="awn_applet_set_path_type">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="self" type="AwnApplet*"/>
+					<parameter name="value" type="AwnPathType"/>
+				</parameters>
+			</method>
 			<method name="set_pos_type" symbol="awn_applet_set_pos_type">
 				<return-type type="void"/>
 				<parameters>
@@ -376,15 +435,12 @@
 			</method>
 			<property name="canonical-name" type="char*" readable="1" writable="1" construct="0" construct-only="1"/>
 			<property name="display-name" type="char*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="max-size" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="offset-modifier" type="gfloat" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="panel-xid" type="gint64" readable="1" writable="0" construct="0" construct-only="0"/>
+			<property name="path-type" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="quit-on-delete" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="show-all-on-embed" type="gboolean" readable="1" writable="1" construct="0" construct-only="0"/>
-			<signal name="flags-changed" when="LAST">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="object" type="AwnApplet*"/>
-					<parameter name="p0" type="gint"/>
-				</parameters>
-			</signal>
 			<signal name="offset-changed" when="LAST">
 				<return-type type="void"/>
 				<parameters>
@@ -416,9 +472,9 @@
 		</object>
 		<object name="AwnAppletSimple" parent="AwnApplet" type-name="AwnAppletSimple" get-type="awn_applet_simple_get_type">
 			<implements>
-				<interface name="AwnPanelConnector"/>
 				<interface name="AtkImplementor"/>
 				<interface name="GtkBuildable"/>
+				<interface name="AwnPanelConnector"/>
 				<interface name="AwnOverlayable"/>
 			</implements>
 			<method name="get_icon" symbol="awn_applet_simple_get_icon">
@@ -1583,6 +1639,13 @@
 					<parameter name="expand" type="gboolean"/>
 				</parameters>
 			</method>
+			<method name="bus_set_behavior" symbol="awn_panel_connector_bus_set_behavior">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="self" type="AwnPanelConnector*"/>
+					<parameter name="behavior" type="AwnAppletFlags"/>
+				</parameters>
+			</method>
 			<method name="connect" symbol="awn_panel_connector_connect">
 				<return-type type="void"/>
 				<parameters>
@@ -1592,20 +1655,8 @@
 					<parameter name="error" type="GError**"/>
 				</parameters>
 			</method>
-			<method name="get_max_size" symbol="awn_panel_connector_get_max_size">
-				<return-type type="gint"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-				</parameters>
-			</method>
 			<method name="get_offset" symbol="awn_panel_connector_get_offset">
 				<return-type type="gint"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-				</parameters>
-			</method>
-			<method name="get_offset_modifier" symbol="awn_panel_connector_get_offset_modifier">
-				<return-type type="float"/>
 				<parameters>
 					<parameter name="self" type="AwnPanelConnector*"/>
 				</parameters>
@@ -1618,18 +1669,6 @@
 			</method>
 			<method name="get_panel_proxy" symbol="awn_panel_connector_get_panel_proxy">
 				<return-type type="DBusGProxy*"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-				</parameters>
-			</method>
-			<method name="get_panel_xid" symbol="awn_panel_connector_get_panel_xid">
-				<return-type type="gint64"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-				</parameters>
-			</method>
-			<method name="get_path_type" symbol="awn_panel_connector_get_path_type">
-				<return-type type="AwnPathType"/>
 				<parameters>
 					<parameter name="self" type="AwnPanelConnector*"/>
 				</parameters>
@@ -1673,13 +1712,6 @@
 					<parameter name="value" type="GValue*"/>
 				</parameters>
 			</method>
-			<method name="set_max_size" symbol="awn_panel_connector_set_max_size">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-					<parameter name="value" type="gint"/>
-				</parameters>
-			</method>
 			<method name="set_offset" symbol="awn_panel_connector_set_offset">
 				<return-type type="void"/>
 				<parameters>
@@ -1687,25 +1719,11 @@
 					<parameter name="value" type="gint"/>
 				</parameters>
 			</method>
-			<method name="set_offset_modifier" symbol="awn_panel_connector_set_offset_modifier">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-					<parameter name="value" type="float"/>
-				</parameters>
-			</method>
 			<method name="set_panel_id" symbol="awn_panel_connector_set_panel_id">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="self" type="AwnPanelConnector*"/>
 					<parameter name="value" type="gint"/>
-				</parameters>
-			</method>
-			<method name="set_path_type" symbol="awn_panel_connector_set_path_type">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-					<parameter name="value" type="AwnPathType"/>
 				</parameters>
 			</method>
 			<method name="set_position" symbol="awn_panel_connector_set_position">
@@ -1736,13 +1754,9 @@
 					<parameter name="cookie" type="guint"/>
 				</parameters>
 			</method>
-			<property name="max-size" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="offset" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
-			<property name="offset-modifier" type="gfloat" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="panel-id" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="panel-proxy" type="DBusGProxy*" readable="1" writable="0" construct="0" construct-only="0"/>
-			<property name="panel-xid" type="gint64" readable="1" writable="0" construct="0" construct-only="0"/>
-			<property name="path-type" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="position" type="GtkPositionType" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="size" type="gint" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="uid" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
@@ -1752,20 +1766,8 @@
 					<parameter name="object" type="AwnPanelConnector*"/>
 				</parameters>
 			</signal>
-			<vfunc name="get_max_size">
-				<return-type type="gint"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-				</parameters>
-			</vfunc>
 			<vfunc name="get_offset">
 				<return-type type="gint"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-				</parameters>
-			</vfunc>
-			<vfunc name="get_offset_modifier">
-				<return-type type="float"/>
 				<parameters>
 					<parameter name="self" type="AwnPanelConnector*"/>
 				</parameters>
@@ -1778,18 +1780,6 @@
 			</vfunc>
 			<vfunc name="get_panel_proxy">
 				<return-type type="DBusGProxy*"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-				</parameters>
-			</vfunc>
-			<vfunc name="get_panel_xid">
-				<return-type type="gint64"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-				</parameters>
-			</vfunc>
-			<vfunc name="get_path_type">
-				<return-type type="AwnPathType"/>
 				<parameters>
 					<parameter name="self" type="AwnPanelConnector*"/>
 				</parameters>
@@ -1826,13 +1816,6 @@
 					<parameter name="value" type="GValue*"/>
 				</parameters>
 			</vfunc>
-			<vfunc name="set_max_size">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-					<parameter name="value" type="gint"/>
-				</parameters>
-			</vfunc>
 			<vfunc name="set_offset">
 				<return-type type="void"/>
 				<parameters>
@@ -1840,25 +1823,11 @@
 					<parameter name="value" type="gint"/>
 				</parameters>
 			</vfunc>
-			<vfunc name="set_offset_modifier">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-					<parameter name="value" type="float"/>
-				</parameters>
-			</vfunc>
 			<vfunc name="set_panel_id">
 				<return-type type="void"/>
 				<parameters>
 					<parameter name="self" type="AwnPanelConnector*"/>
 					<parameter name="value" type="gint"/>
-				</parameters>
-			</vfunc>
-			<vfunc name="set_path_type">
-				<return-type type="void"/>
-				<parameters>
-					<parameter name="self" type="AwnPanelConnector*"/>
-					<parameter name="value" type="AwnPathType"/>
 				</parameters>
 			</vfunc>
 			<vfunc name="set_position">
