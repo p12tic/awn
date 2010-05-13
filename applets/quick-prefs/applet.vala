@@ -29,10 +29,11 @@ using DBus;
 // only here so that config.h is before gi18n-lib.h
 private const string not_used = Build.APPLETSDIR;
 
+[DBus (name="org.freedesktop.DockManager")]
 interface DockManager: GLib.Object
 {
   public async abstract string[] get_capabilities () throws DBus.Error;
-  public abstract void awn_set_visibility (string win_class, bool visible) throws DBus.Error;
+  public async abstract void awn_set_visibility (string win_class, bool visible) throws DBus.Error;
 }
 
 public class PrefsApplet : AppletSimple
