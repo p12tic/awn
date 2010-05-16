@@ -436,7 +436,7 @@ draw_top_bottom_background (AwnBackground*  bg,
                        
   /* Draw the external background  */
   cairo_save (cr);
-  cairo_clip (cr);
+  cairo_clip_preserve (cr);
   cairo_set_source (cr, pat);
   cairo_paint (cr);
   cairo_restore (cr);
@@ -446,7 +446,10 @@ draw_top_bottom_background (AwnBackground*  bg,
   pat_hi = cairo_pattern_create_linear (0, 0, 0, (height / 3.0));
   awn_cairo_pattern_add_color_stop_color (pat_hi, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat_hi, 1.0, bg->g_histep_2);
-  cairo_rectangle (cr, 0, 0, width, height / 3.0);
+  if (expand){
+    cairo_new_path (cr);
+    cairo_rectangle (cr, 0, 0, width, height);
+  }
   cairo_set_source (cr, pat_hi);
   cairo_fill (cr);
   cairo_pattern_destroy (pat_hi);
