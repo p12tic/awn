@@ -43,6 +43,7 @@
 #include "awn-background-3d.h"
 #include "awn-background-curves.h"
 #include "awn-background-edgy.h"
+#include "awn-background-lucido.h"
 #include "awn-background-floaty.h"
 #include "awn-defines.h"
 #include "awn-marshal.h"
@@ -222,6 +223,7 @@ enum
   STYLE_EDGY,
   STYLE_FLOATY,
 
+  STYLE_LUCIDO,
   STYLE_LAST
 };
 
@@ -3167,6 +3169,9 @@ awn_panel_set_style (AwnPanel *panel, gint style)
       break;
     case STYLE_EDGY:
       priv->bg = awn_background_edgy_new (priv->client, panel);
+      break;
+    case STYLE_LUCIDO:
+      priv->bg = awn_background_lucido_new (priv->client, panel);
       break;
     case STYLE_FLOATY:
       priv->bg = awn_background_floaty_new (priv->client, panel);

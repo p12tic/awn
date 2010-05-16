@@ -41,6 +41,8 @@ avant_window_navigator_SOURCES =	\
 	awn-background-edgy.h \
 	awn-background-floaty.c \
 	awn-background-floaty.h \
+	awn-background-lucido.c \
+	awn-background-lucido.h \
 	awn-defines.h \
 	$(builddir)/awn-marshal.c \
 	$(builddir)/awn-marshal.h \

@@ -76,6 +76,12 @@ struct _AwnBackground
   gfloat     pattern_alpha;
   GdkPixbuf *pattern_original;
   cairo_surface_t *pattern;
+  
+  /* Speedup code.
+  *  We can save the bg and redraw only when properties changes
+  */
+  gboolean          needs_redraw;
+  cairo_surface_t*  helper_surface;
 
   /* FIXME:
    * These two should ultimately go somewhere else (once we do multiple panels)
@@ -89,6 +95,7 @@ struct _AwnBackground
   gint     panel_angle;
   gfloat   curviness;
   gfloat   curves_symmetry;
+  gfloat   stripe_width;
 
   /* private */
   guint    changed;

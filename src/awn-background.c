@@ -58,7 +58,8 @@ enum
   PROP_CORNER_RADIUS,
   PROP_PANEL_ANGLE,
   PROP_CURVINESS,
-  PROP_CURVES_SYMEMETRY
+  PROP_CURVES_SYMEMETRY,
+  PROP_STRIPE_WIDTH
 };
 
 enum 
@@ -184,6 +185,11 @@ awn_background_constructed (GObject *object)
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_CURVES_SYMMETRY,
                                        object, "curves-symmetry", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_STRIPE_WIDTH,
+                                       object, "stripe-width", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }
@@ -342,12 +348,15 @@ awn_background_set_property (GObject      *object,
     case PROP_CURVES_SYMEMETRY:
       bg->curves_symmetry = g_value_get_float (value);
       break;
+    case PROP_STRIPE_WIDTH:
+      bg->stripe_width = g_value_get_float (value);
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       return;
   }
-
+  bg->needs_redraw = 1;
   g_signal_emit (object, _bg_signals[CHANGED], 0);
 }
 
@@ -575,6 +584,15 @@ awn_background_class_init (AwnBackgroundClass *klass)
                         0.0, 1.0, 0.5,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS));
+                        
+  g_object_class_install_property (obj_class,
+    PROP_STRIPE_WIDTH,
+    g_param_spec_float ("stripe-width",
+                        "Stripe Width",
+                        "The width of the stripe",
+                        0.0, 1.0, 0.5,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
 
   /* Add signals to the class */
   _bg_signals[CHANGED] = 
@@ -650,6 +668,9 @@ awn_background_init (AwnBackground *bg)
   bg->border_color = NULL;
   bg->hilight_color = NULL;
   bg->sep_color = NULL;
+  bg->needs_redraw = 1;
+  bg->helper_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
+                                                  1, 1);
 }
 
 void 
