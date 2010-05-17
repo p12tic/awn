@@ -240,9 +240,9 @@ _create_path_lucido ( AwnBackground*  bg,
         if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
         {
           lx = curx;
-          ly = y2;
+          ly = y;
           cairo_move_to (cr, lx, ly);
-          _line_from_to (cr, &lx, &ly, lx, y);
+          _line_from_to (cr, &lx, &ly, lx, y2);
           ++exps_found;
         }
 
