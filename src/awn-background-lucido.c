@@ -234,6 +234,17 @@ _create_path_lucido ( AwnBackground*  bg,
         GList *i;
 
         GtkWidget *widget = NULL;
+        
+        widget = GTK_WIDGET (widgets->data);
+        /* if first widget is an expander */
+        if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
+        {
+          lx = curx;
+          ly = y2;
+          cairo_move_to (cr, lx, ly);
+          _line_from_to (cr, &lx, &ly, lx, y);
+          ++exps_found;
+        }
 
         for (i = widgets; i; i = i->next)
         {
@@ -295,11 +306,21 @@ _create_path_lucido ( AwnBackground*  bg,
         GList *i;
 
         GtkWidget *widget = NULL;
-        
+
         ly = y3;
         cairo_move_to (cr, lx, ly);
-
-        _line_from_to (cr, &lx, &ly, lx, y);
+        
+        widget = GTK_WIDGET (widgets->data);
+        /* if first widget is an expander */        
+        if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
+        {
+          _line_from_to (cr, &lx, &ly, lx, y2);
+          ++exps_found;
+        }
+        else
+        {
+          _line_from_to (cr, &lx, &ly, lx, y);
+        }
 
         for (i = widgets; i; i = i->next)
         {
