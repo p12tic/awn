@@ -151,7 +151,7 @@ _create_path_lucido ( AwnBackground*  bg,
                       gfloat          h,
                       gfloat          stripe, /* %fill of stripe 0.0-1.0 */
                       gfloat          d, /* delta curviness */
-                      gfloat          dc,/* delta corner rad*/
+                      gfloat          dc,/* delta curviness on non-expand*/
                       gfloat          symmetry,
                       gboolean        internal,
                       gboolean        expanded
@@ -413,7 +413,7 @@ draw_top_bottom_background (AwnBackground*  bg,
   /* create internal path */
   _create_path_lucido ( bg, position, cr, 0, width, height,
                         bg->stripe_width, bg->curviness,
-                        MAX (6, bg->corner_radius * 3 / 4),
+                        bg->curviness,
                         bg->curves_symmetry, 1, expand);
 
   /* Draw internal pattern if needed */
@@ -452,7 +452,7 @@ draw_top_bottom_background (AwnBackground*  bg,
   /* create external path */
   _create_path_lucido ( bg, position, cr, 0, width, height,
                         bg->stripe_width, bg->curviness,
-                        MAX (6, bg->corner_radius * 3 / 4),
+                        bg->curviness,
                         bg->curves_symmetry, 0, expand);
                        
   /* Draw the external background  */
@@ -500,8 +500,51 @@ void awn_background_lucido_padding_request (AwnBackground *bg,
     guint *padding_left,
     guint *padding_right)
 {
-  AWN_BACKGROUND_CLASS (awn_background_lucido_parent_class)->padding_request (
-        bg, position, padding_top, padding_bottom, padding_left, padding_right);
+  #define TOP_PADDING 2
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  gint side_padding = expand ? 0 : bg->curviness;
+  gint zero_padding = 0;
+
+  gfloat align = awn_background_get_panel_alignment (bg);
+  if (awn_background_do_rtl_swap (bg))
+  {
+    if (align <= 0.0 || align >= 1.0)
+    {
+      zero_padding = side_padding;
+      side_padding = 0;
+    }
+  }
+
+  switch (position)
+  {
+    case GTK_POS_TOP:
+      *padding_top  = 0;
+      *padding_bottom = TOP_PADDING;
+      *padding_left = align == 0.0 ? zero_padding : side_padding;
+      *padding_right = align == 1.0 ? zero_padding : side_padding;
+      break;
+    case GTK_POS_BOTTOM:
+      *padding_top  = TOP_PADDING;
+      *padding_bottom = 0;
+      *padding_left = align == 0.0 ? zero_padding : side_padding;
+      *padding_right = align == 1.0 ? zero_padding : side_padding;
+      break;
+    case GTK_POS_LEFT:
+      *padding_top  = align == 0.0 ? zero_padding : side_padding;
+      *padding_bottom = align == 1.0 ? zero_padding : side_padding;
+      *padding_left = 0;
+      *padding_right = TOP_PADDING;
+      break;
+    case GTK_POS_RIGHT:
+      *padding_top  = align == 0.0 ? zero_padding : side_padding;
+      *padding_bottom = align == 1.0 ? zero_padding : side_padding;
+      *padding_left = TOP_PADDING;
+      *padding_right = 0;
+      break;
+    default:
+      break;
+  }
 }
 
 
