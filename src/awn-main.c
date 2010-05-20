@@ -149,6 +149,7 @@ main (gint argc, gchar *argv[])
   /* Launch Awn */
   app = awn_application_get_default ();
 
+  g_unsetenv ("DESKTOP_AUTOSTART_ID");
   gtk_main ();
 
   g_object_unref (app);

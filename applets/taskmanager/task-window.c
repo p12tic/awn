@@ -1214,6 +1214,11 @@ task_window_matches_wmclass (TaskWindow * task_window,const gchar * name)
   
   g_return_val_if_fail (TASK_IS_WINDOW (task_window),FALSE);
 
+  if (g_strcmp0(name,"Wine")==0)
+  {
+    return FALSE;
+  }
+  
   priv = task_window->priv;
   _wnck_get_wmclass (wnck_window_get_xid (priv->window),&res_name, &class_name);
   result = ( (g_strcmp0 (res_name, name) == 0) || (g_strcmp0 (class_name, name) == 0) );
@@ -1490,14 +1495,17 @@ _match (TaskItem *item,
       #ifdef DEBUG
       g_debug ("%s: 70  res_name = %s,  res_name_to_match = %s",__func__,res_name,res_name_to_match);
       #endif 
-      if ( g_strcmp0 (res_name, res_name_to_match) == 0)
+      if ( g_strcmp0 (res_name,"wine") !=0)
       {
-        g_free (res_name);
-        g_free (class_name);
-        g_free (res_name_to_match);
-        g_free (class_name_to_match);
-        g_free (full_cmd);
-        return 65;
+        if ( g_strcmp0 (res_name, res_name_to_match) == 0)
+        {
+          g_free (res_name);
+          g_free (class_name);
+          g_free (res_name_to_match);
+          g_free (class_name_to_match);
+          g_free (full_cmd);
+          return 65;
+        }
       }
     }
   }
