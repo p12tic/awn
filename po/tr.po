@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-10 22:10+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-05-19 13:40+0000\n"
+"Last-Translator: Volkan Esgel <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-04-11 04:14+0000\n"
+"X-Launchpad-Export-Date: 2010-05-20 05:27+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -214,7 +214,7 @@ msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Tercihler uygulamacığı"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
@@ -322,11 +322,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>Sınıflar</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>Etkiler</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
@@ -338,11 +338,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Genel</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>Simgeler</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
@@ -354,11 +354,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Panel Renkleri</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>Panel</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
@@ -366,7 +366,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>Ayarlar</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
@@ -412,7 +412,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Arkaplan"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
@@ -420,7 +420,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Close animation:"
-msgstr ""
+msgstr "Animasyonu kapat:"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Configured Effects"
@@ -449,11 +449,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Customize effects"
-msgstr ""
+msgstr "Efektleri özelleştir"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize..."
-msgstr ""
+msgstr "Özelleştir..."
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
@@ -465,7 +465,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "Sürükle bırak düzeni"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
@@ -473,15 +473,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
-msgstr ""
+msgstr "Temayı Dışa Aktar..."
 
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Extra Options"
-msgstr ""
+msgstr "Ek Seçenekler"
 
 #: ../awn-settings/awn-settings.ui.h:44
 msgid "Fill Color"
-msgstr ""
+msgstr "Dolgu Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "First Gradient Color"
@@ -493,11 +493,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Font"
-msgstr ""
+msgstr "Yazı Tipi"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Font Color"
-msgstr ""
+msgstr "Yazı Tipi Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Font Mode"
@@ -541,7 +541,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Icons:"
-msgstr ""
+msgstr "Simgeler:"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Inner Border Color"
@@ -549,7 +549,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Install..."
-msgstr ""
+msgstr "Kur..."
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Launch animation:"
@@ -577,7 +577,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Name:"
-msgstr ""
+msgstr "Ad:"
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Offset"
@@ -597,7 +597,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "Panel Artalan Renkleri"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Panel Look Refinements"
@@ -609,11 +609,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Alfa Deseni"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Pattern Image"
-msgstr ""
+msgstr "Desen Görüntüsü"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Reflection alpha multiplier"
@@ -625,7 +625,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Repositories"
-msgstr ""
+msgstr "Depolar"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Second Gradient Color"
@@ -641,11 +641,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Separator Color"
-msgstr ""
+msgstr "Ayırıcı Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
-msgstr ""
+msgstr "Bütün pencereleri göster"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Show dialog after long press"
@@ -657,11 +657,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "St_yle:"
-msgstr ""
+msgstr "Bi_çem:"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "_Awn'yi otomatik başlat"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Theme Export"
@@ -675,19 +675,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Triangle"
-msgstr ""
+msgstr "Üçgen"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Gtk tema renklerini kullan"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Deseni Artalan Olarak Kullan"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
-msgstr ""
+msgstr "Sürüm:"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "_Behavior:"
@@ -703,11 +703,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "_Size of icons:"
-msgstr ""
+msgstr "Simgelerin boyutu:"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "pixels"
-msgstr ""
+msgstr "benekler"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
@@ -887,7 +887,7 @@ msgstr "Pano tarz"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Always visible"
-msgstr ""
+msgstr "Daima görünür"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"

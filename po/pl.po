@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-05-01 23:01+0000\n"
-"Last-Translator: emol007 <emol007@gmail.com>\n"
+"PO-Revision-Date: 2010-05-12 00:18+0000\n"
+"Last-Translator: mtfk <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-05-03 04:04+0000\n"
+"X-Launchpad-Export-Date: 2010-05-20 05:27+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -80,6 +80,9 @@ msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Zachowanie, gdy okno w innym obszarze roboczym zostaje aktywowane. (0 - "
+"domyślne, 1 - zmień aktywny obszar roboczy, 2 - przenieś do bieżącego "
+"obszaru)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
@@ -103,7 +106,7 @@ msgstr "Włącz długie wciśnięcie by otworzyć Dialog."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Zezwól na przestawianie okien metodą przeciągnij i upuść "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
@@ -149,7 +152,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Pokazuj i zarządza tylko aktywatorami okien."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
@@ -243,7 +246,7 @@ msgstr "Obszar roboczy %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:522
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Dodaj jako aktywator"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:540
 msgid "_Close"
@@ -259,7 +262,7 @@ msgstr "Ma_ksymalizuj"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:742
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Cofnij m_aksymalizację"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:771
 msgid "Always on _Top"
@@ -271,7 +274,7 @@ msgstr "Mi_nimalizuj"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:800
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Cofnij m_inimalizację"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:854
 msgid "Always on Visible Workspace"
@@ -299,7 +302,7 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:967
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Przenieś do innego _obszaru"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
@@ -316,11 +319,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Aktywj Aplety</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Dostępne Aplety</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
@@ -340,7 +343,7 @@ msgstr "<b>Dodatki</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Ogólne</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
@@ -376,7 +379,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
-msgstr ""
+msgstr "<b>Te ustawienia wymagają włączonego apletu Menadżer Zadań.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -390,7 +393,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Aktywne aplety"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
@@ -422,7 +425,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Close animation:"
-msgstr ""
+msgstr "Zamknij animację:"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Configured Effects"
@@ -430,7 +433,7 @@ msgstr "Skonfigurowane efekty"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Corner Radius"
-msgstr ""
+msgstr "Zaokrąglenie narożników"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Curves Symmetry"
@@ -438,7 +441,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curviness"
-msgstr ""
+msgstr "Stopień zakrzywienia"
 
 #: ../awn-settings/awn-settings.ui.h:34 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:152
@@ -451,19 +454,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Customize effects"
-msgstr ""
+msgstr "Dostosuj efekty"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize..."
-msgstr ""
+msgstr "Dostosuj..."
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Deaktywacja apletu"
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Display launchers only"
-msgstr ""
+msgstr "Wyświetl tylko aktywatory"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
@@ -471,11 +474,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "R_ozszerz panel"
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
-msgstr ""
+msgstr "Eksportuj motyw..."
 
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Extra Options"
@@ -483,11 +486,11 @@ msgstr "Opcje dodatkowe"
 
 #: ../awn-settings/awn-settings.ui.h:44
 msgid "Fill Color"
-msgstr ""
+msgstr "Kolor Wypełnienia"
 
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "First Gradient Color"
-msgstr ""
+msgstr "Pierwszy kolor gradientu"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "First Highlight Color"
@@ -523,7 +526,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Group common windows"
-msgstr ""
+msgstr "Grupuj okna"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Hover animation:"
@@ -531,11 +534,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Icon _effects:"
-msgstr ""
+msgstr "_Efekty ikon"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Icon alpha"
-msgstr ""
+msgstr "Przeźroczystość ikon"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Icons and Tooltips"
@@ -571,11 +574,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Monitor height"
-msgstr ""
+msgstr "Rozdzielczość w pionie"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Monitor width"
-msgstr ""
+msgstr "Rozdzielczość w poziomie"
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Name:"
@@ -583,7 +586,7 @@ msgstr "Nazwa:"
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Offset"
-msgstr ""
+msgstr "Przesunięcie"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Open animation:"
@@ -595,7 +598,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Outline Color"
-msgstr ""
+msgstr "Kolor obrysu"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Panel Background Colors"
@@ -631,7 +634,7 @@ msgstr "Repozytoria"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Drugi kolor gradientu"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Second Highlight Color"
@@ -643,7 +646,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Separator Color"
-msgstr ""
+msgstr "Kolor separatora"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
@@ -651,7 +654,7 @@ msgstr "Pokaż wszystkie okna"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Pokaż okna po przytrzymaniu klawisza myszy"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Show shadows"
@@ -663,11 +666,11 @@ msgstr "St_yl:"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "Uruchom _Awn przy starcie systemu"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Theme Export"
-msgstr ""
+msgstr "Eksportuj skórkę"
 
 #: ../awn-settings/awn-settings.ui.h:91
 msgid ""
@@ -681,11 +684,11 @@ msgstr "Trójkąt"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Użyj kolorów ze stylów Gtk"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Użyj wzorca jako tło"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
@@ -709,7 +712,7 @@ msgstr "_Rozmiar ikon:"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "pixels"
-msgstr ""
+msgstr "pikseli"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
@@ -723,7 +726,7 @@ msgstr "Błąd, ścieżka jest pusta lub już istnieje"
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
-msgstr ""
+msgstr "Błąd: %s brakuje w twoim systemie, proszę usuń go z sources.list"
 
 #: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
@@ -790,12 +793,12 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Nie znaleziono żadnej z ikon: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Nie znaleziono następującej ikony: %s\n"
 
 #: ../awn-settings/awnClass.py:1067
 msgid "AWN has been successfully refreshed"
@@ -878,7 +881,7 @@ msgstr "Zakrzywiony"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Krawędź"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
@@ -930,7 +933,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:982
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Użyj ikon o najlepszej jakości"
 
 #: ../awn-settings/awnSettings.py.in:983
 msgid "Overlay best quality icon with application icon"
@@ -957,6 +960,19 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Następujące moduły Python`a nie mogły zostać znalezione: %s.  Istnieje "
+"kilka\n"
+"możliwych przyczyn:\n"
+"\n"
+"1. Ten moduł nie jest zainstalowany.  W tym wypadku powinieneś odwiedzić\n"
+"stronę apletów na AWN Wiki aby poznać nazwę paczki dla Twojej dystrybucji\n"
+"która dostarcza ten moduł.\n"
+"\n"
+"2. Moduł został zainstalowany w niestandardowej lokalizacji. To najczęściej "
+"\n"
+"zdarza się kiedy instalujesz paczkę ręcznie, a nie przy użyciu menadżera "
+"paczek.\n"
+"Ta sytuacja jest opisana w FAQ na AWN Wiki.\n"
 
 #: ../bindings/python/__init__.py:138
 msgid "Awn Wiki"
@@ -998,11 +1014,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "Kolor tła dla tytułu AwnDialog"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "Kolor tła dla AwnDialog"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Background color of the tooltip"
@@ -1052,11 +1068,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Kolor czcionki dla podpowiedzi"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Nazwa czcionki dla podpowiedzi"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -1077,6 +1093,8 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Jeśli prawda, panel zostanie rozszerzony na pełną szerokość/wysokość "
+"monitora."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Internal border color."
@@ -1137,7 +1155,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "Kolor separatora"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
@@ -1236,7 +1254,7 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "Dostosuj Aplet"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
@@ -1248,11 +1266,11 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Dostosuj ikone"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Usuń zmodyfikowaną ikone"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
@@ -1261,6 +1279,7 @@ msgstr ""
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
+"Upss! Aplet został zamknięty z powodu błędu. Kliknij aby go zrestartować."
 
 #: ../src/awn-panel.c:3939
 msgid "Close docklet"

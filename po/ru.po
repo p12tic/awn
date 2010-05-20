@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-05-02 10:44+0000\n"
-"Last-Translator: Bashtannik Andrew S. <Unknown>\n"
+"PO-Revision-Date: 2010-05-14 06:51+0000\n"
+"Last-Translator: Ilya Telegin <devi29rus@gmail.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-05-03 04:04+0000\n"
+"X-Launchpad-Export-Date: 2010-05-20 05:27+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -67,8 +67,7 @@ msgstr ""
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
-" Группировать иконки с одинаковой кнопкой запуска, если группировка окон "
-"отключена."
+" Систематизировать одинаковые ярлыки, если группировка окон отключена."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
@@ -171,7 +170,7 @@ msgid ""
 "Number of seconds to inhibit autohide when a application requests attention. "
 "A value of 0 disables."
 msgstr ""
-"Количество секуд задержки autohide, когда приложение требует внимания. "
+"Количество секунд задержки для автоскрытия приложения требующего внимания. "
 "Значение 0 отключает задержку."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
@@ -179,22 +178,22 @@ msgid ""
 "Number of seconds to wait before nagging again, by inhibiting autohide, if "
 "attention is required by any windows. A value of 0 disables."
 msgstr ""
-"Количество секунд задержки перед привлечением внимания опять, задержкой "
-"autohide, если внимание необходимо любому окну. Значение 0 отключает "
-"задержку."
+"Количество секунд задержки для автоскрытия повторного напоминания об окне "
+"требующего внимания. Значение 0 отключает задержку."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Только показывать и менеджер запуска окон"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr "Показывать окна всех рабочих мест"
+msgstr "Показывать окна со всех рабочих мест"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
-msgstr "Порог, при котором текст будет отображаться. Верное значение 1.."
+msgstr ""
+"Порог, при котором текст будет отображаться. Диапазон значений от 1.."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
@@ -216,11 +215,11 @@ msgstr "Запустить %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr "Кнопки запуска/Работающие приложения"
+msgstr "Кнопка запуска/Диспетчер задач"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr "Апплет, отображающий кнопоки запуска/работающие приложения"
+msgstr "Кнопка запуска/Апплет диспетчер задач"
 
 #: ../applets/quick-prefs/applet.vala:123
 #: ../applets/quick-prefs/applet.vala:517 ../src/awn-panel.c:692
@@ -230,7 +229,7 @@ msgstr "О программе Awn"
 #: ../applets/quick-prefs/applet.vala:276
 #: ../applets/quick-prefs/applet.vala:452
 msgid "Drag to change panel orientation"
-msgstr "Перетащите для смены ориентации"
+msgstr "Перетаскивание для смены ориентации панели"
 
 #: ../applets/quick-prefs/applet.vala:468
 msgid "Icon size:"
@@ -280,7 +279,7 @@ msgstr "Рабочее место %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:522
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Закрепить на панели"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:540
 msgid "_Close"
@@ -288,7 +287,7 @@ msgstr "_Закрыть"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:568
 msgid "_Close All"
-msgstr "_Закрыть все"
+msgstr "_Закрыть всё"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:737
 msgid "Ma_ximize"
@@ -296,11 +295,11 @@ msgstr "_Развернуть"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:742
 msgid "Unma_ximize"
-msgstr "Восстановить"
+msgstr "Восстановить прежний размер"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:771
 msgid "Always on _Top"
-msgstr "Всегда _сверху"
+msgstr "Всегда сверху"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:795
 msgid "Mi_nimize"
@@ -320,23 +319,23 @@ msgstr "Только на этом рабочем столе"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:928
 msgid "Move to Workspace _Left"
-msgstr "Переместить на рабочее место с_лева"
+msgstr "Переместить на рабочее место слева"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:938
 msgid "Move to Workspace _Right"
-msgstr "Переместить на рабочее место с_права"
+msgstr "Переместить на рабочее место справа"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:948
 msgid "Move to Workspace _Up"
-msgstr "Переместить на рабочее место _выше"
+msgstr "Переместить на верхнее рабочее место"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:958
 msgid "Move to Workspace _Down"
-msgstr "Переместить на рабочее место _ниже"
+msgstr "Переместить на нижнее рабочее место"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:967
 msgid "Move to Another _Workspace"
-msgstr "Переместить на другое _Рабочее место"
+msgstr "Переместить на другое _рабочее место"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
@@ -385,7 +384,7 @@ msgstr "<b>Иконки</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr "<b>Приложения</b>"
+msgstr "Кнопки запуска"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
@@ -429,7 +428,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr "Включить апплет"
+msgstr "Активировать апплет"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
@@ -437,11 +436,11 @@ msgstr "Активный прямоугольник:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr "Тип стрелки"
+msgstr "Тип указателя"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr "Анимация внимания"
+msgstr "Анимирование действия \"привлечения внимания\""
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
@@ -449,7 +448,7 @@ msgstr "Автор:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr "Режим Autohide"
+msgstr "Режим автоскрытия"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -506,7 +505,7 @@ msgstr "Отображать только кнопки запуска"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
-msgstr "Упорядочивание перетаскиванием"
+msgstr "Перемещать перетаскиванием"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
@@ -550,7 +549,7 @@ msgstr "Цвет Контура Шрифта"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Иная позиция приложения на экране"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Glowing dot"
@@ -574,7 +573,7 @@ msgstr "_Эффекты значка"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Icon alpha"
-msgstr "Альфа-канал значка"
+msgstr "Прозрачность значков"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Icons and Tooltips"
@@ -658,7 +657,7 @@ msgstr "Картинка шаблона"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Reflection alpha multiplier"
-msgstr "Коэффициент альфа-канала отражения"
+msgstr "Прозрачность отражения значков"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Reflection offset"
@@ -678,7 +677,7 @@ msgstr "Второй цвет выделения"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Select Custom Arrow"
-msgstr "Выбрать собственную стрелку"
+msgstr "Выбрать свой указатель"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Separator Color"
@@ -690,7 +689,7 @@ msgstr "Показать все окна"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Show dialog after long press"
-msgstr "Отображать диалог после длительного нажатия"
+msgstr "Отображать диалог при зажатой кнопке мышки"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Show shadows"
@@ -787,7 +786,7 @@ msgstr "Затухание"
 
 #: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:880
 msgid "Spotlight"
-msgstr "Фонарик"
+msgstr "Подсветка"
 
 #: ../awn-settings/awnClass.py:820 ../awn-settings/awnClass.py:881
 msgid "Zoom"
@@ -803,7 +802,7 @@ msgstr "3D поворот"
 
 #: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
 msgid "3D Spotlight Turn"
-msgstr "3D поворот с фонариком"
+msgstr "3D поворот с подсветкой"
 
 #: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
 msgid "Glow"
@@ -815,8 +814,7 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
-"Не удалось создать папку автоматически. Пожалуйста, создайте ее "
-"самостоятельно.\n"
+"Не удалось автоматически создать папку. Пожалуйста, создайте её сами.\n"
 "%s"
 
 #: ../awn-settings/awnClass.py:976
@@ -894,19 +892,19 @@ msgstr "Настройки Awn не могут быть запущены от п
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr "Влево"
+msgstr "По левому краю"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr "Вправо"
+msgstr "По правому краю"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr "Вверх"
+msgstr "Сверху экрана"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr "Вниз"
+msgstr "Снизу экрана"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
@@ -958,7 +956,7 @@ msgstr "Всегда снизу"
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Solid"
-msgstr ""
+msgstr "Без обводки"
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Outline"
@@ -1117,7 +1115,7 @@ msgstr "Название шрифта в подсказке"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
-msgstr ""
+msgstr "Форсировать настройки монитора"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text color.  Leave empty to use gtk theme color."
@@ -1223,10 +1221,14 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
+"Форсировать высоту монитора. Используйте если настройка monitor_force "
+"(форсирование настроек монитора) включено."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
+"Форсировать ширину монитора. Используйте если настройка monitor_force "
+"(форсирование настроек монитора) включено."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
