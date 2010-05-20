@@ -307,6 +307,8 @@ _create_path_lucido ( AwnBackground*  bg,
 
           ++exps_found;
         }
+        g_list_free (widgets);
+        g_list_free (i);
 
         _line_from_to (cr, &lx, &ly, w, ly);
 
@@ -384,6 +386,8 @@ _create_path_lucido ( AwnBackground*  bg,
           }
           ++exps_found;
         }
+        g_list_free (widgets);
+        g_list_free (i);
         
         _line_from_to (cr, &lx, &ly, w, ly);
         _line_from_to (cr, &lx, &ly, lx, y3);
@@ -650,6 +654,9 @@ awn_background_lucido_draw (AwnBackground  *bg,
     }
   }
   
+  g_list_free (widgets);
+  g_list_free (i);
+  
   AwnBackgroundLucido *lbg = NULL;
   lbg = AWN_BACKGROUND_LUCIDO (bg);
   
@@ -660,7 +667,11 @@ awn_background_lucido_draw (AwnBackground  *bg,
     lbg->expw = wcheck;
     lbg->oldw = width;
     lbg->oldh = height;
-    cairo_surface_destroy (bg->helper_surface);
+    if (bg->helper_surface != NULL)
+    {
+      cairo_surface_finish (bg->helper_surface);
+      cairo_surface_destroy (bg->helper_surface);
+    }
     bg->helper_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
                                                      width, height);
     cairo_t* temp_cr = cairo_create (bg->helper_surface);

@@ -669,7 +669,7 @@ awn_background_init (AwnBackground *bg)
   bg->hilight_color = NULL;
   bg->sep_color = NULL;
   bg->needs_redraw = 1;
-  bg->helper_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 1, 1);
+  bg->helper_surface = NULL;
 }
 
 void 
