@@ -325,7 +325,7 @@ awn_background_flat_draw (AwnBackground  *bg,
   {
     case GTK_POS_RIGHT:
       cairo_translate (cr, 0, y + height);
-      cairo_scale(cr, 1, -1);
+      cairo_scale (cr, 1, -1);
       cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
@@ -341,7 +341,7 @@ awn_background_flat_draw (AwnBackground  *bg,
       break;
     case GTK_POS_TOP:
       cairo_translate (cr, x, y + height);
-      cairo_scale(cr, 1, -1);
+      cairo_scale (cr, 1, -1);
       break;
     default:
       cairo_translate (cr, x, y);

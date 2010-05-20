@@ -590,7 +590,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
     g_param_spec_float ("stripe-width",
                         "Stripe Width",
                         "The width of the stripe",
-                        0.0, 1.0, 0.5,
+                        0.0, 1.0, 0.0,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS));
 
@@ -669,8 +669,7 @@ awn_background_init (AwnBackground *bg)
   bg->hilight_color = NULL;
   bg->sep_color = NULL;
   bg->needs_redraw = 1;
-  bg->helper_surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32,
-                                                  1, 1);
+  bg->helper_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 1, 1);
 }
 
 void 

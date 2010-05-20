@@ -77,9 +77,9 @@ struct _AwnBackground
   GdkPixbuf *pattern_original;
   cairo_surface_t *pattern;
   
-  /* Speedup code.
-  *  We can save the bg and redraw only when properties changes
-  */
+  /*  Speedup code.
+   *  We can save the bg and redraw only when properties changes
+   */
   gboolean          needs_redraw;
   cairo_surface_t*  helper_surface;
 

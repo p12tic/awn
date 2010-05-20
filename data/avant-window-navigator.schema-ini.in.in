@@ -229,7 +229,7 @@ per_instance = false
 
 [theme/stripe_width]
 type = float
-default = 0.7
+default = 0.0
 _description=The width of the stripe in Lucido mode.
 per_instance = false
 

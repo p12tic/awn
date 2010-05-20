@@ -141,7 +141,8 @@ class awnPreferencesMini(awnPreferences):
         #setup style mode
         dropdown = self.wTree.get_object("stylecombo")
         self.create_dropdown(dropdown, [_("None"), _("Flat"), _("3d"),
-                                        _("Curved"), _("Edgy"), _("Floaty"), _("Lucido")])
+                                        _("Curved"), _("Edgy"), _("Floaty"),
+                                         _("Lucido")])
 
         #setup behaviour combo
         dropdown = self.wTree.get_object("behaviorcombo")
@@ -578,7 +579,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     
     curviness = gobject.property(type=int, default=10)
     curves_symmetry = gobject.property(type=float, default=0)
-    stripe_width = gobject.property(type=float, default=0.7)
+    stripe_width = gobject.property(type=float, default=0)
     angle = gobject.property(type=int, default=45)
     radius = gobject.property(type=int, default=10)
     gtk_theme_mode = gobject.property(type=bool, default=False)
