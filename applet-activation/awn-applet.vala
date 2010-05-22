@@ -89,6 +89,8 @@ namespace Awn
   {
     private static bool python_applet_started = false;
 
+    private bool launch_returned;
+
     public static int do_dbus_call ()
     {
       try
@@ -304,11 +306,11 @@ namespace Awn
       {
         connection.register_object ("/org/awnproject/Awn/AppletLauncher", 
                                     this);
-            
+
         this.run_applet (applet);
 
-        Gtk.main ();
-        // restart main loop
+        if (!python_applet_started) Gtk.main ();
+        // restart main loop with python locks
         if (python_applet_started) gtk_main_wrapper ();
       }
       else
@@ -325,7 +327,22 @@ namespace Awn
 
     public void run_applet (AppletLaunchInfo applet_info)
     {
+      launch_returned = false;
+      Idle.add (this.check_looping, Priority.HIGH);
       launch_applet (applet_info);
+      launch_returned = true;
+    }
+
+    private bool check_looping ()
+    {
+      if (!launch_returned)
+      {
+        // applet started it's own main loop, kill it and start it ourselves
+        debug ("killed applet's main loop");
+        Gtk.main_quit ();
+      }
+
+      return false;
     }
 
     public static int main (string[] argv)
