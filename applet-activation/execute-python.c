@@ -126,6 +126,9 @@ execute_python (const gchar* module_path, const gchar* args, GError **error)
     initialized = TRUE;
   }
 
+  PyGILState_STATE gstate;
+  gstate = PyGILState_Ensure ();
+
   PyObject* main_module = PyImport_AddModule ("__main__");
 
   PyObject* main_dict = PyModule_GetDict (main_module);
@@ -154,9 +157,11 @@ execute_python (const gchar* module_path, const gchar* args, GError **error)
   if (res == NULL)
   {
     PyErr_Print ();
+    PyGILState_Release (gstate);
     return FALSE;
   }
 
+  PyGILState_Release (gstate);
   return TRUE;
 }
 
