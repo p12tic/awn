@@ -23,9 +23,93 @@
 #include <unistd.h>
 #include <glib.h>
 #include <Python.h>
+#include <pygobject.h>
 
 gboolean
 execute_python (const gchar* module_path, const gchar* args, GError **error);
+
+void
+gtk_main_wrapper (void);
+
+static gboolean
+pygtk_main_watch_prepare(GSource *source,
+                         int     *timeout)
+{
+    /* Python only invokes signal handlers from the main thread,
+     * so if a thread other than the main thread receives the signal
+     * from the kernel, PyErr_CheckSignals() from that thread will
+     * do nothing. So, we need to time out and check for signals
+     * regularily too.
+     * Also, on Windows g_poll() won't be interrupted by a signal
+     * (AFAIK), so we need the timeout there too.
+     */
+#ifndef PLATFORM_WIN32
+    if (pyg_threads_enabled)
+#endif
+        *timeout = 100;
+
+    return FALSE;
+}
+
+static gboolean
+pygtk_main_watch_check(GSource *source)
+{
+    PyGILState_STATE state;
+
+    state = pyg_gil_state_ensure();
+
+    if (PyErr_CheckSignals() == -1 && gtk_main_level() > 0) {
+        PyErr_SetNone(PyExc_KeyboardInterrupt);
+        gtk_main_quit();
+    }
+
+    pyg_gil_state_release(state);
+
+    return FALSE;
+}
+
+static gboolean
+pygtk_main_watch_dispatch(GSource    *source,
+                          GSourceFunc callback,
+                          gpointer    user_data)
+{
+    /* We should never be dispatched */
+    g_assert_not_reached();
+    return TRUE;
+}
+
+static GSourceFuncs pygtk_main_watch_funcs =
+{
+    pygtk_main_watch_prepare,
+    pygtk_main_watch_check,
+    pygtk_main_watch_dispatch,
+    NULL
+};
+
+static GSource *
+pygtk_main_watch_new(void)
+{
+    return g_source_new(&pygtk_main_watch_funcs, sizeof(GSource));
+}
+
+
+void
+gtk_main_wrapper (void)
+{
+    GSource *main_watch;
+    // Call enable_threads again to ensure that the thread state is recorded
+    if (pyg_threads_enabled)
+        pyg_enable_threads ();
+
+    main_watch = pygtk_main_watch_new();
+    pyg_begin_allow_threads;
+    g_source_attach(main_watch, NULL);
+
+    gtk_main();
+    g_source_destroy(main_watch);
+    pyg_end_allow_threads;
+}
+
 
 gboolean
 execute_python (const gchar* module_path, const gchar* args, GError **error)
@@ -38,13 +122,14 @@ execute_python (const gchar* module_path, const gchar* args, GError **error)
   if (!initialized)
   {
     Py_Initialize ();
+    pygobject_init (-1, -1, -1);
     initialized = TRUE;
   }
 
   PyObject* main_module = PyImport_AddModule ("__main__");
 
   PyObject* main_dict = PyModule_GetDict (main_module);
-  PyObject* main_dict_copy = PyDict_Copy (main_dict);
+  //PyObject* main_dict_copy = PyDict_Copy (main_dict);
 
   gchar* module_name = g_path_get_basename (module_path);
 
@@ -62,14 +147,15 @@ execute_python (const gchar* module_path, const gchar* args, GError **error)
   FILE* f = fopen (module_path, "r");
   PyObject* res = PyRun_FileEx (f, module_name, Py_file_input, main_dict, main_dict, TRUE);
 
+  g_strfreev (argv);
+  g_free (python_args);
+
   g_debug ("PyRun_File result: %p [argv[0]=%s]", res, module_path);
   if (res == NULL)
   {
     PyErr_Print ();
+    return FALSE;
   }
-
-  g_strfreev (argv);
-  g_free (python_args);
 
   return TRUE;
 }

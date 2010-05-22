@@ -25,6 +25,7 @@ public extern bool execute_wrapper (string cmd_line) throws GLib.Error;
 
 public extern bool execute_python (string module_path,
                                    string args) throws GLib.Error;
+public extern void gtk_main_wrapper ();
 
 const string dummy = Build.GETTEXT_PACKAGE;
 
@@ -86,6 +87,8 @@ namespace Awn
 
   class AppletStarter : GLib.Object, DBusAppletLauncher
   {
+    private static bool python_applet_started = false;
+
     public static int do_dbus_call ()
     {
       try
@@ -210,6 +213,11 @@ namespace Awn
         string cmd = fmt.printf (info.uid, info.panel_id, info.window_xid);
 
         execute_python (exec, cmd);
+        if (!python_applet_started)
+        {
+          Gtk.main_quit ();
+          python_applet_started = true;
+        }
       }
       else
       {
@@ -300,6 +308,8 @@ namespace Awn
         this.run_applet (applet);
 
         Gtk.main ();
+        // restart main loop
+        if (python_applet_started) gtk_main_wrapper ();
       }
       else
       {
@@ -309,9 +319,7 @@ namespace Awn
                                  "org.awnproject.Awn.AppletLauncher");
 
         launcher.run_applet (applet);
-
-        // FIXME: panel will display crash icon if this process exits
-        //Gtk.main ();
+        return;
       }
     }
 
