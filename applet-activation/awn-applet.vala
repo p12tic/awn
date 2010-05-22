@@ -22,6 +22,10 @@
 using DBus;
 
 public extern bool execute_wrapper (string cmd_line) throws GLib.Error;
+
+public extern bool execute_python (string module_path,
+                                   string args) throws GLib.Error;
+
 const string dummy = Build.GETTEXT_PACKAGE;
 
 string? path;
@@ -200,11 +204,21 @@ namespace Awn
         exec = Path.build_filename (Path.get_dirname (info.path), module, null);
       }
 
-      string fmt = "%s %s --uid=%s --panel-id=%d --window=%" + int64.FORMAT;
-      string cmd = fmt.printf (app, exec, info.uid,
-                               info.panel_id, info.window_xid);
+      if (app == "python")
+      {
+        string fmt = "--uid=%s --panel-id=%d --window=%" + int64.FORMAT;
+        string cmd = fmt.printf (info.uid, info.panel_id, info.window_xid);
 
-      execute_wrapper (cmd);
+        execute_python (exec, cmd);
+      }
+      else
+      {
+        string fmt = "%s %s --uid=%s --panel-id=%d --window=%" + int64.FORMAT;
+        string cmd = fmt.printf (app, exec, info.uid,
+                                 info.panel_id, info.window_xid);
+
+        execute_wrapper (cmd);
+      }
       return true;
     }
 
@@ -236,30 +250,32 @@ namespace Awn
                info.path);
       }
 
-      if (type == "Python" || type == "Mono")
-      {
-        // doesn't return
-        launch_applet_with (type.down (), exec, info);
-      }
-
-      // proceed with native C/Vala applet
       if (!i18n_initialized)
       {
         Intl.bindtextdomain (Build.GETTEXT_PACKAGE, Build.LOCALEDIR);
         i18n_initialized = true;
       }
 
-      unowned string? canonical_name = exec.rstr ("/");
-      canonical_name = canonical_name == null ? 
-        exec : canonical_name.offset (1);
-      unowned string? dot = canonical_name.rstr (".");
-      string canon_name = canonical_name.ndup (dot != null ? 
-        (char*)dot - (char*)canonical_name : canonical_name.size ());
-
-      var applet = create_applet (canon_name, exec, info.uid, info.panel_id);
-      if (info.window_xid != 0)
+      if (type == "Python" || type == "Mono")
       {
-        applet.@construct ((Gdk.NativeWindow)info.window_xid);
+        launch_applet_with (type.down (), exec, info);
+        return true;
+      }
+      else
+      {
+        // proceed with native C/Vala applet
+        unowned string? canonical_name = exec.rstr ("/");
+        canonical_name = canonical_name == null ? 
+          exec : canonical_name.offset (1);
+        unowned string? dot = canonical_name.rstr (".");
+        string canon_name = canonical_name.ndup (dot != null ? 
+          (char*)dot - (char*)canonical_name : canonical_name.size ());
+
+        var applet = create_applet (canon_name, exec, info.uid, info.panel_id);
+        if (info.window_xid != 0)
+        {
+          applet.@construct ((Gdk.NativeWindow)info.window_xid);
+        }
       }
 
       return true;
@@ -295,7 +311,7 @@ namespace Awn
         launcher.run_applet (applet);
 
         // FIXME: panel will display crash icon if this process exits
-        Gtk.main ();
+        //Gtk.main ();
       }
     }
 

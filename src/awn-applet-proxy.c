@@ -447,7 +447,8 @@ static void on_size_alloc (AwnAppletProxy *proxy, GtkAllocation *alloc)
 static void
 on_child_exit (GPid pid, gint status, gpointer user_data)
 {
-  if (AWN_IS_APPLET_PROXY (user_data))
+  if (AWN_IS_APPLET_PROXY (user_data) &&
+      gtk_socket_get_plug_window (GTK_SOCKET (user_data)) == NULL)
   {
     AwnAppletProxyPrivate *priv = AWN_APPLET_PROXY_GET_PRIVATE (user_data);
 

@@ -1,1 +1,1 @@
-valac awn-applet.vala execute-wrapper.c --pkg dbus-glib-1 --pkg desktop-agnostic-fdo --pkg awn ../bindings/vala/build.vapi --Xcc=-I../ -g
+valac awn-applet.vala execute-wrapper.c execute-python.c --pkg dbus-glib-1 --pkg desktop-agnostic-fdo --pkg awn ../bindings/vala/build.vapi --Xcc=-I../ -g --Xcc=-I/usr/include/python2.6 --Xcc=-L/usr/lib --Xcc=-lpython2.6
