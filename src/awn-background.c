@@ -407,6 +407,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
   klass->get_input_shape_mask = awn_background_mask_none;
   klass->get_path_type        = awn_background_path_default;
   klass->get_strut_offsets    = NULL;
+  klass->get_needs_redraw     = awn_background_get_needs_redraw;
 
   /* Object properties */
   g_object_class_install_property (obj_class,
@@ -668,8 +669,11 @@ awn_background_init (AwnBackground *bg)
   bg->border_color = NULL;
   bg->hilight_color = NULL;
   bg->sep_color = NULL;
-  bg->needs_redraw = 1;
+  bg->needs_redraw = TRUE;
   bg->helper_surface = NULL;
+  bg->cache_enabled = TRUE;
+  bg->last_height = 0;
+  bg->last_width = 0;
 }
 
 void 
@@ -684,8 +688,40 @@ awn_background_draw (AwnBackground  *bg,
   
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->draw != NULL);
-
-  klass->draw (bg, cr, position, area);
+  
+  /* Check if background caching is enabled - TRUE by default */
+  if (bg->cache_enabled)
+  {
+    g_return_if_fail (klass->get_needs_redraw != NULL);
+    cairo_save (cr);
+    
+    /* Check if background needs to be redrawn */
+    if (klass->get_needs_redraw (bg, position, area))
+    {
+      /* Free last surface */
+      if (bg->helper_surface != NULL)
+      {
+        cairo_surface_finish (bg->helper_surface);
+        cairo_surface_destroy (bg->helper_surface);
+      }
+      /* Create new surface */
+      bg->helper_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                                       area->x + area->width,
+                                                       area->y + area->height);
+      cairo_t* temp_cr = cairo_create (bg->helper_surface);
+      /* Draw background on temp cairo_t */
+      klass->draw (bg, temp_cr, position, area);
+      cairo_destroy (temp_cr);
+    }
+    /* Paint saved surface */
+    cairo_set_source_surface (cr, bg->helper_surface, 0., 0.);
+    cairo_paint(cr);
+    cairo_restore (cr);
+  }
+  else
+  {
+    klass->draw (bg, cr, position, area);
+  }
 }
 
 void 
@@ -1027,6 +1063,22 @@ static AwnPathType awn_background_path_default (AwnBackground *bg,
                                                 gfloat *offset_mod)
 {
   return AWN_PATH_LINEAR;
+}
+
+gboolean awn_background_get_needs_redraw (AwnBackground *bg,
+                                          GtkPositionType position,
+                                          GdkRectangle *area)
+{
+  if (bg->needs_redraw == 1 ||
+      bg->last_height != area->height ||
+      bg->last_width != area->width)
+  {
+    bg->needs_redraw = 0;
+    bg->last_height = area->height;
+    bg->last_width = area->width;
+    return TRUE;
+  }
+  return FALSE;
 }
 
 /* vim: set et ts=2 sts=2 sw=2 : */

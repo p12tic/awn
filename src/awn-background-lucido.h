@@ -51,8 +51,6 @@ typedef struct _AwnBackgroundLucidoClass AwnBackgroundLucidoClass;
 struct _AwnBackgroundLucido
 {
   AwnBackgroundFlat parent;
-  gint              oldw;
-  gint              oldh;
   gint              expw;
 };
 
@@ -65,6 +63,10 @@ GType           awn_background_lucido_get_type (void) G_GNUC_CONST;
 
 AwnBackground * awn_background_lucido_new (DesktopAgnosticConfigClient *client,
     AwnPanel        *panel);
+
+gboolean awn_background_lucido_get_needs_redraw (AwnBackground *bg,
+                                                 GtkPositionType position,
+                                                 GdkRectangle *area);
 
 G_END_DECLS
 

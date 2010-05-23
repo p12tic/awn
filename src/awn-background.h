@@ -80,8 +80,11 @@ struct _AwnBackground
   /*  Speedup code.
    *  We can save the bg and redraw only when properties changes
    */
+  gboolean          cache_enabled;
   gboolean          needs_redraw;
   cairo_surface_t*  helper_surface;
+  gint              last_height;
+  gint              last_width;
 
   /* FIXME:
    * These two should ultimately go somewhere else (once we do multiple panels)
@@ -136,6 +139,10 @@ struct _AwnBackgroundClass
                              GdkRectangle *area,
                              gint *strut,
                              gint *strut_start, gint *strut_end);
+                             
+  gboolean (*get_needs_redraw) (AwnBackground *bg,
+                                GtkPositionType position,
+                                GdkRectangle *area);
 
   /*< signals >*/
   void (*changed) (AwnBackground *bg);
@@ -168,6 +175,10 @@ void awn_background_get_input_shape_mask (AwnBackground  *bg,
 
 AwnPathType awn_background_get_path_type (AwnBackground *bg,
                                           gfloat *offset_mod);
+                                          
+gboolean awn_background_get_needs_redraw (AwnBackground *bg,
+                                          GtkPositionType position,
+                                          GdkRectangle *area);
 
 void awn_background_get_strut_offsets (AwnBackground *bg,
                                        GtkPositionType position,

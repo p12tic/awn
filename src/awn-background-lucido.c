@@ -79,7 +79,7 @@ awn_background_lucido_class_init (AwnBackgroundLucidoClass *klass)
   bg_class->padding_request = awn_background_lucido_padding_request;
   bg_class->get_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_input_shape_mask = awn_background_lucido_get_shape_mask;
-
+  bg_class->get_needs_redraw = awn_background_lucido_get_needs_redraw;
 }
 
 static void
@@ -120,6 +120,15 @@ _line_from_to ( cairo_t *cr,
   }
   *xs = xf;
   *ys = yf;
+}
+
+static GList*
+_get_applet_widgets (AwnBackground* bg)
+{
+  AwnAppletManager *manager = NULL;
+  g_object_get (bg->panel, "applet-manager", &manager, NULL);
+
+  return gtk_container_get_children (GTK_CONTAINER (manager));
 }
 
 /**
@@ -164,20 +173,20 @@ _create_path_lucido ( AwnBackground*  bg,
   gfloat ly = y;
   gfloat y3 = y + h;
   gfloat y2 = y3 - 5;
-  stripe = (w * stripe); /* now stripe = non-stripe */
   
   if (stripe > 0)
   {
     if (expanded)
     {
+      stripe = (w * stripe); /* now stripe = non-stripe */
       if (internal)
       {
         /* Manual-Stripe & Expanded & Internal */
         lx = stripe * symmetry;
         cairo_move_to (cr, lx, ly);
         _line_from_to (cr, &lx, &ly, lx+d, y2);
-        _line_from_to (cr, &lx, &ly, w-stripe * (1-symmetry) - d, y2);
-        _line_from_to (cr, &lx, &ly, w-stripe * (1-symmetry), y);
+        _line_from_to (cr, &lx, &ly, w-stripe * (1. - symmetry) - d, y2);
+        _line_from_to (cr, &lx, &ly, w-stripe * (1. - symmetry), y);
         cairo_close_path (cr);
       }
       else
@@ -188,8 +197,8 @@ _create_path_lucido ( AwnBackground*  bg,
         _line_from_to (cr, &lx, &ly, lx, y);
         _line_from_to (cr, &lx, &ly, stripe * symmetry, y);
         _line_from_to (cr, &lx, &ly, stripe * symmetry + d, y2);
-        _line_from_to (cr, &lx, &ly, w - stripe * (1 - symmetry) - d, y2);
-        _line_from_to (cr, &lx, &ly, w - stripe * (1-symmetry), y);
+        _line_from_to (cr, &lx, &ly, w - stripe * (1. - symmetry) - d, y2);
+        _line_from_to (cr, &lx, &ly, w - stripe * (1. - symmetry), y);
         _line_from_to (cr, &lx, &ly, w, y);
         _line_from_to (cr, &lx, &ly, w, y3);
         cairo_close_path (cr);
@@ -197,14 +206,21 @@ _create_path_lucido ( AwnBackground*  bg,
     }    
     else
     {
+      if (stripe == 1.)
+      {
+        _create_path_lucido (bg, position, cr, y, w, h, 0., 
+                             d, dc, 0., internal, expanded);
+        return;
+      }
+      stripe = ((w - dc * 2) * stripe); /* now stripe = non-stripe */
       if (internal)
       {
         /* Manual-Stripe & Not-Expanded & Internal */
         lx = stripe * symmetry + dc;
         cairo_move_to (cr, lx, ly);
         _line_from_to (cr, &lx, &ly, lx + d, y2);
-        _line_from_to (cr, &lx, &ly, w - stripe * (1 - symmetry) - dc - d, y2);
-        _line_from_to (cr, &lx, &ly, w - stripe * (1 - symmetry) - dc, y);
+        _line_from_to (cr, &lx, &ly, w - stripe * (1.- symmetry) - dc - d, y2);
+        _line_from_to (cr, &lx, &ly, w - stripe * (1.- symmetry) - dc, y);
         cairo_close_path (cr);
       }
       else
@@ -213,10 +229,10 @@ _create_path_lucido ( AwnBackground*  bg,
         ly = y3;
         cairo_move_to (cr, lx, ly);
         _line_from_to (cr, &lx, &ly, lx+dc, y);
-        _line_from_to (cr, &lx, &ly, stripe*symmetry+dc, y);
-        _line_from_to (cr, &lx, &ly, stripe*symmetry+d+dc, y2);
-        _line_from_to (cr, &lx, &ly, w-stripe*(1-symmetry)-dc-d, y2);
-        _line_from_to (cr, &lx, &ly, w-stripe*(1-symmetry)-dc, y);
+        _line_from_to (cr, &lx, &ly, stripe * symmetry + dc, y);
+        _line_from_to (cr, &lx, &ly, stripe * symmetry + d + dc, y2);
+        _line_from_to (cr, &lx, &ly, w-stripe * (1. - symmetry) - dc - d, y2);
+        _line_from_to (cr, &lx, &ly, w-stripe * (1. - symmetry) - dc, y);
         _line_from_to (cr, &lx, &ly, w-dc, y);
         _line_from_to (cr, &lx, &ly, w, y3);
         cairo_close_path(cr);
@@ -233,15 +249,12 @@ _create_path_lucido ( AwnBackground*  bg,
       if (internal)
       {        
         /* Auto-Stripe & Expanded & Internal */
-        AwnAppletManager *manager = NULL;
-        g_object_get (bg->panel, "applet-manager", &manager, NULL);
-
-        GList *widgets = gtk_container_get_children (GTK_CONTAINER (manager));
-        GList *i = NULL;
+        GList *widgets = _get_applet_widgets (bg);
+        GList *i = widgets;
         GtkWidget *widget = NULL;
         
         /* analyze first widget*/
-        widget = GTK_WIDGET (widgets->data);
+        widget = GTK_WIDGET (i->data);
         
         /* if first widget is an expander */
         if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
@@ -255,7 +268,7 @@ _create_path_lucido ( AwnBackground*  bg,
         }
         /* else start from top */
 
-        for (i = widgets; i; i = i->next)
+        for (; i; i = i->next)
         {
           widget = GTK_WIDGET (i->data);
 
@@ -308,7 +321,6 @@ _create_path_lucido ( AwnBackground*  bg,
           ++exps_found;
         }
         g_list_free (widgets);
-        g_list_free (i);
 
         _line_from_to (cr, &lx, &ly, w, ly);
 
@@ -321,18 +333,15 @@ _create_path_lucido ( AwnBackground*  bg,
       {
         /* Auto-Stripe & Expanded & External */
 
-        AwnAppletManager *manager = NULL;
-        g_object_get (bg->panel, "applet-manager", &manager, NULL);
-
-        GList *widgets = gtk_container_get_children (GTK_CONTAINER (manager));
-        GList *i = NULL;
+        GList *widgets = _get_applet_widgets (bg);
+        GList *i = widgets;
         GtkWidget *widget = NULL;
+        
+        /* analyze first widget*/
+        widget = GTK_WIDGET (i->data);
 
         ly = y3;
         cairo_move_to (cr, lx, ly);
-
-        /* analyze first widget*/
-        widget = GTK_WIDGET (widgets->data);
 
         /* if first widget is an expander */        
         if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
@@ -347,7 +356,7 @@ _create_path_lucido ( AwnBackground*  bg,
           _line_from_to (cr, &lx, &ly, lx, y);
         }
 
-        for (i = widgets; i; i = i->next)
+        for (; i; i = i->next)
         {
           widget = GTK_WIDGET (i->data);
 
@@ -387,7 +396,6 @@ _create_path_lucido ( AwnBackground*  bg,
           ++exps_found;
         }
         g_list_free (widgets);
-        g_list_free (i);
         
         _line_from_to (cr, &lx, &ly, w, ly);
         _line_from_to (cr, &lx, &ly, lx, y3);
@@ -596,8 +604,8 @@ awn_background_lucido_draw (AwnBackground  *bg,
   switch (position)
   {
     case GTK_POS_RIGHT:
-      cairo_translate (cr, 0, y + height);
-      cairo_scale (cr, 1, -1);
+      cairo_translate (cr, 0., y + height);
+      cairo_scale (cr, 1., -1.);
       cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
@@ -613,27 +621,34 @@ awn_background_lucido_draw (AwnBackground  *bg,
       break;
     case GTK_POS_TOP:
       cairo_translate (cr, x, y + height);
-      cairo_scale (cr, 1, -1);
+      cairo_scale (cr, 1., -1.);
       break;
     default:
       cairo_translate (cr, x, y);
       break;
   }
-  /*
-   * Check if we had already do the draw for this settings
-   * otherwise we do it now
-   */
-   
-  /* Check expanders positions & sizes changed */
-  AwnAppletManager *manager = NULL;
-  g_object_get (bg->panel, "applet-manager", &manager, NULL);
+  
+  draw_top_bottom_background (bg, position, cr, width, height);
+  
+  cairo_restore (cr);
+}
 
-  GList *widgets = gtk_container_get_children (GTK_CONTAINER (manager));
-  GList *i = NULL;
+gboolean awn_background_lucido_get_needs_redraw (AwnBackground *bg,
+                                                 GtkPositionType position,
+                                                 GdkRectangle *area)
+{
+  /* Check default needs redraw */
+  gboolean nr = awn_background_get_needs_redraw (bg, position, area);
+  if (nr)
+    return TRUE;
+  
+  /* Check expanders positions & sizes changed */
+  GList *widgets = _get_applet_widgets (bg);
+  GList *i = widgets;
   GtkWidget *widget = NULL;
   gint wcheck = 0;
   
-  for (i = widgets; i; i = i->next)
+  for (; i; i = i->next)
   {
     widget = GTK_WIDGET (i->data);
 
@@ -653,34 +668,16 @@ awn_background_lucido_draw (AwnBackground  *bg,
         break;
     }
   }
-  
   g_list_free (widgets);
-  g_list_free (i);
   
   AwnBackgroundLucido *lbg = NULL;
   lbg = AWN_BACKGROUND_LUCIDO (bg);
-  
-  if(bg->needs_redraw==1 || lbg->expw!=wcheck || lbg->oldw!=width || lbg->oldh!=height)
+  if (lbg->expw != wcheck)
   {
-    /* DEBUG: fprintf(stderr,"Update bg\n"); */
-    bg->needs_redraw = 0;
     lbg->expw = wcheck;
-    lbg->oldw = width;
-    lbg->oldh = height;
-    if (bg->helper_surface != NULL)
-    {
-      cairo_surface_finish (bg->helper_surface);
-      cairo_surface_destroy (bg->helper_surface);
-    }
-    bg->helper_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                                     width, height);
-    cairo_t* temp_cr = cairo_create (bg->helper_surface);
-    draw_top_bottom_background (bg, position, temp_cr, width, height);
-    cairo_destroy (temp_cr);  
+    return TRUE;
   }
-  cairo_set_source_surface (cr, bg->helper_surface, 0, 0);
-  cairo_paint(cr);
-  cairo_restore (cr);
+  return FALSE;  
 }
 
 static void
