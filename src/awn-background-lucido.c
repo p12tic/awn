@@ -644,7 +644,8 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
                                         GdkRectangle *area)
 {
   /* Check default needs redraw */
-  gboolean nr = awn_background_get_needs_redraw (bg, position, area);
+  gboolean nr = AWN_BACKGROUND_CLASS (awn_background_lucido_parent_class)->
+                                      get_needs_redraw (bg, position, area);
   if (nr)
     return TRUE;
   

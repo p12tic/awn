@@ -156,6 +156,8 @@ void awn_background_draw      (AwnBackground  *bg,
                                GtkPositionType  position,
                                GdkRectangle   *area);
 
+void awn_background_invalidate      (AwnBackground  *bg);
+
 void awn_background_padding_request (AwnBackground *bg,
                                      GtkPositionType position,
                                      guint *padding_top,
@@ -175,10 +177,6 @@ void awn_background_get_input_shape_mask (AwnBackground  *bg,
 
 AwnPathType awn_background_get_path_type (AwnBackground *bg,
                                           gfloat *offset_mod);
-                                          
-gboolean awn_background_get_needs_redraw (AwnBackground *bg,
-                                          GtkPositionType position,
-                                          GdkRectangle *area);
 
 void awn_background_get_strut_offsets (AwnBackground *bg,
                                        GtkPositionType position,

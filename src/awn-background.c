@@ -91,6 +91,10 @@ static void awn_background_mask_none (AwnBackground  *bg,
                                       GtkPositionType  position,
                                       GdkRectangle   *area);
 
+static gboolean awn_background_get_needs_redraw (AwnBackground *bg,
+                                                 GtkPositionType position,
+                                                 GdkRectangle *area);
+
 static AwnPathType awn_background_path_default (AwnBackground *bg,
                                                 gfloat *offset_mod);
 
@@ -356,7 +360,7 @@ awn_background_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       return;
   }
-  bg->needs_redraw = 1;
+  awn_background_invalidate (bg);
   g_signal_emit (object, _bg_signals[CHANGED], 0);
 }
 
@@ -1071,9 +1075,9 @@ static AwnPathType awn_background_path_default (AwnBackground *bg,
   return AWN_PATH_LINEAR;
 }
 
-gboolean awn_background_get_needs_redraw (AwnBackground *bg,
-                                          GtkPositionType position,
-                                          GdkRectangle *area)
+static gboolean awn_background_get_needs_redraw (AwnBackground *bg,
+                                                 GtkPositionType position,
+                                                 GdkRectangle *area)
 {
   if (bg->needs_redraw == 1 ||
       bg->last_height != area->height ||
@@ -1085,6 +1089,11 @@ gboolean awn_background_get_needs_redraw (AwnBackground *bg,
     return TRUE;
   }
   return FALSE;
+}
+
+void awn_background_invalidate (AwnBackground  *bg)
+{
+  bg->needs_redraw = 1;
 }
 
 /* vim: set et ts=2 sts=2 sw=2 : */

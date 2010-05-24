@@ -2977,7 +2977,7 @@ awn_panel_set_pos_type (AwnPanel *panel, GtkPositionType position)
   gtk_widget_queue_resize (GTK_WIDGET (panel));
   
   if (priv->bg)
-    priv->bg->needs_redraw = TRUE;
+    awn_background_invalidate (priv->bg);
 }
 
 static void
