@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-05-18 06:29+0000\n"
+"PO-Revision-Date: 2010-05-23 16:38+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-05-20 05:26+0000\n"
+"X-Launchpad-Export-Date: 2010-05-24 03:46+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -464,7 +464,7 @@ msgstr "Näytä vain käynnistimet"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Drag and drop reordering"
-msgstr "Järjestä kuvakkeet napsauttamalla ja raahaamalla"
+msgstr "Järjestä kuvakkeet napsauttamalla ja siirtämällä"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
@@ -508,7 +508,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Pakota näytön tila"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Glowing dot"
@@ -532,7 +532,7 @@ msgstr "Kuvakkeiden t_ehosteet:"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Icon alpha"
-msgstr ""
+msgstr "Kuvakkeen peittävyys"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Icons and Tooltips"
@@ -1091,11 +1091,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "Kuvakkeen ja tekstikentän välinen etäisyys"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Offset of the icons from window border."
-msgstr "Kuvakkeiden etäisyys ikkunan reunasta."
+msgstr "Kuvakkeen etäisyys ikkunan reunasta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1184,7 +1184,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Kuvakkeen ja peilikuvan välinen etäisyys"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The opacity of the icons, from 0.0 to 1.0"
