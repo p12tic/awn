@@ -389,6 +389,12 @@ awn_background_finalize (GObject *object)
   if (bg->hilight_color) g_object_unref (bg->hilight_color);
   if (bg->sep_color) g_object_unref (bg->sep_color);
 
+  if (bg->helper_surface != NULL)
+  {
+    cairo_surface_finish (bg->helper_surface);
+    cairo_surface_destroy (bg->helper_surface);
+  }
+
   G_OBJECT_CLASS (awn_background_parent_class)->finalize (object);
 }
 

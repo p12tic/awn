@@ -3183,15 +3183,8 @@ awn_panel_set_style (AwnPanel *panel, gint style)
       g_assert_not_reached ();
   }
 
-  if (old_bg)
-  {
-    if (old_bg->helper_surface != NULL)
-    {
-      cairo_surface_finish (old_bg->helper_surface);
-      cairo_surface_destroy (old_bg->helper_surface);
-    }
-    g_object_unref (old_bg);
-  }
+  if (old_bg) g_object_unref (old_bg);
+
   if (priv->bg)
   {
     g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed),

@@ -53,6 +53,11 @@ static void awn_background_lucido_padding_request (AwnBackground *bg,
                                                    guint *padding_bottom,
                                                    guint *padding_left,
                                                    guint *padding_right);
+                                                   
+static gboolean
+awn_background_lucido_get_needs_redraw (AwnBackground *bg,
+                                        GtkPositionType position,
+                                        GdkRectangle *area);
 
 static void
 awn_background_lucido_constructed (GObject *object)
@@ -633,9 +638,10 @@ awn_background_lucido_draw (AwnBackground  *bg,
   cairo_restore (cr);
 }
 
-gboolean awn_background_lucido_get_needs_redraw (AwnBackground *bg,
-                                                 GtkPositionType position,
-                                                 GdkRectangle *area)
+static gboolean
+awn_background_lucido_get_needs_redraw (AwnBackground *bg,
+                                        GtkPositionType position,
+                                        GdkRectangle *area)
 {
   /* Check default needs redraw */
   gboolean nr = awn_background_get_needs_redraw (bg, position, area);
