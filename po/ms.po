@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-05-24 01:58+0000\n"
+"PO-Revision-Date: 2010-05-24 15:56+0000\n"
 "Last-Translator: myromance123 <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-05-24 03:46+0000\n"
+"X-Launchpad-Export-Date: 2010-05-25 03:43+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -103,10 +103,13 @@ msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Definisi menu konteks. Akan lihat didalam direktori pemasangan menu awn "
+"kecuali jalan diberikan secara mutlak."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
 msgstr ""
+"Tangguhkan sebelum mengaktifkan tetingkap apabila menyeret ikon ke atasnya."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -116,15 +119,15 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "Bolehkan tekan lama untuk membuka Dialog."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Bolehkan penyusunan semula tetingkap secara seret dan jatuh. "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Membolehkan kumpulan tugas-tugasan."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -151,6 +154,8 @@ msgstr ""
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
+"Nombor maksimum penunjuk tugas untuk ditunjukkan dibawah ikon. Lingkungan "
+"sah daripada 0..3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
@@ -166,11 +171,11 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Hanya tunjuk dan mengurus pelancar tetingkap"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Papar tetingkap dari semua ruangkerja"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -186,34 +191,34 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:821
 msgid "Launch"
-msgstr ""
+msgstr "Lancarkan"
 
 #: ../applets/taskmanager/task-launcher.c:1186
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "Lancarkan %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Pelancar/PengurusTugas"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Applet Pelancar/PengurusTugas"
 
 #: ../applets/quick-prefs/applet.vala:123
 #: ../applets/quick-prefs/applet.vala:517 ../src/awn-panel.c:692
 msgid "About Awn"
-msgstr ""
+msgstr "Mengenai Awn"
 
 #: ../applets/quick-prefs/applet.vala:276
 #: ../applets/quick-prefs/applet.vala:452
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Seret untuk menukarkan orientasi panel"
 
 #: ../applets/quick-prefs/applet.vala:468
 msgid "Icon size:"
-msgstr ""
+msgstr "Saiz ikon:"
 
 #: ../applets/quick-prefs/applet.vala:504 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:676
@@ -223,104 +228,105 @@ msgstr "Tetapan Dock"
 #: ../applets/quick-prefs/applet.vala:568
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Tidak dapat membuka tetapan Awn: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
+"Applet yang digunakan untuk mengawal dock dan melancarkan tetapan Awn."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Applet tetapan"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Menambahkan pemisah diantara applet"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Pemisah"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Ruangkerja %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Ruangkerja 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Ruangkerja %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:522
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Tambah sebagai Pelancar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:540
 msgid "_Close"
-msgstr ""
+msgstr "_Tutup"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:568
 msgid "_Close All"
-msgstr ""
+msgstr "_Tutup Semua"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:737
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ksimakan"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:742
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Nyahma_ksimum"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:771
 msgid "Always on _Top"
-msgstr ""
+msgstr "Sentiasa di _Atas"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:795
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Mi_nima"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:800
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Nyahmi_nima"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:854
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Selalu berada pada Ruangkerja Kelihatan"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:858
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Hanya pada RuangKerja Ini"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:928
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Pindah ke Ruangkerja Ki_ri"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:938
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Pindah ke RuangkerjaK_anan"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:948
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Pindah ke Ruangkerja _Atas"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:958
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Pindah ke Ruangkerja _Bawah"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:967
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Pindah ke R_uangkerja lain"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr ""
+msgstr "Tetapan Awn"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -328,93 +334,95 @@ msgstr "Uruskan tetapan Awn, pelancar Awn, applet Awn, dan tema Awn"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr ""
+msgstr "Sudut 3D"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Applet Aktif</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Applet yang Sedia Ada</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>Kategori</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>Kesan</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Eksport Kumpulan Opsyen</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>Tambahan</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Umum</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>Ikon</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr ""
+msgstr "<b>Pelancar</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr ""
+msgstr "<b>Tetapan Bernombor</b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Warna-warna panel</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>Panel</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Repositori</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>Tetapan</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>PengurusTugas</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
-msgstr ""
+msgstr "<b>Tetapan ini memerlukan applet Pengurus Tugas aktif. </b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Tip Alatan</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
+"<b>Anda perlu membolehkan kesan-kesan desktop (compositor) untuk mengguna "
+"dan menukar tema mengikut kebiasaan anda.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Aktifkan applet"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "Aktifkan segi empat tepat:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Jenis panah"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
@@ -422,7 +430,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Pengarang:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
@@ -430,7 +438,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Latar belakang:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Clickthrough"
@@ -454,12 +462,12 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curviness"
-msgstr ""
+msgstr "Kelengkukan"
 
 #: ../awn-settings/awn-settings.ui.h:34 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Custom"
-msgstr "Buatan sendiri"
+msgstr "Personalisasi Tersendiri"
 
 #: ../awn-settings/awn-settings.ui.h:35
 msgid "Custom Arrow Image"
@@ -471,7 +479,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize..."
-msgstr ""
+msgstr "Personalisasi..."
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
