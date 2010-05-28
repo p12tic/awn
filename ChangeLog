@@ -1,5 +1,10 @@
 2010-05-28  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/quick-prefs/applet.vala:
+	Use async DBus calls in quick-prefs applet.
+
+2010-05-28  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awnSettings.py.in:
 	* po/avant-window-navigator.pot:
 	Fix LP bug #586670.
