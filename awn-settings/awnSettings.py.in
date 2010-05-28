@@ -1127,25 +1127,25 @@ class awnManagerMini(awnManager):
         store = gtk.ListStore(str, gtk.gdk.Pixbuf, str)
         size = 32
         store.append([
-            'Preferences', 
+            _('Preferences'), 
             self.safe_load_icon('gtk-preferences', size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.PREFERENCE_PANEL
         ])
 
         store.append([
-            'Task Manager', 
+            _('Task Manager'), 
             self.safe_load_icon('gtk-execute', size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.LAUNCHER_PANEL
         ])
         
         store.append([
-            'Applets', 
+            _('Applets'), 
             self.safe_load_icon('awn-plugins', size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.APPLET_PANEL
         ])
         '''
         store.append([
-            'Launchers',
+            _('Launchers'),
             self.safe_load_icon(['gnome-panel-launcher', 'launcher-program',
                                  'system-run', 'run'],
                                 size, gtk.ICON_LOOKUP_USE_BUILTIN),
@@ -1153,13 +1153,13 @@ class awnManagerMini(awnManager):
         ])
         '''
         store.append([
-            'Themes', 
+            _('Themes'), 
             self.safe_load_icon("preferences-desktop-theme", size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.THEME_PANEL
         ])
 
         store.append([
-            'Advanced', 
+            _('Advanced'), 
             self.safe_load_icon('gtk-properties', size, gtk.ICON_LOOKUP_USE_BUILTIN),
 	        self.ADVANCED_PANEL
         ])
