@@ -2798,7 +2798,7 @@ _context_menu_closed (GtkMenuShell *menu,TaskIcon *icon)
 
   if (priv->autohide_cookie)
   {     
-    awn_applet_uninhibit_autohide (AWN_APPLET (priv->applet), priv->autohide_cookie);
+    awn_panel_connector_uninhibit_autohide (AWN_PANEL_CONNECTOR (priv->applet), priv->autohide_cookie);
     priv->autohide_cookie = 0;
   }
 }
@@ -2867,7 +2867,7 @@ task_icon_button_press_event (GtkWidget *widget,GdkEventButton *event)
                               G_CALLBACK(_context_menu_closed),icon);
     if (!priv->autohide_cookie)
     {
-      priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(priv->applet), "TaskmanContextMenuUp");
+      priv->autohide_cookie = awn_panel_connector_inhibit_autohide (AWN_PANEL_CONNECTOR(priv->applet), "TaskmanContextMenuUp");
     }
 
   }
