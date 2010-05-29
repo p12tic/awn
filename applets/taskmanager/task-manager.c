@@ -1582,7 +1582,7 @@ on_window_opened (WnckScreen    *screen,
     win_timeout_data->window = window;
     win_timeout_data->manager = manager;    
     g_signal_connect (window,"name-changed",G_CALLBACK(process_window_opened),manager);
-    g_timeout_add (500,(GSourceFunc)_wait_for_name_change_timeout,win_timeout_data);
+    g_timeout_add (2000,(GSourceFunc)_wait_for_name_change_timeout,win_timeout_data);
   }
   else
   {

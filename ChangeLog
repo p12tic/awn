@@ -1,3 +1,26 @@
+2010-05-28  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Use async DBus calls in quick-prefs applet.
+
+2010-05-28  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnSettings.py.in:
+	* po/avant-window-navigator.pot:
+	Fix LP bug #586670.
+
+2010-05-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Wait a bit longer on the timeout on Open office windows
+	that are opened through a file association.  Changed from
+	500ms to 2000ms.  Currently only effects Openoffice and,
+	in general, the timeout is just a paranoia check, the 
+	app should get to a state where it identifiable in all 
+	cases AFAICT.  Unfortunately getting some reports where
+	it seems to be not reaching an identifiable state within
+	the current 500ms timeout.
+
 2010-05-01  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon-build-context-menus.c:
