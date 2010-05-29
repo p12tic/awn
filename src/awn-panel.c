@@ -558,6 +558,15 @@ on_about_activated (GtkMenuItem *item, AwnPanel *panel)
 }
 
 static void
+on_screen_changed (GtkWidget *panel, GdkScreen *screen, gpointer userdata)
+{
+  AwnPanelPrivate *priv;
+
+  priv = AWN_PANEL_GET_PRIVATE (panel);
+  g_object_set (priv->monitor, "screen", gtk_widget_get_screen (panel), NULL);
+}
+
+static void
 awn_panel_constructed (GObject *object)
 {
   AwnPanelPrivate *priv;
@@ -567,8 +576,11 @@ awn_panel_constructed (GObject *object)
   priv = AWN_PANEL_GET_PRIVATE (object);
   panel = GTK_WIDGET (object);
 
-  priv->monitor = awn_monitor_new_from_config (priv->client);
-  g_signal_connect (priv->monitor, "geometry_changed",
+  screen = gtk_widget_get_screen (panel);
+  priv->monitor = awn_monitor_new_for_screen (screen, priv->client);
+  g_signal_connect (panel, "screen-changed",
+                    G_CALLBACK (on_screen_changed), NULL);
+  g_signal_connect (priv->monitor, "geometry-changed",
                     G_CALLBACK (on_geometry_changed), panel);
 
   g_signal_connect_swapped (priv->monitor, "notify::monitor-align",
@@ -581,7 +593,6 @@ awn_panel_constructed (GObject *object)
   g_timeout_add (10000, (GSourceFunc)on_startup_complete, panel);
 
   /* Composited checks/setup */
-  screen = gtk_widget_get_screen (panel);
   priv->composited = gdk_screen_is_composited (screen);
   priv->animated_resize = priv->composited;
   g_print ("Screen %s composited\n", priv->composited ? "is" : "isn't");

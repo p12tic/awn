@@ -1,3 +1,10 @@
+2010-05-29  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-monitor.c:
+	* src/awn-monitor.h:
+	* src/awn-panel.c:
+	Possible fix for LP bug #562453.
+
 2010-05-28  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/quick-prefs/applet.vala:
