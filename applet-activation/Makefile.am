@@ -23,7 +23,7 @@ awn_applet_LDADD =			\
 	$(NULL)
 
 awn_applet_SOURCES =	\
-	awn-applet.vala	\
+	awn-applet-starter.vala	\
 	execute-wrapper.c	\
 	execute-python.c	\
 	$(NULL)

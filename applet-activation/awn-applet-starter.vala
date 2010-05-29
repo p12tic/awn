@@ -217,7 +217,7 @@ namespace Awn
         execute_python (exec, cmd);
         if (!python_applet_started)
         {
-          Gtk.main_quit ();
+          if (Gtk.main_level () > 0) Gtk.main_quit ();
           python_applet_started = true;
         }
       }
@@ -296,38 +296,49 @@ namespace Awn
       AppletLaunchInfo applet = get_launch_info ();
       debug ("launching %s, %s", applet.path, applet.uid);
 
-      var connection = Bus.get (BusType.SESSION);
-      dynamic DBus.Object bus = connection.get_object ("org.freedesktop.DBus",
-                                                       "/org/freedesktop/DBus",
-                                                       "org.freedesktop.DBus");
-
-      uint request_name_result = bus.request_name ("org.awnproject.Awn.AppletLauncher", (uint) NameFlag.DO_NOT_QUEUE);
-      if (request_name_result == RequestNameReply.PRIMARY_OWNER)
+      if (standalone)
       {
-        connection.register_object ("/org/awnproject/Awn/AppletLauncher", 
-                                    this);
-
         this.run_applet (applet);
-
-        if (!python_applet_started) Gtk.main ();
-        // restart main loop with python locks
-        if (python_applet_started) gtk_main_wrapper ();
       }
       else
       {
-        var launcher = (DBusAppletLauncher)
-          connection.get_object ("org.awnproject.Awn.AppletLauncher",
-                                 "/org/awnproject/Awn/AppletLauncher",
-                                 "org.awnproject.Awn.AppletLauncher");
+        var connection = Bus.get (BusType.SESSION);
+        dynamic DBus.Object bus =
+          connection.get_object ("org.freedesktop.DBus",
+                                 "/org/freedesktop/DBus",
+                                 "org.freedesktop.DBus");
 
-        launcher.run_applet (applet);
-        return;
+        uint request_name_result =
+          bus.request_name ("org.awnproject.Awn.AppletLauncher",
+                            (uint) NameFlag.DO_NOT_QUEUE);
+
+        if (request_name_result == RequestNameReply.PRIMARY_OWNER)
+        {
+          connection.register_object ("/org/awnproject/Awn/AppletLauncher", 
+                                      this);
+
+          this.run_applet (applet);
+        }
+        else
+        {
+          var launcher = (DBusAppletLauncher)
+            connection.get_object ("org.awnproject.Awn.AppletLauncher",
+                                   "/org/awnproject/Awn/AppletLauncher",
+                                   "org.awnproject.Awn.AppletLauncher");
+
+          launcher.run_applet (applet);
+          return;
+        }
       }
+      if (!python_applet_started) Gtk.main ();
+      // restart main loop with python locks
+      if (python_applet_started) gtk_main_wrapper ();
     }
 
     public void run_applet (AppletLaunchInfo applet_info)
     {
       launch_returned = false;
+      // FIXME: correct fix is to remove "Gtk.main()" call from the applets
       Idle.add (this.check_looping, Priority.HIGH);
       launch_applet (applet_info);
       launch_returned = true;
