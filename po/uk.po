@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-10 22:09+0000\n"
+"POT-Creation-Date: 2010-05-28 09:50+0200\n"
+"PO-Revision-Date: 2010-05-28 10:07+0000\n"
 "Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-04-11 04:14+0000\n"
+"X-Launchpad-Export-Date: 2010-05-29 03:53+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -206,12 +206,12 @@ msgstr ""
 "перелік шляхів до .desktop файлів з яких менеджер завдань створюватиме "
 "кнопки запуску"
 
-#: ../applets/taskmanager/task-launcher.c:1103
-#: ../applets/taskmanager/task-icon-build-context-menus.c:821
+#: ../applets/taskmanager/task-launcher.c:1109
+#: ../applets/taskmanager/task-icon-build-context-menus.c:955
 msgid "Launch"
 msgstr "Запуск"
 
-#: ../applets/taskmanager/task-launcher.c:1186
+#: ../applets/taskmanager/task-launcher.c:1192
 #, c-format
 msgid "Launch %s"
 msgstr "Запустити %s"
@@ -224,26 +224,26 @@ msgstr "Кнопка запуску/менеджер завдань"
 msgid "Launcher/Taskmanager applet"
 msgstr "Аплет для кнопок запуску та менеджер завдань"
 
-#: ../applets/quick-prefs/applet.vala:123
-#: ../applets/quick-prefs/applet.vala:517 ../src/awn-panel.c:692
+#: ../applets/quick-prefs/applet.vala:130
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:692
 msgid "About Awn"
 msgstr "Про Awn"
 
-#: ../applets/quick-prefs/applet.vala:276
-#: ../applets/quick-prefs/applet.vala:452
+#: ../applets/quick-prefs/applet.vala:283
+#: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
 msgstr "Потягніть, щоб змінити орієнтацію панелі"
 
-#: ../applets/quick-prefs/applet.vala:468
+#: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
 msgstr "Розмір піктограми:"
 
-#: ../applets/quick-prefs/applet.vala:504 ../libawn/awn-applet.c:1081
+#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:676
 msgid "Dock Preferences"
 msgstr "Налаштування панелі"
 
-#: ../applets/quick-prefs/applet.vala:568
+#: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
 msgstr "Не можу відкрити налаштування Awn: %s"
@@ -280,63 +280,63 @@ msgstr "Робоча область 1_0"
 msgid "Workspace %s%d"
 msgstr "Робоча область %s%d"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:522
+#: ../applets/taskmanager/task-icon-build-context-menus.c:657
 msgid "Add as Launcher"
 msgstr "Додати як кнопку запуску"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:540
+#: ../applets/taskmanager/task-icon-build-context-menus.c:675
 msgid "_Close"
 msgstr "_Закрити"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:568
+#: ../applets/taskmanager/task-icon-build-context-menus.c:703
 msgid "_Close All"
 msgstr "_Закрити все"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:737
+#: ../applets/taskmanager/task-icon-build-context-menus.c:872
 msgid "Ma_ximize"
 msgstr "Розгорнути на ве_сь екран"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:742
+#: ../applets/taskmanager/task-icon-build-context-menus.c:877
 msgid "Unma_ximize"
 msgstr "В_ідновити попередній розмір"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:771
+#: ../applets/taskmanager/task-icon-build-context-menus.c:905
 msgid "Always on _Top"
 msgstr "Завжди звер_ху"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:795
+#: ../applets/taskmanager/task-icon-build-context-menus.c:929
 msgid "Mi_nimize"
 msgstr "_Згорути"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:800
+#: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Unmi_nimize"
 msgstr "_Розгорнути"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:854
+#: ../applets/taskmanager/task-icon-build-context-menus.c:988
 msgid "Always on Visible Workspace"
 msgstr "Завжди у видимій робочій області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:858
+#: ../applets/taskmanager/task-icon-build-context-menus.c:992
 msgid "Only on This Workspace"
 msgstr "Лише в цій робочій області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:928
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1081
 msgid "Move to Workspace _Left"
 msgstr "Перемістити _ліворуч робочої області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:938
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1091
 msgid "Move to Workspace _Right"
 msgstr "Перемістити _праворуч робочої області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:948
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1101
 msgid "Move to Workspace _Up"
 msgstr "П_еремістити угору робочої області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:958
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1111
 msgid "Move to Workspace _Down"
 msgstr "Перемістити в_низ робочої області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:967
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1120
 msgid "Move to Another _Workspace"
 msgstr "Перемістити до іншої робочої _області"
 
@@ -983,7 +983,27 @@ msgstr "Поєднати найвищу якість з піктограмами
 msgid "Overlay application icon with best quality icon"
 msgstr "Поєднати піктограми програм з найвищою якістю"
 
-#: ../bindings/python/__init__.py:123
+#: ../awn-settings/awnSettings.py.in:1130
+msgid "Preferences"
+msgstr "Параметри"
+
+#: ../awn-settings/awnSettings.py.in:1136
+msgid "Task Manager"
+msgstr "Менеджер завдань"
+
+#: ../awn-settings/awnSettings.py.in:1142
+msgid "Applets"
+msgstr "Аплети"
+
+#: ../awn-settings/awnSettings.py.in:1156
+msgid "Themes"
+msgstr "Теми"
+
+#: ../awn-settings/awnSettings.py.in:1162
+msgid "Advanced"
+msgstr "Додатково"
+
+#: ../bindings/python/__init__.py:126
 #, python-format
 msgid ""
 "The following Python modules could not be found: %s.  There are a few "
@@ -1011,7 +1031,7 @@ msgstr ""
 "випадку, якщо ви вручну встановили пакунок, тобто не через менеджер\n"
 "пакунків. Такий випадок розглядається в розділі вікі «Часті запитання».\n"
 
-#: ../bindings/python/__init__.py:138
+#: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
 msgstr "Awn Вікі"
 

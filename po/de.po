@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-04-20 12:10+0000\n"
-"Last-Translator: Jan-Christoph Borchardt <jan@inquata.com>\n"
+"POT-Creation-Date: 2010-05-28 09:50+0200\n"
+"PO-Revision-Date: 2010-05-28 05:22+0000\n"
+"Last-Translator: Gabor Karsay <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-04-21 04:06+0000\n"
+"X-Launchpad-Export-Date: 2010-05-29 03:53+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -169,12 +169,12 @@ msgid ""
 "it's launchers"
 msgstr ""
 
-#: ../applets/taskmanager/task-launcher.c:1103
-#: ../applets/taskmanager/task-icon-build-context-menus.c:821
+#: ../applets/taskmanager/task-launcher.c:1109
+#: ../applets/taskmanager/task-icon-build-context-menus.c:955
 msgid "Launch"
 msgstr "Starten"
 
-#: ../applets/taskmanager/task-launcher.c:1186
+#: ../applets/taskmanager/task-launcher.c:1192
 #, c-format
 msgid "Launch %s"
 msgstr "%s starten"
@@ -187,26 +187,26 @@ msgstr "Starter / Anwendungsverwalter"
 msgid "Launcher/Taskmanager applet"
 msgstr "Starter- / Anwendungsverwalter-Applet"
 
-#: ../applets/quick-prefs/applet.vala:123
-#: ../applets/quick-prefs/applet.vala:517 ../src/awn-panel.c:692
+#: ../applets/quick-prefs/applet.vala:130
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:692
 msgid "About Awn"
 msgstr "Über Awn"
 
-#: ../applets/quick-prefs/applet.vala:276
-#: ../applets/quick-prefs/applet.vala:452
+#: ../applets/quick-prefs/applet.vala:283
+#: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
 msgstr ""
 
-#: ../applets/quick-prefs/applet.vala:468
+#: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
 msgstr "Symbolgröße:"
 
-#: ../applets/quick-prefs/applet.vala:504 ../libawn/awn-applet.c:1081
+#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:676
 msgid "Dock Preferences"
 msgstr "Dock-Einstellungen"
 
-#: ../applets/quick-prefs/applet.vala:568
+#: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
 msgstr "Konnte Awn-Einstellungen nicht öffnen: %s"
@@ -243,63 +243,63 @@ msgstr "Arbeitsfläche 1_0"
 msgid "Workspace %s%d"
 msgstr "Arbeitsfläche %s%d"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:522
+#: ../applets/taskmanager/task-icon-build-context-menus.c:657
 msgid "Add as Launcher"
 msgstr "Als Starter hinzufügen"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:540
+#: ../applets/taskmanager/task-icon-build-context-menus.c:675
 msgid "_Close"
 msgstr "_Schließen"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:568
+#: ../applets/taskmanager/task-icon-build-context-menus.c:703
 msgid "_Close All"
 msgstr "_Alle schließen"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:737
+#: ../applets/taskmanager/task-icon-build-context-menus.c:872
 msgid "Ma_ximize"
 msgstr "Ma_ximieren"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:742
+#: ../applets/taskmanager/task-icon-build-context-menus.c:877
 msgid "Unma_ximize"
 msgstr "_Maximierung aufheben"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:771
+#: ../applets/taskmanager/task-icon-build-context-menus.c:905
 msgid "Always on _Top"
 msgstr "Immer im _Vordergrund"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:795
+#: ../applets/taskmanager/task-icon-build-context-menus.c:929
 msgid "Mi_nimize"
 msgstr "Mi_nimieren"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:800
+#: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Unmi_nimize"
 msgstr "_Wiederherstellen"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:854
+#: ../applets/taskmanager/task-icon-build-context-menus.c:988
 msgid "Always on Visible Workspace"
 msgstr "Immer auf sichtbarer Arbeitsfläche"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:858
+#: ../applets/taskmanager/task-icon-build-context-menus.c:992
 msgid "Only on This Workspace"
 msgstr "Nur auf dieser Arbeitsfläche"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:928
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1081
 msgid "Move to Workspace _Left"
 msgstr "Auf Arbeitsfläche _links verschieben"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:938
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1091
 msgid "Move to Workspace _Right"
 msgstr "Auf Arbeitsfläche _rechts verschieben"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:948
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1101
 msgid "Move to Workspace _Up"
 msgstr "Auf Arbeitsfläche darü_ber verschieben"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:958
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1111
 msgid "Move to Workspace _Down"
 msgstr "Auf Arbeitsfläche dar_unter verschieben"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:967
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1120
 msgid "Move to Another _Workspace"
 msgstr "Auf a_ndere Arbeitsfläche verschieben"
 
@@ -699,7 +699,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "_Orientation:"
-msgstr ""
+msgstr "A_usrichtung:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "_Position on the screen:"
@@ -854,19 +854,19 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Links"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Rechts"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "Oben"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "Unten"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
@@ -894,7 +894,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Always visible"
-msgstr ""
+msgstr "Immer sichtbar"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
@@ -944,7 +944,27 @@ msgstr ""
 msgid "Overlay application icon with best quality icon"
 msgstr ""
 
-#: ../bindings/python/__init__.py:123
+#: ../awn-settings/awnSettings.py.in:1130
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: ../awn-settings/awnSettings.py.in:1136
+msgid "Task Manager"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:1142
+msgid "Applets"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:1156
+msgid "Themes"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:1162
+msgid "Advanced"
+msgstr ""
+
+#: ../bindings/python/__init__.py:126
 #, python-format
 msgid ""
 "The following Python modules could not be found: %s.  There are a few "
@@ -962,7 +982,7 @@ msgid ""
 "wiki.\n"
 msgstr ""
 
-#: ../bindings/python/__init__.py:138
+#: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
 msgstr ""
 
@@ -976,11 +996,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
