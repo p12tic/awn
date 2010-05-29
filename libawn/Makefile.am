@@ -3,18 +3,22 @@ MARSHAL_PREFIX = libawn
 include $(top_srcdir)/Makefile.marshal
 
 ENUMFILES = awn-enum-types.c awn-enum-types.h
-STAMPFILES = stamp-awn-enum-types.h
+STAMPFILES = stamp-awn-enum-types.h libawn.vala.stamp
 
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
 
 VALA_FILES = \
 	awn-applet.vala \
-	awn-panel-connector.vala \
 	$(NULL)
 
-VALA_GENERATED_FILES = \
-	$(VALA_FILES:.vala=.c) \
-	$(VALA_FILES:.vala=.h) \
+VALA_GENERATED_VAPIS = awn-panel-connector.vapi
+# don't define the same file in both VALA_FILES and VALA_GENERATED_VAPIS!
+
+ALL_VALA_FILES = $(VALA_FILES) $(VALA_GENERATED_VAPIS:.vapi=.vala)
+
+VALA_GENERATED_SRCS = \
+	$(ALL_VALA_FILES:.vala=.c) \
+	$(ALL_VALA_FILES:.vala=.h) \
 	$(NULL)
 
 VALA_PKGS = \
@@ -25,22 +29,24 @@ VALA_PKGS = \
 	--pkg x11 \
 	$(NULL)
 
-VALA_VAPI_FILES = \
+VALA_VAPIS = \
 	awn-defines.vapi \
-	awn-panel-connector.vapi \
 	$(NULL)
 
-.vala.vapi:
-	$(VALAC) -C -H $(<:.vala=.h) --vapi $(<:.vala=.vapi) $< awn-defines.vapi $(VALA_PKGS) && \
-	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(<:.vala=).[ch]
+VALA_FLAGS = $(VALA_PKGS) $(VALA_VAPIS)
 
-.vala.c:
-	$(VALAC) -C -H $(<:.vala=.h) $< $(VALA_VAPI_FILES) $(VALA_PKGS) && \
-	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(<:.vala=).[ch]
+libawn.vala.stamp: $(ALL_VALA_FILES)
+	$(foreach vala_vapi,$(VALA_GENERATED_VAPIS),\
+	$(VALAC) -C -H $(vala_vapi:.vapi=.h) --vapi $(vala_vapi) $(vala_vapi:.vapi=.vala) $(VALA_FLAGS) && \
+	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(vala_vapi:.vapi=.)[ch];)
+	$(foreach vala_file,$(VALA_FILES),\
+	$(VALAC) -C -H $(vala_file:.vala=.h) $(vala_file) $(VALA_FLAGS) $(VALA_GENERATED_VAPIS) && \
+	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(vala_file:.vala=.)[ch];)
+	touch "$@"
+
 
 BUILT_SOURCES = \
-	awn-panel-connector.vapi \
-	$(VALA_GENERATED_FILES) \
+	libawn.vala.stamp \
 	$(ENUMFILES) \
 	$(builddir)/libawn-marshal.c \
 	$(builddir)/libawn-marshal.h \
@@ -88,7 +94,7 @@ public_headers = \
 	awn-tooltip.h \
 	awn-utils.h \
 	libawn.h \
-	$(VALA_FILES:.vala=.h) \
+	$(filter %.h,$(VALA_GENERATED_SRCS)) \
 	$(NULL)
 
 anims_headers = \
@@ -158,6 +164,8 @@ source_c = \
 	awn-themed-icon.c \
 	awn-tooltip.c \
 	awn-utils.c \
+	awn-panel-connector.c \
+	awn-applet.c \
 	$(NULL)
 
 libawninc_HEADERS = \
@@ -165,7 +173,9 @@ libawninc_HEADERS = \
 	$(NULL)
 libawn_la_SOURCES = \
 	$(private_headers) \
-	$(BUILT_SOURCES) \
+	$(ENUMFILES) \
+	$(builddir)/libawn-marshal.c \
+	$(builddir)/libawn-marshal.h \
 	$(source_c) \
 	$(NULL)
 libawn_la_CFLAGS = $(WARNING_FLAGS)
@@ -174,7 +184,7 @@ libawn_la_LDFLAGS = -version-info 1:1:0
 
 awn-enum-types.h: stamp-awn-enum-types.h
 	@true
-stamp-awn-enum-types.h: $(source_h) Makefile
+stamp-awn-enum-types.h: $(source_h) Makefile libawn.vala.stamp
 	$(QUIET_GEN)( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
 	  	--template $(srcdir)/awn-enum-types.h.in \
@@ -195,8 +205,15 @@ EXTRA_DIST =				\
 	awn-enum-types.c.in		\
 	awn-enum-types.h.in		\
 	libawn-marshal.list		\
+	$(VALA_GENERATED_SRCS) \
+	$(VALA_GENERATED_VAPIS) \
 	$(NULL)
 
-CLEANFILES = $(STAMPFILES) $(BUILT_SOURCES)
+CLEANFILES = \
+	$(STAMPFILES) \
+	$(BUILT_SOURCES) \
+	$(VALA_GENERATED_SRCS) \
+	$(VALA_GENERATED_VAPIS) \
+	$(NULL)
 
 # vim: set ts=8 sts=8 sw=8 :
