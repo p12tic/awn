@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-28 09:50+0200\n"
-"PO-Revision-Date: 2010-05-28 05:22+0000\n"
+"PO-Revision-Date: 2010-05-29 08:20+0000\n"
 "Last-Translator: Gabor Karsay <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-05-29 03:53+0000\n"
+"X-Launchpad-Export-Date: 2010-05-30 03:45+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -477,7 +477,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
-msgstr ""
+msgstr "Thema exportieren …"
 
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Extra Options"
@@ -950,19 +950,19 @@ msgstr "Einstellungen"
 
 #: ../awn-settings/awnSettings.py.in:1136
 msgid "Task Manager"
-msgstr ""
+msgstr "Anwendungsverwalter"
 
 #: ../awn-settings/awnSettings.py.in:1142
 msgid "Applets"
-msgstr ""
+msgstr "Applets"
 
 #: ../awn-settings/awnSettings.py.in:1156
 msgid "Themes"
-msgstr ""
+msgstr "Themen"
 
 #: ../awn-settings/awnSettings.py.in:1162
 msgid "Advanced"
-msgstr ""
+msgstr "Erweitert"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
