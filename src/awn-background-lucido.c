@@ -741,10 +741,10 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
     {
       case GTK_POS_BOTTOM:
       case GTK_POS_TOP:
-        wcheck += widget->allocation.x + widget->allocation.width;
+        wcheck += widget->allocation.x * 2 + widget->allocation.width;
         break;
       default:
-        wcheck += widget->allocation.y + widget->allocation.height;
+        wcheck += widget->allocation.y * 2 + widget->allocation.height;
         break;
     }
   }
