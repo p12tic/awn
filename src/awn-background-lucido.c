@@ -309,8 +309,9 @@ _create_path_lucido ( AwnBackground*  bg,
         {
           widget = GTK_WIDGET (i->data);
           
-          /* if first widget is an expander */
-          if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
+          /* if first widget is an expander or align==0 || 1*/
+          if ( (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget) ) ||
+               ( align == 0. || align == 1. ) )
           {
             /* start from bottom */
             lx = curx;
@@ -318,6 +319,8 @@ _create_path_lucido ( AwnBackground*  bg,
             cairo_move_to (cr, lx, ly);
             _line_from_to (cr, &lx, &ly, lx, y2);
             ++exps_found;
+            if (align != 0. && align != 1.)
+              i = i->next;
           }
         }
         /* else start from top */
@@ -362,13 +365,17 @@ _create_path_lucido ( AwnBackground*  bg,
             {
               /* odd expander - curve at the end of expander */
               _line_from_to (cr, &lx, &ly, curx - d, y2);
-              _line_from_to (cr, &lx, &ly, curx, y);
+              if (i->next != NULL)
+                _line_from_to (cr, &lx, &ly, curx, y);
+              /* else the last widget is an expander */
             }
             else
             {
               /* even expander - curve at the start of expander */
               _line_from_to (cr, &lx, &ly, curx, y);
-              _line_from_to (cr, &lx, &ly, curx + d, y2);
+              if (i->next != NULL)
+                _line_from_to (cr, &lx, &ly, curx + d, y2);
+              /* else the last widget is an expander */
             }
           }
 
@@ -399,12 +406,15 @@ _create_path_lucido ( AwnBackground*  bg,
           ly = y3;
           cairo_move_to (cr, lx, ly);
 
-          /* if first widget is an expander */        
-          if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
+          /* if first widget is an expander or align==0 || 1*/
+          if ( (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget) ) ||
+               ( align == 0. || align == 1. ) )
           {
             /* start from bottom */
             _line_from_to (cr, &lx, &ly, lx, y2);
             ++exps_found;
+            if (align != 0. && align != 1.)
+              i = i->next;
           }
           else
           {
