@@ -41,6 +41,7 @@ G_DEFINE_TYPE (AwnBackgroundLucido, awn_background_lucido, AWN_TYPE_BACKGROUND_F
 struct _AwnBackgroundLucidoPrivate
 {
     gint expw;
+    gint expn;
 };
 
 enum 
@@ -727,6 +728,7 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   GList *i = widgets;
   GtkWidget *widget = NULL;
   gint wcheck = 0;
+  gint ncheck = 0;
   
   for (; i; i = i->next)
   {
@@ -747,6 +749,7 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
         wcheck += widget->allocation.y * 2 + widget->allocation.height;
         break;
     }
+    ++ncheck;
   }
   g_list_free (widgets);
   
@@ -754,6 +757,12 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   lbg = AWN_BACKGROUND_LUCIDO (bg);
   AwnBackgroundLucidoPrivate *priv;
   priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
+  if (priv->expn != ncheck)
+  {
+    priv->expn = ncheck;
+    /* used to refresh bar */
+    AWN_PANEL_GET_CLASS (bg->panel)->padding_changed (bg->panel);
+  }
   if (priv->expw != wcheck)
   {
     priv->expw = wcheck;
