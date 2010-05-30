@@ -30,12 +30,49 @@
 #include "awn-applet-manager.h"
 #include "awn-background-lucido.h"
 #include "awn-separator.h"
+#include "awn-panel.h"
 
 G_DEFINE_TYPE (AwnBackgroundLucido, awn_background_lucido, AWN_TYPE_BACKGROUND_FLAT)
 
 #define AWN_BACKGROUND_LUCIDO_GET_PRIVATE(obj) ( \
     G_TYPE_INSTANCE_GET_PRIVATE (obj, AWN_TYPE_BACKGROUND_LUCIDO, \
                                  AwnBackgroundLucidoPrivate))
+
+struct _AwnBackgroundLucidoPrivate
+{
+    gint expw;
+};
+
+enum 
+{
+  PROP_0,
+
+  PROP_CLIENT,
+  PROP_PANEL,
+
+  PROP_GSTEP1,
+  PROP_GSTEP2,
+  PROP_GHISTEP1,
+  PROP_GHISTEP2,
+  PROP_BORDER,
+  PROP_HILIGHT,
+  
+  PROP_SHOW_SEP,
+  PROP_SEP_COLOR,
+
+  PROP_ENABLE_PATTERN,
+  PROP_PATTERN_ALPHA,
+  PROP_PATTERN_FILENAME,
+
+  PROP_GTK_THEME_MODE,
+  PROP_DIALOG_GTK_MODE,
+  PROP_ROUNDED_CORNERS,
+  PROP_CORNER_RADIUS,
+  PROP_PANEL_ANGLE,
+  PROP_CURVINESS,
+  PROP_CURVES_SYMEMETRY,
+  PROP_STRIPE_WIDTH
+};
 
 static void awn_background_lucido_draw (AwnBackground  *bg,
                                         cairo_t        *cr,
@@ -58,6 +95,10 @@ static gboolean
 awn_background_lucido_get_needs_redraw (AwnBackground *bg,
                                         GtkPositionType position,
                                         GdkRectangle *area);
+
+static 
+void awn_background_lucido_property_changed (AwnBackground *bg,
+                                             guint         prop_id);
 
 static void
 awn_background_lucido_constructed (GObject *object)
@@ -85,6 +126,9 @@ awn_background_lucido_class_init (AwnBackgroundLucidoClass *klass)
   bg_class->get_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_input_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_needs_redraw = awn_background_lucido_get_needs_redraw;
+  bg_class->property_changed = awn_background_lucido_property_changed;
+  
+  g_type_class_add_private (obj_class, sizeof (AwnBackgroundLucidoPrivate));
 }
 
 static void
@@ -162,6 +206,7 @@ static void
 _create_path_lucido ( AwnBackground*  bg,
                       GtkPositionType position,
                       cairo_t*        cr,
+                      gfloat          x,
                       gfloat          y,
                       gfloat          w,
                       gfloat          h,
@@ -170,11 +215,12 @@ _create_path_lucido ( AwnBackground*  bg,
                       gfloat          dc,
                       gfloat          symmetry,
                       gboolean        internal,
-                      gboolean        expanded)
+                      gboolean        expanded,
+                      gfloat          align)
 {
   cairo_new_path (cr);
 
-  gfloat lx = 0.0;
+  gfloat lx = x;
   gfloat ly = y;
   gfloat y3 = y + h;
   gfloat y2 = y3 - 5;
@@ -213,8 +259,8 @@ _create_path_lucido ( AwnBackground*  bg,
     {
       if (stripe == 1.)
       {
-        _create_path_lucido (bg, position, cr, y, w, h, 0., 
-                             d, dc, 0., internal, expanded);
+        _create_path_lucido (bg, position, cr, x, y, w, h, 0., 
+                             d, dc, 0., internal, expanded, align);
         return;
       }
       stripe = ((w - dc * 2) * stripe); /* now stripe = non-stripe */
@@ -259,17 +305,20 @@ _create_path_lucido ( AwnBackground*  bg,
         GtkWidget *widget = NULL;
         
         /* analyze first widget*/
-        widget = GTK_WIDGET (i->data);
-        
-        /* if first widget is an expander */
-        if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
+        if (i)
         {
-          /* start from bottom */
-          lx = curx;
-          ly = y;
-          cairo_move_to (cr, lx, ly);
-          _line_from_to (cr, &lx, &ly, lx, y2);
-          ++exps_found;
+          widget = GTK_WIDGET (i->data);
+          
+          /* if first widget is an expander */
+          if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
+          {
+            /* start from bottom */
+            lx = curx;
+            ly = y;
+            cairo_move_to (cr, lx, ly);
+            _line_from_to (cr, &lx, &ly, lx, y2);
+            ++exps_found;
+          }
         }
         /* else start from top */
 
@@ -343,22 +392,25 @@ _create_path_lucido ( AwnBackground*  bg,
         GtkWidget *widget = NULL;
         
         /* analyze first widget*/
-        widget = GTK_WIDGET (i->data);
-
-        ly = y3;
-        cairo_move_to (cr, lx, ly);
-
-        /* if first widget is an expander */        
-        if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
+        if (i)
         {
-          /* start from bottom */
-          _line_from_to (cr, &lx, &ly, lx, y2);
-          ++exps_found;
-        }
-        else
-        {
-          /* start from top */
-          _line_from_to (cr, &lx, &ly, lx, y);
+          widget = GTK_WIDGET (i->data);
+
+          ly = y3;
+          cairo_move_to (cr, lx, ly);
+
+          /* if first widget is an expander */        
+          if (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget))
+          {
+            /* start from bottom */
+            _line_from_to (cr, &lx, &ly, lx, y2);
+            ++exps_found;
+          }
+          else
+          {
+            /* start from top */
+            _line_from_to (cr, &lx, &ly, lx, y);
+          }
         }
 
         for (; i; i = i->next)
@@ -420,8 +472,17 @@ _create_path_lucido ( AwnBackground*  bg,
         /* Auto-Stripe & Not-Expanded & External */
         ly = y3;
         cairo_move_to (cr, lx, ly);
-        _line_from_to (cr, &lx, &ly, lx + dc, y);
-        _line_from_to (cr, &lx, &ly, w - dc, y);
+        
+        if (align == 0.)
+          _line_from_to (cr, &lx, &ly, lx , y);
+        else
+          _line_from_to (cr, &lx, &ly, lx + dc, y);
+        
+        if (align == 1.)
+          _line_from_to (cr, &lx, &ly, w, y);
+        else
+          _line_from_to (cr, &lx, &ly, w - dc, y);
+        
         _line_from_to (cr, &lx, &ly, w, y3);
         cairo_close_path (cr);
       }
@@ -454,11 +515,13 @@ draw_top_bottom_background (AwnBackground*   bg,
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
   
+  gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
+  
   /* create internal path */
-  _create_path_lucido (bg, position, cr, 0, width, height,
+  _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
                        bg->stripe_width, bg->curviness,
                        bg->curviness, bg->curves_symmetry,
-                       1, expand);
+                       1, expand, align);
 
   /* Draw internal pattern if needed */
   if (bg->enable_pattern && bg->pattern)
@@ -494,10 +557,10 @@ draw_top_bottom_background (AwnBackground*   bg,
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
   
   /* create external path */
-  _create_path_lucido (bg, position, cr, 0, width, height,
+  _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
                        bg->stripe_width, bg->curviness,
                        bg->curviness, bg->curves_symmetry,
-                       0, expand);
+                       0, expand, align);
                        
   /* Draw the external background  */
   cairo_save (cr);
@@ -679,9 +742,11 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   
   AwnBackgroundLucido *lbg = NULL;
   lbg = AWN_BACKGROUND_LUCIDO (bg);
-  if (lbg->expw != wcheck)
+  AwnBackgroundLucidoPrivate *priv;
+  priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
+  if (priv->expw != wcheck)
   {
-    lbg->expw = wcheck;
+    priv->expw = wcheck;
     return TRUE;
   }
   return FALSE;  
@@ -697,4 +762,17 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
     bg, cr, position, area);
 }
 
+static 
+void awn_background_lucido_property_changed (AwnBackground *bg,
+                                      guint         prop_id)
+{
+  switch (prop_id)
+  {
+    case PROP_CURVINESS:
+      AWN_PANEL_GET_CLASS (bg->panel)->padding_changed (bg->panel);
+      break;
+    default:    
+      break;
+  }
+}
 /* vim: set et ts=2 sts=2 sw=2 : */

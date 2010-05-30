@@ -47,11 +47,12 @@ G_BEGIN_DECLS
 
 typedef struct _AwnBackgroundLucido AwnBackgroundLucido;
 typedef struct _AwnBackgroundLucidoClass AwnBackgroundLucidoClass;
+typedef struct _AwnBackgroundLucidoPrivate AwnBackgroundLucidoPrivate;
 
 struct _AwnBackgroundLucido
 {
   AwnBackgroundFlat parent;
-  gint              expw;
+  AwnBackgroundLucidoPrivate *priv;
 };
 
 struct _AwnBackgroundLucidoClass

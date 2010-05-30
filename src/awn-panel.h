@@ -70,6 +70,7 @@ struct _AwnPanelClass
   void (*offset_changed)   (AwnPanel *panel, gint offset);
   void (*property_changed) (AwnPanel *panel,
                             const gchar *prop_name, GValue *value);
+  void (*padding_changed)  (AwnPanel *panel);
   void (*destroy_notify)   (AwnPanel *panel);
   void (*destroy_applet)   (AwnPanel *panel, const gchar *uid);
 

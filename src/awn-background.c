@@ -360,6 +360,12 @@ awn_background_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       return;
   }
+
+  AwnBackgroundClass *klass;
+  klass = AWN_BACKGROUND_GET_CLASS (bg);
+  if (klass->property_changed != NULL)  
+    klass->property_changed (bg, prop_id);
+  
   awn_background_invalidate (bg);
   g_signal_emit (object, _bg_signals[CHANGED], 0);
 }
@@ -418,6 +424,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
   klass->get_path_type        = awn_background_path_default;
   klass->get_strut_offsets    = NULL;
   klass->get_needs_redraw     = awn_background_get_needs_redraw;
+  klass->property_changed     = NULL;
 
   /* Object properties */
   g_object_class_install_property (obj_class,

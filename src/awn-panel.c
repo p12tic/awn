@@ -1066,6 +1066,9 @@ awn_panel_refresh_alignment (AwnPanel *panel)
   }
 
   awn_panel_queue_masks_update (panel);
+
+  if (priv->bg)
+    awn_background_invalidate (priv->bg);
 }
 
 static
@@ -1115,6 +1118,12 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
                              top, bottom, left, right);
 
   gtk_widget_queue_draw (GTK_WIDGET (panel));
+}
+
+static 
+void awn_panel_padding_changed (AwnPanel *panel)
+{
+  awn_panel_refresh_padding (panel, NULL);
 }
 
 #ifdef DEBUG_APPLET_AREA
@@ -1751,6 +1760,8 @@ awn_panel_class_init (AwnPanelClass *klass)
   obj_class->finalize      = awn_panel_finalize;
   obj_class->get_property  = awn_panel_get_property;
   obj_class->set_property  = awn_panel_set_property;
+
+  klass->padding_changed = awn_panel_padding_changed;
     
   cont_class->add          = awn_panel_add;
   
@@ -2975,9 +2986,6 @@ awn_panel_set_pos_type (AwnPanel *panel, GtkPositionType position)
   position_window (panel);
   
   gtk_widget_queue_resize (GTK_WIDGET (panel));
-  
-  if (priv->bg)
-    awn_background_invalidate (priv->bg);
 }
 
 static void
