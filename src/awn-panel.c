@@ -1120,12 +1120,6 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
   gtk_widget_queue_draw (GTK_WIDGET (panel));
 }
 
-static 
-void awn_panel_padding_changed (AwnPanel *panel)
-{
-  awn_panel_refresh_padding (panel, NULL);
-}
-
 #ifdef DEBUG_APPLET_AREA
 static
 void awn_panel_get_applet_rect (AwnPanel *panel,
@@ -1761,8 +1755,6 @@ awn_panel_class_init (AwnPanelClass *klass)
   obj_class->get_property  = awn_panel_get_property;
   obj_class->set_property  = awn_panel_set_property;
 
-  klass->padding_changed = awn_panel_padding_changed;
-    
   cont_class->add          = awn_panel_add;
   
   wid_class->expose_event  = awn_panel_expose;

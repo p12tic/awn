@@ -144,9 +144,6 @@ struct _AwnBackgroundClass
                                 GtkPositionType position,
                                 GdkRectangle *area);
 
-  void (*property_changed) (AwnBackground *bg,
-                            guint         prop_id);
-
   /*< signals >*/
   void (*changed) (AwnBackground *bg);
   void (*padding_changed) (AwnBackground *bg);

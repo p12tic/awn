@@ -30,7 +30,6 @@
 #include "awn-applet-manager.h"
 #include "awn-background-lucido.h"
 #include "awn-separator.h"
-#include "awn-panel.h"
 
 G_DEFINE_TYPE (AwnBackgroundLucido, awn_background_lucido, AWN_TYPE_BACKGROUND_FLAT)
 
@@ -42,37 +41,6 @@ struct _AwnBackgroundLucidoPrivate
 {
     gint expw;
     gint expn;
-};
-
-enum 
-{
-  PROP_0,
-
-  PROP_CLIENT,
-  PROP_PANEL,
-
-  PROP_GSTEP1,
-  PROP_GSTEP2,
-  PROP_GHISTEP1,
-  PROP_GHISTEP2,
-  PROP_BORDER,
-  PROP_HILIGHT,
-  
-  PROP_SHOW_SEP,
-  PROP_SEP_COLOR,
-
-  PROP_ENABLE_PATTERN,
-  PROP_PATTERN_ALPHA,
-  PROP_PATTERN_FILENAME,
-
-  PROP_GTK_THEME_MODE,
-  PROP_DIALOG_GTK_MODE,
-  PROP_ROUNDED_CORNERS,
-  PROP_CORNER_RADIUS,
-  PROP_PANEL_ANGLE,
-  PROP_CURVINESS,
-  PROP_CURVES_SYMEMETRY,
-  PROP_STRIPE_WIDTH
 };
 
 static void awn_background_lucido_draw (AwnBackground  *bg,
@@ -96,15 +64,18 @@ static gboolean
 awn_background_lucido_get_needs_redraw (AwnBackground *bg,
                                         GtkPositionType position,
                                         GdkRectangle *area);
-
-static 
-void awn_background_lucido_property_changed (AwnBackground *bg,
-                                             guint         prop_id);
+                                        
+static void awn_background_lucido_curviness_changed (AwnBackground *bg);                                        
 
 static void
 awn_background_lucido_constructed (GObject *object)
 {
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->constructed (object);
+  
+  AwnBackground *bg = AWN_BACKGROUND (object);
+  g_signal_connect_swapped (bg, "notify::curviness",
+                            G_CALLBACK (awn_background_lucido_curviness_changed),
+                            object);
 }
 
 static void
@@ -127,7 +98,6 @@ awn_background_lucido_class_init (AwnBackgroundLucidoClass *klass)
   bg_class->get_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_input_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_needs_redraw = awn_background_lucido_get_needs_redraw;
-  bg_class->property_changed = awn_background_lucido_property_changed;
   
   g_type_class_add_private (obj_class, sizeof (AwnBackgroundLucidoPrivate));
 }
@@ -761,14 +731,23 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   {
     priv->expn = ncheck;
     /* used to refresh bar */
-    AWN_PANEL_GET_CLASS (bg->panel)->padding_changed (bg->panel);
+    awn_background_emit_padding_changed (bg);
   }
   if (priv->expw != wcheck)
   {
     priv->expw = wcheck;
     return TRUE;
   }
-  return FALSE;  
+  return FALSE;
+}
+
+static void awn_background_lucido_curviness_changed (AwnBackground *bg)
+{
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  
+  if (!expand)
+    awn_background_emit_padding_changed (bg);
 }
 
 static void
@@ -779,19 +758,5 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
 {
   AWN_BACKGROUND_CLASS (awn_background_lucido_parent_class)->get_shape_mask (
     bg, cr, position, area);
-}
-
-static 
-void awn_background_lucido_property_changed (AwnBackground *bg,
-                                      guint         prop_id)
-{
-  switch (prop_id)
-  {
-    case PROP_CURVINESS:
-      AWN_PANEL_GET_CLASS (bg->panel)->padding_changed (bg->panel);
-      break;
-    default:    
-      break;
-  }
 }
 /* vim: set et ts=2 sts=2 sw=2 : */
