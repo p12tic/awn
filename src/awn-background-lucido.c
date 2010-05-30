@@ -366,16 +366,15 @@ _create_path_lucido ( AwnBackground*  bg,
             {
               /* odd expander - curve at the end of expander */
               _line_from_to (cr, &lx, &ly, curx - d, y2);
-              if (i->next != NULL)
-                _line_from_to (cr, &lx, &ly, curx, y);
-              /* else the last widget is an expander */
+              if (i->next == NULL)
+                _line_from_to (cr, &lx, &ly, curx, y2);
+              _line_from_to (cr, &lx, &ly, curx, y);
             }
             else
             {
               /* even expander - curve at the start of expander */
               _line_from_to (cr, &lx, &ly, curx, y);
-              if (i->next != NULL)
-                _line_from_to (cr, &lx, &ly, curx + d, y2);
+              _line_from_to (cr, &lx, &ly, curx + d, y2);
               /* else the last widget is an expander */
             }
           }
@@ -454,7 +453,8 @@ _create_path_lucido ( AwnBackground*  bg,
           if (exps_found % 2 != 0)
           {
             _line_from_to (cr, &lx, &ly, curx - d, y2);
-            _line_from_to (cr, &lx, &ly, curx, y);
+            if (i->next != NULL)
+              _line_from_to (cr, &lx, &ly, curx, y);
           }
           else
           {
@@ -743,10 +743,10 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
     {
       case GTK_POS_BOTTOM:
       case GTK_POS_TOP:
-        wcheck += widget->allocation.x * 2 + widget->allocation.width;
+        wcheck += (widget->allocation.x * 3) / 2 + widget->allocation.width;
         break;
       default:
-        wcheck += widget->allocation.y * 2 + widget->allocation.height;
+        wcheck += (widget->allocation.y * 3 ) / 2 + widget->allocation.height;
         break;
     }
     ++ncheck;
