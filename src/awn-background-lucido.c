@@ -43,6 +43,8 @@ struct _AwnBackgroundLucidoPrivate
   gint expn;
 };
 
+#define TRANSFORM_RADIUS(x) sqrt(x/50.)*50.
+
 static void awn_background_lucido_draw (AwnBackground  *bg,
                                         cairo_t        *cr,
                                         GtkPositionType  position,
@@ -574,8 +576,8 @@ draw_top_bottom_background (AwnBackground*   bg,
 
   /* create internal path */
   _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
-                       bg->stripe_width, pow (bg->corner_radius, 1.25),
-                       pow (bg->corner_radius, 1.25), bg->curves_symmetry,
+                       bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
+                       TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
                        1, expand, align);
 
   /* Draw internal pattern if needed */
@@ -616,8 +618,8 @@ draw_top_bottom_background (AwnBackground*   bg,
   
   /* create external path */
   _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
-                       bg->stripe_width, pow (bg->corner_radius, 1.25),
-                       pow (bg->corner_radius, 1.25), bg->curves_symmetry,
+                       bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
+                       TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
                        0, expand, align);
 
   /* Draw external pattern if needed */
@@ -677,14 +679,14 @@ paint_lines:
   {
     awn_cairo_set_source_color (cr, bg->border_color);
     _create_path_lucido (bg, position, cr, 0., 0., width, height,
-                         bg->stripe_width, pow (bg->corner_radius, 1.25),
-                         pow (bg->corner_radius, 1.25), bg->curves_symmetry,
+                         bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
+                         TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
                          0, expand, align);
     cairo_stroke (cr);
     awn_cairo_set_source_color (cr, bg->hilight_color);
     _create_path_lucido (bg, position, cr, 1., 1., width-1., height-1.,
-                         bg->stripe_width, pow (bg->corner_radius, 1.25),
-                         pow (bg->corner_radius, 1.25), bg->curves_symmetry,
+                         bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
+                         TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
                          0, expand, align);
   }
   cairo_stroke (cr);
@@ -702,7 +704,7 @@ void awn_background_lucido_padding_request (AwnBackground *bg,
   #define TOP_PADDING 2
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
-  gint side_padding = expand ? 0 : pow (bg->corner_radius, 1.25);
+  gint side_padding = expand ? 0 : TRANSFORM_RADIUS (bg->corner_radius);
   gint zero_padding = 0;
 
   gfloat align = awn_background_get_panel_alignment (bg);
@@ -902,8 +904,8 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   else
   {
     _create_path_lucido (bg, position, cr, 0, 0., width, height,
-                         bg->stripe_width, pow (bg->corner_radius, 1.25),
-                         pow (bg->corner_radius, 1.25), bg->curves_symmetry,
+                         bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
+                         TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
                          0, expand, align);
   }
   cairo_fill (cr);
