@@ -535,33 +535,28 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  
+  gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
+  
+  /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
+  switch (position)
+  {
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
+      cairo_translate (cr, 0., 0.5);
+      break;
+    default:
+      cairo_translate (cr, 0.5, 0.);
+      break;
+  }
+  
   if(gtk_widget_is_composited (GTK_WIDGET (bg->panel) ) == FALSE)
   {
     goto paint_lines;
   }
 
-  gboolean expand = FALSE;
-  g_object_get (bg->panel, "expand", &expand, NULL);
-  
-  /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
-  if (expand)
-  {
-    switch (position)
-    {
-      case GTK_POS_TOP:
-      case GTK_POS_BOTTOM:
-        cairo_translate (cr, 0., 0.5);
-        break;
-      default:
-        cairo_translate (cr, 0.5, 0.);
-        break;
-    }
-  }
-  else
-    cairo_translate (cr, 0.5, 0.5);
-    
-  gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
-  
   /* create internal path */
   _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
                        bg->stripe_width, bg->curviness,
@@ -634,14 +629,31 @@ draw_top_bottom_background (AwnBackground*   bg,
   /* if not composited */
 paint_lines:
 
-  /* Internal border */
-  awn_cairo_set_source_color (cr, bg->hilight_color);
-  cairo_rectangle (cr, 1, 1, width - 3, height + 3);
-  cairo_stroke (cr);
+  if (expand)
+  {
+    /* Internal border */
+    awn_cairo_set_source_color (cr, bg->hilight_color);
+    cairo_rectangle (cr, 1, 1, width - 3, height + 3);
+    cairo_stroke (cr);
 
-  /* External border */
-  awn_cairo_set_source_color (cr, bg->border_color);
-  cairo_rectangle (cr, 1, 1, width - 1, height + 3);
+    /* External border */    
+    awn_cairo_set_source_color (cr, bg->border_color);
+    cairo_rectangle (cr, 1, 1, width - 1, height + 3);
+  }
+  else
+  {
+    awn_cairo_set_source_color (cr, bg->border_color);
+    _create_path_lucido (bg, position, cr, 0., 0., width, height,
+                         bg->stripe_width, bg->curviness,
+                         bg->curviness, bg->curves_symmetry,
+                         0, expand, align);
+    cairo_stroke (cr);
+    awn_cairo_set_source_color (cr, bg->hilight_color);
+    _create_path_lucido (bg, position, cr, 1., 1., width-1., height-1.,
+                         bg->stripe_width, bg->curviness,
+                         bg->curviness, bg->curves_symmetry,
+                         0, expand, align);
+  }
   cairo_stroke (cr);
 }
 
@@ -852,9 +864,9 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
     cairo_rectangle (cr, 0, 0, width, height + 2);
   else
     _create_path_lucido (bg, position, cr, 0, 0., width, height,
-                       bg->stripe_width, bg->curviness,
-                       bg->curviness, bg->curves_symmetry,
-                       0, expand, align);
+                         bg->stripe_width, bg->curviness,
+                         bg->curviness, bg->curves_symmetry,
+                         0, expand, align);
   cairo_fill (cr);
 
   cairo_restore (cr);
