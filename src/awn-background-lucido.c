@@ -557,35 +557,28 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-  if (gtk_widget_is_composited (GTK_WIDGET (bg->panel) ) == FALSE)
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  
+  gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
+  
+  /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
+  switch (position)
+  {
+    case GTK_POS_TOP:
+    case GTK_POS_BOTTOM:
+      cairo_translate (cr, 0., 0.5);
+      break;
+    default:
+      cairo_translate (cr, 0.5, 0.);
+      break;
+  }
+  
+  if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
   {
     goto paint_lines;
   }
 
-  gboolean expand = FALSE;
-  g_object_get (bg->panel, "expand", &expand, NULL);
-  
-  /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
-  if (expand)
-  {
-    switch (position)
-    {
-      case GTK_POS_TOP:
-      case GTK_POS_BOTTOM:
-        cairo_translate (cr, 0., 0.5);
-        break;
-      default:
-        cairo_translate (cr, 0.5, 0.);
-        break;
-    }
-  }
-  else
-  {
-    cairo_translate (cr, 0.5, 0.5);
-  }
-    
-  gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
-  
   /* create internal path */
   _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
                        bg->stripe_width, pow (bg->corner_radius, 1.25),
@@ -593,18 +586,18 @@ draw_top_bottom_background (AwnBackground*   bg,
                        1, expand, align);
 
   /* Draw internal pattern if needed */
-  if (bg->enable_pattern && bg->pattern)
+  if ((expand || bg->stripe_width != 0.) && bg->enable_pattern && bg->pattern)
   {
     /* Prepare pattern */
-    pat = cairo_pattern_create_for_surface (bg->pattern);
-    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
+    pat_hi = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat_hi, CAIRO_EXTEND_REPEAT);
     /* Draw */
     cairo_save (cr);
     cairo_clip_preserve (cr);
-    cairo_set_source (cr, pat);
+    cairo_set_source (cr, pat_hi);
     cairo_paint (cr);
     cairo_restore (cr);
-    cairo_pattern_destroy (pat);
+    cairo_pattern_destroy (pat_hi);
   }
 
   /* Prepare the internal background */
@@ -618,18 +611,36 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_set_source (cr, pat);
   cairo_paint (cr);
   cairo_restore (cr);
-  cairo_pattern_destroy (pat);
 
   /* Prepare external background gradient*/
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  if (expand || bg->stripe_width != 0.)
+  {
+    cairo_pattern_destroy (pat);
+    pat = cairo_pattern_create_linear (0, 0, 0, height);
+    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
+    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  }
   
   /* create external path */
   _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
                        bg->stripe_width, pow (bg->corner_radius, 1.25),
                        pow (bg->corner_radius, 1.25), bg->curves_symmetry,
                        0, expand, align);
+
+  /* Draw external pattern if needed */
+  if (!expand && bg->stripe_width == 0. && bg->enable_pattern && bg->pattern)
+  {
+    /* Prepare pattern */
+    pat_hi = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat_hi, CAIRO_EXTEND_REPEAT);
+    /* Draw */
+    cairo_save (cr);
+    cairo_clip_preserve (cr);
+    cairo_set_source (cr, pat_hi);
+    cairo_paint (cr);
+    cairo_restore (cr);
+    cairo_pattern_destroy (pat_hi);
+  }
                        
   /* Draw the external background  */
   cairo_save (cr);
@@ -658,14 +669,31 @@ draw_top_bottom_background (AwnBackground*   bg,
   /* if not composited */
 paint_lines:
 
-  /* Internal border */
-  awn_cairo_set_source_color (cr, bg->hilight_color);
-  cairo_rectangle (cr, 1, 1, width - 3, height + 3);
-  cairo_stroke (cr);
+  if (expand)
+  {
+    /* Internal border */
+    awn_cairo_set_source_color (cr, bg->hilight_color);
+    cairo_rectangle (cr, 1, 1, width - 3, height + 3);
+    cairo_stroke (cr);
 
-  /* External border */
-  awn_cairo_set_source_color (cr, bg->border_color);
-  cairo_rectangle (cr, 1, 1, width - 1, height + 3);
+    /* External border */    
+    awn_cairo_set_source_color (cr, bg->border_color);
+    cairo_rectangle (cr, 1, 1, width - 1, height + 3);
+  }
+  else
+  {
+    awn_cairo_set_source_color (cr, bg->border_color);
+    _create_path_lucido (bg, position, cr, 0., 0., width, height,
+                         bg->stripe_width, pow (bg->corner_radius, 1.25),
+                         pow (bg->corner_radius, 1.25), bg->curves_symmetry,
+                         0, expand, align);
+    cairo_stroke (cr);
+    awn_cairo_set_source_color (cr, bg->hilight_color);
+    _create_path_lucido (bg, position, cr, 1., 1., width-1., height-1.,
+                         bg->stripe_width, pow (bg->corner_radius, 1.25),
+                         pow (bg->corner_radius, 1.25), bg->curves_symmetry,
+                         0, expand, align);
+  }
   cairo_stroke (cr);
 }
 
@@ -881,9 +909,9 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   else
   {
     _create_path_lucido (bg, position, cr, 0, 0., width, height,
-                       bg->stripe_width, pow (bg->corner_radius, 1.25),
-                       pow (bg->corner_radius, 1.25), bg->curves_symmetry,
-                       0, expand, align);
+                         bg->stripe_width, pow (bg->corner_radius, 1.25),
+                         pow (bg->corner_radius, 1.25), bg->curves_symmetry,
+                         0, expand, align);
   }
   cairo_fill (cr);
 
