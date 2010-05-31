@@ -31,7 +31,7 @@
 #include "awn-background-lucido.h"
 #include "awn-separator.h"
 
-G_DEFINE_TYPE (AwnBackgroundLucido, awn_background_lucido, AWN_TYPE_BACKGROUND_FLAT)
+G_DEFINE_TYPE (AwnBackgroundLucido, awn_background_lucido, AWN_TYPE_BACKGROUND)
 
 #define AWN_BACKGROUND_LUCIDO_GET_PRIVATE(obj) ( \
     G_TYPE_INSTANCE_GET_PRIVATE (obj, AWN_TYPE_BACKGROUND_LUCIDO, \
@@ -65,7 +65,27 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
                                         GtkPositionType position,
                                         GdkRectangle *area);
                                         
-static void awn_background_lucido_curviness_changed (AwnBackground *bg);                                        
+static void 
+awn_background_lucido_curviness_changed (AwnBackground *bg)
+{
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  
+  if (!expand)
+    awn_background_emit_padding_changed (bg);
+}
+
+static void
+awn_background_lucido_expand_changed (AwnBackground *bg)
+{
+  awn_background_emit_padding_changed (bg);
+}
+
+static void
+awn_background_lucido_align_changed (AwnBackground *bg)
+{
+  awn_background_emit_padding_changed (bg);
+}
 
 static void
 awn_background_lucido_constructed (GObject *object)
@@ -73,14 +93,44 @@ awn_background_lucido_constructed (GObject *object)
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->constructed (object);
   
   AwnBackground *bg = AWN_BACKGROUND (object);
+  gpointer monitor = NULL;
+  
   g_signal_connect_swapped (bg, "notify::curviness",
                             G_CALLBACK (awn_background_lucido_curviness_changed),
+                            object);
+
+  g_return_if_fail (bg->panel);
+  
+  g_signal_connect_swapped (bg->panel, "notify::expand",
+                            G_CALLBACK (awn_background_lucido_expand_changed),
+                            object);
+
+  g_object_get (bg->panel, "monitor", &monitor, NULL);
+
+  g_return_if_fail (monitor);
+
+  g_signal_connect_swapped (monitor, "notify::monitor-align",
+                            G_CALLBACK (awn_background_lucido_align_changed),
                             object);
 }
 
 static void
 awn_background_lucido_dispose (GObject *object)
 {
+  gpointer monitor = NULL;
+  if (AWN_BACKGROUND (object)->panel)
+    g_object_get (AWN_BACKGROUND (object)->panel, "monitor", &monitor, NULL);
+
+  if (monitor)
+    g_signal_handlers_disconnect_by_func (monitor, 
+        G_CALLBACK (awn_background_lucido_align_changed), object);
+
+  g_signal_handlers_disconnect_by_func (AWN_BACKGROUND (object)->panel, 
+        G_CALLBACK (awn_background_lucido_expand_changed), object);
+
+  g_signal_handlers_disconnect_by_func (AWN_BACKGROUND (object), 
+        G_CALLBACK (awn_background_lucido_curviness_changed), object);
+
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->dispose (object);
 }
 
@@ -741,22 +791,49 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   return FALSE;
 }
 
-static void awn_background_lucido_curviness_changed (AwnBackground *bg)
-{
-  gboolean expand = FALSE;
-  g_object_get (bg->panel, "expand", &expand, NULL);
-  
-  if (!expand)
-    awn_background_emit_padding_changed (bg);
-}
-
 static void
 awn_background_lucido_get_shape_mask (AwnBackground   *bg,
                                       cairo_t         *cr,
                                       GtkPositionType position,
                                       GdkRectangle    *area)
 {
-  AWN_BACKGROUND_CLASS (awn_background_lucido_parent_class)->get_shape_mask (
-    bg, cr, position, area);
+  gint temp;
+  gint x = area->x, y = area->y;
+  gint width = area->width, height = area->height;
+  gfloat   align = 0.5;
+  gboolean expand = FALSE;
+
+  cairo_save (cr);
+
+  align = awn_background_get_panel_alignment (bg);
+  g_object_get (bg->panel, "expand", &expand, NULL);
+
+  switch (position)
+  {
+    case GTK_POS_RIGHT:
+      cairo_translate (cr, x, y+height);
+      cairo_rotate (cr, M_PI * 1.5);
+      temp = width;
+      width = height; height = temp;
+      break;
+    case GTK_POS_LEFT:
+      cairo_translate (cr, x+width, y);
+      cairo_rotate (cr, M_PI * 0.5);
+      temp = width;
+      width = height; height = temp;
+      break;
+    case GTK_POS_TOP:
+      cairo_translate (cr, x+width, y+height);
+      cairo_rotate (cr, M_PI);
+      break;
+    default:
+      cairo_translate (cr, x, y);
+      break;
+  }
+
+  cairo_rectangle (cr, 0, 0, width, height + 2);
+  cairo_fill (cr);
+
+  cairo_restore (cr);
 }
 /* vim: set et ts=2 sts=2 sw=2 : */

@@ -25,7 +25,7 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-#include "awn-background-flat.h"
+#include "awn-background.h"
 
 G_BEGIN_DECLS
 
@@ -51,13 +51,13 @@ typedef struct _AwnBackgroundLucidoPrivate AwnBackgroundLucidoPrivate;
 
 struct _AwnBackgroundLucido
 {
-  AwnBackgroundFlat parent;
+  AwnBackground parent;
   AwnBackgroundLucidoPrivate *priv;
 };
 
 struct _AwnBackgroundLucidoClass
 {
-  AwnBackgroundFlatClass parent_class;
+  AwnBackgroundClass parent_class;
 };
 
 GType           awn_background_lucido_get_type (void) G_GNUC_CONST;
