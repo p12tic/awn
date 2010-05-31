@@ -43,6 +43,7 @@
 #include "awn-background-3d.h"
 #include "awn-background-curves.h"
 #include "awn-background-edgy.h"
+#include "awn-background-lucido.h"
 #include "awn-background-floaty.h"
 #include "awn-defines.h"
 #include "awn-marshal.h"
@@ -221,6 +222,7 @@ enum
   STYLE_CURVES,
   STYLE_EDGY,
   STYLE_FLOATY,
+  STYLE_LUCIDO,
 
   STYLE_LAST
 };
@@ -1075,6 +1077,11 @@ awn_panel_refresh_alignment (AwnPanel *panel)
   }
 
   awn_panel_queue_masks_update (panel);
+
+  if (priv->bg)
+  {
+    awn_background_invalidate (priv->bg);
+  }
 }
 
 static
@@ -1760,7 +1767,7 @@ awn_panel_class_init (AwnPanelClass *klass)
   obj_class->finalize      = awn_panel_finalize;
   obj_class->get_property  = awn_panel_get_property;
   obj_class->set_property  = awn_panel_set_property;
-    
+
   cont_class->add          = awn_panel_add;
   
   wid_class->expose_event  = awn_panel_expose;
@@ -3178,6 +3185,9 @@ awn_panel_set_style (AwnPanel *panel, gint style)
       break;
     case STYLE_EDGY:
       priv->bg = awn_background_edgy_new (priv->client, panel);
+      break;
+    case STYLE_LUCIDO:
+      priv->bg = awn_background_lucido_new (priv->client, panel);
       break;
     case STYLE_FLOATY:
       priv->bg = awn_background_floaty_new (priv->client, panel);

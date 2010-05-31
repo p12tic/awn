@@ -86,6 +86,7 @@ CORNER_RADIUS           = "corner_radius"       #float
 PANEL_ANGLE             = "panel_angle"         #float
 CURVINESS               = "curviness"           #float
 CURVES_SYMMETRY         = "curves_symmetry"     #float
+STRIPE_WIDTH            = "stripe_width"        #float
 TOOLTIP_FONT_NAME       = "tooltip_font_name"   #string
 TOOLTIP_FONT_COLOR      = "tooltip_font_color"  #string
 TOOLTIP_BG_COLOR        = "tooltip_bg_color"    #string

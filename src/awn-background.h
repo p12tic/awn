@@ -76,6 +76,15 @@ struct _AwnBackground
   gfloat     pattern_alpha;
   GdkPixbuf *pattern_original;
   cairo_surface_t *pattern;
+  
+  /*  Speedup code.
+   *  We can save the bg and redraw only when properties changes
+   */
+  gboolean          cache_enabled;
+  gboolean          needs_redraw;
+  cairo_surface_t*  helper_surface;
+  gint              last_height;
+  gint              last_width;
 
   /* FIXME:
    * These two should ultimately go somewhere else (once we do multiple panels)
@@ -89,6 +98,7 @@ struct _AwnBackground
   gint     panel_angle;
   gfloat   curviness;
   gfloat   curves_symmetry;
+  gfloat   stripe_width;
 
   /* private */
   guint    changed;
@@ -129,6 +139,10 @@ struct _AwnBackgroundClass
                              GdkRectangle *area,
                              gint *strut,
                              gint *strut_start, gint *strut_end);
+                             
+  gboolean (*get_needs_redraw) (AwnBackground *bg,
+                                GtkPositionType position,
+                                GdkRectangle *area);
 
   /*< signals >*/
   void (*changed) (AwnBackground *bg);
@@ -141,6 +155,8 @@ void awn_background_draw      (AwnBackground  *bg,
                                cairo_t        *cr, 
                                GtkPositionType  position,
                                GdkRectangle   *area);
+
+void awn_background_invalidate      (AwnBackground  *bg);
 
 void awn_background_padding_request (AwnBackground *bg,
                                      GtkPositionType position,

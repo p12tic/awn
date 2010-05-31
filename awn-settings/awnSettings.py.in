@@ -141,7 +141,8 @@ class awnPreferencesMini(awnPreferences):
         #setup style mode
         dropdown = self.wTree.get_object("stylecombo")
         self.create_dropdown(dropdown, [_("None"), _("Flat"), _("3d"),
-                                        _("Curved"), _("Edgy"), _("Floaty")])
+                                        _("Curved"), _("Edgy"), _("Floaty"),
+                                        _("Lucido")])
 
         #setup behaviour combo
         dropdown = self.wTree.get_object("behaviorcombo")
@@ -578,6 +579,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     
     curviness = gobject.property(type=int, default=10)
     curves_symmetry = gobject.property(type=float, default=0)
+    stripe_width = gobject.property(type=float, default=0)
     angle = gobject.property(type=int, default=45)
     radius = gobject.property(type=int, default=10)
     gtk_theme_mode = gobject.property(type=bool, default=False)
@@ -727,6 +729,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 			(defs.THEME, defs.PANEL_ANGLE, 'float', sizes),
 			(defs.THEME, defs.CURVINESS, 'float', sizes),
 			(defs.THEME, defs.CURVES_SYMMETRY, 'float', sizes),
+			(defs.THEME, defs.STRIPE_WIDTH, 'float', sizes),
 			(defs.THEME, defs.TOOLTIP_FONT_NAME, 'str', icon),
 			(defs.THEME, defs.TOOLTIP_FONT_COLOR, 'str', icon),
 			(defs.THEME, defs.TOOLTIP_BG_COLOR, 'str', icon),
@@ -823,6 +826,8 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                 "curviness", "theme_curviness"),
             (self.client, defs.THEME, defs.CURVES_SYMMETRY,
                 "curves-symmetry", "theme_symmetry"),
+            (self.client, defs.THEME, defs.STRIPE_WIDTH,
+                "stripe-width", "theme_stripe_width"),
             (self.client, defs.THEME, defs.PANEL_ANGLE,
                 "angle", "theme_angle"),
             (self.client, defs.THEME, defs.CORNER_RADIUS,

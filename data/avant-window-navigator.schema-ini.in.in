@@ -159,7 +159,7 @@ _description=Auto hides the dock when the cursor is not on the dock (shouldn't b
 [panel/style]
 type = integer
 default = 1
-_description=The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3, edgy=4, floaty=5)
+_description=The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3, edgy=4, floaty=5, lucido=6)
 
 [panels/panel_list]
 type = list-integer
@@ -225,6 +225,12 @@ per_instance = false
 type = float
 default = 10.0
 _description=The curviness of the panel in Curves mode.
+per_instance = false
+
+[theme/stripe_width]
+type = float
+default = 0.0
+_description=The width of the stripe in Lucido mode.
 per_instance = false
 
 [theme/dialog_gtk_mode]
