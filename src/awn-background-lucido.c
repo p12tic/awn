@@ -39,8 +39,8 @@ G_DEFINE_TYPE (AwnBackgroundLucido, awn_background_lucido, AWN_TYPE_BACKGROUND)
 
 struct _AwnBackgroundLucidoPrivate
 {
-    gint expw;
-    gint expn;
+  gint expw;
+  gint expn;
 };
 
 static void awn_background_lucido_draw (AwnBackground  *bg,
@@ -66,13 +66,15 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
                                         GdkRectangle *area);
                                         
 static void 
-awn_background_lucido_curviness_changed (AwnBackground *bg)
+awn_background_lucido_corner_radius_changed (AwnBackground *bg)
 {
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
   
   if (!expand)
+  {
     awn_background_emit_padding_changed (bg);
+  }
 }
 
 static void
@@ -95,8 +97,8 @@ awn_background_lucido_constructed (GObject *object)
   AwnBackground *bg = AWN_BACKGROUND (object);
   gpointer monitor = NULL;
   
-  g_signal_connect_swapped (bg, "notify::curviness",
-                            G_CALLBACK (awn_background_lucido_curviness_changed),
+  g_signal_connect_swapped (bg, "notify::corner-radius",
+                            G_CALLBACK (awn_background_lucido_corner_radius_changed),
                             object);
 
   g_return_if_fail (bg->panel);
@@ -133,7 +135,7 @@ awn_background_lucido_dispose (GObject *object)
         G_CALLBACK (awn_background_lucido_expand_changed), object);
 
   g_signal_handlers_disconnect_by_func (AWN_BACKGROUND (object), 
-        G_CALLBACK (awn_background_lucido_curviness_changed), object);
+        G_CALLBACK (awn_background_lucido_corner_radius_changed), object);
 
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->dispose (object);
 }
@@ -586,8 +588,8 @@ draw_top_bottom_background (AwnBackground*   bg,
   
   /* create internal path */
   _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
-                       bg->stripe_width, bg->curviness,
-                       bg->curviness, bg->curves_symmetry,
+                       bg->stripe_width, pow (bg->corner_radius, 1.25),
+                       pow (bg->corner_radius, 1.25), bg->curves_symmetry,
                        1, expand, align);
 
   /* Draw internal pattern if needed */
@@ -625,8 +627,8 @@ draw_top_bottom_background (AwnBackground*   bg,
   
   /* create external path */
   _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
-                       bg->stripe_width, bg->curviness,
-                       bg->curviness, bg->curves_symmetry,
+                       bg->stripe_width, pow (bg->corner_radius, 1.25),
+                       pow (bg->corner_radius, 1.25), bg->curves_symmetry,
                        0, expand, align);
                        
   /* Draw the external background  */
@@ -679,7 +681,7 @@ void awn_background_lucido_padding_request (AwnBackground *bg,
   #define TOP_PADDING 2
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
-  gint side_padding = expand ? 0 : bg->curviness;
+  gint side_padding = expand ? 0 : pow (bg->corner_radius, 1.25);
   gint zero_padding = 0;
 
   gfloat align = awn_background_get_panel_alignment (bg);
@@ -879,8 +881,8 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   else
   {
     _create_path_lucido (bg, position, cr, 0, 0., width, height,
-                       bg->stripe_width, bg->curviness,
-                       bg->curviness, bg->curves_symmetry,
+                       bg->stripe_width, pow (bg->corner_radius, 1.25),
+                       pow (bg->corner_radius, 1.25), bg->curves_symmetry,
                        0, expand, align);
   }
   cairo_fill (cr);

@@ -223,8 +223,14 @@ per_instance = false
 
 [theme/curviness]
 type = float
-default = 10.0
+default = 1.0
 _description=The curviness of the panel in Curves mode.
+per_instance = false
+
+[theme/floaty_offset]
+type = integer
+default = 10
+_description=The offset of the Floaty background.
 per_instance = false
 
 [theme/stripe_width]

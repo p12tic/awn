@@ -61,7 +61,7 @@ awn_background_floaty_constructed (GObject *object)
   g_signal_connect (object, "notify::corner-radius",
                     G_CALLBACK (awn_background_emit_padding_changed), NULL);
 
-  g_signal_connect (object, "notify::curviness",
+  g_signal_connect (object, "notify::floaty-offset",
                     G_CALLBACK (awn_background_emit_padding_changed), NULL);
 
   g_signal_connect_swapped (bg->panel, "notify::expand",
@@ -153,12 +153,12 @@ draw_top_bottom_background (AwnBackground  *bg,
   g_object_get (bg->panel, "expand", &expand, NULL);
   if (expand)
   {
-    gint extra_space = bg->curviness * 3 / 4;
+    gint extra_space = bg->floaty_offset * 3 / 4;
     cairo_translate (cr, extra_space, 0.0);
     width -= 2*extra_space;
   }
 
-  bg_size = height - bg->curviness + 1;
+  bg_size = height - bg->floaty_offset + 1;
 
   if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
   {
@@ -230,26 +230,26 @@ void awn_background_floaty_padding_request (AwnBackground *bg,
   g_object_get (bg->panel, "expand", &expand, NULL);
   if (expand)
   {
-    side_padding += bg->curviness * 3 / 4;
+    side_padding += bg->floaty_offset * 3 / 4;
   }
   
   switch (position)
   {
     case GTK_POS_TOP:
-      *padding_top  = bg->curviness; *padding_bottom = TOP_PADDING;
+      *padding_top  = bg->floaty_offset; *padding_bottom = TOP_PADDING;
       *padding_left = side_padding; *padding_right = side_padding;
       break;
     case GTK_POS_BOTTOM:
-      *padding_top  = TOP_PADDING; *padding_bottom = bg->curviness;
+      *padding_top  = TOP_PADDING; *padding_bottom = bg->floaty_offset;
       *padding_left = side_padding; *padding_right = side_padding;
       break;
     case GTK_POS_LEFT:
       *padding_top  = side_padding; *padding_bottom = side_padding;
-      *padding_left = bg->curviness; *padding_right = TOP_PADDING;
+      *padding_left = bg->floaty_offset; *padding_right = TOP_PADDING;
       break;
     case GTK_POS_RIGHT:
       *padding_top  = side_padding; *padding_bottom = side_padding;
-      *padding_left = TOP_PADDING; *padding_right = bg->curviness;
+      *padding_left = TOP_PADDING; *padding_right = bg->floaty_offset;
       break;
     default:
       break;
@@ -330,7 +330,7 @@ awn_background_floaty_get_shape_mask (AwnBackground  *bg,
       break;
   }
 
-  draw_rect (bg, cr, position, 0, 0, width, height - bg->curviness + 2, TRUE);
+  draw_rect (bg, cr, position, 0, 0, width, height - bg->floaty_offset + 2, TRUE);
   cairo_fill (cr);
 
   cairo_restore (cr);

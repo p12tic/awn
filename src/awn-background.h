@@ -96,6 +96,7 @@ struct _AwnBackground
   gboolean rounded_corners;
   gfloat   corner_radius;
   gint     panel_angle;
+  gint     floaty_offset;
   gfloat   curviness;
   gfloat   curves_symmetry;
   gfloat   stripe_width;

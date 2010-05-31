@@ -59,6 +59,7 @@ enum
   PROP_PANEL_ANGLE,
   PROP_CURVINESS,
   PROP_CURVES_SYMEMETRY,
+  PROP_FLOATY_OFFSET,
   PROP_STRIPE_WIDTH
 };
 
@@ -187,6 +188,11 @@ awn_background_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_FLOATY_OFFSET,
+                                       object, "floaty-offset", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_CURVES_SYMMETRY,
                                        object, "curves-symmetry", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
@@ -204,7 +210,10 @@ awn_background_get_property (GObject    *object,
                              GValue     *value,
                              GParamSpec *pspec)
 {
+  AwnBackground *bg;
   g_return_if_fail (AWN_IS_BACKGROUND (object));
+
+  bg = AWN_BACKGROUND (object);
 
   switch (prop_id)
   {
@@ -224,6 +233,9 @@ awn_background_get_property (GObject    *object,
       g_value_take_object (value, color);
       break;
     }
+    case PROP_FLOATY_OFFSET:
+      g_value_set_int (value, bg->floaty_offset);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -351,6 +363,9 @@ awn_background_set_property (GObject      *object,
       break;
     case PROP_CURVES_SYMEMETRY:
       bg->curves_symmetry = g_value_get_float (value);
+      break;
+    case PROP_FLOATY_OFFSET:
+      bg->floaty_offset = g_value_get_int (value);
       break;
     case PROP_STRIPE_WIDTH:
       bg->stripe_width = g_value_get_float (value);
@@ -579,11 +594,20 @@ awn_background_class_init (AwnBackgroundClass *klass)
                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
+    PROP_FLOATY_OFFSET,
+    g_param_spec_int ("floaty-offset",
+                      "Floaty offset",
+                      "The offset of the panel in Floaty mode",
+                      0, G_MAXINT, 10,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
     PROP_CURVINESS,
     g_param_spec_float ("curviness",
                         "Curviness",
                         "Curviness",
-                        0.0, G_MAXFLOAT, 10.0,
+                        0.0, 1.0, 1.0,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS));
 
