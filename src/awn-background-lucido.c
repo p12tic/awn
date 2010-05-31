@@ -811,27 +811,36 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   switch (position)
   {
     case GTK_POS_RIGHT:
-      cairo_translate (cr, x, y+height);
+      cairo_translate (cr, 0., y + height);
+      cairo_scale (cr, 1., -1.);
+      cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_LEFT:
-      cairo_translate (cr, x+width, y);
+      cairo_translate (cr, x + width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_TOP:
-      cairo_translate (cr, x+width, y+height);
-      cairo_rotate (cr, M_PI);
+      cairo_translate (cr, x, y + height);
+      cairo_scale (cr, 1., -1.);
       break;
     default:
       cairo_translate (cr, x, y);
       break;
   }
-
-  cairo_rectangle (cr, 0, 0, width, height + 2);
+  if (expand)
+    cairo_rectangle (cr, 0, 0, width, height + 2);
+  else
+    _create_path_lucido (bg, position, cr, 0, 0., width, height,
+                       bg->stripe_width, bg->curviness,
+                       bg->curviness, bg->curves_symmetry,
+                       0, expand, align);
   cairo_fill (cr);
 
   cairo_restore (cr);
