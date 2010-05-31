@@ -564,18 +564,18 @@ draw_top_bottom_background (AwnBackground*   bg,
                        1, expand, align);
 
   /* Draw internal pattern if needed */
-  if (bg->enable_pattern && bg->pattern)
+  if ((expand || bg->stripe_width != 0.) && bg->enable_pattern && bg->pattern)
   {
     /* Prepare pattern */
-    pat = cairo_pattern_create_for_surface (bg->pattern);
-    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
+    pat_hi = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat_hi, CAIRO_EXTEND_REPEAT);
     /* Draw */
     cairo_save (cr);
     cairo_clip_preserve (cr);
-    cairo_set_source (cr, pat);
+    cairo_set_source (cr, pat_hi);
     cairo_paint (cr);
     cairo_restore (cr);
-    cairo_pattern_destroy (pat);
+    cairo_pattern_destroy (pat_hi);
   }
 
   /* Prepare the internal background */
@@ -589,18 +589,36 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_set_source (cr, pat);
   cairo_paint (cr);
   cairo_restore (cr);
-  cairo_pattern_destroy (pat);
 
   /* Prepare external background gradient*/
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  if (expand || bg->stripe_width != 0.)
+  {
+    cairo_pattern_destroy (pat);
+    pat = cairo_pattern_create_linear (0, 0, 0, height);
+    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
+    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  }
   
   /* create external path */
   _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
                        bg->stripe_width, bg->curviness,
                        bg->curviness, bg->curves_symmetry,
                        0, expand, align);
+
+  /* Draw external pattern if needed */
+  if (!expand && bg->stripe_width == 0. && bg->enable_pattern && bg->pattern)
+  {
+    /* Prepare pattern */
+    pat_hi = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat_hi, CAIRO_EXTEND_REPEAT);
+    /* Draw */
+    cairo_save (cr);
+    cairo_clip_preserve (cr);
+    cairo_set_source (cr, pat_hi);
+    cairo_paint (cr);
+    cairo_restore (cr);
+    cairo_pattern_destroy (pat_hi);
+  }
                        
   /* Draw the external background  */
   cairo_save (cr);
