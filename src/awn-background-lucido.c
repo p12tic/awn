@@ -314,7 +314,7 @@ _create_path_lucido ( AwnBackground*  bg,
   else
   {
     gint exps_found = 0;
-    gfloat curx = 0.0;
+    gfloat curx = x;
     
     if (expanded)
     {
@@ -530,9 +530,6 @@ draw_top_bottom_background (AwnBackground*   bg,
 {
   cairo_pattern_t *pat = NULL;
   cairo_pattern_t *pat_hi = NULL;
-
-  /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
-  cairo_translate (cr, 0.5, 0.5);
   
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
@@ -546,6 +543,23 @@ draw_top_bottom_background (AwnBackground*   bg,
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
   
+  /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
+  if (expand)
+  {
+    switch (position)
+    {
+      case GTK_POS_TOP:
+      case GTK_POS_BOTTOM:
+        cairo_translate (cr, 0., 0.5);
+        break;
+      default:
+        cairo_translate (cr, 0.5, 0.);
+        break;
+    }
+  }
+  else
+    cairo_translate (cr, 0.5, 0.5);
+    
   gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
   
   /* create internal path */
