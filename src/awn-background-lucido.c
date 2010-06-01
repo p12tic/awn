@@ -380,7 +380,9 @@ _create_path_lucido ( AwnBackground*  bg,
         if (internal)
         {
           cairo_new_path (cr);
-          cairo_move_to (cr, lx + dc, y);
+          ly = y;
+          lx = lx + dc;
+          cairo_move_to (cr, lx, ly);
         }
         else
           _line_from_to (cr, &lx, &ly, lx + dc, y);
