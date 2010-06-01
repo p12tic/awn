@@ -34,7 +34,7 @@ struct _AwnSeparatorPrivate
   GtkPositionType  position;
   gint             offset;
   gint             size;
-  gint             width;
+  gint             separator_size;
 
   gboolean         transparent;
   DesktopAgnosticColor *sep_color;
@@ -52,7 +52,7 @@ enum
   PROP_SEP_COLOR,
   PROP_SEP_TRANSPARENT,
   
-  PROP_SEP_WIDTH
+  PROP_SEP_SIZE
 };
 
 static void
@@ -83,8 +83,8 @@ awn_separator_get_property (GObject    *object,
     case PROP_SEP_COLOR:
       g_value_set_object (value, priv->sep_color);
       break;
-    case PROP_SEP_WIDTH:
-      g_value_set_int (value, priv->width);
+    case PROP_SEP_SIZE:
+      g_value_set_int (value, priv->separator_size);
       break;
     case PROP_SEP_TRANSPARENT:
       g_value_set_boolean (value, priv->transparent);
@@ -137,10 +137,10 @@ awn_separator_set_property (GObject      *object,
       priv->sep_color = g_value_dup_object (value);
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
-    case PROP_SEP_WIDTH:
+    case PROP_SEP_SIZE:
       temp = g_value_get_int (value);
-      if (temp == priv->width) break;
-      priv->width = temp;
+      if (temp == priv->separator_size) break;
+      priv->separator_size = temp;
       gtk_widget_queue_resize (GTK_WIDGET (object));
       break;
     case PROP_SEP_TRANSPARENT:
@@ -204,13 +204,13 @@ awn_separator_size_request (GtkWidget *widget, GtkRequisition *req)
   {
     case GTK_POS_TOP:
     case GTK_POS_BOTTOM:
-      req->width = priv->width;
+      req->width = priv->separator_size;
       req->height = priv->size + priv->offset;
       break;
     case GTK_POS_LEFT:
     case GTK_POS_RIGHT:
       req->width = priv->size + priv->offset;
-      req->height = priv->width;
+      req->height = priv->separator_size;
       break;
     default:
       break;
@@ -400,10 +400,10 @@ awn_separator_class_init (AwnSeparatorClass *klass)
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class,
-    PROP_SEP_WIDTH,
-    g_param_spec_int ("width",
-                      "Width",
-                      "The width of the separator",
+    PROP_SEP_SIZE,
+    g_param_spec_int ("separator-size",
+                      "Separator Size",
+                      "The size of the separator",
                       0, G_MAXINT, 10,
                       G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                       G_PARAM_STATIC_STRINGS));
@@ -428,7 +428,7 @@ awn_separator_init (AwnSeparator *self)
 
   priv->sep_color = NULL;
   priv->transparent = FALSE;
-  priv->width = 10;
+  priv->separator_size = 10;
 }
 
 /**

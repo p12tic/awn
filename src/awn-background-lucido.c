@@ -719,7 +719,7 @@ _set_special_widget_width_and_transparent (AwnBackground *bg,
   if (i && IS_SPECIAL (i->data) && !dispose)
   {
     widget = GTK_WIDGET (i->data);
-    g_object_set (G_OBJECT (widget), "width", 0, NULL);
+    g_object_set (G_OBJECT (widget), "separator-size", 0, NULL);
     g_object_set (G_OBJECT (widget), "transparent", transp, NULL);
     i = i->next;
   }
@@ -732,7 +732,7 @@ _set_special_widget_width_and_transparent (AwnBackground *bg,
       /* if not special continue */
       continue;
     }
-    g_object_set (G_OBJECT (widget), "width", width, NULL);
+    g_object_set (G_OBJECT (widget), "separator-size", width, NULL);
     g_object_set (G_OBJECT (widget), "transparent", transp, NULL);
   }
 
@@ -759,19 +759,17 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   gint wcheck = 0;
   gint ncheck = 0;
   gint pcheck = 0;
-  gint j = 0;
   
   for (; i; i = i->next)
   {
     widget = GTK_WIDGET (i->data);
-    ++j;
     if (!IS_SPECIAL (widget)) 
     {
       /* if not special continue */
       continue;
     }
     ++ncheck;
-    pcheck += j;
+    pcheck += ncheck;
     switch (position)
     {
       case GTK_POS_BOTTOM:
