@@ -222,6 +222,24 @@ _get_applet_widgets (AwnBackground* bg)
   return gtk_container_get_children (GTK_CONTAINER (manager));
 }
 
+static gint
+_get_applet_manager_size (AwnBackground* bg, GtkPositionType position)
+{
+  AwnAppletManager *manager = NULL;
+  g_object_get (bg->panel, "applet-manager", &manager, NULL);
+  
+  switch (position)
+  {
+    case GTK_POS_BOTTOM:
+    case GTK_POS_TOP:
+      return GTK_WIDGET (manager)->allocation.width;
+      break;
+    default:
+      return GTK_WIDGET (manager)->allocation.height;
+      break;
+  }
+}
+
 /**
  * _create_path_lucido:
  * @bg: The background pointer
@@ -280,6 +298,7 @@ _create_path_lucido ( AwnBackground*  bg,
   
   if (expanded)
   {
+    pad_left = lx + (w - _get_applet_manager_size (bg, position)) * align;
     if (first_widget_is_special)
     {
       /* start from bottom */
