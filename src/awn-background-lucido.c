@@ -802,6 +802,8 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   }
   g_list_free (widgets);
   
+  pcheck += _get_applet_manager_size (bg, position);
+  
   AwnBackgroundLucido *lbg = NULL;
   lbg = AWN_BACKGROUND_LUCIDO (bg);
   AwnBackgroundLucidoPrivate *priv;

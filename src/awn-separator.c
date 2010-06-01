@@ -221,25 +221,20 @@ static gboolean
 awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnSeparatorPrivate *priv = AWN_SEPARATOR (widget)->priv;
+  
+  if (priv->transparent)
+  {
+    return TRUE;
+  }
+  
   cairo_t *cr;
   cairo_path_t *path;
   GtkOrientation orient;
   cairo_pattern_t *pat = NULL, *shadow_pat = NULL;
   gdouble r, g, b, a;
-
+  
   cr = gdk_cairo_create (widget->window);
   g_return_val_if_fail (cr, FALSE);
-  
-  if (priv->transparent)
-  {
-    cairo_save (cr);
-    cairo_set_source_rgba (cr, 0., 0., 0., 0.);
-    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-    cairo_paint (cr);
-    cairo_restore (cr);
-    cairo_destroy (cr);
-    return TRUE;
-  }
 
   cairo_set_line_width (cr, 1.0);
 
