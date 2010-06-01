@@ -34,7 +34,9 @@ struct _AwnSeparatorPrivate
   GtkPositionType  position;
   gint             offset;
   gint             size;
+  gint             width;
 
+  gboolean         transparent;
   DesktopAgnosticColor *sep_color;
 };
 
@@ -47,7 +49,10 @@ enum
   PROP_OFFSET,
   PROP_SIZE,
 
-  PROP_SEP_COLOR
+  PROP_SEP_COLOR,
+  PROP_SEP_TRANSPARENT,
+  
+  PROP_SEP_WIDTH
 };
 
 static void
@@ -77,6 +82,12 @@ awn_separator_get_property (GObject    *object,
       break;
     case PROP_SEP_COLOR:
       g_value_set_object (value, priv->sep_color);
+      break;
+    case PROP_SEP_WIDTH:
+      g_value_set_int (value, priv->width);
+      break;
+    case PROP_SEP_TRANSPARENT:
+      g_value_set_boolean (value, priv->transparent);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -124,6 +135,18 @@ awn_separator_set_property (GObject      *object,
         g_object_unref (priv->sep_color);
       }
       priv->sep_color = g_value_dup_object (value);
+      gtk_widget_queue_draw (GTK_WIDGET (object));
+      break;
+    case PROP_SEP_WIDTH:
+      temp = g_value_get_int (value);
+      if (temp == priv->width) break;
+      priv->width = temp;
+      gtk_widget_queue_resize (GTK_WIDGET (object));
+      break;
+    case PROP_SEP_TRANSPARENT:
+      temp = g_value_get_boolean (value);
+      if (temp == priv->transparent) break;
+      priv->transparent = temp;
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     default:
@@ -181,13 +204,13 @@ awn_separator_size_request (GtkWidget *widget, GtkRequisition *req)
   {
     case GTK_POS_TOP:
     case GTK_POS_BOTTOM:
-      req->width = 10;
+      req->width = priv->width;
       req->height = priv->size + priv->offset;
       break;
     case GTK_POS_LEFT:
     case GTK_POS_RIGHT:
       req->width = priv->size + priv->offset;
-      req->height = 10;
+      req->height = priv->width;
       break;
     default:
       break;
@@ -206,6 +229,16 @@ awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
 
   cr = gdk_cairo_create (widget->window);
   g_return_val_if_fail (cr, FALSE);
+  
+  if (priv->transparent)
+  {
+    cairo_save (cr);
+    cairo_set_source_rgba (cr, 0., 0., 0., 0.);
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+    cairo_paint (cr);
+    cairo_restore (cr);
+    return TRUE;
+  }
 
   cairo_set_line_width (cr, 1.0);
 
@@ -366,6 +399,24 @@ awn_separator_class_init (AwnSeparatorClass *klass)
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  g_object_class_install_property (object_class,
+    PROP_SEP_WIDTH,
+    g_param_spec_int ("width",
+                      "Width",
+                      "The width of the separator",
+                      0, G_MAXINT, 10,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class,
+    PROP_SEP_TRANSPARENT,
+    g_param_spec_boolean ("transparent",
+                          "Transparent",
+                          "Is separator transparent?",
+                          FALSE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
+
   g_type_class_add_private (klass, sizeof (AwnSeparatorPrivate));
 }
 
@@ -376,6 +427,8 @@ awn_separator_init (AwnSeparator *self)
   priv = self->priv = AWN_SEPARATOR_GET_PRIVATE (self);
 
   priv->sep_color = NULL;
+  priv->transparent = FALSE;
+  priv->width = 10;
 }
 
 /**
