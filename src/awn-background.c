@@ -59,8 +59,7 @@ enum
   PROP_PANEL_ANGLE,
   PROP_CURVINESS,
   PROP_CURVES_SYMEMETRY,
-  PROP_FLOATY_OFFSET,
-  PROP_STRIPE_WIDTH
+  PROP_FLOATY_OFFSET
 };
 
 enum 
@@ -195,11 +194,6 @@ awn_background_constructed (GObject *object)
   desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_CURVES_SYMMETRY,
                                        object, "curves-symmetry", TRUE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
-  desktop_agnostic_config_client_bind (bg->client,
-                                       AWN_GROUP_THEME, AWN_THEME_STRIPE_WIDTH,
-                                       object, "stripe-width", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }
@@ -366,9 +360,6 @@ awn_background_set_property (GObject      *object,
       break;
     case PROP_FLOATY_OFFSET:
       bg->floaty_offset = g_value_get_int (value);
-      break;
-    case PROP_STRIPE_WIDTH:
-      bg->stripe_width = g_value_get_float (value);
       break;
 
     default:
@@ -620,15 +611,6 @@ awn_background_class_init (AwnBackgroundClass *klass)
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS));
                         
-  g_object_class_install_property (obj_class,
-    PROP_STRIPE_WIDTH,
-    g_param_spec_float ("stripe-width",
-                        "Stripe Width",
-                        "The width of the stripe",
-                        0.0, 1.0, 0.0,
-                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                        G_PARAM_STATIC_STRINGS));
-
   /* Add signals to the class */
   _bg_signals[CHANGED] = 
     g_signal_new ("changed",

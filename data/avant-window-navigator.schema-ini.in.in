@@ -233,12 +233,6 @@ default = 10
 _description=The offset of the Floaty background.
 per_instance = false
 
-[theme/stripe_width]
-type = float
-default = 0.0
-_description=The width of the stripe in Lucido mode.
-per_instance = false
-
 [theme/dialog_gtk_mode]
 type = boolean
 default = true

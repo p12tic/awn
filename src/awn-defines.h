@@ -88,7 +88,6 @@
 #define AWN_THEME_CURVINESS        "curviness"
 #define AWN_THEME_CURVES_SYMMETRY  "curves_symmetry"
 #define AWN_THEME_FLOATY_OFFSET    "floaty_offset"
-#define AWN_THEME_STRIPE_WIDTH     "stripe_width"
 
 #endif /*_HAVE_AWN_DEFINES_H */
 
