@@ -503,9 +503,9 @@ draw_top_bottom_background (AwnBackground*   bg,
   gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
   
   /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
-  cairo_translate (cr, -0.5, -0.5);
-  width += 0.5;
-  height += 0.5;
+  cairo_translate (cr, 0.5, 0.5);
+  width -= 0.5;
+  height -= 0.5;
   
   if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
   {
