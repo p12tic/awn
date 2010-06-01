@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-25 14:15+0200\n"
-"PO-Revision-Date: 2010-05-23 16:38+0000\n"
+"POT-Creation-Date: 2010-05-28 09:50+0200\n"
+"PO-Revision-Date: 2010-05-31 09:07+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-05-24 03:46+0000\n"
+"X-Launchpad-Export-Date: 2010-06-01 03:45+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -162,44 +162,44 @@ msgid ""
 "it's launchers"
 msgstr ""
 
-#: ../applets/taskmanager/task-launcher.c:1103
-#: ../applets/taskmanager/task-icon-build-context-menus.c:821
+#: ../applets/taskmanager/task-launcher.c:1109
+#: ../applets/taskmanager/task-icon-build-context-menus.c:955
 msgid "Launch"
 msgstr "Käynnistä"
 
-#: ../applets/taskmanager/task-launcher.c:1186
+#: ../applets/taskmanager/task-launcher.c:1192
 #, c-format
 msgid "Launch %s"
 msgstr "Käynnistä %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Käynnistin/tehtävähallinta"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Sovelma käynnistimille ja tehtävähallintaan"
 
-#: ../applets/quick-prefs/applet.vala:123
-#: ../applets/quick-prefs/applet.vala:517 ../src/awn-panel.c:692
+#: ../applets/quick-prefs/applet.vala:130
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:692
 msgid "About Awn"
 msgstr "Tietoja Awn:stä"
 
-#: ../applets/quick-prefs/applet.vala:276
-#: ../applets/quick-prefs/applet.vala:452
+#: ../applets/quick-prefs/applet.vala:283
+#: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
 msgstr "Raahaa vaihtaaksesi paneelin sijaintia"
 
-#: ../applets/quick-prefs/applet.vala:468
+#: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
 msgstr "Kuvakkeiden koko:"
 
-#: ../applets/quick-prefs/applet.vala:504 ../libawn/awn-applet.c:1081
+#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:676
 msgid "Dock Preferences"
 msgstr "Telakan asetukset"
 
-#: ../applets/quick-prefs/applet.vala:568
+#: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
 msgstr "Awn-asetuksien avaus epäonnistui: %s"
@@ -236,63 +236,63 @@ msgstr "Työtila 1_0"
 msgid "Workspace %s%d"
 msgstr "Työtila %s%d"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:522
+#: ../applets/taskmanager/task-icon-build-context-menus.c:657
 msgid "Add as Launcher"
 msgstr "Lisää käynnistimenä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:540
+#: ../applets/taskmanager/task-icon-build-context-menus.c:675
 msgid "_Close"
 msgstr "_Sulje"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:568
+#: ../applets/taskmanager/task-icon-build-context-menus.c:703
 msgid "_Close All"
 msgstr "Sulje _kaikki"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:737
+#: ../applets/taskmanager/task-icon-build-context-menus.c:872
 msgid "Ma_ximize"
 msgstr "S_uurenna"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:742
+#: ../applets/taskmanager/task-icon-build-context-menus.c:877
 msgid "Unma_ximize"
 msgstr "_Palauta koko"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:771
+#: ../applets/taskmanager/task-icon-build-context-menus.c:905
 msgid "Always on _Top"
 msgstr "Aina pää_llimmäisenä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:795
+#: ../applets/taskmanager/task-icon-build-context-menus.c:929
 msgid "Mi_nimize"
 msgstr "Pie_nennä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:800
+#: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Unmi_nimize"
 msgstr "Palau_ta"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:854
+#: ../applets/taskmanager/task-icon-build-context-menus.c:988
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Aina aktiivisessa työtilassa"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:858
+#: ../applets/taskmanager/task-icon-build-context-menus.c:992
 msgid "Only on This Workspace"
 msgstr "Vain tässä työtilassa"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:928
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1081
 msgid "Move to Workspace _Left"
 msgstr "Siirrä _vasemmalla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:938
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1091
 msgid "Move to Workspace _Right"
 msgstr "Siirrä _oikealla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:948
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1101
 msgid "Move to Workspace _Up"
 msgstr "Siirrä _yllä olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:958
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1111
 msgid "Move to Workspace _Down"
 msgstr "Siirrä _alla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:967
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1120
 msgid "Move to Another _Workspace"
 msgstr "Siirrä toiseen _työtilaan"
 
@@ -367,11 +367,12 @@ msgstr "<b>Asetukset</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>Tehtävähallinnat</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
+"<b>Nämä asetukset vaativat tehtävähallintasovelman olevan aktiivisena. </b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -500,7 +501,7 @@ msgstr "Kirjasimen väri"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Font Mode"
-msgstr ""
+msgstr "Kirjasintila"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "Font Outline Color"
@@ -874,7 +875,7 @@ msgstr "Kaari"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Kulmikas"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
@@ -910,15 +911,15 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Solid"
-msgstr ""
+msgstr "Tasainen"
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Outline"
-msgstr ""
+msgstr "Ääriviiva"
 
 #: ../awn-settings/awnSettings.py.in:793
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "Ääriviiva, käänteinen"
 
 #: ../awn-settings/awnSettings.py.in:981
 msgid "Use application-specified icons"
@@ -936,7 +937,27 @@ msgstr ""
 msgid "Overlay application icon with best quality icon"
 msgstr ""
 
-#: ../bindings/python/__init__.py:123
+#: ../awn-settings/awnSettings.py.in:1130
+msgid "Preferences"
+msgstr "Asetukset"
+
+#: ../awn-settings/awnSettings.py.in:1136
+msgid "Task Manager"
+msgstr "Tehtävähallinta"
+
+#: ../awn-settings/awnSettings.py.in:1142
+msgid "Applets"
+msgstr "Sovelmat"
+
+#: ../awn-settings/awnSettings.py.in:1156
+msgid "Themes"
+msgstr "Teemat"
+
+#: ../awn-settings/awnSettings.py.in:1162
+msgid "Advanced"
+msgstr "Lisäasetukset"
+
+#: ../bindings/python/__init__.py:126
 #, python-format
 msgid ""
 "The following Python modules could not be found: %s.  There are a few "
@@ -954,7 +975,7 @@ msgid ""
 "wiki.\n"
 msgstr ""
 
-#: ../bindings/python/__init__.py:138
+#: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
 msgstr "Awn-wiki"
 
@@ -964,7 +985,7 @@ msgstr "Telakkamainen ikkunanavigaattori."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr ""
+msgstr "0 - tasainen, 1 - ääriviiva, 2 ääriviiva, käänteinen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
@@ -991,6 +1012,8 @@ msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"0:aa suurempi arvo piirtää kulmat paneeliin. Mitä suurempi säde, sitä "
+"suuremmat kulmat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog's title."
@@ -1077,11 +1100,11 @@ msgstr "Jos tosi, paneeli laajenee näytön täyteen leveyteen/korkeuteen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Internal border color."
-msgstr ""
+msgstr "Sisäisen reunan väri."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid "Main border color."
-msgstr ""
+msgstr "Pääreunan väri."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""

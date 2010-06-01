@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-28 09:50+0200\n"
-"PO-Revision-Date: 2010-05-29 08:20+0000\n"
+"PO-Revision-Date: 2010-05-31 16:57+0000\n"
 "Last-Translator: Gabor Karsay <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-05-30 03:45+0000\n"
+"X-Launchpad-Export-Date: 2010-06-01 03:45+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -222,7 +222,7 @@ msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Fügt eine Trennlinie zwischen den Applets hinzu"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -314,7 +314,7 @@ msgstr "AWN-Einstellungen, -Starter, -Applets und -Themen verwalten"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr ""
+msgstr "3D-Winkel"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
@@ -358,7 +358,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Farben des Panels</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
@@ -379,6 +379,8 @@ msgstr "<b>Anwendungsverwalter</b>"
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
+"<b>Für diese Einstellungen muss das Anwendungsverwalter-Applet aktiv "
+"sein.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -396,7 +398,7 @@ msgstr "Applet aktivieren"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "Aktives Rechteck:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
@@ -473,7 +475,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "Panel aus_dehnen"
 
 #: ../awn-settings/awn-settings.ui.h:42
 msgid "Export Theme..."
@@ -533,11 +535,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Icon _effects:"
-msgstr ""
+msgstr "Symbol_effekte:"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Icon alpha"
-msgstr ""
+msgstr "Symboltransparenz"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Icons and Tooltips"
@@ -545,7 +547,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Icons:"
-msgstr ""
+msgstr "Symbole:"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Inner Border Color"
@@ -553,7 +555,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Install..."
-msgstr ""
+msgstr "Installieren …"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Launch animation:"
@@ -585,7 +587,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Offset"
-msgstr ""
+msgstr "Versatz"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Open animation:"
@@ -601,7 +603,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "Hintergrundfarben des Panels"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Panel Look Refinements"
@@ -649,7 +651,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
-msgstr ""
+msgstr "Alle Fenster zeigen"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Show dialog after long press"
@@ -679,7 +681,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Triangle"
-msgstr ""
+msgstr "Dreieck"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Use Gtk theme colors"
@@ -691,7 +693,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
-msgstr ""
+msgstr "Version:"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "_Behavior:"
@@ -703,7 +705,7 @@ msgstr "A_usrichtung:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_Position auf dem Bildschirm:"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "_Size of icons:"
@@ -711,7 +713,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "pixels"
-msgstr ""
+msgstr "Pixel"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
@@ -910,7 +912,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
-msgstr ""
+msgstr "Transparenz"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Keep below"
@@ -992,7 +994,7 @@ msgstr "Ein Dock-ähnlicher Fensternavigator."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr ""
+msgstr "0 - gefüllt, 1 - umrandet, 2 - invertierte Umrandung"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
@@ -1012,7 +1014,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
+msgstr "Optionaler Versatz, wenn Sie mehr als einen Monitor verwenden."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid ""
@@ -1034,19 +1036,21 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Farbe des aktiven Rechtecks."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Farbe des glühenden Punkts."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Farbe der Umrandung des aktiven Rechtecks."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
 msgstr ""
+"Verzögerung, nach der das Panel ausgeblendet wird, wenn die Maus das Panel "
+"verlässt."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "Delay for mouse position polling."
@@ -1161,7 +1165,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "Farbe der Trennlinie."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
@@ -1201,7 +1205,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
-msgstr ""
+msgstr "Die Liste der Panelinstanzen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
@@ -1225,7 +1229,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid "The user-visible size of Awn."
-msgstr ""
+msgstr "Die für den Benutzer sichtbare Größe von AWN."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "Time in ms after which AwnIcon will emit long-press signal."
@@ -1238,6 +1242,8 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "Whether to close dialogs on loss of focus."
 msgstr ""
+"Bestimmt, ob die Dialoge, die nicht mehr im Vordergrund stehen, geschlossen "
+"werden sollen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Whether to use colors from the current Gtk theme."
@@ -1263,7 +1269,7 @@ msgstr "Applet anpassen"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "Symbole"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
@@ -1271,20 +1277,22 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Symbol anpassen"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Benutzerdefiniertes Symbol entfernen"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "Lade Applet …"
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
+"Huch! Das Applet ist abgestürzt. Klicken Sie noch mal darauf, um es neu zu "
+"starten."
 
 #: ../src/awn-panel.c:3939
 msgid "Close docklet"
-msgstr ""
+msgstr "Docklet schließen"
