@@ -517,6 +517,13 @@ draw_top_bottom_background (AwnBackground*   bg,
     cairo_restore (cr);
     cairo_pattern_destroy (pat_hi);
   }
+  /* Prepare the hi-light */
+  pat_hi = cairo_pattern_create_linear (0, 0, 0, height);
+  awn_cairo_pattern_add_color_stop_color (pat_hi, 0.0, bg->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color (pat_hi, 0.3, bg->g_histep_2);
+  double red, green, blue, alpha;
+  desktop_agnostic_color_get_cairo_color (bg->g_histep_2, &red, &green, &blue, &alpha);
+  cairo_pattern_add_color_stop_rgba (pat_hi, 0.4, red, green, blue, 0.);
 
   /* Prepare the internal background */
   pat = cairo_pattern_create_linear (0, 0, 0, height);
@@ -527,6 +534,12 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_save (cr);
   cairo_clip_preserve (cr);
   cairo_set_source (cr, pat);
+  cairo_paint (cr);
+  cairo_restore (cr);
+  /* Draw the internal hi-light gradient */
+  cairo_save (cr);
+  cairo_clip (cr);
+  cairo_set_source (cr, pat_hi);
   cairo_paint (cr);
   cairo_restore (cr);
 
@@ -551,19 +564,13 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_restore (cr);
   cairo_pattern_destroy (pat);
   
-  /* Draw the hi-light */
-  pat_hi = cairo_pattern_create_linear (0, 0, 0, (height / 3.0));
-  awn_cairo_pattern_add_color_stop_color (pat_hi, 0.0, bg->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat_hi, 1.0, bg->g_histep_2);
-  
-  if (expand)
-  {
-    cairo_new_path (cr);
-    cairo_rectangle (cr, 0, 0, width, (height / 3.0));
-  }
-  
+  /* Draw the internal hi-light gradient */
+  cairo_save (cr);
+  cairo_clip (cr);
   cairo_set_source (cr, pat_hi);
-  cairo_fill (cr);
+  cairo_paint (cr);
+  cairo_restore (cr);
+  
   cairo_pattern_destroy (pat_hi);
 
   return;
