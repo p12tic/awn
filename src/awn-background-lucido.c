@@ -44,21 +44,6 @@ struct _AwnBackgroundLucidoPrivate
   gint expp;
 };
 
-enum
-{
-  PROP_0,
-
-  PROP_CLIENT,
-  PROP_POSITION,
-  PROP_OFFSET,
-  PROP_SIZE,
-
-  PROP_SEP_COLOR,
-  PROP_SEP_TRANSPARENT,
-  
-  PROP_SEP_WIDTH
-};
-
 #define TRANSFORM_RADIUS(x) sqrt(x/50.)*50.
 
 #define IS_SPECIAL(x) AWN_IS_SEPARATOR(x)
