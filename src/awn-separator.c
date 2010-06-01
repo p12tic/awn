@@ -237,6 +237,7 @@ awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
     cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
     cairo_paint (cr);
     cairo_restore (cr);
+    cairo_destroy (cr);
     return TRUE;
   }
 
