@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-28 09:50+0200\n"
-"PO-Revision-Date: 2010-05-31 16:57+0000\n"
+"PO-Revision-Date: 2010-06-01 22:10+0000\n"
 "Last-Translator: Gabor Karsay <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-06-01 03:45+0000\n"
+"X-Launchpad-Export-Date: 2010-06-02 03:33+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -459,7 +459,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize..."
-msgstr ""
+msgstr "Anpassen …"
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Deactivate applet"
@@ -495,15 +495,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "First Highlight Color"
-msgstr ""
+msgstr "Glanzlicht erste Farbe"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Font"
-msgstr ""
+msgstr "Schrift"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Font Color"
-msgstr ""
+msgstr "Schriftfarbe"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Font Mode"
@@ -511,7 +511,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Konturfarbe der Schrift"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "Force monitor mode ?"
@@ -523,7 +523,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Glowing dot color"
-msgstr ""
+msgstr "Farbe des glühenden Punkts"
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Group common windows"
@@ -551,7 +551,7 @@ msgstr "Symbole:"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Inner Border Color"
-msgstr ""
+msgstr "Randfarbe innen"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Install..."
@@ -595,11 +595,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Outer Border Color"
-msgstr ""
+msgstr "Randfarbe außen"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Outline Color"
-msgstr ""
+msgstr "Konturfarbe"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Panel Background Colors"
@@ -611,15 +611,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Panelstil & -größe"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Deckkraft des Musters"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Pattern Image"
-msgstr ""
+msgstr "Verwendetes Muster"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Reflection alpha multiplier"
@@ -639,7 +639,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Glanzlicht zweite Farbe"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Select Custom Arrow"
@@ -647,7 +647,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Separator Color"
-msgstr ""
+msgstr "Trennlinienfarbe"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Show all windows"
@@ -663,7 +663,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "St_yle:"
-msgstr ""
+msgstr "_Stil:"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Start _Awn automatically"
@@ -685,11 +685,11 @@ msgstr "Dreieck"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Farben des GTK-Themas verwenden"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Hintergrundmuster verwenden"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Version:"
@@ -697,7 +697,7 @@ msgstr "Version:"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "_Behavior:"
-msgstr ""
+msgstr "_Verhalten"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "_Orientation:"
@@ -709,7 +709,7 @@ msgstr "_Position auf dem Bildschirm:"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "_Size of icons:"
-msgstr ""
+msgstr "_Größe der Symbole:"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "pixels"
@@ -908,7 +908,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Fade out"
-msgstr ""
+msgstr "Ausblenden"
 
 #: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
@@ -920,15 +920,15 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Solid"
-msgstr ""
+msgstr "Gefüllt"
 
 #: ../awn-settings/awnSettings.py.in:792
 msgid "Outline"
-msgstr ""
+msgstr "Kontur"
 
 #: ../awn-settings/awnSettings.py.in:793
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "Kontur, invertiert"
 
 #: ../awn-settings/awnSettings.py.in:981
 msgid "Use application-specified icons"
