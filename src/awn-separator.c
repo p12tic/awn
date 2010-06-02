@@ -221,10 +221,9 @@ static gboolean
 awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnSeparatorPrivate *priv = AWN_SEPARATOR (widget)->priv;
-  
-  if (priv->transparent)
-  {
-    return TRUE;
+  if (priv->transparent)  
+  {  
+    return TRUE;  
   }
   
   cairo_t *cr;
@@ -237,7 +236,7 @@ awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
   g_return_val_if_fail (cr, FALSE);
 
   cairo_set_line_width (cr, 1.0);
-
+  
   // translate to correct position
   switch (priv->position)
   {

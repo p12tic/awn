@@ -27,7 +27,19 @@
 #include "awn-background-flat.h"
 
 G_DEFINE_TYPE (AwnBackgroundFlat, awn_background_flat, AWN_TYPE_BACKGROUND)
+static int timer = 0;
 
+static gboolean
+awn_background_redraw (AwnBackground *bg)
+{
+  g_return_val_if_fail (AWN_IS_BACKGROUND (bg), FALSE);
+
+  timer++;
+  awn_background_invalidate (bg);
+  gtk_widget_queue_draw (bg->panel);
+
+  return TRUE;
+}
 static void awn_background_flat_draw (AwnBackground  *bg,
                                       cairo_t        *cr,
                                       GtkPositionType  position,
@@ -87,6 +99,7 @@ awn_background_flat_constructed (GObject *object)
   g_signal_connect_swapped (monitor, "notify::monitor-align",
                             G_CALLBACK (awn_background_flat_align_changed),
                             object);
+  g_timeout_add (80, (GSourceFunc)awn_background_redraw, object);
 }
 
 static void
@@ -179,7 +192,33 @@ draw_rect (AwnBackground  *bg,
 
   awn_cairo_rounded_rect (cr, x, y, width, height, bg->corner_radius, state);
 }
+static void
+draw_sin_line (cairo_t *cr, float t, double r, double g, double b, double fLen)
+{
+  const float YMAX = 0.35f;
+  const int STEPS = 10;
 
+  cairo_set_line_width (cr, fLen);
+
+  cairo_pattern_t *pat = cairo_pattern_create_linear (0.0, 0.0, 1.0, 0.0);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0, r, g, b, 0.0);
+  cairo_pattern_add_color_stop_rgba (pat, 0.5, r, g, b, 1.0);
+  cairo_pattern_add_color_stop_rgba (pat, 1.0, r, g, b, 0.0);
+
+  cairo_set_source (cr, pat);
+
+  const double offset = 2*M_PI*t;
+  const double step_mult = 1./STEPS;
+
+  for (int i=0; i<STEPS; i++)
+  {
+    double y = sin(M_PI/180. * i * 180./STEPS + offset) * YMAX;
+    cairo_line_to (cr, i*step_mult, y);
+  }
+  cairo_stroke (cr);
+
+  cairo_pattern_destroy (pat);
+}
 static void
 draw_top_bottom_background (AwnBackground  *bg,
                             GtkPositionType position,
@@ -187,72 +226,50 @@ draw_top_bottom_background (AwnBackground  *bg,
                             gint            width,
                             gint            height)
 {
-  cairo_pattern_t *pat;
-  gfloat   align = 0.5;
-  gboolean expand = FALSE;
+  float t = (timer % 25) / 25.;
+  double fLen = 1. / height * 2;
 
-  /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
-  cairo_translate (cr, 0.5, 0.5);
-
-  /* Basic set-up */
-  cairo_set_line_width (cr, 1.0);
+  cairo_scale (cr, width, height);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-  align = awn_background_get_panel_alignment (bg);
-  g_object_get (bg->panel, "expand", &expand, NULL);
+  cairo_translate (cr, 0.0, 0.5);
 
-  if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
-  {
-    goto paint_lines;
-  }
-
-  /* Draw the background */
-  if (bg->enable_pattern && bg->pattern)
-  {
-    pat = cairo_pattern_create_for_surface (bg->pattern);
-    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
-  }
-  else
-  {
-    pat = cairo_pattern_create_linear (0, 0, 0, height);
-    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-  }
-
-  // we're painting like this (clip + paint) because it has much better
-  // performance as opposed to cairo_fill
   cairo_save (cr);
-
-  draw_rect (bg, cr, position, 1, 1, width-3, height-1, align, expand);
-  cairo_clip (cr);
-  cairo_set_source (cr, pat);
-  cairo_paint (cr);
-
+  draw_sin_line (cr, t, 1.0, 0.1, 0.1, fLen);
   cairo_restore (cr);
 
-  cairo_pattern_destroy (pat);
+  cairo_save (cr);
+  cairo_rotate (cr, -0.2);
+  cairo_translate (cr, 0.03, 0.1);
+  draw_sin_line (cr, t+0.3, 0.3, 0.8, 0.3, fLen * 3);
+  cairo_restore (cr);
 
-  /* Draw the hi-light */
-  pat = cairo_pattern_create_linear (0, 0, 0, (height/3.0));
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect (bg, cr, position, 1, 1, width-3, height/3.0, align, expand);
+  cairo_save (cr);
+  cairo_rotate (cr, 0.15);
+  cairo_translate (cr, 0.02, 0.05);
+  draw_sin_line (cr, t+0.7, 0.1, 0.4, 0.9, fLen * 2);
+  cairo_restore (cr);
 
-  cairo_set_source (cr, pat);
-  cairo_fill (cr);
-  cairo_pattern_destroy (pat);
+  cairo_save (cr);
+  cairo_rotate (cr, 0.03);
+  cairo_translate (cr, 0.0, 0.15);
+  draw_sin_line (cr, t+0.4, 0.9, 0.1, 0.9, fLen * 1.5);
+  cairo_restore (cr);
 
-  paint_lines:
-
-  /* Internal border */
-  awn_cairo_set_source_color (cr, bg->hilight_color);
-  draw_rect (bg, cr, position, 1, 1, width-3, height+3, align, expand);
-  cairo_stroke (cr);
-
-  /* External border */
-  awn_cairo_set_source_color (cr, bg->border_color);
-  draw_rect (bg, cr, position, 0, 0, width-1, height+3, align, expand);
-  cairo_stroke (cr);
+  cairo_save (cr);
+  cairo_rotate (cr, 0.09);
+  cairo_translate (cr, 0.0, -0.15);
+  draw_sin_line (cr, t-0.25, 0.9, 0.9, 0.2, fLen * 2);
+  cairo_restore (cr);
+#if 0
+   cairo_pattern_t *pat;
+   gfloat   align = 0.5;
+   gboolean expand = FALSE;
+@@ -229,6 +307,7 @@
+   awn_cairo_set_source_color (cr, bg->border_color);
+   draw_rect (bg, cr, position, 0, 0, width-1, height+3, align, expand);
+   cairo_stroke (cr);
+#endif
 }
 
 static
