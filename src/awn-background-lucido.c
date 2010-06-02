@@ -108,6 +108,9 @@ awn_background_lucido_corner_radius_changed (AwnBackground *bg)
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
   
+  _set_special_widget_width_and_transparent 
+                  (bg, TRANSFORM_RADIUS (bg->corner_radius), TRUE, FALSE);
+  
   if (!expand)
   {    
     awn_background_emit_padding_changed (bg);
