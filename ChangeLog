@@ -1,3 +1,8 @@
+2010-06-02  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	Don't destroy helper surface if we can use it.
+
 2010-06-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background-lucido.c:
