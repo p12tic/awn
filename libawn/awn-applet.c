@@ -1231,7 +1231,7 @@ awn_applet_create_about_item (AwnApplet         *applet,
   {
     gtk_about_dialog_set_documenters (dialog, documenters);
   }
-  item_text = g_strdup_printf ("About %s", applet_name);
+  item_text = g_strdup_printf (dgettext (GETTEXT_PACKAGE, "About %s"), applet_name);
   item = gtk_image_menu_item_new_with_label (item_text); /* FIXME Add pretty icon */
 #if GTK_CHECK_VERSION (2,16,0)	
 	g_object_set (item,"always-show-image",TRUE,NULL);  
