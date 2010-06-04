@@ -231,12 +231,12 @@ awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
   GtkOrientation orient;
   cairo_pattern_t *pat = NULL, *shadow_pat = NULL;
   gdouble r, g, b, a;
-  
+
   cr = gdk_cairo_create (widget->window);
   g_return_val_if_fail (cr, FALSE);
 
   cairo_set_line_width (cr, 1.0);
-  
+
   // translate to correct position
   switch (priv->position)
   {
@@ -422,8 +422,6 @@ awn_separator_init (AwnSeparator *self)
   priv = self->priv = AWN_SEPARATOR_GET_PRIVATE (self);
 
   priv->sep_color = NULL;
-  priv->transparent = FALSE;
-  priv->separator_size = 10;
 }
 
 /**
