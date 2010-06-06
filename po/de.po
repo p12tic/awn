@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-04 16:33+0200\n"
-"PO-Revision-Date: 2010-06-04 22:37+0000\n"
+"PO-Revision-Date: 2010-06-05 07:47+0000\n"
 "Last-Translator: Gabor Karsay <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-06-05 03:36+0000\n"
+"X-Launchpad-Export-Date: 2010-06-06 03:35+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -24,7 +24,7 @@ msgstr ""
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Füllt den Leerraum auf dem Panel im Expansionsmodus."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
@@ -39,6 +39,9 @@ msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Steuert den Alpha-Wert (Deckkraft) der Überlagerung, wenn der Wert für "
+"»overlay_application_icons« auf »true« eingestellt ist. Gültige Werte sind "
+"0,0 bis 1,0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -54,12 +57,15 @@ msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Steuert die Größe der Überlagerung, wenn der Wert für "
+"»overlay_application_icons« auf »true« eingestellt ist. Gültige Werte sind "
+"0,2 bis 0,7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
-" Symbole mit gleichem Starter gruppieren,  wenn gruppieren von Fenstern "
+" Symbole mit gleichem Starter gruppieren,  wenn das Gruppieren von Fenstern "
 "deaktiviert ist."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
@@ -67,6 +73,8 @@ msgid ""
 " If overlay_application_icons is true, this key will reverse the "
 "overlay/overlayee if set to true."
 msgstr ""
+" Wenn der Wert für »overlay_application_icons« auf »true« eingestellt ist, "
+"wird hierdurch die Überlagerung umgekehrt."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -366,7 +374,7 @@ msgstr "<b>Leiste</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Paketquellen</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
@@ -424,11 +432,11 @@ msgstr "Hintergrund:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Choose a theme..."
-msgstr ""
+msgstr "Ein Thema wählen …"
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
-msgstr ""
+msgstr "Durchklicken"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
@@ -482,12 +490,14 @@ msgstr ""
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr ""
+msgstr "Ziehen Sie installierte Applets hierher, um sie zu aktivieren"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
 msgstr ""
+"Ziehen Sie Applets nach unten oder doppelklicken Sie drauf, um sie zu "
+"aktivieren"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
@@ -535,11 +545,11 @@ msgstr "Konturfarbe der Schrift"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Bildschirmauflösung erzwingen?"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
-msgstr ""
+msgstr "Glühender Punkt"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Glowing dot color"
@@ -575,7 +585,7 @@ msgstr "Randfarbe innen"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr ""
+msgstr "Applet installieren …"
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
@@ -591,23 +601,23 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Horizontaler Bildschirmabstand"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Vertikaler Bildschirmabstand"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr ""
+msgstr "Bildschirmhöhe"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "Bildschirmbreite"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
-msgstr ""
+msgstr "Name:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
@@ -655,7 +665,7 @@ msgstr "Abstand der Spiegelung"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
-msgstr ""
+msgstr "Paketquellen"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
@@ -672,7 +682,7 @@ msgstr "Benutzerdefinierten Pfeil wählen"
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Select item to filter by category"
-msgstr ""
+msgstr "Wählen Sie einen Eintrag, um Applets dieser Kategorie anzuzeigen"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
@@ -704,7 +714,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Theme Export"
-msgstr ""
+msgstr "Thema exportieren"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -1020,6 +1030,20 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Die folgenden Python-Module konnten nicht gefunden werden: %s. Es gibt ein "
+"paar\n"
+"mögliche Erklärungen dafür:\n"
+"\n"
+"1. Dieses Python-Modul ist nicht installiert. In diesem Fall sollten Sie\n"
+"die Applet-Sektion des AWN-Wikis besuchen, um den exakten Namen des\n"
+"Pakets, das das fehlende Modul bereitstellt, für Ihre Distribution zu "
+"erfahren.\n"
+"\n"
+"2. Das Modul befindet sich nicht an dem dafür vorgesehenen Ort. Das ist in "
+"der \n"
+"Regel der Fall, wenn Sie Pakete nicht mit dem Paketmanager der Distribution\n"
+"installieren. Diese Situation ist in der FAQ-Sektion des Wikis genauer "
+"erklärt.\n"
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
@@ -1039,7 +1063,7 @@ msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "6)"
-msgstr ""
+msgstr "6)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -1047,7 +1071,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
+msgstr "Ausrichtung eines nicht ausgedehnten Panels."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid "An optional offset when you have more than 1 monitors."
@@ -1125,7 +1149,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
-msgstr ""
+msgstr "Erzwinge Bildschirm-Seitenverhältnis."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text color.  Leave empty to use gtk theme color."
@@ -1142,6 +1166,8 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Wenn der Wert auf »true« gesetzt ist, wird das Panel auf die volle Breite "
+"bzw. Höhe des Bildschirms ausgedehnt."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Internal border color."
@@ -1156,6 +1182,9 @@ msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
+"Bildschirmnummer, auf dem sich AWN befindet (hat nur einen Effekt, wenn der "
+"Wert für »monitor_force« auf »false« eingestellt ist, verwenden Sie den Wert "
+"»-1«, damit der Bildschirm automatisch gewählt wird)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset between the icons and their dialog."
@@ -1223,10 +1252,14 @@ msgstr "Die Wölbung des Panels im gewölbten Modus."
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
+"Die erzwungene Bildschirmhöhe. Wird nur benutzt, wenn der Wert für "
+"»monitor_force« auf »true« eingestellt ist."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
+"Die erzwungene Bildschirmbreite. Wird nur benutzt, wenn der Wert für "
+"»monitor_force« auf »true« eingestellt ist."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
