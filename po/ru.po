@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-04 16:33+0200\n"
-"PO-Revision-Date: 2010-06-06 06:49+0000\n"
+"PO-Revision-Date: 2010-06-07 15:34+0000\n"
 "Last-Translator: mr.The <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-06-07 03:44+0000\n"
+"X-Launchpad-Export-Date: 2010-06-08 03:41+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -238,7 +238,7 @@ msgstr "Размер значка:"
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:689
 msgid "Dock Preferences"
-msgstr "Настройки Dock"
+msgstr "Настройки панели"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
@@ -959,7 +959,7 @@ msgstr "Парящий"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
-msgstr ""
+msgstr "Lucido"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
@@ -1070,7 +1070,7 @@ msgstr "Awn Вики"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr "Dock подобный навигатор."
+msgstr "Панелеподобный навигатор"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -1082,7 +1082,7 @@ msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "6)"
-msgstr ""
+msgstr "6)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -1134,7 +1134,7 @@ msgstr "Задержка между покиданием курсора пане
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Задержка выбора положения указателя."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid ""
@@ -1271,7 +1271,7 @@ msgstr "Угол наклона панели в режиме 3D."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
-msgstr ""
+msgstr "Изгиб панели в «выгнутом» режиме."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
@@ -1335,7 +1335,7 @@ msgstr "размер панели AWN"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The width of the stripe in Lucido mode."
-msgstr ""
+msgstr "Длинна полосы в режиме Lucido."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "Time in ms after which AwnIcon will emit long-press signal."

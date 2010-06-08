@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-04 16:33+0200\n"
-"PO-Revision-Date: 2010-06-06 09:56+0000\n"
+"PO-Revision-Date: 2010-06-07 20:59+0000\n"
 "Last-Translator: Gabor Karsay <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-06-07 03:44+0000\n"
+"X-Launchpad-Export-Date: 2010-06-08 03:41+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -107,6 +107,8 @@ msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Definition des Kontextmenüs. Sucht im Installationsverzeichnis des Awn-"
+"Menüs, wenn kein absoluter Pfad angegeben ist."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
@@ -117,10 +119,13 @@ msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"Desktop-Kopierverhalten beim Ziehen und Ablegen von Desktop-Dateien. 0 = "
+"Alles kopieren, 1 = Kopieren, wenn der Anwender auch Eigentümer ist, 2 = "
+"Nicht kopieren."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "Langen Klick aktivieren, um ein Dialogfenster zu öffnen."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
@@ -215,7 +220,7 @@ msgstr "Über Awn"
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Ziehen Sie das Symbol, um die Ausrichtung des Panels zu ändern"
 
 #: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
@@ -235,10 +240,11 @@ msgstr "Konnte Awn-Einstellungen nicht öffnen: %s"
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
+"Applet zur Verwaltung des Docks und zum Starten der »Awn-Einstellungen«."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Einstellungen-Applet"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
@@ -277,11 +283,11 @@ msgstr "_Alle schließen"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:872
 msgid "Ma_ximize"
-msgstr "Ma_ximieren"
+msgstr "_Maximieren"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:877
 msgid "Unma_ximize"
-msgstr "_Maximierung aufheben"
+msgstr "Ma_ximierung aufheben"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:905
 msgid "Always on _Top"
@@ -326,11 +332,11 @@ msgstr "Auf a_ndere Arbeitsfläche verschieben"
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr "AWN-Einstellungen"
+msgstr "Awn-Einstellungen"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr "AWN-Einstellungen, -Starter, -Applets und -Themen verwalten"
+msgstr "Awn-Einstellungen, -Starter, -Applets und -Themen verwalten"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
@@ -374,7 +380,7 @@ msgstr "<b>Starter</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr ""
+msgstr "<b>Numerische Einstellungen</b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
@@ -436,7 +442,7 @@ msgstr "Autor:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Automatisches Ausblenden:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -521,11 +527,11 @@ msgstr "Thema exportieren …"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Extra Options"
-msgstr ""
+msgstr "Weitere Einstellungen"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Fill Color"
-msgstr ""
+msgstr "Füllfarbe"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
@@ -549,7 +555,7 @@ msgstr "Schriftfarbe"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "Schriftdarstellung"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
@@ -706,7 +712,7 @@ msgstr "Alle Fenster zeigen"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Nach langem Klick Dialog zeigen"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
@@ -718,11 +724,11 @@ msgstr "_Stil:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "_Awn automatisch starten"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Stripe Width"
-msgstr ""
+msgstr "Streifenbreite"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Theme Export"
@@ -733,6 +739,8 @@ msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
 msgstr ""
+"Für »Intelligentes Ausblenden« oder »Fenstern ausweichen« muss das "
+"Anwendungsverwalter-Applet aktiviert sein."
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
@@ -772,17 +780,19 @@ msgstr "Pixel"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Fehler, es existiert bereits eine sources.list"
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Fehler, der Pfad ist leer oder existiert bereits"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
+"Fehler: %s ist auf dem System nicht vorhanden – bitte entfernen Sie es aus "
+"der sources.list!"
 
 #: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
@@ -947,11 +957,11 @@ msgstr "Schwebend"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
-msgstr ""
+msgstr "Lucido"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
-msgstr ""
+msgstr "Panel-Modus"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
@@ -959,11 +969,11 @@ msgstr "Immer sichtbar"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Intellihide"
-msgstr ""
+msgstr "Intelligentes Ausblenden"
 
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Window dodge"
-msgstr ""
+msgstr "Fenstern ausweichen"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Fade out"
@@ -1059,7 +1069,7 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn-Wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -1079,7 +1089,7 @@ msgstr "6)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgstr "Eine Bitmaske, die den Effekttyp für jedes Ereignis speichert."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid "Alignment of a non-expanded panel on the monitor edge."
@@ -1194,7 +1204,7 @@ msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
-"Bildschirmnummer, auf dem sich AWN befindet (hat nur einen Effekt, wenn der "
+"Bildschirmnummer, auf dem sich Awn befindet (hat nur einen Effekt, wenn der "
 "Wert für »monitor_force« auf »false« eingestellt ist, verwenden Sie den Wert "
 "»-1«, damit der Bildschirm automatisch gewählt wird)."
 
@@ -1315,7 +1325,7 @@ msgstr "Die Symmetrie der Wölbung im gewölbten Modus."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The user-visible size of Awn."
-msgstr "Die für den Benutzer sichtbare Größe von AWN."
+msgstr "Die für den Benutzer sichtbare Größe von Awn."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The width of the stripe in Lucido mode."
