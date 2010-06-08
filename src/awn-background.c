@@ -714,17 +714,33 @@ awn_background_draw (AwnBackground  *bg,
     /* Check if background needs to be redrawn */
     if (klass->get_needs_redraw (bg, position, area))
     {
-      /* Free last surface */
-      if (bg->helper_surface != NULL)
+      cairo_t *temp_cr;
+      gint full_width = area->x + area->width;
+      gint full_height = area->y + area->height;
+
+      gboolean realloc_needed = bg->helper_surface == NULL ||
+        cairo_image_surface_get_width (bg->helper_surface) != full_width ||
+        cairo_image_surface_get_height (bg->helper_surface) != full_height;
+      if (realloc_needed)
       {
-        cairo_surface_finish (bg->helper_surface);
-        cairo_surface_destroy (bg->helper_surface);
+        /* Free last surface */
+        if (bg->helper_surface != NULL)
+        {
+          cairo_surface_destroy (bg->helper_surface);
+        }
+        /* Create new surface */
+        bg->helper_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                                         full_width,
+                                                         full_height);
+        temp_cr = cairo_create (bg->helper_surface);
       }
-      /* Create new surface */
-      bg->helper_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-                                                       area->x + area->width,
-                                                       area->y + area->height);
-      cairo_t* temp_cr = cairo_create (bg->helper_surface);
+      else
+      {
+        temp_cr = cairo_create (bg->helper_surface);
+        cairo_set_operator (temp_cr, CAIRO_OPERATOR_CLEAR);
+        cairo_paint (temp_cr);
+        cairo_set_operator (temp_cr, CAIRO_OPERATOR_OVER);
+      }
       /* Draw background on temp cairo_t */
       klass->draw (bg, temp_cr, position, area);
       cairo_destroy (temp_cr);

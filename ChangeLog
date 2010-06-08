@@ -1,3 +1,21 @@
+2010-06-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* po/avant-window-navigator.pot:
+	Update translation template.
+
+2010-06-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	patch by: Gabor Karsay
+
+	* awn-settings/awn-settings.ui:
+	* libawn/awn-applet.c:
+	Fix untranslatable strings - LP bug #586670.
+
+2010-06-02  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background.c:
+	Don't destroy helper surface if we can use it.
+
 2010-06-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background-lucido.c:
