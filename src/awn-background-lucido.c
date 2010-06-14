@@ -221,10 +221,15 @@ _line_from_to ( cairo_t *cr,
 }
 
 static GList*
-_get_applet_widgets (AwnBackground* bg)
+_get_applet_widgets (AwnBackground* bg, gboolean *docklet_mode)
 {
   AwnAppletManager *manager = NULL;
   g_object_get (bg->panel, "applet-manager", &manager, NULL);
+  
+  if (docklet_mode)
+  {
+    *docklet_mode = awn_applet_manager_get_docklet_mode (manager);
+  }
 
   return gtk_container_get_children (GTK_CONTAINER (manager));
 }
@@ -292,10 +297,15 @@ _create_path_lucido ( AwnBackground*  bg,
   gfloat pad_left = 0.;
   
   /* Get list of widgets */
-  GList *widgets = _get_applet_widgets (bg);
+  gboolean docklet_mode = FALSE;
+  GList *widgets = _get_applet_widgets (bg, &docklet_mode);
   GList *i = widgets;
   GtkWidget *widget = NULL;
   gboolean first_widget_is_special = FALSE;
+  if (i && docklet_mode)
+  {
+    i = i->next;
+  }
   if (i && IS_SPECIAL (i->data))
   {
     first_widget_is_special = TRUE;
@@ -410,41 +420,46 @@ _create_path_lucido ( AwnBackground*  bg,
   /* now we are on y or y2 */
   /* start loop on widgets */
   curx = lx;
-  for (; i; i = i->next)
+  if (!docklet_mode)
   {
-    widget = GTK_WIDGET (i->data);
+    for (; i; i = i->next)
+    {
+      widget = GTK_WIDGET (i->data);
 
-    if (!IS_SPECIAL (widget)) 
-    {
-      /* if not special continue */
-      continue;
-    }         
-    /* special found */
-    switch (position)
-    {
-      case GTK_POS_BOTTOM:
-      case GTK_POS_TOP:
-        curx = widget->allocation.x + pad_left;
-        break;
-      default:
-        curx = widget->allocation.y + pad_left;
-        break;
-    }
-    if ((curx - pad_left) < 0)
-    {
-      continue;
-    }
-    _line_from_to (cr, &lx, &ly, curx, ly);
-    if (ly == y2)
-    {
-      _line_from_to (cr, &lx, &ly, lx + d, y);
-    }
-    else
-    {
-      _line_from_to (cr, &lx, &ly, lx + d, y2);
+      if (!IS_SPECIAL (widget)) 
+      {
+        /* if not special continue */
+        continue;
+      }         
+      /* special found */
+      switch (position)
+      {
+        case GTK_POS_BOTTOM:
+        case GTK_POS_TOP:
+          curx = widget->allocation.x + pad_left;
+          break;
+        default:
+          curx = widget->allocation.y + pad_left;
+          break;
+      }
+      if ((curx - pad_left) < 0)
+      {
+        continue;
+      }
+      _line_from_to (cr, &lx, &ly, curx, ly);
+      if (ly == y2)
+      {
+        _line_from_to (cr, &lx, &ly, lx + d, y);
+      }
+      else
+      {
+        _line_from_to (cr, &lx, &ly, lx + d, y2);
+      }
     }
   }
+
   g_list_free (widgets);
+
   if (expanded)
   {
     /* make sure that cairo close path in the right way */
@@ -744,14 +759,14 @@ _set_special_widget_width_and_transparent (AwnBackground *bg,
                                            gboolean      transp,
                                            gboolean      dispose)
 {
-  GList *widgets = _get_applet_widgets (bg);
+  GList *widgets = _get_applet_widgets (bg, NULL);
   GList *i = widgets;
   GtkWidget *widget = NULL;
 
   if (i && IS_SPECIAL (i->data) && !dispose)
   {
     widget = GTK_WIDGET (i->data);
-    g_object_set (G_OBJECT (widget), "separator-size", 0, NULL);
+    g_object_set (G_OBJECT (widget), "separator-size", 1, NULL);
     g_object_set (G_OBJECT (widget), "transparent", transp, NULL);
     i = i->next;
   }
@@ -783,17 +798,23 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   {
     return TRUE;
   }
-  
+
   /* Check separators positions & sizes changed */
-  GList *widgets = _get_applet_widgets (bg);
+  GList *widgets = _get_applet_widgets (bg, NULL);
   GList *i = widgets;
   GtkWidget *widget = NULL;
-  gint wcheck = 0;
-  gint ncheck = 0;
-  gint pcheck = 0;
-  
+  gint  wcheck = 0,
+        ncheck = 0,
+        pcheck = 0,
+        j = 0;
+
+  if (i && IS_SPECIAL (i->data))
+  {
+    ++ncheck;
+  }
   for (; i; i = i->next)
   {
+    ++j;
     widget = GTK_WIDGET (i->data);
     if (!IS_SPECIAL (widget)) 
     {
@@ -801,35 +822,43 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
       continue;
     }
     ++ncheck;
-    pcheck += ncheck;
+    pcheck += j;
     switch (position)
     {
-      case GTK_POS_BOTTOM:
-      case GTK_POS_TOP:
-        wcheck += (widget->allocation.x * ncheck);
+      case GTK_POS_LEFT:
+      case GTK_POS_RIGHT:
+        wcheck += (widget->allocation.y * ncheck);
         break;
       default:
-        wcheck += (widget->allocation.y * ncheck);
+        wcheck += (widget->allocation.x * ncheck);
         break;
     }
   }
   g_list_free (widgets);
-  
+
   pcheck += _get_applet_manager_size (bg, position);
+
+  AwnBackgroundLucido *lbg = AWN_BACKGROUND_LUCIDO (bg);
+  AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
   
-  AwnBackgroundLucido *lbg = NULL;
-  lbg = AWN_BACKGROUND_LUCIDO (bg);
-  AwnBackgroundLucidoPrivate *priv;
-  priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
   if (priv->expn != ncheck)
   {
+    /* added/removed a "special" widget */
     _set_special_widget_width_and_transparent 
                   (bg, TRANSFORM_RADIUS (bg->corner_radius), TRUE, FALSE);
+
+    priv->expn = ncheck;
+    priv->expp = pcheck;
+    priv->expw = wcheck;
+    /* used to refresh bar */
+    awn_background_emit_changed (bg);
+    return TRUE;
   }
 
   if (priv->expp != pcheck)
   {
     priv->expp = pcheck;
+    priv->expw = wcheck;
     /* used to refresh bar */
     awn_background_emit_changed (bg);
     return TRUE;
