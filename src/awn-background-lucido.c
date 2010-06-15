@@ -294,7 +294,7 @@ _create_path_lucido ( AwnBackground*  bg,
   gfloat ly = y;
   gfloat y3 = y + h;
   gfloat y2 = y3 - 5;
-  gfloat pad_left = 0.;
+  gfloat pad_left = 0.;  
   
   /* Get list of widgets */
   gboolean docklet_mode = FALSE;
@@ -524,28 +524,40 @@ draw_top_bottom_background (AwnBackground*   bg,
 {
   cairo_pattern_t *pat = NULL;
   cairo_pattern_t *pat_hi = NULL;
-  
+
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
-  
+
   gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
-  
+
   /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
-  cairo_translate (cr, 0.5, 0.5);
-  width -= 0.5;
-  height -= 0.5;
-  
+  if (!expand)
+  {
+    /* use only in non-expanded mode */
+    cairo_translate (cr, 0.5, 0.);
+    width -= 0.5;
+  }
+
   if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
   {
     goto paint_lines;
   }
 
+  gfloat x = 0.,
+         y = 0.;
+
+  gfloat panel_angle = bg->panel_angle;
+  gfloat oheight = height;
+  panel_angle = (height - 5.) * panel_angle / 90.;
+  y += panel_angle;
+  height -= panel_angle;
+
   /* create internal path */
-  _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
+  _create_path_lucido (bg, position, cr, x, y, width, height,
                        TRANSFORM_RADIUS (bg->corner_radius),
                        TRANSFORM_RADIUS (bg->corner_radius),
                        1, expand, align);
@@ -565,7 +577,7 @@ draw_top_bottom_background (AwnBackground*   bg,
     cairo_pattern_destroy (pat_hi);
   }
   /* Prepare the hi-light */
-  pat_hi = cairo_pattern_create_linear (0, 0, 0, height);
+  pat_hi = cairo_pattern_create_linear (x, y, 0., oheight);
   awn_cairo_pattern_add_color_stop_color (pat_hi, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat_hi, 0.3, bg->g_histep_2);
   double red, green, blue, alpha;
@@ -573,7 +585,7 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_pattern_add_color_stop_rgba (pat_hi, 0.4, red, green, blue, 0.);
 
   /* Prepare the internal background */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  pat = cairo_pattern_create_linear (x, y, 0., oheight);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->border_color);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->hilight_color);
 
@@ -592,13 +604,12 @@ draw_top_bottom_background (AwnBackground*   bg,
 
   /* Prepare external background gradient*/  
   cairo_pattern_destroy (pat);
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  pat = cairo_pattern_create_linear (x, y, 0., oheight);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
 
-  
   /* create external path */
-  _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
+  _create_path_lucido (bg, position, cr, x, y, width, height,
                        TRANSFORM_RADIUS (bg->corner_radius),
                        TRANSFORM_RADIUS (bg->corner_radius),
                        0, expand, align);
@@ -610,14 +621,14 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_paint (cr);
   cairo_restore (cr);
   cairo_pattern_destroy (pat);
-  
+
   /* Draw the internal hi-light gradient */
   cairo_save (cr);
   cairo_clip (cr);
   cairo_set_source (cr, pat_hi);
   cairo_paint (cr);
   cairo_restore (cr);
-  
+
   cairo_pattern_destroy (pat_hi);
 
   return;
@@ -920,12 +931,20 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   }
   else
   {
-    _create_path_lucido (bg, position, cr, 0, 0., width, height,
+    gfloat xp = 0.,
+           yp = 0.;
+
+    gfloat panel_angle = bg->panel_angle;
+    panel_angle = (height - 10.) * (90. - panel_angle) / 90.;
+    yp += panel_angle;
+    height -= panel_angle;
+
+    _create_path_lucido (bg, position, cr, xp, yp, width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
                          0, expand, align);
     cairo_fill (cr);
-    _create_path_lucido (bg, position, cr, 0, 0., width, height,
+    _create_path_lucido (bg, position, cr, xp, yp, width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
                          1, expand, align);
