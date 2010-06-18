@@ -341,7 +341,7 @@ draw_rect_path (AwnBackground  *bg,
   }
 
   cairo_close_path(cr);
-  /* return Y top (used in highlight pattern) */
+  /* return Y top (used for background) */
   return vertices[8][1];
 }
 
@@ -374,11 +374,12 @@ draw_top_bottom_background (AwnBackground  *bg,
   /* Draw the background */
   cairo_save (cr);
 
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-
   float top_y = draw_rect_path (bg, cr, 0., 0., width, height);
+  top_y = top_y / height;
+
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  awn_cairo_pattern_add_color_stop_color (pat, top_y, bg->g_step_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
 
   cairo_clip_preserve (cr);
   cairo_set_source (cr, pat);
@@ -397,7 +398,6 @@ draw_top_bottom_background (AwnBackground  *bg,
 
 #if DRAW_HIGHLIGHT
   /* Prepare the hi-light */
-  top_y = top_y / height;
   pat = cairo_pattern_create_linear (0., 0., 0., height);
   awn_cairo_pattern_add_color_stop_color
                         (pat, top_y + 0.0, bg->g_histep_1);
@@ -419,7 +419,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 
 #if DRAW_INTERNAL_BORDER
   /* Internal border (Large) */
-  cairo_set_line_width (cr, 4);
+  cairo_set_line_width (cr, 4.);
   awn_cairo_set_source_color (cr, bg->hilight_color);
 #if DRAW_EXTERNAL_BORDER
   cairo_stroke_preserve (cr);
@@ -430,7 +430,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 
 #if DRAW_EXTERNAL_BORDER
   /* External border (Thin) */
-  cairo_set_line_width (cr, 1.0);
+  cairo_set_line_width (cr, 2.);
   awn_cairo_set_source_color (cr, bg->border_color);
   cairo_stroke (cr);
 #endif

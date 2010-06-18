@@ -1,3 +1,9 @@
+avant-window-navigator-trunk (0.4.1~bzr711-1.10.04+albyrock87-729) lucid; urgency=low
+
+  * Rewrite of 3D Style. Now more beauty and customizable.
+
+ -- Alberto Aldegheri <albyrock87+dev@gmail.com>  Sat, 19 Jun 2010 01:09:20 +0100
+
 avant-window-navigator-trunk (0.4.1~bzr711-1.10.04+albyrock87-728) lucid; urgency=low
 
   * Lot of draw bugfixes
