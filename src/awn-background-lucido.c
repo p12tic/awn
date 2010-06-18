@@ -935,7 +935,7 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
            yp = 0.;
 
     gfloat panel_angle = bg->panel_angle;
-    panel_angle = (height - 10.) * (90. - panel_angle) / 90.;
+    panel_angle = (height - 5.) * panel_angle / 90.;
     yp += panel_angle;
     height -= panel_angle;
 
