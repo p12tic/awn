@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  Author : Anthony Arobone <aarobone@gmail.com>
+ *           Alberto Aldegheri <albyrock87+dev@gmail.com>
  *           (awn_cairo_rounded_rect)
  *  Author : Mark Lee <avant-wn@lazymalevolence.com>
  *           (awn_cairo_set_source_color,
