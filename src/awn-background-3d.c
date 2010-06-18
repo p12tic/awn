@@ -83,6 +83,10 @@ awn_background_3d_constructed (GObject *object)
   g_signal_connect (bg, "notify::panel-angle", 
                     G_CALLBACK (awn_background_3d_update_padding), 
                     NULL);
+
+  g_signal_connect (bg, "notify::corner-radius", 
+                    G_CALLBACK (awn_background_3d_update_padding), 
+                    NULL);
 }
 
 static void
@@ -182,11 +186,13 @@ apply_perspective_x( double width, double angle, double x, double y )
  *
  * Returns: a double containing the width
  */
+/* NOT USED
 static double
 get_width_on_height( double width, double angle, double y )
 {
 		return width-2*y/tan((90-angle)*M_PI/180);
 }
+*/
 
 /**
  * cubic_bezier_curve:
@@ -385,10 +391,22 @@ draw_top_bottom_background (AwnBackground  *bg,
 
 #if DEBUG_DRAW_HIGHLIGHT
   /* Draw the hi-light (on the top) */
-  pat = cairo_pattern_create_linear (0, height/3.0, 0, height*2.0/3.0);
+  /* Draw the hi-light (on the top) */
+  pat = cairo_pattern_create_linear (0, 0., 0, height);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.50, bg->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.75, bg->g_histep_2);
+  double red, green, blue, alpha;
+  desktop_agnostic_color_get_cairo_color (bg->g_histep_2, &red, &green, &blue, &alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 0.80, red, green, blue, 0.);
+
+  draw_rect_path (bg, cr, 0, 0, width, height, 0.5);
+
+  /* OLD CODE */
+  /*pat = cairo_pattern_create_linear (0, height/3.0, 0, height*2.0/3.0);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
   draw_rect_path (bg, cr, apply_perspective_x(width, bg->panel_angle, 0, height/3.0), height/3.0, get_width_on_height(width, bg->panel_angle, height/3.0), height/3.0, 1.5);
+  */
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);

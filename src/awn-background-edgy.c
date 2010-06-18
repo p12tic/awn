@@ -498,55 +498,24 @@ awn_background_edgy_prepare_context (AwnBackgroundEdgy *bg,
 }
 
 static void 
-chain_draw (AwnBackground  *bg,
-            cairo_t        *cr, 
-            GtkPositionType  position,
-            GdkRectangle   *area)
-{
-  cairo_save (cr);
-
-  if (AWN_BACKGROUND_EDGY (bg)->priv->in_corner)
-  {
-    /* we need to clip the drawing area of flat background */
-    gint width, height;
-
-    gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
-    gboolean bottom_left = align == 0.0;
-
-    cairo_rectangle (cr, area->x, area->y, area->width, area->height);
-
-    /* init our context - translate, rotate.. */
-    awn_background_edgy_prepare_context (AWN_BACKGROUND_EDGY (bg), cr,
-                                         position, area, &width, &height);
-
-    cairo_move_to (cr, bottom_left ? 0.0 : width, height);
-    draw_path (cr, height - 1.0, width, height, bottom_left);
-    cairo_line_to (cr, bottom_left ? 0.0 : width, height);
-
-    cairo_set_fill_rule (cr, CAIRO_FILL_RULE_EVEN_ODD);
-    cairo_clip (cr);
-
-    /* prepare context for base class call */
-    cairo_identity_matrix (cr);
-    cairo_set_fill_rule (cr, CAIRO_FILL_RULE_WINDING);
-
-    awn_background_edgy_translate_for_flat (bg, position, area);
-  }
-
-  AWN_BACKGROUND_CLASS (awn_background_edgy_parent_class)-> draw (
-    bg, cr, position, area);
-
-  cairo_restore (cr);
-}
-
-static void 
 awn_background_edgy_draw (AwnBackground  *bg,
                           cairo_t        *cr, 
                           GtkPositionType  position,
                           GdkRectangle   *area)
 {
   const gboolean in_corner = AWN_BACKGROUND_EDGY (bg)->priv->in_corner;
-  gint base_size = area->width;
+
+  GdkRectangle *areaf = (GdkRectangle *) malloc (sizeof(GdkRectangle));
+  memcpy (areaf, area, sizeof(GdkRectangle));
+
+  if (in_corner)
+  {
+    awn_background_edgy_translate_for_flat (bg, position, areaf);
+  } 
+  AWN_BACKGROUND_CLASS (awn_background_edgy_parent_class)-> draw (
+    bg, cr, position, areaf);
+
+  free (areaf);
 
   if (in_corner)
   {
@@ -554,19 +523,14 @@ awn_background_edgy_draw (AwnBackground  *bg,
 
     cairo_save (cr);
 
-    /* init our context - translate, rotate.. */
+    // init our context - translate, rotate..
     awn_background_edgy_prepare_context (AWN_BACKGROUND_EDGY (bg),
                                          cr, position, area, &width, &height);
 
     draw_top_bottom_background (bg, cr, width, height);
 
     cairo_restore (cr);
-
-    base_size = width;
   }
-
-  if (!in_corner || base_size > AWN_BACKGROUND_EDGY (bg)->priv->radius * 4/3)
-    chain_draw (bg, cr, position, area);
 }
 
 static void 
