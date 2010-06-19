@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-04 16:33+0200\n"
-"PO-Revision-Date: 2010-06-07 20:59+0000\n"
+"PO-Revision-Date: 2010-06-18 20:56+0000\n"
 "Last-Translator: Gabor Karsay <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-06-08 03:41+0000\n"
+"X-Launchpad-Export-Date: 2010-06-19 03:51+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -434,7 +434,7 @@ msgstr "Art des Pfeils"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Achtung-Animation:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
@@ -458,7 +458,7 @@ msgstr "Durchklicken"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
-msgstr ""
+msgstr "Schließen-Animation:"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Configured Effects"
@@ -543,7 +543,7 @@ msgstr "Glanzlicht erste Farbe"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "Abstand beim »schwebenden« Panel-Stil"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
@@ -611,7 +611,7 @@ msgstr "Installieren …"
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "Start-Animation:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
@@ -643,7 +643,7 @@ msgstr "Versatz"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr ""
+msgstr "Öffnen-Animation:"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
@@ -712,7 +712,7 @@ msgstr "Alle Fenster zeigen"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr "Nach langem Klick Dialog zeigen"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
@@ -1107,11 +1107,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "Hintergrundfarbe des Titels von AwnDialog."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "Hintergrundfarbe von AwnDialog."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Background color of the tooltip"
@@ -1242,6 +1242,7 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
+"Deckkraft der Spiegelung als Multiplikator der Deckkraft des Symbols."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
@@ -1257,11 +1258,11 @@ msgstr "Farbe der Trennlinie."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Bei Symbolen einen Schatten zeigen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
-msgstr ""
+msgstr "Die aktive Liste der UA Screenlets für dieses Panel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
@@ -1288,12 +1289,16 @@ msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
+"Die Liste der UA Screenlets, die zuvor in Form von "
+"»ScreenletInstance::Position« hinzugefügt worden sind."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
+"Die Liste der Applets für dieses Panel, geordnet von links nach rechts oder "
+"von oben nach unten."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
@@ -1301,23 +1306,23 @@ msgstr "Die Liste der Panelinstanzen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
-msgstr ""
+msgstr "Der Pfad des Musters, das gezeichnet wird."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Der Abstand zwischen dem Symbol und seiner Spiegelung"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
-msgstr ""
+msgstr "Abstand beim »schwebenden« Panel-Stil."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "Die Deckkraft der Symbole – Wertebereich zwischen 0,0 und 1,0"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Die Deckkraft des Musters."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid "The symmetry of the curve in Curves mode."
@@ -1329,15 +1334,17 @@ msgstr "Die für den Benutzer sichtbare Größe von Awn."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The width of the stripe in Lucido mode."
-msgstr ""
+msgstr "Die Breite des Streifens im Panel-Stil »Lucido«."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
+"Zeit in Millisekunden, nach deren Ablauf AwnIcon ein »long-press«-Signal\" "
+"abgibt."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
+msgstr "Bestimmt, ob AwnDialog die Farben des GTK-Themas benutzen soll."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether to close dialogs on loss of focus."
@@ -1347,13 +1354,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgstr "Bestimmt, ob Farben des aktuellen GTK-Themas benutzt werden sollen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
+"Breite der Symboltextkontur, wenn der Konturmodus eingeschaltet ist. "
+"Empfohlene Werte: 1,0 – 5,0."
 
 #: ../data/awn-themed-icon.ui.h:1
 msgid ""
@@ -1378,7 +1387,7 @@ msgstr "Symbole"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Benutzerdefiniertes Symbol wählen"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
