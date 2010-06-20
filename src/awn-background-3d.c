@@ -574,10 +574,7 @@ awn_background_3d_padding_request (AwnBackground *bg,
     padding_from_rad = ( h - padding_from_rad );
   }
   /* Use biggest padding */
-  if (padding_from_rad > padding)
-  {
-    padding = padding_from_rad;
-  }
+  padding += padding_from_rad;
 
   switch (position)
   {
