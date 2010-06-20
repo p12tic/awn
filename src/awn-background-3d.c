@@ -35,9 +35,12 @@
 #define PADDING_BOTTOM 1
 
 /* Some defines for debugging */
-#define DRAW_INTERNAL_BORDER            TRUE
+#define DRAW_SIDE                       TRUE
 #define DRAW_EXTERNAL_BORDER            TRUE
 #define DRAW_HIGHLIGHT                  TRUE
+#define CLEAR_TOP_BEFORE_PAINT          FALSE
+#define FILL_BOTTOM_PLANE               FALSE
+
 
 #define DEBUG_DRAW_INPUT_SHAPE_MASK           FALSE
 
@@ -389,9 +392,10 @@ draw_top_bottom_background (AwnBackground  *bg,
   /* calc the y coord of the top panel, used for pattern painting */
   float top_y = vertices[8].y;
 
+  double red, green, blue, alpha;
   /* Save general context */
   cairo_save (cr);
-#if DRAW_INTERNAL_BORDER
+#if DRAW_SIDE
   /* Internal border (The Side of the 3D panel) */
   /* Draw only if it will be visible */
   float s = sin ((bg->panel_angle - 1) * M_PI / 180.) * SIDE_SPACE;
@@ -400,55 +404,57 @@ draw_top_bottom_background (AwnBackground  *bg,
     float i;
 
     /* calc points on a wider space (for good looking) */
-    Point3 *vertices_internal = calc_points (bg, -0.5, 0., width + 1., height);
+    Point3 *vertices_internal = calc_points (bg, 0., 0., width + 0., height);
     /* Draw bottom plane (Inner Border Color) with
      * its own border (Outer Border Color)
      */
-    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-    draw_rect_path (cr, vertices_internal, ceil(s));
-    cairo_save (cr);
-    awn_cairo_set_source_color (cr, bg->hilight_color);
-    cairo_clip_preserve (cr);
-    cairo_paint (cr);
-    cairo_set_line_width (cr, 3.);
-    awn_cairo_set_source_color (cr, bg->border_color);
-    cairo_stroke (cr);
-    cairo_set_line_width (cr, 1.0);
-    cairo_restore (cr);
-
-    /* Pixel per Pixel draw each plane only with border from bottom to top */
-    cairo_set_line_width (cr, 3.);
-    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-    for (i = floor (s); i > 0. ; i -= 1.)
+    desktop_agnostic_color_get_cairo_color
+                        (bg->hilight_color, &red, &green, &blue, &alpha);
+    /* if side is transparent (1. / 255.), don't draw bottom border */
+    if (alpha > 0.003)
     {
+      cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+      draw_rect_path (cr, vertices_internal, ceil(s));
+#if FILL_BOTTOM_PLANE
       cairo_save (cr);
-      draw_rect_path (cr, vertices_internal, i);
-      /* fill with bottom plane's color */
-      /* -> disabled for now...
       awn_cairo_set_source_color (cr, bg->hilight_color);
-      cairo_clip (cr);
+      cairo_clip_preserve (cr);
       cairo_paint (cr);
-      */
+      cairo_restore (cr);
+#endif
+      cairo_set_line_width (cr, 2.);
       awn_cairo_set_source_color (cr, bg->border_color);
       cairo_stroke (cr);
-      cairo_restore (cr);
+      cairo_set_line_width (cr, 1.0);
+
+      /* Pixel per Pixel draw each plane only with border from bottom to top */
+      cairo_set_line_width (cr, 1.5);
+      cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+      for (i = floor (s); i >= 0. ; i -= 1.)
+      {
+        draw_rect_path (cr, vertices_internal, i);
+        awn_cairo_set_source_color (cr, bg->hilight_color);
+        cairo_stroke (cr);
+      }
     }
     /* Clear the area for the top plane
      *-> hides "back border" when top is transparent
      *-> disabled for now...
      */
-    /*cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+#if CLEAR_TOP_BEFORE_PAINT
+    cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
     draw_rect_path (cr, vertices, 0.);
     cairo_save (cr);
     cairo_set_source_rgba (cr, 0., 0., 0., 1.);
     cairo_clip_preserve (cr);
     cairo_paint (cr);
-    cairo_restore (cr);/**/
-
+    cairo_restore (cr);
+#endif
     free (vertices_internal);
   }
 #endif
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_set_line_width (cr, 2.);
   /* Draw the path of top plane */
   draw_rect_path (cr, vertices, 0.);
   /* obtain 0.0 - 1.0 relative height for pattern drawing */
@@ -485,7 +491,7 @@ draw_top_bottom_background (AwnBackground  *bg,
                         (pat, top_y + 0.0, bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color
                         (pat, top_y + (1. - top_y) * 0.3, bg->g_histep_2);
-  double red, green, blue, alpha;
+
   desktop_agnostic_color_get_cairo_color
                         (bg->g_histep_2, &red, &green, &blue, &alpha);
   cairo_pattern_add_color_stop_rgba
@@ -500,7 +506,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 #endif
 #if DRAW_EXTERNAL_BORDER
   /* External border (Thin) */
-  cairo_set_line_width (cr, 1.);
+  cairo_set_line_width (cr, 1.5);
   awn_cairo_set_source_color (cr, bg->border_color);
   cairo_stroke (cr);
 #endif
