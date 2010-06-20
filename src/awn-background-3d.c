@@ -380,7 +380,6 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
-  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   /* Translate for sharp edges and for avoid drawing glitches */
   cairo_translate (cr, 1.5, 0.);
   width -= 2.5;
@@ -396,45 +395,57 @@ draw_top_bottom_background (AwnBackground  *bg,
   /* Internal border (The Side of the 3D panel) */
   /* Draw only if it will be visible */
   float s = sin ((bg->panel_angle - 1) * M_PI / 180.) * SIDE_SPACE;
-  if (bg->floaty_offset > floor (s) && bg->panel_angle > 0)
+  if (bg->panel_angle > 0)
   {
     float i;
 
     /* calc points on a wider space (for good looking) */
     Point3 *vertices_internal = calc_points (bg, -0.5, 0., width + 1., height);
-
-    /* Draw bottom plane with its own border (Inner Border Color)  */
+    /* Draw bottom plane (Inner Border Color) with
+     * its own border (Outer Border Color)
+     */
+    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
     draw_rect_path (cr, vertices_internal, ceil(s));
     cairo_save (cr);
-    awn_cairo_set_source_color (cr, bg->g_step_2);
+    awn_cairo_set_source_color (cr, bg->hilight_color);
     cairo_clip_preserve (cr);
     cairo_paint (cr);
     cairo_set_line_width (cr, 3.);
-    awn_cairo_set_source_color (cr, bg->hilight_color);
+    awn_cairo_set_source_color (cr, bg->border_color);
     cairo_stroke (cr);
     cairo_set_line_width (cr, 1.0);
     cairo_restore (cr);
 
-    /* Pixel per Pixel draw each plane without border from bottom to top */
+    /* Pixel per Pixel draw each plane only with border from bottom to top */
+    cairo_set_line_width (cr, 3.);
+    cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
     for (i = floor (s); i > 0. ; i -= 1.)
     {
-      draw_rect_path (cr, vertices_internal, i);
       cairo_save (cr);
-      awn_cairo_set_source_color (cr, bg->g_step_2);
+      draw_rect_path (cr, vertices_internal, i);
+      /* fill with bottom plane's color */
+      /* -> disabled for now...
+      awn_cairo_set_source_color (cr, bg->hilight_color);
       cairo_clip (cr);
       cairo_paint (cr);
+      */
+      awn_cairo_set_source_color (cr, bg->border_color);
+      cairo_stroke (cr);
       cairo_restore (cr);
     }
-    free (vertices_internal);
-
-    /* Clear the area for the top plane*/
-    cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+    /* Clear the area for the top plane
+     *-> hides "back border" when top is transparent
+     *-> disabled for now...
+     */
+    /*cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
     draw_rect_path (cr, vertices, 0.);
     cairo_save (cr);
     cairo_set_source_rgba (cr, 0., 0., 0., 1.);
     cairo_clip_preserve (cr);
     cairo_paint (cr);
-    cairo_restore (cr);
+    cairo_restore (cr);/**/
+
+    free (vertices_internal);
   }
 #endif
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
@@ -555,11 +566,11 @@ awn_background_3d_padding_request (AwnBackground *bg,
   float w,h;
   _get_applet_manager_size (bg, position, &w, &h);
   padding = apply_perspective_x
-                      ( w, TRANSFORM_RADIUS(bg->panel_angle), 0., h ) / 2.;
-  /* Padding > h/2 is not needed */
-  if (padding > h / 2.)
+                      ( w, TRANSFORM_RADIUS(bg->panel_angle), 0., h );
+  /* Padding > h is not needed */
+  if (padding > h)
   {
-    padding = h / 2.;
+    padding = h;
   }
 
   /* Obtain the padding from corner radius */
@@ -573,7 +584,7 @@ awn_background_3d_padding_request (AwnBackground *bg,
   {
     padding_from_rad = ( h - padding_from_rad );
   }
-  /* Use biggest padding */
+  /* Sum padding needed */
   padding += padding_from_rad;
 
   switch (position)
