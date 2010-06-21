@@ -87,7 +87,7 @@ awn_background_lucido_corner_radius_changed (AwnBackground *bg)
                                         TRANSFORM_RADIUS (bg->corner_radius),
                                         TRUE,
                                         FALSE);
-  
+
   if (!expand)
   {
     awn_background_emit_padding_changed (bg);
@@ -110,17 +110,17 @@ static void
 awn_background_lucido_constructed (GObject *object)
 {
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->constructed (object);
-  
+
   AwnBackground *bg = AWN_BACKGROUND (object);
   gpointer monitor = NULL;
-  
+
   g_signal_connect_swapped (bg, "notify::corner-radius",
                             G_CALLBACK (
                             awn_background_lucido_corner_radius_changed),
                             object);
 
   g_return_if_fail (bg->panel);
-  
+
   g_signal_connect_swapped (bg->panel, "notify::expand",
                             G_CALLBACK (awn_background_lucido_expand_changed),
                             object);
@@ -225,7 +225,7 @@ _get_applet_widgets (AwnBackground* bg, gboolean *docklet_mode)
 {
   AwnAppletManager *manager = NULL;
   g_object_get (bg->panel, "applet-manager", &manager, NULL);
-  
+
   if (docklet_mode)
   {
     *docklet_mode = awn_applet_manager_get_docklet_mode (manager);
@@ -295,7 +295,7 @@ _create_path_lucido ( AwnBackground*  bg,
   gfloat y3 = y + h;
   gfloat y2 = y3 - 5;
   gfloat pad_left = 0.;  
-  
+
   /* Get list of widgets */
   gboolean docklet_mode = FALSE;
   GList *widgets = _get_applet_widgets (bg, &docklet_mode);
@@ -310,11 +310,11 @@ _create_path_lucido ( AwnBackground*  bg,
   {
     first_widget_is_special = TRUE;
   }
-  
+
   /* We start from left */
   ly = y3;
   cairo_move_to (cr, lx, ly);
-  
+
   if (expanded)
   {
     pad_left = lx + (w - _get_applet_manager_size (bg, position)) * align;
@@ -512,7 +512,6 @@ _create_path_lucido ( AwnBackground*  bg,
     }
   }
   cairo_close_path (cr);
-
 }
 
 static void
@@ -560,7 +559,7 @@ draw_top_bottom_background (AwnBackground*   bg,
   _create_path_lucido (bg, position, cr, x, y, width, height,
                        TRANSFORM_RADIUS (bg->corner_radius),
                        TRANSFORM_RADIUS (bg->corner_radius),
-                       1, expand, align);
+                       TRUE, expand, align);
 
   /* Draw internal pattern if needed */
   if (bg->enable_pattern && bg->pattern)
@@ -612,8 +611,8 @@ draw_top_bottom_background (AwnBackground*   bg,
   _create_path_lucido (bg, position, cr, x, y, width, height,
                        TRANSFORM_RADIUS (bg->corner_radius),
                        TRANSFORM_RADIUS (bg->corner_radius),
-                       0, expand, align);
-                       
+                       FALSE, expand, align);
+
   /* Draw the external background  */
   cairo_save (cr);
   cairo_clip_preserve (cr);
@@ -639,12 +638,12 @@ paint_lines:
   {
     /* Internal border */
     awn_cairo_set_source_color (cr, bg->hilight_color);
-    cairo_rectangle (cr, 1, 1, width - 3, height + 3);
+    cairo_rectangle (cr, 1., 1., width - 3., height + 3.);
     cairo_stroke (cr);
 
     /* External border */    
     awn_cairo_set_source_color (cr, bg->border_color);
-    cairo_rectangle (cr, 1, 1, width - 1, height + 3);
+    cairo_rectangle (cr, 1., 1., width - 1., height + 3.);
   }
   else
   {
@@ -652,13 +651,13 @@ paint_lines:
     _create_path_lucido (bg, position, cr, 0., 0., width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         0, expand, align);
+                         FALSE, expand, align);
     cairo_stroke (cr);
     awn_cairo_set_source_color (cr, bg->hilight_color);
     _create_path_lucido (bg, position, cr, 1., 1., width-1., height-1.,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         0, expand, align);
+                         FALSE, expand, align);
   }
   cairo_stroke (cr);
 }
@@ -758,9 +757,9 @@ awn_background_lucido_draw (AwnBackground  *bg,
       cairo_translate (cr, x, y);
       break;
   }
-  
+
   draw_top_bottom_background (bg, position, cr, width, height);
-  
+
   cairo_restore (cr);
 }
 
@@ -851,7 +850,7 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
 
   AwnBackgroundLucido *lbg = AWN_BACKGROUND_LUCIDO (bg);
   AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
-  
+
   if (priv->expn != ncheck)
   {
     /* added/removed a "special" widget */
@@ -927,7 +926,7 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   }
   if (expand)
   {
-    cairo_rectangle (cr, 0, 0, width, height + 2);
+    cairo_rectangle (cr, 0., 0., width, height + 2.);
   }
   else
   {
@@ -942,12 +941,12 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
     _create_path_lucido (bg, position, cr, xp, yp, width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         0, expand, align);
+                         FALSE, expand, align);
     cairo_fill (cr);
     _create_path_lucido (bg, position, cr, xp, yp, width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         1, expand, align);
+                         TRUE, expand, align);
 
   }
   cairo_fill (cr);

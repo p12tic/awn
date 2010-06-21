@@ -403,8 +403,6 @@ draw_top_bottom_background (AwnBackground  *bg,
   {
     float i;
 
-    /* calc points on a wider space (for good looking) */
-    Point3 *vertices_internal = calc_points (bg, 0., 0., width + 0., height);
     /* Draw bottom plane (Inner Border Color) with
      * its own border (Outer Border Color)
      */
@@ -414,11 +412,11 @@ draw_top_bottom_background (AwnBackground  *bg,
     if (alpha > 0.003)
     {
       cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-      draw_rect_path (cr, vertices_internal, ceil(s));
+      draw_rect_path (cr, vertices, ceil(s));
 #if FILL_BOTTOM_PLANE
       cairo_save (cr);
       awn_cairo_set_source_color (cr, bg->hilight_color);
-      cairo_clip_preserve (cr);
+      cairo_clip (cr);
       cairo_paint (cr);
       cairo_restore (cr);
 #endif
@@ -432,7 +430,7 @@ draw_top_bottom_background (AwnBackground  *bg,
       cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
       for (i = floor (s); i >= 0. ; i -= 1.)
       {
-        draw_rect_path (cr, vertices_internal, i);
+        draw_rect_path (cr, vertices, i);
         awn_cairo_set_source_color (cr, bg->hilight_color);
         cairo_stroke (cr);
       }
@@ -446,11 +444,10 @@ draw_top_bottom_background (AwnBackground  *bg,
     draw_rect_path (cr, vertices, 0.);
     cairo_save (cr);
     cairo_set_source_rgba (cr, 0., 0., 0., 1.);
-    cairo_clip_preserve (cr);
+    cairo_clip (cr);
     cairo_paint (cr);
     cairo_restore (cr);
 #endif
-    free (vertices_internal);
   }
 #endif
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
@@ -461,7 +458,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   top_y = top_y / height;
 
   /* Paint the top plane gradient */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
+  pat = cairo_pattern_create_linear (0., 0., 0., height);
   awn_cairo_pattern_add_color_stop_color (pat, top_y, bg->g_step_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
   cairo_save (cr);
@@ -736,7 +733,7 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
   width -= 1.5;
 
   /* Draw the background (in black color) */
-  cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
+  cairo_set_source_rgba(cr, 0., 0., 0., 1.);
   /* for shape mask draw only top and bottom plane */
   Point3 *vertices = calc_points (bg, 0., 0., width, height);
   draw_rect_path (cr, vertices, 0.);
