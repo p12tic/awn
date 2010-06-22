@@ -31,8 +31,9 @@
 #include "awn-applet-manager.h"
 
 /* The pixels to draw the side of the panel INTEGER*/
-#define SIDE_SPACE 8
+#define SIDE_SPACE 7
 #define PADDING_BOTTOM 1
+#define PADDING_TOP 1
 
 /* Some defines for debugging */
 #define DRAW_SIDE                       TRUE
@@ -593,20 +594,24 @@ awn_background_3d_padding_request (AwnBackground *bg,
   switch (position)
   {
     case GTK_POS_TOP:
-      *padding_top  = PADDING_BOTTOM + bg->floaty_offset; *padding_bottom = 0;
+      *padding_top  = PADDING_BOTTOM + bg->floaty_offset;
+      *padding_bottom = PADDING_TOP;
       *padding_left = padding; *padding_right = padding;
       break;
     case GTK_POS_BOTTOM:
-      *padding_top  = 0; *padding_bottom = PADDING_BOTTOM + bg->floaty_offset;
+      *padding_top  = PADDING_TOP;
+      *padding_bottom = PADDING_BOTTOM + bg->floaty_offset;
       *padding_left = padding; *padding_right = padding;
       break;
     case GTK_POS_LEFT:
       *padding_top  = padding; *padding_bottom = padding;
-      *padding_left = PADDING_BOTTOM + bg->floaty_offset; *padding_right = 0;
+      *padding_left = PADDING_BOTTOM + bg->floaty_offset;
+      *padding_right = PADDING_TOP;
       break;
     case GTK_POS_RIGHT:
       *padding_top  = padding; *padding_bottom = padding;
-      *padding_left = 0; *padding_right = PADDING_BOTTOM + bg->floaty_offset;
+      *padding_left = PADDING_TOP;
+      *padding_right = PADDING_BOTTOM + bg->floaty_offset;
       break;
     default:
       break;
