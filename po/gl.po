@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-04 16:33+0200\n"
-"PO-Revision-Date: 2010-06-23 07:20+0000\n"
+"PO-Revision-Date: 2010-06-24 11:03+0000\n"
 "Last-Translator: Xose M <Unknown>\n"
 "Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-06-24 03:47+0000\n"
+"X-Launchpad-Export-Date: 2010-06-25 03:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -231,6 +231,8 @@ msgstr "Non se puideron abrir as configuracións de Awn: %s"
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
+"Miniaplicativo utilizado para administrar o entallado e iniciar o control de "
+"preferencias de Awn."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -335,11 +337,11 @@ msgstr "Ángulo 3D"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Miniaplicativos Activos</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Miniaplicativos dispoñibles</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
@@ -533,7 +535,7 @@ msgstr "Primeira cor de resaltado"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "Separación en modo Flotante"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
@@ -549,7 +551,7 @@ msgstr "Modo da fonte"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Cor do borde da letra."
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
@@ -605,7 +607,7 @@ msgstr "Lanzar animacións:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "Forza da coincidencia"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
@@ -849,12 +851,12 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Non se atopou ningún deses iconos: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Non se atopou o seguinte icono: %s\n"
 
 #: ../awn-settings/awnClass.py:1067
 msgid "AWN has been successfully refreshed"
@@ -950,7 +952,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
-msgstr ""
+msgstr "Tipo de panel"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
@@ -1205,11 +1207,11 @@ msgstr "Camiño ó arquivo do decorado actual do escritorio."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Camiño ó png que contén o fondo do icono activo."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Camiño ó png que contén o icono da flecha."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
@@ -1284,7 +1286,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
-msgstr ""
+msgstr "A separación do fondo no modo Flotante."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
@@ -1292,7 +1294,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "A opacidade do patrón."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid "The symmetry of the curve in Curves mode."
@@ -1300,7 +1302,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The user-visible size of Awn."
-msgstr ""
+msgstr "O tamaño de Awn visible polo usuario."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The width of the stripe in Lucido mode."
@@ -1309,6 +1311,7 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
+"Tempo en ms tralo que AwnIcon emitirá o sinal de pulsación prolongada."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Whether AwnDialog should use Gtk theme colors."
@@ -1338,12 +1341,12 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "Personaliza o Miniaplicativo"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
 msgid "About %s"
-msgstr ""
+msgstr "Acerca de %s"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
