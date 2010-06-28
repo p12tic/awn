@@ -31,18 +31,26 @@
 #include "awn-applet-manager.h"
 
 /* The pixels to draw the side of the panel INTEGER*/
-#define SIDE_SPACE 7
+#define SIDE_SPACE 5
 #define PADDING_BOTTOM 1
 #define PADDING_TOP 1
+#define BORDER_LINE_WIDTH 1
+
+/* There is a refresh bug when we are near the left border */
+#define DRAW_XPADDING 2
 
 /* Some defines for debugging */
 #define DRAW_SIDE                       TRUE
 #define DRAW_EXTERNAL_BORDER            TRUE
+/* Internal border isn't good-looking for now */
+/* We need another color, because Inner Border Color */
+/* is used for paint the side face of 3D */
+#define DRAW_INTERNAL_BORDER            FALSE
 #define DRAW_HIGHLIGHT                  TRUE
 #define CLEAR_TOP_BEFORE_PAINT          FALSE
 #define FILL_BOTTOM_PLANE               FALSE
 
-
+/* Enable this for paint the shape mask */
 #define DEBUG_DRAW_INPUT_SHAPE_MASK           FALSE
 
 #define TRANSFORM_RADIUS(x) (x / 90. * 75)
@@ -192,7 +200,7 @@ awn_background_3d_update_padding (AwnBackground *bg)
 static double
 apply_perspective_x( double width, double angle, double x, double y )
 {
-		return (width/2.0-x)/(width/2.0*tan((90-angle)*M_PI/180))*y+x;
+		return (width/2.0-x)/(width/2.0*tan((90-angle)*M_PI/180)*1.5)*y+x;
 }
 
 /**
@@ -318,8 +326,8 @@ calc_points (AwnBackground  *bg,
                                          TRANSFORM_RADIUS(bg->panel_angle),
                                          vertices[i].x,
                                          vertices[i].y ) + x;
-    /* Invert coordinates for our Y coordinate system */
-    vertices[i].y = height - vertices[i].y + y;
+    /* Invert coordinates for our Y coordinate system cutted to int */
+    vertices[i].y = floor (height - vertices[i].y + y);
   }
   /* use vertices[8]->y to find the top coordinate of the panel */
   return vertices;
@@ -385,8 +393,8 @@ draw_top_bottom_background (AwnBackground  *bg,
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   /* Translate for sharp edges and for avoid drawing glitches */
-  cairo_translate (cr, 1.5, 0.);
-  width -= 2.5;
+  cairo_translate (cr, DRAW_XPADDING, 0.5);
+  width -= DRAW_XPADDING * 2.;
 
   /* calc vertices for draw the main path */
   Point3 *vertices = calc_points (bg, 0., 0., width, height);
@@ -413,7 +421,7 @@ draw_top_bottom_background (AwnBackground  *bg,
     if (alpha > 0.003)
     {
       cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-      draw_rect_path (cr, vertices, ceil(s));
+      draw_rect_path (cr, vertices, floor(s) + 1.);
 #if FILL_BOTTOM_PLANE
       cairo_save (cr);
       awn_cairo_set_source_color (cr, bg->hilight_color);
@@ -421,10 +429,9 @@ draw_top_bottom_background (AwnBackground  *bg,
       cairo_paint (cr);
       cairo_restore (cr);
 #endif
-      cairo_set_line_width (cr, 2.);
+      cairo_set_line_width (cr, BORDER_LINE_WIDTH);
       awn_cairo_set_source_color (cr, bg->border_color);
       cairo_stroke (cr);
-      cairo_set_line_width (cr, 1.0);
 
       /* Pixel per Pixel draw each plane only with border from bottom to top */
       cairo_set_line_width (cr, 1.5);
@@ -433,6 +440,25 @@ draw_top_bottom_background (AwnBackground  *bg,
       {
         draw_rect_path (cr, vertices, i);
         awn_cairo_set_source_color (cr, bg->hilight_color);
+        cairo_stroke (cr);
+      }
+      /* draw edges lines if 0 <= corner-radius <= 3 */
+      if (bg->corner_radius < 4)
+      {
+        cairo_move_to (cr, vertices[0].x, vertices[0].y);
+        cairo_line_to (cr, vertices[0].x, vertices[0].y + floor(s) + 1.);
+        cairo_move_to (cr, vertices[3].x, vertices[3].y);
+        cairo_line_to (cr, vertices[3].x, vertices[3].y + floor(s) + 1.);
+        cairo_move_to (cr, vertices[6].x, vertices[6].y);
+        cairo_line_to (cr, vertices[6].x, vertices[6].y + floor(s) + 1.);
+        cairo_move_to (cr, vertices[9].x, vertices[9].y);
+        cairo_line_to (cr, vertices[9].x, vertices[9].y + floor(s) + 1.);
+        cairo_set_line_width (cr, BORDER_LINE_WIDTH);
+        desktop_agnostic_color_get_cairo_color
+                        (bg->border_color, &red, &green, &blue, &alpha);
+        /* edges fade effect when increasing the corner radius from 0 to 3 */
+        cairo_set_source_rgba (cr, red, green, blue, 
+                               alpha * (1.0 - bg->corner_radius / 3.));
         cairo_stroke (cr);
       }
     }
@@ -502,9 +528,27 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_restore (cr);
   cairo_pattern_destroy (pat);
 #endif
+#if DRAW_INTERNAL_BORDER
+  /* Internal border of the top surface */
+  desktop_agnostic_color_get_cairo_color
+                        (bg->border_color, &red, &green, &blue, &alpha);
+  /* for glass-look don't draw internal border if there is no external border */
+  if (alpha > 0.003)
+  {
+    cairo_save (cr);
+    cairo_scale (cr, (width - 2.) / (width), (height - 2.) / (height));
+    cairo_translate (cr, 1., 1.);
+    draw_rect_path (cr, vertices, 0.);
+    cairo_set_line_width (cr, BORDER_LINE_WIDTH + 0.5);
+    awn_cairo_set_source_color (cr, bg->hilight_color);
+    cairo_stroke (cr);
+    cairo_restore (cr);
+    draw_rect_path (cr, vertices, 0.);
+  }
+#endif
 #if DRAW_EXTERNAL_BORDER
-  /* External border (Thin) */
-  cairo_set_line_width (cr, 1.5);
+  /* External border */
+  cairo_set_line_width (cr, BORDER_LINE_WIDTH);
   awn_cairo_set_source_color (cr, bg->border_color);
   cairo_stroke (cr);
 #endif
@@ -589,7 +633,7 @@ awn_background_3d_padding_request (AwnBackground *bg,
     padding_from_rad = ( h - padding_from_rad );
   }
   /* Sum padding needed */
-  padding += padding_from_rad;
+  padding = MAX (padding, padding_from_rad) + DRAW_XPADDING;
 
   switch (position)
   {
@@ -734,8 +778,8 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-  cairo_translate (cr, 0.5, 0.);
-  width -= 1.5;
+  cairo_translate (cr, DRAW_XPADDING, 0.5);
+  width -= DRAW_XPADDING * 2.;
 
   /* Draw the background (in black color) */
   cairo_set_source_rgba(cr, 0., 0., 0., 1.);
@@ -744,7 +788,8 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
   draw_rect_path (cr, vertices, 0.);
   cairo_fill (cr);
   float s = sin (bg->panel_angle * M_PI / 180.) * SIDE_SPACE;
-  draw_rect_path (cr, vertices, ceil (s));
+  s = floor (s) + 1.;
+  draw_rect_path (cr, vertices, s);
   cairo_fill (cr);
   free (vertices);
 
