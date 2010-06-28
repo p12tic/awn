@@ -31,7 +31,7 @@
 #include "awn-applet-manager.h"
 
 /* The pixels to draw the side of the panel INTEGER*/
-#define SIDE_SPACE 5
+#define SIDE_SPACE 6
 #define PADDING_BOTTOM 1
 #define PADDING_TOP 1
 #define BORDER_LINE_WIDTH 1
