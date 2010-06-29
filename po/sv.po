@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-04 16:33+0200\n"
-"PO-Revision-Date: 2010-06-27 09:07+0000\n"
-"Last-Translator: Daniel Nylander <yeager@ubuntu.com>\n"
+"PO-Revision-Date: 2010-06-28 17:37+0000\n"
+"Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-06-28 03:48+0000\n"
+"X-Launchpad-Export-Date: 2010-06-29 03:37+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -37,6 +37,8 @@ msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Kontrollerar alfakanalerna vid överlappning, om overlay_application_icons "
+"är aktivt. Giltigt omfång 0.0 till 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -46,17 +48,26 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" Kontrollerar huruvida ikoner visas i fönsterväljaren. 0) Visa alltid "
+"programspecifik ikon när ett fönster är aktivt (förutom i några få "
+"specialfall). 1) Visa bara programspecifik ikon när den tillför någon "
+"användbar information. 2) Ignorera alltid ikon tillhandahållen av ett "
+"program och visa endast programstartarens ikon."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Kontrollerar storleken av överlappningen om overlay_application_icons är "
+"aktiv. Giltigt omfång 0.2 till 0.7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Gruppera ikoner med samma programstartare, om gruppering av fönster är "
+"inaktivt."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
@@ -70,12 +81,18 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" Om aktiverat kommer programspecifik ikon överlappa programstartarens ikon "
+"istället för att ersätta den. Detta i enlighet med vad som angetts vid "
+"icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Beteende när ett fönster på en annan arbetsyta tillkallar uppmärksamhet. (0 "
+"för standardvärde, 1 - byt till aktuell arbetsyta, 2 - förflytta fönster "
+"till nuvarande arbetsyta)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
@@ -85,25 +102,27 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
+msgstr "Fördröjning innan ett fönster aktiveras när en ikon är markerad."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"Beteende vid kopiering när skrivbordsfiler dras och släpps. 0.. Kopiera "
+"alla, 1.. Kopiera om filen ägs av användaren, 2.. Kopiera inte."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "Tryck längre för att visa dialogruta."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Tillåt dra och släpp för omplacering av fönster "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Aktivera gruppering av fönster."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -111,6 +130,9 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
+"Hur hård matchning som används vid gruppering av fönster. Värdet ska vara "
+"mellan 0 och 99, där 0 betyder i princip ingen gruppering och vid 99 kommer "
+"det mesta att grupperas."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -129,23 +151,28 @@ msgstr ""
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
-msgstr ""
+msgstr "Maximalt antal indikatorer under en ikon. Giltiga värden är 0..3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
 "Number of seconds to inhibit autohide when a application requests attention. "
 "A value of 0 disables."
 msgstr ""
+"Antal sekunder för att hindra automatisk döljning när ett program tillkallar "
+"uppmärksamhet. Värdet 0 förhindrar det."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
 "Number of seconds to wait before nagging again, by inhibiting autohide, if "
 "attention is required by any windows. A value of 0 disables."
 msgstr ""
+"Antal sekunder att vänta innan nytt försök görs för att hindra automatisk "
+"döljning, om ett fönster tillkallar uppmärksamhet. Värdet 0 inaktiverar "
+"detta."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Visa och hantera endast fönster till programstartare"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
@@ -161,6 +188,8 @@ msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"Lista av kataloger med .desktop-filer, därifrån fönsterväljaren gör sina "
+"programstartare."
 
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:955
@@ -174,11 +203,11 @@ msgstr "Starta %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Programstartare/Fönsterväljare"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Starta och hantera program och fönster"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
@@ -197,7 +226,7 @@ msgstr "Ikonstorlek:"
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:689
 msgid "Dock Preferences"
-msgstr "Inställningar för docka"
+msgstr "Inställningar för Awn"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
@@ -207,11 +236,11 @@ msgstr "Kunde inte öppna Awn-inställningar: %s"
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "Panelprogram för att ändra inställningar för Awn"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Inställningar"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
@@ -238,7 +267,7 @@ msgstr "Arbetsyta %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:657
 msgid "Add as Launcher"
-msgstr "Lägg till som programstart"
+msgstr "Lägg till som programstartare"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:675
 msgid "_Close"
@@ -307,15 +336,15 @@ msgstr "Hantera Awn-inställningar, programstartare, panelprogram och teman"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr ""
+msgstr "3D-vinkel"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Aktiva panelprogram</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Tillgängliga panelprogram</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
@@ -343,15 +372,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr ""
+msgstr "<b>Programstartare</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr ""
+msgstr "<b>Numeriska inställningar</b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Panelfärger</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
@@ -359,7 +388,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Förråd</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
@@ -367,11 +396,13 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>Fönsterväljare</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
+"<b>För dessa inställningar behöver panelprogrammet "
+"Programstartare/Fönsterväljare vara aktivt. </b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -382,22 +413,24 @@ msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
+"<b>Du behöver aktivera visuella effekter (kompositering) för att använda och "
+"anpassa teman.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Aktivera panelprogram"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "Aktiv rektangel:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Piltyp"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Animation för uppmärksamhet:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
@@ -405,7 +438,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Läge för automatisk döljning:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -413,7 +446,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Choose a theme..."
-msgstr ""
+msgstr "Välj ett tema..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
@@ -421,19 +454,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
-msgstr ""
+msgstr "Stäng animation:"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Configured Effects"
-msgstr ""
+msgstr "Konfigurerade effekter"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr ""
+msgstr "Radie för hörn"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Symmetri för kurvor"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
@@ -446,11 +479,11 @@ msgstr "Anpassad"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "Egen pilbild"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
-msgstr ""
+msgstr "Anpassa effekter"
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Customize..."
@@ -458,20 +491,20 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Avaktivera panelprogram"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr ""
+msgstr "Visa endast programstartare"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "Dra-och-släpp-omplacering"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr ""
+msgstr "Dra hit tillgängliga panelprogram för att aktivera"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
