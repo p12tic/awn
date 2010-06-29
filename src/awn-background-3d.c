@@ -30,8 +30,7 @@
 #include <math.h>
 #include "awn-applet-manager.h"
 
-/* The pixels to draw the side of the panel INTEGER*/
-#define SIDE_SPACE 6
+#define MAX_THICKNESS 10.
 #define PADDING_BOTTOM 1
 #define PADDING_TOP 1
 #define BORDER_LINE_WIDTH 1
@@ -109,7 +108,7 @@ awn_background_3d_constructed (GObject *object)
                     G_CALLBACK (awn_background_3d_update_padding), 
                     NULL);
 
-  g_signal_connect (bg, "notify::floaty-offset", 
+  g_signal_connect (bg, "notify::thickness", 
                     G_CALLBACK (awn_background_3d_update_padding), 
                     NULL);
 }
@@ -388,7 +387,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 {
   cairo_pattern_t *pat;
   /* adjust height */
-  height -= PADDING_BOTTOM + bg->floaty_offset;
+  height -= PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
@@ -407,7 +406,8 @@ draw_top_bottom_background (AwnBackground  *bg,
 #if DRAW_SIDE
   /* Internal border (The Side of the 3D panel) */
   /* Draw only if it will be visible */
-  float s = sin ((bg->panel_angle - 1) * M_PI / 180.) * SIDE_SPACE;
+  float s = sin ((bg->panel_angle - 1) * M_PI / 180.) 
+                                      * MAX_THICKNESS * bg->thickness;
   if (bg->panel_angle > 0)
   {
     float i;
@@ -638,24 +638,24 @@ awn_background_3d_padding_request (AwnBackground *bg,
   switch (position)
   {
     case GTK_POS_TOP:
-      *padding_top  = PADDING_BOTTOM + bg->floaty_offset;
+      *padding_top  = PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
       *padding_bottom = PADDING_TOP;
       *padding_left = padding; *padding_right = padding;
       break;
     case GTK_POS_BOTTOM:
       *padding_top  = PADDING_TOP;
-      *padding_bottom = PADDING_BOTTOM + bg->floaty_offset;
+      *padding_bottom = PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
       *padding_left = padding; *padding_right = padding;
       break;
     case GTK_POS_LEFT:
       *padding_top  = padding; *padding_bottom = padding;
-      *padding_left = PADDING_BOTTOM + bg->floaty_offset;
+      *padding_left = PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
       *padding_right = PADDING_TOP;
       break;
     case GTK_POS_RIGHT:
       *padding_top  = padding; *padding_bottom = padding;
       *padding_left = PADDING_TOP;
-      *padding_right = PADDING_BOTTOM + bg->floaty_offset;
+      *padding_right = PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
       break;
     default:
       break;
@@ -773,7 +773,7 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
       break;
   }
 
-  height -= PADDING_BOTTOM + bg->floaty_offset;
+  height -= PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
@@ -787,7 +787,7 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
   Point3 *vertices = calc_points (bg, 0., 0., width, height);
   draw_rect_path (cr, vertices, 0.);
   cairo_fill (cr);
-  float s = sin (bg->panel_angle * M_PI / 180.) * SIDE_SPACE;
+  float s = sin (bg->panel_angle * M_PI / 180.) * MAX_THICKNESS * bg->thickness;
   s = floor (s) + 1.;
   draw_rect_path (cr, vertices, s);
   cairo_fill (cr);

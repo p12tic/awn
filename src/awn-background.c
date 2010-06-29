@@ -59,7 +59,8 @@ enum
   PROP_PANEL_ANGLE,
   PROP_CURVINESS,
   PROP_CURVES_SYMEMETRY,
-  PROP_FLOATY_OFFSET
+  PROP_FLOATY_OFFSET,
+  PROP_THICKNESS
 };
 
 enum 
@@ -196,6 +197,11 @@ awn_background_constructed (GObject *object)
                                        object, "curves-symmetry", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_THICKNESS,
+                                       object, "thickness", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 }
 
 static void
@@ -229,6 +235,9 @@ awn_background_get_property (GObject    *object,
     }
     case PROP_FLOATY_OFFSET:
       g_value_set_int (value, bg->floaty_offset);
+      break;
+    case PROP_THICKNESS:
+      g_value_set_float (value, bg->thickness);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -357,6 +366,9 @@ awn_background_set_property (GObject      *object,
       break;
     case PROP_CURVES_SYMEMETRY:
       bg->curves_symmetry = g_value_get_float (value);
+      break;
+    case PROP_THICKNESS:
+      bg->thickness = g_value_get_float (value);
       break;
     case PROP_FLOATY_OFFSET:
       bg->floaty_offset = g_value_get_int (value);
@@ -608,6 +620,14 @@ awn_background_class_init (AwnBackgroundClass *klass)
                         "Curves Symmetry",
                         "The symmetry of the curve",
                         0.0, 1.0, 0.5,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
+  g_object_class_install_property (obj_class,
+    PROP_THICKNESS,
+    g_param_spec_float ("thickness",
+                        "Thickness",
+                        "The thickness in 3D mode",
+                        0.0, 1.0, 0.6,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS));
                         

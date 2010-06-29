@@ -580,6 +580,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     curviness = gobject.property(type=float, default=1)
     curves_symmetry = gobject.property(type=float, default=0)
     floaty_offset = gobject.property(type=int, default=10)
+    thickness = gobject.property(type=float, default=0)
     angle = gobject.property(type=int, default=45)
     radius = gobject.property(type=int, default=10)
     gtk_theme_mode = gobject.property(type=bool, default=False)
@@ -830,6 +831,8 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                 "angle", "theme_angle"),
             (self.client, defs.THEME, defs.FLOATY_OFFSET,
                 "floaty-offset", "theme_floaty_offset"),
+            (self.client, defs.THEME, defs.THICKNESS,
+                "thickness", "theme_thickness"),
             (self.client, defs.THEME, defs.CORNER_RADIUS,
                 "radius", "theme_radius"),
             (self.client, defs.THEME, defs.TOOLTIP_FONT_NAME,

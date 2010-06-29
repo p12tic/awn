@@ -233,6 +233,12 @@ default = 10
 _description=The offset of the Floaty background.
 per_instance = false
 
+[theme/thickness]
+type = float
+default = 0.6
+_description=The thickness in 3D mode.
+per_instance = false
+
 [theme/dialog_gtk_mode]
 type = boolean
 default = true

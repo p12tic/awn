@@ -99,6 +99,7 @@ struct _AwnBackground
   gint     floaty_offset;
   gfloat   curviness;
   gfloat   curves_symmetry;
+  gfloat   thickness;
 
   /* private */
   guint    changed;
