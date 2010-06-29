@@ -58,6 +58,9 @@ struct _AwnBackgroundLucidoPrivate
 /* draw shape mask for debug */
 #define DEBUG_SHAPE_MASK      FALSE
 
+/* enables a little speedup, that avoid to draw curves when internal = TRUE*/
+#define LITTLE_SPEED_UP       TRUE
+
 #define TRANSFORM_RADIUS(x) sqrt(x/50.)*50.
 
 #define IS_SPECIAL(x) AWN_IS_SEPARATOR(x)
@@ -501,9 +504,16 @@ _create_path_lucido ( AwnBackground*  bg,
         cairo_new_path (cr);
         ly = y;
         cairo_move_to (cr, lx, ly);
+#if LITTLE_SPEED_UP
+        _line_from_to (cr, &lx, &ly, lx, y2);
+#else
+        _line_from_to (cr, &lx, &ly, lx, y);
+#endif
       }
-
-      _line_from_to (cr, &lx, &ly, lx, y);
+      else
+      {
+        _line_from_to (cr, &lx, &ly, lx, y);
+      }
     }
   }
   else
@@ -550,7 +560,8 @@ _create_path_lucido ( AwnBackground*  bg,
           ly = y;
           cairo_move_to (cr, lx, ly);
           _line_from_to (cr, &lx, &ly, curx, y3);
-          _line_from_to (cr, &lx, &ly, lx + dc, y2);
+          _line_from_to (cr, &lx, &ly, lx + dc, ly);
+          _line_from_to (cr, &lx, &ly, lx, y2);
         }
         else
         {
@@ -568,6 +579,9 @@ _create_path_lucido ( AwnBackground*  bg,
           ly = y;
           lx = lx + dc;
           cairo_move_to (cr, lx, ly);
+#if LITTLE_SPEED_UP
+          _line_from_to (cr, &lx, &ly, lx, y2);
+#endif
         }
         else
         {
@@ -623,6 +637,15 @@ _create_path_lucido ( AwnBackground*  bg,
       {
         curx = g_array_index (priv->pos, gfloat, j);
       }
+      /* there's no reason to draw the curve, because the "external" part
+       * will do the job for us clearing the context behind external
+       */
+#if LITTLE_SPEED_UP
+      if (internal)
+      {
+        continue;
+      }
+#endif
       if (curx < 0)
       {
         continue;
@@ -697,7 +720,12 @@ _create_path_lucido ( AwnBackground*  bg,
         if (ly == y2)
         {
           _line_from_to (cr, &lx, &ly, w - dc, y2);
+#if LITTLE_SPEED_UP
+          _line_from_to (cr, &lx, &ly, lx, y3);
+          _line_from_to (cr, &lx, &ly, w, ly);
+#else
           _line_from_to (cr, &lx, &ly, w, y3);
+#endif
           _line_from_to (cr, &lx, &ly, w - dc, y);
         }
         /* else close path */
