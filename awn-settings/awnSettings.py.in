@@ -730,6 +730,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 			(defs.THEME, defs.PANEL_ANGLE, 'float', sizes),
 			(defs.THEME, defs.CURVINESS, 'float', sizes),
 			(defs.THEME, defs.CURVES_SYMMETRY, 'float', sizes),
+			(defs.THEME, defs.THICKNESS, 'float', sizes),
 			(defs.THEME, defs.FLOATY_OFFSET, 'int', sizes),
 			(defs.THEME, defs.TOOLTIP_FONT_NAME, 'str', icon),
 			(defs.THEME, defs.TOOLTIP_FONT_COLOR, 'str', icon),
