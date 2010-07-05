@@ -230,7 +230,7 @@ awn_background_lucido_init (AwnBackgroundLucido *bg)
 {
   AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (bg);
   priv->lastx = 0;
-  priv->lastxend = 1;
+  priv->lastxend = INT_MAX;
   priv->needs_animation = FALSE;
   priv->tid = 0;
   priv->pos = g_array_new (FALSE, TRUE, sizeof (gfloat));
@@ -260,9 +260,8 @@ awn_background_lucido_new (DesktopAgnosticConfigClient *client,
  * Usually called when a special applet is added
  */
 static void
-_add_n_positions (AwnBackgroundLucidoPrivate *priv, gint n)
+_add_n_positions (AwnBackgroundLucidoPrivate *priv, gint n, gfloat startpos)
 {
-  gfloat startpos = 0.;
   while (n-- > 0)
   {
     g_array_append_val (priv->pos, startpos);
@@ -623,7 +622,7 @@ _create_path_lucido ( AwnBackground*  bg,
       if (priv->pos_size <= j)
       {
         /* New special applet found, resize the array */
-        _add_n_positions (priv, 1);
+        _add_n_positions (priv, 1, lx);
       }
       /************************************************************************/
       /*****************    UPDATE SINGLE CURVE POSITION  *********************/
@@ -635,11 +634,11 @@ _create_path_lucido ( AwnBackground*  bg,
         {
           needs_animation = TRUE;
         }
+        curx = coord_get_near (g_array_index (priv->pos, gfloat, j), curx);
         if (curx > (w - rdc - d))
         {
           curx = w - rdc - d;
         }
-        curx = coord_get_near (g_array_index (priv->pos, gfloat, j), curx);
         g_array_index (priv->pos, gfloat, j) = curx;
       }
       else
