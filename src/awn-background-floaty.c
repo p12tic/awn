@@ -181,7 +181,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_save (cr);
 
   draw_rect (bg, cr, position, 1, 1, width-3, bg_size-2, TRUE);
-  cairo_clip (cr);
+  cairo_clip_preserve (cr);
   cairo_set_source (cr, pat);
   cairo_paint (cr);
 
@@ -190,10 +190,12 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_pattern_destroy (pat);
 
   /* Draw the hi-light */
-  pat = cairo_pattern_create_linear (0, 0, 0, (bg_size/3.0));
+  pat = cairo_pattern_create_linear (0., 0., 0., height);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect (bg, cr, position, 1, 1, width-3, bg_size/3.0, FALSE);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.3, bg->g_histep_2);
+  double red, green, blue, alpha;
+  desktop_agnostic_color_get_cairo_color (bg->g_histep_2, &red, &green, &blue, &alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 0.4, red, green, blue, 0.);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);

@@ -50,6 +50,7 @@ struct _AwnBackgroundLucidoPrivate
   gboolean  needs_animation;
 };
 
+#define TOP_PADDING 2
 /* Timeout for animation -> 40 = 25fps*/
 #define ANIM_TIMEOUT 40
 /* ANIMATION SPEED needs to be greater than 0. - Lower values are faster */
@@ -61,7 +62,7 @@ struct _AwnBackgroundLucidoPrivate
 /* enables a little speedup, that avoid to draw curves when internal = TRUE*/
 #define LITTLE_SPEED_UP       TRUE
 
-#define TRANSFORM_RADIUS(x) sqrt(x/50.)*50.
+#define TRANSFORM_RADIUS(x) sqrt(x/80.)*80.
 
 #define IS_SPECIAL(x) AWN_IS_SEPARATOR(x)
 
@@ -404,8 +405,10 @@ coord_get_near (const gfloat from, const gfloat to)
  * equals to one curve.
  * If the first widget is an separator, start from bottom-left,
  * otherwise start from top-left
+ *
+ * returns the calculated y coordinate to draw the gradient
  */
-static void
+static gfloat
 _create_path_lucido ( AwnBackground*  bg,
                       GtkPositionType position,
                       cairo_t*        cr,
@@ -446,19 +449,32 @@ _create_path_lucido ( AwnBackground*  bg,
   {
     x = priv->lastx;
   }
-
+  gfloat sym = bg->curves_symmetry;
   gfloat curx = x;
   gfloat lx = x;
   gfloat ly = y;
   gfloat y3 = y + h;
-  gfloat y2 = y3 - 5;
+  gfloat y2 = y3 - 5.;
   /* j = index of last special widget found */
   gint j = -1;
 
   /* curves symmetry acts on starting y of the stripe */
+  gfloat exty = y + h * (0.5 - sym) * 2.;
   if (internal)
   {
-    y = y + (h - 5) * (1. - bg->curves_symmetry);
+    if (sym > 0.5)
+    {
+      sym = (sym - 0.5) * 2.;
+      y = y + (h - 5.) * sym;
+    }
+  }
+  else if (sym < 0.5)
+  {
+    y = exty;
+  }
+  if (exty > y2)
+  {
+    y2 = exty;
   }
 
   /* Get list of widgets */
@@ -560,8 +576,7 @@ _create_path_lucido ( AwnBackground*  bg,
           ly = y;
           cairo_move_to (cr, lx, ly);
           _line_from_to (cr, &lx, &ly, curx, y3);
-          _line_from_to (cr, &lx, &ly, lx + dc, ly);
-          _line_from_to (cr, &lx, &ly, lx, y2);
+          _line_from_to (cr, &lx, &ly, lx + dc, y2);
         }
         else
         {
@@ -720,12 +735,7 @@ _create_path_lucido ( AwnBackground*  bg,
         if (ly == y2)
         {
           _line_from_to (cr, &lx, &ly, w - dc, y2);
-#if LITTLE_SPEED_UP
-          _line_from_to (cr, &lx, &ly, lx, y3);
-          _line_from_to (cr, &lx, &ly, w, ly);
-#else
           _line_from_to (cr, &lx, &ly, w, y3);
-#endif
           _line_from_to (cr, &lx, &ly, w - dc, y);
         }
         /* else close path */
@@ -749,6 +759,7 @@ _create_path_lucido ( AwnBackground*  bg,
       priv->needs_animation = FALSE;
     }
   }
+  return y;
 }
 
 static void
@@ -759,7 +770,6 @@ draw_top_bottom_background (AwnBackground*   bg,
                             gfloat           height)
 {
   cairo_pattern_t *pat = NULL;
-  cairo_pattern_t *pat_hi = NULL;
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
@@ -773,9 +783,13 @@ draw_top_bottom_background (AwnBackground*   bg,
   /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
   if (!expand)
   {
-    /* use only in non-expanded mode */
-    cairo_translate (cr, 0.5, 0.);
+    cairo_translate (cr, 0.5, 0.5);
     width -= 0.5;
+  }
+  else
+  {
+    cairo_translate (cr, -0., 0.5);
+    width += 1.;
   }
 
   if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
@@ -785,39 +799,33 @@ draw_top_bottom_background (AwnBackground*   bg,
 
   gfloat x = 0.,
          y = 0.;
+  gfloat y_pat;
 
   /* create internal path */
-  _create_path_lucido (bg, position, cr, x, y, width, height,
-                       TRANSFORM_RADIUS (bg->corner_radius),
-                       TRANSFORM_RADIUS (bg->corner_radius),
-                       TRUE, expand, align, TRUE);
+  y_pat = _create_path_lucido (bg, position, cr, x, y, width, height,
+                               TRANSFORM_RADIUS (bg->corner_radius),
+                               TRANSFORM_RADIUS (bg->corner_radius),
+                               TRUE, expand, align, TRUE);
 
   /* Draw internal pattern if needed */
   if (bg->enable_pattern && bg->pattern)
   {
     /* Prepare pattern */
-    pat_hi = cairo_pattern_create_for_surface (bg->pattern);
-    cairo_pattern_set_extend (pat_hi, CAIRO_EXTEND_REPEAT);
+    pat = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
     /* Draw */
     cairo_save (cr);
     cairo_clip_preserve (cr);
-    cairo_set_source (cr, pat_hi);
+    cairo_set_source (cr, pat);
     cairo_paint (cr);
     cairo_restore (cr);
-    cairo_pattern_destroy (pat_hi);
+    cairo_pattern_destroy (pat);
   }
-  /* Prepare the hi-light */
-  pat_hi = cairo_pattern_create_linear (x, y, 0., height);
-  awn_cairo_pattern_add_color_stop_color (pat_hi, 0.0, bg->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat_hi, 0.3, bg->g_histep_2);
-  double red, green, blue, alpha;
-  desktop_agnostic_color_get_cairo_color (bg->g_histep_2, &red, &green, &blue, &alpha);
-  cairo_pattern_add_color_stop_rgba (pat_hi, 0.4, red, green, blue, 0.);
 
   /* Prepare the internal background */
-  pat = cairo_pattern_create_linear (x, y, 0., height);
-  awn_cairo_pattern_add_color_stop_color (pat, (1. - bg->curves_symmetry), bg->border_color);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->hilight_color);
+  pat = cairo_pattern_create_linear (x, y_pat, 0., height);
+  awn_cairo_pattern_add_color_stop_color (pat, 0., bg->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
 
   /* Draw the internal background gradient */
   cairo_save (cr);
@@ -825,32 +833,23 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_set_source (cr, pat);
   cairo_paint (cr);
   cairo_restore (cr);
-  /* Draw the internal hi-light gradient */
-  cairo_save (cr);
-  cairo_clip (cr);
-  cairo_set_source (cr, pat_hi);
-  cairo_paint (cr);
-  cairo_restore (cr);
+  awn_cairo_set_source_color (cr, bg->border_color);
+  cairo_stroke (cr);
 
-  /* Prepare external background gradient*/  
+  /* create external path */
+  y_pat = _create_path_lucido (bg, position, cr, x, y, width, height,
+                               TRANSFORM_RADIUS (bg->corner_radius),
+                               TRANSFORM_RADIUS (bg->corner_radius),
+                               FALSE, expand, align, FALSE);
+
+  /* Prepare external background gradient*/
   cairo_pattern_destroy (pat);
-  pat = cairo_pattern_create_linear (x, y, 0., height);
+  pat = cairo_pattern_create_linear (x, y_pat, 0., height);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
 
-  /* create external path */
-  _create_path_lucido (bg, position, cr, x, y, width, height,
-                       TRANSFORM_RADIUS (bg->corner_radius),
-                       TRANSFORM_RADIUS (bg->corner_radius),
-                       FALSE, expand, align, FALSE);
-
-  /* clean below external background */
-  cairo_save (cr);
-  cairo_clip_preserve (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
-  cairo_paint (cr);
-  cairo_restore (cr);
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  /* Clean below external background */
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   /* Draw the external background  */
   cairo_save (cr);
   cairo_clip_preserve (cr);
@@ -858,15 +857,12 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_paint (cr);
   cairo_restore (cr);
   cairo_pattern_destroy (pat);
+  /* Restore operator */
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
-  /* Draw the internal hi-light gradient */
-  cairo_save (cr);
-  cairo_clip (cr);
-  cairo_set_source (cr, pat_hi);
-  cairo_paint (cr);
-  cairo_restore (cr);
-
-  cairo_pattern_destroy (pat_hi);
+  /* Draw border */
+  awn_cairo_set_source_color (cr, bg->hilight_color);
+  cairo_stroke (cr);
 
   return;
   /* if not composited */
@@ -909,7 +905,6 @@ void awn_background_lucido_padding_request (AwnBackground *bg,
     guint *padding_left,
     guint *padding_right)
 {
-  #define TOP_PADDING 2
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
   gint side_padding = expand ? 0 : TRANSFORM_RADIUS (bg->corner_radius);
