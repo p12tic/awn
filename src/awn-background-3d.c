@@ -30,7 +30,7 @@
 #include <math.h>
 #include "awn-applet-manager.h"
 
-#define MAX_THICKNESS 10.
+#define MAX_THICKNESS 12.
 #define PADDING_BOTTOM 1
 #define PADDING_TOP 1
 #define BORDER_LINE_WIDTH 1
@@ -53,6 +53,8 @@
 #define DEBUG_DRAW_INPUT_SHAPE_MASK           FALSE
 
 #define TRANSFORM_RADIUS(x) (x / 90. * 75)
+#define OBTAIN_THICKNESS(rad,thick) (floor(sin(TRANSFORM_RADIUS(rad)*\
+                                               M_PI/180.)*MAX_THICKNESS*thick))
 
 G_DEFINE_TYPE (AwnBackground3d, awn_background_3d, AWN_TYPE_BACKGROUND)
 
@@ -386,12 +388,13 @@ draw_top_bottom_background (AwnBackground  *bg,
                             gfloat          height)
 {
   cairo_pattern_t *pat;
-  /* adjust height */
-  height -= PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
+  float s = OBTAIN_THICKNESS (bg->panel_angle, bg->thickness);
+
+  height -= (s + PADDING_BOTTOM + 1.);
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
-  /* Translate for sharp edges and for avoid drawing glitches */
+  /* Translate for sharp edges and for avoid drawing's glitches */
   cairo_translate (cr, DRAW_XPADDING, 0.5);
   width -= DRAW_XPADDING * 2.;
 
@@ -406,8 +409,6 @@ draw_top_bottom_background (AwnBackground  *bg,
 #if DRAW_SIDE
   /* Internal border (The Side of the 3D panel) */
   /* Draw only if it will be visible */
-  float s = sin ((bg->panel_angle - 1) * M_PI / 180.) 
-                                      * MAX_THICKNESS * bg->thickness;
   if (bg->panel_angle > 0)
   {
     float i;
@@ -421,7 +422,7 @@ draw_top_bottom_background (AwnBackground  *bg,
     if (alpha > 0.003)
     {
       cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-      draw_rect_path (cr, vertices, floor(s) + 1.);
+      draw_rect_path (cr, vertices, s);
 #if FILL_BOTTOM_PLANE
       cairo_save (cr);
       awn_cairo_set_source_color (cr, bg->hilight_color);
@@ -436,7 +437,7 @@ draw_top_bottom_background (AwnBackground  *bg,
       /* Pixel per Pixel draw each plane only with border from bottom to top */
       cairo_set_line_width (cr, 1.5);
       cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-      for (i = floor (s); i >= 0. ; i -= 1.)
+      for (i = s - 1.; i >= 0. ; i -= 1.)
       {
         draw_rect_path (cr, vertices, i);
         awn_cairo_set_source_color (cr, bg->hilight_color);
@@ -446,13 +447,13 @@ draw_top_bottom_background (AwnBackground  *bg,
       if (bg->corner_radius < 4)
       {
         cairo_move_to (cr, vertices[0].x, vertices[0].y);
-        cairo_line_to (cr, vertices[0].x, vertices[0].y + floor(s) + 1.);
+        cairo_line_to (cr, vertices[0].x, vertices[0].y + s);
         cairo_move_to (cr, vertices[3].x, vertices[3].y);
-        cairo_line_to (cr, vertices[3].x, vertices[3].y + floor(s) + 1.);
+        cairo_line_to (cr, vertices[3].x, vertices[3].y + s);
         cairo_move_to (cr, vertices[6].x, vertices[6].y);
-        cairo_line_to (cr, vertices[6].x, vertices[6].y + floor(s) + 1.);
+        cairo_line_to (cr, vertices[6].x, vertices[6].y + s);
         cairo_move_to (cr, vertices[9].x, vertices[9].y);
-        cairo_line_to (cr, vertices[9].x, vertices[9].y + floor(s) + 1.);
+        cairo_line_to (cr, vertices[9].x, vertices[9].y + s);
         cairo_set_line_width (cr, BORDER_LINE_WIDTH);
         desktop_agnostic_color_get_cairo_color
                         (bg->border_color, &red, &green, &blue, &alpha);
@@ -634,28 +635,29 @@ awn_background_3d_padding_request (AwnBackground *bg,
   }
   /* Sum padding needed */
   padding = MAX (padding, padding_from_rad) + DRAW_XPADDING;
+  float s = OBTAIN_THICKNESS (bg->panel_angle, bg->thickness);
 
   switch (position)
   {
     case GTK_POS_TOP:
-      *padding_top  = PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
+      *padding_top  = PADDING_BOTTOM + s;
       *padding_bottom = PADDING_TOP;
       *padding_left = padding; *padding_right = padding;
       break;
     case GTK_POS_BOTTOM:
       *padding_top  = PADDING_TOP;
-      *padding_bottom = PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
+      *padding_bottom = PADDING_BOTTOM + s;
       *padding_left = padding; *padding_right = padding;
       break;
     case GTK_POS_LEFT:
       *padding_top  = padding; *padding_bottom = padding;
-      *padding_left = PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
+      *padding_left = PADDING_BOTTOM + s;
       *padding_right = PADDING_TOP;
       break;
     case GTK_POS_RIGHT:
       *padding_top  = padding; *padding_bottom = padding;
       *padding_left = PADDING_TOP;
-      *padding_right = PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
+      *padding_right = PADDING_BOTTOM + s;
       break;
     default:
       break;
@@ -772,9 +774,9 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
       cairo_translate (cr, x, y);
       break;
   }
+  float s = OBTAIN_THICKNESS (bg->panel_angle, bg->thickness);
 
-  height -= PADDING_BOTTOM + bg->thickness * MAX_THICKNESS + 2.;
-
+  height -= (s + PADDING_BOTTOM + 1.);
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
@@ -787,8 +789,6 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
   Point3 *vertices = calc_points (bg, 0., 0., width, height);
   draw_rect_path (cr, vertices, 0.);
   cairo_fill (cr);
-  float s = sin (bg->panel_angle * M_PI / 180.) * MAX_THICKNESS * bg->thickness;
-  s = floor (s) + 1.;
   draw_rect_path (cr, vertices, s);
   cairo_fill (cr);
   free (vertices);
