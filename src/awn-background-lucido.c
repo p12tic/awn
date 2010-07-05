@@ -57,9 +57,6 @@ struct _AwnBackgroundLucidoPrivate
 /* draw shape mask for debug */
 #define DEBUG_SHAPE_MASK      FALSE
 
-/* enables a little speedup, that avoid to draw curves when internal = TRUE*/
-#define LITTLE_SPEED_UP       TRUE
-
 #define TRANSFORM_RADIUS(x) sqrt(x/80.)*80.
 
 #define IS_SPECIAL(x) AWN_IS_SEPARATOR(x)
@@ -449,17 +446,19 @@ _create_path_lucido ( AwnBackground*  bg,
 {
   AwnBackgroundLucido *lbg = AWN_BACKGROUND_LUCIDO (bg);
   AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
-  cairo_new_path (cr);
-  gfloat appmx = 0.;
-  _get_applet_manager_size (bg, position, &appmx);
+  gfloat applet_manager_x = 0.;
+  _get_applet_manager_size (bg, position, &applet_manager_x);
   gboolean needs_animation = FALSE;
 
+  /****************************************************************************/
+  /********************     UPDATE STARTING POINT     *************************/
+  /****************************************************************************/
   /* x variable stores the starting x point for draw the panel */
   if (update_positions)
   {
     if (!expanded)
     {
-      x += appmx - dc;
+      x += applet_manager_x - dc;
     }
     x = lroundf (x);
     if (x != priv->lastx)
@@ -473,165 +472,128 @@ _create_path_lucido ( AwnBackground*  bg,
   {
     x = priv->lastx;
   }
+  /****************************************************************************/
+  /********************     INIT GENERAL COORDINATES  *************************/
+  /****************************************************************************/
   gfloat sym = bg->curves_symmetry;
   gfloat curx = x;
   gfloat lx = x;
   gfloat ly = y;
   gfloat y3 = y + h;
   gfloat y2 = y3 - 5.;
-  /* j = index of last special widget found */
-  gint j = -1;
+  gfloat rdc = dc;
 
-  /* curves symmetry acts on starting y of the stripe */
-  gfloat exty = y + h * (0.5 - sym) * 2.;
-  if (internal)
-  {
-    if (sym > 0.5)
-    {
-      sym = (sym - 0.5) * 2.;
-      y = y + (h - 5.) * sym;
-    }
-  }
-  else if (sym < 0.5)
-  {
-    y = exty;
-  }
+  /****************************************************************************/
+  /********************     CURVES SYMMETRY HANDLER   *************************/
+  /****************************************************************************/
+  sym = fabs (sym - 0.5);
+  gfloat exty = y + h * sym * 2.;
   if (exty > y2)
   {
     y2 = exty;
   }
-
-  /* Get list of widgets */
+  if (internal && bg->curves_symmetry > 0.5)
+  {
+    y = exty;
+  }
+  else if (!internal && bg->curves_symmetry < 0.5)
+  {
+    y = exty;
+  }
+  /****************************************************************************/
+  /********************     OBTAIN LIST OF APPLETS    *************************/
+  /****************************************************************************/
   gboolean docklet_mode = FALSE;
   GList *widgets = _get_applet_widgets (bg, &docklet_mode);
   GList *i = widgets;
   GtkWidget *widget = NULL;
-  gboolean first_widget_is_special = FALSE;
+  /* j = index of last special widget found */
+  gint j = -1;
+  /* Check for docklet mode - In docklet mode first widget is the docklet */
   if (i && docklet_mode)
   {
     i = i->next;
   }
+  /* Check if the first widget is special */
+  gboolean first_widget_is_special = FALSE;
   if (i && IS_SPECIAL (i->data))
   {
     first_widget_is_special = TRUE;
   }
-
-  /* We start from left */
-  ly = y3;
-  cairo_move_to (cr, lx, ly);
-
+  /****************************************************************************/
+  /********************     SETUP EXTERBAK CORNERS    *************************/
+  /****************************************************************************/
   if (expanded)
   {
-    if (first_widget_is_special)
+    dc = rdc = 0.;
+  }
+  else if (align == 0.)
+  {
+    dc = 0.;
+  }
+  else if (align == 1.)
+  {
+    rdc = 0.;
+  }
+  /****************************************************************************/
+  /********************        START THE PATH         *************************/
+  /****************************************************************************/
+  if (internal)
+  {
+    cairo_new_path (cr);
+    lx = lx + dc;
+    ly = y;
+    cairo_move_to (cr, lx, ly);
+    _line_from_to (cr, &lx, &ly, curx, y3);
+  }
+  else
+  {
+    cairo_new_path (cr);
+    lx = curx;
+    ly = y3;
+    cairo_move_to (cr, lx, ly);
+  }
+  /* check for special in first position */
+  if (first_widget_is_special)
+  {
+    i = i->next;
+    _line_from_to (cr, &lx, &ly, lx + dc, y2);
+  }
+  else if (!internal)
+  {
+    _line_from_to (cr, &lx, &ly, lx + dc, y);
+  }
+  else
+  {
+    _line_from_to (cr, &lx, &ly, lx + dc, exty);
+  }
+  /****************************************************************************/
+  /********************     UPDATE WIDTH FOR LAST X   *************************/
+  /****************************************************************************/
+  /* w stores the "right corner", lastxend equals to last w */
+  if (update_positions)
+  {
+    w = lroundf (w);
+    if (w != priv->lastxend)
     {
-      /* start from bottom */
-      if (internal)
-      {
-        cairo_new_path (cr);
-        ly = y;
-        cairo_move_to (cr, lx, ly);
-      }
-
-      _line_from_to (cr, &lx, &ly, lx, y2);
-      /* jump first special widget */
-      i = i->next;
-    }
-    else
-    {
-      /* start from top */
-      if (internal)
-      {
-        cairo_new_path (cr);
-        ly = y;
-        cairo_move_to (cr, lx, ly);
-#if LITTLE_SPEED_UP
-        _line_from_to (cr, &lx, &ly, lx, y2);
-#else
-        _line_from_to (cr, &lx, &ly, lx, y);
-#endif
-      }
-      else
-      {
-        _line_from_to (cr, &lx, &ly, lx, y);
-      }
+      needs_animation = TRUE;
+      gfloat neww = coord_get_near (priv->lastxend, w);
+      w = MIN (w, neww);
+      priv->lastxend = w;
     }
   }
   else
   {
-    if (align == 0.)
-    {
-      if (first_widget_is_special)
-      {
-        /* start from bottom */
-        if (internal)
-        {
-          cairo_new_path (cr);
-          ly = y;
-          cairo_move_to (cr, lx, ly);
-        }
-        _line_from_to (cr, &lx, &ly, lx, y2);
-        /* jump first special widget */
-        i = i->next;
-      }
-      else
-      {
-        if (internal)
-        {
-          cairo_new_path (cr);
-          ly = y;
-          cairo_move_to (cr, lx, ly);
-        }
-        else
-        {
-          /* start from top */
-          _line_from_to (cr, &lx, &ly, lx, y);
-        }
-      }
-    }
-    else
-    {
-      if (first_widget_is_special)
-      {
-        /* start from bottom */
-        if (internal)
-        {
-          cairo_new_path (cr);
-          lx = lx + dc;
-          ly = y;
-          cairo_move_to (cr, lx, ly);
-          _line_from_to (cr, &lx, &ly, curx, y3);
-          _line_from_to (cr, &lx, &ly, lx + dc, y2);
-        }
-        else
-        {
-          _line_from_to (cr, &lx, &ly, lx + dc, y2);
-          /* jump first special widget */
-        }
-        i = i->next;
-      }
-      else
-      {
-        /* start from top */
-        if (internal)
-        {
-          cairo_new_path (cr);
-          ly = y;
-          lx = lx + dc;
-          cairo_move_to (cr, lx, ly);
-#if LITTLE_SPEED_UP
-          _line_from_to (cr, &lx, &ly, lx, y2);
-#endif
-        }
-        else
-        {
-          _line_from_to (cr, &lx, &ly, lx + dc, y);
-        }
-      }
-    }
+    w = priv->lastxend;
   }
-  /* "first curve" done. now we are on y or y2.
-   * start loop on widgets
-   */
+  /****************************************************************************/
+  /********************        LOOP ON APPLETS        *************************/
+  /****************************************************************************/
+  gfloat saved_y = y;
+  if (bg->curves_symmetry < 0.5)
+  {
+    y = exty;
+  }
   curx = lx;
   gint wx, wy;
   if (!docklet_mode)
@@ -644,7 +606,7 @@ _create_path_lucido ( AwnBackground*  bg,
         /* if not special continue */
         continue;
       }
-      /* special found */
+      /* special found, obtain coordinates */
       ++j;
       gtk_widget_translate_coordinates(widget, gtk_widget_get_toplevel(widget),
                                        0, 0, &wx, &wy);
@@ -660,14 +622,22 @@ _create_path_lucido ( AwnBackground*  bg,
       }
       if (priv->pos_size <= j)
       {
+        /* New special applet found, resize the array */
         _add_n_positions (priv, 1);
       }
+      /************************************************************************/
+      /*****************    UPDATE SINGLE CURVE POSITION  *********************/
+      /************************************************************************/
       if (update_positions)
       {
         curx = lroundf (curx);
         if (curx != g_array_index (priv->pos, gfloat, j))
         {
           needs_animation = TRUE;
+        }
+        if (curx > (w - rdc - d))
+        {
+          curx = w - rdc - d;
         }
         curx = coord_get_near (g_array_index (priv->pos, gfloat, j), curx);
         g_array_index (priv->pos, gfloat, j) = curx;
@@ -676,15 +646,6 @@ _create_path_lucido ( AwnBackground*  bg,
       {
         curx = g_array_index (priv->pos, gfloat, j);
       }
-      /* there's no reason to draw the curve, because the "external" part
-       * will do the job for us clearing the context behind external
-       */
-#if LITTLE_SPEED_UP
-      if (internal)
-      {
-        continue;
-      }
-#endif
       if (curx < 0)
       {
         continue;
@@ -700,26 +661,11 @@ _create_path_lucido ( AwnBackground*  bg,
       }
     }
   }
-
+  y = saved_y;
   g_list_free (widgets);
-
-  /* w stores the "right corner", lastxend equals to last w */
-  if (update_positions)
-  {
-    w = lroundf (w);
-    if (w != priv->lastxend)
-    {
-      needs_animation = TRUE;
-    }
-    gfloat neww = coord_get_near (priv->lastxend, w);
-    w = MIN (w, neww);
-    priv->lastxend = w;
-  }
-  else
-  {
-    w = priv->lastxend;
-  }
-
+  /****************************************************************************/
+  /************************     CLOSE THE PATH   ******************************/
+  /****************************************************************************/
   if (expanded)
   {
     /* make sure that cairo close path in the right way */
@@ -739,12 +685,8 @@ _create_path_lucido ( AwnBackground*  bg,
     {
       if (internal)
       {
-        if (ly == y2)
-        {
-          _line_from_to (cr, &lx, &ly, w, ly);
-          _line_from_to (cr, &lx, &ly, lx, y);
-        }
-        /* else close path */
+        _line_from_to (cr, &lx, &ly, w, ly);
+        _line_from_to (cr, &lx, &ly, lx, y);
       }
       else
       {
@@ -756,22 +698,21 @@ _create_path_lucido ( AwnBackground*  bg,
     {
       if (internal)
       {
-        if (ly == y2)
-        {
-          _line_from_to (cr, &lx, &ly, w - dc, y2);
-          _line_from_to (cr, &lx, &ly, w, y3);
-          _line_from_to (cr, &lx, &ly, w - dc, y);
-        }
-        /* else close path */
+        _line_from_to (cr, &lx, &ly, w - rdc, y2);
+        _line_from_to (cr, &lx, &ly, w, y3);
+        _line_from_to (cr, &lx, &ly, w - rdc, y);
       }
       else
       {
-        _line_from_to (cr, &lx, &ly, w - dc, ly);
+        _line_from_to (cr, &lx, &ly, w - rdc, ly);
         _line_from_to (cr, &lx, &ly, w, y3);
       }
     }
   }
   cairo_close_path (cr);
+  /****************************************************************************/
+  /********************     RESTART ANIMATION IF NEEDED  **********************/
+  /****************************************************************************/
   if (update_positions)
   {
     if (needs_animation)
