@@ -66,6 +66,7 @@ struct _AwnAppletManagerClass
   void (*applet_embedded)    (AwnAppletManager *manager, GtkWidget *applet);
   void (*applet_removed)     (AwnAppletManager *manager, GtkWidget *applet);
   void (*shape_mask_changed) (AwnAppletManager *manager);
+  void (*applets_refreshed)  (AwnAppletManager *manager);
 };
 
 GType       awn_applet_manager_get_type          (void) G_GNUC_CONST;

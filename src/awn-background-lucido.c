@@ -40,8 +40,6 @@ G_DEFINE_TYPE (AwnBackgroundLucido, awn_background_lucido, AWN_TYPE_BACKGROUND)
 struct _AwnBackgroundLucidoPrivate
 {
   gint      expw;
-  gint      expn;
-  gint      expp;
   gfloat    lastx;
   gfloat    lastxend;
   GArray   *pos;
@@ -82,18 +80,13 @@ static void awn_background_lucido_padding_request (AwnBackground *bg,
                                                    guint *padding_bottom,
                                                    guint *padding_left,
                                                    guint *padding_right);
-                                                   
-static gboolean
-awn_background_lucido_get_needs_redraw (AwnBackground *bg,
-                                        GtkPositionType position,
-                                        GdkRectangle *area);
 
 static void 
 _set_special_widget_width_and_transparent (AwnBackground *bg,
                                            gint          width,
                                            gboolean      transp,
                                            gboolean      dispose);
-                                        
+
 static void 
 awn_background_lucido_corner_radius_changed (AwnBackground *bg)
 {
@@ -125,6 +118,15 @@ awn_background_lucido_align_changed (AwnBackground *bg)
 }
 
 static void
+awn_background_lucido_applets_refreshed (AwnBackground *bg)
+{
+  _set_special_widget_width_and_transparent 
+                  (bg, TRANSFORM_RADIUS (bg->corner_radius), TRUE, FALSE);
+  awn_background_invalidate (bg);
+  awn_background_emit_changed (bg);
+}
+
+static void
 awn_background_lucido_constructed (GObject *object)
 {
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->constructed (object);
@@ -150,6 +152,12 @@ awn_background_lucido_constructed (GObject *object)
   g_signal_connect_swapped (monitor, "notify::monitor-align",
                             G_CALLBACK (awn_background_lucido_align_changed),
                             object);
+
+  AwnAppletManager *manager = NULL;
+  g_object_get (bg->panel, "applet-manager", &manager, NULL);
+  g_return_if_fail (manager);
+  g_signal_connect_swapped (manager, "applets-refreshed",
+                      G_CALLBACK (awn_background_lucido_applets_refreshed), bg);
 }
 
 static void
@@ -180,6 +188,15 @@ awn_background_lucido_dispose (GObject *object)
   g_signal_handlers_disconnect_by_func (AWN_BACKGROUND (object), 
         G_CALLBACK (awn_background_lucido_corner_radius_changed), object);
 
+  AwnAppletManager *manager = NULL;
+  g_object_get (AWN_BACKGROUND (object)->panel,
+                                "applet-manager", &manager, NULL);
+  if (manager)
+  {
+    g_signal_handlers_disconnect_by_func (manager, 
+        G_CALLBACK (awn_background_lucido_applets_refreshed), object);
+  }
+
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->dispose (object);
 }
 
@@ -200,8 +217,7 @@ awn_background_lucido_class_init (AwnBackgroundLucidoClass *klass)
   bg_class->padding_request = awn_background_lucido_padding_request;
   bg_class->get_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_input_shape_mask = awn_background_lucido_get_shape_mask;
-  bg_class->get_needs_redraw = awn_background_lucido_get_needs_redraw;
-  
+
   g_type_class_add_private (obj_class, sizeof (AwnBackgroundLucidoPrivate));
 }
 
@@ -215,6 +231,7 @@ awn_background_lucido_init (AwnBackgroundLucido *bg)
   priv->tid = 0;
   priv->pos = g_array_new (FALSE, TRUE, sizeof (gfloat));
   priv->pos_size = 0;
+  awn_background_lucido_applets_refreshed (AWN_BACKGROUND (bg));
 }
 
 AwnBackground *
@@ -1031,92 +1048,6 @@ _set_special_widget_width_and_transparent (AwnBackground *bg,
   }
 
   g_list_free (widgets);
-}
-
-static gboolean
-awn_background_lucido_get_needs_redraw (AwnBackground *bg,
-                                        GtkPositionType position,
-                                        GdkRectangle *area)
-{
-  /* Check default needs redraw */
-  gboolean nr = AWN_BACKGROUND_CLASS (awn_background_lucido_parent_class)->
-                                      get_needs_redraw (bg, position, area);
-  if (nr)
-  {
-    return TRUE;
-  }
-
-  /* Check separators positions & sizes changed */
-  GList *widgets = _get_applet_widgets (bg, NULL);
-  GList *i = widgets;
-  GtkWidget *widget = NULL;
-  gint  wcheck = 0,
-        ncheck = 0,
-        pcheck = 0,
-        j = 0;
-
-  if (i && IS_SPECIAL (i->data))
-  {
-    ++ncheck;
-  }
-  for (; i; i = i->next)
-  {
-    ++j;
-    widget = GTK_WIDGET (i->data);
-    if (!IS_SPECIAL (widget)) 
-    {
-      /* if not special continue */
-      continue;
-    }
-    ++ncheck;
-    pcheck += j;
-    switch (position)
-    {
-      case GTK_POS_LEFT:
-      case GTK_POS_RIGHT:
-        wcheck += (widget->allocation.y * ncheck);
-        break;
-      default:
-        wcheck += (widget->allocation.x * ncheck);
-        break;
-    }
-  }
-  g_list_free (widgets);
-
-  pcheck += _get_applet_manager_size (bg, position, NULL);
-
-  AwnBackgroundLucido *lbg = AWN_BACKGROUND_LUCIDO (bg);
-  AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
-
-  if (priv->pos_size < ncheck) _add_n_positions (priv, ncheck - priv->pos_size);
-  if (priv->expn != ncheck)
-  {
-    /* added/removed a "special" widget */
-    _set_special_widget_width_and_transparent 
-                  (bg, TRANSFORM_RADIUS (bg->corner_radius), TRUE, FALSE);
-
-    priv->expn = ncheck;
-    priv->expp = pcheck;
-    priv->expw = wcheck;
-    /* used to refresh bar */
-    awn_background_emit_changed (bg);
-    return TRUE;
-  }
-
-  if (priv->expp != pcheck)
-  {
-    priv->expp = pcheck;
-    priv->expw = wcheck;
-    /* used to refresh bar */
-    awn_background_emit_changed (bg);
-    return TRUE;
-  }
-  if (priv->expw != wcheck)
-  {
-    priv->expw = wcheck;
-    return TRUE;
-  }
-  return FALSE;
 }
 
 static void

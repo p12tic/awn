@@ -88,6 +88,7 @@ enum
   APPLET_EMBEDDED,
   APPLET_REMOVED,
   SHAPE_MASK_CHANGED,
+  APPLETS_REFRESHED,
 
   LAST_SIGNAL
 };
@@ -402,7 +403,16 @@ awn_applet_manager_class_init (AwnAppletManagerClass *klass)
                  NULL, NULL,
                  g_cclosure_marshal_VOID__VOID,
                  G_TYPE_NONE, 0);
- 
+
+  _applet_manager_signals[APPLETS_REFRESHED] =
+    g_signal_new("applets-refreshed",
+                 G_OBJECT_CLASS_TYPE(obj_class),
+                 G_SIGNAL_RUN_FIRST,
+                 G_STRUCT_OFFSET(AwnAppletManagerClass, applets_refreshed),
+                 NULL, NULL,
+                 g_cclosure_marshal_VOID__VOID,
+                 G_TYPE_NONE, 0);
+
   g_type_class_add_private (obj_class, sizeof (AwnAppletManagerPrivate));
 }
 
@@ -913,6 +923,7 @@ awn_applet_manager_refresh_applets  (AwnAppletManager *manager)
     priv->expands = TRUE;
     g_object_notify (G_OBJECT (manager), "expands");
   }
+  g_signal_emit (manager, _applet_manager_signals[APPLETS_REFRESHED], 0);
 }
 
 void
