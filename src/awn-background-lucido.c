@@ -81,6 +81,12 @@ static void awn_background_lucido_padding_request (AwnBackground *bg,
                                                    guint *padding_left,
                                                    guint *padding_right);
 
+static gboolean
+awn_background_lucido_get_needs_redraw (AwnBackground *bg,
+                                        GtkPositionType position,
+                                        GdkRectangle *area);
+
+
 static void 
 _set_special_widget_width_and_transparent (AwnBackground *bg,
                                            gint          width,
@@ -217,6 +223,7 @@ awn_background_lucido_class_init (AwnBackgroundLucidoClass *klass)
   bg_class->padding_request = awn_background_lucido_padding_request;
   bg_class->get_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_input_shape_mask = awn_background_lucido_get_shape_mask;
+  bg_class->get_needs_redraw = awn_background_lucido_get_needs_redraw;
 
   g_type_class_add_private (obj_class, sizeof (AwnBackgroundLucidoPrivate));
 }
@@ -805,7 +812,7 @@ draw_top_bottom_background (AwnBackground*   bg,
   }
   else
   {
-    cairo_translate (cr, -0., 0.5);
+    cairo_translate (cr, -0.5, 0.5);
     width += 1.;
   }
 
@@ -1117,5 +1124,61 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   cairo_fill (cr);
 
   cairo_restore (cr);
+}
+static gboolean
+awn_background_lucido_get_needs_redraw (AwnBackground *bg,
+                                        GtkPositionType position,
+                                        GdkRectangle *area)
+{
+  /* Check default needs redraw */
+  gboolean nr = AWN_BACKGROUND_CLASS (awn_background_lucido_parent_class)->
+                                      get_needs_redraw (bg, position, area);
+  if (nr)
+  {
+    return TRUE;
+  }
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  if (!expand)
+  {
+    return FALSE;
+  }
+  /* Check separators positions, 
+   * because bar's width doesn't change in expanded mode
+   */
+  GList *widgets = _get_applet_widgets (bg, NULL);
+  GList *i = widgets;
+  GtkWidget *widget = NULL;
+  gint  wcheck = 0, j = 0;
+
+  for (; i; i = i->next)
+  {
+    ++j;
+    widget = GTK_WIDGET (i->data);
+    if (!IS_SPECIAL (widget)) 
+    {
+      /* if not special continue */
+      continue;
+    }
+    switch (position)
+    {
+      case GTK_POS_LEFT:
+      case GTK_POS_RIGHT:
+        wcheck += widget->allocation.y * j;
+        break;
+      default:
+        wcheck += widget->allocation.x * j;
+        break;
+    }
+  }
+  g_list_free (widgets);
+  AwnBackgroundLucidoPrivate *priv = 
+                AWN_BACKGROUND_LUCIDO_GET_PRIVATE (AWN_BACKGROUND_LUCIDO (bg));
+  if (priv->expw != wcheck)
+  {
+    priv->expw = wcheck;
+    return TRUE;
+  }
+  return FALSE;
 }
 /* vim: set et ts=2 sts=2 sw=2 : */
