@@ -276,7 +276,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
 
   if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
   {
@@ -320,12 +320,17 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   cairo_pattern_destroy (pat);
 
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
   /* Draw the hi-light */
   pat = cairo_pattern_create_radial (bottom_left ? 0 : width, height,
                                      height * 3/4,
                                      bottom_left ? 0 : width, height,
                                      height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_2);
+  double red, green, blue, alpha;
+  desktop_agnostic_color_get_cairo_color (bg->g_histep_2, &red, &green, &blue, &alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 0.0, red, green, blue, 0.);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.2, bg->g_histep_2);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_1);
 
   draw_path (cr, height * 3/4, width, height, bottom_left);
@@ -505,17 +510,14 @@ awn_background_edgy_draw (AwnBackground  *bg,
 {
   const gboolean in_corner = AWN_BACKGROUND_EDGY (bg)->priv->in_corner;
 
-  GdkRectangle *areaf = (GdkRectangle *) malloc (sizeof(GdkRectangle));
-  memcpy (areaf, area, sizeof(GdkRectangle));
+  GdkRectangle areaf = *area;
 
   if (in_corner)
   {
-    awn_background_edgy_translate_for_flat (bg, position, areaf);
+    awn_background_edgy_translate_for_flat (bg, position, &areaf);
   } 
   AWN_BACKGROUND_CLASS (awn_background_edgy_parent_class)-> draw (
-    bg, cr, position, areaf);
-
-  free (areaf);
+    bg, cr, position, &areaf);
 
   if (in_corner)
   {

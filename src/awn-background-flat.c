@@ -230,7 +230,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   awn_cairo_pattern_add_color_stop_color (pat, 0.3, bg->g_histep_2);
   double red, green, blue, alpha;
   desktop_agnostic_color_get_cairo_color (bg->g_histep_2, &red, &green, &blue, &alpha);
-  cairo_pattern_add_color_stop_rgba (pat, 0.4, red, green, blue, 0.);
+  cairo_pattern_add_color_stop_rgba (pat, 0.36, red, green, blue, 0.);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);

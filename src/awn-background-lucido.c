@@ -479,7 +479,7 @@ _create_path_lucido ( AwnBackground*  bg,
   gfloat lx = x;
   gfloat ly = y;
   gfloat y3 = y + h;
-  gfloat y2 = y3 - 5.;
+  gfloat y2 = y3 - 8. * bg->thickness;
   gfloat rdc = dc;
 
   /****************************************************************************/
