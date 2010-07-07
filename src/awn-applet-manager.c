@@ -1181,6 +1181,8 @@ awn_applet_manager_show_applets (AwnAppletManager *manager)
   g_object_notify (G_OBJECT (manager), "expands");
 
   g_list_free (list);
+  /* Emit refresh signal for applets when swithcing docklet mode */
+  g_signal_emit (manager, _applet_manager_signals[APPLETS_REFRESHED], 0);
 }
 
 void
@@ -1205,6 +1207,8 @@ awn_applet_manager_hide_applets (AwnAppletManager *manager)
   g_object_notify (G_OBJECT (manager), "expands");
 
   g_list_free (list);
+  /* Emit refresh signal for applets when swithcing docklet mode */
+  g_signal_emit (manager, _applet_manager_signals[APPLETS_REFRESHED], 0);
 }
 
 void
