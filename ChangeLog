@@ -1,3 +1,9 @@
+2010-07-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	* po/avant-window-navigator.pot:
+	Don't use equal signs in schemas - bug #590842.
+
 2010-06-04  Michal Hruby  <michal.mhr@gmail.com>
 
 	* po/avant-window-navigator.pot:

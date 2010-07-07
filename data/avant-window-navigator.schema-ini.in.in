@@ -74,7 +74,7 @@ _description=The list of applets for this panel ordered from left-to-right or to
 [panel/clickthrough]
 type = integer
 default = 0
-_description=Provides possibility to click on windows behind the panel. (0 - never click through, 1 - click through when holding CTRL, 2 - always click through and interact with panel only when holding CTRL)
+_description=Provides possibility to click on windows behind the panel. (0: never click through, 1: click through when holding CTRL, 2: always click through and interact with panel only when holding CTRL)
 
 [panel/dialog_offset]
 type = integer
@@ -129,7 +129,7 @@ _description=Offset of the icons from window border.
 [panel/orient]
 type = integer
 default = 3
-_description=Orientation of Awn. (left=0, right=1, top=2 and bottom=3)
+_description=Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)
 
 [panel/panel_mode]
 type = boolean
@@ -154,12 +154,12 @@ _description=The list of UA Screenlets that have been previous added in the form
 [panel/autohide]
 type = integer
 default = 0
-_description=Auto hides the dock when the cursor is not on the dock (shouldn't be used together with panel_mode). (none=0, keep below=1, fade out=2, see through=3)
+_description=Auto hides the dock when the cursor is not on the dock (shouldn't be used together with panel_mode). (none: 0, keep below: 1, fade out: 2, see through: 3)
 
 [panel/style]
 type = integer
 default = 1
-_description=The style of the bar. (none=0, flat bar=1, 3d bar=2, curved bar=3, edgy=4, floaty=5, lucido=6)
+_description=The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: 4, floaty: 5, lucido: 6)
 
 [panels/panel_list]
 type = list-integer
@@ -296,7 +296,7 @@ per_instance = false
 [theme/icon_font_mode]
 type = integer
 default = 1
-_description=0 - solid, 1 - outline, 2 - outline, reversed.
+_description=0: solid, 1: outline, 2: outline, reversed.
 per_instance = false
 
 [theme/icon_text_color]
