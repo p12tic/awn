@@ -138,16 +138,12 @@ awn_separator_set_property (GObject      *object,
       gtk_widget_queue_draw (GTK_WIDGET (object));
       break;
     case PROP_SEP_SIZE:
-      temp = g_value_get_int (value);
-      if (temp == priv->separator_size) break;
-      priv->separator_size = temp;
-      gtk_widget_queue_resize (GTK_WIDGET (object));
+      awn_separator_set_separator_size (AWN_SEPARATOR (object),
+                                        g_value_get_int (value));
       break;
     case PROP_SEP_TRANSPARENT:
-      temp = g_value_get_boolean (value);
-      if (temp == priv->transparent) break;
-      priv->transparent = temp;
-      gtk_widget_queue_draw (GTK_WIDGET (object));
+      awn_separator_set_transparent (AWN_SEPARATOR (object),
+                                     g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -450,5 +446,37 @@ awn_separator_new_from_config_with_values (DesktopAgnosticConfigClient *client,
                        "size", size,
                        "offset", offset,
                        NULL);
+}
+
+void 
+awn_separator_set_transparent (AwnSeparator *sep, gboolean transp)
+{
+  if (sep->priv->transparent != transp)
+  {
+    sep->priv->transparent = transp;
+    gtk_widget_queue_draw (GTK_WIDGET (sep));
+  }
+}
+
+gboolean 
+awn_separator_get_transparent (AwnSeparator *sep, gboolean transp)
+{
+  return sep->priv->separator_size;
+}
+
+void 
+awn_separator_set_separator_size (AwnSeparator *sep, gint size)
+{
+  if (sep->priv->separator_size != size)
+  {
+    sep->priv->separator_size = size;
+    gtk_widget_queue_resize (GTK_WIDGET (sep));
+  }
+}
+
+gint 
+awn_separator_get_separator_size (AwnSeparator *sep, gint size)
+{
+  return sep->priv->separator_size;
 }
 

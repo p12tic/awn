@@ -339,15 +339,10 @@ _line_from_to ( cairo_t *cr,
  * Sets docklet mode = TRUE if panel is in docklet mode
  */
 static GList*
-_get_applet_widgets (AwnBackground* bg, gboolean *docklet_mode)
+_get_applet_widgets (AwnBackground* bg)
 {
   AwnAppletManager *manager = NULL;
   g_object_get (bg->panel, "applet-manager", &manager, NULL);
-
-  if (docklet_mode)
-  {
-    *docklet_mode = awn_applet_manager_get_docklet_mode (manager);
-  }
 
   return gtk_container_get_children (GTK_CONTAINER (manager));
 }
@@ -502,8 +497,8 @@ _create_path_lucido ( AwnBackground*  bg,
   /****************************************************************************/
   /********************     OBTAIN LIST OF APPLETS    *************************/
   /****************************************************************************/
-  gboolean docklet_mode = FALSE;
-  GList *widgets = _get_applet_widgets (bg, &docklet_mode);
+  gboolean docklet_mode = awn_panel_get_docklet_mode (bg->panel);
+  GList *widgets = _get_applet_widgets (bg);
   GList *i = widgets;
   GtkWidget *widget = NULL;
   /* j = index of last special widget found */
@@ -970,15 +965,15 @@ _set_special_widget_width_and_transparent (AwnBackground *bg,
                                            gboolean      transp,
                                            gboolean      dispose)
 {
-  GList *widgets = _get_applet_widgets (bg, NULL);
+  GList *widgets = _get_applet_widgets (bg);
   GList *i = widgets;
   GtkWidget *widget = NULL;
 
   if (i && IS_SPECIAL (i->data) && !dispose)
   {
     widget = GTK_WIDGET (i->data);
-    g_object_set (G_OBJECT (widget), "separator-size", 1, NULL);
-    g_object_set (G_OBJECT (widget), "transparent", transp, NULL);
+    awn_separator_set_separator_size (AWN_SEPARATOR (widget), 1);
+    awn_separator_set_transparent (AWN_SEPARATOR (widget), transp);
     i = i->next;
   }
 
@@ -990,8 +985,8 @@ _set_special_widget_width_and_transparent (AwnBackground *bg,
       /* if not special continue */
       continue;
     }
-    g_object_set (G_OBJECT (widget), "separator-size", width, NULL);
-    g_object_set (G_OBJECT (widget), "transparent", transp, NULL);
+    awn_separator_set_separator_size (AWN_SEPARATOR (widget), width);
+    awn_separator_set_transparent (AWN_SEPARATOR (widget), transp);
   }
 
   g_list_free (widgets);
@@ -1086,7 +1081,7 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   /* Check separators positions, 
    * because bar's width doesn't change in expanded mode
    */
-  GList *widgets = _get_applet_widgets (bg, NULL);
+  GList *widgets = _get_applet_widgets (bg);
   GList *i = widgets;
   GtkWidget *widget = NULL;
   gint  wcheck = 0, j = 0;

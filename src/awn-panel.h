@@ -111,6 +111,8 @@ void        awn_panel_docklet_request     (AwnPanel         *panel,
                                            gboolean          expand,
                                            DBusGMethodInvocation *context);
 
+gboolean    awn_panel_get_docklet_mode    (AwnPanel         *panel);
+
 gboolean    awn_panel_get_snapshot        (AwnPanel *panel,
                                            GValue *value,
                                            GError **error);
