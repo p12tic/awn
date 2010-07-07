@@ -1,14 +1,8 @@
-avant-window-navigator-trunk (0.4.1~bzr711-1.10.04+albyrock87-729) lucid; urgency=low
+avant-window-navigator-trunk (0.3.9.1-1) experimental; urgency=low
 
-  * Rewrite of 3D Style. Now more beauty and customizable.
+  * New testing branch.
 
- -- Alberto Aldegheri <albyrock87+dev@gmail.com>  Sat, 19 Jun 2010 01:09:20 +0100
-
-avant-window-navigator-trunk (0.4.1~bzr711-1.10.04+albyrock87-728) lucid; urgency=low
-
-  * Lot of draw bugfixes
-
- -- Alberto Aldegheri <albyrock87+dev@gmail.com>  Fri, 18 Jun 2010 18:09:20 +0100
+ -- Julien Lavergne <gilir@ubuntu.com>  Thu, 31 Dec 2009 00:09:20 +0100
 
 avant-window-navigator (0.2.6-1) unstable; urgency=low
 
