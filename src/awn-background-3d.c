@@ -443,23 +443,32 @@ draw_top_bottom_background (AwnBackground  *bg,
         awn_cairo_set_source_color (cr, bg->hilight_color);
         cairo_stroke (cr);
       }
-      /* draw edges lines if 0 <= corner-radius <= 3 */
-      if (bg->corner_radius < 4)
+      /* draw edges lines if corner-radius is smaller then 3px */
+      if (bg->corner_radius < 4 || bg->corner_radius > (height - 3))
       {
+        double alpha_coeff = bg->corner_radius;
         cairo_move_to (cr, vertices[0].x, vertices[0].y);
         cairo_line_to (cr, vertices[0].x, vertices[0].y + s);
         cairo_move_to (cr, vertices[3].x, vertices[3].y);
         cairo_line_to (cr, vertices[3].x, vertices[3].y + s);
-        cairo_move_to (cr, vertices[6].x, vertices[6].y);
-        cairo_line_to (cr, vertices[6].x, vertices[6].y + s);
-        cairo_move_to (cr, vertices[9].x, vertices[9].y);
-        cairo_line_to (cr, vertices[9].x, vertices[9].y + s);
+        if (bg->corner_radius < 4)
+        {
+          cairo_move_to (cr, vertices[6].x, vertices[6].y);
+          cairo_line_to (cr, vertices[6].x, vertices[6].y + s);
+          cairo_move_to (cr, vertices[9].x, vertices[9].y);
+          cairo_line_to (cr, vertices[9].x, vertices[9].y + s);
+        }
+        else
+        {
+          alpha_coeff = fabs (MIN (bg->corner_radius, height) - height);
+        }
+        alpha_coeff = (1.0 - alpha_coeff / 3.);
         cairo_set_line_width (cr, BORDER_LINE_WIDTH);
         desktop_agnostic_color_get_cairo_color
                         (bg->border_color, &red, &green, &blue, &alpha);
         /* edges fade effect when increasing the corner radius from 0 to 3 */
         cairo_set_source_rgba (cr, red, green, blue, 
-                               alpha * (1.0 - bg->corner_radius / 3.));
+                               alpha * alpha_coeff);
         cairo_stroke (cr);
       }
     }
