@@ -3926,7 +3926,7 @@ awn_panel_get_docklet_mode (AwnPanel *panel)
   return panel->priv->docklet != NULL;
 }
 
-void
+static void
 awn_panel_docklet_destroy (AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
