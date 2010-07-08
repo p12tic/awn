@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-04 16:33+0200\n"
-"PO-Revision-Date: 2010-06-18 16:30+0000\n"
-"Last-Translator: Nicolas Delvaux <Unknown>\n"
+"POT-Creation-Date: 2010-07-07 11:06+0200\n"
+"PO-Revision-Date: 2010-07-07 11:07+0000\n"
+"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-06-19 03:51+0000\n"
+"X-Launchpad-Export-Date: 2010-07-08 03:50+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -1088,30 +1088,22 @@ msgid "A dock-like window navigator."
 msgstr "Une barre des tâches de type « dock »"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
-msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr "0- opaque,  1 - contour, 2 - contour, inversé."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:2
-msgid "3)"
-msgstr "3)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:3
-msgid "6)"
+msgid "0: solid, 1: outline, 2: outline, reversed."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:4
+#: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "A bitmask which stores the type of effect for each event"
 msgstr "Masque binaire enregistrant le type d'effet pour chaque évènement"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:5
+#: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
 msgstr "Alignement d'une barre non étendue avec le coin de l'écran."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+#: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
 msgstr "Un réglage optionnel lorsque vous utilisez plus d'un écran."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:7
+#: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
@@ -1119,39 +1111,46 @@ msgstr ""
 "Toute valeur supérieure à 0 dessinera une barre avec des coins. Plus la "
 "valeur est grande, plus les angles sont aigus."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:8
+#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+msgid ""
+"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
+"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
+"through: 3)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
 msgstr "Couleur d'arrière plan du titre des boites de dialogue Awn."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:9
+#: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
 msgstr "Couleur d'arrière plan des boites de dialogue Awn."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:10
+#: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
 msgstr "Couleur de fond des infobulles"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:11
+#: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
 msgstr "Couleur du rectangle actif."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:12
+#: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
 msgstr "Couleur du point lumineux."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:13
+#: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
 msgstr "Couleur de la bordure externe du rectangle actif."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:14
+#: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Delay between mouse leaving the panel and it hiding."
 msgstr "Délai entre le moment ou la souris quitte la barre et le masquage."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:15
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
 msgstr "Delai d'interrogation de la position de souris."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:16
+#: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
@@ -1159,63 +1158,63 @@ msgstr ""
 "Détermine si l'éditeur de configuration générique est autorisé pour les "
 "applets ne disposant pas de leur propre boite de dialogue."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:17
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
 msgstr "Dessiner les séparateurs."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:18
+#: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
 msgstr "Activer le dessin d'un modèle."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:19
+#: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
 msgstr "Première couleur du dégradé."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:20
+#: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First highlight gradient step color."
 msgstr "Première couleur du dégradé de mise en surbrillance."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:21
+#: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
 msgstr "Couleur de la police des infobulles"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:22
+#: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
 msgstr "Nom de la police des infobulles"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:23
+#: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
 msgstr "Forcer la géométrie de l'écran."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:24
+#: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
 "Couleur du texte de l'icône. Laissez vide pour utiliser la couleur du thème "
 "gtk."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
 "Couleur du contours du texte. Laissez vide pour utiliser la couleur du thème "
 "gtk."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:26
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
 msgstr "Si vrai, les fenêtres maximisées ne couvrirons pas la barre."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:27
+#: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr "Si vrai, la barre utilisera toute la largeur/hauteur de l'écran."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:28
+#: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
 msgstr "Couleur de la bordure interne."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:29
+#: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
 msgstr "Couleur de la bordure pricipale"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:30
+#: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
@@ -1224,13 +1223,17 @@ msgstr ""
 "monitor_force est faux, utilisez -1 pour que le moniteur soit choisi "
 "automatiquement)."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:31
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
 msgstr "Écart entre les icônes et leurs boites de dialogue."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+#: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
 msgstr "Écart entre les icônes et le bord de la fenêtre."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1250,14 +1253,10 @@ msgstr "Chemin vers le .png de l'icône de flèche."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
-"Provides possibility to click on windows behind the panel. (0 - never click "
-"through, 1 - click through when holding CTRL, 2 - always click through and "
+"Provides possibility to click on windows behind the panel. (0: never click "
+"through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
-"Donne la possibilité de cliquer sur les fenêtres derrière la barre (0 - ne "
-"jamais cliquer à travers, 1 - cliquer à travers si CTRL est maintenu, 2 - "
-"toujours cliquer à travers et n'interagit avec la barre que lorsque CTRL est "
-"maintenu)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
@@ -1342,35 +1341,41 @@ msgid "The opacity of the pattern."
 msgstr "Opacité du modèle."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
+msgid ""
+"The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
+"4, floaty: 5, lucido: 6)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
 msgstr "Symétrie de la courbe en mode incurvé."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:57
+#: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The user-visible size of Awn."
 msgstr "Taille de Awn visible par l'utilisateur."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:58
+#: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The width of the stripe in Lucido mode."
 msgstr "Largeur du bandeau en mode Lucido"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:59
+#: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
 "Temps en ms avant que AwnIcon considère le clic comme étant « long »."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:60
+#: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
 msgstr "Si AwnDialog doit utiliser les couleurs du thème Gtk."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:61
+#: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
 msgstr "Fermeture des boites de dialogue lors de la perte du focus."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:62
+#: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
 msgstr "Utilisation des couleurs courantes du thème gtk."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:63
+#: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
@@ -1430,8 +1435,24 @@ msgstr "Fermer le docklet"
 #~ msgid "Standard"
 #~ msgstr "Standard"
 
+#~ msgid "0 - solid, 1 - outline, 2 - outline, reversed."
+#~ msgstr "0- opaque,  1 - contour, 2 - contour, inversé."
+
 #~ msgid "5)"
 #~ msgstr "5)"
 
+#~ msgid "3)"
+#~ msgstr "3)"
+
 #~ msgid "Always"
 #~ msgstr "Toujours"
+
+#~ msgid ""
+#~ "Provides possibility to click on windows behind the panel. (0 - never click "
+#~ "through, 1 - click through when holding CTRL, 2 - always click through and "
+#~ "interact with panel only when holding CTRL)"
+#~ msgstr ""
+#~ "Donne la possibilité de cliquer sur les fenêtres derrière la barre (0 - ne "
+#~ "jamais cliquer à travers, 1 - cliquer à travers si CTRL est maintenu, 2 - "
+#~ "toujours cliquer à travers et n'interagit avec la barre que lorsque CTRL est "
+#~ "maintenu)"
