@@ -171,6 +171,32 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
   }
 }
 
+static void
+remove_from_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
+{
+  TaskLauncher    *launcher = NULL;
+  
+  g_return_if_fail (TASK_IS_ICON (icon));  
+  
+  launcher = TASK_LAUNCHER(task_icon_get_launcher (icon));
+  if (launcher)
+  {
+    TaskManager * applet;
+    gboolean grouping;
+    g_object_get (icon,
+                  "applet",&applet,
+                  NULL);
+    g_object_get (applet,
+                  "grouping",&grouping,
+                  NULL);
+    task_manager_remove_launcher (TASK_MANAGER(applet),
+                                  task_launcher_get_desktop_path(launcher));
+    g_object_set (applet,
+                  "grouping",grouping,
+                  NULL);
+  }
+}
+
 /*
  When a window is moved to another "workspace" in Compiz it will remain active
  if it was already active...  we really prefer that this not happen
@@ -658,6 +684,45 @@ task_icon_get_menu_item_add_to_launcher_list (TaskIcon * icon)
   gtk_widget_show (item);
   g_signal_connect (item,"activate",
                     G_CALLBACK(add_to_launcher_list_cb),
+                    icon);
+  return item;
+}
+
+static GtkWidget *
+task_icon_get_menu_item_remove_from_launcher_list (TaskIcon * icon)
+{
+  g_return_val_if_fail (TASK_IS_ICON (icon),NULL);  
+  
+  GtkWidget * item;
+  TaskIconPrivate * priv = TASK_ICON_GET_PRIVATE(icon);
+  GValueArray *launcher_paths;
+  GValue val = {0,};
+  const TaskItem * launcher = task_icon_get_launcher (icon);
+  gboolean found = FALSE;
+  if (launcher)
+  {
+    const gchar * launcher_path = task_launcher_get_desktop_path (TASK_LAUNCHER(launcher));
+    g_object_get (G_OBJECT (priv->applet), "launcher_paths", &launcher_paths, NULL);
+    g_value_init (&val, G_TYPE_STRING);
+    for (guint idx = 0; idx < launcher_paths->n_values; idx++)
+    {
+      const gchar *path = g_value_get_string (g_value_array_get_nth (launcher_paths, idx));
+      if (g_strcmp0 (path,launcher_path)==0)
+      {
+        found = TRUE;
+      }
+    }
+    g_value_unset (&val);
+    g_value_array_free (launcher_paths);
+  }
+  if ( !found || !launcher )
+  {
+    return NULL;
+  }
+  item = gtk_menu_item_new_with_label (_("Remove Launcher"));
+  gtk_widget_show (item);
+  g_signal_connect (item,"activate",
+                    G_CALLBACK(remove_from_launcher_list_cb),
                     icon);
   return item;
 }
@@ -1319,6 +1384,7 @@ typedef enum{
       INTERNAL_MAXIMIZE_ALL,
       INTERNAL_MINIMIZE_ALL,
       INTERNAL_REMOVE_CUSTOMIZED_ICON,
+      INTERNAL_REMOVE_FROM_LAUNCHER_LIST,
       INTERNAL_SEPARATOR,
       INTERNAL_SMART_WNCK_MENU,
       INTERNAL_SMART_WNCK_SIMPLE_MENU,
@@ -1353,6 +1419,7 @@ const ContextMenuItemType context_menu_item_type_list[] = {
         { INTERNAL_MAXIMIZE_ALL,"Internal-Maximize-All"},
         { INTERNAL_MINIMIZE_ALL,"Internal-Minimize-All"},
         { INTERNAL_REMOVE_CUSTOMIZED_ICON,"Internal-Remove-Customized-Icon"},
+        { INTERNAL_REMOVE_FROM_LAUNCHER_LIST,"Internal-Remove-From-Launcher-List"},
         { INTERNAL_SEPARATOR,"Internal-Separator"},
         { INTERNAL_SMART_WNCK_MENU,"Internal-Smart-Wnck-Menu"},
         { INTERNAL_SMART_WNCK_SIMPLE_MENU,"Internal-Smart-Wnck-Simple-Menu"},
@@ -1631,6 +1698,9 @@ menu_parse_start_element (GMarkupParseContext *context,
       break;
     case INTERNAL_REMOVE_CUSTOMIZED_ICON:
       menuitem = awn_themed_icon_create_remove_custom_icon_item (AWN_THEMED_ICON(icon),task_icon_get_custom_name(icon));
+      break;
+    case INTERNAL_REMOVE_FROM_LAUNCHER_LIST:
+      menuitem = task_icon_get_menu_item_remove_from_launcher_list (icon);
       break;
     case INTERNAL_SEPARATOR:
       {

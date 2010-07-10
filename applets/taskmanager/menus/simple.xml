@@ -3,6 +3,7 @@
   <menuitem type="Internal-Customize-Icon"></menuitem>
   <menuitem type="Internal-Remove-Customized-Icon"></menuitem>
   <menuitem type="Internal-Add-To-Launcher-List"></menuitem>  
+  <menuitem type="Internal-Remove-From-Launcher-List"></menuitem>
   <menuitem type="Internal-Separator"></menuitem>
   <menuitem type="Internal-Inline-Plugins"></menuitem>
   <menuitem type="Internal-Separator"></menuitem>
