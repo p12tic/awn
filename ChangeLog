@@ -1,3 +1,9 @@
+2010-07-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix for viewports where the active windows is not 
+	within the viewport.
+
 2010-07-07  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/avant-window-navigator.schema-ini.in.in:

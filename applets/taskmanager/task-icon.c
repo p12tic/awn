@@ -2415,6 +2415,18 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
   {
     task_icon_search_main_item (icon,NULL);
   }
+  /*A Compiz clause*/
+  if ( TASK_IS_WINDOW(priv->main_item) && 
+      wnck_workspace_is_virtual (wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)))))
+  {
+    if ( ! wnck_window_is_in_viewport (task_window_get_window (TASK_WINDOW(priv->main_item)),
+                                       wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)))))
+    {
+      priv->main_item = NULL;
+      task_icon_search_main_item (icon,NULL);
+    }
+        
+  }
   /*If long press is enabled then we try to be smart about what we do on short clicks*/
   if (priv->enable_long_press)
   {
