@@ -2,7 +2,8 @@
   <menuitem type="Internal-Dock-Prefs"></menuitem>
   <menuitem type="Internal-Customize-Icon"></menuitem>
   <menuitem type="Internal-Remove-Customized-Icon"></menuitem>
-  <menuitem type="Internal-Add-To-Launcher-List"></menuitem>  
+  <menuitem type="Internal-Add-To-Launcher-List"></menuitem>
+  <menuitem type="Internal-Remove-From-Launcher-List"></menuitem> 
   <menuitem type="Internal-Separator"></menuitem>
   <submenu text="Processes" icon="process-stop">
     <menuitem type="External-Command" cmd="xterm -e 'pmap -d $AWN_TASK_PID; read' &amp;">pmap</menuitem>

@@ -1436,7 +1436,7 @@ process_window_opened (WnckWindow    *window,
    off and on in certain circumstances.  Nip this in the bud.
    TODO:  Investigate wth this is happening...  it bothers me.
    */
-//  if ( wnck_window_get_pid (window) == getpid() || 
+  
   if ( g_strcmp0 (wnck_window_get_name (window),"awn-applet")==0 )
   {
     return;
@@ -1699,6 +1699,35 @@ task_manager_append_launcher(TaskManager  *manager, const gchar * launcher_path)
   g_value_init (&val, G_TYPE_STRING);
   g_value_set_string (&val, launcher_path);
   launcher_paths = g_value_array_append (launcher_paths, &val);
+  g_object_set (G_OBJECT (manager), "launcher_paths", launcher_paths, NULL);
+  g_value_unset (&val);
+  task_manager_refresh_launcher_paths (manager, launcher_paths);
+  g_value_array_free (launcher_paths);
+}
+
+void
+task_manager_remove_launcher(TaskManager  *manager, const gchar * launcher_path)
+{
+  TaskManagerPrivate *priv;
+  GValueArray *launcher_paths;
+  GValue val = {0,};
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+
+  g_object_get (G_OBJECT (manager), "launcher_paths", &launcher_paths, NULL);
+  g_value_init (&val, G_TYPE_STRING);
+  g_value_set_string (&val, launcher_path);
+  for (guint idx = 0; idx < launcher_paths->n_values; idx++)
+  {
+    gchar *path;
+    path = g_value_dup_string (g_value_array_get_nth (launcher_paths, idx));
+    if ( g_strcmp0 (path,launcher_path)==0)
+    {
+      g_value_array_remove (launcher_paths,idx);
+      break;
+    }
+  }
   g_object_set (G_OBJECT (manager), "launcher_paths", launcher_paths, NULL);
   g_value_unset (&val);
   task_manager_refresh_launcher_paths (manager, launcher_paths);

@@ -1,3 +1,20 @@
+2010-07-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/menus/advanced.xml:
+  	* applets/taskmanager/menus/custom-example.xml:
+  	* applets/taskmanager/menus/simple.xml:
+  	* applets/taskmanager/menus/standard.xml:
+  	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-manager.h:
+	Add a Remove Launcher menu item.
+
+2010-07-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix for viewports where the active windows is not 
+	within the viewport.
+
 2010-07-07  Michal Hruby  <michal.mhr@gmail.com>
 
 	* data/avant-window-navigator.schema-ini.in.in:
