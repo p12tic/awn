@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-08 09:55+0000\n"
+"PO-Revision-Date: 2010-07-09 14:33+0000\n"
 "Last-Translator: Gabor Karsay <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-09 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-07-10 04:03+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Leerraum"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr "Füllt den Leerraum auf dem Panel im Expansionsmodus."
+msgstr "Füllt das Panel mit Leerraum auf, wenn es ausgedehnt ist."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
@@ -98,9 +98,9 @@ msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
-"Das Verhalten, wenn ein Fenster auf einer anderen Arbeitsfläche fokussiert "
-"wird. (0 für Standard, 1 - wechsele zur anderen Arbeitsfläche, 2 - bewege "
-"Fenster auf aktive Arbeitsfläche)"
+"Das Verhalten, wenn ein Fenster auf einer anderen Arbeitsfläche aktiviert "
+"wird (0 für Standard, 1 - zur anderen Arbeitsfläche wechseln, 2 - Fenster "
+"auf aktuelle Arbeitsfläche verschieben)."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
@@ -113,6 +113,8 @@ msgstr ""
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
 msgstr ""
+"Verzögerung, bevor ein Fenster aktiviert wird, über dessen Symbol etwas "
+"gezogen wird."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -129,7 +131,7 @@ msgstr "Langen Klick aktivieren, um ein Dialogfenster zu öffnen."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr "Erlaube das Verändern der Anordnung per Drag'n'Drop "
+msgstr "Erlaube Neuanordnung der Fenster durch Ziehen und Ablegen "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
@@ -141,6 +143,9 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
+"Bestimmt, wie »radikal« Objekte gruppiert werden. Der Wert sollte sich "
+"zwischen 0 und 99 bewegen. Der Wert 0 hat so gut wie keine Gruppierung zur "
+"Folge, während der Wert 99 fast alle Objekte gruppiert."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -148,6 +153,10 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
+"Bestimmt, wie die Liste der Fenster erstellt wird, die darauf überprüft "
+"werden, ob sie sich mit dem Panel überschneiden, wenn »Intelligentes "
+"Ausblenden« aktiviert ist. 0 = Benutze Fenster auf aktiver Arbeitsfläche, 1 "
+"= Benutze Fenster der im Augenblick fokussierten Anwendung."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -155,6 +164,10 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
+"»Intelligentes Ausblenden« anwenden, wenn hide (verstecken) aktiviert ist. "
+"Dies verhindert ein automatisches Ausblenden des Panels, wenn keine "
+"überlappenden Fenster in der relevanten Fensterliste vorhanden sind (siehe "
+"den Schlüssel »intellihide_mode«)."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
@@ -168,16 +181,23 @@ msgid ""
 "Number of seconds to inhibit autohide when a application requests attention. "
 "A value of 0 disables."
 msgstr ""
+"Die Anzahl der Sekunden, in denen ein automatisches Ausblenden verhindert "
+"wird, wenn die Anwendung Ihre Aufmerksamkeit erfordert. Der Wert 0 "
+"deaktiviert."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
 "Number of seconds to wait before nagging again, by inhibiting autohide, if "
 "attention is required by any windows. A value of 0 disables."
 msgstr ""
+"Die Anzahl der Sekunden, die gewartet wird, bevor der Anwender erneut "
+"»genervt« und das automatische Verbergen unterbunden wird, falls ein "
+"beliebiges Fenster seine Aufmerksamkeit erfordert. Der Wert 0 deaktiviert "
+"die Funktion."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Zeige und verwalte ausschließlich Startfenster."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
@@ -187,12 +207,16 @@ msgstr "Fenster aller Arbeitsflächen anzeigen"
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
 msgstr ""
+"Der Grenzwert, ab dem die Anzahl der Prozesse als Text eingeblendet wird. "
+"Akzeptierter Wertebereich liegt bei 1…"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"Eine Liste von Pfaden zu .desktop-Dateien, aus denen der Anwendungsverwalter "
+"seine Starter erstellen soll."
 
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:955
@@ -360,7 +384,7 @@ msgstr "<b>Effekte</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Einstellungsgruppen exportieren</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
@@ -388,7 +412,7 @@ msgstr "<b>Farben des Panels</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr "<b>Leiste</b>"
+msgstr "<b>Panel</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
@@ -410,7 +434,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Minihilfen</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
@@ -503,7 +527,7 @@ msgstr "Nur Starter anzeigen"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "Anordnung durch Ziehen und Ablegen ändern"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
@@ -535,7 +559,7 @@ msgstr "Füllfarbe"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
-msgstr ""
+msgstr "Startfarbe für Verlauf"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "First Highlight Color"
@@ -579,7 +603,7 @@ msgstr "Zusammengehörige Fenster gruppieren"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
-msgstr ""
+msgstr "Schwebe-Animation:"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
@@ -615,7 +639,7 @@ msgstr "Start-Animation:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "Stärke der Gruppierung"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
@@ -659,7 +683,7 @@ msgstr "Hintergrundfarben des Panels"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Panel Look Refinements"
-msgstr ""
+msgstr "Aussehensverfeinerungen des Panels"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
@@ -687,7 +711,7 @@ msgstr "Paketquellen"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Zielfarbe für Verlauf"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
@@ -712,7 +736,7 @@ msgstr "Alle Fenster zeigen"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Nach langem Drücken Dialog anzeigen"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
@@ -918,6 +942,7 @@ msgstr ""
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
 msgstr ""
+"Awn-Einstellungen kann nicht unter dem Root-Benutzerkonto gestartet werden."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
@@ -949,7 +974,7 @@ msgstr "Gewölbt"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Edgy"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
@@ -985,7 +1010,7 @@ msgstr "Transparenz"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "Im Hintergrund"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1096,6 +1121,8 @@ msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"Jeder Wert größer 0 zeichnet ein Panel mit Ecken. Je größer der Radius, "
+"desto größer die Ecken."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid ""
@@ -1103,6 +1130,9 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
+"Verbirgt das Panel automatisch, wenn sich der Zeiger nicht über dem Panel "
+"befindet (sollte nicht zusammen mit panel_mode verwendet werden). (nicht "
+"verbergen: 0, in den Hintergrund: 1, ausblenden: 2, durchsichtig: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
@@ -1114,7 +1144,7 @@ msgstr "Hintergrundfarbe von AwnDialog."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "Hintergrundfarbe der Minihilfe"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
@@ -1136,37 +1166,39 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Verzögerung der Maus-Positionsabfrage."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Bestimmt, ob ein allgemeiner Konfigurationseditor für Applets erlaubt ist, "
+"die keinen angepassten Einstellungsdialog besitzen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
-msgstr ""
+msgstr "Trennlinien zeichnen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Schaltet das Zeichnen von Mustern ein."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
-msgstr ""
+msgstr "Startfarbe für Verlauf."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "Startfarbe für Glanzlichtverlauf."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Schriftfarbe der Minihilfe"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Schriftart der Minihilfe"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
@@ -1175,14 +1207,19 @@ msgstr "Erzwinge Bildschirm-Seitenverhältnis."
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
+"Symboltextfarbe. Freilassen, um die Farbe des GTK-Themas zu verwenden."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
+"Konturfarbe der Symboltexte. Freilassen, um die Farbe des GTK-Themas zu "
+"verwenden."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
 msgstr ""
+"Wenn der Wert auf »true« gesetzt ist, werden maximierte Fenster das Panel "
+"nicht überdecken."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
@@ -1192,11 +1229,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
-msgstr ""
+msgstr "Innere Randfarbe."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
-msgstr ""
+msgstr "Hauptrahmenfarbe."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
@@ -1209,7 +1246,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "Abstand zwischen den Symbolen und deren Dialog."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
@@ -1221,19 +1258,19 @@ msgstr "Ausrichtung von Awn. (links: 0, rechts: 1, oben: 2 und unten: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
-msgstr ""
+msgstr "Konturfarbe der Minihilfe"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Pfad zur Datei mit dem aktuellen Awn-Thema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Pfad zur PNG-Datei, die den aktiven Symbolhintergrund enthält."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Pfad zur PNG-Datei, die das Pfeilsymbol enthält."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
@@ -1241,6 +1278,10 @@ msgid ""
 "through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
+"Ermöglicht, auf hinter dem Panel liegende Fenster zu klicken. (0: niemals "
+"durchklicken, 1: durchklicken, wenn die Strg-Taste gedrückt ist, 2: immer "
+"durchklicken und mit dem Panel nur dann interagieren, wenn die Strg-Taste "
+"gedrückt wird)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
@@ -1249,11 +1290,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
-msgstr ""
+msgstr "Zielfarbe für Verlauf."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "Zielfarbe für Glanzlichtverlauf."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
@@ -1382,6 +1423,10 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
+"<b>Panelsymbol anpassen</b>\n"
+"Sie haben sich dazu entschlossen, ein Symbol auf dem Panel zu ersetzen. "
+"Bitte entscheiden Sie, ob dieser Wechsel nur dieses Applet, alle Applets "
+"dieses Typs oder alle Symbole dieses Typs auf dem Panel betreffen soll."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
