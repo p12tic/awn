@@ -461,7 +461,7 @@ awn_separator_set_transparent (AwnSeparator *sep, gboolean transp)
 gboolean 
 awn_separator_get_transparent (AwnSeparator *sep, gboolean transp)
 {
-  return sep->priv->separator_size;
+  return sep->priv->transparent;
 }
 
 void 
