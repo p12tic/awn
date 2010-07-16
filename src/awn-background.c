@@ -872,7 +872,7 @@ void
 awn_background_emit_padding_changed (AwnBackground *bg)
 {
   g_return_if_fail (AWN_IS_BACKGROUND (bg));
-
+  awn_background_invalidate (bg);
   g_signal_emit (bg, _bg_signals[PADDING_CHANGED], 0);
 }
 
@@ -880,7 +880,7 @@ void
 awn_background_emit_changed (AwnBackground *bg)
 {
   g_return_if_fail (AWN_IS_BACKGROUND (bg));
-
+  awn_background_invalidate (bg);
   g_signal_emit (bg, _bg_signals[CHANGED], 0);
 }
 

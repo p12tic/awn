@@ -76,7 +76,7 @@ struct _AwnBackground
   gfloat     pattern_alpha;
   GdkPixbuf *pattern_original;
   cairo_surface_t *pattern;
-  
+
   /*  Speedup code.
    *  We can save the bg and redraw only when properties changes
    */
@@ -91,7 +91,7 @@ struct _AwnBackground
    */
   gboolean dialog_gtk_mode;
   gboolean gtk_theme_mode;
-  
+
   /* Appearance options -- (some are backend specific) */
   gboolean rounded_corners;
   gfloat   corner_radius;

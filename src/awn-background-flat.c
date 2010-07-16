@@ -190,6 +190,9 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
+  gfloat x = 0.,
+         y = 0.;
+
   align = awn_background_get_panel_alignment (bg);
   g_object_get (bg->panel, "expand", &expand, NULL);
 
@@ -215,7 +218,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   // performance as opposed to cairo_fill
   cairo_save (cr);
 
-  draw_rect (bg, cr, position, 1, 1, width-3, height-1, align, expand);
+  draw_rect (bg, cr, position, x, y, width, height, align, expand);
   cairo_clip_preserve (cr);
   cairo_set_source (cr, pat);
   cairo_paint (cr);
@@ -240,12 +243,12 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Internal border */
   awn_cairo_set_source_color (cr, bg->hilight_color);
-  draw_rect (bg, cr, position, 1, 1, width-3, height+3, align, expand);
+  draw_rect (bg, cr, position, x + 1, y + 1, width-2, height-1, align, expand);
   cairo_stroke (cr);
 
   /* External border */
   awn_cairo_set_source_color (cr, bg->border_color);
-  draw_rect (bg, cr, position, 0, 0, width-1, height+3, align, expand);
+  draw_rect (bg, cr, position, x, y, width, height, align, expand);
   cairo_stroke (cr);
 }
 
@@ -387,7 +390,7 @@ awn_background_flat_get_shape_mask (AwnBackground  *bg,
       break;
   }
 
-  draw_rect (bg, cr, position, 0, 0, width, height+3, align, expand);
+  draw_rect (bg, cr, position, 0, 0, width, height, align, expand);
   cairo_fill (cr);
 
   cairo_restore (cr);

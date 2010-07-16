@@ -125,7 +125,6 @@ awn_background_lucido_applets_refreshed (AwnBackground *bg)
 {
   _set_special_widget_width_and_transparent 
                   (bg, TRANSFORM_RADIUS (bg->corner_radius), TRUE, FALSE);
-  awn_background_invalidate (bg);
   awn_background_emit_changed (bg);
 }
 
