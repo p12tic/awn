@@ -65,6 +65,18 @@ awn_separator_new_from_config_with_values (DesktopAgnosticConfigClient *client,
                                            GtkPositionType pos,
                                            gint size, gint offset);
 
+void 
+awn_separator_set_transparent (AwnSeparator *sep, gboolean transp);
+
+gboolean 
+awn_separator_get_transparent (AwnSeparator *sep, gboolean transp);
+
+void 
+awn_separator_set_separator_size (AwnSeparator *sep, gint size);
+
+gint 
+awn_separator_get_separator_size (AwnSeparator *sep, gint size);
+
 G_END_DECLS
 
 #endif /* _AWN_SEPARATOR_H_ */

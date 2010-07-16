@@ -17,7 +17,7 @@
  *
  *  Author : Alberto Aldegheri <albyrock87+dev@gmail.com>
  *  Thanks to: Matt <sharkbaitbobby@gmail.com>
- *             for the code section to analyze expanders
+ *             for the code section to analyze separators
  *
  */
 
@@ -39,11 +39,27 @@ G_DEFINE_TYPE (AwnBackgroundLucido, awn_background_lucido, AWN_TYPE_BACKGROUND)
 
 struct _AwnBackgroundLucidoPrivate
 {
-  gint expw;
-  gint expn;
+  gint      expw;
+  gfloat    lastx;
+  gfloat    lastxend;
+  GArray   *pos;
+  gint      pos_size;
+  guint     tid;
+  gboolean  needs_animation;
 };
 
-#define TRANSFORM_RADIUS(x) sqrt(x/50.)*50.
+#define TOP_PADDING 2
+/* Timeout for animation -> 40 = 25fps*/
+#define ANIM_TIMEOUT 40
+/* ANIMATION SPEED needs to be greater than 0. - Lower values are faster */
+#define ANIMATION_SPEED 16.
+
+/* draw shape mask for debug */
+#define DEBUG_SHAPE_MASK      FALSE
+
+#define TRANSFORM_RADIUS(x) MAX(sqrt(x/60.)*60.,1)
+
+#define IS_SPECIAL(x) AWN_IS_SEPARATOR(x)
 
 static void awn_background_lucido_draw (AwnBackground  *bg,
                                         cairo_t        *cr,
@@ -61,18 +77,31 @@ static void awn_background_lucido_padding_request (AwnBackground *bg,
                                                    guint *padding_bottom,
                                                    guint *padding_left,
                                                    guint *padding_right);
-                                                   
+
 static gboolean
 awn_background_lucido_get_needs_redraw (AwnBackground *bg,
                                         GtkPositionType position,
                                         GdkRectangle *area);
-                                        
+
+
+static void 
+_set_special_widget_width_and_transparent (AwnBackground *bg,
+                                           gint          width,
+                                           gboolean      transp,
+                                           gboolean      dispose);
+
 static void 
 awn_background_lucido_corner_radius_changed (AwnBackground *bg)
 {
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
-  
+
+  _set_special_widget_width_and_transparent (
+                                        bg,
+                                        TRANSFORM_RADIUS (bg->corner_radius),
+                                        TRUE,
+                                        FALSE);
+
   if (!expand)
   {
     awn_background_emit_padding_changed (bg);
@@ -92,19 +121,28 @@ awn_background_lucido_align_changed (AwnBackground *bg)
 }
 
 static void
+awn_background_lucido_applets_refreshed (AwnBackground *bg)
+{
+  _set_special_widget_width_and_transparent 
+                  (bg, TRANSFORM_RADIUS (bg->corner_radius), TRUE, FALSE);
+  awn_background_emit_changed (bg);
+}
+
+static void
 awn_background_lucido_constructed (GObject *object)
 {
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->constructed (object);
-  
+
   AwnBackground *bg = AWN_BACKGROUND (object);
   gpointer monitor = NULL;
-  
+
   g_signal_connect_swapped (bg, "notify::corner-radius",
-                            G_CALLBACK (awn_background_lucido_corner_radius_changed),
+                            G_CALLBACK (
+                            awn_background_lucido_corner_radius_changed),
                             object);
 
   g_return_if_fail (bg->panel);
-  
+
   g_signal_connect_swapped (bg->panel, "notify::expand",
                             G_CALLBACK (awn_background_lucido_expand_changed),
                             object);
@@ -116,11 +154,24 @@ awn_background_lucido_constructed (GObject *object)
   g_signal_connect_swapped (monitor, "notify::monitor-align",
                             G_CALLBACK (awn_background_lucido_align_changed),
                             object);
+
+  AwnAppletManager *manager = NULL;
+  g_object_get (bg->panel, "applet-manager", &manager, NULL);
+  g_return_if_fail (manager);
+  g_signal_connect_swapped (manager, "applets-refreshed",
+                      G_CALLBACK (awn_background_lucido_applets_refreshed), bg);
 }
 
 static void
 awn_background_lucido_dispose (GObject *object)
 {
+  _set_special_widget_width_and_transparent 
+                          (AWN_BACKGROUND (object), 10, FALSE, TRUE);
+
+  AwnBackgroundLucido *lbg = AWN_BACKGROUND_LUCIDO (object);
+  AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
+  g_array_free (priv->pos, TRUE);
+
   gpointer monitor = NULL;
   if (AWN_BACKGROUND (object)->panel)
   {
@@ -139,6 +190,15 @@ awn_background_lucido_dispose (GObject *object)
   g_signal_handlers_disconnect_by_func (AWN_BACKGROUND (object), 
         G_CALLBACK (awn_background_lucido_corner_radius_changed), object);
 
+  AwnAppletManager *manager = NULL;
+  g_object_get (AWN_BACKGROUND (object)->panel,
+                                "applet-manager", &manager, NULL);
+  if (manager)
+  {
+    g_signal_handlers_disconnect_by_func (manager, 
+        G_CALLBACK (awn_background_lucido_applets_refreshed), object);
+  }
+
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->dispose (object);
 }
 
@@ -151,19 +211,30 @@ awn_background_lucido_class_init (AwnBackgroundLucidoClass *klass)
   obj_class->constructed  = awn_background_lucido_constructed;
   obj_class->dispose = awn_background_lucido_dispose;
 
+#if DEBUG_SHAPE_MASK
+  bg_class->draw = awn_background_lucido_get_shape_mask;
+#else
   bg_class->draw = awn_background_lucido_draw;
+#endif
   bg_class->padding_request = awn_background_lucido_padding_request;
   bg_class->get_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_input_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_needs_redraw = awn_background_lucido_get_needs_redraw;
-  
+
   g_type_class_add_private (obj_class, sizeof (AwnBackgroundLucidoPrivate));
 }
 
 static void
 awn_background_lucido_init (AwnBackgroundLucido *bg)
 {
-
+  AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (bg);
+  priv->lastx = 0;
+  priv->lastxend = INT_MAX;
+  priv->needs_animation = FALSE;
+  priv->tid = 0;
+  priv->pos = g_array_new (FALSE, TRUE, sizeof (gfloat));
+  priv->pos_size = 0;
+  awn_background_lucido_applets_refreshed (AWN_BACKGROUND (bg));
 }
 
 AwnBackground *
@@ -177,6 +248,66 @@ awn_background_lucido_new (DesktopAgnosticConfigClient *client,
                      "panel", panel,
                      NULL);
   return bg;
+}
+
+/* ANIMATION FUNCTIONS */
+
+/*
+ * _add_n_positions:
+ * adds n positions to position array that contains
+ * last positions of special applets
+ * Usually called when a special applet is added
+ */
+static void
+_add_n_positions (AwnBackgroundLucidoPrivate *priv, gint n, gfloat startpos)
+{
+  while (n-- > 0)
+  {
+    g_array_append_val (priv->pos, startpos);
+    ++priv->pos_size;
+  }  
+}
+
+/*
+ * awn_background_lucido_redraw:
+ * @lbg: the lucido background ojbect
+ *
+ * Queue redraw of the panel and repeat itself if needed
+ */
+static gboolean
+awn_background_lucido_redraw (AwnBackgroundLucido *lbg)
+{
+  g_return_val_if_fail (AWN_IS_BACKGROUND_LUCIDO (lbg), FALSE);
+
+  AwnBackgroundLucidoPrivate *priv;
+  AwnBackground *bg = AWN_BACKGROUND (lbg);
+  priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
+
+  if (priv->needs_animation)
+  {
+    awn_background_invalidate (bg);
+    gtk_widget_queue_draw (GTK_WIDGET (bg->panel));
+    return TRUE;
+  }
+  else
+  {
+    priv->tid = 0;
+    return FALSE;
+  }
+}
+
+/*
+ * _restart_timeout:
+ * restarts animation's timer if needed
+ */
+static void _restart_timeout (AwnBackground *bg,
+                              AwnBackgroundLucidoPrivate *priv)
+{
+  priv->needs_animation = TRUE;
+  if (!priv->tid)
+  {
+    priv->tid = g_timeout_add (ANIM_TIMEOUT, (GSourceFunc)awn_background_lucido_redraw, bg);
+  }
 }
 
 /*
@@ -202,6 +333,10 @@ _line_from_to ( cairo_t *cr,
   *ys = yf;
 }
 
+/*
+ * Gets applet manager's childs.
+ * Sets docklet mode = TRUE if panel is in docklet mode
+ */
 static GList*
 _get_applet_widgets (AwnBackground* bg)
 {
@@ -209,6 +344,58 @@ _get_applet_widgets (AwnBackground* bg)
   g_object_get (bg->panel, "applet-manager", &manager, NULL);
 
   return gtk_container_get_children (GTK_CONTAINER (manager));
+}
+
+/*
+ * Get applet manager size
+ * Get offset-left stored in "x" variable passed to method
+ *
+ */
+static gint
+_get_applet_manager_size (AwnBackground* bg, GtkPositionType position, float *x)
+{
+  AwnAppletManager *manager = NULL;
+  g_object_get (bg->panel, "applet-manager", &manager, NULL);
+  GtkWidget *widget = GTK_WIDGET (manager);
+  gint wx, wy;
+  gtk_widget_translate_coordinates(widget, gtk_widget_get_toplevel(widget),
+                                       0, 0, &wx, &wy);
+  switch (position)
+  {
+    case GTK_POS_BOTTOM:
+    case GTK_POS_TOP:
+      if (x)
+        *x = wx;
+      return widget->allocation.width;
+      break;
+    default:
+      if (x)
+        *x = wy;
+      return widget->allocation.height;
+      break;
+  }
+}
+
+/*
+ * coord_get_near:
+ * @from: the current position
+ * @to: the target position
+ * @return: a position between "from" and "to", if distance = 1, returns "to" 
+ */
+static float
+coord_get_near (const gfloat from, const gfloat to)
+{
+  float inc = abs (to - from);
+  float step = inc / ANIMATION_SPEED + 1.; // makes the resize shiny
+  inc = MIN (inc, step);
+  if (to > from)
+  {
+    return lroundf (from + inc);
+  }
+  else
+  {
+    return lroundf (from - inc);
+  }
 }
 
 /**
@@ -219,21 +406,23 @@ _get_applet_widgets (AwnBackground* bg)
  * @y: The top left coordinate of the "bar rect" - default = 0
  * @w: The width of the bar
  * @h: The height of the bar
- * @stripe: The width of the stripe (0.0-1.0). Zero for auto-stripe.
  * @d: The width of each curve in the path
  * @dc: The width of the external curves in non-expanded&auto mode
- * @symmetry: The symmetry of the stripe when @stripe > 0
  * @internal: If Zero, creates the path for the stripe
  * @expanded: If Zero, the bar is not expanded
+ * @align: the monitor align
+ * @update_positions: if FALSE it uses positions stored in priv->pos,
+ *                    otherwise updates the position stored in priv->pos
  *
  * This function creates paths on which the bar will be drawn.
- * In atuo-stripe, it searchs for expanders applet, each expander
+ * In atuo-stripe, it searchs for separators applet, each separator
  * equals to one curve.
- * If the first widget is an expander, start from bottom-left,
+ * If the first widget is an separator, start from bottom-left,
  * otherwise start from top-left
+ *
+ * returns the calculated y coordinate to draw the gradient
  */
-
-static void
+static gfloat
 _create_path_lucido ( AwnBackground*  bg,
                       GtkPositionType position,
                       cairo_t*        cr,
@@ -241,371 +430,360 @@ _create_path_lucido ( AwnBackground*  bg,
                       gfloat          y,
                       gfloat          w,
                       gfloat          h,
-                      gfloat          stripe,
                       gfloat          d,
                       gfloat          dc,
-                      gfloat          symmetry,
                       gboolean        internal,
                       gboolean        expanded,
-                      gfloat          align)
+                      gfloat          align,
+                      gboolean        update_positions)
 {
-  cairo_new_path (cr);
+  AwnBackgroundLucido *lbg = AWN_BACKGROUND_LUCIDO (bg);
+  AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
+  gfloat applet_manager_x = 0.;
+  _get_applet_manager_size (bg, position, &applet_manager_x);
+  gboolean needs_animation = FALSE;
 
+  /****************************************************************************/
+  /********************     UPDATE STARTING POINT     *************************/
+  /****************************************************************************/
+  /* x variable stores the starting x point for draw the panel */
+  if (update_positions)
+  {
+    if (!expanded)
+    {
+      x += applet_manager_x - dc;
+    }
+    x = lroundf (x);
+    if (x != priv->lastx)
+    {
+      needs_animation = TRUE;
+    }
+    x = coord_get_near (priv->lastx, x);
+    priv->lastx = x;
+  }
+  else
+  {
+    x = priv->lastx;
+  }
+  /****************************************************************************/
+  /********************     INIT GENERAL COORDINATES  *************************/
+  /****************************************************************************/
+  gfloat sym = bg->curves_symmetry;
+  gfloat curx = x;
   gfloat lx = x;
   gfloat ly = y;
   gfloat y3 = y + h;
-  gfloat y2 = y3 - 5;
-  
-  if (stripe > 0)
+  gfloat y2 = y3 - 8. * bg->thickness;
+  gfloat rdc = dc;
+
+  /****************************************************************************/
+  /********************     CURVES SYMMETRY HANDLER   *************************/
+  /****************************************************************************/
+  sym = fabs (sym - 0.5);
+  gfloat exty = y + h * sym * 2.;
+  if (exty > y2)
   {
-    if (expanded)
+    y2 = exty;
+  }
+  if (internal && bg->curves_symmetry > 0.5)
+  {
+    y = exty;
+  }
+  else if (!internal && bg->curves_symmetry < 0.5)
+  {
+    y = exty;
+  }
+  /****************************************************************************/
+  /********************     OBTAIN LIST OF APPLETS    *************************/
+  /****************************************************************************/
+  gboolean docklet_mode = awn_panel_get_docklet_mode (bg->panel);
+  GList *widgets = _get_applet_widgets (bg);
+  GList *i = widgets;
+  GtkWidget *widget = NULL;
+  /* j = index of last special widget found */
+  gint j = -1;
+  /* Check for docklet mode - In docklet mode first widget is the docklet */
+  if (i && docklet_mode)
+  {
+    i = i->next;
+  }
+  /* Check if the first widget is special */
+  gboolean first_widget_is_special = FALSE;
+  if (i && IS_SPECIAL (i->data))
+  {
+    first_widget_is_special = TRUE;
+  }
+  /****************************************************************************/
+  /********************     SETUP EXTERNAL CORNERS    *************************/
+  /****************************************************************************/
+  if (expanded)
+  {
+    dc = rdc = 0.;
+  }
+  else if (align == 0.)
+  {
+    dc = 0.;
+  }
+  else if (align == 1.)
+  {
+    rdc = 0.;
+  }
+  /****************************************************************************/
+  /********************        START THE PATH         *************************/
+  /****************************************************************************/
+  if (internal)
+  {
+    cairo_new_path (cr);
+    lx = lx + dc;
+    ly = y;
+    cairo_move_to (cr, lx, ly);
+    _line_from_to (cr, &lx, &ly, curx, y3);
+  }
+  else
+  {
+    cairo_new_path (cr);
+    lx = curx;
+    ly = y3;
+    cairo_move_to (cr, lx, ly);
+  }
+  /* check for special in first position */
+  if (first_widget_is_special)
+  {
+    i = i->next;
+    _line_from_to (cr, &lx, &ly, lx + dc, y2);
+  }
+  else if (!internal)
+  {
+    _line_from_to (cr, &lx, &ly, lx + dc, y);
+  }
+  else
+  {
+    _line_from_to (cr, &lx, &ly, lx + dc, exty);
+  }
+  /****************************************************************************/
+  /********************     UPDATE WIDTH FOR LAST X   *************************/
+  /****************************************************************************/
+  /* w stores the "right corner", lastxend equals to last w */
+  if (update_positions)
+  {
+    w = lroundf (w);
+    if (w != priv->lastxend)
     {
-      stripe = (w * stripe); /* now stripe = non-stripe */
-      if (internal)
-      {
-        /* Manual-Stripe & Expanded & Internal */
-        lx = stripe * symmetry;
-        cairo_move_to (cr, lx, ly);
-        _line_from_to (cr, &lx, &ly, lx+d, y2);
-        _line_from_to (cr, &lx, &ly, w-stripe * (1. - symmetry) - d, y2);
-        _line_from_to (cr, &lx, &ly, w-stripe * (1. - symmetry), y);
-        cairo_close_path (cr);
-      }
-      else
-      {
-        /* Manual-Stripe & Expanded & External */
-        ly = y3;
-        cairo_move_to (cr, lx, ly);
-        _line_from_to (cr, &lx, &ly, lx, y);
-        _line_from_to (cr, &lx, &ly, stripe * symmetry, y);
-        _line_from_to (cr, &lx, &ly, stripe * symmetry + d, y2);
-        _line_from_to (cr, &lx, &ly, w - stripe * (1. - symmetry) - d, y2);
-        _line_from_to (cr, &lx, &ly, w - stripe * (1. - symmetry), y);
-        _line_from_to (cr, &lx, &ly, w, y);
-        _line_from_to (cr, &lx, &ly, w, y3);
-        cairo_close_path (cr);
-      }
-    }    
-    else
-    {
-      if (stripe == 1.)
-      {
-        _create_path_lucido (bg, position, cr, x, y, w, h, 0., 
-                             d, dc, 0., internal, expanded, align);
-        return;
-      }
-      stripe = ((w - dc * 2) * stripe); /* now stripe = non-stripe */
-      if (internal)
-      {
-        /* Manual-Stripe & Not-Expanded & Internal */
-        lx = stripe * symmetry + dc;
-        cairo_move_to (cr, lx, ly);
-        _line_from_to (cr, &lx, &ly, lx + d, y2);
-        _line_from_to (cr, &lx, &ly, w - stripe * (1.- symmetry) - dc - d, y2);
-        _line_from_to (cr, &lx, &ly, w - stripe * (1.- symmetry) - dc, y);
-        cairo_close_path (cr);
-      }
-      else
-      {
-        /* Manual-Stripe & Not-Expanded & External */
-        ly = y3;
-        cairo_move_to (cr, lx, ly);
-        _line_from_to (cr, &lx, &ly, lx+dc, y);
-        _line_from_to (cr, &lx, &ly, stripe * symmetry + dc, y);
-        _line_from_to (cr, &lx, &ly, stripe * symmetry + d + dc, y2);
-        _line_from_to (cr, &lx, &ly, w-stripe * (1. - symmetry) - dc - d, y2);
-        _line_from_to (cr, &lx, &ly, w-stripe * (1. - symmetry) - dc, y);
-        _line_from_to (cr, &lx, &ly, w-dc, y);
-        _line_from_to (cr, &lx, &ly, w, y3);
-        cairo_close_path(cr);
-      }
+      needs_animation = TRUE;
+      gfloat neww = coord_get_near (priv->lastxend, w);
+      w = MIN (w, neww);
+      priv->lastxend = w;
     }
   }
   else
   {
-    gint exps_found = 0;
-    gfloat curx = x;
-    
-    if (expanded)
+    w = priv->lastxend;
+  }
+  /****************************************************************************/
+  /********************        LOOP ON APPLETS        *************************/
+  /****************************************************************************/
+  gfloat saved_y = y;
+  if (bg->curves_symmetry < 0.5)
+  {
+    y = exty;
+  }
+  curx = lx;
+  gint wx, wy;
+  if (!docklet_mode)
+  {
+    for (; i; i = i->next)
     {
-      if (internal)
-      {        
-        /* Auto-Stripe & Expanded & Internal */
-        GList *widgets = _get_applet_widgets (bg);
-        GList *i = widgets;
-        GtkWidget *widget = NULL;
-        
-        /* analyze first widget*/
-        if (i)
+      widget = GTK_WIDGET (i->data);
+      if (!IS_SPECIAL (widget)) 
+      {
+        /* if not special continue */
+        continue;
+      }
+      /* special found, obtain coordinates */
+      ++j;
+      gtk_widget_translate_coordinates(widget, gtk_widget_get_toplevel(widget),
+                                       0, 0, &wx, &wy);
+      switch (position)
+      {
+        case GTK_POS_BOTTOM:
+        case GTK_POS_TOP:
+          curx = wx;
+          break;
+        default:
+          curx = wy;
+          break;
+      }
+      if (priv->pos_size <= j)
+      {
+        /* New special applet found, resize the array */
+        _add_n_positions (priv, 1, lx);
+      }
+      /************************************************************************/
+      /*****************    UPDATE SINGLE CURVE POSITION  *********************/
+      /************************************************************************/
+      if (update_positions)
+      {
+        curx = lroundf (curx);
+        if (curx != g_array_index (priv->pos, gfloat, j))
         {
-          widget = GTK_WIDGET (i->data);
-          
-          /* if first widget is an expander or align==0 || 1*/
-          if ( (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget) ) ||
-               ( align == 0. || align == 1. ) )
-          {
-            /* start from bottom */
-            lx = curx;
-            ly = y;
-            cairo_move_to (cr, lx, ly);
-            _line_from_to (cr, &lx, &ly, lx, y2);
-            ++exps_found;
-            if (align != 0. && align != 1.)
-              i = i->next;
-          }
+          needs_animation = TRUE;
         }
-        /* else start from top */
-
-        for (; i; i = i->next)
+        curx = coord_get_near (g_array_index (priv->pos, gfloat, j), curx);
+        if (curx > (w - rdc - d))
         {
-          widget = GTK_WIDGET (i->data);
-
-          if (!GTK_IS_IMAGE (widget) || AWN_IS_SEPARATOR (widget)) 
-          {
-            /* if not expander continue */
-            continue;
-          }          
-          /* expander found */
-          switch (position)
-          {
-            case GTK_POS_BOTTOM:
-            case GTK_POS_TOP:
-              curx = widget->allocation.x;
-              if (exps_found % 2 != 0)
-              {
-                curx += widget->allocation.width;
-              }
-              break;
-            default:
-              curx = widget->allocation.y;
-              if ( exps_found % 2 != 0)
-              {
-                curx += widget->allocation.height;
-              }
-              break;
-          }
-          if (curx < 0)
-          {
-            continue;
-          }
-
-          if (exps_found == 0)
-          {
-            /* this is the first expander */  
-            lx = curx;
-            cairo_move_to (cr, lx, ly);
-            _line_from_to (cr, &lx, &ly, curx + d, y2);
-          }
-          else
-          {
-            if (exps_found % 2 != 0)
-            {
-              /* odd expander - curve at the end of expander */
-              _line_from_to (cr, &lx, &ly, curx - d, y2);
-              if (i->next == NULL)
-                _line_from_to (cr, &lx, &ly, curx, y2);
-              _line_from_to (cr, &lx, &ly, curx, y);
-            }
-            else
-            {
-              /* even expander - curve at the start of expander */
-              _line_from_to (cr, &lx, &ly, curx, y);
-              _line_from_to (cr, &lx, &ly, curx + d, y2);
-              /* else the last widget is an expander */
-            }
-          }
-
-          ++exps_found;
+          curx = w - rdc - d;
         }
-        g_list_free (widgets);
-
-        _line_from_to (cr, &lx, &ly, w, ly);
-
-        if (exps_found % 2 != 0)
-        {
-          _line_from_to (cr, &lx, &ly, lx, y);
-        }
-
-        cairo_close_path (cr);
+        g_array_index (priv->pos, gfloat, j) = curx;
       }
       else
       {
-        /* Auto-Stripe & Expanded & External */
-
-        GList *widgets = _get_applet_widgets (bg);
-        GList *i = widgets;
-        GtkWidget *widget = NULL;
-        
-        /* analyze first widget*/
-        if (i)
-        {
-          widget = GTK_WIDGET (i->data);
-
-          ly = y3;
-          cairo_move_to (cr, lx, ly);
-
-          /* if first widget is an expander or align==0 || 1*/
-          if ( (widget && GTK_IS_IMAGE (widget) && !AWN_IS_SEPARATOR (widget) ) ||
-               ( align == 0. || align == 1. ) )
-          {
-            /* start from bottom */
-            _line_from_to (cr, &lx, &ly, lx, y2);
-            ++exps_found;
-            if (align != 0. && align != 1.)
-              i = i->next;
-          }
-          else
-          {
-            /* start from top */
-            _line_from_to (cr, &lx, &ly, lx, y);
-          }
-        }
-
-        for (; i; i = i->next)
-        {
-          widget = GTK_WIDGET (i->data);
-
-          if (!GTK_IS_IMAGE (widget) || AWN_IS_SEPARATOR (widget))
-          {
-            /* if not expander continue */
-            continue;
-          }
-          /* expander found */
-          switch (position)
-          {
-            case GTK_POS_BOTTOM:
-            case GTK_POS_TOP:
-              curx = widget->allocation.x;
-              if (exps_found % 2 != 0)
-              {
-                curx += widget->allocation.width;
-              }
-              break;
-            default:
-              curx = widget->allocation.y;
-              if (exps_found % 2 != 0)
-              {
-                curx += widget->allocation.height;
-              }
-              break;
-          }
-          if (curx < 0)
-          {
-            continue;
-          }
-
-          if (exps_found % 2 != 0)
-          {
-            _line_from_to (cr, &lx, &ly, curx - d, y2);
-            if (i->next != NULL)
-              _line_from_to (cr, &lx, &ly, curx, y);
-          }
-          else
-          {
-            _line_from_to (cr, &lx, &ly, curx, y);
-            _line_from_to (cr, &lx, &ly, curx + d, y2);
-          }
-          ++exps_found;
-        }
-        g_list_free (widgets);
-        
+        curx = g_array_index (priv->pos, gfloat, j);
+      }
+      if (curx < 0)
+      {
+        continue;
+      }
+      _line_from_to (cr, &lx, &ly, curx, ly);
+      if (ly == y2)
+      {
+        _line_from_to (cr, &lx, &ly, lx + d, y);
+      }
+      else
+      {
+        _line_from_to (cr, &lx, &ly, lx + d, y2);
+      }
+    }
+  }
+  y = saved_y;
+  g_list_free (widgets);
+  /****************************************************************************/
+  /************************     CLOSE THE PATH   ******************************/
+  /****************************************************************************/
+  if (expanded)
+  {
+    /* make sure that cairo close path in the right way */
+    _line_from_to (cr, &lx, &ly, w, ly);
+    if (internal)
+    {
+      _line_from_to (cr, &lx, &ly, lx, y);
+    }
+    else
+    {
+      _line_from_to (cr, &lx, &ly, lx, y3);
+    }
+  }
+  else
+  {
+    if (align == 1.)
+    {
+      if (internal)
+      {
+        _line_from_to (cr, &lx, &ly, w, ly);
+        _line_from_to (cr, &lx, &ly, lx, y);
+      }
+      else
+      {
         _line_from_to (cr, &lx, &ly, w, ly);
         _line_from_to (cr, &lx, &ly, lx, y3);
-
-        cairo_close_path (cr);
       }
     }
     else
     {
       if (internal)
       {
-        /* Auto-Stripe & Not-Expanded & Internal */
-        /* no-path */
+        _line_from_to (cr, &lx, &ly, w - rdc, y2);
+        _line_from_to (cr, &lx, &ly, w, y3);
+        _line_from_to (cr, &lx, &ly, w - rdc, y);
       }
       else
       {
-        /* Auto-Stripe & Not-Expanded & External */
-        ly = y3;
-        cairo_move_to (cr, lx, ly);
-        
-        if (align == 0.)
-          _line_from_to (cr, &lx, &ly, lx , y);
-        else
-          _line_from_to (cr, &lx, &ly, lx + dc, y);
-        
-        if (align == 1.)
-          _line_from_to (cr, &lx, &ly, w, y);
-        else
-          _line_from_to (cr, &lx, &ly, w - dc, y);
-        
+        _line_from_to (cr, &lx, &ly, w - rdc, ly);
         _line_from_to (cr, &lx, &ly, w, y3);
-        cairo_close_path (cr);
       }
     }
   }
+  cairo_close_path (cr);
+  /****************************************************************************/
+  /********************     RESTART ANIMATION IF NEEDED  **********************/
+  /****************************************************************************/
+  if (update_positions)
+  {
+    if (needs_animation)
+    {
+      _restart_timeout (bg, priv);
+    }
+    else
+    {
+      priv->needs_animation = FALSE;
+    }
+  }
+  return y;
 }
 
 static void
 draw_top_bottom_background (AwnBackground*   bg,
                             GtkPositionType  position,
                             cairo_t*         cr,
-                            gint             width,
-                            gint             height)
+                            gfloat           width,
+                            gfloat           height)
 {
   cairo_pattern_t *pat = NULL;
-  cairo_pattern_t *pat_hi = NULL;
-  
+
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
 
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
-  
+
   gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
-  
+
   /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
-  switch (position)
+  if (!expand)
   {
-    case GTK_POS_TOP:
-    case GTK_POS_BOTTOM:
-      cairo_translate (cr, 0., 0.5);
-      break;
-    default:
-      cairo_translate (cr, 0.5, 0.);
-      break;
+    cairo_translate (cr, 0.5, 0.5);
+    width -= 0.5;
   }
-  
+  else
+  {
+    cairo_translate (cr, -0.5, 0.5);
+    width += 1.;
+  }
+
   if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
   {
     goto paint_lines;
   }
 
+  gfloat x = 0.,
+         y = 0.;
+  gfloat y_pat;
+
   /* create internal path */
-  _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
-                       bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
-                       TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
-                       1, expand, align);
+  y_pat = _create_path_lucido (bg, position, cr, x, y, width, height,
+                               TRANSFORM_RADIUS (bg->corner_radius),
+                               TRANSFORM_RADIUS (bg->corner_radius),
+                               TRUE, expand, align, TRUE);
 
   /* Draw internal pattern if needed */
-  if ((expand || bg->stripe_width != 0.) && bg->enable_pattern && bg->pattern)
+  if (bg->enable_pattern && bg->pattern)
   {
     /* Prepare pattern */
-    pat_hi = cairo_pattern_create_for_surface (bg->pattern);
-    cairo_pattern_set_extend (pat_hi, CAIRO_EXTEND_REPEAT);
+    pat = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
     /* Draw */
     cairo_save (cr);
     cairo_clip_preserve (cr);
-    cairo_set_source (cr, pat_hi);
+    cairo_set_source (cr, pat);
     cairo_paint (cr);
     cairo_restore (cr);
-    cairo_pattern_destroy (pat_hi);
+    cairo_pattern_destroy (pat);
   }
 
   /* Prepare the internal background */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->border_color);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->hilight_color);
+  pat = cairo_pattern_create_linear (x, y_pat, 0., height);
+  awn_cairo_pattern_add_color_stop_color (pat, 0., bg->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
 
   /* Draw the internal background gradient */
   cairo_save (cr);
@@ -613,37 +791,23 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_set_source (cr, pat);
   cairo_paint (cr);
   cairo_restore (cr);
+  awn_cairo_set_source_color (cr, bg->border_color);
+  cairo_stroke (cr);
+
+  /* create external path */
+  y_pat = _create_path_lucido (bg, position, cr, x, y, width, height,
+                               TRANSFORM_RADIUS (bg->corner_radius),
+                               TRANSFORM_RADIUS (bg->corner_radius),
+                               FALSE, expand, align, FALSE);
 
   /* Prepare external background gradient*/
-  if (expand || bg->stripe_width != 0.)
-  {
-    cairo_pattern_destroy (pat);
-    pat = cairo_pattern_create_linear (0, 0, 0, height);
-    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-  }
-  
-  /* create external path */
-  _create_path_lucido (bg, position, cr, -1.0, 0., width, height,
-                       bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
-                       TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
-                       0, expand, align);
+  cairo_pattern_destroy (pat);
+  pat = cairo_pattern_create_linear (x, y_pat, 0., height);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
 
-  /* Draw external pattern if needed */
-  if (!expand && bg->stripe_width == 0. && bg->enable_pattern && bg->pattern)
-  {
-    /* Prepare pattern */
-    pat_hi = cairo_pattern_create_for_surface (bg->pattern);
-    cairo_pattern_set_extend (pat_hi, CAIRO_EXTEND_REPEAT);
-    /* Draw */
-    cairo_save (cr);
-    cairo_clip_preserve (cr);
-    cairo_set_source (cr, pat_hi);
-    cairo_paint (cr);
-    cairo_restore (cr);
-    cairo_pattern_destroy (pat_hi);
-  }
-                       
+  /* Clean below external background */
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   /* Draw the external background  */
   cairo_save (cr);
   cairo_clip_preserve (cr);
@@ -651,21 +815,12 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_paint (cr);
   cairo_restore (cr);
   cairo_pattern_destroy (pat);
-  
-  /* Draw the hi-light */
-  pat_hi = cairo_pattern_create_linear (0, 0, 0, (height / 3.0));
-  awn_cairo_pattern_add_color_stop_color (pat_hi, 0.0, bg->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat_hi, 1.0, bg->g_histep_2);
-  
-  if (expand)
-  {
-    cairo_new_path (cr);
-    cairo_rectangle (cr, 0, 0, width, (height / 3.0));
-  }
-  
-  cairo_set_source (cr, pat_hi);
-  cairo_fill (cr);
-  cairo_pattern_destroy (pat_hi);
+  /* Restore operator */
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+
+  /* Draw border */
+  awn_cairo_set_source_color (cr, bg->hilight_color);
+  cairo_stroke (cr);
 
   return;
   /* if not composited */
@@ -675,26 +830,26 @@ paint_lines:
   {
     /* Internal border */
     awn_cairo_set_source_color (cr, bg->hilight_color);
-    cairo_rectangle (cr, 1, 1, width - 3, height + 3);
+    cairo_rectangle (cr, 1., 1., width - 3., height + 3.);
     cairo_stroke (cr);
 
     /* External border */    
     awn_cairo_set_source_color (cr, bg->border_color);
-    cairo_rectangle (cr, 1, 1, width - 1, height + 3);
+    cairo_rectangle (cr, 1., 1., width - 1., height + 3.);
   }
   else
   {
     awn_cairo_set_source_color (cr, bg->border_color);
     _create_path_lucido (bg, position, cr, 0., 0., width, height,
-                         bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
-                         TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
-                         0, expand, align);
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         FALSE, expand, align, TRUE);
     cairo_stroke (cr);
     awn_cairo_set_source_color (cr, bg->hilight_color);
     _create_path_lucido (bg, position, cr, 1., 1., width-1., height-1.,
-                         bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
-                         TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
-                         0, expand, align);
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         FALSE, expand, align, FALSE);
   }
   cairo_stroke (cr);
 }
@@ -708,7 +863,6 @@ void awn_background_lucido_padding_request (AwnBackground *bg,
     guint *padding_left,
     guint *padding_right)
 {
-  #define TOP_PADDING 2
   gboolean expand = FALSE;
   g_object_get (bg->panel, "expand", &expand, NULL);
   gint side_padding = expand ? 0 : TRANSFORM_RADIUS (bg->corner_radius);
@@ -771,7 +925,8 @@ awn_background_lucido_draw (AwnBackground  *bg,
   switch (position)
   {
     case GTK_POS_RIGHT:
-      cairo_translate (cr, 0., y + height);
+      height += y;
+      cairo_translate (cr, 0., height);
       cairo_scale (cr, 1., -1.);
       cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
@@ -780,85 +935,60 @@ awn_background_lucido_draw (AwnBackground  *bg,
       height = temp;
       break;
     case GTK_POS_LEFT:
-      cairo_translate (cr, x + width, y);
+      height += y;
+      cairo_translate (cr, x + width, 0.);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height;
       height = temp;
       break;
     case GTK_POS_TOP:
-      cairo_translate (cr, x, y + height);
+      width += x;
+      cairo_translate (cr, 0., y + height);
       cairo_scale (cr, 1., -1.);
       break;
     default:
-      cairo_translate (cr, x, y);
+      width += x;
+      cairo_translate (cr, 0., y);
       break;
   }
-  
+
   draw_top_bottom_background (bg, position, cr, width, height);
-  
+
   cairo_restore (cr);
 }
 
-static gboolean
-awn_background_lucido_get_needs_redraw (AwnBackground *bg,
-                                        GtkPositionType position,
-                                        GdkRectangle *area)
+static void 
+_set_special_widget_width_and_transparent (AwnBackground *bg,
+                                           gint          width,
+                                           gboolean      transp,
+                                           gboolean      dispose)
 {
-  /* Check default needs redraw */
-  gboolean nr = AWN_BACKGROUND_CLASS (awn_background_lucido_parent_class)->
-                                      get_needs_redraw (bg, position, area);
-  if (nr)
-  {
-    return TRUE;
-  }
-  
-  /* Check expanders positions & sizes changed */
   GList *widgets = _get_applet_widgets (bg);
   GList *i = widgets;
   GtkWidget *widget = NULL;
-  gint wcheck = 0;
-  gint ncheck = 0;
-  
+
+  if (i && IS_SPECIAL (i->data) && !dispose)
+  {
+    widget = GTK_WIDGET (i->data);
+    awn_separator_set_separator_size (AWN_SEPARATOR (widget), 1);
+    awn_separator_set_transparent (AWN_SEPARATOR (widget), transp);
+    i = i->next;
+  }
+
   for (; i; i = i->next)
   {
     widget = GTK_WIDGET (i->data);
-
-    if (!GTK_IS_IMAGE (widget) || AWN_IS_SEPARATOR (widget)) 
+    if (!IS_SPECIAL (widget)) 
     {
-      /* if not expander continue */
+      /* if not special continue */
       continue;
     }
-    switch (position)
-    {
-      case GTK_POS_BOTTOM:
-      case GTK_POS_TOP:
-        wcheck += (widget->allocation.x * 3) / 2 + widget->allocation.width;
-        break;
-      default:
-        wcheck += (widget->allocation.y * 3 ) / 2 + widget->allocation.height;
-        break;
-    }
-    ++ncheck;
+    awn_separator_set_separator_size (AWN_SEPARATOR (widget), width);
+    awn_separator_set_transparent (AWN_SEPARATOR (widget), transp);
   }
+
   g_list_free (widgets);
-  
-  AwnBackgroundLucido *lbg = NULL;
-  lbg = AWN_BACKGROUND_LUCIDO (bg);
-  AwnBackgroundLucidoPrivate *priv;
-  priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
-  if (priv->expn != ncheck)
-  {
-    priv->expn = ncheck;
-    /* used to refresh bar */
-    awn_background_emit_padding_changed (bg);
-  }
-  if (priv->expw != wcheck)
-  {
-    priv->expw = wcheck;
-    return TRUE;
-  }
-  return FALSE;
 }
 
 static void
@@ -881,7 +1011,8 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   switch (position)
   {
     case GTK_POS_RIGHT:
-      cairo_translate (cr, 0., y + height);
+      height += y;
+      cairo_translate (cr, 0., height);
       cairo_scale (cr, 1., -1.);
       cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
@@ -890,33 +1021,98 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
       height = temp;
       break;
     case GTK_POS_LEFT:
-      cairo_translate (cr, x + width, y);
+      height += y;
+      cairo_translate (cr, x + width, 0.);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height;
       height = temp;
       break;
     case GTK_POS_TOP:
-      cairo_translate (cr, x, y + height);
+      width += x;
+      cairo_translate (cr, 0., y + height);
       cairo_scale (cr, 1., -1.);
       break;
     default:
-      cairo_translate (cr, x, y);
+      width += x;
+      cairo_translate (cr, 0., y);
       break;
   }
   if (expand)
   {
-    cairo_rectangle (cr, 0, 0, width, height + 2);
+    cairo_rectangle (cr, 0., 0., width, height + 2.);
   }
   else
   {
-    _create_path_lucido (bg, position, cr, 0, 0., width, height,
-                         bg->stripe_width, TRANSFORM_RADIUS (bg->corner_radius),
-                         TRANSFORM_RADIUS (bg->corner_radius), bg->curves_symmetry,
-                         0, expand, align);
+    _create_path_lucido (bg, position, cr, 0., 0., width, height,
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         FALSE, expand, align, FALSE);
+    cairo_fill (cr);
+    _create_path_lucido (bg, position, cr, 0., 0., width, height,
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         TRUE, expand, align, FALSE);
+
   }
   cairo_fill (cr);
 
   cairo_restore (cr);
+}
+static gboolean
+awn_background_lucido_get_needs_redraw (AwnBackground *bg,
+                                        GtkPositionType position,
+                                        GdkRectangle *area)
+{
+  /* Check default needs redraw */
+  gboolean nr = AWN_BACKGROUND_CLASS (awn_background_lucido_parent_class)->
+                                      get_needs_redraw (bg, position, area);
+  if (nr)
+  {
+    return TRUE;
+  }
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  if (!expand)
+  {
+    return FALSE;
+  }
+  /* Check separators positions, 
+   * because bar's width doesn't change in expanded mode
+   */
+  GList *widgets = _get_applet_widgets (bg);
+  GList *i = widgets;
+  GtkWidget *widget = NULL;
+  gint  wcheck = 0, j = 0;
+
+  for (; i; i = i->next)
+  {
+    ++j;
+    widget = GTK_WIDGET (i->data);
+    if (!IS_SPECIAL (widget)) 
+    {
+      /* if not special continue */
+      continue;
+    }
+    switch (position)
+    {
+      case GTK_POS_LEFT:
+      case GTK_POS_RIGHT:
+        wcheck += widget->allocation.y * j;
+        break;
+      default:
+        wcheck += widget->allocation.x * j;
+        break;
+    }
+  }
+  g_list_free (widgets);
+  AwnBackgroundLucidoPrivate *priv = 
+                AWN_BACKGROUND_LUCIDO_GET_PRIVATE (AWN_BACKGROUND_LUCIDO (bg));
+  if (priv->expw != wcheck)
+  {
+    priv->expw = wcheck;
+    return TRUE;
+  }
+  return FALSE;
 }
 /* vim: set et ts=2 sts=2 sw=2 : */

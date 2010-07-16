@@ -66,6 +66,7 @@ struct _AwnAppletManagerClass
   void (*applet_embedded)    (AwnAppletManager *manager, GtkWidget *applet);
   void (*applet_removed)     (AwnAppletManager *manager, GtkWidget *applet);
   void (*shape_mask_changed) (AwnAppletManager *manager);
+  void (*applets_refreshed)  (AwnAppletManager *manager);
 };
 
 GType       awn_applet_manager_get_type          (void) G_GNUC_CONST;
@@ -93,7 +94,6 @@ void        awn_applet_manager_hide_applets      (AwnAppletManager *manager);
 
 void        awn_applet_manager_add_docklet       (AwnAppletManager *manager,
                                                   GtkWidget *docklet);
-gboolean    awn_applet_manager_get_docklet_mode  (AwnAppletManager *manager);
 
 void        awn_applet_manager_redraw_throbbers  (AwnAppletManager *manager);
 

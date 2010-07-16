@@ -3920,6 +3920,12 @@ docklet_closer_click (GtkWidget *widget, AwnPanel *panel)
   return FALSE;
 }
 
+gboolean
+awn_panel_get_docklet_mode (AwnPanel *panel)
+{
+  return panel->priv->docklet != NULL;
+}
+
 static void
 awn_panel_docklet_destroy (AwnPanel *panel)
 {

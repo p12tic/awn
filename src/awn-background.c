@@ -60,7 +60,7 @@ enum
   PROP_CURVINESS,
   PROP_CURVES_SYMEMETRY,
   PROP_FLOATY_OFFSET,
-  PROP_STRIPE_WIDTH
+  PROP_THICKNESS
 };
 
 enum 
@@ -198,8 +198,8 @@ awn_background_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
-                                       AWN_GROUP_THEME, AWN_THEME_STRIPE_WIDTH,
-                                       object, "stripe-width", TRUE,
+                                       AWN_GROUP_THEME, AWN_THEME_THICKNESS,
+                                       object, "thickness", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }
@@ -235,6 +235,9 @@ awn_background_get_property (GObject    *object,
     }
     case PROP_FLOATY_OFFSET:
       g_value_set_int (value, bg->floaty_offset);
+      break;
+    case PROP_THICKNESS:
+      g_value_set_float (value, bg->thickness);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -364,11 +367,11 @@ awn_background_set_property (GObject      *object,
     case PROP_CURVES_SYMEMETRY:
       bg->curves_symmetry = g_value_get_float (value);
       break;
+    case PROP_THICKNESS:
+      bg->thickness = g_value_get_float (value);
+      break;
     case PROP_FLOATY_OFFSET:
       bg->floaty_offset = g_value_get_int (value);
-      break;
-    case PROP_STRIPE_WIDTH:
-      bg->stripe_width = g_value_get_float (value);
       break;
 
     default:
@@ -619,16 +622,15 @@ awn_background_class_init (AwnBackgroundClass *klass)
                         0.0, 1.0, 0.5,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS));
-                        
   g_object_class_install_property (obj_class,
-    PROP_STRIPE_WIDTH,
-    g_param_spec_float ("stripe-width",
-                        "Stripe Width",
-                        "The width of the stripe",
-                        0.0, 1.0, 0.0,
+    PROP_THICKNESS,
+    g_param_spec_float ("thickness",
+                        "Thickness",
+                        "The thickness in 3D mode",
+                        0.0, 1.0, 0.6,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS));
-
+                        
   /* Add signals to the class */
   _bg_signals[CHANGED] = 
     g_signal_new ("changed",
@@ -870,7 +872,7 @@ void
 awn_background_emit_padding_changed (AwnBackground *bg)
 {
   g_return_if_fail (AWN_IS_BACKGROUND (bg));
-
+  awn_background_invalidate (bg);
   g_signal_emit (bg, _bg_signals[PADDING_CHANGED], 0);
 }
 
@@ -878,7 +880,7 @@ void
 awn_background_emit_changed (AwnBackground *bg)
 {
   g_return_if_fail (AWN_IS_BACKGROUND (bg));
-
+  awn_background_invalidate (bg);
   g_signal_emit (bg, _bg_signals[CHANGED], 0);
 }
 

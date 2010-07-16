@@ -1,3 +1,26 @@
+2010-07-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/awn-cairo-utils.c:
+	* src/awn-applet-manager.c:
+	* src/awn-applet-manager.h:
+	* src/awn-background-3d.c:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	* src/awn-background-lucido.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-defines.h:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	* src/awn-separator.c:
+	* src/awn-separator.h:
+	Merge from <lp:~albyrock87/awn/awn-lucido> up to revision 761.
+
 2010-07-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/menus/advanced.xml:
