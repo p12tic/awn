@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-07 11:08+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-07-17 21:30+0000\n"
+"Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-08 03:50+0000\n"
+"X-Launchpad-Export-Date: 2010-07-18 03:39+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -676,7 +676,7 @@ msgstr "Näytä kaikki ikkunat"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Näytä valintaikkuna pitämållä painike pohjassa"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
@@ -942,7 +942,7 @@ msgstr "Läpinäkyvyys"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "Pidä alla"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"

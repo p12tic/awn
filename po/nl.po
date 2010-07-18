@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-07 10:59+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-07-17 17:40+0000\n"
+"Last-Translator: Ivo Reumkens <ivoreum@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-08 03:50+0000\n"
+"X-Launchpad-Export-Date: 2010-07-18 03:39+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -590,7 +590,7 @@ msgstr "Installeer..."
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "Start animatie:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
@@ -610,7 +610,7 @@ msgstr "Monitor hoogte"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "Monitor breedte"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
@@ -618,7 +618,7 @@ msgstr "Naam:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
-msgstr ""
+msgstr "Positie"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
@@ -646,7 +646,7 @@ msgstr "Paneel Stijl & Grootte"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Patroon Alpha"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Pattern Image"
@@ -658,7 +658,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "Reflectie positie"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
@@ -674,7 +674,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Selecteer Gewone Pijl"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
