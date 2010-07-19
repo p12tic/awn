@@ -1,3 +1,9 @@
+2010-02-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+        * applets/taskmanager/task-window.h:
+        * applets/taskmanager/task-window.c:
+        Added task_window_matches_wmclass().
+
 2010-02-10  Michal Hruby  <michal.mhr@gmail.com>
 
 	* bindings/vala/awn.metadata:

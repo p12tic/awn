@@ -1195,7 +1195,6 @@ task_window_set_icon_geometry (TaskWindow    *window,
 
 }
 
-
 gboolean    
 task_window_get_is_running (TaskWindow *window)
 {
@@ -1204,6 +1203,23 @@ task_window_get_is_running (TaskWindow *window)
   return WNCK_IS_WINDOW (window->priv->window);
 }
 
+gboolean
+task_window_matches_wmclass (TaskWindow * task_window,const gchar * name)
+{
+  gchar * res_name = NULL;
+  gchar * class_name = NULL;
+  gboolean result = FALSE;
+  TaskWindowPrivate *priv;
+  
+  g_return_val_if_fail (TASK_IS_WINDOW (task_window),FALSE);
+
+  priv = task_window->priv;
+  _wnck_get_wmclass (wnck_window_get_xid (priv->window),&res_name, &class_name);
+  result = ( (g_strcmp0 (res_name, name) == 0) || (g_strcmp0 (class_name, name) == 0) );
+  g_free (res_name);
+  g_free (class_name);
+  return result;
+}
 /*
  * Implemented functions for a window
  */
