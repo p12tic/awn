@@ -2139,15 +2139,16 @@ task_icon_minimize_group(TaskIcon * icon,TaskWindow * window)
   {
     GList* app_windows = wnck_application_get_windows (application);
     GList * iter;
+    WnckWorkspace * active_ws = wnck_screen_get_active_workspace (wnck_screen_get_default());
     for (iter = app_windows; iter; iter = iter->next)
     {
       GSList * i;
       for (i = icon->priv->items; i; i=i->next)
       {
+        WnckWindow * wnck_win = task_window_get_window (i->data);
         if (!TASK_IS_WINDOW (i->data) ) continue;
         if (!task_item_is_visible(i->data)) continue;
-        if (!wnck_window_is_on_workspace (task_window_get_window (i->data),
-                                                 wnck_screen_get_active_workspace (wnck_screen_get_default()) ))
+        if (!wnck_window_is_in_viewport (wnck_win, active_ws) )
         {
           continue;
         }
@@ -2179,19 +2180,21 @@ task_icon_restore_group(TaskIcon * icon,TaskWindow * window, guint32 timestamp)
   {
     GList* app_windows = wnck_application_get_windows (application);
     GList * iter;
+    WnckWorkspace *active_ws = wnck_screen_get_active_workspace (wnck_screen_get_default());
     for (iter = app_windows; iter; iter = iter->next)
     {
       GSList * i;
       for (i = icon->priv->items; i; i=i->next)
       {
+        WnckWindow * wnck_win = task_window_get_window (i->data);
         if (!TASK_IS_WINDOW (i->data) ) continue;
         if (i->data == window) continue;
         if (!task_item_is_visible(i->data)) continue;
-        if (!wnck_window_is_on_workspace (task_window_get_window (i->data),
-                                                 wnck_screen_get_active_workspace (wnck_screen_get_default()) ))
+        if (!wnck_window_is_in_viewport (wnck_win, active_ws) )
         {
           continue;
         }
+
         if ( iter->data == task_window_get_window(i->data))
         {
           if (wnck_window_is_minimized(iter->data) )
