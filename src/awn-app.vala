@@ -43,6 +43,8 @@ namespace Awn
       this.panels = new HashTable<string, Panel> (str_hash, str_equal);
       this.client = Config.get_default (0);
 
+      Gtk.Window.set_default_icon_name ("avant-window-navigator");
+
       this.connection = Bus.get (BusType.SESSION);
       this.connection.register_object ("/org/awnproject/Awn", this);
 
@@ -98,3 +100,4 @@ namespace Awn
     }
   }
 }
+

@@ -27,9 +27,9 @@ namespace Awn
     public abstract void add_applet (string desktop_file) throws DBus.Error;
     public abstract void delete_applet (string uid) throws DBus.Error;
 
-    public abstract void docklet_request (int min_size,
-                                          bool shrink,
-                                          bool expand) throws DBus.Error;
+    public abstract int64 docklet_request (int min_size,
+                                           bool shrink,
+                                           bool expand) throws DBus.Error;
 
     public abstract string[] get_inhibitors () throws DBus.Error;
     public abstract Value get_snapshot () throws DBus.Error;
@@ -95,14 +95,14 @@ namespace Awn
       panel.delete_applet (uid);
     }
 
-    public void docklet_request (int min_size, bool shrink, bool expand) throws DBus.Error
+    public int64 docklet_request (int min_size, bool shrink, bool expand) throws DBus.Error
     {
+      return panel.docklet_request (min_size, shrink, expand);
     }
 
     public string[] get_inhibitors () throws DBus.Error
     {
-      string[] reasons;
-      panel.get_inhibitors (out reasons);
+      string[] reasons = panel.get_inhibitors ();
 
       return reasons;
     }

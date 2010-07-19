@@ -3670,13 +3670,14 @@ awn_panel_uninhibit_autohide  (AwnPanel *panel, guint cookie)
   return TRUE;
 }
 
-gboolean
-awn_panel_get_inhibitors (AwnPanel *panel, GStrv *reasons)
+GStrv
+awn_panel_get_inhibitors (AwnPanel *panel)
 {
   AwnPanelPrivate *priv = panel->priv;
   GList *list, *l;
+  GStrv reasons;
 
-  *reasons = g_new0 (char*, g_hash_table_size (priv->inhibits) + 1);
+  reasons = g_new0 (char*, g_hash_table_size (priv->inhibits) + 1);
 
   list = l = g_hash_table_get_values (priv->inhibits); // list should be freed
   int i=0;
@@ -3684,14 +3685,14 @@ awn_panel_get_inhibitors (AwnPanel *panel, GStrv *reasons)
   while (list)
   {
     AwnInhibitItem *item = list->data;
-    (*reasons)[i++] = g_strdup (item->description);
+    reasons[i++] = g_strdup (item->description);
 
     list = list->next;
   }
 
   g_list_free (l);
 
-  return TRUE;
+  return reasons;
 }
 
 static void
@@ -3879,12 +3880,12 @@ awn_panel_docklet_destroy (AwnPanel *panel)
   gtk_widget_hide (priv->docklet_closer);
 }
 
-void
+gint64
 awn_panel_docklet_request (AwnPanel *panel,
                            gint min_size,
                            gboolean shrink,
                            gboolean expand,
-                           DBusGMethodInvocation *context)
+                           GError **error)
 {
   AwnPanelPrivate *priv = panel->priv;
   GtkAllocation alloc;
@@ -3969,7 +3970,7 @@ awn_panel_docklet_request (AwnPanel *panel,
 
   window_id = gtk_socket_get_id (GTK_SOCKET (priv->docklet));
 
-  dbus_g_method_return (context, window_id);
+  return window_id;
 }
 
 static void
