@@ -18,25 +18,24 @@ VALA_FILES = \
 	awn-app.vala \
 	$(NULL)
 
-VALA_GENERATED_FILES = \
-	$(VALA_FILES:.vala=.c) \
-	$(VALA_FILES:.vala=.h) \
-	$(NULL)
-
-VALA_PKGS = \
+VALA_FLAGS = \
+	$(top_builddir)/bindings/vala/awn.vapi \
+	awn-panel.vapi \
 	--pkg dbus-glib-1 \
 	--pkg gtk+-2.0 \
 	--pkg desktop-agnostic-cfg \
 	$(NULL)
 
-VALA_VAPI_FILES = \
-	$(top_builddir)/bindings/vala/awn.vapi \
-	awn-panel.vapi \
-	$(NULL)
+awn-core.vala.stamp: $(VALA_FILES)
+	$(foreach vala_file,$(VALA_FILES),\
+	$(VALAC) -C -H $(vala_file:.vala=.h) $(vala_file) $(VALA_FLAGS) && \
+	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(vala_file:.vala=.)[ch];)
+	touch "$@"
 
-.vala.c:
-	$(VALAC) -C -H $(<:.vala=.h) $< $(VALA_VAPI_FILES) $(VALA_PKGS) && \
-	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(<:.vala=).[ch]
+VALA_GENERATED_FILES = \
+	$(VALA_FILES:.vala=.c) \
+	$(VALA_FILES:.vala=.h) \
+	$(NULL)
 
 bin_PROGRAMS = avant-window-navigator
 
@@ -85,14 +84,18 @@ avant_window_navigator_SOURCES =	\
 	$(NULL)
 
 BUILT_SOURCES = \
-	$(VALA_GENERATED_FILES) \
+	awn-core.vala.stamp \
 	$(MARSHALFILES) \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES)
+CLEANFILES = \
+	$(BUILT_SOURCES) \
+	$(VALA_GENERATED_FILES) \
+	$(NULL)
 
 EXTRA_DIST = \
 	awn-marshal.list \
+	$(VALA_GENERATED_FILES) \
 	$(NULL)
 
 # vim: set ts=8 sts=8 sw=8 :
