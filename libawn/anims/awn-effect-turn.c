@@ -38,7 +38,7 @@ turn_hover_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
   }
 
-  const gint PERIOD = 44;
+  const gint PERIOD = 36;
 
   gint prev_count = priv->count;
 
@@ -118,7 +118,7 @@ turn_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
   }
 
-  const gint PERIOD = 44;
+  const gint PERIOD = 36;
 
   gint prev_count = priv->count;
 
@@ -203,7 +203,7 @@ turn_opening_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
   }
 
-  const gint PERIOD = 44;
+  const gint PERIOD = 36;
   const gint MAX_OFFSET = priv->icon_height / 2;
 
   gint prev_count = priv->count;
@@ -290,7 +290,7 @@ turn_closing_effect(AwnEffectsAnimation * anim)
     priv->icon_depth_direction = 0;
   }
 
-  const gint PERIOD = 44;
+  const gint PERIOD = 36;
 
   const gint MAX_OFFSET = priv->icon_height;
 

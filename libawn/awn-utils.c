@@ -100,7 +100,7 @@ awn_utils_make_transparent_bg (GtkWidget *widget)
 static void
 on_style_set (GtkWidget *widget, GtkStyle *prev_style)
 {
-  if (GTK_WIDGET_REALIZED (widget))
+  if (gtk_widget_get_realized (GTK_WIDGET (widget)))
     awn_utils_make_transparent_bg (widget);
 }
 
@@ -121,7 +121,7 @@ on_composited_change (GtkWidget *widget, gpointer data)
 void
 awn_utils_ensure_transparent_bg (GtkWidget *widget)
 {
-  if (GTK_WIDGET_REALIZED (widget))
+  if (gtk_widget_get_realized (GTK_WIDGET (widget)))
     awn_utils_make_transparent_bg (widget);
 
   // make sure we don't connect the handler multiple times

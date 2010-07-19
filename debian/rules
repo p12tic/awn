@@ -16,12 +16,14 @@ configure_flags += 	--prefix=/usr \
 			--disable-pymod-checks \
 			--enable-gtk-doc \
 			--with-gconf-schema-file-dir=/etc/gconf/schemas \
+			--disable-maintainer-mode \
 			--enable-extra-version=$(EXTRA_VERSION)
 
 build: build-stamp
 build-stamp: $(QUILT_STAMPFN)
 	dh_testdir
 	./autogen.sh $(configure_flags)
+	dh_auto_configure -- $(configure_flags)
 	dh_auto_build
 	touch build-stamp
 

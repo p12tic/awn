@@ -52,4 +52,6 @@ gboolean usable_desktop_entry (  DesktopAgnosticFDODesktopEntry * entry);
 
 gboolean usable_desktop_file_from_path ( const gchar * path);
 
+char* _desktop_entry_get_localized_name (DesktopAgnosticFDODesktopEntry *entry);
+
 #endif

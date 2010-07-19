@@ -36,7 +36,7 @@ bounce_effect(AwnEffectsAnimation * anim)
   const gfloat MAX_BOUNCE_OFFSET =
     anim->effects->position == GTK_POS_LEFT ||
     anim->effects->position == GTK_POS_RIGHT ?
-      priv->icon_width / 3. : priv->icon_height / 3.;
+      priv->icon_width / 1.5 : priv->icon_height / 1.5;
   const gint PERIOD = 16;
 
   priv->top_offset = sin(++priv->count * M_PI / PERIOD) * MAX_BOUNCE_OFFSET;
@@ -68,7 +68,7 @@ bounce_hover_effect(AwnEffectsAnimation * anim)
     anim->effects->position == GTK_POS_LEFT ||
     anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
-  const gint PERIOD = 16;
+  const gint PERIOD = 14;
 
   /* repaint widget */
   awn_effects_redraw(anim->effects);
@@ -111,7 +111,7 @@ bounce_opening_effect(AwnEffectsAnimation * anim)
   }
 
   const gint PERIOD1 = 12;
-  const gint PERIOD2 = 16;
+  const gint PERIOD2 = 14;
   const gfloat MAX_BOUNCE_OFFSET =
     anim->effects->position == GTK_POS_LEFT ||
     anim->effects->position == GTK_POS_RIGHT ?

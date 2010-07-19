@@ -26,6 +26,7 @@
 #include <unistd.h>
 
 #include <gtk/gtk.h>
+#include <libintl.h>
 
 #include <libdesktop-agnostic/fdo.h>
 #include <libawn/libawn.h>
@@ -230,6 +231,9 @@ main(gint argc, gchar **argv)
     launch_applet_with ("mono", path, exec, uid, window, panel_id);
     return 0;
   }
+
+  /* Set locale stuff */
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
 
   /* Extract canonical-name from exec */
   gchar *canonical_name = g_strrstr(exec, "/");

@@ -42,7 +42,7 @@ bounce_squish_hover_effect(AwnEffectsAnimation * anim)
     anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
-  const gint PERIOD = 25;
+  const gint PERIOD = 20;
   const gfloat MAX_SQUISH = 1.25;
   const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)
   const gfloat SQUISH_STEP2 = 0.125;
@@ -134,7 +134,7 @@ bounce_squish_effect(AwnEffectsAnimation * anim)
     anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
-  const gint PERIOD = 25;
+  const gint PERIOD = 20;
   const gfloat MAX_SQUISH = 1.25;
   const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)
   const gfloat SQUISH_STEP2 = 0.125;
@@ -218,7 +218,7 @@ bounce_squish_attention_effect(AwnEffectsAnimation * anim)
     anim->effects->position == GTK_POS_RIGHT ?
       priv->icon_width / 3. : priv->icon_height / 3.;
 
-  const gint PERIOD = 25;
+  const gint PERIOD = 20;
   const gfloat MAX_SQUISH = 1.25;
   const gfloat SQUISH_STEP = 0.0834; // 3 frames to get to max (0.25 / 3)
   const gfloat SQUISH_STEP2 = 0.125;

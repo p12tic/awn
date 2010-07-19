@@ -963,7 +963,7 @@ awn_background_set_gtk_theme_mode (AwnBackground *bg, gboolean gtk_mode)
 
   if (gtk_mode)
   {
-    if (GTK_WIDGET_REALIZED (widget))
+    if (gtk_widget_get_realized (GTK_WIDGET (widget)))
     {
       load_colours_from_widget (bg, widget);
     }

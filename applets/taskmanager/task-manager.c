@@ -1481,11 +1481,9 @@ process_window_opened (WnckWindow    *window,
       match = taskicon;
     }
   }
-#define DEBUG
 #ifdef DEBUG
   g_debug("Matching score: %i, must be bigger then:%i, groups: %i", max_match_score, 99-priv->match_strength, max_match_score > 99-priv->match_strength);
 #endif  
-#undef DEBUG
   /*
    if match is not 0
    and 
@@ -2654,13 +2652,11 @@ task_manager_win_closed_cb (WnckScreen *screen,WnckWindow *window, TaskManager *
   win = wnck_screen_get_active_window (priv->screen);
   if (!win)
   {
-    g_debug ("%s: No active windw",__func__);
     return;
   }
   app = wnck_window_get_application (win);
   space = wnck_screen_get_active_workspace (priv->screen);
-  task_manager_check_for_intersection (manager,space,app);  
-  
+  task_manager_check_for_intersection (manager,space,app);
 }
 /*
  A window's geometry has channged.  If Intellihide is active then check for

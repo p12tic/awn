@@ -2,7 +2,6 @@ APPLET_NAME = quick-prefs
 APPLET_CFLAGS = \
 	$(TASKMANAGER_CFLAGS) \
 	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
-	-DLOCALEDIR=\""$(datadir)/locale"\"
 	$(NULL)
 VALA_FILES = \
 	applet.vala \

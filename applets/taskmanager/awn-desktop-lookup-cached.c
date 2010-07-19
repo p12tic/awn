@@ -132,7 +132,7 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
             /*
              Be careful.  Not duplicating these strings for each data structure
              */
-            gchar * name = desktop_agnostic_fdo_desktop_entry_get_name (entry);
+            gchar * name = _desktop_entry_get_localized_name (entry);
             gchar * exec = desktop_agnostic_fdo_desktop_entry_get_string (entry, "Exec");
             gchar * copy_path = NULL;
             gchar * search = NULL;
@@ -237,7 +237,6 @@ _data_dir_changed (DesktopAgnosticVFSFileMonitor* monitor,
                   )
 {
   gchar * path = desktop_agnostic_vfs_file_get_path (self);
-  g_debug ("%s: refresh %s",__func__,path);
   if ( g_file_test (path,G_FILE_TEST_IS_DIR))
   {
     awn_desktop_lookup_cached_add_dir (lookup, path);
@@ -270,7 +269,7 @@ awn_desktop_lookup_cached_constructed (GObject *object)
       g_free (applications_dir);
       continue;
     }
-    g_message ("Adding %s",applications_dir);
+//    g_message ("Adding %s",applications_dir);
     awn_desktop_lookup_cached_add_dir (AWN_DESKTOP_LOOKUP_CACHED(object),applications_dir);
 
     file_vfs = desktop_agnostic_vfs_file_new_for_path (applications_dir,&error);
@@ -456,22 +455,29 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
   }
   for (gchar **i= (gchar **)extensions; *i; i++)
   {
-    gchar * search = search = g_strrstr_len (res_name,-1,*i);
-    if ( search )
+    gchar * search = NULL;
+    if (res_name)
     {
-      if ( strlen (res_name)>(strlen(*i)+3) &&  (strlen (search) == strlen (*i)) )
+      search = g_strrstr_len (res_name,-1,*i);
+      if ( search )
       {
-        res_name_no_ext = g_strdup (res_name);
-        res_name_no_ext [strlen (res_name_no_ext) - strlen(*i)]='\0';
+        if ( strlen (res_name)>(strlen(*i)+3) &&  (strlen (search) == strlen (*i)) )
+        {
+          res_name_no_ext = g_strdup (res_name);
+          res_name_no_ext [strlen (res_name_no_ext) - strlen(*i)]='\0';
+        }
       }
     }
-    search = g_strrstr_len (class_name,-1,*i);
-    if ( search )
+    if (class_name)
     {
-      if ( strlen (class_name)>(strlen(*i)+3) &&  (strlen (search) == strlen (*i)) )
+      search = g_strrstr_len (class_name,-1,*i);
+      if ( search )
       {
-        class_name_no_ext = g_strdup (class_name);
-        class_name_no_ext [strlen (class_name_no_ext) - strlen(*i)]='\0';
+        if ( strlen (class_name)>(strlen(*i)+3) &&  (strlen (search) == strlen (*i)) )
+        {
+          class_name_no_ext = g_strdup (class_name);
+          class_name_no_ext [strlen (class_name_no_ext) - strlen(*i)]='\0';
+        }
       }
     }
   }
@@ -800,11 +806,12 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
     hit_method ++;
   }
   result = result?(g_file_test(result,G_FILE_TEST_EXISTS)?result:NULL):NULL;
-  
+#ifdef DEBUG  
   if (hit_method)
   {
     g_message ("%s: Hit method = %d",__func__,hit_method);
   }
+#endif
   g_free (full_cmd);
   g_free (cmd);
   g_free (cmd_basename);

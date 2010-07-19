@@ -1306,9 +1306,10 @@ class awnApplet(awnBzr):
     def activate_applet (self, treeview, path, col):
         select = treeview.get_selection()
         if not select:
-            print "no selection"
             return
         model, iterator = select.get_selected ()
+        if not iterator:
+            return
         path = model.get_value (iterator, 2)
         icon, text, name = self.make_row (path)
         uid = "%d" % int(time.time())

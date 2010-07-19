@@ -20,12 +20,12 @@ _description=Number of seconds to inhibit autohide when a application requests a
 
 [DEFAULT/attention_required_reminder]
 type = integer
-default = 60
+default = 120
 _description=Number of seconds to wait before nagging again, by inhibiting autohide, if attention is required by any windows. A value of 0 disables.
 
 [DEFAULT/drag_and_drop]
 type = boolean
-default = false
+default = true
 _description=Enable reordering of windows by drag and drop 
 
 [DEFAULT/drag_and_drop_hover_delay]

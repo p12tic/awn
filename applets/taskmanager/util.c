@@ -748,3 +748,30 @@ usable_desktop_file_from_path ( const gchar * path)
   return TRUE;
 }
 
+char* _desktop_entry_get_localized_name (DesktopAgnosticFDODesktopEntry *entry)
+{
+  char *result;
+
+  result = desktop_agnostic_fdo_desktop_entry_get_localestring (entry,
+                                                                "Name",
+                                                                NULL);
+
+  // workaround for older versions of lda which don't support NULL locale param
+  if (result == NULL)
+  {
+    const gchar* const * languages = g_get_language_names ();
+    int i = 0;
+
+    while (result == NULL && languages[i] != NULL)
+    {
+      result =
+        desktop_agnostic_fdo_desktop_entry_get_localestring (entry,
+                                                             "Name",
+                                                             languages[i]);
+      i++;
+    }
+  }
+
+  return result ? result : desktop_agnostic_fdo_desktop_entry_get_name (entry);
+}
+
