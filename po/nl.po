@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:35-0800\n"
-"PO-Revision-Date: 2010-02-02 10:11+0000\n"
+"POT-Creation-Date: 2010-02-08 02:31-0800\n"
+"PO-Revision-Date: 2010-02-08 13:24+0000\n"
 "Last-Translator: Mark Lee <Unknown>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
+"X-Launchpad-Export-Date: 2010-02-09 05:11+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -24,7 +24,7 @@ msgstr ""
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Vult lege ruimte op van het paneel in uitgeklapte modus"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
@@ -183,7 +183,7 @@ msgstr ""
 #: ../applets/quick-prefs/applet.vala:118
 #: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
 msgid "About Awn"
-msgstr ""
+msgstr "Over Awn"
 
 #: ../applets/quick-prefs/applet.vala:289
 #: ../applets/quick-prefs/applet.vala:465
@@ -192,7 +192,7 @@ msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
 msgid "Icon size:"
-msgstr ""
+msgstr "Icoongrootte:"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -202,7 +202,7 @@ msgstr "Dock voorkeuren"
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Kan Awn configuratie niet openen: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
@@ -211,34 +211,34 @@ msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Voorkeuren applet"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Voegt een scheiding toe tussen applets"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Scheiding"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Werkblad %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Werkblad 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Werkblad %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Voegt een starter toe"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
@@ -246,27 +246,27 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
-msgstr ""
+msgstr "Alles sl_uiten"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:743
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ximaliseren"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:748
 msgid "Unma_ximize"
-msgstr ""
+msgstr "_Herstellen"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:777
 msgid "Always on _Top"
-msgstr ""
+msgstr "Altijd _bovenop"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:801
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Mi_nimaliseren"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:806
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "_Herstellen"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
@@ -294,11 +294,11 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:973
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "_Verplaatsen naar ander werkblad"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
-msgstr ""
+msgstr "Awn configuratie"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -319,13 +319,13 @@ msgid ""
 msgstr ""
 
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
-#: ../awn-settings/awnSettings.py.in:140
+#: ../awn-settings/awnSettings.py.in:143
 msgid "None"
 msgstr "Geen"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
-msgstr ""
+msgstr "Eenvoudig"
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
@@ -345,7 +345,7 @@ msgstr "Zoom"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Samendrukken"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
@@ -359,7 +359,7 @@ msgstr "3D Sptlicht Draai"
 msgid "Glow"
 msgstr "Gloeien"
 
-#: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
+#: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:151
 msgid "Custom"
 msgstr "Aangepast"
 
@@ -445,88 +445,100 @@ msgstr ""
 msgid "Awn Settings can't be run as root."
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:135
+#: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:135
+#: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:136
+#: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:136
+#: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:140
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:140
+#: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3D"
 
-#: ../awn-settings/awnSettings.py.in:141
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Gekromd"
 
-#: ../awn-settings/awnSettings.py.in:141
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Begrensd"
 
-#: ../awn-settings/awnSettings.py.in:141
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:145
-msgid "Standard"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:145
-msgid "Panel mode"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:146
-msgid "Autohide Keep below"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:147
-msgid "Autohide Fade out"
-msgstr ""
+msgstr "Drijvend"
 
 #: ../awn-settings/awnSettings.py.in:148
+msgid "Standard"
+msgstr "Standaard"
+
+#: ../awn-settings/awnSettings.py.in:148
+msgid "Panel mode"
+msgstr "Paneel modus"
+
+#: ../awn-settings/awnSettings.py.in:149
+msgid "Autohide Keep below"
+msgstr "Automatisch naar onder verbergen"
+
+#: ../awn-settings/awnSettings.py.in:150
+msgid "Autohide Fade out"
+msgstr "Automatisch uitvagen"
+
+#: ../awn-settings/awnSettings.py.in:151
 msgid "Transparency"
+msgstr "Transparantie"
+
+#: ../awn-settings/awnSettings.py.in:155
+msgid "Always"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:690
+#: ../awn-settings/awnSettings.py.in:155
+msgid "Intellihide"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:156
+msgid "Window dodge"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:757
 msgid "Solid"
-msgstr ""
+msgstr "Vast"
 
-#: ../awn-settings/awnSettings.py.in:690
+#: ../awn-settings/awnSettings.py.in:757
 msgid "Outline"
-msgstr ""
+msgstr "Rand"
 
-#: ../awn-settings/awnSettings.py.in:691
+#: ../awn-settings/awnSettings.py.in:758
 msgid "Outline, Reversed"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:858
-msgid "Use Window Icons"
+#: ../awn-settings/awnSettings.py.in:942
+msgid "Use application-specified icons"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:859
-msgid "Use Launcher Icons"
+#: ../awn-settings/awnSettings.py.in:943
+msgid "Use best quality icons"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:860
-msgid "Overlay Window Icon"
+#: ../awn-settings/awnSettings.py.in:944
+msgid "Overlay best quality icon with application icon"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:861
-msgid "Overlay Window Icon - Reversed"
+#: ../awn-settings/awnSettings.py.in:945
+msgid "Overlay application icon with best quality icon"
 msgstr ""
 
 #: ../bindings/python/__init__.py:118
@@ -561,11 +573,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -599,15 +611,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Kleur van de actieve rechthoek"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Kleur van het gloeiende punt."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Randkleur van de actieve rechthoek."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
@@ -726,7 +738,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Toon schaduw van iconen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "The active list UA Screenlets for this panel."
@@ -734,7 +746,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "De hoek van het paneel in 3D modus."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The curviness of the panel in Curves mode."
@@ -812,15 +824,15 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
-msgstr ""
+msgstr "Iconen"
 
 #: ../libawn/awn-themed-icon.c:1978
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Kies een ander icoon"
 
 #: ../libawn/awn-themed-icon.c:2065
 msgid "Customize Icon"
-msgstr ""
+msgstr "Verander het icoon"
 
 #: ../libawn/awn-themed-icon.c:2152
 msgid "Remove Customized Icon"
@@ -828,12 +840,12 @@ msgstr ""
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
-msgstr ""
+msgstr "Applet wordt geladen..."
 
 #: ../src/awn-applet-proxy.c:371 ../src/awn-applet-proxy.c:472
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
 
-#: ../src/awn-panel.c:3896
+#: ../src/awn-panel.c:3898
 msgid "Close docklet"
-msgstr ""
+msgstr "Sluit docklet"

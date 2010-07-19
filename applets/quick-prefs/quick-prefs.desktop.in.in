@@ -5,6 +5,6 @@ X-AWN-AppletType=Vala
 _Name=Preferences applet
 _Comment=Applet used to control the dock and launch Awn preferences.
 Exec=awn-applet -p %k
-X-AWN-AppletExec=@LIBDIR@/awn/applets/quick-prefs/quick-prefs.so
+X-AWN-AppletExec=@LIBAPPLETDIR@/quick-prefs/quick-prefs.so
 Icon=avant-window-navigator
 X-AWN-AppletCategory=Utility
