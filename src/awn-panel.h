@@ -94,10 +94,10 @@ gboolean    awn_panel_set_applet_flags    (AwnPanel         *panel,
                                            gint              flags,
                                            GError          **error);
 
-void        awn_panel_inhibit_autohide    (AwnPanel *panel,
+guint       awn_panel_inhibit_autohide    (AwnPanel *panel,
+                                           const gchar *sender,
                                            const gchar *app_name,
-                                           const gchar *reason,
-                                           DBusGMethodInvocation *context);
+                                           const gchar *reason);
 
 gboolean    awn_panel_uninhibit_autohide  (AwnPanel         *panel,
                                            guint             cookie);

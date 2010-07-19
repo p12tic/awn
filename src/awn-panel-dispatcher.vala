@@ -100,11 +100,12 @@ namespace Awn
 
     public uint inhibit_autohide (DBus.BusName sender, string app_name, string reason) throws DBus.Error
     {
-      return 1;
+      return panel.inhibit_autohide (sender, app_name, reason);
     }
 
     public void uninhibit_autohide (uint cookie) throws DBus.Error
     {
+      panel.uninhibit_autohide (cookie);
     }
 
     public void set_applet_flags (string uid, int flags) throws DBus.Error
