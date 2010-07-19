@@ -669,6 +669,11 @@
 				</parameters>
 			</signal>
 		</object>
+		<object name="AwnDesktopLookupClient" parent="GObject" type-name="AwnDesktopLookupClient" get-type="awn_desktop_lookup_client_get_type">
+			<constructor name="new" symbol="awn_desktop_lookup_client_new">
+				<return-type type="AwnDesktopLookupClient*"/>
+			</constructor>
+		</object>
 		<object name="AwnDialog" parent="GtkWindow" type-name="AwnDialog" get-type="awn_dialog_get_type">
 			<implements>
 				<interface name="AtkImplementor"/>
@@ -824,6 +829,7 @@
 			</method>
 			<property name="active" type="gboolean" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="active-rect-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="0" construct-only="0"/>
+			<property name="active-rect-outline" type="DesktopAgnosticColor*" readable="1" writable="1" construct="0" construct-only="0"/>
 			<property name="arrow-png" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="arrows-count" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="border-clip" type="gint" readable="1" writable="1" construct="1" construct-only="0"/>
@@ -900,6 +906,12 @@
 			</method>
 			<method name="get_indicator_count" symbol="awn_icon_get_indicator_count">
 				<return-type type="gint"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+				</parameters>
+			</method>
+			<method name="get_input_mask" symbol="awn_icon_get_input_mask">
+				<return-type type="GdkRegion*"/>
 				<parameters>
 					<parameter name="icon" type="AwnIcon*"/>
 				</parameters>

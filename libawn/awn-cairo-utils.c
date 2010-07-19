@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  Author : Anthony Arobone <aarobone@gmail.com>
+ *           Alberto Aldegheri <albyrock87+dev@gmail.com>
  *           (awn_cairo_rounded_rect)
  *  Author : Mark Lee <avant-wn@lazymalevolence.com>
  *           (awn_cairo_set_source_color,
@@ -42,16 +43,46 @@ awn_cairo_rounded_rect(cairo_t *cr, double rx0, double ry0,
   /* arc with radius == 0.0 doesn't paint anything */
   if (radius == 0.0) state = ROUND_NONE;
 
-  cairo_move_to (cr, rx0, ry1 - radius);
+  /* fix to radius to avoid wrong draws */
+  if (radius > height / 2. && (
+        ((state & ROUND_TOP_LEFT) && (state & ROUND_BOTTOM_LEFT)) ||
+        ((state & ROUND_TOP_RIGHT) && (state & ROUND_BOTTOM_RIGHT))
+      ))
+  {
+    radius = height / 2.;
+  }
+  else if (radius > height)
+  {
+    radius = height;
+  }
+  if (radius > width / 2. && (
+        ((state & ROUND_TOP_LEFT) && (state & ROUND_TOP_RIGHT)) ||
+        ((state & ROUND_BOTTOM_LEFT) && (state & ROUND_BOTTOM_RIGHT))
+      ))
+  {
+    radius = width / 2.;
+  }
+  else if (radius > width)
+  {
+    radius = width;
+  }
 
   /* top left corner */
-
   if (state & ROUND_TOP_LEFT)
   {
+    if (state & ROUND_BOTTOM_LEFT)
+    {
+      cairo_move_to (cr, rx0, ry1 - radius);
+    }
+    else
+    {
+      cairo_move_to (cr, rx0, ry1);
+    }
     cairo_arc (cr, rx0 + radius, ry0 + radius, radius, M_PI, M_PI * 1.5);
   }
   else
   {
+    cairo_move_to (cr, rx0, ry1 - radius);
     cairo_line_to (cr, rx0, ry0);
   }
 

@@ -58,7 +58,9 @@ enum
   PROP_CORNER_RADIUS,
   PROP_PANEL_ANGLE,
   PROP_CURVINESS,
-  PROP_CURVES_SYMEMETRY
+  PROP_CURVES_SYMEMETRY,
+  PROP_FLOATY_OFFSET,
+  PROP_THICKNESS
 };
 
 enum 
@@ -89,6 +91,10 @@ static void awn_background_mask_none (AwnBackground  *bg,
                                       cairo_t        *cr,
                                       GtkPositionType  position,
                                       GdkRectangle   *area);
+
+static gboolean awn_background_get_needs_redraw (AwnBackground *bg,
+                                                 GtkPositionType position,
+                                                 GdkRectangle *area);
 
 static AwnPathType awn_background_path_default (AwnBackground *bg,
                                                 gfloat *offset_mod);
@@ -182,8 +188,18 @@ awn_background_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
   desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_FLOATY_OFFSET,
+                                       object, "floaty-offset", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
                                        AWN_GROUP_THEME, AWN_THEME_CURVES_SYMMETRY,
                                        object, "curves-symmetry", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+  desktop_agnostic_config_client_bind (bg->client,
+                                       AWN_GROUP_THEME, AWN_THEME_THICKNESS,
+                                       object, "thickness", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 }
@@ -194,7 +210,10 @@ awn_background_get_property (GObject    *object,
                              GValue     *value,
                              GParamSpec *pspec)
 {
+  AwnBackground *bg;
   g_return_if_fail (AWN_IS_BACKGROUND (object));
+
+  bg = AWN_BACKGROUND (object);
 
   switch (prop_id)
   {
@@ -214,6 +233,12 @@ awn_background_get_property (GObject    *object,
       g_value_take_object (value, color);
       break;
     }
+    case PROP_FLOATY_OFFSET:
+      g_value_set_int (value, bg->floaty_offset);
+      break;
+    case PROP_THICKNESS:
+      g_value_set_float (value, bg->thickness);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -342,12 +367,18 @@ awn_background_set_property (GObject      *object,
     case PROP_CURVES_SYMEMETRY:
       bg->curves_symmetry = g_value_get_float (value);
       break;
+    case PROP_THICKNESS:
+      bg->thickness = g_value_get_float (value);
+      break;
+    case PROP_FLOATY_OFFSET:
+      bg->floaty_offset = g_value_get_int (value);
+      break;
 
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       return;
   }
-
+  awn_background_invalidate (bg);
   g_signal_emit (object, _bg_signals[CHANGED], 0);
 }
 
@@ -380,6 +411,12 @@ awn_background_finalize (GObject *object)
   if (bg->hilight_color) g_object_unref (bg->hilight_color);
   if (bg->sep_color) g_object_unref (bg->sep_color);
 
+  if (bg->helper_surface != NULL)
+  {
+    cairo_surface_finish (bg->helper_surface);
+    cairo_surface_destroy (bg->helper_surface);
+  }
+
   G_OBJECT_CLASS (awn_background_parent_class)->finalize (object);
 }
 
@@ -398,6 +435,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
   klass->get_input_shape_mask = awn_background_mask_none;
   klass->get_path_type        = awn_background_path_default;
   klass->get_strut_offsets    = NULL;
+  klass->get_needs_redraw     = awn_background_get_needs_redraw;
 
   /* Object properties */
   g_object_class_install_property (obj_class,
@@ -559,11 +597,20 @@ awn_background_class_init (AwnBackgroundClass *klass)
                         G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (obj_class,
+    PROP_FLOATY_OFFSET,
+    g_param_spec_int ("floaty-offset",
+                      "Floaty offset",
+                      "The offset of the panel in Floaty mode",
+                      0, G_MAXINT, 10,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
     PROP_CURVINESS,
     g_param_spec_float ("curviness",
                         "Curviness",
                         "Curviness",
-                        0.0, G_MAXFLOAT, 10.0,
+                        0.0, 1.0, 1.0,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS));
 
@@ -575,7 +622,15 @@ awn_background_class_init (AwnBackgroundClass *klass)
                         0.0, 1.0, 0.5,
                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                         G_PARAM_STATIC_STRINGS));
-
+  g_object_class_install_property (obj_class,
+    PROP_THICKNESS,
+    g_param_spec_float ("thickness",
+                        "Thickness",
+                        "The thickness in 3D mode",
+                        0.0, 1.0, 0.6,
+                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                        G_PARAM_STATIC_STRINGS));
+                        
   /* Add signals to the class */
   _bg_signals[CHANGED] = 
     g_signal_new ("changed",
@@ -650,6 +705,11 @@ awn_background_init (AwnBackground *bg)
   bg->border_color = NULL;
   bg->hilight_color = NULL;
   bg->sep_color = NULL;
+  bg->needs_redraw = TRUE;
+  bg->helper_surface = NULL;
+  bg->cache_enabled = TRUE;
+  bg->last_height = 0;
+  bg->last_width = 0;
 }
 
 void 
@@ -664,8 +724,56 @@ awn_background_draw (AwnBackground  *bg,
   
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->draw != NULL);
+  
+  /* Check if background caching is enabled - TRUE by default */
+  if (bg->cache_enabled)
+  {
+    g_return_if_fail (klass->get_needs_redraw != NULL);
+    cairo_save (cr);
+    
+    /* Check if background needs to be redrawn */
+    if (klass->get_needs_redraw (bg, position, area))
+    {
+      cairo_t *temp_cr;
+      gint full_width = area->x + area->width;
+      gint full_height = area->y + area->height;
 
-  klass->draw (bg, cr, position, area);
+      gboolean realloc_needed = bg->helper_surface == NULL ||
+        cairo_image_surface_get_width (bg->helper_surface) != full_width ||
+        cairo_image_surface_get_height (bg->helper_surface) != full_height;
+      if (realloc_needed)
+      {
+        /* Free last surface */
+        if (bg->helper_surface != NULL)
+        {
+          cairo_surface_destroy (bg->helper_surface);
+        }
+        /* Create new surface */
+        bg->helper_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+                                                         full_width,
+                                                         full_height);
+        temp_cr = cairo_create (bg->helper_surface);
+      }
+      else
+      {
+        temp_cr = cairo_create (bg->helper_surface);
+        cairo_set_operator (temp_cr, CAIRO_OPERATOR_CLEAR);
+        cairo_paint (temp_cr);
+        cairo_set_operator (temp_cr, CAIRO_OPERATOR_OVER);
+      }
+      /* Draw background on temp cairo_t */
+      klass->draw (bg, temp_cr, position, area);
+      cairo_destroy (temp_cr);
+    }
+    /* Paint saved surface */
+    cairo_set_source_surface (cr, bg->helper_surface, 0., 0.);
+    cairo_paint(cr);
+    cairo_restore (cr);
+  }
+  else
+  {
+    klass->draw (bg, cr, position, area);
+  }
 }
 
 void 
@@ -764,7 +872,7 @@ void
 awn_background_emit_padding_changed (AwnBackground *bg)
 {
   g_return_if_fail (AWN_IS_BACKGROUND (bg));
-
+  awn_background_invalidate (bg);
   g_signal_emit (bg, _bg_signals[PADDING_CHANGED], 0);
 }
 
@@ -772,7 +880,7 @@ void
 awn_background_emit_changed (AwnBackground *bg)
 {
   g_return_if_fail (AWN_IS_BACKGROUND (bg));
-
+  awn_background_invalidate (bg);
   g_signal_emit (bg, _bg_signals[CHANGED], 0);
 }
 
@@ -1007,6 +1115,27 @@ static AwnPathType awn_background_path_default (AwnBackground *bg,
                                                 gfloat *offset_mod)
 {
   return AWN_PATH_LINEAR;
+}
+
+static gboolean awn_background_get_needs_redraw (AwnBackground *bg,
+                                                 GtkPositionType position,
+                                                 GdkRectangle *area)
+{
+  if (bg->needs_redraw == 1 ||
+      bg->last_height != area->height ||
+      bg->last_width != area->width)
+  {
+    bg->needs_redraw = 0;
+    bg->last_height = area->height;
+    bg->last_width = area->width;
+    return TRUE;
+  }
+  return FALSE;
+}
+
+void awn_background_invalidate (AwnBackground  *bg)
+{
+  bg->needs_redraw = 1;
 }
 
 /* vim: set et ts=2 sts=2 sw=2 : */

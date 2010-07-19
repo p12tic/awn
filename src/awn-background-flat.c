@@ -159,22 +159,14 @@ draw_rect (AwnBackground  *bg,
   if (expand){ state = ROUND_NONE; x-=2; width+=4; }
   else
   {
-    switch (position)
+    if (align == 0.0f)
     {
-      case GTK_POS_BOTTOM:
-      case GTK_POS_LEFT:
-        if (align == 0.0f){ state = ROUND_TOP_RIGHT; x-=2; width+=2; }
-        else if(align == 1.0f){ state = ROUND_TOP_LEFT; width+=2; }
-        break;
-      case GTK_POS_TOP:
-      case GTK_POS_RIGHT:
-        if (align == 0.0f){ state = ROUND_TOP_LEFT; width+=2; }
-        else if(align == 1.0f){ state = ROUND_TOP_RIGHT; x-=2; width+=2; }
-        break;
-      default:
-        break;
+      state = ROUND_TOP_RIGHT; x-=2; width+=2;
     }
-
+    else if(align == 1.0f)
+    {
+      state = ROUND_TOP_LEFT; width+=2;
+    }
   }
 
   awn_cairo_rounded_rect (cr, x, y, width, height, bg->corner_radius, state);
@@ -224,7 +216,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_save (cr);
 
   draw_rect (bg, cr, position, 1, 1, width-3, height-1, align, expand);
-  cairo_clip (cr);
+  cairo_clip_preserve (cr);
   cairo_set_source (cr, pat);
   cairo_paint (cr);
 
@@ -233,10 +225,12 @@ draw_top_bottom_background (AwnBackground  *bg,
   cairo_pattern_destroy (pat);
 
   /* Draw the hi-light */
-  pat = cairo_pattern_create_linear (0, 0, 0, (height/3.0));
+  pat = cairo_pattern_create_linear (0, 0, 0, height);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect (bg, cr, position, 1, 1, width-3, height/3.0, align, expand);
+  awn_cairo_pattern_add_color_stop_color (pat, 0.3, bg->g_histep_2);
+  double red, green, blue, alpha;
+  desktop_agnostic_color_get_cairo_color (bg->g_histep_2, &red, &green, &blue, &alpha);
+  cairo_pattern_add_color_stop_rgba (pat, 0.36, red, green, blue, 0.);
 
   cairo_set_source (cr, pat);
   cairo_fill (cr);
@@ -324,20 +318,24 @@ awn_background_flat_draw (AwnBackground  *bg,
   switch (position)
   {
     case GTK_POS_RIGHT:
-      cairo_translate (cr, x, y+height);
+      cairo_translate (cr, 0., y + height);
+      cairo_scale (cr, 1., -1.);
+      cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_LEFT:
-      cairo_translate (cr, x+width, y);
+      cairo_translate (cr, x + width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_TOP:
-      cairo_translate (cr, x+width, y+height);
-      cairo_rotate (cr, M_PI);
+      cairo_translate (cr, x, y + height);
+      cairo_scale (cr, 1., -1.);
       break;
     default:
       cairo_translate (cr, x, y);

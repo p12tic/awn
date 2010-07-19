@@ -34,7 +34,9 @@ struct _AwnSeparatorPrivate
   GtkPositionType  position;
   gint             offset;
   gint             size;
+  gint             separator_size;
 
+  gboolean         transparent;
   DesktopAgnosticColor *sep_color;
 };
 
@@ -47,7 +49,10 @@ enum
   PROP_OFFSET,
   PROP_SIZE,
 
-  PROP_SEP_COLOR
+  PROP_SEP_COLOR,
+  PROP_SEP_TRANSPARENT,
+  
+  PROP_SEP_SIZE
 };
 
 static void
@@ -77,6 +82,12 @@ awn_separator_get_property (GObject    *object,
       break;
     case PROP_SEP_COLOR:
       g_value_set_object (value, priv->sep_color);
+      break;
+    case PROP_SEP_SIZE:
+      g_value_set_int (value, priv->separator_size);
+      break;
+    case PROP_SEP_TRANSPARENT:
+      g_value_set_boolean (value, priv->transparent);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -125,6 +136,14 @@ awn_separator_set_property (GObject      *object,
       }
       priv->sep_color = g_value_dup_object (value);
       gtk_widget_queue_draw (GTK_WIDGET (object));
+      break;
+    case PROP_SEP_SIZE:
+      awn_separator_set_separator_size (AWN_SEPARATOR (object),
+                                        g_value_get_int (value));
+      break;
+    case PROP_SEP_TRANSPARENT:
+      awn_separator_set_transparent (AWN_SEPARATOR (object),
+                                     g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -181,13 +200,13 @@ awn_separator_size_request (GtkWidget *widget, GtkRequisition *req)
   {
     case GTK_POS_TOP:
     case GTK_POS_BOTTOM:
-      req->width = 10;
+      req->width = priv->separator_size;
       req->height = priv->size + priv->offset;
       break;
     case GTK_POS_LEFT:
     case GTK_POS_RIGHT:
       req->width = priv->size + priv->offset;
-      req->height = 10;
+      req->height = priv->separator_size;
       break;
     default:
       break;
@@ -198,6 +217,12 @@ static gboolean
 awn_separator_expose (GtkWidget *widget, GdkEventExpose *event)
 {
   AwnSeparatorPrivate *priv = AWN_SEPARATOR (widget)->priv;
+
+  if (priv->transparent)
+  {
+    return TRUE;
+  }
+
   cairo_t *cr;
   cairo_path_t *path;
   GtkOrientation orient;
@@ -366,6 +391,24 @@ awn_separator_class_init (AwnSeparatorClass *klass)
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  g_object_class_install_property (object_class,
+    PROP_SEP_SIZE,
+    g_param_spec_int ("separator-size",
+                      "Separator Size",
+                      "The size of the separator",
+                      0, G_MAXINT, 10,
+                      G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                      G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (object_class,
+    PROP_SEP_TRANSPARENT,
+    g_param_spec_boolean ("transparent",
+                          "Transparent",
+                          "Is separator transparent?",
+                          FALSE,
+                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                          G_PARAM_STATIC_STRINGS));
+
   g_type_class_add_private (klass, sizeof (AwnSeparatorPrivate));
 }
 
@@ -403,5 +446,37 @@ awn_separator_new_from_config_with_values (DesktopAgnosticConfigClient *client,
                        "size", size,
                        "offset", offset,
                        NULL);
+}
+
+void 
+awn_separator_set_transparent (AwnSeparator *sep, gboolean transp)
+{
+  if (sep->priv->transparent != transp)
+  {
+    sep->priv->transparent = transp;
+    gtk_widget_queue_draw (GTK_WIDGET (sep));
+  }
+}
+
+gboolean 
+awn_separator_get_transparent (AwnSeparator *sep, gboolean transp)
+{
+  return sep->priv->transparent;
+}
+
+void 
+awn_separator_set_separator_size (AwnSeparator *sep, gint size)
+{
+  if (sep->priv->separator_size != size)
+  {
+    sep->priv->separator_size = size;
+    gtk_widget_queue_resize (GTK_WIDGET (sep));
+  }
+}
+
+gint 
+awn_separator_get_separator_size (AwnSeparator *sep, gint size)
+{
+  return sep->priv->separator_size;
 }
 

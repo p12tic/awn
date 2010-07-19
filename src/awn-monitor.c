@@ -16,11 +16,12 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
  *
- *  Author : Neil Jagdish Patel <njpatel@gmail.com>
+ *  Authors : Neil Jagdish Patel <njpatel@gmail.com>
+ *            Michal Hruby <michal.mhr@gmail.com>
  *
  *  Notes : Thanks to MacSlow (macslow.thepimp.net) for the transparent & shaped
  *	        monitor code.
-*/
+ */
 
 #include "config.h"
 
@@ -43,6 +44,8 @@ struct _AwnMonitorPrivate
   guint      size_signal_id;
   guint      monitors_signal_id;
 
+  gboolean construction_done;
+  gboolean warning_shown;
   /* Monitor Geometry stuff */
   gboolean force_monitor;
 
@@ -55,6 +58,7 @@ enum
 {
   PROP_0,
 
+  PROP_SCREEN,
   PROP_CLIENT,
   PROP_FORCE_MONITOR,
   PROP_HEIGHT,
@@ -121,6 +125,8 @@ awn_monitor_constructed (GObject *object)
                                        object, "monitor-align", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
+
+  priv->construction_done = TRUE;
 }
 
 static void
@@ -180,6 +186,14 @@ awn_monitor_set_property (GObject      *object,
 
   switch (prop_id)
   {
+    case PROP_SCREEN:
+      priv->screen = g_value_get_object (value);
+      priv->warning_shown = FALSE;
+      if (!priv->force_monitor && priv->construction_done)
+      {
+        awn_monitor_update_fields (monitor);
+      }
+      break;
     case PROP_CLIENT:
       priv->client = g_value_get_object (value);
       break;
@@ -257,6 +271,15 @@ awn_monitor_class_init (AwnMonitorClass *klass)
   obj_class->dispose      = awn_monitor_dispose;
 
   /* Add properties to the class */
+  g_object_class_install_property (obj_class,
+    PROP_SCREEN,
+    g_param_spec_object ("screen",
+                         "Screen",
+                         "Managed screen",
+                         GDK_TYPE_SCREEN,
+                         G_PARAM_WRITABLE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
+
   g_object_class_install_property (obj_class,
     PROP_CLIENT,
     g_param_spec_object ("client",
@@ -344,15 +367,14 @@ awn_monitor_init (AwnMonitor *monitor)
   AwnMonitorPrivate *priv;
 
   priv = monitor->priv = AWN_MONITOR_GET_PRIVATE (monitor);
-
-  // FIXME: this might not be the best idea
-  priv->screen = gdk_screen_get_default ();
 }
 
 AwnMonitor *
-awn_monitor_new_from_config (DesktopAgnosticConfigClient *client)
+awn_monitor_new_for_screen (GdkScreen *screen,
+                            DesktopAgnosticConfigClient *client)
 {
   AwnMonitor *monitor = g_object_new (AWN_TYPE_MONITOR,
+                                      "screen", screen,
                                       "client", client,
                                       NULL);
   return monitor;
@@ -369,8 +391,12 @@ awn_monitor_update_fields (AwnMonitor *monitor)
   // make sure there is monitor with this number, if not get last one
   if (n_monitors <= monitor_number)
   {
-    g_warning ("Unable to position Awn on monitor number %d,"
-               " using monitor %d instead", monitor_number, n_monitors-1);
+    if (!priv->warning_shown)
+    {
+      g_warning ("Unable to position Awn on monitor number %d,"
+                 " using monitor %d instead", monitor_number, n_monitors-1);
+      priv->warning_shown = TRUE;
+    }
     monitor_number = n_monitors - 1;
   }
   // for monitor_number == -1, we'll get monitor with position [0, 0]
@@ -408,6 +434,8 @@ on_screen_monitors_changed (GdkScreen *screen, AwnMonitor *monitor)
 
   g_return_if_fail (AWN_IS_MONITOR (monitor));
   priv = monitor->priv;
+
+  priv->warning_shown = FALSE;
 
   if (priv->force_monitor) return;
 

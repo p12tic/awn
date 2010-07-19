@@ -15,7 +15,8 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301  USA.
  *
- *  Author : h4writer <hv1989@gmail.com>
+ *  Original Author : h4writer <hv1989@gmail.com>
+ *  Rewrited by: Alberto Aldegheri <albyrock87+dev@gmail.com>
  *
  */
 
@@ -27,22 +28,43 @@
 #include "awn-x.h"
 
 #include <math.h>
+#include "awn-applet-manager.h"
 
-/* The pixels to draw the side of the panel*/
-#define SIDE_SPACE 4
+#define MAX_THICKNESS 12.
+#define PADDING_BOTTOM 1
+#define PADDING_TOP 1
+#define BORDER_LINE_WIDTH 1
+
+/* There is a refresh bug when we are near the left border */
+#define DRAW_XPADDING 2
 
 /* Some defines for debugging */
-#define DEBUG_DRAW_INTERNAL_BORDER_BOTTOM     TRUE
-#define DEBUG_DRAW_EXTERNAL_BORDER_BOTTOM     TRUE
-#define DEBUG_DRAW_SIDE                       TRUE
-#define DEBUG_DRAW_INTERNAL_BORDER_TOP        TRUE
-#define DEBUG_DRAW_EXTERNAL_BORDER_TOP        TRUE
-#define DEBUG_DRAW_HIGHLIGHT                  TRUE
+#define DRAW_SIDE                       TRUE
+#define DRAW_EXTERNAL_BORDER            TRUE
+/* Internal border isn't good-looking for now */
+/* We need another color, because Inner Border Color */
+/* is used for paint the side face of 3D */
+#define DRAW_INTERNAL_BORDER            FALSE
+#define DRAW_HIGHLIGHT                  TRUE
+#define CLEAR_TOP_BEFORE_PAINT          FALSE
+#define FILL_BOTTOM_PLANE               FALSE
 
+/* Enable this for paint the shape mask */
 #define DEBUG_DRAW_INPUT_SHAPE_MASK           FALSE
+
+#define TRANSFORM_RADIUS(x) (x / 90. * 75)
+#define OBTAIN_THICKNESS(rad,thick) (floor(sin(TRANSFORM_RADIUS(rad)*\
+                                               M_PI/180.)*MAX_THICKNESS*thick))
 
 G_DEFINE_TYPE (AwnBackground3d, awn_background_3d, AWN_TYPE_BACKGROUND)
 
+struct _Point3
+{
+  float x;
+  float y;
+  float z;
+};
+typedef struct _Point3 Point3;
 /* FORWARDS */
 static void awn_background_3d_padding_request (AwnBackground *bg,
                                                GtkPositionType position,
@@ -81,6 +103,14 @@ awn_background_3d_constructed (GObject *object)
                             object);
 
   g_signal_connect (bg, "notify::panel-angle", 
+                    G_CALLBACK (awn_background_3d_update_padding), 
+                    NULL);
+
+  g_signal_connect (bg, "notify::corner-radius", 
+                    G_CALLBACK (awn_background_3d_update_padding), 
+                    NULL);
+
+  g_signal_connect (bg, "notify::thickness", 
                     G_CALLBACK (awn_background_3d_update_padding), 
                     NULL);
 }
@@ -160,32 +190,18 @@ awn_background_3d_update_padding (AwnBackground *bg)
  * @param x: the x pos in the flat dimension
  * @param y: the y pos in the perspective
  * 
- * Calculates the x position of the point (x,y) in the flat dimension brought back in the perspective
+ * Calculates the x position of the point (x,y) in the flat dimension 
+ * brought back in the perspective
  * note: - the bottom left corner is (0,0)
  *       - the bottom right corner should be (width, 0)
  *
- * Returns: gives the x position back of the point (x,y) in the flat dimension brought back in the perspective
+ * Returns: gives the x position back of the point (x,y) in the flat dimension
+ * brought back in the perspective
  */
 static double
 apply_perspective_x( double width, double angle, double x, double y )
 {
-		return (width/2.0-x)/(width/2.0*tan((90-angle)*M_PI/180))*y+x;
-}
-
-/**
- * get_width_on_height:
- * @param width: the current width of the bar
- * @param angle: the angle the bar will have
- * @param y: the y pos in the perspective
- *
- * Calculates the width of the bar on a given y-pos (in the perspective)
- *
- * Returns: a double containing the width
- */
-static double
-get_width_on_height( double width, double angle, double y )
-{
-		return width-2*y/tan((90-angle)*M_PI/180);
+		return (width/2.0-x)/(width/2.0*tan((90-angle)*M_PI/180)*1.5)*y+x;
 }
 
 /**
@@ -194,100 +210,164 @@ get_width_on_height( double width, double angle, double y )
  * @param point2: control point 2
  * @param point3: control point 3
  * @param point4: control point 4
- * @param t: the position between O and 1 (0 gives back point1, 1 gives back point4)
+ * @param t: the position between O and 1 
+ *          (0 gives back point1, 1 gives back point4)
  *
- * This function is used to get back the left most position of the rounded corner,
- * to let the side of the bar begin there.
+ * This function is used to get back the left most position of the rounded
+ * corner to let the side of the bar begin there.
  *
- * - Note: Not used atm. Can be I need it later on, but for now it's commented out.
+ * Note: Not used atm. Can be I need it later on, but for now it's commented out
  *
- * Returns: gives back the position of the cubic bezier curve constructed with these control points 
+ * Returns: gives back the position of the cubic bezier curve constructed with
+ *          these control points 
  */
-/*static double cubic_bezier_curve(double point1, double point2, double point3, double point4, double t)
+/*static double cubic_bezier_curve(double point1, double point2, double point3,
+                                   double point4, double t)
 {
-	return (1-t)*(1-t)*(1-t)*point1 + 3*t*(1-t)*(1-t)*point2 + 3*t*t*(1-t)*point3 + t*t*t*point4;
+	return (1-t)*(1-t)*(1-t)*point1 + 3*t*(1-t)*(1-t)*point2 + 
+	                        3*t*t*(1-t)*point3 + t*t*t*point4;
 }*/
 
-
-/*
- * Drawing functions
- */
-
 /**
- * draw_rect_path:
+ * calc_points
  * @param bg: AwnBackground
- * @param cr: a cairo context 
  * @param x: the begin x position to draw 
  * @param y: the begin y position to draw
  * @param width: the width for the drawing
  * @param height: the height for the drawing
- * @param padding: makes the path X amount of pixels smaller on every side
  *
+ * Calculates vertices to draw the path
+ */
+static Point3*
+calc_points (AwnBackground  *bg,
+             float           x,
+             float           y,
+             float           width,
+             float           height)
+{
+  float xp0, xp1, xp2, xp3, yp0, yp1, yp2, yp3;
+  float radius = bg->corner_radius;
+  /**
+   * rb = decrease the radius on bottom vertices
+   * ex = increase the x-radius on top vertices
+   */
+  float rb = 0., ex = 0.;
+  /* calc sin and cos for current angle */
+  float s = sin (TRANSFORM_RADIUS (bg->panel_angle) * M_PI / 180.);
+  float c = cos (TRANSFORM_RADIUS (bg->panel_angle) * M_PI / 180.);
+
+  /* Adjust radius */
+  if (radius > height)
+  {
+    ex = radius - height;
+    radius = height;
+  }
+  if (radius > height / 2.)
+  {
+    rb = 2. * radius - height;
+  }
+  if (radius == 0.)
+  {
+    /* for nice edges */
+    radius = 0.5;
+  }
+
+  /* Carefull: here (0,0) is in the top left corner of the screen
+   */
+  /*        0   1                   2    3
+   *    A   x0  x1                  x2  x3     B
+   *        |___|___________________|___|__y0
+   *   11   |                           |__y1     4
+   *        |                           |
+   *   10   |                           |__y2     5
+   *        |___________________________|__y3     6
+   *    D   9   8                   7          C
+   *
+   * WARNING!! When draw the path, remember that ->
+   *                 A becomes D
+   *                 B becomes C
+   */
+  xp0 = 0.;
+  xp1 = radius;
+  xp2 = width - radius;
+  xp3 = width;
+
+  yp0 = 0.;
+  yp1 = radius;
+  yp2 = height - radius;
+  yp3 = height;
+
+  Point3 *vertices = (Point3 *) malloc (sizeof (Point3) * 12); 
+  float z = 2; 
+  vertices[0] = (Point3){xp0, yp0, z};
+  vertices[1] = (Point3){xp1 - rb, yp0, z};
+  vertices[2] = (Point3){xp2 + rb, yp0, z};
+  vertices[3] = (Point3){xp3, yp0, z};
+  vertices[4] = (Point3){xp3, yp1 - rb, z};
+  vertices[5] = (Point3){xp3, yp2, z};
+  vertices[6] = (Point3){xp3, yp3, z};
+  vertices[7] = (Point3){xp2 - ex, yp3, z};
+  vertices[8] = (Point3){xp1 + ex, yp3, z};
+  vertices[9] = (Point3){xp0, yp3, z};
+  vertices[10] = (Point3){xp0, yp2, z};
+  vertices[11] = (Point3){xp0, yp1 - rb, z};
+
+  int i = 0;
+
+  for (; i < 12; ++i)
+  {
+    /* 3D ROTATION OVER X AXIS */
+    vertices[i].y = c * vertices[i].y - s * vertices[i].z;
+    vertices[i].z = s * vertices[i].y + c * vertices[i].z;
+
+    /* 3D to 2D - For now, use apply_perspective_x
+     * maybe in the future we use projection matrix
+     */
+    vertices[i].x = apply_perspective_x (width, 
+                                         TRANSFORM_RADIUS(bg->panel_angle),
+                                         vertices[i].x,
+                                         vertices[i].y ) + x;
+    /* Invert coordinates for our Y coordinate system cutted to int */
+    vertices[i].y = floor (height - vertices[i].y + y);
+  }
+  /* use vertices[8]->y to find the top coordinate of the panel */
+  return vertices;
+} 
+/**
+ * draw_rect_path:
+ * @param cr: a cairo context 
+ * @param vertices: vertices to use for drawing 
+ * @param padding: padding from top
+ * 
  * This function draws the path of the bar in perspective.
  */
 static void 
-draw_rect_path (AwnBackground  *bg,
-                cairo_t        *cr, 
-                gdouble         x,
-                gdouble         y,
-                gint            width,
-                gint            height,
-                gint            padding)
+draw_rect_path (cairo_t *cr, Point3 *vertices, float padding)
 {
-  double x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11,
-         cy0, cy1, cy2, cy3;
-  double radius = bg->corner_radius;
 
-  /* Carefull: here (0,0) is in the top left corner of the screen
-   *    (x3,cy3)  (x4,cy3)      (x5,cy3) (x6,cy3)
-   *           '-.,  |              | ,.-'
-   *    (x2,cy2)___.-''''''''''''''''-.___(x7,cy2)
-   *              /                    \
-   *  (x1,cy1)___/                      \___(x8,cy1)
-   *             '.____________________.'
-   *  (x0,cy0)--'´|                   | `'--(x9,cy0)
-   *          (x11,cy0)           (x10,cy0)
-   */
+  /* Let's make the path '*/
+  cairo_new_path (cr);
+  cairo_move_to (cr,  vertices[1].x, vertices[1].y + padding);
 
-  x0 = x + apply_perspective_x(width, bg->panel_angle, padding, padding);
-  x1 = x + apply_perspective_x(width, bg->panel_angle, padding, radius+padding);
-  x2 = x + apply_perspective_x(width, bg->panel_angle, padding, height/2.0-radius-padding);
-  x3 = x + apply_perspective_x(width, bg->panel_angle, padding, height/2.0-padding);
-  x4 = x + apply_perspective_x(width, bg->panel_angle, radius+padding, height/2.0-padding);
-  x5 = x + apply_perspective_x(width, bg->panel_angle, width-radius-padding, height/2.0-padding);
-  x6 = x + apply_perspective_x(width, bg->panel_angle, width-padding, height/2.0-padding);
-  x7 = x + apply_perspective_x(width, bg->panel_angle, width-padding, height/2.0-radius-padding);
-  x8 = x + apply_perspective_x(width, bg->panel_angle, width-padding, radius+padding);
-  x9 = x + apply_perspective_x(width, bg->panel_angle, width-padding, padding);
-  x10 = x + apply_perspective_x(width, bg->panel_angle, width-radius-padding, padding);
-  x11 = x + apply_perspective_x(width, bg->panel_angle, radius+padding, padding);
+  cairo_line_to (cr,  vertices[2].x, vertices[2].y + padding);
+  cairo_curve_to (cr, vertices[2].x, vertices[2].y + padding,
+                      vertices[3].x, vertices[3].y + padding,
+                      vertices[4].x, vertices[4].y + padding);
 
-  cy0 = y + height - padding;
-  cy1 = y + height - radius - padding;
-  cy2 = y + height/2.0 + radius + padding;
-  cy3 = y + height/2.0 + padding;
+  cairo_line_to (cr,  vertices[5].x, vertices[5].y + padding);
+  cairo_curve_to (cr, vertices[6].x, vertices[6].y + padding,
+                      vertices[7].x, vertices[7].y + padding,
+                      vertices[7].x, vertices[7].y + padding);
 
-  cairo_move_to(cr, x2, cy2);
-  cairo_curve_to(cr, x3, cy3, x3, cy3, x4, cy3);
-  cairo_line_to(cr, x5, cy3);
-  cairo_curve_to(cr, x6, cy3, x6, cy3, x7, cy2);
-  if( x8 > x7 )
-  {
-    /* draw the rounded corners on the bottom too */
-    cairo_line_to(cr, x8, cy1);
-    cairo_curve_to(cr, x9, cy0, x9, cy0, x10, cy0);
-    cairo_line_to(cr, x11, cy0);
-    cairo_curve_to(cr, x0, cy0, x0, cy0, x1, cy1);
-    cairo_line_to(cr, x2, cy2);
-  }
-  else
-  {
-    /* the radius is to big, so only draw the rounded corners on the top. On the bottom just ordinary corners. */
-    cairo_line_to(cr, x9, cy0);
-    cairo_line_to(cr, x0, cy0);
-    cairo_line_to(cr, x2, cy2);
-  }
+  cairo_line_to (cr,  vertices[8].x, vertices[8].y + padding);
+  cairo_curve_to (cr, vertices[8].x, vertices[8].y + padding,
+                      vertices[9].x, vertices[9].y + padding,
+                      vertices[10].x, vertices[10].y + padding);
 
+  cairo_line_to (cr,  vertices[11].x, vertices[11].y + padding);
+  cairo_curve_to (cr, vertices[0].x, vertices[0].y + padding,
+                      vertices[1].x, vertices[1].y + padding,
+                      vertices[1].x, vertices[1].y + padding);
   cairo_close_path(cr);
 }
 
@@ -304,111 +384,214 @@ draw_rect_path (AwnBackground  *bg,
 static void
 draw_top_bottom_background (AwnBackground  *bg,
                             cairo_t        *cr,
-                            gint            width,
-                            gint            height)
+                            gfloat          width,
+                            gfloat          height)
 {
-#if DEBUG_DRAW_SIDE
-  int i;
-#endif
   cairo_pattern_t *pat;
+  float s = OBTAIN_THICKNESS (bg->panel_angle, bg->thickness);
 
-  height -= SIDE_SPACE;
+  height -= (s + PADDING_BOTTOM + 1.);
 
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
-  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-  cairo_translate (cr, 0.5, 0.5);
+  /* Translate for sharp edges and for avoid drawing's glitches */
+  cairo_translate (cr, DRAW_XPADDING, 0.5);
+  width -= DRAW_XPADDING * 2.;
 
-#if DEBUG_DRAW_INTERNAL_BORDER_BOTTOM
-  /* Internal border (on the bottom) */
-  awn_cairo_set_source_color (cr, bg->hilight_color),
-  draw_rect_path (bg, cr, 0, SIDE_SPACE, width, height, 1);
-  cairo_stroke (cr);
-#endif
+  /* calc vertices for draw the main path */
+  Point3 *vertices = calc_points (bg, 0., 0., width, height);
+  /* calc the y coord of the top panel, used for pattern painting */
+  float top_y = vertices[8].y;
 
-#if DEBUG_DRAW_EXTERNAL_BORDER_BOTTOM
-  /* External border (on the bottom) */
-  awn_cairo_set_source_color (cr, bg->border_color);
-  draw_rect_path (bg, cr, 0, SIDE_SPACE,  width, height, 0.5);
-  cairo_stroke (cr);
-
-  /* Draw the background (on the bottom) */
-  //FIXME: I'm doubting if it is nicer with or without the bottom background drawn
-  /*pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-
-  draw_rect_path (bg, cr, 0, 0, width, height, 0.5);
-  cairo_set_source (cr, pat);
-  cairo_fill (cr);
-
-  cairo_pattern_destroy (pat);*/
-
-  /* draw the side */
-  /* TODO: if a side has no rounded corners, the border should be drawn. */
-  pat = cairo_pattern_create_linear (0, 0, 0, height);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-  cairo_set_source (cr, pat);
-  for(i=SIDE_SPACE-1; i>0; i--)
-  {
-    draw_rect_path (bg, cr, 0, i,  width, height, 0.5);
-    cairo_stroke (cr);
-  }
-
-  cairo_pattern_destroy (pat);
-#endif
-
-  /* Draw the background (on the top) */
-  if (bg->enable_pattern && bg->pattern)
-  {
-    pat = cairo_pattern_create_for_surface (bg->pattern);
-    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
-  }
-  else
-  {
-    pat = cairo_pattern_create_linear (0, 0, 0, height);
-    awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
-    awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
-  }
-
+  double red, green, blue, alpha;
+  /* Save general context */
   cairo_save (cr);
+#if DRAW_SIDE
+  /* Internal border (The Side of the 3D panel) */
+  /* Draw only if it will be visible */
+  if (bg->panel_angle > 0)
+  {
+    float i;
 
-  draw_rect_path (bg, cr, 0, 0, width, height, 0.5);
-  cairo_clip (cr);
+    /* Draw bottom plane (Inner Border Color) with
+     * its own border (Outer Border Color)
+     */
+    desktop_agnostic_color_get_cairo_color
+                        (bg->hilight_color, &red, &green, &blue, &alpha);
+    /* if side is transparent (1. / 255.), don't draw bottom border */
+    if (alpha > 0.003)
+    {
+      cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+      draw_rect_path (cr, vertices, s);
+#if FILL_BOTTOM_PLANE
+      cairo_save (cr);
+      awn_cairo_set_source_color (cr, bg->hilight_color);
+      cairo_clip (cr);
+      cairo_paint (cr);
+      cairo_restore (cr);
+#endif
+      cairo_set_line_width (cr, BORDER_LINE_WIDTH);
+      awn_cairo_set_source_color (cr, bg->border_color);
+      cairo_stroke (cr);
+
+      /* Pixel per Pixel draw each plane only with border from bottom to top */
+      cairo_set_line_width (cr, 1.5);
+      cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+      for (i = s - 1.; i >= 0. ; i -= 1.)
+      {
+        draw_rect_path (cr, vertices, i);
+        awn_cairo_set_source_color (cr, bg->hilight_color);
+        cairo_stroke (cr);
+      }
+      /* draw edges lines if corner-radius is smaller then 3px */
+      if (bg->corner_radius < 4 || bg->corner_radius > (height - 3))
+      {
+        double alpha_coeff = bg->corner_radius;
+        cairo_move_to (cr, vertices[0].x, vertices[0].y);
+        cairo_line_to (cr, vertices[0].x, vertices[0].y + s);
+        cairo_move_to (cr, vertices[3].x, vertices[3].y);
+        cairo_line_to (cr, vertices[3].x, vertices[3].y + s);
+        if (bg->corner_radius < 4)
+        {
+          cairo_move_to (cr, vertices[6].x, vertices[6].y);
+          cairo_line_to (cr, vertices[6].x, vertices[6].y + s);
+          cairo_move_to (cr, vertices[9].x, vertices[9].y);
+          cairo_line_to (cr, vertices[9].x, vertices[9].y + s);
+        }
+        else
+        {
+          alpha_coeff = fabs (MIN (bg->corner_radius, height) - height);
+        }
+        alpha_coeff = (1.0 - alpha_coeff / 3.);
+        cairo_set_line_width (cr, BORDER_LINE_WIDTH);
+        desktop_agnostic_color_get_cairo_color
+                        (bg->border_color, &red, &green, &blue, &alpha);
+        /* edges fade effect when increasing the corner radius from 0 to 3 */
+        cairo_set_source_rgba (cr, red, green, blue, 
+                               alpha * alpha_coeff);
+        cairo_stroke (cr);
+      }
+    }
+    /* Clear the area for the top plane
+     *-> hides "back border" when top is transparent
+     *-> disabled for now...
+     */
+#if CLEAR_TOP_BEFORE_PAINT
+    cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
+    draw_rect_path (cr, vertices, 0.);
+    cairo_save (cr);
+    cairo_set_source_rgba (cr, 0., 0., 0., 1.);
+    cairo_clip (cr);
+    cairo_paint (cr);
+    cairo_restore (cr);
+#endif
+  }
+#endif
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_set_line_width (cr, 2.);
+  /* Draw the path of top plane */
+  draw_rect_path (cr, vertices, 0.);
+  /* obtain 0.0 - 1.0 relative height for pattern drawing */
+  top_y = top_y / height;
+
+  /* Paint the top plane gradient */
+  pat = cairo_pattern_create_linear (0., 0., 0., height);
+  awn_cairo_pattern_add_color_stop_color (pat, top_y, bg->g_step_1);
+  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
+  cairo_save (cr);
+  cairo_clip_preserve (cr);
   cairo_set_source (cr, pat);
   cairo_paint (cr);
-
+  cairo_pattern_destroy (pat);
   cairo_restore (cr);
 
-  cairo_pattern_destroy (pat);
+  if (bg->enable_pattern && bg->pattern)
+  {
+    /* Paint the top plane pattern */
+    cairo_save (cr);
+    pat = cairo_pattern_create_for_surface (bg->pattern);
+    cairo_pattern_set_extend (pat, CAIRO_EXTEND_REPEAT);
+    cairo_clip_preserve (cr);
+    cairo_set_source (cr, pat);
+    cairo_paint (cr);
+    cairo_pattern_destroy (pat);
+    cairo_restore (cr);
+  }
 
-#if DEBUG_DRAW_HIGHLIGHT
-  /* Draw the hi-light (on the top) */
-  pat = cairo_pattern_create_linear (0, height/3.0, 0, height*2.0/3.0);
-  awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_histep_1);
-  awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
-  draw_rect_path (bg, cr, apply_perspective_x(width, bg->panel_angle, 0, height/3.0), height/3.0, get_width_on_height(width, bg->panel_angle, height/3.0), height/3.0, 1.5);
+#if DRAW_HIGHLIGHT
+  /* Prepare the hi-light */
+  pat = cairo_pattern_create_linear (0., 0., 0., height);
+  awn_cairo_pattern_add_color_stop_color
+                        (pat, top_y + 0.0, bg->g_histep_1);
+  awn_cairo_pattern_add_color_stop_color
+                        (pat, top_y + (1. - top_y) * 0.3, bg->g_histep_2);
 
+  desktop_agnostic_color_get_cairo_color
+                        (bg->g_histep_2, &red, &green, &blue, &alpha);
+  cairo_pattern_add_color_stop_rgba
+                        (pat, top_y + (1. - top_y) * 0.4, red, green, blue, 0.);
+  /* Paint the hi-light gradient */
+  cairo_save (cr);
+  cairo_clip_preserve (cr);
   cairo_set_source (cr, pat);
-  cairo_fill (cr);
+  cairo_paint (cr);
+  cairo_restore (cr);
   cairo_pattern_destroy (pat);
 #endif
-
-#if DEBUG_DRAW_INTERNAL_BORDER_TOP
-  /* Internal border (on the top) */
-  awn_cairo_set_source_color (cr, bg->hilight_color);
-  draw_rect_path (bg, cr, 0, 0, width, height, 1);
+#if DRAW_INTERNAL_BORDER
+  /* Internal border of the top surface */
+  desktop_agnostic_color_get_cairo_color
+                        (bg->border_color, &red, &green, &blue, &alpha);
+  /* for glass-look don't draw internal border if there is no external border */
+  if (alpha > 0.003)
+  {
+    cairo_save (cr);
+    cairo_scale (cr, (width - 2.) / (width), (height - 2.) / (height));
+    cairo_translate (cr, 1., 1.);
+    draw_rect_path (cr, vertices, 0.);
+    cairo_set_line_width (cr, BORDER_LINE_WIDTH + 0.5);
+    awn_cairo_set_source_color (cr, bg->hilight_color);
+    cairo_stroke (cr);
+    cairo_restore (cr);
+    draw_rect_path (cr, vertices, 0.);
+  }
+#endif
+#if DRAW_EXTERNAL_BORDER
+  /* External border */
+  cairo_set_line_width (cr, BORDER_LINE_WIDTH);
+  awn_cairo_set_source_color (cr, bg->border_color);
   cairo_stroke (cr);
 #endif
+  /* restore genereal context */
+  cairo_restore (cr);
+  /* free memory :) */
+  free (vertices);
+}
 
-#if DEBUG_DRAW_EXTERNAL_BORDER_BOTTOM
-  /* External border (on the top) */
-   awn_cairo_set_source_color (cr, bg->border_color);
-   draw_rect_path (bg, cr, 0, 0,  width, height, 0.5);
-   cairo_stroke (cr);
-#endif
+/**
+ * _get_applet_manager_size
+ * Obtain width and height from applet manager
+ */
+static void
+_get_applet_manager_size (AwnBackground* bg, GtkPositionType position,
+                          float *w, float *h)
+{
+  AwnAppletManager *manager = NULL;
+  g_object_get (bg->panel, "applet-manager", &manager, NULL);
 
+  switch (position)
+  {
+    case GTK_POS_BOTTOM:
+    case GTK_POS_TOP:
+      *w = GTK_WIDGET (manager)->allocation.width;
+      break;
+    default:
+      *w = GTK_WIDGET (manager)->allocation.height;
+      break;
+  }
+  gint size = 0;
+  g_object_get (manager, "size", &size, NULL);
+  *h = size;
 }
 
 /**
@@ -436,33 +619,54 @@ awn_background_3d_padding_request (AwnBackground *bg,
   guint padding;
   g_object_get (bg->panel, "offset", &offset, "size", &size, NULL);
 
-  if(offset > size)
-    padding = (size+offset)/2.0/tan((90-bg->panel_angle)*M_PI/180);
-  else
+  /* Find the coordinate of the (0;0) point in the prospective */
+  /* Its X coordinate is equal to the padding */
+  float w,h;
+  _get_applet_manager_size (bg, position, &w, &h);
+  padding = apply_perspective_x
+                      ( w, TRANSFORM_RADIUS(bg->panel_angle), 0., h );
+  /* Padding > h is not needed */
+  if (padding > h)
   {
-    double angle = 90 - CLAMP (bg->panel_angle, 0.0, 75.0);
-    double y_pos = size / 2.0 + bg->corner_radius;
-    double x = y_pos / tan (angle * M_PI/180);
-    padding = MAX (x, offset);
+    padding = h;
   }
+
+  /* Obtain the padding from corner radius */
+  float padding_from_rad = bg->corner_radius;
+
+  if (padding_from_rad > h)
+  {
+    padding_from_rad = h;
+  }
+  if (padding_from_rad > (h / 2.))
+  {
+    padding_from_rad = ( h - padding_from_rad );
+  }
+  /* Sum padding needed */
+  padding = MAX (padding, padding_from_rad) + DRAW_XPADDING;
+  float s = OBTAIN_THICKNESS (bg->panel_angle, bg->thickness);
 
   switch (position)
   {
     case GTK_POS_TOP:
-      *padding_top  = SIDE_SPACE+2; *padding_bottom = 0;
+      *padding_top  = PADDING_BOTTOM + s;
+      *padding_bottom = PADDING_TOP;
       *padding_left = padding; *padding_right = padding;
       break;
     case GTK_POS_BOTTOM:
-      *padding_top  = 0; *padding_bottom = SIDE_SPACE+2;
+      *padding_top  = PADDING_TOP;
+      *padding_bottom = PADDING_BOTTOM + s;
       *padding_left = padding; *padding_right = padding;
       break;
     case GTK_POS_LEFT:
       *padding_top  = padding; *padding_bottom = padding;
-      *padding_left = SIDE_SPACE+2; *padding_right = 0;
+      *padding_left = PADDING_BOTTOM + s;
+      *padding_right = PADDING_TOP;
       break;
     case GTK_POS_RIGHT:
       *padding_top  = padding; *padding_bottom = padding;
-      *padding_left = 0; *padding_right = SIDE_SPACE+2;
+      *padding_left = PADDING_TOP;
+      *padding_right = PADDING_BOTTOM + s;
       break;
     default:
       break;
@@ -482,7 +686,8 @@ awn_background_3d_padding_request (AwnBackground *bg,
  * Draws the bar in the in the cairo context &cr given the position &position,
  * the &x and &y position and given &width and &height
  *
- * Important: every change to this function should get adjusted in input_shape_mask!!!
+ * Important: every change to this function should get 
+ * adjusted in input_shape_mask!!!
  */
 static void 
 awn_background_3d_draw (AwnBackground  *bg,
@@ -498,23 +703,27 @@ awn_background_3d_draw (AwnBackground  *bg,
   switch (position)
   {
     case GTK_POS_RIGHT:
-      cairo_translate (cr, x-1, y+height);
+      cairo_translate (cr, 0., y + height);
+      cairo_scale (cr, 1., -1.);
+      cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_LEFT:
-      cairo_translate (cr, x+width+1, y);
+      cairo_translate (cr, x + width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_TOP:
-      cairo_translate (cr, x+width, y+height+1);
-      cairo_rotate (cr, M_PI);
+      cairo_translate (cr, x, y + height);
+      cairo_scale (cr, 1., -1.);
       break;
     default:
-      cairo_translate (cr, x, y-1);
+      cairo_translate (cr, x, y);
       break;
   }
 
@@ -543,50 +752,55 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
                                     GtkPositionType  position,
                                     GdkRectangle   *area)
 {
-  int i;
-  gint temp;
-  gint x = area->x, y = area->y;
-  gint width = area->width, height = area->height;
+  gfloat temp;
+  gfloat x = area->x, y = area->y;
+  gfloat width = area->width, height = area->height;
   cairo_save (cr);
 
   switch (position)
   {
     case GTK_POS_RIGHT:
-      cairo_translate (cr, x-1, y+height);
+      cairo_translate (cr, 0., y + height);
+      cairo_scale (cr, 1., -1.);
+      cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_LEFT:
-      cairo_translate (cr, x+width+1, y);
+      cairo_translate (cr, x + width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_TOP:
-      cairo_translate (cr, x+width, y+height+1);
-      cairo_rotate (cr, M_PI);
+      cairo_translate (cr, x, y + height);
+      cairo_scale (cr, 1., -1.);
       break;
     default:
-      cairo_translate (cr, x, y-1);
+      cairo_translate (cr, x, y);
       break;
   }
+  float s = OBTAIN_THICKNESS (bg->panel_angle, bg->thickness);
 
-  height -= SIDE_SPACE;
-
+  height -= (s + PADDING_BOTTOM + 1.);
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
-  cairo_translate (cr, 0.5, 0.5);
+  cairo_translate (cr, DRAW_XPADDING, 0.5);
+  width -= DRAW_XPADDING * 2.;
 
-  /* Draw the background (in black color*/
-  cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 1.0);
-
-  for(i=SIDE_SPACE-1; i>-1; i--)
-  {
-    draw_rect_path (bg, cr, 0, i,  width, height, 0.5);
-    cairo_fill (cr);
-  }
+  /* Draw the background (in black color) */
+  cairo_set_source_rgba(cr, 0., 0., 0., 1.);
+  /* for shape mask draw only top and bottom plane */
+  Point3 *vertices = calc_points (bg, 0., 0., width, height);
+  draw_rect_path (cr, vertices, 0.);
+  cairo_fill (cr);
+  draw_rect_path (cr, vertices, s);
+  cairo_fill (cr);
+  free (vertices);
 
   cairo_restore (cr);
 }

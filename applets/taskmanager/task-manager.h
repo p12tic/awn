@@ -89,6 +89,9 @@ GObject* task_manager_get_dbus_dispatcher (TaskManager *manager);
 
 void task_manager_append_launcher     (TaskManager  *manager, 
                                       const gchar * launcher_path);
+void task_manager_remove_launcher     (TaskManager  *manager, 
+                                      const gchar * launcher_path);
+
 
 void task_manager_remove_task_icon    (TaskManager  *manager, GtkWidget *icon);
 

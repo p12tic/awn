@@ -59,6 +59,8 @@ struct _AwnAppletPrivate
   gint size;
   gint max_size;
 
+  guint menu_inhibit_cookie;
+
   gboolean show_all_on_embed;
   gboolean quit_on_delete;
 
@@ -1075,7 +1077,8 @@ awn_applet_create_pref_item (void)
 {
 	GtkWidget *item;
   
-  item = gtk_image_menu_item_new_with_label (_("Dock Preferences"));
+  item = gtk_image_menu_item_new_with_label (dgettext (GETTEXT_PACKAGE,
+                                                       "Dock Preferences"));
 #if GTK_CHECK_VERSION (2,16,0)	
 	g_object_set (item,"always-show-image",TRUE,NULL);  
 #endif
@@ -1228,7 +1231,7 @@ awn_applet_create_about_item (AwnApplet         *applet,
   {
     gtk_about_dialog_set_documenters (dialog, documenters);
   }
-  item_text = g_strdup_printf ("About %s", applet_name);
+  item_text = g_strdup_printf (dgettext (GETTEXT_PACKAGE, "About %s"), applet_name);
   item = gtk_image_menu_item_new_with_label (item_text); /* FIXME Add pretty icon */
 #if GTK_CHECK_VERSION (2,16,0)	
 	g_object_set (item,"always-show-image",TRUE,NULL);  
@@ -1277,6 +1280,38 @@ awn_applet_create_about_item_simple (AwnApplet        *applet,
                                        NULL);
 }
 
+static void
+_menu_showed (AwnApplet *applet)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+
+  priv = applet->priv;
+
+  if (priv->menu_inhibit_cookie == 0)
+  {
+    priv->menu_inhibit_cookie = 
+      awn_applet_inhibit_autohide (applet, "Displaying applet menu");
+  }
+}
+
+static void
+_menu_hidden (AwnApplet *applet)
+{
+  AwnAppletPrivate *priv;
+
+  g_return_if_fail (AWN_IS_APPLET (applet));
+
+  priv = applet->priv;
+
+  if (priv->menu_inhibit_cookie)
+  {
+    awn_applet_uninhibit_autohide (applet, priv->menu_inhibit_cookie);
+    priv->menu_inhibit_cookie = 0;
+  }
+}
+
 /**
  * awn_applet_create_default_menu:
  * @applet: An AwnApplet.
@@ -1297,6 +1332,10 @@ awn_applet_create_default_menu (AwnApplet *applet)
   priv = AWN_APPLET_GET_PRIVATE (applet);
 
   menu = gtk_menu_new ();
+
+  /* Inhibit autohide when the menu is shown */
+  g_signal_connect_swapped (menu, "show", G_CALLBACK (_menu_showed), applet);
+  g_signal_connect_swapped (menu, "hide", G_CALLBACK (_menu_hidden), applet);
 
   /* The preferences (awn-settings) menu item  */
   item = awn_applet_create_pref_item ();

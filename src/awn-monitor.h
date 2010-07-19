@@ -71,7 +71,8 @@ struct _AwnMonitorClass {
 GType awn_monitor_get_type(void) G_GNUC_CONST;
 
 
-AwnMonitor * awn_monitor_new_from_config (DesktopAgnosticConfigClient *client);
+AwnMonitor * awn_monitor_new_for_screen (GdkScreen *screen,
+                                         DesktopAgnosticConfigClient *client);
 
 G_END_DECLS
 

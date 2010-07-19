@@ -43,6 +43,7 @@
 #include "awn-background-3d.h"
 #include "awn-background-curves.h"
 #include "awn-background-edgy.h"
+#include "awn-background-lucido.h"
 #include "awn-background-floaty.h"
 #include "awn-defines.h"
 #include "awn-marshal.h"
@@ -223,6 +224,7 @@ enum
   STYLE_CURVES,
   STYLE_EDGY,
   STYLE_FLOATY,
+  STYLE_LUCIDO,
 
   STYLE_LAST
 };
@@ -567,6 +569,15 @@ on_about_activated (GtkMenuItem *item, AwnPanel *panel)
 }
 
 static void
+on_screen_changed (GtkWidget *panel, GdkScreen *screen, gpointer userdata)
+{
+  AwnPanelPrivate *priv;
+
+  priv = AWN_PANEL_GET_PRIVATE (panel);
+  g_object_set (priv->monitor, "screen", gtk_widget_get_screen (panel), NULL);
+}
+
+static void
 awn_panel_constructed (GObject *object)
 {
   AwnPanelPrivate *priv;
@@ -576,8 +587,11 @@ awn_panel_constructed (GObject *object)
   priv = AWN_PANEL_GET_PRIVATE (object);
   panel = GTK_WIDGET (object);
 
-  priv->monitor = awn_monitor_new_from_config (priv->client);
-  g_signal_connect (priv->monitor, "geometry_changed",
+  screen = gtk_widget_get_screen (panel);
+  priv->monitor = awn_monitor_new_for_screen (screen, priv->client);
+  g_signal_connect (panel, "screen-changed",
+                    G_CALLBACK (on_screen_changed), NULL);
+  g_signal_connect (priv->monitor, "geometry-changed",
                     G_CALLBACK (on_geometry_changed), panel);
 
   g_signal_connect_swapped (priv->monitor, "notify::monitor-align",
@@ -590,7 +604,6 @@ awn_panel_constructed (GObject *object)
   g_timeout_add (10000, (GSourceFunc)on_startup_complete, panel);
 
   /* Composited checks/setup */
-  screen = gtk_widget_get_screen (panel);
   priv->composited = gdk_screen_is_composited (screen);
   priv->animated_resize = priv->composited;
   g_print ("Screen %s composited\n", priv->composited ? "is" : "isn't");
@@ -1076,6 +1089,11 @@ awn_panel_refresh_alignment (AwnPanel *panel)
   }
 
   awn_panel_queue_masks_update (panel);
+
+  if (priv->bg)
+  {
+    awn_background_invalidate (priv->bg);
+  }
 }
 
 static
@@ -1782,7 +1800,7 @@ awn_panel_class_init (AwnPanelClass *klass)
   obj_class->finalize      = awn_panel_finalize;
   obj_class->get_property  = awn_panel_get_property;
   obj_class->set_property  = awn_panel_set_property;
-    
+
   cont_class->add          = awn_panel_add;
   cont_class->remove       = awn_panel_remove;
   
@@ -3221,6 +3239,9 @@ awn_panel_set_style (AwnPanel *panel, gint style)
     case STYLE_EDGY:
       priv->bg = awn_background_edgy_new (priv->client, panel);
       break;
+    case STYLE_LUCIDO:
+      priv->bg = awn_background_lucido_new (priv->client, panel);
+      break;
     case STYLE_FLOATY:
       priv->bg = awn_background_floaty_new (priv->client, panel);
       break;
@@ -3944,6 +3965,12 @@ docklet_closer_click (GtkWidget *widget, AwnPanel *panel)
   awn_panel_docklet_destroy (panel);
 
   return FALSE;
+}
+
+gboolean
+awn_panel_get_docklet_mode (AwnPanel *panel)
+{
+  return panel->priv->docklet != NULL;
 }
 
 static void

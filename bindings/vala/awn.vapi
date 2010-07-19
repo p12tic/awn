@@ -153,6 +153,11 @@ namespace Awn {
 		public virtual signal void name_disappeared (string name);
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
+	public class DesktopLookupClient : GLib.Object {
+		[CCode (has_construct_function = false)]
+		public DesktopLookupClient ();
+	}
+	[CCode (cheader_filename = "libawn/libawn.h")]
 	public class Dialog : Gtk.Window, Atk.Implementor, Gtk.Buildable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Dialog ();
@@ -223,6 +228,8 @@ namespace Awn {
 		[NoAccessorMethod]
 		public DesktopAgnostic.Color active_rect_color { owned get; set; }
 		[NoAccessorMethod]
+		public DesktopAgnostic.Color active_rect_outline { owned get; set; }
+		[NoAccessorMethod]
 		public string arrow_png { owned get; set construct; }
 		[NoAccessorMethod]
 		public int arrows_count { get; set construct; }
@@ -275,6 +282,7 @@ namespace Awn {
 		public Icon ();
 		public bool get_hover_effects ();
 		public int get_indicator_count ();
+		public unowned Gdk.Region get_input_mask ();
 		public bool get_is_active ();
 		public int get_offset ();
 		public Gtk.PositionType get_pos_type ();
@@ -510,6 +518,7 @@ namespace Awn {
 		public void set_focus_widget (Gtk.Widget widget);
 		public void set_font_color (DesktopAgnostic.Color font_color);
 		public void set_font_name (string font_name);
+		public void set_outline_color (DesktopAgnostic.Color outline);
 		public void set_position_hint (Gtk.PositionType position, int size);
 		public void set_text (string text);
 		public void update_position ();
@@ -528,6 +537,8 @@ namespace Awn {
 		public DesktopAgnostic.Color tooltip_font_color { owned get; set construct; }
 		[NoAccessorMethod]
 		public string tooltip_font_name { owned get; set construct; }
+		[NoAccessorMethod]
+		public DesktopAgnostic.Color tooltip_outline_color { owned get; set construct; }
 	}
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public interface Overlayable {
@@ -536,7 +547,7 @@ namespace Awn {
 		public unowned GLib.List get_overlays ();
 		public void remove_overlay (Awn.Overlay overlay);
 	}
-	[CCode (cprefix = "AWN_APPLET_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
+	[CCode (cprefix = "AWN_APPLET_", has_type_id = false, cheader_filename = "libawn/libawn.h")]
 	public enum AppletFlags {
 		FLAGS_NONE,
 		EXPAND_MINOR,
@@ -547,14 +558,14 @@ namespace Awn {
 		DOCKLET_HANDLES_POSITION_CHANGE,
 		DOCKLET_CLOSE_ON_MOUSE_OUT
 	}
-	[CCode (cprefix = "AWN_APPLET_LICENSE_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
+	[CCode (cprefix = "AWN_APPLET_LICENSE_", has_type_id = false, cheader_filename = "libawn/libawn.h")]
 	public enum AppletLicense {
 		GPLV2,
 		GPLV3,
 		LGPLV2_1,
 		LGPLV3
 	}
-	[CCode (cprefix = "ROUND_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
+	[CCode (cprefix = "ROUND_", has_type_id = false, cheader_filename = "libawn/libawn.h")]
 	public enum CairoRoundCorners {
 		NONE,
 		TOP_LEFT,
@@ -567,7 +578,7 @@ namespace Awn {
 		RIGHT,
 		ALL
 	}
-	[CCode (cprefix = "AWN_EFFECT_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
+	[CCode (cprefix = "AWN_EFFECT_", has_type_id = false, cheader_filename = "libawn/libawn.h")]
 	public enum Effect {
 		NONE,
 		OPENING,
@@ -577,13 +588,13 @@ namespace Awn {
 		ATTENTION,
 		DESATURATE
 	}
-	[CCode (cprefix = "AWN_OVERLAY_ALIGN_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
+	[CCode (cprefix = "AWN_OVERLAY_ALIGN_", has_type_id = false, cheader_filename = "libawn/libawn.h")]
 	public enum OverlayAlign {
 		CENTRE,
 		LEFT,
 		RIGHT
 	}
-	[CCode (cprefix = "AWN_PATH_", has_type_id = "0", cheader_filename = "libawn/libawn.h")]
+	[CCode (cprefix = "AWN_PATH_", has_type_id = false, cheader_filename = "libawn/libawn.h")]
 	public enum PathType {
 		LINEAR,
 		ELLIPSE,

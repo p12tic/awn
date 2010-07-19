@@ -87,6 +87,8 @@
 #define AWN_THEME_PANEL_ANGLE      "panel_angle"
 #define AWN_THEME_CURVINESS        "curviness"
 #define AWN_THEME_CURVES_SYMMETRY  "curves_symmetry"
+#define AWN_THEME_FLOATY_OFFSET    "floaty_offset"
+#define AWN_THEME_THICKNESS        "thickness"
 
 #endif /*_HAVE_AWN_DEFINES_H */
 
