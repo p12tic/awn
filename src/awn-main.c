@@ -62,7 +62,7 @@ GOptionEntry entries[] =
 gint 
 main (gint argc, gchar *argv[])
 {
-  AwnApp          *app;
+  AwnApplication  *app;
   GOptionContext  *context;
   DBusGConnection *connection;
   DBusGProxy      *proxy;
@@ -135,10 +135,7 @@ main (gint argc, gchar *argv[])
   if (is_startup) sleep (5);
 
   /* Launch Awn */
-  app = awn_app_get_default ();
-  dbus_g_connection_register_g_object (connection, 
-                                       AWN_DBUS_APP_PATH,
-                                       G_OBJECT (app));
+  app = awn_application_get_default ();
 
   gtk_main ();
 
