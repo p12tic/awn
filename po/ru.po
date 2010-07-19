@@ -7,37 +7,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:34-0800\n"
-"PO-Revision-Date: 2009-01-27 04:12+0000\n"
-"Last-Translator: Vyacheslav Kurenyshev <Unknown>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-06 03:45+0000\n"
+"Last-Translator: 6a6ep <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2010-02-07 04:38+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Расширитель"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Заполняет место на панели в развёрнутом режиме"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
-msgstr ""
+msgstr " Разрешить группировку окон с разными значениями WM_CLIENT_NAME."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Управляет альфа-каналом наложения если значение overlay_application_icons "
+"есть true. Допустимы значения в диапазоне от 0.0 до 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -47,22 +49,30 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" Управляет отображением иконок приложений в Менеджере Задач. 0) Всегда "
+"отображать иконки приложения когда окно активно (за исключением очень редких "
+"случаев). 1) Попытаться отображать иконки, когда они могут предоставить "
+"полезную / контекстную информацию. 2) Игнорировать иконки приложений и "
+"отображать только значок Ярлыка."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Управляет размером наложения если значение overlay_application_icons есть "
+"true. Допустимы значения в диапазоне от 0.2 до 0.7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Группировать иконки с одинаковым ярлыком, если группировка окон отключена."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -71,12 +81,16 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" Если true то иконка приложения будет наложена на Ярлык вместо замещения, "
+"параметры наложения определены в icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Поведение при активации окна на другом рабочем месте. (0 по умолчанию, 1 - "
+"изменить активное рабочее место, 2 - перейти к текущему рабочему месту)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
@@ -96,15 +110,15 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "Включить долгое нажатие для открытия Контекстного меню"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Включить упорядочивание ярлыков с помощью перетаскивания "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Включение группировки задач."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -131,6 +145,8 @@ msgstr ""
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
+"Максимальное число индикаторов задач для отображения под значком. Диапазон "
+"значений: 0..3"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
@@ -149,9 +165,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Показывать окна со всех рабочих мест"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -166,14 +181,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Запуск"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Запуск"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -194,9 +208,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Смещение иконки "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -214,19 +227,16 @@ msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
-#, fuzzy
 msgid "Preferences applet"
-msgstr "Параметры"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Добавление и удаление апплетов"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Цвет разделителя:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -244,14 +254,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Добавление и удаление программ для запуска"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Закрытие"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -306,9 +314,8 @@ msgid "Move to Another _Workspace"
 msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
-#, fuzzy
 msgid "Awn Settings"
-msgstr "Запускается %s"
+msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -343,7 +350,7 @@ msgstr "Классический"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Затухание"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
@@ -355,7 +362,7 @@ msgstr "Увеличение"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Сжатие"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
@@ -363,11 +370,11 @@ msgstr "3D поворот"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Объёмное вращение с фонариком"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Свечение"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
@@ -468,14 +475,12 @@ msgid "Top"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:136
-#, fuzzy
 msgid "Bottom"
-msgstr "Увеличение"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
-#, fuzzy
 msgid "Flat"
-msgstr "Плоская панель"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "3d"
@@ -490,9 +495,8 @@ msgid "Edgy"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:141
-#, fuzzy
 msgid "Floaty"
-msgstr "Плоская панель"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Standard"
@@ -507,14 +511,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Автоматически скрывать панель, когда она не используется"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Прозрачность:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -533,9 +535,8 @@ msgid "Use Window Icons"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:859
-#, fuzzy
 msgid "Use Launcher Icons"
-msgstr "Значок ярлыка"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:860
 msgid "Overlay Window Icon"
@@ -602,28 +603,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Цвет фона:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Цвет фона:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Цвет фона:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Цвет фона:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -648,29 +645,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Включить шаблон"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Первый цвет:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Первый цвет:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Цвет фона:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Цвет фона:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -693,14 +685,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Внутренняя граница:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Главная граница:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -740,19 +730,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Вторичный цвет:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Вторичный цвет:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Цвет разделителя:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -807,9 +794,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Включить шаблон"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -850,14 +836,12 @@ msgid "Choose Custom Icon"
 msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2065
-#, fuzzy
 msgid "Customize Icon"
-msgstr "Пользовательский"
+msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2152
-#, fuzzy
 msgid "Remove Customized Icon"
-msgstr "Пользовательский"
+msgstr ""
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
@@ -873,258 +857,3 @@ msgstr ""
 
 #~ msgid "PNG Files"
 #~ msgstr "PNG файлы"
-
-#~ msgid "3D turn"
-#~ msgstr "3D поворот"
-
-#~ msgid "3D turn with spotlight"
-#~ msgstr "3D поворот с фонариком"
-
-#~ msgid "Select an Executable File"
-#~ msgstr "Выбрать запускаемый файл"
-
-#~ msgid "Please provide a name for the launcher in the \"%s\" field."
-#~ msgstr "Введите название ярлыка в поле \"%s\"."
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>Название:</b>"
-
-#~ msgid "Please provide a program to launch in the \"%s\" field."
-#~ msgstr "Укажите программу для запуска в поле \"%s\"."
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>Команда:</b>"
-
-#~ msgid "Couldn't save the launcher. Error: %s"
-#~ msgstr "Не удаётся сохранить ярлык. Ошибка %s"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Активный значок</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Настройки апплета</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Стрелки</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Поведение панели</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Границы</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Настроить эффекты</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Основные настройки</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Градиент</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Подсветка</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Эффекты значка</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "Настройки программы для запуска"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Вид </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Шаблон</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Разделитель</b>"
-
-#~ msgid "<b>Startup behaviour</b>"
-#~ msgstr "<b>Поведение при запуске</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Текст</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Темы</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Окна</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Включить"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Добавление и удаление программ для запуска"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Добавить, удалить и сохранить темы"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Уведомлять при обновлении окна приложения"
-
-#~ msgid "Arrow offset: "
-#~ msgstr "Смещение: "
-
-#~ msgid "Attention"
-#~ msgstr "Внимание"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Автоматически скрывать панель, когда она не используется"
-
-#~ msgid "Automatically start AWN on login."
-#~ msgstr "Автоматически запускать AWN при входе."
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Внешний вид панели"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Угол панели: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Высота панели: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Изменить вид и поведение дока"
-
-#~ msgid "Color:"
-#~ msgstr "Цвет:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Выключить"
-
-#~ msgid "Delete"
-#~ msgstr "Удалить"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Закругленные углы"
-
-#~ msgid "Font:"
-#~ msgstr "Шрифт:"
-
-#~ msgid "General"
-#~ msgstr "Общие"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Цвета отражения"
-
-#~ msgid "Hover"
-#~ msgstr "Парить"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Будет активирован эффект \"напоминания\" иконок обновленных приложений"
-
-#~ msgid "Install"
-#~ msgstr "Установить"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Располагать под активными окнами, когда не используется"
-
-#~ msgid "Launching"
-#~ msgstr "Запуск"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr ""
-#~ "Развернутые окна не перекрывают панель (требуется перезагрузка панели)"
-
-#~ msgid "Opening"
-#~ msgstr "Открытие"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Шаблоны"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Цвет тени:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr ""
-#~ "Показывать разделитель между кнопками запуска программ и работающими "
-#~ "программами"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Внешний вид панели задач"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Задачи обозначаются стрелками"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Автоматически прятать панель, если она не используется"
-
-#~ msgid "Transparency:"
-#~ msgstr "Прозрачность:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Окна не перекрывают панель, если эта опция включена"
-
-#~ msgid "page 1"
-#~ msgstr "Страница 1"
-
-#~ msgid "page 2"
-#~ msgstr "Страница 2"
-
-#~ msgid "page 3"
-#~ msgstr "Страница 3"
-
-#~ msgid "page 4"
-#~ msgstr "Страница 4"
-
-#~ msgid "Awn Manager"
-#~ msgstr "Awn менеджер"
-
-#~ msgid "3D look"
-#~ msgstr "Объемный вид"
-
-#~ msgid "<b>Description:</b>"
-#~ msgstr "<b>Описание:</b>"
-
-#~ msgid "Directory:"
-#~ msgstr "Директория:"
-
-#~ msgid "Launcher Editor"
-#~ msgstr "Редактор ярлыка"
-
-#~ msgid "Open..."
-#~ msgstr "Открыть..."
-
-#~ msgid "Select A Folder"
-#~ msgstr "Выбрать папку"
-
-#~ msgid "Select Icon"
-#~ msgstr "Выбрать значок"
-
-#~ msgid "Expand bar to monitor width"
-#~ msgstr "Расширить панель на всю ширину монитора"
-
-#~ msgid "File is not a valid .desktop file"
-#~ msgstr "Файл не является корректным файлом .desktop"
-
-#~ msgid "Unrecognized desktop file Version '%s'"
-#~ msgstr "Неопознанная версия файла desktop '%s'"
-
-#~ msgid "Application does not accept documents on command line"
-#~ msgstr "Приложение не принимает документы в командной строке"
-
-#~ msgid "Unrecognized launch option: %d"
-#~ msgstr "Неопределённый параметр запуска: %d"
-
-#~ msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-#~ msgstr ""
-#~ "Не удаётся передать URI документа элементу рабочего стола 'Type=Link'"
-
-#~ msgid "Not a launchable item"
-#~ msgstr "Незапускаемый объект"
-
-#~ msgid "Choose New Image..."
-#~ msgstr "Выбрать новое изображение..."
-
-#~ msgid "Change Icon..."
-#~ msgstr "Изменить значок..."
-
-#~ msgid "Change Image..."
-#~ msgstr "Изменить изображение..."
-
-#~ msgid "Change Icon"
-#~ msgstr "Сменить значок"

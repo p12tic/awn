@@ -520,9 +520,10 @@ awn_effects_redraw(AwnEffects *fx)
 
       case GTK_POS_RIGHT:
       case GTK_POS_LEFT:
-        icon_size = fx->is_active && fx->priv->width_mod <= 1.0 ?
+        // effects swap width & height_mod when on side orientation
+        icon_size = fx->is_active && fx->priv->height_mod <= 1.0 ?
           fx->priv->icon_width :
-          fx->priv->icon_width * fx->priv->width_mod;
+          fx->priv->icon_width * fx->priv->height_mod;
         icon_size *= fx->make_shadow ? 1.0625 : 1.0;
         w = ceil (icon_size) +
             fx->icon_offset + fx->priv->top_offset +

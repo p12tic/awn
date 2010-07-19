@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:33-0800\n"
-"PO-Revision-Date: 2008-07-17 17:07+0000\n"
-"Last-Translator: Pittmann Tamás <zaivaldi@gmail.com>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 11:27+0000\n"
+"Last-Translator: Pittmann Tamás <zaivaldi@ubuntu.hu>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Ablakok mutatása az összes munkaterületről"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Futtatás"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Futtatás"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Ikon kezdőpozíció: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Dokk beállítások"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Kisalkalmazások hozzáadása és eltávolítása"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Elválasztó színe:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,9 +237,8 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Alkalmazásindító ikonok hozzáadása és eltávolítása"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
 msgid "_Close"
@@ -304,11 +298,13 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
-msgstr ""
+msgstr "Awn Beállítások"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
+"Az Awn beállításainak, alkalmazásindítóinak, kisalkalmazásainak és témáinak "
+"kezelése"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -327,7 +323,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Nincs"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -335,39 +331,39 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Klasszikus"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Elhalványítás"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Reflektorfény"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Nagyítás"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Giccs"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3D forgatás"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D forgás reflektorfényben"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Ragyogás"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "Egyéni"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -375,16 +371,21 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Automatikus létrehozás nem sikerült. Kérem saját kezűleg hozza létre a "
+"könyvtárat:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Könyvtár létrehozás megerősítése"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Nincs meglévő autostart könyvtár az Ön felhasználói fiókjához.\n"
+"Szeretné, hogy létrehozzam az Ön számára?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -398,16 +399,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "Az AWN sikeresen frissítve"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant ablaknavigátor"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Teljesen testreszabható dokk-szerű ablak menedzser a GNOME-hoz"
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -416,6 +417,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Ez a program szabad szoftver: terjesztheti és/vagy módosíthatja a Free "
+"Software Foundation által kiadott GNU General Public License második (vagy "
+"bármely későbbi) változatában foglaltak alapján."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -424,6 +428,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Ez a program abban a reményben kerül közreadásra, hogy hasznos lesz, de "
+"minden egyéb GARANCIA NÉLKÜL, az ELADHATÓSÁGRA vagy VALAMELY CÉLRA VALÓ "
+"ALKALMAZHATÓSÁGRA való származtatott garanciát is beleértve. További "
+"részleteket a GNU General Public License tartalmaz."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -431,6 +439,10 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Ezzel a programmal együtt meg kellett kapnia a GNU General Public License "
+"egy példányát; ha mégsem kapta meg, akkor írjon a következő címre: Free "
+"Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-"
+"1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -438,27 +450,27 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:135
 msgid "Left"
-msgstr ""
+msgstr "Bal"
 
 #: ../awn-settings/awnSettings.py.in:135
 msgid "Right"
-msgstr ""
+msgstr "Jobb"
 
 #: ../awn-settings/awnSettings.py.in:136
 msgid "Top"
-msgstr ""
+msgstr "Felső"
 
 #: ../awn-settings/awnSettings.py.in:136
 msgid "Bottom"
-msgstr ""
+msgstr "Alsó"
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "Flat"
-msgstr ""
+msgstr "Lapos"
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "3d"
-msgstr ""
+msgstr "3d"
 
 #: ../awn-settings/awnSettings.py.in:141
 msgid "Curved"
@@ -485,14 +497,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Pult automatikus elrejtése, amikor nincs használatban"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Átlátszóság:"
+msgstr "Átlátszóság"
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -546,7 +556,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Dokkszerű ablaknavigátor"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -554,11 +564,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -579,28 +589,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Háttérszín:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Háttérszín:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Háttérszín:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Háttérszín:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -625,29 +631,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Mintázat engedélyezése"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Első szín"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Első szín"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Háttérszín:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Háttérszín:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -670,14 +671,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Belső szegély:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Külső szegély:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -717,19 +716,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Második szín:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Második szín:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Elválasztó színe:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -784,9 +780,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Mintázat engedélyezése"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -820,7 +815,7 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:1976
 msgid "Icons"
-msgstr ""
+msgstr "Ikonok"
 
 #: ../libawn/awn-themed-icon.c:1978
 msgid "Choose Custom Icon"
@@ -845,169 +840,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Aktív ikon</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Kisalkalmazás beállítások</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Nyilak</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Pult viselkedése</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Szegélyek</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Effektek testreszabása</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Általános beállítások</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Színátmenet</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Kiemelés</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Ikon effektek</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "Indítópult Beállítások"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Megjelenés</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Minta</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Elválasztó</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Szöveg</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Témák</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Ablakok</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktiválás"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Alkalmazásindító ikonok hozzáadása és eltávolítása"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Témák hozzáadása, eltávolítása és mentése"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Visszajelzés amikor az alkalmazásablak frissül"
-
-#~ msgid "Attention"
-#~ msgstr "Figyelem"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Pult automatikus elrejtése, amikor nincs használatban"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Pult megjelenése"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Sáv szöge: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Sáv magassága "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Dokkoló megjelenésének és viselkedésének megváltoztatása"
-
-#~ msgid "Color:"
-#~ msgstr "Szín:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Kikapcsolás"
-
-#~ msgid "Delete"
-#~ msgstr "Törlés"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Lekerekített sarkok engedélyezése"
-
-#~ msgid "Font:"
-#~ msgstr "Betűkészlet:"
-
-#~ msgid "General"
-#~ msgstr "Általános"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Üveg motor"
-
-#~ msgid "Hover"
-#~ msgstr "Szövegbuborék"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Az ikon figyelmeztető effektus aktív lesz és jelzi a felhasználónak az "
-#~ "egyes ablakok frissülését"
-
-#~ msgid "Install"
-#~ msgstr "Telepítés"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Használaton kívül maradjon a maximalizált ablakok mögött amikor"
-
-#~ msgid "Launching"
-#~ msgstr "Futtatás"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr ""
-#~ "A maximalizált ablakok ne takarják ki a pultot (újraindítást igényel)"
-
-#~ msgid "Opening"
-#~ msgstr "Megnyitás"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Minta motor"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Árnyékolás színe:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Elválasztó megjelenítése az indítóikonok és a feladatok között"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Feladatok megjelenése"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Nyíl megjelenítése a feladatokhoz"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "A pult automatikus elrejtése, amikor nincs használatban"
-
-#~ msgid "Transparency:"
-#~ msgstr "Átlátszóság:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Az ablakok nem takarják ki a pultot, ha ez be van kapcsolva"
-
-#~ msgid "page 1"
-#~ msgstr "1. oldal"
-
-#~ msgid "page 2"
-#~ msgstr "2. oldal"
-
-#~ msgid "page 3"
-#~ msgstr "3. oldal"
-
-#~ msgid "page 4"
-#~ msgstr "4. oldal"
-
-#~ msgid "Change Icon"
-#~ msgstr "Ikoncsere"

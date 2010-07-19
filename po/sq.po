@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:34-0800\n"
-"PO-Revision-Date: 2009-01-21 21:10+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 09:22+0000\n"
 "Last-Translator: Ermal Llanaj <ermalipavia@gmail.com>\n"
 "Language-Team: Albanian <sq@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Shfaq dritaret nga te gjitha sfondet"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Ne ngarkim"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Ne ngarkim"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,9 +191,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Zhvendos ikonen: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -213,19 +210,16 @@ msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
-#, fuzzy
 msgid "Preferences applet"
-msgstr "Preferencat"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Shto ose hiq programe"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Ngjyra e ndaresit:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -243,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Shto ose hiq Fillues"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Duke u mbyllur"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -305,9 +297,8 @@ msgid "Move to Another _Workspace"
 msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
-#, fuzzy
 msgid "Awn Settings"
-msgstr "Duke nisur %s"
+msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -466,14 +457,12 @@ msgid "Top"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:136
-#, fuzzy
 msgid "Bottom"
-msgstr "Zmadho"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
-#, fuzzy
 msgid "Flat"
-msgstr "Panel i sheshte"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "3d"
@@ -488,9 +477,8 @@ msgid "Edgy"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:141
-#, fuzzy
 msgid "Floaty"
-msgstr "Panel i sheshte"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Standard"
@@ -505,14 +493,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Fshih automatikisht barin kur nuk eshte ne perdorim"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Transparenca:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -531,9 +517,8 @@ msgid "Use Window Icons"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:859
-#, fuzzy
 msgid "Use Launcher Icons"
-msgstr "Ikona e Leshuesit"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:860
 msgid "Overlay Window Icon"
@@ -600,28 +585,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Ngjyra e sfondit:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Ngjyra e sfondit:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Ngjyra e sfondit:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Ngjyra e sfondit:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -646,29 +627,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Aktivizo modelin"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Ngjyra e hapit te pare:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Ngjyra e hapit te pare:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Ngjyra e sfondit:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Ngjyra e sfondit:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -691,14 +667,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Bordi i brendshem:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Bordi Kryesor:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -738,19 +712,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Ngjyra per hapin e dyte:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Ngjyra per hapin e dyte:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Ngjyra e ndaresit:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -805,9 +776,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Aktivizo modelin"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -848,14 +818,12 @@ msgid "Choose Custom Icon"
 msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2065
-#, fuzzy
 msgid "Customize Icon"
-msgstr "Personalizuar"
+msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2152
-#, fuzzy
 msgid "Remove Customized Icon"
-msgstr "Personalizuar"
+msgstr ""
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
@@ -871,259 +839,3 @@ msgstr ""
 
 #~ msgid "PNG Files"
 #~ msgstr "Dokumentat PNG"
-
-#~ msgid "3D turn"
-#~ msgstr "Rrotullim 3D"
-
-#~ msgid "3D turn with spotlight"
-#~ msgstr "Rrotullim 3D me ndricim"
-
-#~ msgid "Select an Executable File"
-#~ msgstr "Zgjidh nje file te Ekzekutueshem"
-
-#~ msgid "Please provide a name for the launcher in the \"%s\" field."
-#~ msgstr "Shkruani nje emer per leshuesin ne fushen \"%s\""
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>Emri:</b>"
-
-#~ msgid "Please provide a program to launch in the \"%s\" field."
-#~ msgstr "Mundeso nje program per te leshuar ne fushen \"%s\""
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>Komanda:</b>"
-
-#~ msgid "Couldn't save the launcher. Error: %s"
-#~ msgstr "Nuk mund te ruhej leshuesi. Gabim: %s"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Ikona Aktive</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Preferencat e Programit</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Shigjetat</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Sjellja e Barit</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Bordet</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Pershtat Efektet</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Preferenca Gjenerale</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Gradient</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Thekso</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Efektet e Ikones</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Preferencat e Filluesit</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Shiko </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Model</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Ndares</b>"
-
-#~ msgid "<b>Startup behaviour</b>"
-#~ msgstr "<b>Startup behaviour</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Teksti</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Temat</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Dritare</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktivizo"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Shto ose hiq Fillues"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Shto, hiq dhe ruaj temat"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Lajmero kur dritarja e programit perditesohet"
-
-#~ msgid "Arrow offset: "
-#~ msgstr "Arrow offset: "
-
-#~ msgid "Attention"
-#~ msgstr "Kujdes"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Fshih automatikisht barin kur nuk eshte ne perdorim"
-
-#~ msgid "Automatically start AWN on login."
-#~ msgstr "Fillo AWN automatikisht ne hyrje."
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Pamja e Barit"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Kendi i Barit: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Lartesia e Barit: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Ndrysho pamjen dhe sjelljen"
-
-#~ msgid "Color:"
-#~ msgstr "Ngjyra"
-
-#~ msgid "Deactivate"
-#~ msgstr "Caktivizo"
-
-#~ msgid "Delete"
-#~ msgstr "Fshi"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Aktivizo kendet e rrumbullaket"
-
-#~ msgid "Font:"
-#~ msgstr "Shkrimi:"
-
-#~ msgid "General"
-#~ msgstr "Të përgjithshme"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Prodhuesi i efektit Xham"
-
-#~ msgid "Hover"
-#~ msgstr "Rri pezull"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Efekti i kujdesit per ikonen do te aktivizohet per te lajmeruar "
-#~ "perdoruesin per perditesimin e dritares."
-
-#~ msgid "Install"
-#~ msgstr "Instalo"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Kalo mbrapa dritareve te zmadhuara kur nuk eshte ne perdorim"
-
-#~ msgid "Launching"
-#~ msgstr "Ne ngarkim"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Dritaret e zmadhuara nuk e mbulojne barin (kerkon rinisje)"
-
-#~ msgid "Opening"
-#~ msgstr "Po Hapet"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Motorri i modeleve"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Ngjyra e hijes:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Shfaq ndaresin midis filluesve dhe taskeve"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Pamja e taskeve"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Tasket kane shigjeta"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Bari fshihet automatikisht kur nuk eshte ne perdorim"
-
-#~ msgid "Transparency:"
-#~ msgstr "Transparenca:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Dritaret nuk e mbulojne barin nese behet kjo zgjedhje"
-
-#~ msgid "page 1"
-#~ msgstr "faqja 1"
-
-#~ msgid "page 2"
-#~ msgstr "faqja 2"
-
-#~ msgid "page 3"
-#~ msgstr "faqja 3"
-
-#~ msgid "page 4"
-#~ msgstr "faqja 4"
-
-#~ msgid "Awn Manager"
-#~ msgstr "Menaxheri Awn"
-
-#~ msgid "3D look"
-#~ msgstr "Pamje 3D"
-
-#~ msgid "<b>Description:</b>"
-#~ msgstr "<b>Përshkrimi:</b>"
-
-#~ msgid "Directory:"
-#~ msgstr "Direktori:"
-
-#~ msgid "Launcher Editor"
-#~ msgstr "Ndryshues Leshuesi"
-
-#~ msgid "Open..."
-#~ msgstr "Hap..."
-
-#~ msgid "Select A Folder"
-#~ msgstr "Zgjidh Një Dosje"
-
-#~ msgid "Select Icon"
-#~ msgstr "Zgjidh Ikonen"
-
-#~ msgid "Stock/In Theme"
-#~ msgstr "Stock/In Theme"
-
-#~ msgid "Expand bar to monitor width"
-#~ msgstr "Zgjero panelin ne permasat e monitorit"
-
-#~ msgid "File is not a valid .desktop file"
-#~ msgstr "File nuk është një file i vlefshëm .desktop"
-
-#~ msgid "Unrecognized desktop file Version '%s'"
-#~ msgstr "Version i pasaktë file desktop '%s'"
-
-#~ msgid "Application does not accept documents on command line"
-#~ msgstr "Aplikativi nuk pranon dokumente në rreshtin e komandës"
-
-#~ msgid "Unrecognized launch option: %d"
-#~ msgstr "Opsion i pasaktë nisje: %d"
-
-#~ msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-#~ msgstr ""
-#~ "Nuk mund t'i kalohen URLtë e dokumenteve një zëri desktop 'Type=Link'"
-
-#~ msgid "Not a launchable item"
-#~ msgstr "Nuk është një element i ekzekutueshëm"
-
-#~ msgid "Choose New Image..."
-#~ msgstr "Zgjidh Imazh te Ri..."
-
-#~ msgid "Change Icon..."
-#~ msgstr "Nderro ikonen"
-
-#~ msgid "Change Image..."
-#~ msgstr "Ndrysho Imazhin..."
-
-#~ msgid "Change Icon"
-#~ msgstr "Ndrysho ikonen"

@@ -1,6 +1,6 @@
 # requires Makefile.shave
 
-NULL = 
+NULL ?= 
 
 # glib-genmarshal (based on WebKit's build system)
 

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:32-0800\n"
-"PO-Revision-Date: 2008-02-21 07:09+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 12:48+0000\n"
 "Last-Translator: Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>\n"
 "Language-Team: Basque <eu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Lan-eremu guztietako leihoak erakutsi"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Abiarazten"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Abiarazten"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Ikurren desplazamendua: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Dock-hobespenak"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Applet-ak gehitu eta kendu"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Bereizlearen kolorea:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Abiarazleak gehitu eta kendu"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Isten"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Awn-ren hobespenak, abiarazleak, appletak eta gaiak kudeatu"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -328,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Batere ez"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -336,39 +329,39 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Klasikoa"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Desagertu"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Argi-fokoa"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Handitu"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Errebotatu"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3D Bira"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D Argi-foko Bira"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Argitu"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "Pertsonalizatua"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -376,16 +369,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Errorea sortze automatikoan. Eskuz sortu ezazu direktorioa:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Direktorio-sorrera baieztu"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Ez dago autoabiarazte direktoriorik zure erabiltzaile-konturako.\n"
+"Zuretzat automatikoki sortzea nahi al duzu?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -399,16 +396,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "Arrakastaz freskatu da AWN"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Awn (Avant Leiho-Nabigatzailea)"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "GNOMErentzako dock moduko leiho-nabigatzaile pertsonalizagarria."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -417,6 +414,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Programa hau software librea da; Free Software Foundation-en GNU Lizentzia "
+"Orokor Publikoaren (2garren edo ondorengo ezein bertsioren) arauen arabera "
+"distribuitu eta/edo aldatu dezakezu."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -425,6 +425,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Erabilgarria izango den esperantzarekin banatzen da programa hau, baina "
+"INONGO BERMERIK GABE; MERKATURATZE edo HELBURU BATERAKO EGOKITASUNAREN "
+"garantia inpliziturik gabe ere. GNU Lizentzia Orokor Publikoa ikus dezakezu "
+"xehetasun gehiagorako."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -432,6 +436,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"GNU Lizentzia Orokor Publikoaren kopia bat jaso beharko zenuke programa "
+"honekin batera; bestela, hona idatz ezazu: Free Software Foundation, Inc., "
+"51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -486,14 +493,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Ez denean erabiltzen, automatikoki ezkutatu barra"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Gardentasuna:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -547,7 +552,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Dock moduko leiho-nabigatzailea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -580,28 +585,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Atzealdeko kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Atzealdeko kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Atzealdeko kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Atzealdeko kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -626,29 +627,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Eredua gaitu"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Lehen kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Lehen kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Atzealdeko kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Atzealdeko kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -671,14 +667,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Barne-ertza:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Ertz nagusia:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -718,19 +712,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Bigarren kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Bigarren kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Bereizlearen kolorea:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -785,9 +776,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Eredua gaitu"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -846,169 +836,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Ikur Gaitua</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Applet-en Hobespenak</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Geziak</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Barraren portaera</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Ertzak</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Efektuak Pertsonalizatu</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Hobespen Orokorrak</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Gradientea</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Nabarmendu</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Ikurren efektuak</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Abiarazlearen Hobespenak</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Itxura</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Eredua</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Bereizlea</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Testua</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Gaiak</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Leihoak</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktibatu"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Abiarazleak gehitu eta kendu"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Gaiak gehitu, kendu eta gorde"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Aplikazioaren leihoa eguneratzen denean ohartarazi"
-
-#~ msgid "Attention"
-#~ msgstr "Oharra"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Ez denean erabiltzen, automatikoki ezkutatu barra"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Barraren Itxura"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Barraren angelua: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Barraren altuera: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Barraren itxura eta portaera aldatu"
-
-#~ msgid "Color:"
-#~ msgstr "Kolorea:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Desaktibatu"
-
-#~ msgid "Delete"
-#~ msgstr "Ezabatu"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Izkina borobilduak gaitu"
-
-#~ msgid "Font:"
-#~ msgstr "Letra-mota:"
-
-#~ msgid "General"
-#~ msgstr "Orokorra"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Kristal Motorea"
-
-#~ msgid "Hover"
-#~ msgstr "Planeatu"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Ikur-oharra efektua aktibatuko da erabiltzailea leiho eguneratuei buruz "
-#~ "ohartarazteko."
-
-#~ msgid "Install"
-#~ msgstr "Instalatu"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Leiho maximizatuen azpian mantendu erabilpean ez dagoenean."
-
-#~ msgid "Launching"
-#~ msgstr "Abiarazten"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr ""
-#~ "Maximizatutako leihoek ez dute barra estaltzen (berrabiaraztea behar du)"
-
-#~ msgid "Opening"
-#~ msgstr "Irekitzen"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Eredu Motorea"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Itzalaren kolorea:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Bereizlea erakutsi abiarazle eta atazen artean"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Atazen Itxura"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Atazek geziak dituzte"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Ez denean erabiltzen, automatikoki ezkutatzen da barra"
-
-#~ msgid "Transparency:"
-#~ msgstr "Gardentasuna:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Leihoak ez zaizkio barrari gainezartzen hau gaituz gero"
-
-#~ msgid "page 1"
-#~ msgstr "1 orria"
-
-#~ msgid "page 2"
-#~ msgstr "2 orria"
-
-#~ msgid "page 3"
-#~ msgstr "3 orria"
-
-#~ msgid "page 4"
-#~ msgstr "4 orria"
-
-#~ msgid "Change Icon"
-#~ msgstr "Ikurra aldatu"

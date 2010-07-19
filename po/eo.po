@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:32-0800\n"
-"PO-Revision-Date: 2008-07-28 14:53+0000\n"
-"Last-Translator: صقر بن عبدالله <Unknown>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 13:08+0000\n"
+"Last-Translator: Mark Lee <Unknown>\n"
 "Language-Team: Esperanto <eo@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -197,7 +197,7 @@ msgstr ""
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Agordaĵoj de doko"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -218,9 +218,8 @@ msgid "Adds a separator between applets"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "<b>Apartigilo</b>"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -303,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Administri preferaĵojn, lanĉilojn, apletojn kaj etosojn"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -322,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Nenio"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -330,39 +329,39 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Klasike"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Dissolvi"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Lumĵeto"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Zumo"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Elasta"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3D turno"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D turno kun lumĵeto"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Lumbrilo"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "Personigita"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -370,16 +369,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Aŭtomata kreo malsukcesis. Bonvolu permane krei la dosierujon:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Konfirmi dosierujan kreon"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Ne jam estas ekzista aŭtolanĉa dosierujo por via konto de uzanto.\n"
+"Ĉu vi deziras aŭtomate krei ĝin?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -393,16 +396,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN aktualiĝis sukcese."
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant fenestro-eksplorilo"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Plena akomodebla doka fenestra navigisto por GNOME."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -411,6 +414,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Tiu programo estas libera programo; vi povas distribui ĝin kaj/aŭ modifi ĝin "
+"laŭ la termoj de la GNUa Ĝenerala Publika Permesilo kiel elsendita de la "
+"Free Software Foundation; dua versio de la Permesilo aŭ laŭvole iu-ajn lasta."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -419,6 +425,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Tiu programo estas distribuite kun la espero ke ĝi estos utila, sed sen ia "
+"ajn garantio; eĉ sen la implica garantio de negoceblo aŭ adaptado al iu "
+"aparta celo. Vidu la GNUan Ĝeneralan Publikan Permesilon por pli da detaloj."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -426,6 +435,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Vi devus ricevita kopion de la GNUa Ĝenerala Publika Permesilo laŭlonge kun "
+"tiu programo; se ne, skribu al la Free Software Foundation, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -539,7 +551,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Doka fenestro navigilo."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -823,51 +835,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Activa Bildsimbolo</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Aplikaĵetaj Agordoj</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Sagoj</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Breta Konduto</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Borderoj</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Tajlori Efektoj</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Ĝeneralaj Agordoj</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Kolortransiro</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Marki</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Bildsimbolaj Efektoj</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Fasado </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Modelo</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Teksto</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Etoso</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Fenestro</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktivigu"

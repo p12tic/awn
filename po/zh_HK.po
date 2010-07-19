@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-01 19:35-0800\n"
-"PO-Revision-Date: 2008-03-28 15:16+0000\n"
-"Last-Translator: SuN <Unknown>\n"
+"PO-Revision-Date: 2010-02-02 12:53+0000\n"
+"Last-Translator: Mark Lee <Unknown>\n"
 "Language-Team: Chinese (Hong Kong) <zh_HK@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "在所有視點顯示視窗"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "啟動中"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "啟動中"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,9 +191,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "字體大小："
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -213,19 +210,16 @@ msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
-#, fuzzy
 msgid "Preferences applet"
-msgstr "喜好設置"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "新增/移除Applets"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "分隔線顏色："
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -243,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "新增/移除Launchers"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "關閉中"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -443,9 +435,8 @@ msgid "Left"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:135
-#, fuzzy
 msgid "Right"
-msgstr "高度："
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:136
 msgid "Top"
@@ -488,19 +479,16 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "非使用時自動隱藏"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "透明度："
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
-#, fuzzy
 msgid "Solid"
-msgstr "粗體"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Outline"
@@ -583,28 +571,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "背景顏色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "背景顏色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "背景顏色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "背景顏色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -629,29 +613,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "啟用圖樣"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "首階顏色："
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "首階顏色："
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "背景顏色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "背景顏色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -674,14 +653,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "內部邊框："
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "主要邊框："
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -721,19 +698,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "次階顏色"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "次階顏色"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "分隔線顏色："
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -744,9 +718,8 @@ msgid "The active list UA Screenlets for this panel."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
-#, fuzzy
 msgid "The angle of the panel in 3D mode."
-msgstr "系統匣的方向"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The curviness of the panel in Curves mode."
@@ -773,28 +746,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
-#, fuzzy
 msgid "The list of panel instances."
-msgstr "系統匣的方向"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
-#, fuzzy
 msgid "The location of the pattern to draw."
-msgstr "系統匣的方向"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The offset between the icon and it's reflection"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
-#, fuzzy
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr "系統匣的方向"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "系統匣的方向"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -853,169 +822,6 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>動作圖示</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Applet 偏好設定</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>箭頭</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>啟動圖示列屬性</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>邊框</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>自訂特效</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>一般設定</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>漸變色</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>選取中</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>圖示效果</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Launcher偏好設定</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>外觀</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>圖案</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>分隔線</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>字體</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>主題</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>視窗</b>"
-
-#~ msgid "Activate"
-#~ msgstr "啟用"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "新增/移除Launchers"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "新增、移除和儲存主題"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "程式視窗更新時警告"
-
-#~ msgid "Attention"
-#~ msgstr "注意"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "非使用時自動隱藏"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "顯示啟動圖示列"
-
-#~ msgid "Bar angle: "
-#~ msgstr "工具列角度: "
-
-#~ msgid "Bar height: "
-#~ msgstr "工具列高度: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "變更工具列的外觀和屬性"
-
-#~ msgid "Color:"
-#~ msgstr "顏色："
-
-#~ msgid "Deactivate"
-#~ msgstr "使無效"
-
-#~ msgid "Delete"
-#~ msgstr "刪除"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "啟用圓角"
-
-#~ msgid "Font:"
-#~ msgstr "字型:"
-
-#~ msgid "General"
-#~ msgstr "基本設置"
-
-#~ msgid "Glass Engine"
-#~ msgstr "玻璃效果"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr "圖示效果將會啟動以通知使用者視窗更新"
-
-#~ msgid "Icon offset: "
-#~ msgstr "圖示偏移 "
-
-#~ msgid "Install"
-#~ msgstr "安裝"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "不使用時保持在最大化視窗下"
-
-#~ msgid "Launching"
-#~ msgstr "啟動中"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "最大化視窗時不掩蓋AWN快捷列"
-
-#~ msgid "Opening"
-#~ msgstr "開始中"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "圖案效果"
-
-#~ msgid "Shadow color:"
-#~ msgstr "陰影顏色："
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "在啟動圖示及工作列表間顯示分隔線"
-
-#~ msgid "Task Appearance"
-#~ msgstr "顯示工作區"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "在當前執行的工作區上顯示箭頭"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "非使用時自動隱藏"
-
-#~ msgid "Transparency:"
-#~ msgstr "透明度："
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "若設定此項目，則視窗不會蓋住工具列"
-
-#~ msgid "page 1"
-#~ msgstr "頁一"
-
-#~ msgid "page 2"
-#~ msgstr "頁二"
-
-#~ msgid "page 3"
-#~ msgstr "頁三"
-
-#~ msgid "page 4"
-#~ msgstr "頁四"
-
-#~ msgid "Change Icon"
-#~ msgstr "改變圖示"
 
 #~ msgid "Rows:"
 #~ msgstr "列："
@@ -1113,11 +919,7 @@ msgstr ""
 #~ msgstr ""
 #~ "翻譯版本提供者\n"
 #~ "Launchpad Contributions:\n"
-#~ "Alucard https://launchpad.net/~arikado-genya\n"
-#~ "\n"
-#~ "Launchpad Contributions:\n"
-#~ "  Alucard https://launchpad.net/~arikado-genya\n"
-#~ "  SuN https://launchpad.net/~hhsun2002"
+#~ "  Mark Lee https://launchpad.net/~malept"
 
 #~ msgid "Delete Immediately?"
 #~ msgstr "需要立即刪除？"
@@ -1137,8 +939,7 @@ msgstr ""
 #~ "%s"
 
 #~ msgid ""
-#~ "If you choose to empty the trash, all items in it will be permanently "
-#~ "lost.\n"
+#~ "If you choose to empty the trash, all items in it will be permanently lost.\n"
 #~ "Please note that you can also delete them separately."
 #~ msgstr ""
 #~ "如果選擇清理回收筒，所有項目將會被永久地刪除。\n"

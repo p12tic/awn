@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-01 19:35-0800\n"
-"PO-Revision-Date: 2008-07-18 14:23+0000\n"
+"PO-Revision-Date: 2010-02-02 14:23+0000\n"
 "Last-Translator: Furkan KARA <kingofthepixels@gmail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Pencereleri tüm görüm pencerelerinden göster"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Başlatılıyor"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Başlatılıyor"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,9 +191,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Simge konumu "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Küçük uygulamaları ekle ve kaldır"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Ayraç rengi:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Başlatıcı ekle ve sil"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Kapanıyor"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Awn tercihlerini, başlatıcıları, uygulamaları ve temaları  yönetin."
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -328,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Hiçbiri"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -336,19 +329,19 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Klasik"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Kaybolma"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Sahne Işığı"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Yakınlaş"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
@@ -356,19 +349,19 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3B Dönme"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3B Sahne Işığı Dönüşü"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Parlama"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "Özel"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -376,16 +369,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Otomatik oluşturma başarısız. Lütfen dizini el ile oluşturun:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Dizin oluşturmayı onaylayın"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Burada hesabınız için otomatik başlatma klasörü mevcut değil.\n"
+"Sizin için otomatik oluşturmamı istermisiniz?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -399,16 +396,17 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN kusursuzca yenilendi."
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Pencere Gezgini"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
+"GNOME için tamamıyla kişiselleştirilebilir ekran altı pencere kısayolları."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -417,6 +415,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Bu program ücretsizdir.Yeniden dağıtılabilir,modifiye edilebilir (ücretsiz "
+"yazılım kuruluşunun yayınladığı GNU genel halka açık lisansının herhangi bir "
+"versiyonuna uyarak)"
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -425,6 +426,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Bu program faydalı olacağı umut edilerek dağıtılmaktadır, fakat HİÇBİR "
+"GARANTİSİ YOKTUR; hatta ÜRÜN DEĞERİ ya da BİR AMACA UYGUNLUK gibi garantiler "
+"de vermez.  Lütfen daha fazla detay için GNU Genel Kamu Lisansı'nı inceleyin."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -432,6 +436,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Bu programla birlikte GNU Genel Kamu Lisansı'nın bir kopyasını almış "
+"olmalısınız; Eğer almadıysanız, Özgür Yazılım Vakfı'na yazın, Inc., 51 "
+"Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -486,14 +493,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Kullanılmadığında çubuğu kendiliğinden gizle"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Geçirgenlik:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -580,28 +585,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Artalan rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Artalan rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Artalan rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Artalan rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -626,29 +627,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Deseni etkinleştir"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "İlk adım rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "İlk adım rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Artalan rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Artalan rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -671,14 +667,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "iç kenar:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Ana kenar:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -718,19 +712,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "İkinci adım rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "İkinci adım rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Ayraç rengi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -785,9 +776,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Deseni etkinleştir"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -846,170 +836,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Etkin simge</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Küçük Uygulama Seçenekleri</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Oklar</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Çubuk davranışı</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Kenarlar</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Etkileri Kişiselleştir</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Genel Ayarlar</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Gradyan</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Vurgu</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Simge Efektleri</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Başlatıcı Ayarları</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Görünüm </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Desen</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Ayraç</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Metin</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Temalar</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Pencereler</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Etkinleştir"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Başlatıcı ekle ve sil"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Tema ekle, sil ve kaydet"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Uygulama penceresi güncellendiğinde uyarıver"
-
-#~ msgid "Attention"
-#~ msgstr "Dikkat"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Kullanılmadığında çubuğu kendiliğinden gizle"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Çubuk Görünümü"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Çubuk açısı: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Çubuk yüksekliği: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Panelin görünüm ve davranışını değiştirin"
-
-#~ msgid "Color:"
-#~ msgstr "Renk:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Etkisiz hale getir"
-
-#~ msgid "Delete"
-#~ msgstr "Sil"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Yuvarlatılmış köşeleri etkinleştir"
-
-#~ msgid "Font:"
-#~ msgstr "Yazıtipi:"
-
-#~ msgid "General"
-#~ msgstr "Genel"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Cam Makinesi"
-
-#~ msgid "Hover"
-#~ msgstr "Üzerinde durmak"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Kullanıcıyı güncellenen pencerelerden haberdar etmek üzere simge uyarı "
-#~ "efektini etkinleştir."
-
-#~ msgid "Install"
-#~ msgstr "Yükle"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr ""
-#~ "Kullanımda olmadığında tam ekran durumundaki pencerelerin altında tut"
-
-#~ msgid "Launching"
-#~ msgstr "Başlatılıyor"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr ""
-#~ "Enbüyütülmüş pencereler çubuğu örtmesinler (yeniden başlatmak gerektirir)"
-
-#~ msgid "Opening"
-#~ msgstr "Açılıyor"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Desen Makinesi"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Gölge rengi:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Başlatıcılar ve görevler arasında ayraç göster"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Görev Görünümü"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Görevlerin okları olsun"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Kullanılmadığında çubuk kendiliğinden gizlenir"
-
-#~ msgid "Transparency:"
-#~ msgstr "Geçirgenlik:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Eğer bu seçili ise pencereler örtüşmesinler"
-
-#~ msgid "page 1"
-#~ msgstr "sayfa 1"
-
-#~ msgid "page 2"
-#~ msgstr "sayfa 2"
-
-#~ msgid "page 3"
-#~ msgstr "sayfa 3"
-
-#~ msgid "page 4"
-#~ msgstr "sayfa 4"
-
-#~ msgid "Change Icon"
-#~ msgstr "Simgeyi Değiştir"

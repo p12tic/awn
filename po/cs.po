@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:31-0800\n"
-"PO-Revision-Date: 2008-02-24 07:20+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 13:56+0000\n"
 "Last-Translator: Zdeněk Dlauhý <zdlauhy@gmail.com>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Zobrazit okna ze všech pohledů plochy"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Spouštění"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Spouštění"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Odchylka ikony "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Nastavení dokování"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Přidat a odstranit applety"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Barva oddělovače:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Přidat a odstranit spuštěče"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Zavírání"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Správa nastavení AWN, spouštěčů, appletů a témat"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -328,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Žádný"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -336,39 +329,39 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Klasické"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Prolnutí"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Podsvícení"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Zvětšení"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Hopsání"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3D otáčení"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D otáčení s podsvícením"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Záře"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "Vlastní"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -376,16 +369,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Automatické vytvoření selhalo. Vytvořte prosím složku ručně:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Potvrďte vytvoření složky"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Tento uživatel ještě nemá složku automatického spouštění.\n"
+"Přejete si ji automaticky vytvořit?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -399,16 +396,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN byl úspěšně obnoven"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Plně přizpůsobitelný dokovací přepínač oken pro GNOME"
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -417,6 +414,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Tento program je svobodný software; můžete jej šířit a/nebo upravovat podle "
+"ustanovení GNU General Public License vydané Free Software Foundation; buď "
+"verze 2 této licence nebo (dle vlastního uvážení) kterékoliv pozdější verze."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -425,6 +425,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Tento program je šířen v naději, že bude užitečný, avšak BEZ JAKÉKOLIV "
+"ZÁRUKY; neposkytují se ani odvozené záruky PRODEJNOSTI anebo VHODNOSTI PRO "
+"URČITÝ ÚČEL. Další podrobnosti hledejte v GNU General Public License."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -432,6 +435,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Spolu s tímto programem byste měli obdržet také kopii GNU General Public "
+"License; pokud tomu tak není, napište si o ni do Free Software Foundation, "
+"Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -486,14 +492,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Automaticky schovat pruh, když se nepoužívá"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Průhlednost:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -547,7 +551,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Dokovací přepínač oken"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -580,28 +584,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Barva pozadí:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Barva pozadí:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Barva pozadí:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Barva pozadí:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -626,29 +626,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Nastavit vzorek"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Barva prvního kroku:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Barva prvního kroku:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Barva pozadí:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Barva pozadí:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -671,14 +666,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Vnitřní okraj:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Hlavní okraj:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -718,19 +711,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Barva druhého kroku:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Barva druhého kroku:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Barva oddělovače:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -785,9 +775,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Nastavit vzorek"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -846,168 +835,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Aktivní ikona</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Nastavení Appletů</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Šipky</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Chování pruhu</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Okraje</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Upravit Effekty</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Základní Nastavení</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Gradient</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Zvýraznění</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Efekty Icon</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Nastavení Spouštěčů</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Vzhled </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Vzorek</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Oddělovač</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Text</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Témata</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Okna</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktivovat"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Přidat a odstranit spuštěče"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Přidat, odstranit a uložit témata"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Upozorni, když je okno aplikace aktualizováno"
-
-#~ msgid "Attention"
-#~ msgstr "Pozor"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Automaticky schovat pruh, když se nepoužívá"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Vzhled pruhu"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Úhel panelu "
-
-#~ msgid "Bar height: "
-#~ msgstr "Výška panelu "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Uprav vhzled a chování docku"
-
-#~ msgid "Color:"
-#~ msgstr "Barva:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Deaktivovat"
-
-#~ msgid "Delete"
-#~ msgstr "Smazat"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Nastavit kulaté rohy"
-
-#~ msgid "Font:"
-#~ msgstr "Písmo:"
-
-#~ msgid "General"
-#~ msgstr "Obecné"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Skleněné prostředí"
-
-#~ msgid "Hover"
-#~ msgstr "Vznášející se"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Upozorňovací efekt bude aktivován pro výstrahu uživatele aktualizovaného "
-#~ "okna."
-
-#~ msgid "Install"
-#~ msgstr "Nainstalovat"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Udržuj pod maximalizovanými okny pokud není používáno,"
-
-#~ msgid "Launching"
-#~ msgstr "Spouštění"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Maximalizovaná okna nepřekrývají pruh (vyžaduje restart)"
-
-#~ msgid "Opening"
-#~ msgstr "Otevření"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Vzorkované prostředí"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Barva stínu:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Zobrazit oddělovač mezi spouštěči a úlohami"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Vzhled úlohy"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Úlohy mají šipky"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Nepoužívaný pruh se automaticky skrývá"
-
-#~ msgid "Transparency:"
-#~ msgstr "Průhlednost:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Okna nepřekrývají pruh"
-
-#~ msgid "page 1"
-#~ msgstr "strana 1"
-
-#~ msgid "page 2"
-#~ msgstr "strana 2"
-
-#~ msgid "page 3"
-#~ msgstr "strana 3"
-
-#~ msgid "page 4"
-#~ msgstr "strana 4"
-
-#~ msgid "Change Icon"
-#~ msgstr "Změnit ikonu"

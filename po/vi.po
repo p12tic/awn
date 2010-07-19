@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-01 19:35-0800\n"
-"PO-Revision-Date: 2009-01-18 07:25+0000\n"
-"Last-Translator: Thien Pham <Unknown>\n"
+"PO-Revision-Date: 2010-02-02 08:47+0000\n"
+"Last-Translator: Mark Lee <Unknown>\n"
 "Language-Team: Vietnamese <vi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Hiện cửa sổ từ tất cả các vùng"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Đang khởi chạy"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Đang khởi chạy"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Rìa biểu tượng: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Tùy chỉnh Dock"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Thêm và gỡ bỏ applets"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Màu phân cách"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Thêm và gỡ bỏ bộ khởi chạy"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Đóng"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Quản lý tùy chỉnh, bộ khởi chạy, tiểu dụng và diện mạo"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -417,6 +410,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Chương trình này là phần mềm mở ; bạn có thể phân phối hoặc thay đổi nó dưới "
+"Giấy phép GNU General Public License được xuất bản bởi tổ chức phần mềm mở ( "
+"Free Software Foundation) ; hoặc phiên bản 2 của giấy phép hoặc (tùy chọn "
+"của bạn) với bất cứ phiên bản mới nào"
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -425,6 +422,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Chương trình này được phân phối với hy vọng rằng nó sẽ rất hữu ích , nhưng "
+"KHÔNG BAO GỒM BẤT CỨ ĐẢM BẢO NÀO , ngoại trừ đảm bảo Thương mại hoặc một vài "
+"LÝ DO ĐẶC BIỆT . Đọc GNU để biết thêm chi tiết"
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -432,6 +432,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Bạn nên nhận một bản sao của GNU qua chương trình này ; nếu không , viết thư "
+"tới Quỹ phần mềm mở Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 "
+"USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -486,14 +489,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Tự động ẩn khi không sử dụng"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Trong suốt:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -580,28 +581,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Màu nền"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Màu nền"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Màu nền"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Màu nền"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -626,29 +623,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Cho phép dùng mẫu"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Màu bước đầu tiên:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Màu bước đầu tiên:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Màu nền"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Màu nền"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -671,14 +663,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Đường viền bên trong"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Đường viền chính:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -718,19 +708,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Màu bước thứ hai"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Màu bước thứ hai"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Màu phân cách"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -785,9 +772,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Cho phép dùng mẫu"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -846,165 +832,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Kích hoạt biểu tượng</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Tùy thích Applet</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Mũi tên</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Cách ứng xử</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Đường viền</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Tùy biến hiệu ứng</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Tùy thích chung</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Độ nghiêng</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Tô sáng</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Hiệu ứng biểu tượng</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Tùy thích bộ khởi chạy</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Nhìn</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Mẫu</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Phân cách</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Chữ</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Diện mạo</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Cửa sổ</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Kích hoạt"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Thêm và gỡ bỏ bộ khởi chạy"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Thêm, gỡ bỏ và lưu các diện mạo"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Thông báo khi cửa sổ ứng dụng được cập nhật"
-
-#~ msgid "Attention"
-#~ msgstr "Chú ý"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Tự động ẩn khi không sử dụng"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Diện mạo của thanh"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Góc của thanh: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Chiều cao thanh: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Thay đổi diện mạo và hành vi của dock"
-
-#~ msgid "Color:"
-#~ msgstr "Màu:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Bỏ kích hoạt"
-
-#~ msgid "Delete"
-#~ msgstr "Xoá"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Cho phép bo tròn các góc"
-
-#~ msgid "Font:"
-#~ msgstr "Phông chữ :"
-
-#~ msgid "General"
-#~ msgstr "Tổng quát"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Cơ cấu trong suốt"
-
-#~ msgid "Hover"
-#~ msgstr "Lượn"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Hiệu ứng gây chú ý vào biểu tượng được kích hoạt để thông báo cửa sổ đã "
-#~ "được cập nhật."
-
-#~ msgid "Install"
-#~ msgstr "Cài đặt"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Giữ bên dưới cửa sổ toàn màn hình khi không sử dụng"
-
-#~ msgid "Launching"
-#~ msgstr "Đang khởi chạy"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Cửa sổ cực đại không phủ lên thanh (yêu cầu khởi động lại)"
-
-#~ msgid "Opening"
-#~ msgstr "Đang mở"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Mẫu"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Màu bóng:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Hiện phân cách giữa launchers và tasks"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Sửa diện mạo"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Tự động ẩn thanh khi không sử dụng"
-
-#~ msgid "Transparency:"
-#~ msgstr "Trong suốt:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Cửa sổ sẽ không che khuất thanh nếu cái này được đặt"
-
-#~ msgid "page 1"
-#~ msgstr "trang 1"
-
-#~ msgid "page 2"
-#~ msgstr "trang 2"
-
-#~ msgid "page 3"
-#~ msgstr "trang 3"
-
-#~ msgid "page 4"
-#~ msgstr "trang 4"
-
-#~ msgid "Change Icon"
-#~ msgstr "Thay biểu tượng"

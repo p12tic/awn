@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:33-0800\n"
-"PO-Revision-Date: 2009-02-01 22:57+0000\n"
-"Last-Translator: José Lou C. <knight4light@gmail.com>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 08:51+0000\n"
+"Last-Translator: José Lou Chang <Unknown>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -148,9 +148,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "全てのビューポートのウィンドウを表示"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,14 +164,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "起動中"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "起動中"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -193,14 +191,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "アイコン偏り： "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "ドックの設定"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -217,14 +214,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "アプレットの追加と削除"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "区切りの色"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -242,14 +237,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "ランチャーの追加と削除"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "閉じています"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -309,7 +302,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr "Awnの設定、ランチャー、アプレットやテーマを管理する"
+msgstr "Awn の設定、ランチャー、アプレットやテーマを管理する"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -328,7 +321,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "なし"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
@@ -340,7 +333,7 @@ msgstr "クラシック"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "フェード"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
@@ -348,27 +341,27 @@ msgstr "スポットライト"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "ズーム"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "スプラッシュ"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "3D ターン"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "スポットライト付き 3D ターン"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "発光"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "カスタム"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -376,16 +369,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"自動作成に失敗しました。手動でディレクトリを作成して下さい。:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "ディレクトリ作成の確認"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"まだ、あなたのアカウントでは自動起動ディレクトリが作成されていません。\n"
+"自動起動ディレクトリを作成しますか？"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -399,16 +396,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr "AWNのリフレッシ成功です"
+msgstr "Awn のリフレッシュに成功しました"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr "Avant ウィンドウ・ナビゲーター"
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "自由にカスタマイズできるドックライクな GNOME 用ウィンドウナビゲーター"
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -417,10 +414,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
-"本プログラムはフリー・ソフトウェアです。あなたは、Free Software Foundation が"
-"公表したGNU一般公有使用許諾の「バージョン2」あるいはそれ以降の各バージョンの"
-"中からいずれかを選択し、そのバージョンが定める条項に従って本プログラムを再頒"
-"布または変更することができます。"
+"本プログラムはフリー・ソフトウェアです。あなたは、Free Software Foundation "
+"が公表したGNU一般公有使用許諾の「バージョン2」あるいはそれ以降の各バージョンの中からいずれかを選択し、そのバージョンが定める条項に従って本プログラムを"
+"再頒布または変更することができます。"
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -429,9 +425,8 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
-"このプログラムは有用であることを願って頒布されますが、* 全くの無保証* です。"
-"商業可能性の保証や特定の目的への適合性は、言外に示されたものも含め全く存在し"
-"ません。詳しくはGNU 一般公衆利用許諾契約書をご覧ください。"
+"このプログラムは有用であることを願って頒布されますが、 *全くの無保証* です。*商業可能性の保証* や *特定の目的への適合性* "
+"は、言外に示されたものも含め全く存在しません。詳しくはGNU一般公衆利用許諾契約書をご覧ください。"
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -439,6 +434,9 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"あなたはこのプログラムと共に、GNU一般公衆利用許諾契約書の複製を一部受け取ったはずです。もし受け取っていなければ、フリーソフトウェア財団まで請求してくだ"
+"さい(宛先は the Free Software Foundation,Inc., 51 Franklin St, Fifth Floor, "
+"Boston, MA 02110-1301 USA)。"
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -493,14 +491,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "使わないときバーを自動的に隠す"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "透明度:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -554,7 +550,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "ドックライクなウィンドウナビゲーター"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -587,28 +583,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "背景色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "背景色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "背景色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "背景色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -633,29 +625,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "パターンを有効にする"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "最初の段の色"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "最初の段の色"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "背景色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "背景色:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -678,14 +665,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "内側の境界"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "メインの境界"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -725,19 +710,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "二段目の色"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "二段目の色"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "区切りの色"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -792,9 +774,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "パターンを有効にする"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -853,190 +834,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "PNG Files"
-#~ msgstr "PNG　ファイル"
-
-#~ msgid "Select an Executable File"
-#~ msgstr "実行ファイルを選んでください"
-
-#~ msgid "Please provide a name for the launcher in the \"%s\" field."
-#~ msgstr "ラーンチャの名を\"%s\"フィールドに書いてください"
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>名前:</b>"
-
-#~ msgid "Please provide a program to launch in the \"%s\" field."
-#~ msgstr "ラーンチャを明けるためプログラムを\"%s\"フィールドに書いてください"
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>コマンド:</b>"
-
-#~ msgid "Couldn't save the launcher. Error: %s"
-#~ msgstr "ラーンチャをセーブ出来ませんでした。エラー：%s"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>アクティブなアイコン</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>アプレット設定</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>矢印</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>バーの動作</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>境界</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>特撮設定</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>設定</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "グラデーション"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>光沢</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>アイコン設定</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>ランチャー設定</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>外観 </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>パターン</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>区切り</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>テキスト</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>テーマ</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>ウィンドウ</b>"
-
-#~ msgid "Activate"
-#~ msgstr "有効化"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "ランチャーの追加と削除"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "テーマの追加と削除"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "アプリケーションウィンドウが更新されたら警告"
-
-#~ msgid "Attention"
-#~ msgstr "注意"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "使わないときバーを自動的に隠す"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "バーの外観"
-
-#~ msgid "Bar angle: "
-#~ msgstr "バーの角度: "
-
-#~ msgid "Bar height: "
-#~ msgstr "バーの高さ: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Dockの外観と動作を変更します"
-
-#~ msgid "Color:"
-#~ msgstr "色:"
-
-#~ msgid "Deactivate"
-#~ msgstr "無効化"
-
-#~ msgid "Delete"
-#~ msgstr "削除"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Dockの角を丸める"
-
-#~ msgid "Font:"
-#~ msgstr "フォント:"
-
-#~ msgid "General"
-#~ msgstr "全般"
-
-#~ msgid "Glass Engine"
-#~ msgstr "鏡面効果の設定"
-
-#~ msgid "Hover"
-#~ msgstr "ホバー"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr "アイコンエフェクトを更新されたウィンドウに対して有効化"
-
-#~ msgid "Install"
-#~ msgstr "インストール"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "使わないとき最大化ウィンドウの下に保つ"
-
-#~ msgid "Launching"
-#~ msgstr "起動中"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "最大化されたウィンドウをバーで覆わない (再起動が必要)"
-
-#~ msgid "Opening"
-#~ msgstr "開いています"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "パターンの設定"
-
-#~ msgid "Shadow color:"
-#~ msgstr "影の色:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "ランチャとタスクの間に区切りを表示"
-
-#~ msgid "Task Appearance"
-#~ msgstr "タスクの外観"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "タスクに矢印をつける"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "使わないときバーを自動的に隠す"
-
-#~ msgid "Transparency:"
-#~ msgstr "透明度:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "ウィンドウをバーの上に表示させない"
-
-#~ msgid "page 1"
-#~ msgstr "ページ1"
-
-#~ msgid "page 2"
-#~ msgstr "ページ 2"
-
-#~ msgid "page 3"
-#~ msgstr "ページ 3"
-
-#~ msgid "page 4"
-#~ msgstr "ページ 4"
-
-#~ msgid "Awn Manager"
-#~ msgstr "Awn マネージャー"
-
-#~ msgid "Change Icon"
-#~ msgstr "アイコンを変更する"

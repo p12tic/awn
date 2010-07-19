@@ -7,25 +7,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:34-0800\n"
-"PO-Revision-Date: 2008-05-22 16:55+0000\n"
-"Last-Translator: tymmej <tymmej@gmail.com>\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-04 13:06+0000\n"
+"Last-Translator: Tomasz Trębski <kornicameister@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-05 05:02+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Element rozszerzający"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Wypełnia przestrzeń na panelu w trybie rozszerzenia"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
@@ -61,8 +61,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -104,7 +104,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Włącz grupowanie zadań"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -149,7 +149,6 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
 msgstr "Pokaż listę okien ze wszystkich obszarów roboczych"
 
@@ -166,14 +165,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Uruchamianie"
+msgstr "Uruchom"
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Uruchamianie"
+msgstr "Uruchom %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -186,27 +184,26 @@ msgstr ""
 #: ../applets/quick-prefs/applet.vala:118
 #: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
 msgid "About Awn"
-msgstr ""
+msgstr "O programie Awn"
 
 #: ../applets/quick-prefs/applet.vala:289
 #: ../applets/quick-prefs/applet.vala:465
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Przeciągnij aby zmienić orientację panela"
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Przesunięcie ikon: "
+msgstr "Rozmiar ikony:"
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Ustawienia"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Nie udało się otworzyć ustawień Awn: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
@@ -215,42 +212,38 @@ msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Opcje apletu"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Dodaj i usuń aplety"
+msgstr "Dodaj separator pomiędzy aplety"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Kolor separatora:"
+msgstr "Separator"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Obsza roboczy %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Obszar roboczy 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Obszar roboczy %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Dodaj i usuń aktywatory"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Zamykanie"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -278,11 +271,11 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:860
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Zawsze na widocznym obszarze roboczym"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:864
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Tylko na tym obszarze roboczym"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
 msgid "Move to Workspace _Left"
@@ -306,19 +299,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 msgid "Awn Settings"
-msgstr ""
+msgstr "Ustawienia Awn"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Zarządzaj ustawieniami, aktywatorami, apletami oraz motywami AWN."
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Błąd, plik sources.list już istnieje"
 
 #: ../awn-settings/awnClass.py:335
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Błąd, ścieżka jest pusta lub już istnieje"
 
 #: ../awn-settings/awnClass.py:455
 #, python-format
@@ -329,47 +322,47 @@ msgstr ""
 #: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
 #: ../awn-settings/awnSettings.py.in:140
 msgid "None"
-msgstr ""
+msgstr "Brak"
 
 #: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
 msgid "Simple"
-msgstr ""
+msgstr "Prosty"
 
 #: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
 msgid "Classic"
-msgstr ""
+msgstr "Klasyczny"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Zanikanie"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
-msgstr ""
+msgstr "Strumień światła"
 
 #: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
 msgid "Zoom"
-msgstr ""
+msgstr "Powiększenie"
 
 #: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
 msgid "Squish"
-msgstr ""
+msgstr "Ściśnięcie"
 
 #: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
 msgid "3D Turn"
-msgstr ""
+msgstr "Obrót 3D"
 
 #: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "Obrót 3D z podświetleniem"
 
 #: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
 msgid "Glow"
-msgstr ""
+msgstr "Poświata"
 
 #: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:148
 msgid "Custom"
-msgstr ""
+msgstr "Użytkownika"
 
 #: ../awn-settings/awnClass.py:997
 #, python-format
@@ -377,16 +370,20 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Automatyczne stworzenie nie powiodło się. Proszę o ręczne utworzenie "
+"katalogu: %s"
 
 #: ../awn-settings/awnClass.py:1007
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Potwierdź utworzenie katalogu"
 
 #: ../awn-settings/awnClass.py:1008
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Nie istnieje jeszcze katalog autostart dla twojego konta użytkownika. Czy "
+"chcesz, abym utworzył go teraz?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -400,16 +397,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN został pomyślnie odświeżony"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Nawigator Okien Avant"
 
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "W pełni konfigurowalny dockopodobny nawigator okien dla GNOME"
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -418,6 +415,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Niniejszy program jest wolnym oprogramowaniem; można go rozprowadzać dalej "
+"i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
+"przez Fundację Wolnego Oprogramowania - według wersji drugiej tej Licencji "
+"lub którejś z późniejszych wersji."
 
 #: ../awn-settings/awnClass.py:1124
 msgid ""
@@ -426,6 +427,10 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Ten program jest rozpowszechniany w nadziei, że będzie użyteczny, ale BEZ "
+"JAKIEJKOLWIEK GWARANCJI, nawet domyślnej gwarancji PRZYDATNOŚCI HANDLOWEJ "
+"albo PRZYDATNOŚCI DO OKREŚLONEGO CELU. Więcej szczegółów znajdziesz w "
+"licencji GNU General Public License."
 
 #: ../awn-settings/awnClass.py:1126
 msgid ""
@@ -433,10 +438,13 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Powinieneś otrzymać kopię Publicznej Licencji GNU wraz z tym programem, "
+"jeżeli nie, napisz do Free Software Foundation, Inc., 51 Franklin St, Fifth "
+"Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "Ustwienia Awn nie mogą być uruchomione jako root"
 
 #: ../awn-settings/awnSettings.py.in:135
 msgid "Left"
@@ -460,7 +468,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "3d"
-msgstr ""
+msgstr "3d"
 
 #: ../awn-settings/awnSettings.py.in:141
 msgid "Curved"
@@ -480,21 +488,19 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Panel mode"
-msgstr ""
+msgstr "Tryb panelu"
 
 #: ../awn-settings/awnSettings.py.in:146
 msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Automatyczne ukrywanie"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Przeźroczystość:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -544,11 +550,11 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:133
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn Wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Nawigator okien taki jak pasek zadań."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0 - solid, 1 - outline, 2 - outline, reversed."
@@ -556,11 +562,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "3)"
-msgstr ""
+msgstr "3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "5)"
-msgstr ""
+msgstr "5)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
@@ -581,28 +587,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Kolor tła:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Kolor tła:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Kolor tła:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Kolor aktywnego prostokąta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Kolor tła:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -624,32 +626,27 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Draw separators."
-msgstr ""
+msgstr "Rysuj separatory."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Aktywuj deseń"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Kolor pierwszej warstwy:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Kolor pierwszej warstwy:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Kolor tła:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Kolor tła:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -657,11 +654,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "Kolor tekstu ikon. Zostaw puste aby użyć kolorów z GTK."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "Kolor obramowania tekstu ikon. Zostaw puste aby użyć kolorów z GTK."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, maximised windows will not cover the panel."
@@ -672,14 +669,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Wewnętrzne obramowanie:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Zewnętrzne obramowanie:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -719,23 +714,20 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Kolor drugiej warstwy:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Kolor drugiej warstwy:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Kolor separatora:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Pokaż cienie ikon."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "The active list UA Screenlets for this panel."
@@ -786,9 +778,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Aktywuj deseń"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -847,157 +838,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Aktywna ikona</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Preferencje apletu</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Strzałki</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Zachowanie paska</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Obramowania</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Dostosuj efekty</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Podstawowe preferencje</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Gradient</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Podświetlenie</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Efekty ikon</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Preferencje aktywatorów</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Wygląd</b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Deseń</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Separator</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Tekst</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Motywy</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Okna</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktywuj"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Dodaj i usuń aktywatory"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Dodaj, usuń i zapisz motywy"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Powiadom o zmianie w oknie aplikacji"
-
-#~ msgid "Attention"
-#~ msgstr "Uwaga"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Automatyczne ukrywanie"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Wygląd paska"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Kąt nachylenia paska "
-
-#~ msgid "Bar height: "
-#~ msgstr "Wysokość paska "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Zmień wygląd i zachowanie paska"
-
-#~ msgid "Color:"
-#~ msgstr "Kolor:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Deaktywuj"
-
-#~ msgid "Delete"
-#~ msgstr "Usuń"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Aktywuj zaokrąglone narożniki"
-
-#~ msgid "Font:"
-#~ msgstr "Czcionka:"
-
-#~ msgid "General"
-#~ msgstr "Ogólne"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Efekt szkła"
-
-#~ msgid "Install"
-#~ msgstr "Instaluj"
-
-#~ msgid "Launching"
-#~ msgstr "Uruchamianie"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr ""
-#~ "Zmaksymalizowane okna nie zasłaniają paska (wymaga ponownego uruchomienia)"
-
-#~ msgid "Opening"
-#~ msgstr "Otwieranie"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Efekt deseniu"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Kolor cienia:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Pokaż separator pomiędzy skrótami do programów a ikonami zadań"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Wygląd ikon zadań"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Ikony zadań posiadają strzałki"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Automatyczne ukrywanie paska"
-
-#~ msgid "Transparency:"
-#~ msgstr "Przeźroczystość:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Okna nie zakrywają panelu, jeśli zaznaczone"
-
-#~ msgid "page 1"
-#~ msgstr "strona 1"
-
-#~ msgid "page 2"
-#~ msgstr "strona 2"
-
-#~ msgid "page 3"
-#~ msgstr "strona 3"
-
-#~ msgid "page 4"
-#~ msgstr "strona 4"
-
-#~ msgid "Change Icon"
-#~ msgstr "Zmień ikonę"

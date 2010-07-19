@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:34-0800\n"
-"PO-Revision-Date: 2009-01-30 13:43+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 09:47+0000\n"
 "Last-Translator: Manuel R. Ciosici <manuelciosici@yahoo.com>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
 "== 0) && (n != 0))) ? 2: 1));\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -61,8 +61,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -149,9 +149,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Arată ferestre de pe toate ecranele"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -166,14 +165,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Se lansează"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Se lansează"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -194,14 +192,13 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Decalaj pictogramă: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
 msgid "Dock Preferences"
-msgstr "Preferințele bară de docare"
+msgstr "Preferințele barei de andocare"
 
 #: ../applets/quick-prefs/applet.vala:578
 #, c-format
@@ -214,19 +211,16 @@ msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
-#, fuzzy
 msgid "Preferences applet"
-msgstr "Preferințe"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Adaugare și eliminare mini-aplicații"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Culoare separator:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -244,14 +238,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Adaugare și eliminare lansatoare"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Închid"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -306,13 +298,13 @@ msgid "Move to Another _Workspace"
 msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
-#, fuzzy
 msgid "Awn Settings"
-msgstr "Se pornește %s"
+msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
+"Administrați preferințele Awn, lansatoarele, mini-aplicațiile și temele"
 
 #: ../awn-settings/awnClass.py:267
 msgid "Error, a sources.list already exist"
@@ -343,7 +335,7 @@ msgstr "Clasic"
 
 #: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
 msgid "Fade"
-msgstr ""
+msgstr "Estompare"
 
 #: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
 msgid "Spotlight"
@@ -379,7 +371,7 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
-"Crearea automată a eșuat. Vă rog creați manual directorul:\n"
+"Crearea automată a eșuat. Creați manual directorul:\n"
 "%s"
 
 #: ../awn-settings/awnClass.py:1007
@@ -393,7 +385,7 @@ msgid ""
 msgstr ""
 "Încă nu există niciun director de pornire automată pentru acest cont de "
 "utilizator.\n"
-"Doriți să creez unul pentru dumneavoastră?"
+"Doriți să fie creat unul automat?"
 
 #: ../awn-settings/awnClass.py:1067
 #, python-format
@@ -407,7 +399,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1096
 msgid "AWN has been successfully refreshed"
-msgstr ""
+msgstr "AWN s-a împrospătat cu succes"
 
 #: ../awn-settings/awnClass.py:1102
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -417,8 +409,7 @@ msgstr "Navigatorul de ferestre Avant"
 #: ../awn-settings/awnClass.py:1120
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
-"Navigator de ferestre pentru GNOME complet configurabil asemănător cu bara "
-"de docare."
+"Navigator de ferestre pentru GNOME complet configurabil cu bara de andocare."
 
 #: ../awn-settings/awnClass.py:1122
 msgid ""
@@ -472,14 +463,12 @@ msgid "Top"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:136
-#, fuzzy
 msgid "Bottom"
-msgstr "Mărire"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
-#, fuzzy
 msgid "Flat"
-msgstr "Bară plată"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:140
 msgid "3d"
@@ -494,9 +483,8 @@ msgid "Edgy"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:141
-#, fuzzy
 msgid "Floaty"
-msgstr "Bară plată"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Standard"
@@ -511,14 +499,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Ascunde automat bara când nu este folosită"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Transparență:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -537,9 +523,8 @@ msgid "Use Window Icons"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:859
-#, fuzzy
 msgid "Use Launcher Icons"
-msgstr "Icoană lansator"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:860
 msgid "Overlay Window Icon"
@@ -606,28 +591,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Culoare de fundal:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Culoare de fundal:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Culoare de fundal:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Culoare de fundal:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -652,29 +633,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Activează modelul"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Culoarea primului pas:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Culoarea primului pas:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Culoare de fundal:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Culoare de fundal:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -697,14 +673,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Margine internă:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Margine principală:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -744,19 +718,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Culoarea pasului doi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Culoarea pasului doi:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Culoare separator:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -811,9 +782,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Activează modelul"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -854,14 +824,12 @@ msgid "Choose Custom Icon"
 msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2065
-#, fuzzy
 msgid "Customize Icon"
-msgstr "Personalizat"
+msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2152
-#, fuzzy
 msgid "Remove Customized Icon"
-msgstr "Personalizat"
+msgstr ""
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
 msgid "Loading applet..."
@@ -877,252 +845,3 @@ msgstr ""
 
 #~ msgid "PNG Files"
 #~ msgstr "fișiere PNG"
-
-#~ msgid "3D turn"
-#~ msgstr "Rotire 3D"
-
-#~ msgid "3D turn with spotlight"
-#~ msgstr "Rotire 3D cu spot de lumină"
-
-#~ msgid "Select an Executable File"
-#~ msgstr "Selectați un fișier executabil"
-
-#~ msgid "Please provide a name for the launcher in the \"%s\" field."
-#~ msgstr "Vă rog introduceți un nume pentru lansatorul din câmpul \"%s\"."
-
-#~ msgid "<b>Name:</b>"
-#~ msgstr "<b>Nume:</b>"
-
-#~ msgid "Please provide a program to launch in the \"%s\" field."
-#~ msgstr "Vă rog oferiți un proram pentru a fi lansat din câmpul \"%s\"."
-
-#~ msgid "<b>Command:</b>"
-#~ msgstr "<b>Comandă:</b>"
-
-#~ msgid "Couldn't save the launcher. Error: %s"
-#~ msgstr "Lansatorul nu a putut fi salvat. Eroare: %s"
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Pictogramă activă</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Preferințe mini-aplicație</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Indicatoare</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Comportament bară</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Margini</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Prelucrează efectele</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Preferințe generale</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Degrade</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Evidențiere</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Efecte pictogramă</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Preferințe lansator</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Aspect </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Model</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Separator</b>"
-
-#~ msgid "<b>Startup behaviour</b>"
-#~ msgstr "<b>Comportament la pornire</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Text</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Teme</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Ferestre</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Activează"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Adaugare și eliminare lansatoare"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Adaugare, eliminare și salvare teme"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Avertizează când fereastra aplicaţiei este actualizată"
-
-#~ msgid "Attention"
-#~ msgstr "Atenție"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Ascunde automat bara când nu este folosită"
-
-#~ msgid "Automatically start AWN on login."
-#~ msgstr "Pornește AWN automat la autentificare."
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Aspectul barei"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Unghi bară: "
-
-#~ msgid "Bar height: "
-#~ msgstr "Înălțime bară: "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Schimbă aspectul și comportamentul barei"
-
-#~ msgid "Color:"
-#~ msgstr "Culoare:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Dezactivează"
-
-#~ msgid "Delete"
-#~ msgstr "Șterge"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Activează colţuri rotunde"
-
-#~ msgid "Font:"
-#~ msgstr "Font:"
-
-#~ msgid "General"
-#~ msgstr "General"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Motor reflecție"
-
-#~ msgid "Hover"
-#~ msgstr "Planare"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Efectul pictogramă de atenţie va fi activat pentru a aviza utilizatorul "
-#~ "de actualizarea ferestrei"
-
-#~ msgid "Install"
-#~ msgstr "Instalează"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Menţine sub fereastrele maximizate când nu e în uz"
-
-#~ msgid "Launching"
-#~ msgstr "Se lansează"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Ferestrele maximizate nu acoperă bara (necesită repornire)"
-
-#~ msgid "Opening"
-#~ msgstr "Se deschide"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Motor modele"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Culoare umbră:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Arată un separator între lansatoare și programe"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Aspectul programelor"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Programele au indicatoare"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Bara se ascunde automat când nu e folosită"
-
-#~ msgid "Transparency:"
-#~ msgstr "Transparență:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Ferestrele nu se suprapun peste bară"
-
-#~ msgid "page 1"
-#~ msgstr "pagina 1"
-
-#~ msgid "page 2"
-#~ msgstr "pagina 2"
-
-#~ msgid "page 3"
-#~ msgstr "pagina 3"
-
-#~ msgid "page 4"
-#~ msgstr "pagina 4"
-
-#~ msgid "Awn Manager"
-#~ msgstr "Administratorul Awn"
-
-#~ msgid "3D look"
-#~ msgstr "Aspect 3D"
-
-#~ msgid "<b>Description:</b>"
-#~ msgstr "<b>Descriere:</b>"
-
-#~ msgid "Directory:"
-#~ msgstr "Director:"
-
-#~ msgid "Launcher Editor"
-#~ msgstr "Editor de lansator"
-
-#~ msgid "Open..."
-#~ msgstr "Deschide..."
-
-#~ msgid "Select A Folder"
-#~ msgstr "Selectaţi un dosar"
-
-#~ msgid "Select Icon"
-#~ msgstr "Selectare pictogramă"
-
-#~ msgid "Expand bar to monitor width"
-#~ msgstr "Extinde bara conform lățimii monitorului"
-
-#~ msgid "File is not a valid .desktop file"
-#~ msgstr "Fișierul nu este un fișier .desktop valid"
-
-#~ msgid "Unrecognized desktop file Version '%s'"
-#~ msgstr "Versiune fișier desktop nerecunoscută „%s”"
-
-#~ msgid "Application does not accept documents on command line"
-#~ msgstr "Aplicația nu acceptă documente în linia de comandă"
-
-#~ msgid "Unrecognized launch option: %d"
-#~ msgstr "Opțiune de lansare necunoscută: %d"
-
-#~ msgid "Can't pass document URIs to a 'Type=Link' desktop entry"
-#~ msgstr "Nu se pot pasa URI-uri document către o intrare desktop de tip link"
-
-#~ msgid "Not a launchable item"
-#~ msgstr "Nu e un element care să poată fi lansat"
-
-#~ msgid "Choose New Image..."
-#~ msgstr "Alegeți o imagine nouă..."
-
-#~ msgid "Change Icon..."
-#~ msgstr "Schimbă pictogramă..."
-
-#~ msgid "Change Image..."
-#~ msgstr "Schimbă Imaginea..."
-
-#~ msgid "Change Icon"
-#~ msgstr "Schimbă pictograma"

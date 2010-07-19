@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-01 19:33-0800\n"
-"PO-Revision-Date: 2008-08-02 11:14+0000\n"
+"POT-Creation-Date: 2010-02-01 19:35-0800\n"
+"PO-Revision-Date: 2010-02-02 10:33+0000\n"
 "Last-Translator: zolookas <zolookas@delfi.lt>\n"
 "Language-Team: Lithuanian <lt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
-"100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2009-02-07 23:40+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"(n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -61,8 +61,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -149,9 +149,8 @@ msgid "Only show and manager launcher windows"
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
-#, fuzzy
 msgid "Show windows from all workspaces"
-msgstr "Rodyti langus iš visų darbalaukių"
+msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -166,14 +165,13 @@ msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1103
 #: ../applets/taskmanager/task-icon-build-context-menus.c:827
-#, fuzzy
 msgid "Launch"
-msgstr "Paleidžiama"
+msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1186
-#, fuzzy, c-format
+#, c-format
 msgid "Launch %s"
-msgstr "Paleidžiama"
+msgstr ""
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -194,9 +192,8 @@ msgid "Drag to change panel orientation"
 msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:478
-#, fuzzy
 msgid "Icon size:"
-msgstr "Piktogramos atkėlimas: "
+msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
 #: ../src/awn-panel.c:673
@@ -218,14 +215,12 @@ msgid "Preferences applet"
 msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:1
-#, fuzzy
 msgid "Adds a separator between applets"
-msgstr "Pridėti arba pašalinti programas"
+msgstr ""
 
 #: ../applets/separator/separator.desktop.in.in.h:2
-#, fuzzy
 msgid "Separator"
-msgstr "Skirtuko spalva:"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
@@ -243,14 +238,12 @@ msgid "Workspace %s%d"
 msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:528
-#, fuzzy
 msgid "Add as Launcher"
-msgstr "Pridėti arba pašalinti leistuvus"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:546
-#, fuzzy
 msgid "_Close"
-msgstr "Uždaroma"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:574
 msgid "_Close All"
@@ -487,14 +480,12 @@ msgid "Autohide Keep below"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:147
-#, fuzzy
 msgid "Autohide Fade out"
-msgstr "Paslėpti juostą kai nenaudojama"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:148
-#, fuzzy
 msgid "Transparency"
-msgstr "Permatomumas:"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:690
 msgid "Solid"
@@ -581,28 +572,24 @@ msgid ""
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-#, fuzzy
 msgid "Background color for AwnDialog's title."
-msgstr "Fono spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-#, fuzzy
 msgid "Background color for AwnDialog."
-msgstr "Fono spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-#, fuzzy
 msgid "Background color of the tooltip"
-msgstr "Fono spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the active rectangle."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-#, fuzzy
 msgid "Color of the glowing dot."
-msgstr "Fono spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Color of the outline of active rectangle."
@@ -627,29 +614,24 @@ msgid "Draw separators."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-#, fuzzy
 msgid "Enable drawing of a pattern."
-msgstr "Įjungti raštą"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-#, fuzzy
 msgid "First gradient step color."
-msgstr "Pirmo žingsnio spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-#, fuzzy
 msgid "First highlight gradient step color."
-msgstr "Pirmo žingsnio spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-#, fuzzy
 msgid "Font color of the tooltip"
-msgstr "Fono spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-#, fuzzy
 msgid "Font name of the tooltip"
-msgstr "Fono spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Force monitor geometry."
@@ -672,14 +654,12 @@ msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-#, fuzzy
 msgid "Internal border color."
-msgstr "Vidinis kraštas:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-#, fuzzy
 msgid "Main border color."
-msgstr "Pagrininis kraštas:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
@@ -719,19 +699,16 @@ msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-#, fuzzy
 msgid "Second gradient step color."
-msgstr "Antro žingsnio spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-#, fuzzy
 msgid "Second highlight gradient step color."
-msgstr "Antro žingsnio spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-#, fuzzy
 msgid "Separator color."
-msgstr "Skirtuko spalva:"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Show shadows for icons."
@@ -786,9 +763,8 @@ msgid "The opacity of the icons, from 0.0 to 1.0"
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-#, fuzzy
 msgid "The opacity of the pattern."
-msgstr "Įjungti raštą"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The symmetry of the curve in Curves mode."
@@ -847,168 +823,3 @@ msgstr ""
 #: ../src/awn-panel.c:3896
 msgid "Close docklet"
 msgstr ""
-
-#~ msgid "<b>Active Icon</b>"
-#~ msgstr "<b>Aktyvi piktograma</b>"
-
-#~ msgid "<b>Applet Preferences</b>"
-#~ msgstr "<b>Programos nustatymai</b>"
-
-#~ msgid "<b>Arrows</b>"
-#~ msgstr "<b>Rodyklės</b>"
-
-#~ msgid "<b>Bar behaviour</b>"
-#~ msgstr "<b>Juostos elgesys</b>"
-
-#~ msgid "<b>Borders</b>"
-#~ msgstr "<b>Kraštai</b>"
-
-#~ msgid "<b>Customize Effects</b>"
-#~ msgstr "<b>Keisti effektus</b>"
-
-#~ msgid "<b>General Preferences</b>"
-#~ msgstr "<b>Bendrieji nustatymai</b>"
-
-#~ msgid "<b>Gradient</b>"
-#~ msgstr "<b>Perėjimas</b>"
-
-#~ msgid "<b>Highlight</b>"
-#~ msgstr "<b>Paryšikinimas</b>"
-
-#~ msgid "<b>Icon Effects</b>"
-#~ msgstr "<b>Piktogramų efektai</b>"
-
-#~ msgid "<b>Launcher Preferences</b>"
-#~ msgstr "<b>Paleidimo nustatymai</b>"
-
-#~ msgid "<b>Look </b>"
-#~ msgstr "<b>Peržiūra </b>"
-
-#~ msgid "<b>Pattern</b>"
-#~ msgstr "<b>Raštas</b>"
-
-#~ msgid "<b>Separator</b>"
-#~ msgstr "<b>Skirtukas</b>"
-
-#~ msgid "<b>Text</b>"
-#~ msgstr "<b>Tekstas</b>"
-
-#~ msgid "<b>Themes</b>"
-#~ msgstr "<b>Temos</b>"
-
-#~ msgid "<b>Windows</b>"
-#~ msgstr "<b>Langai</b>"
-
-#~ msgid "Activate"
-#~ msgstr "Aktyvuoti"
-
-#~ msgid "Add and remove launchers"
-#~ msgstr "Pridėti arba pašalinti leistuvus"
-
-#~ msgid "Add, remove and save themes"
-#~ msgstr "Pridėti, pašalinti arba išsaugoti temas"
-
-#~ msgid "Alert when application window updated"
-#~ msgstr "Pranešti kai programos langas atsinaujina"
-
-#~ msgid "Attention"
-#~ msgstr "Dėmesio"
-
-#~ msgid "Auto hide bar when not in use"
-#~ msgstr "Paslėpti juostą kai nenaudojama"
-
-#~ msgid "Bar Appearance"
-#~ msgstr "Juostos išvaizda"
-
-#~ msgid "Bar angle: "
-#~ msgstr "Juostos kampas "
-
-#~ msgid "Bar height: "
-#~ msgstr "Juostos aukštis "
-
-#~ msgid "Change the look and behaviour of the dock"
-#~ msgstr "Pakeisti denio išvaizdą ir poelgius"
-
-#~ msgid "Color:"
-#~ msgstr "Spalva:"
-
-#~ msgid "Deactivate"
-#~ msgstr "Išjungti"
-
-#~ msgid "Delete"
-#~ msgstr "Ištrinti"
-
-#~ msgid "Enable rounded corners"
-#~ msgstr "Įjungti suapvalintus kraštus"
-
-#~ msgid "Font:"
-#~ msgstr "Šriftas:"
-
-#~ msgid "General"
-#~ msgstr "Bendra"
-
-#~ msgid "Glass Engine"
-#~ msgstr "Stiklo variklis"
-
-#~ msgid "Hover"
-#~ msgstr "Užvedus pelės rodyklę"
-
-#~ msgid ""
-#~ "Icon attention effect will be activated to alert user of updated windows."
-#~ msgstr ""
-#~ "Piktogramų dėmesio efektas bus aktivuotas, kad vartotojas sužinotų apie "
-#~ "atsinaujinusius langus."
-
-#~ msgid "Install"
-#~ msgstr "Įdiegti"
-
-#~ msgid "Keep below maximized windows when not in use"
-#~ msgstr "Paslėpti po padidintais langais kai nenaudojama"
-
-#~ msgid "Launching"
-#~ msgstr "Paleidžiama"
-
-#~ msgid "Maximized windows don't cover the bar (requires restart)"
-#~ msgstr "Išdidinti langai neuždengia juostos (veiks po perkrovimo)"
-
-#~ msgid "Opening"
-#~ msgstr "Atidaroma"
-
-#~ msgid "Pattern Engine"
-#~ msgstr "Rašto variklis"
-
-#~ msgid "Shadow color:"
-#~ msgstr "Šešėlio spalva:"
-
-#~ msgid "Show separator between launchers and tasks"
-#~ msgstr "Rodyti skirtuką tarp paleidėjų ir užduočių"
-
-#~ msgid "Task Appearance"
-#~ msgstr "Užduočių išvaizda"
-
-#~ msgid "Tasks have arrows"
-#~ msgstr "Užduotis turi rodykles"
-
-#~ msgid "The bar automatically hides when not used"
-#~ msgstr "Juosta nenaudojama automatiškai pasislepia"
-
-#~ msgid "Transparency:"
-#~ msgstr "Permatomumas:"
-
-#~ msgid "Windows don't overlap the bar if this is set"
-#~ msgstr "Langai neperdengia juostos"
-
-#~ msgid "page 1"
-#~ msgstr "1 puslapis"
-
-#~ msgid "page 2"
-#~ msgstr "2 puslapis"
-
-#~ msgid "page 3"
-#~ msgstr "3 puslapis"
-
-#~ msgid "page 4"
-#~ msgstr "4 puslapis"
-
-#~ msgid "Change Icon"
-#~ msgstr "Pakeisti piktogramą"

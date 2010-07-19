@@ -1,0 +1,27 @@
+# vim: set ft=automake ts=8 sts=8 sw=8 :
+include $(top_srcdir)/Makefile.c-applet
+
+####
+# Note to applet developers: DO NOT OVERRIDE CPPFLAGS, CFLAGS, OR VALAFLAGS.
+# That is what the AM_FOOFLAGS variant is for.
+####
+
+# for shave
+QUIET_INSTALL = $(Q:@=@echo '  INSTALL '$@;)
+QUIET_VALA = $(Q:@=@echo '  VALAC '$@;)
+
+BUILT_SOURCES = $(APPLET_NAME).vala.stamp
+
+VALA_C_FILES = $(VALA_FILES:.vala=.c)
+
+$(APPLET_NAME).vala.stamp: $(VALA_FILES)
+	$(QUIET_VALA)$(VALAC) -C $^ \
+		--vapidir=$(LDA_VAPIDIR) \
+		--vapidir=$(top_srcdir)/bindings/vala \
+		--vapidir=$(top_builddir)/bindings/vala \
+		--pkg=awn \
+		$(AM_VALAFLAGS) $(VALAFLAGS)
+	touch "$@"
+
+EXTRA_DIST += $(VALA_FILES)
+CLEANFILES += $(APPLET_NAME).vala.stamp
