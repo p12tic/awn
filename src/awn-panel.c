@@ -47,6 +47,7 @@
 #include "awn-defines.h"
 #include "awn-marshal.h"
 #include "awn-monitor.h"
+#include "awn-panel-dispatcher.h"
 #include "awn-throbber.h"
 #include "awn-x.h"
 
@@ -590,6 +591,9 @@ awn_panel_constructed (GObject *object)
                     G_CALLBACK (on_window_state_event), NULL);
   g_signal_connect (panel, "delete-event",
                     G_CALLBACK (gtk_true), NULL);
+
+  /* DBus interface */
+  awn_panel_dispatcher_new (AWN_PANEL (object));
   
   /* Contents */
   priv->manager = awn_applet_manager_new_from_config (priv->client);
@@ -1721,8 +1725,6 @@ awn_panel_finalize (GObject *object)
   G_OBJECT_CLASS (awn_panel_parent_class)->finalize (object);
 }
 
-#include "awn-panel-glue.h"
-
 static void
 awn_panel_class_init (AwnPanelClass *klass)
 {
@@ -1990,9 +1992,6 @@ awn_panel_class_init (AwnPanelClass *klass)
 			      0);
 
   g_type_class_add_private (obj_class, sizeof (AwnPanelPrivate));
-
-  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass), 
-                                   &dbus_glib_awn_panel_object_info);
 }
 
 static gboolean

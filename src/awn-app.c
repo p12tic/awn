@@ -146,8 +146,10 @@ awn_app_init (AwnApp *app)
 
     gchar *object_path = g_strdup_printf (AWN_DBUS_PANEL_PATH "%d", panel_id);
 
+    /*
     dbus_g_connection_register_g_object (priv->connection, 
                                          object_path, G_OBJECT (panel));
+    */
 
     g_hash_table_insert (priv->panels, object_path, panel);
 

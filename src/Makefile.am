@@ -49,7 +49,8 @@ avant_window_navigator_SOURCES =	\
 	awn-monitor.h \
 	awn-panel.c \
 	awn-panel.h \
-	awn-panel-glue.h \
+	awn-panel-dispatcher.c \
+	awn-panel-dispatcher.h \
 	awn-separator.c \
 	awn-separator.h \
 	awn-throbber.c \
@@ -67,12 +68,8 @@ avant_window_navigator_SOURCES =	\
 awn-app-glue.h: awn-app-dbus.xml Makefile
 	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_app --mode=glib-server --output=$@ $<
 
-awn-panel-glue.h: awn-panel-dbus.xml Makefile
-	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_panel --mode=glib-server --output=$@ $<
-
 BUILT_SOURCES = \
 	awn-app-glue.h \
-	awn-panel-glue.h \
 	$(MARSHALFILES) \
 	$(NULL)
 
@@ -80,7 +77,6 @@ CLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
 	awn-app-dbus.xml \
-	awn-panel-dbus.xml \
 	awn-marshal.list \
 	$(NULL)
 
