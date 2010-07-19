@@ -29,6 +29,12 @@ using DBus;
 // only here so that config.h is before gi18n-lib.h
 private const string not_used = Build.APPLETSDIR;
 
+interface DockManager: GLib.Object
+{
+  public async abstract string[] get_capabilities () throws DBus.Error;
+  public abstract void awn_set_visibility (string win_class, bool visible) throws DBus.Error;
+}
+
 public class PrefsApplet : AppletSimple
 {
   const TargetEntry[] targets = {
@@ -136,19 +142,19 @@ public class PrefsApplet : AppletSimple
     this.update_taskmanager (false);
   }
 
-  private void
+  private async void
   update_taskmanager (bool visible)
   {
     try
     {
       DBus.Connection con = DBus.Bus.get (DBus.BusType.SESSION);
 
-      dynamic DBus.Object taskman;
-      taskman = con.get_object ("org.freedesktop.DockManager",
-                                "/org/freedesktop/DockManager",
-                                "org.freedesktop.DockManager");
+      var taskman = (DockManager) 
+        con.get_object ("org.freedesktop.DockManager",
+                        "/org/freedesktop/DockManager",
+                        "org.freedesktop.DockManager");
 
-      string[] caps = taskman.GetCapabilities ();
+      string[] caps = yield taskman.get_capabilities ();
       bool supports_visibility_setting = false;
       foreach (string cap in caps)
       {
@@ -157,7 +163,7 @@ public class PrefsApplet : AppletSimple
 
       if (supports_visibility_setting)
       {
-        taskman.AwnSetVisibility ("awn-settings", visible);
+        taskman.awn_set_visibility ("awn-settings", visible);
       }
     }
     catch (DBus.Error err)
