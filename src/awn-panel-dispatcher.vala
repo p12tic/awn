@@ -66,15 +66,15 @@ namespace Awn
 
       panel.size_changed.connect ( (p, s) =>
       {
-        this.property_changed ("Size", s);
+        this.property_changed ("size", s);
       });
       panel.position_changed.connect ( (p, pos) =>
       {
-        this.property_changed ("Position", pos);
+        this.property_changed ("position", pos);
       });
       panel.offset_changed.connect ( (p, o) =>
       {
-        this.property_changed ("Offset", o);
+        this.property_changed ("offset", o);
       });
       panel.property_changed.connect ( (p, pn, v) =>
       {

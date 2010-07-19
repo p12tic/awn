@@ -171,34 +171,6 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
   }
 }
 
-/*
- When a window is moved to another "workspace" in Compiz it will remain active
- if it was already active...  we really prefer that this not happen
- */
-
-static void
-activate_appropriate_window (WnckWindow * win_on_the_move)
-{
-  WnckWorkspace * workspace;
-  workspace = wnck_screen_get_active_workspace (wnck_screen_get_default());
-  if (workspace)
-  {
-    GList* windows = wnck_screen_get_windows_stacked (wnck_screen_get_default());
-    GList * iter;
-    for (iter = g_list_last (windows); iter; iter=g_list_previous (iter))
-    {
-      if (iter->data != win_on_the_move)
-      {
-        if (wnck_window_is_in_viewport (iter->data,workspace) )
-        {
-          wnck_window_activate (iter->data,gtk_get_current_event_time ());
-          break;
-        }
-      }
-    }
-  }
-}
-
 static void
 remove_from_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
 {
