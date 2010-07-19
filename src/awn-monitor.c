@@ -1,5 +1,6 @@
 /*
  *  Copyright (C) 2007 Neil Jagdish Patel <njpatel@gmail.com>
+ *                2010 Michal Hruby <michal.mhr@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -226,6 +227,18 @@ awn_monitor_dispose (GObject *object)
   AwnMonitorPrivate *priv;
 
   priv = AWN_MONITOR_GET_PRIVATE (object);
+
+  if (priv->size_signal_id)
+  {
+    g_signal_handler_disconnect (priv->screen, priv->size_signal_id);
+    priv->size_signal_id = 0;
+  }
+
+  if (priv->monitors_signal_id)
+  {
+    g_signal_handler_disconnect (priv->screen, priv->monitors_signal_id);
+    priv->monitors_signal_id = 0;
+  }
 
   desktop_agnostic_config_client_unbind_all_for_object (priv->client,
                                                         object, NULL);
