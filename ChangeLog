@@ -1,3 +1,40 @@
+2010-02-04  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* data/Makefile.am:
+	* data/awn-applets-migration (deleted):
+	* data/awn-autostart (deleted):
+	* data/default-theme (deleted):
+	* debian/awn-applets-migration.1 (deleted):
+	* debian/awn-autostart.1 (deleted):
+	Remove obsolete files.
+
+2010-02-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	Fix compability with Vala 0.7.10.
+
+2010-02-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* ChangeLog:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* libawn/awn-icon.c:
+	* src/awn-main.c:
+	Merge from trunk-rewrite.
+
+2010-02-04  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-icon.c:
+	Include gseal-transition header.
+
+2010-02-01  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* po/POTFILES.in:
+	Don't translate generated files.
+
+	* po/avant-window-navigator.pot:
+	* po/*.po:
+	Update gettext files.
+
 2010-02-01  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-main.c:

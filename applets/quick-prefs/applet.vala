@@ -357,7 +357,7 @@ public class PrefsApplet : AppletSimple
     else
     {
       Gdk.NativeWindow window_id = this.docklet_request (450, false, true);
-      if (window_id != (Gdk.NativeWindow)0)
+      if ((long)window_id != 0)
       {
         this.setup_docklet (window_id);
       }
