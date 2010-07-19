@@ -9,9 +9,11 @@ icon_text_outline_color = #000000000000ffff
 icon_font_mode = 1
 panel_angle = 45.0
 gtk_theme_mode = False
+draw_pattern = False
 corner_radius = 7.0
 tooltip_font_name = Sans 10
-tooltip_bg_color = #000000000000ffff
+tooltip_bg_color = #30300a0a2424a8a8
+tooltip_outline_color = #000000000000a8a8
 curviness = 10.0
 hilight = #b3eaaf2daf2dffff
 border = #9c9c9a9a94940000
@@ -20,6 +22,7 @@ curves_symmetry = 0.5
 
 [config/effects]
 show_shadows = False
+active_background_icon =
 active_rect_color = #9090878779796666
 active_rect_outline = #0000000000000000
 

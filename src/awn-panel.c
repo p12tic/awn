@@ -108,6 +108,7 @@ struct _AwnPanelPrivate
   gint old_x;
   gint old_y;
   guint strut_update_id;
+  guint masks_update_id;
 
   /* animated resizing */
   gint draw_width;
@@ -345,6 +346,8 @@ static void     awn_panel_refresh_padding   (AwnPanel *panel,
 static void     awn_panel_update_masks      (GtkWidget *panel, 
                                              gint real_width, 
                                              gint real_height);
+
+static void     awn_panel_queue_masks_update(AwnPanel *panel);
 
 static void     awn_panel_docklet_destroy   (AwnPanel *panel);
 
@@ -1012,13 +1015,15 @@ awn_panel_resize_timeout (gpointer data)
   // without this there are some artifacts on sad face & throbbers
   awn_applet_manager_redraw_throbbers (AWN_APPLET_MANAGER (priv->manager));
 
-  // FIXME: should this really be done on every animation step?
-  awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
+  // Don't update the input masks here, it gets called too often and some
+  // drivers really don't like it. (LP bug #478790)
 
   if (resize_done)
   {
     gtk_widget_queue_resize (GTK_WIDGET (panel));
     priv->resize_timer_id = 0;
+
+    awn_panel_queue_masks_update (panel);
   }
 
   return !resize_done;
@@ -1062,6 +1067,8 @@ awn_panel_refresh_alignment (AwnPanel *panel)
                          0.5, align, 1.0, expand);
       break;
   }
+
+  awn_panel_queue_masks_update (panel);
 }
 
 static
@@ -1179,6 +1186,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 {
   AwnPanelPrivate *priv = panel->priv;
   GtkAllocation alloc;
+  gfloat align;
 
   /* 
    * We provide a param for width & height, cause for example
@@ -1198,6 +1206,12 @@ awn_panel_get_draw_rect (AwnPanel *panel,
   }
 
   gint paintable_size = priv->offset + priv->size + priv->extra_padding;
+  align = priv->monitor->align;
+  if (gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL &&
+      (priv->position == GTK_POS_TOP || priv->position == GTK_POS_BOTTOM))
+  {
+    align = 1.0 - align;
+  }
 
   switch (priv->position)
   {
@@ -1207,7 +1221,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 
       if (priv->animated_resize && !priv->expand)
       {
-        area->x = ROUND ((width - priv->draw_width) * priv->monitor->align);
+        area->x = ROUND ((width - priv->draw_width) * align);
         area->width = priv->draw_width;
       }
       else
@@ -1223,7 +1237,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 
       if (priv->animated_resize && !priv->expand)
       {
-        area->x = ROUND ((width - priv->draw_width) * priv->monitor->align);
+        area->x = ROUND ((width - priv->draw_width) * align);
         area->width = priv->draw_width;
       }
       else
@@ -1239,7 +1253,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 
       if (priv->animated_resize && !priv->expand)
       {
-        area->y = ROUND ((height - priv->draw_height) * priv->monitor->align);
+        area->y = ROUND ((height - priv->draw_height) * align);
         area->height = priv->draw_height;
       }
       else
@@ -1256,7 +1270,7 @@ awn_panel_get_draw_rect (AwnPanel *panel,
 
       if (priv->animated_resize && !priv->expand)
       {
-        area->y = ROUND ((height - priv->draw_height) * priv->monitor->align);
+        area->y = ROUND ((height - priv->draw_height) * align);
         area->height = priv->draw_height;
       }
       else
@@ -2188,7 +2202,8 @@ awn_panel_init (AwnPanel *panel)
   priv->box = awn_box_new (GTK_ORIENTATION_HORIZONTAL);
   gtk_container_add (GTK_CONTAINER (priv->alignment), priv->box);
 
-  priv->arrow1 = awn_throbber_new ();
+  priv->arrow1 = awn_throbber_new_with_config (
+      awn_config_get_default (0, NULL));
   awn_throbber_set_type (AWN_THROBBER (priv->arrow1),
                          AWN_THROBBER_TYPE_ARROW_1);
   g_signal_connect_swapped (priv->arrow1, "enter-notify-event",
@@ -2197,7 +2212,8 @@ awn_panel_init (AwnPanel *panel)
                             G_CALLBACK (awn_panel_arrow_out), panel);
   gtk_box_pack_start (GTK_BOX (priv->box), priv->arrow1, FALSE, TRUE, 0);
 
-  priv->arrow2 = awn_throbber_new ();
+  priv->arrow2 = awn_throbber_new_with_config (
+      awn_config_get_default (0, NULL));
   awn_throbber_set_type (AWN_THROBBER (priv->arrow2),
                          AWN_THROBBER_TYPE_ARROW_2);
   g_signal_connect_swapped (priv->arrow2, "enter-notify-event",
@@ -2432,8 +2448,7 @@ awn_panel_update_masks (GtkWidget *panel,
   if (priv->clickthrough && priv->composited)
   {
     GdkRegion *region = gdk_region_new ();
-    GdkWindow *win;
-    win = gtk_widget_get_window (GTK_WIDGET (panel));
+    GdkWindow *win = gtk_widget_get_window (GTK_WIDGET (panel));
     gdk_window_input_shape_combine_region (win, region, 0, 0);
     gdk_region_destroy (region);
   }
@@ -2496,6 +2511,32 @@ awn_panel_update_masks (GtkWidget *panel,
     }
 
     g_object_unref (shaped_bitmap);
+  }
+}
+
+static gboolean
+masks_update_scheduler (AwnPanel *panel)
+{
+  g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
+
+  AwnPanelPrivate *priv = panel->priv;
+
+  priv->masks_update_id = 0;
+
+  awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
+
+  return FALSE;
+}
+
+static void
+awn_panel_queue_masks_update (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = panel->priv;
+
+  if (priv->masks_update_id == 0)
+  {
+    priv->masks_update_id = g_idle_add ((GSourceFunc)masks_update_scheduler,
+                                        panel);
   }
 }
 
@@ -3253,7 +3294,7 @@ on_manager_size_alloc (GtkWidget *manager, GtkAllocation *alloc,
   {
     awn_panel_queue_strut_update (panel);
   }
-  awn_panel_update_masks (GTK_WIDGET (panel), 0, 0);
+  awn_panel_queue_masks_update (panel);
 }
 
 static gboolean
@@ -3895,7 +3936,7 @@ awn_panel_docklet_request (AwnPanel *panel,
 
   if (!priv->docklet_closer)
   {
-    priv->docklet_closer = awn_throbber_new ();
+    priv->docklet_closer = awn_throbber_new_with_config (priv->client);
     awn_throbber_set_type (AWN_THROBBER (priv->docklet_closer),
                            AWN_THROBBER_TYPE_CLOSE_BUTTON);
     awn_icon_set_hover_effects (AWN_ICON (priv->docklet_closer), TRUE);

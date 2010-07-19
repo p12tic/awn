@@ -1242,6 +1242,15 @@
   )
 )
 
+(define-method set_outline_color
+  (of-object "AwnTooltip")
+  (c-name "awn_tooltip_set_outline_color")
+  (return-type "none")
+  (parameters
+    '("DesktopAgnosticColor*" "bg_color")
+  )
+)
+
 (define-method set_background_color
   (of-object "AwnTooltip")
   (c-name "awn_tooltip_set_background_color")

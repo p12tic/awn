@@ -48,18 +48,37 @@ namespace Awn
       this.connection = Bus.get (BusType.SESSION);
       this.connection.register_object ("/org/awnproject/Awn", this);
 
-      var panel_ids = this.client.get_list ("panels", "panel_list");
-
-      foreach (Value val in panel_ids)
+      try
       {
-        int panel_id = val.get_int ();
-        string path = "/org/awnproject/Awn/Panel%d".printf (panel_id);
+        var panel_ids = this.client.get_list ("panels", "panel_list");
 
-        Panel panel = new Panel.with_panel_id (panel_id);
+        if (panel_ids.n_values == 0)
+        {
+          bool is_gconf = false;
+          Type config_type = DesktopAgnostic.Config.get_type ();
+          if (config_type > 0)
+          {
+            is_gconf = config_type.name ().str ("GConf") != null;
+          }
+          error ("No panels to create! %s", is_gconf ?
+            "You might want to try running `killall gconfd-2`." : "");
+        }
 
-        this.panels.insert ((owned)path, panel);
+        foreach (Value val in panel_ids)
+        {
+          int panel_id = val.get_int ();
+          string path = "/org/awnproject/Awn/Panel%d".printf (panel_id);
 
-        panel.show ();
+          Panel panel = new Panel.with_panel_id (panel_id);
+
+          this.panels.insert ((owned)path, panel);
+
+          panel.show ();
+        }
+      }
+      catch (GLib.Error e)
+      {
+        error ("Unable to retrieve panels config value: %s", e.message);
       }
     }
 

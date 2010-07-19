@@ -73,7 +73,7 @@ _description=The list of applets for this panel ordered from left-to-right or to
 
 [panel/clickthrough]
 type = integer
-default = 1
+default = 0
 _description=Provides possibility to click on windows behind the panel. (0 - never click through, 1 - click through when holding CTRL, 2 - always click through and interact with panel only when holding CTRL)
 
 [panel/dialog_offset]
@@ -133,7 +133,7 @@ _description=Orientation of Awn. (left=0, right=1, top=2 and bottom=3)
 
 [panel/panel_mode]
 type = boolean
-default = false
+default = true
 _description=If true, maximised windows will not cover the panel.
 
 [panel/size]
@@ -169,13 +169,13 @@ per_instance = false
 
 [panels/hide_delay]
 type = integer
-default = 1000
+default = 500
 _description=Delay between mouse leaving the panel and it hiding.
 per_instance = false
 
 [panels/mouse_poll_delay]
 type = integer
-default = 500
+default = 250
 _description=Delay for mouse position polling.
 per_instance = false
 
@@ -289,13 +289,13 @@ per_instance = false
 
 [theme/icon_text_color]
 type = color
-default =
+default = #FFFFFFFFFFFFFFFF
 _description=Icon text color.  Leave empty to use gtk theme color.
 per_instance = false
 
 [theme/icon_text_outline_color]
 type = color
-default =
+default = #000000000000FFFF
 _description=Icon text outline color.  Leave empty to use gtk theme color.
 per_instance = false
 
@@ -347,6 +347,12 @@ default = #000000B3
 _description=Background color of the tooltip
 per_instance = false
 
+[theme/tooltip_outline_color]
+type = color
+default = #000000A8
+_description=Outline color of the tooltip
+per_instance = false
+
 [theme/tooltip_font_color]
 type = color
 default = #FFFFFFFF
@@ -355,7 +361,7 @@ per_instance = false
 
 [theme/tooltip_font_name]
 type = string
-default = Sans 8
+default = Sans 10
 _description=Font name of the tooltip
 per_instance = false
 

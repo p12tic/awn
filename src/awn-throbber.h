@@ -72,6 +72,8 @@ GType         awn_throbber_get_type         (void) G_GNUC_CONST;
 
 GtkWidget *   awn_throbber_new              (void);
 
+GtkWidget*    awn_throbber_new_with_config  (DesktopAgnosticConfigClient *client);
+
 void          awn_throbber_set_type         (AwnThrobber *throbber,
                                              AwnThrobberType type);
 

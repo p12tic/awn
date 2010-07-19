@@ -175,7 +175,7 @@ static  WindowMatch window_regexes[] =
   {NULL,"Toplevel","_listchoose","^Properties$","aMSN"},
   {NULL,"Toplevel","^dlgag$","^Add.*Group$","aMSN"},
   {NULL,"Toplevel",".*_hist$","^History.*","aMSN"},
-  {NULL,"Toplevel","savecontacts","^Options$","aMSN"},  
+  {NULL,"Toplevel","savecontacts","^Options$","aMSN"},
   {NULL,NULL,NULL,NULL,NULL}
 };
 
@@ -222,6 +222,7 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox"},
   {NULL,"Nautilus","nautilus",NULL,"nautilus-browser"},
   {NULL,"Nautilus","nautilus",NULL,"nautilus-home"},
+  {NULL,NULL,NULL,"Moovida.*Media.*Cent.*","moovida"},
   {NULL,NULL,NULL,NULL,NULL}
 };
 

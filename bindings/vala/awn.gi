@@ -1558,6 +1558,13 @@
 					<parameter name="font_name" type="gchar*"/>
 				</parameters>
 			</method>
+			<method name="set_outline_color" symbol="awn_tooltip_set_outline_color">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="tooltip" type="AwnTooltip*"/>
+					<parameter name="outline" type="DesktopAgnosticColor*"/>
+				</parameters>
+			</method>
 			<method name="set_position_hint" symbol="awn_tooltip_set_position_hint">
 				<return-type type="void"/>
 				<parameters>
@@ -1587,6 +1594,7 @@
 			<property name="tooltip-bg-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="tooltip-font-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
 			<property name="tooltip-font-name" type="char*" readable="1" writable="1" construct="1" construct-only="0"/>
+			<property name="tooltip-outline-color" type="DesktopAgnosticColor*" readable="1" writable="1" construct="1" construct-only="0"/>
 		</object>
 		<interface name="AwnOverlayable" type-name="AwnOverlayable" get-type="awn_overlayable_get_type">
 			<method name="add_overlay" symbol="awn_overlayable_add_overlay">

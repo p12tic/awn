@@ -42,6 +42,7 @@ G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW)
 #define FONT_NAME       "tooltip_font_name"
 #define FONT_COLOR      "tooltip_font_color"
 #define BACKGROUND      "tooltip_bg_color"
+#define OUTLINE_COLOR   "tooltip_outline_color"
 
 #define AWN_PANEL_GROUP "panel"
 #define ICON_OFFSET     "offset"
@@ -55,7 +56,8 @@ struct _AwnTooltipPrivate
   GtkWidget *focus;
   GtkWidget *label;
 
-  DesktopAgnosticColor  *bg;
+  DesktopAgnosticColor *bg;
+  DesktopAgnosticColor *outline_color;
   gchar    *font_name;
   DesktopAgnosticColor *font_color;
   gint      icon_offset;
@@ -82,6 +84,7 @@ enum
 
   PROP_FOCUS,  
   PROP_BG,
+  PROP_OUTLINE,
   PROP_FONT_NAME,
   PROP_FONT_COLOR,
   PROP_ICON_OFFSET,
@@ -127,13 +130,24 @@ awn_tooltip_expose_event (GtkWidget *widget, GdkEventExpose *expose)
   cairo_paint (cr);
   
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_set_line_width (cr, 1.0);
   
   /* Draw */
   awn_cairo_set_source_color (cr, priv->bg);
 
   awn_cairo_rounded_rect (cr, 0, 0, width, height,
                           TOOLTIP_ROUND_RADIUS, ROUND_ALL);
-  cairo_fill (cr);
+
+  if (priv->outline_color)
+  {
+    cairo_fill_preserve (cr);
+    awn_cairo_set_source_color (cr, priv->outline_color);
+    cairo_stroke (cr);
+  }
+  else
+  {
+    cairo_fill (cr);
+  }
 
   /* Clean up */
   cairo_destroy (cr);
@@ -236,6 +250,11 @@ awn_tooltip_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 
+  desktop_agnostic_config_client_bind (priv->client, AWN_THEME_GROUP, OUTLINE_COLOR,
+                                       object, OUTLINE_COLOR, TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+
   /* Setup internal widgets */
   align = gtk_alignment_new (0.5, 0.5, 1.0, 1.0);
   gtk_alignment_set_padding (GTK_ALIGNMENT (align), 5, 3, 8, 8);
@@ -281,6 +300,10 @@ awn_tooltip_get_property (GObject    *object,
 
     case PROP_BG:
       g_value_set_object (value, priv->bg);
+      break;
+
+    case PROP_OUTLINE:
+      g_value_set_object (value, priv->outline_color);
       break;
 
     case PROP_ICON_OFFSET:
@@ -332,6 +355,10 @@ awn_tooltip_set_property (GObject      *object,
 
     case PROP_BG:
       awn_tooltip_set_background_color (tooltip, g_value_get_object (value));
+      break;
+
+    case PROP_OUTLINE:
+      awn_tooltip_set_outline_color (tooltip, g_value_get_object (value));
       break;
 
     case PROP_ICON_OFFSET:
@@ -411,6 +438,11 @@ awn_tooltip_finalize(GObject *obj)
     g_object_unref (priv->bg);
     priv->bg = NULL;
   }
+  if (priv->outline_color)
+  {
+    g_object_unref (priv->outline_color);
+    priv->outline_color = NULL;
+  }
 
   G_OBJECT_CLASS (awn_tooltip_parent_class)->finalize (obj);
 }
@@ -461,6 +493,15 @@ awn_tooltip_class_init(AwnTooltipClass *klass)
     g_param_spec_object ("tooltip-bg-color",
                          "tooltip-bg-color",
                          "Tooltip Background Color",
+                         DESKTOP_AGNOSTIC_TYPE_COLOR,
+                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                         G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (obj_class,
+    PROP_OUTLINE,
+    g_param_spec_object ("tooltip-outline-color",
+                         "tooltip-outline-color",
+                         "Tooltip Outline Color",
                          DESKTOP_AGNOSTIC_TYPE_COLOR,
                          G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                          G_PARAM_STATIC_STRINGS));
@@ -899,6 +940,34 @@ awn_tooltip_set_font_color (AwnTooltip           *tooltip,
 }
 
 void     
+awn_tooltip_set_outline_color (AwnTooltip           *tooltip,
+                               DesktopAgnosticColor *outline_color)
+{
+  AwnTooltipPrivate *priv;
+
+  g_return_if_fail (AWN_TOOLTIP (tooltip));
+  priv = tooltip->priv;
+
+  if (priv->outline_color)
+  {
+    g_object_unref (priv->outline_color);
+  }
+  
+  if (outline_color)
+  {
+    priv->outline_color = g_object_ref (outline_color);
+  }
+  else
+  {
+    /* use default, fully transparent. */
+    priv->outline_color =
+      desktop_agnostic_color_new_from_string ("#00000000", NULL);
+  }
+
+  gtk_widget_queue_draw (GTK_WIDGET (tooltip));
+}
+
+void     
 awn_tooltip_set_background_color (AwnTooltip           *tooltip,
                                   DesktopAgnosticColor *bg_color)
 {
@@ -922,7 +991,7 @@ awn_tooltip_set_background_color (AwnTooltip           *tooltip,
     priv->bg = desktop_agnostic_color_new_from_string ("#000000B3", NULL);
   }
 
-  ensure_tooltip (tooltip);
+  gtk_widget_queue_draw (GTK_WIDGET (tooltip));
 }
 
 void    
