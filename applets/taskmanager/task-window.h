@@ -98,7 +98,7 @@ gboolean        task_window_is_active         (TaskWindow    *window);
 void            task_window_set_is_active     (TaskWindow    *window,
                                                gboolean       is_active);
 
-gboolean        task_window_needs_attention   (TaskWindow    *window);
+gboolean        task_window_get_needs_attention (TaskWindow    *window);
 
 const gchar   * task_window_get_message       (TaskWindow    *window);
 
@@ -133,7 +133,7 @@ void            task_window_set_icon_geometry (TaskWindow     *window,
 
 gboolean        task_window_get_is_running      (TaskWindow     *window);
 
-WinIconUse      task_window_use_win_icon        (TaskWindow * item);
+WinIconUse      task_window_get_use_win_icon    (TaskWindow * window);
 
 WinIconUse      task_window_get_icon_changes    (TaskWindow * window);
 

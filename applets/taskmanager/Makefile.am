@@ -41,6 +41,7 @@ taskmanager_la_SOURCES = \
 	awn-desktop-lookup.c \
 	awn-desktop-lookup-cached.c \
 	awn-desktop-lookup-gnome3.c \
+	task-defines.h \
 	task-drag-indicator.c \
 	task-drag-indicator.h \
 	task-icon.c \
