@@ -1,3 +1,13 @@
+2010-02-01  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-main.c:
+	Add startup-delay command-line parameter.
+
+2010-01-31  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	Finally added quick-prefs to list of default applets.
+
 2010-01-25  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
