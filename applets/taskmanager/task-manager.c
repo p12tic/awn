@@ -48,7 +48,6 @@
 #include "awn-desktop-lookup-cached.h"
 #include "task-manager.h"
 #include "dock-manager-api.h"
-#include "task-manager-glue.h"
 
 #include "task-drag-indicator.h"
 #include "task-icon.h"
@@ -610,9 +609,6 @@ task_manager_class_init (TaskManagerClass *klass)
             G_TYPE_BOOLEAN);
 
   g_type_class_add_private (obj_class, sizeof (TaskManagerPrivate));
-
-  dbus_g_object_type_install_info (G_TYPE_FROM_CLASS (klass),
-                                   &dbus_glib_task_manager_object_info);
 
   dbus_g_error_domain_register (task_manager_error_quark (), NULL, 
                                 task_manager_error_get_type ());
@@ -1349,11 +1345,24 @@ search_for_desktop (TaskIcon * icon,TaskItem *item,gboolean thorough)
 static void
 window_name_changed_cb  (TaskWindow *item,const gchar *name, TaskIcon * icon)
 {
+  const gchar *found_desktop = NULL;
+
   g_return_if_fail (TASK_IS_WINDOW(item));
   g_return_if_fail (TASK_IS_ICON(icon));
-  if (search_for_desktop (TASK_ICON(icon),TASK_ITEM(item),FALSE))
+
+  found_desktop = search_for_desktop (TASK_ICON(icon),TASK_ITEM(item),FALSE);
+  if (found_desktop)
   {
     g_signal_handlers_disconnect_by_func(item, window_name_changed_cb, icon);
+    if (found_desktop)
+    {
+      TaskManager * manager = TASK_MANAGER(task_icon_get_applet (icon));
+      TaskItem * launcher = get_launcher (manager,found_desktop);
+      if (launcher)
+      {
+        task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+      }
+    }          
   }
 }
 
@@ -1372,7 +1381,7 @@ process_window_opened (WnckWindow    *window,
   TaskIcon *match      = NULL;
   gint match_score     = 0;
   gint max_match_score = 0;
-  const gchar         *found_desktop = FALSE;
+  const gchar         *found_desktop = NULL;
   TaskIcon            *containing_icon = NULL;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
@@ -2301,11 +2310,24 @@ _match_name (TaskManager *manager, const gchar* window)
   for (w = priv->windows; w; w = w->next)
   {
     TaskWindow *taskwindow = w->data;
+    gchar * res_name = NULL;
+    gchar * class_name = NULL;
 
     if (!TASK_IS_WINDOW (taskwindow)) 
     {
       continue;
     }
+
+    _wnck_get_wmclass (task_window_get_xid (taskwindow),&res_name, &class_name);
+    if ( (g_strcmp0 (window, res_name) == 0) ||(g_strcmp0 (window, class_name) == 0) )
+    {
+      g_free (res_name);
+      g_free (class_name);
+      return taskwindow;
+    }
+    g_free (res_name);
+    g_free (class_name);
+    
     wnck_app = task_window_get_application (taskwindow);
     if (WNCK_IS_APPLICATION(wnck_app))
     {
@@ -2729,6 +2751,17 @@ task_manager_set_windows_visibility (TaskManager *manager,const gchar * name,gbo
   }
 }
 
+GObject*
+task_manager_get_dbus_dispatcher (TaskManager *manager)
+{
+  TaskManagerPrivate *priv;
+
+  g_return_val_if_fail (TASK_IS_MANAGER (manager), NULL);
+
+  priv = manager->priv;
+  return G_OBJECT (priv->dbus_proxy);
+}
+
 gboolean
 task_manager_update (TaskManager *manager,
                      GValue *window,
@@ -2770,87 +2803,14 @@ task_manager_update (TaskManager *manager,
     gpointer key, value;
 
     g_hash_table_iter_init (&iter, hints);
-    while (g_hash_table_iter_next (&iter, &key, &value)) 
+    while (g_hash_table_iter_next (&iter, &key, &value))
     {
       gchar *key_name = (gchar *)key;
-      if (strcmp ("icon-file", key_name) == 0)
-      {
-        //g_debug ("Request to change icon-file...");
-        TaskItem *item = TASK_ITEM (matched_window);
-        if (item->icon_overlay == NULL)
-        {
-          item->icon_overlay = awn_overlay_pixbuf_file_new (NULL);
-          g_object_set (G_OBJECT (item->icon_overlay),
-                        "use-source-op", TRUE,
-                        "scale", 1.0, NULL);
-          GtkWidget *image = task_item_get_image_widget (item);
-          AwnOverlayable *over = AWN_OVERLAYABLE (image);
-          awn_overlayable_add_overlay (over,
-                                       AWN_OVERLAY (item->icon_overlay));
-        }
 
-        const gchar* filename = g_value_get_string (value);
-        g_object_set (G_OBJECT (item->icon_overlay),
-                      "active", filename && filename[0] != '\0', NULL);
-        if (filename && filename[0] != '\0')
-        {
-          g_object_set_property (G_OBJECT (item->icon_overlay),
-                                 "file-name", value);
-        }
+      TaskItem *item = TASK_ITEM (matched_window);
+      task_item_update_overlay (item, key_name, value);
 
-        // this refreshes the overlays on TaskIcon
-        task_item_set_task_icon (item, task_item_get_task_icon (item));
-      }
-      else if (strcmp ("progress", key_name) == 0)
-      {
-        //g_debug ("Request to change progress...");
-        TaskItem *item = TASK_ITEM (matched_window);
-        if (item->progress_overlay == NULL)
-        {
-          item->progress_overlay = awn_overlay_progress_circle_new ();
-          GtkWidget *image = task_item_get_image_widget (item);
-          AwnOverlayable *over = AWN_OVERLAYABLE (image);
-          awn_overlayable_add_overlay (over,
-                                       AWN_OVERLAY (item->progress_overlay));
-        }
-
-        g_object_set (G_OBJECT (item->progress_overlay),
-                      "active", g_value_get_int (value) != -1, NULL);
-        if (g_value_get_int (value) != -1)
-        {
-          g_object_set_property (G_OBJECT (item->progress_overlay),
-                                 "percent-complete", value);
-        }
-
-        // this refreshes the overlays on TaskIcon
-        task_item_set_task_icon (item, task_item_get_task_icon (item));
-      }
-      else if (strcmp ("message", key_name) == 0)
-      {
-        //g_debug ("Request to change message...");
-        TaskItem *item = TASK_ITEM (matched_window);
-        if (item->text_overlay == NULL)
-        {
-          item->text_overlay = awn_overlay_text_new ();
-          g_object_set (G_OBJECT (item->text_overlay),
-                        "font-sizing", AWN_FONT_SIZE_LARGE, NULL);
-          GtkWidget *image = task_item_get_image_widget (item);
-          AwnOverlayable *over = AWN_OVERLAYABLE (image);
-          awn_overlayable_add_overlay (over, AWN_OVERLAY (item->text_overlay));
-        }
-
-        const gchar* text = g_value_get_string (value);
-        g_object_set (G_OBJECT (item->text_overlay),
-                      "active", text && text[0] != '\0', NULL);
-        if (text && text[0] != '\0')
-        {
-          g_object_set_property (G_OBJECT (item->text_overlay), "text", value);
-        }
-
-        // this refreshes the overlays on TaskIcon
-        task_item_set_task_icon (item, task_item_get_task_icon (item));
-      }
-      else if (strcmp ("visible", key_name) == 0)
+      if (strcmp ("visible", key_name) == 0)
       {
         gboolean visible = g_value_get_boolean (value);
         if (G_VALUE_HOLDS_STRING (window))
@@ -2876,10 +2836,6 @@ task_manager_update (TaskManager *manager,
           task_manager_set_windows_visibility (manager,g_value_get_string(window),visible);
         }
         task_window_set_hidden (TASK_WINDOW(matched_window),!visible);
-      }
-      else
-      {
-        g_debug ("Taskmanager doesn't understand the key: %s", key_name);
       }
     }
     

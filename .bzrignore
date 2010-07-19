@@ -38,6 +38,7 @@ py-compile
 stamp-h1
 applet-activation/awn-applet
 applets/quick-prefs/applet.c
+applets/taskmanager/dock-manager-api.[ch]
 awn-settings/awnDefs.py
 awn-settings/awnSettings.py
 bindings/python/awn.c

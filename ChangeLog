@@ -1,3 +1,111 @@
+2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix ref counting on plugin menu items.
+
+2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	* applets/taskmanager/task-item.c:
+	* applets/taskmanager/task-item.h:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.vapi:
+	Move overlay setting to one place.
+
+2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-manager.h:
+	* applets/taskmanager/task-manager.vapi:
+	Fix the ItemAdded and ItemRemoved DBus signals.
+
+2010-02-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	Check if the autostart file exists when deleting it.
+	Fixes bug #334454.
+
+2010-02-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Add WM_CLASS matching into the old dbus API support.
+
+2010-02-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix no launch animation bug #509175.
+
+2010-02-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Do not continue searching after finding and removing menu item.
+	
+2010-02-18  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-manager.c:
+	Re-enabled proper handling for applications for which desktop file
+	cannot be determined on initial open but become discoverable later.
+
+2010-02-18  Mark Lee  <avant-wn@lazymalevolence.com>
+
+	* .bzrignore:
+	* applets/taskmanager/Makefile.am:
+	Clean up the taskmanager portion of the build system. Also fixes
+	parallel builds.
+
+2010-02-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/dock-manager-api.vala:
+	* applets/taskmanager/task-manager.c:
+	Get rid of the older DBus API.
+
+2010-02-17  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	* applets/taskmanager/task-manager.vapi:
+	More DBus context menu code.
+
+2010-02-17  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-icon-private.h:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+	Dbus context menu code.
+
+2010-02-16  Michal Hruby  <michal.mhr@gmail.com>
+
+	* data/avant-window-navigator.schema-ini.in.in:
+	Fix the schema keys after build system refactoring.
+
+2010-02-14  Julien Lavergne <gilir@ubuntu.com>
+
+	patch by: Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/expander/Makefile.am:
+	* applets/separator/Makefile.am:
+	Fix linking for expander applet
+
+	* debian/control:
+	Build-depends on Vala (>= 0.7.9)
+
+2010-02-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* configure.in:
+	Don't treat unused function as error.
+
+2010-02-13  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnClass.py:
+	* src/awn-throbber.c:
+	Moving the code around a bit...
+
 2010-02-11  Rodney Cryderman  <rcryderman@gmail.com>
 
         * applets/taskmanager/task-window.h:

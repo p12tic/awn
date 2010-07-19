@@ -89,7 +89,7 @@ public class PrefsApplet : AppletSimple
     this.initialize_menu ();
 
     unowned DBusWatcher watcher = DBusWatcher.get_default ();
-    watcher.name_appeared["org.awnproject.Applet.Taskmanager"].
+    watcher.name_appeared["org.freedesktop.DockManager"].
         connect (this.taskmanager_appeared);
 
     // ask taskman to hide awn-settings
@@ -139,17 +139,21 @@ public class PrefsApplet : AppletSimple
       DBus.Connection con = DBus.Bus.get (DBus.BusType.SESSION);
 
       dynamic DBus.Object taskman;
-      taskman = con.get_object ("org.awnproject.Applet.Taskmanager",
-                                "/org/awnproject/Applet/Taskmanager",
-                                "org.awnproject.Applet.Taskmanager");
+      taskman = con.get_object ("org.freedesktop.DockManager",
+                                "/org/freedesktop/DockManager",
+                                "org.freedesktop.DockManager");
 
-      HashTable<string, unowned Value?> hints;
-      hints = new HashTable<string, unowned Value?> (str_hash, str_equal);
-      Value val = visible;
-      hints.insert ("visible", val);
+      string[] caps = taskman.GetCapabilities ();
+      bool supports_visibility_setting = false;
+      foreach (string cap in caps)
+      {
+        if (cap == "x-awn-set-visibility") supports_visibility_setting = true;
+      }
 
-      Value window = "awn-settings";
-      taskman.Update(window, hints);
+      if (supports_visibility_setting)
+      {
+        taskman.AwnSetVisibility ("awn-settings", visible);
+      }
     }
     catch (DBus.Error err)
     {

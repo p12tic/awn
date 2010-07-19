@@ -30,6 +30,10 @@ public interface DockManagerDBusInterface: GLib.Object
   public abstract ObjectPath[] get_items_by_pid (int pid) throws DBus.Error;
   public abstract ObjectPath get_item_by_xid (int64 xid) throws DBus.Error;
 
+  // Awn-specific methods
+  public abstract void awn_set_visibility (string win_name, bool visible) throws DBus.Error;
+  public abstract ObjectPath awn_register_proxy_item (string desktop_file, string uri) throws DBus.Error;
+
   public signal void item_added (ObjectPath path);
   public signal void item_removed (ObjectPath path);
 }
@@ -42,6 +46,7 @@ public interface DockItemDBusInterface: GLib.Object
   public abstract void update_dock_item (HashTable<string, Value?> hints) throws DBus.Error;
 
   public abstract string desktop_file { owned get; }
+  public abstract string uri { owned get; }
 
   public signal void menu_item_activated (int id);
 }
@@ -82,7 +87,8 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 
   public string[] get_capabilities () throws DBus.Error
   {
-    string[] capabilities = {"x-awn-0.4"};
+    string[] capabilities = {"x-awn-set-visibility",
+                             "x-awn-register-proxy-item"};
     return capabilities;
   }
 
@@ -173,6 +179,23 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 
     return null;
   }
+
+  public void 
+  awn_set_visibility (string win_name, bool visible) throws DBus.Error
+  {
+    HashTable<string, unowned Value?> hints;
+    hints = new HashTable<string, unowned Value?> (str_hash, str_equal);
+    hints.insert ("visible", visible);
+ 
+    this.manager.update (win_name, hints);
+  }
+
+  public ObjectPath 
+  awn_register_proxy_item (string desktop_file, string uri) throws DBus.Error
+  {
+    // TODO: implement
+    return new ObjectPath ("/not/yet/implemented");
+  }
 }
 
 public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
@@ -196,35 +219,106 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
     }
   }
 
-  // FIXME: if TaskManagerDispatcher had only get_default constructor without
-  //   parameters, we could just emit its item_added signal in our constructor
+  public string uri
+  {
+    owned get
+    {
+      return "";
+    }
+  }
+
+  static int counter = 1;
+
   public TaskIconDispatcher (Task.Icon icon)
   {
     this.icon = icon;
 
     var conn = Bus.get (BusType.SESSION);
-    this.object_path = "/org/freedesktop/DockItem/%p".printf (icon);
+    this.object_path = "/org/freedesktop/DockManager/Item%d".printf (counter++);
     conn.register_object (this.object_path, this);
+
+    this.emit_item_added ();
+  }
+
+  private unowned TaskManagerDispatcher? get_manager_proxy ()
+  {
+    unowned TaskManagerDispatcher? proxy;
+    unowned Task.Manager manager = this.icon.get_applet () as Task.Manager;
+    proxy = manager.get_dbus_dispatcher () as TaskManagerDispatcher;
+
+    return proxy;
+  }
+
+  private void emit_item_added ()
+  {
+    unowned TaskManagerDispatcher? proxy = this.get_manager_proxy ();
+
+    if (proxy != null)
+    {
+      proxy.item_added (new ObjectPath(this.object_path));
+    }
+  }
+
+  ~TaskIconDispatcher ()
+  {
+    unowned TaskManagerDispatcher? proxy = this.get_manager_proxy ();
+
+    if (proxy != null)
+    {
+      proxy.item_removed (new ObjectPath(this.object_path));
+    }
   }
 
   public int add_menu_item (HashTable<string, Value?> menu_hints) throws DBus.Error
   {
-    debug ("called add_menu_item method");
+    Gtk.ImageMenuItem? item = null;
+    Gtk.Image? image = null;
+
     HashTableIter<string, Value?> iter =
       HashTableIter<string, Value?>(menu_hints);
     unowned string key;
     unowned Value? value;
     while (iter.next (out key, out value))
     {
-      debug ( "%s: %s", key, value.strdup_contents ());
+      if (key == "label")
+      {
+        item = new Gtk.ImageMenuItem.with_label (value.get_string ());
+      }
+      else if (key == "icon-name")
+      {
+        image = new Gtk.Image.from_icon_name (value.get_string (),
+                                              Gtk.IconSize.MENU);
+      }
+      else if (key == "icon-file")
+      {
+        image = new Gtk.Image.from_file (value.get_string ());
+      }
+      else if (key == "uri")
+      {
+        // TODO: implement
+      }
     }
 
-    int id = 12345;
-    return id;
+    if (item != null)
+    {
+      if (image != null) item.set_image (image);
+      int id = this.icon.add_menu_item (item);
+      item.show ();
+
+      item.activate.connect ((w) =>
+      {
+        this.menu_item_activated (id);
+      });
+
+      return id;
+    }
+
+    return 0;
   }
 
   public void remove_menu_item (int id) throws DBus.Error
   {
+    this.icon.remove_menu_item (id);
   }
 
   public void update_dock_item (HashTable<string, Value?> hints) throws DBus.Error
@@ -234,114 +328,12 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
     unowned Value? value;
     while (iter.next (out key, out value))
     {
-      if (key == "message")
+      unowned SList<unowned Task.Item> items = this.icon.get_items ();
+      foreach (unowned Task.Item item in items)
       {
-        if (!value.holds (typeof (string)))
-        {
-          warning ("Invalid type for property \"%s\"", key);
-          continue;
-        }
-
-        unowned SList<unowned Task.Item> items = this.icon.get_items ();
-        foreach (unowned Task.Item item in items)
-        {
-          if (item is Task.Launcher) continue;
-
-          if (item.text_overlay == null)
-          {
-            item.text_overlay = new Awn.OverlayText ();
-            item.text_overlay.font_sizing = 15;
-
-            unowned Awn.Overlayable over;
-            over = item.get_image_widget () as Awn.Overlayable;
-            over.add_overlay (item.text_overlay);
-          }
-
-          unowned string text = (string)value;
-          item.text_overlay.active = text.size () > 0;
-          item.text_overlay.text = text;
-
-          // this refreshes the overlays on TaskIcon
-          item.set_task_icon (item.get_task_icon ());
-        }
+        if (item is Task.Launcher) continue;
+        item.update_overlay (key, value);
       }
-      else if (key == "progress")
-      {
-        if (!value.holds (typeof (int)))
-        {
-          warning ("Invalid type for property \"%s\"", key);
-          continue;
-        }
-
-        unowned SList<unowned Task.Item> items = this.icon.get_items ();
-        foreach (unowned Task.Item item in items)
-        {
-          if (item is Task.Launcher) continue;
-
-          if (item.progress_overlay == null)
-          {
-            item.progress_overlay = new Awn.OverlayProgressCircle ();
-            
-            unowned Awn.Overlayable over;
-            over = item.get_image_widget () as Awn.Overlayable;
-            over.add_overlay (item.progress_overlay);
-          }
-
-          int percent = (int)value;
-          item.progress_overlay.active = percent != -1;
-
-          if (percent != -1)
-          {
-            item.progress_overlay.percent_complete = percent;
-          }
-
-          // this refreshes the overlays on TaskIcon
-          item.set_task_icon (item.get_task_icon ());
-        }
-      }
-      else if (key == "icon-file")
-      {
-        if (!value.holds (typeof (string)))
-        {
-          warning ("Invalid type for property \"%s\"", key);
-          continue;
-        }
-
-        unowned SList<unowned Task.Item> items = this.icon.get_items ();
-        foreach (unowned Task.Item item in items)
-        {
-          if (item is Task.Launcher) continue;
-
-          if (item.icon_overlay == null)
-          {
-            item.icon_overlay = new Awn.OverlayPixbufFile (null);
-            item.icon_overlay.use_source_op = true;
-            item.icon_overlay.scale = 1.0;
-
-            unowned Awn.Overlayable over;
-            over = item.get_image_widget () as Awn.Overlayable;
-            over.add_overlay (item.progress_overlay);
-          }
-
-          unowned string filename = (string)value;
-          item.icon_overlay.active = filename.size () > 0;
-
-          if (filename.size () > 0)
-          {
-            item.icon_overlay.file_name = filename;
-          }
-        }
-      }
-      else
-      {
-        debug ("Unsupported key: \"%s\"", key);
-      }
-      /*else if (key == "attention")
-      {
-      }
-      else if (key == "waiting")
-      {
-      }*/
     }
   }
 }

@@ -55,7 +55,7 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
                                      DBUS_PATH_DBUS,
                                      DBUS_INTERFACE_DBUS);
   if (!org_freedesktop_DBus_request_name (proxy,
-                                          "org.awnproject.Applet.Taskmanager",
+                                          "org.freedesktop.DockManager",
                                           0, &ret, &error))
   {
     g_warning ("There was an error requesting the D-Bus name:%s\n",
@@ -72,17 +72,12 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
     g_object_unref (proxy);
     dbus_g_connection_unref (connection);
     connection = NULL;
-    // return NULL; // FIXME: what to do in this case?
   }
 
   applet = task_manager_new (name, uid, panel_id);
   
   // We're non-first instance, don't do DBus registering
   if (connection == NULL) return applet;
-
-  dbus_g_connection_register_g_object (connection,
-                                       "/org/awnproject/Applet/Taskmanager",
-                                       G_OBJECT (applet));
 
   /* Now expose also the old API */
   if (!org_freedesktop_DBus_request_name (proxy,
