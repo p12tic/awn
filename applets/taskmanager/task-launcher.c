@@ -845,10 +845,13 @@ _match (TaskItem *item,
   if (desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,"StartupWMClass"))
   {
     startup_wm_class = desktop_agnostic_fdo_desktop_entry_get_string (priv->entry, "StartupWMClass");
-    if ( (g_strcmp0 (startup_wm_class,res_name)==0) || (g_strcmp0(startup_wm_class,class_name)==0))
+    if (g_strcmp0(startup_wm_class,"Wine")!=0)
     {
-      g_free (startup_wm_class);
-      return 94;
+      if ( (g_strcmp0 (startup_wm_class,res_name)==0) || (g_strcmp0(startup_wm_class,class_name)==0))
+      {
+        g_free (startup_wm_class);
+        return 94;
+      }
     }
     g_free (startup_wm_class);
   }
@@ -874,7 +877,10 @@ _match (TaskItem *item,
    name.
    */
 
-  if (res_name_lower)
+  /*
+   Go for something more generic if another wine appears
+   */
+  if (res_name_lower && (g_strcmp0 (res_name_lower,"wine")!=0))
   {
     if ( strlen(res_name_lower)>1 && priv->exec)
     {

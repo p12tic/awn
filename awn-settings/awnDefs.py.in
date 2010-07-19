@@ -122,9 +122,7 @@ ICON_BEHAVIOR           = "icon_change_behavior" #int
 I18N_DOMAIN = '@GETTEXT_PACKAGE@'
 
 def i18nize(symbol_table):
-    import locale
     import gettext
-    locale.setlocale(locale.LC_ALL, '')
     gettext.bindtextdomain(I18N_DOMAIN, LOCALEDIR)
     gettext.textdomain(I18N_DOMAIN)
     symbol_table['_'] = gettext.gettext
