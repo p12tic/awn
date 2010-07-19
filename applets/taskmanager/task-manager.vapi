@@ -14,8 +14,9 @@ namespace Task {
 		public uint count_tasklist_windows ();
 		public void decrement_ephemeral_count ();
 		public unowned string get_custom_name ();
+		public unowned GLib.Object get_dbus_dispatcher ();
 		public unowned Gtk.Widget get_dialog ();
-		public unowned GLib.SList get_items ();
+		public unowned GLib.SList<Task.Item> get_items ();
 		public unowned Task.Item get_launcher ();
 		public unowned Task.Item get_main_item ();
 		public void increment_ephemeral_count ();
@@ -62,9 +63,9 @@ namespace Task {
 	}
 	[CCode (cheader_filename = "task-item.h")]
 	public class Item : Gtk.Button, Gtk.Activatable, Gtk.Buildable, Atk.Implementor {
-		public weak Awn.OverlayPixbufFile icon_overlay;
-		public weak Awn.OverlayProgressCircle progress_overlay;
-		public weak Awn.OverlayText text_overlay;
+		public Awn.OverlayPixbufFile icon_overlay;
+		public Awn.OverlayProgressCircle progress_overlay;
+		public Awn.OverlayText text_overlay;
 		public void emit_icon_changed (Gdk.Pixbuf icon);
 		public void emit_name_changed (string name);
 		public void emit_visible_changed (bool visible);
@@ -108,9 +109,9 @@ namespace Task {
 		public bool get_capabilities (string[] supported_keys) throws GLib.Error;
 		public unowned Task.Icon get_icon_by_xid (int64 xid);
 		public unowned GLib.SList get_icons ();
-		public GLib.SList get_icons_by_desktop (string desktop);
-		public GLib.SList get_icons_by_pid (int pid);
-		public GLib.SList get_icons_by_wmclass (string name);
+		public GLib.SList<Task.Icon> get_icons_by_desktop (string desktop);
+		public GLib.SList<Task.Icon> get_icons_by_pid (int pid);
+		public GLib.SList<Task.Icon> get_icons_by_wmclass (string name);
 		public void remove_task_icon (Gtk.Widget icon);
 		public bool update (GLib.Value window, GLib.HashTable hints) throws GLib.Error;
 		[NoAccessorMethod]
