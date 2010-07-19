@@ -89,6 +89,20 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
 
   public ObjectPath[] get_items_by_desktop_file (string desktop_file) throws DBus.Error
   {
+    unowned SList<Task.Icon> icons = manager.get_icons ();
+
+    foreach (Task.Icon icon in icons)
+    {
+      unowned Task.Launcher? launcher = icon.get_launcher () as Task.Launcher;
+      if (launcher != null)
+      {
+        if (desktop_file == launcher.get_desktop_path ())
+        {
+          debug ("desktop_file match: %p", icon);
+          // TODO: add to a list
+        }
+      }
+    }
     return null;
   }
 
