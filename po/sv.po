@@ -8,14 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-16 22:02+0000\n"
+"PO-Revision-Date: 2010-07-19 20:51+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
-"Language-Team: Swedish <sv@li.org>\n"
+"Language-Team: Launchpad Swedish Translators <lp-l10n-"
+"sv@lists.launchpad.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-18 03:39+0000\n"
+"X-Launchpad-Export-Date: 2010-07-20 03:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -37,8 +38,8 @@ msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
-" Kontrollerar alfakanalerna vid överlappning, om overlay_application_icons "
-"är aktivt. Giltigt omfång 0.0 till 1.0."
+" Kontrollerar alfakanalen för överlappningen, om overlay_application_icons "
+"är aktiverat. Giltigt omfång är 0.0 till 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -48,7 +49,7 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
-" Kontrollerar huruvida ikoner visas i fönsterväljaren. 0) Visa alltid "
+" Kontrollerar huruvida ikoner visas i aktivitetshanteraren. 0) Visa alltid "
 "programspecifik ikon när ett fönster är aktivt (förutom i några få "
 "specialfall). 1) Visa bara programspecifik ikon när den tillför någon "
 "användbar information. 2) Ignorera alltid ikon tillhandahållen av ett "
@@ -60,20 +61,22 @@ msgid ""
 "Valid range 0.2 to 0.7."
 msgstr ""
 " Kontrollerar storleken av överlappningen om overlay_application_icons är "
-"aktiv. Giltigt omfång 0.2 till 0.7."
+"aktiverat. Giltigt omfång 0.2 till 0.7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
 " Gruppera ikoner med samma programstartare, om gruppering av fönster är "
-"inaktivt."
+"inaktiverat."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
 " If overlay_application_icons is true, this key will reverse the "
 "overlay/overlayee if set to true."
 msgstr ""
+" Om overlay_application_icons är aktiverat, kommer den här nyckeln att "
+"spegelvända överlappningen om aktiverat."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -81,7 +84,7 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
-" Om aktiverat kommer programspecifik ikon överlappa programstartarens ikon "
+" Om aktiverat, kommer programspecifik ikon överlappa programstartarens ikon "
 "istället för att ersätta den. Detta i enlighet med vad som angetts vid "
 "icon_change_behavior."
 
@@ -99,10 +102,12 @@ msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Definition för högerklicksmeny. Kommer titta i installationskatalogen för "
+"Awn-menyn om inte en absolut sökväg anges."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr "Fördröjning innan ett fönster aktiveras när en ikon är markerad."
+msgstr "Fördröjning innan ett fönster aktiveras när en ikon är fokuserad."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -122,7 +127,7 @@ msgstr "Tillåt dra och släpp för omplacering av fönster "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr "Aktivera gruppering av fönster."
+msgstr "Aktivera gruppering av aktiviteter."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -151,7 +156,9 @@ msgstr ""
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
-msgstr "Maximalt antal indikatorer under en ikon. Giltiga värden är 0..3."
+msgstr ""
+"Maximalt antal av aktivitetsindikatorer som visas under en ikon. Giltigt "
+"omfång är 0..3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
@@ -188,8 +195,8 @@ msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
-"Lista av kataloger med .desktop-filer, därifrån fönsterväljaren gör sina "
-"programstartare."
+"Lista av sökvägar till .desktop-filer, därifrån aktivitetshanteraren gör "
+"sina programstartare."
 
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:955
@@ -203,11 +210,11 @@ msgstr "Starta %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr "Programstartare/Fönsterväljare"
+msgstr "Programstartare/Aktivitetshanterare"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr "Starta och hantera program och fönster"
+msgstr "Starta och hantera program och aktiviteter"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
@@ -226,7 +233,7 @@ msgstr "Ikonstorlek:"
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:689
 msgid "Dock Preferences"
-msgstr "Inställningar för Awn"
+msgstr "Inställningar för panel"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
@@ -336,7 +343,7 @@ msgstr "Hantera Awn-inställningar, programstartare, panelprogram och teman"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr "3D-vinkel"
+msgstr "3d-vinkel"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
@@ -356,11 +363,11 @@ msgstr "<b>Effekter</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Exporteringsalternativ</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>Extrafunktioner</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
@@ -396,17 +403,17 @@ msgstr "<b>Inställningar</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr "<b>Fönsterväljare</b>"
+msgstr "<b>Aktivitetshanterare</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
-"<b>För dessa inställningar behöver panelprogrammet "
-"Programstartare/Fönsterväljare vara aktivt. </b>"
+"<b>För dessa inställningar behöver panelprogrammet för aktivitetshantering "
+"vara aktiverat.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Verktygstips</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
@@ -426,7 +433,7 @@ msgstr "Aktiv rektangel:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr "Piltyp"
+msgstr "Indikatortyp"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
@@ -434,11 +441,11 @@ msgstr "Animation för uppmärksamhet:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Skapare:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr "Läge för automatisk döljning:"
+msgstr "Läge vid döljning:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -454,7 +461,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
-msgstr "Stäng animation:"
+msgstr "Animation vid stängning:"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Configured Effects"
@@ -462,11 +469,11 @@ msgstr "Konfigurerade effekter"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr "Radie för hörn"
+msgstr "Hörnradie"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr "Symmetri för kurvor"
+msgstr "Kurvsymmetri"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
@@ -479,7 +486,7 @@ msgstr "Anpassad"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr "Egen pilbild"
+msgstr "Anpassad indikatorbild"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
@@ -491,7 +498,7 @@ msgstr "Anpassa..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr "Avaktivera panelprogram"
+msgstr "Inaktivera panelprogram"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
@@ -499,7 +506,7 @@ msgstr "Visa endast programstartare"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr "Dra-och-släpp-omplacering"
+msgstr "\"Dra och släpp\"-omplacering"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
@@ -530,15 +537,15 @@ msgstr "Fyllningsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
-msgstr ""
+msgstr "Första gradientfärg"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "First Highlight Color"
-msgstr ""
+msgstr "Första framhävningsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "Flytande kompensation"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
@@ -550,31 +557,31 @@ msgstr "Typsnittsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "Typsnittsläge"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Konturfärg för typsnitt"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Tvinga skärmläge?"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
-msgstr ""
+msgstr "Glödande punkt"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Glowing dot color"
-msgstr ""
+msgstr "Färg för glödande punkt"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
-msgstr ""
+msgstr "Gruppera liknande fönster"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
-msgstr ""
+msgstr "Animation vid fokusering:"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
@@ -582,11 +589,11 @@ msgstr "Ikon_effekt:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
-msgstr ""
+msgstr "Alfakanal för ikon"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "Ikoner och verktygstips"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Icons:"
@@ -594,7 +601,7 @@ msgstr "Ikoner:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
-msgstr ""
+msgstr "Innerkantsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
@@ -606,19 +613,19 @@ msgstr "Installera..."
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "Animation vid programstart:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "Matchningsstyrka"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "X-position"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Y-position"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
@@ -634,15 +641,15 @@ msgstr "Namn:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
-msgstr ""
+msgstr "Kompensation"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr "Öppningsanimation:"
+msgstr "Animation vid öppning:"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
-msgstr ""
+msgstr "Ytterkantsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
@@ -650,31 +657,31 @@ msgstr "Konturfärg"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "Bakgrundsfärger för panel"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Panel Look Refinements"
-msgstr ""
+msgstr "Förfiningar av panelutseende"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Stil och storlek för panel"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Alfakanal för mönster"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Pattern Image"
-msgstr ""
+msgstr "Mönsterbild"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "Multiplikator av alfakanal för reflektion"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "Kompensation av reflektion"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
@@ -682,32 +689,32 @@ msgstr "Förråd"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Andra gradientfärg"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Andra framhävningsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Välj anpassad indikator"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Select item to filter by category"
-msgstr ""
+msgstr "Välj objekt för att filtrera efter kategori"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
-msgstr ""
+msgstr "Färg för avgränsare"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
-msgstr ""
+msgstr "Visa alla fönster"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Tryck längre för att visa dialogruta"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
@@ -715,7 +722,7 @@ msgstr "Visa skuggor"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
-msgstr ""
+msgstr "St_il:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
@@ -723,17 +730,19 @@ msgstr "Starta _Awn automatiskt"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Stripe Width"
-msgstr ""
+msgstr "Randbredd"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Theme Export"
-msgstr ""
+msgstr "Exportera tema"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
 msgstr ""
+"För att använda lägena \"Dölj smart\" eller \"Undvik fönster\", måste du ha "
+"panelprogrammet för aktivitetshantering aktiverat."
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
@@ -741,11 +750,11 @@ msgstr "Triangel"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Använd färger från GTK-tema"
 
 #: ../awn-settings/awn-settings.ui.h:104
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Använd mönster som bakgrund"
 
 #: ../awn-settings/awn-settings.ui.h:105
 msgid "Version:"
@@ -753,7 +762,7 @@ msgstr "Version:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr "_Beteende"
+msgstr "_Beteende:"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
@@ -769,7 +778,7 @@ msgstr "Ikonstorlek:"
 
 #: ../awn-settings/awn-settings.ui.h:110
 msgid "pixels"
-msgstr "pixlar"
+msgstr "bildpunkter"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
@@ -816,11 +825,11 @@ msgstr "Kläm ihop"
 
 #: ../awn-settings/awnClass.py:822 ../awn-settings/awnClass.py:883
 msgid "3D Turn"
-msgstr "3D-vändning"
+msgstr "3d-vändning"
 
 #: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
 msgid "3D Spotlight Turn"
-msgstr "3D-vändning med strålkastare"
+msgstr "3d-vändning med strålkastare"
 
 #: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
 msgid "Glow"
@@ -869,7 +878,7 @@ msgstr "Avant Window Navigator"
 #: ../awn-settings/awnClass.py:1091
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
-"Fullständigt anpassningsbar dockningsliknande fönsternavigator för GNOME."
+"Fullständigt anpassningsbar dock-liknande fönsternavigator för GNOME."
 
 #: ../awn-settings/awnClass.py:1093
 msgid ""
@@ -975,11 +984,11 @@ msgstr "Genomskinlighet"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "Behåll under"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
-msgstr ""
+msgstr "Solid"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Outline"
@@ -999,11 +1008,11 @@ msgstr "Använd ikoner med bästa kvalitet"
 
 #: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Överlappa ikon med bästa kvalitet med programspecifik ikon"
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Överlappa programspecifik ikon med ikon med bästa kvalitet"
 
 #: ../awn-settings/awnSettings.py.in:1139
 msgid "Preferences"
@@ -1049,11 +1058,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr "En dockningsliknande fönsternavigator."
+msgstr "En dock-liknande fönsternavigator."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0: solid, 1: outline, 2: outline, reversed."
-msgstr ""
+msgstr "0: solid, 1: kontur, 2: kontur, omvänd"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "A bitmask which stores the type of effect for each event"
@@ -1061,17 +1070,19 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
+msgstr "Position för en icke-expanderad panel på skärmkanten."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
+msgstr "En valfri kompensation när du har fler än en skärm."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"Allt större än 0 visar en panel med rundade hörn. Ju större radien är, destå "
+"större blir hörnen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid ""
@@ -1079,10 +1090,13 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
+"Döljer panelen automatiskt när pekaren inte fokuserar på den. (Ska inte "
+"användas tillsammans med panel_mode. Inget: 0, behåll under: 1, tona ut: 2, "
+"genomskinlighet: 3)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "Bakgrundsfärg för Awn-dialogrutans titel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
@@ -1090,23 +1104,23 @@ msgstr "Bakgrundsfärg för AwnDialog."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "Bakgrundsfärg för verktygstips."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Färg för aktiv rektangel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Färg för glödande punkt."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Konturfärg för aktiv rektangel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Delay between mouse leaving the panel and it hiding."
-msgstr ""
+msgstr "Fördröjning mellan det att musen lämnar panelen och den döljs."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
@@ -1120,47 +1134,50 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
-msgstr ""
+msgstr "Visa avgränsare."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Aktivera visning av ett mönster."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
-msgstr ""
+msgstr "Förstastegsfärg för gradient."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "Förstastegsfärg för framhävningsgradient."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
-msgstr "Typsnittsfärg för verktygstipset"
+msgstr "Typsnittsfärg för verktygstips"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
-msgstr "Typsnittsnamn för verktygstipset"
+msgstr "Typsnittsnamn för verktygstips"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
-msgstr ""
+msgstr "Tvinga skärmgeometri."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "Färg för ikontext. Lämna tomt för att använda färg från GTK-tema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
+"Konturfärg för ikontext. Lämna tomt för att använda färg från GTK-tema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "Om aktiverat, kommer maximerade fönster inte att täcka panelen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Om aktiverat, kommer panelen expandera till fullständing "
+"skärmbredd/skärmhöjd."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
@@ -1175,22 +1192,24 @@ msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
+"Skärmnummer där Awn är belägen. (Gäller endast när monitor_force är "
+"inaktiverat. Använd -1 för att skärm ska väljas automatiskt)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "Kompensation mellan ikoner och deras dialogruta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Kompensation av ikoner från fönsterram."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr ""
+msgstr "Orientering för Awn. (Vänster: 0, höger: 1, överst: 2, nederst: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
-msgstr ""
+msgstr "Konturfärg för verktygstips."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
@@ -1198,11 +1217,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Sökväg till png-filen som innehåller den aktiva ikonbakgrunden."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Sökväg till png-filen som innehåller indikatorikonen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
@@ -1214,18 +1233,20 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
+"Alfakanal för reflektion, som en multiplikator av den aktuella alfakanalen "
+"för ikonen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
-msgstr ""
+msgstr "Andrastegsfärg för gradient."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "Andrastegsfärg för framhävningsgradient."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "Färg för avgränsare."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
@@ -1237,19 +1258,21 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "Vinkeln på panelen i 3d-läge."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
-msgstr ""
+msgstr "Kurvigheten av panelen i kurvformat läge."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
+"Den tvingade skärmhöjden. Används endast om monitor_force är aktiverat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
+"Den tvingade skärmbredden. Används endast om monitor_force är aktiverat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
@@ -1262,40 +1285,44 @@ msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
+"Lista av panelprogram för denna panel, sorterade från vänster till höger "
+"eller överst till nederst."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
-msgstr ""
+msgstr "Lista av panelinstanser."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
-msgstr ""
+msgstr "Platsen för mönster att visa."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Kompensationen mellan ikoner och dess reflektion."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
-msgstr ""
+msgstr "Kompensationen för den flytande bakgrunden."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "Opaciteten för ikoner, från 0.0 till 1.0."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Opaciteten för mönstret."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid ""
 "The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
 "4, floaty: 5, lucido: 6)"
 msgstr ""
+"Stilen på panelen. (Ingen: 0, platt: 1, 3d: 2, kurvformad: 3, kantig: 4, "
+"flytande: 5, lucido: 6)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
-msgstr ""
+msgstr "Symmetrin av kurvorna i kurvformat läge."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The user-visible size of Awn."
@@ -1303,29 +1330,31 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The width of the stripe in Lucido mode."
-msgstr ""
+msgstr "Bredden av randen i lucido-läge."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
-msgstr ""
+msgstr "Tid i ms varefter Awn-ikon kommer avge signal för \"längre tryck\"."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
+msgstr "Huruvida Awn-dialogrutan ska använda färger från GTK-tema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
-msgstr ""
+msgstr "Huruvida dialogrutor ska stängas eller ej vid förlorad fokus."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgstr "Huruvida färger från nuvarande GTK-tema ska användas eller ej."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
+"Bredd på kontur för ikontext om kontur-läge är aktiverat. Föreslagna värden "
+"är 1.0 till 5.0."
 
 #: ../data/awn-themed-icon.ui.h:1
 msgid ""
