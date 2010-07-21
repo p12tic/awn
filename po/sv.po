@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-19 20:51+0000\n"
+"PO-Revision-Date: 2010-07-20 14:48+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-20 03:47+0000\n"
+"X-Launchpad-Export-Date: 2010-07-21 03:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -114,8 +114,8 @@ msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
-"Beteende vid kopiering när skrivbordsfiler dras och släpps. 0.. Kopiera "
-"alla, 1.. Kopiera om filen ägs av användaren, 2.. Kopiera inte."
+"Beteende vid kopiering när skrivbordsfiler dras och släpps. 0: Kopiera alla, "
+"1: kopiera om filen ägs av användaren, 2: kopiera inte."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
@@ -145,6 +145,9 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
+"Hur listan över fönster som testas för korsning ska skapas, när \"Dölj "
+"smart\" är aktivt. 0: Använd fönster på aktiv arbetsyta, 1: använd fönster "
+"för närvarande fokuserat program."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -152,6 +155,9 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
+"\"Dölj smart\" om döljning är aktiverat för panelen. Detta hindrar "
+"automatisk döljning av panelen, om det inte finns några korsande fönster i "
+"den relevanta fönsterlistan (se intellihide_mode)."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
@@ -166,7 +172,7 @@ msgid ""
 "A value of 0 disables."
 msgstr ""
 "Antal sekunder för att hindra automatisk döljning när ett program tillkallar "
-"uppmärksamhet. Värdet 0 förhindrar det."
+"uppmärksamhet. Värdet 0 inaktiverar detta."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
@@ -188,7 +194,7 @@ msgstr "Visa fönster från alla arbetsytor"
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
-msgstr ""
+msgstr "Gränsen vid vilken texträkning börjar visas. Giltigt omfång från 1.."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
@@ -233,7 +239,7 @@ msgstr "Ikonstorlek:"
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:689
 msgid "Dock Preferences"
-msgstr "Inställningar för panel"
+msgstr "Inställningar för Awn"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
@@ -457,7 +463,7 @@ msgstr "Välj ett tema..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
-msgstr ""
+msgstr "Genomklickning"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
@@ -853,7 +859,7 @@ msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
-"Det finns ännu ingen autostart-katalog för ditt användarkonto.\n"
+"Det finns ännu ingen uppstartskatalog för ditt användarkonto.\n"
 "Vill du att jag automatiskt skapar en åt dig?"
 
 #: ../awn-settings/awnClass.py:1038
@@ -1051,10 +1057,24 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Det gick inte att hitta följande Pythonmoduler: %s. Det finns några möjliga\n"
+"förklaringar för detta:\n"
+"\n"
+"1. Du har inte denna Pythonmodulen installerad. I detta fall, bör du besöka\n"
+"sektionen för panelprogram (applets) i Awn-wikin, för att lista ut det "
+"korrekta\n"
+"paketnamnet för din distribution, som tillhandahåller denna modul.\n"
+"\n"
+"2.Modulen är installerad på en icke-standardiserad plats. Detta är "
+"vanligtvis\n"
+"anledningen när du installerar ett paket manuellt, det vill säga inte genom "
+"din\n"
+"distributions pakethanterare. Denna situation är förklarad i FAQ-sektionen i "
+"wikin.\n"
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn-wikin"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -1066,7 +1086,7 @@ msgstr "0: solid, 1: kontur, 2: kontur, omvänd"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgstr "En bitmask som lagrar effekttypen för varje händelse."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
@@ -1124,13 +1144,15 @@ msgstr "Fördröjning mellan det att musen lämnar panelen och den döljs."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Fördröjning för sökning efter musposition."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Avgör om allmän konfigurationsredigerare är tillåten för panelprogram som "
+"inte har en anpassad dialogruta för inställningar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
@@ -1213,7 +1235,7 @@ msgstr "Konturfärg för verktygstips."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Sökväg till nuvarande sktivbordstema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
@@ -1229,6 +1251,9 @@ msgid ""
 "through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
+"Tillhandahåller möjlighet att klicka på fönster bakom panelen. (0: Klicka "
+"aldrig igenom, 1: klicka igenom när ctrl hålls nedtryckt, 2: klicka alltid "
+"igenom och påverka endast panelen när ctrl hålls nedtryckt)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
@@ -1254,7 +1279,7 @@ msgstr "Visa skuggor för ikoner."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
-msgstr ""
+msgstr "Den aktiva listan med UA-screenlets för denna panel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
@@ -1279,6 +1304,8 @@ msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
+"Listan med UA-screenlets som tidigare har lagts till i formuläret "
+"ScreeneletInstance::Position."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
@@ -1326,7 +1353,7 @@ msgstr "Symmetrin av kurvorna i kurvformat läge."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The user-visible size of Awn."
-msgstr ""
+msgstr "Den användarsynliga storleken av Awn."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The width of the stripe in Lucido mode."
@@ -1363,6 +1390,10 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
+"<b>Anpassa panelikon</b>\n"
+"Du har valt att ersätta en ikon på panelen. Välj huruvida denna förändring "
+"ska gälla för endast detta panelprogram, för alla panelprogram av denna typ "
+"eller för alla ikoner på panelen av denna typ."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
