@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-20 14:48+0000\n"
+"PO-Revision-Date: 2010-07-21 14:31+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-21 03:44+0000\n"
+"X-Launchpad-Export-Date: 2010-07-22 03:57+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -239,7 +239,7 @@ msgstr "Ikonstorlek:"
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:689
 msgid "Dock Preferences"
-msgstr "Inställningar för Awn"
+msgstr "Inställningar för dock"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format

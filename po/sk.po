@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-20 22:44+0000\n"
+"PO-Revision-Date: 2010-07-21 10:40+0000\n"
 "Last-Translator: Marcel <marceliqq@gmail.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Launchpad-Export-Date: 2010-07-21 03:44+0000\n"
+"X-Launchpad-Export-Date: 2010-07-22 03:57+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -211,7 +211,7 @@ msgstr "Nepodarilo sa otvoriť Awn nastavenia: %s"
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "Applet slúžiaci na ovládanie doku a spustenie Awn nastavení."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -482,7 +482,7 @@ msgstr "Presuň ľubovoľný applet sem pre jeho aktiváciu"
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr ""
+msgstr "Pretiahnite nižšie alebo dvojklikom aktivovať applet"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
@@ -534,11 +534,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
-msgstr ""
+msgstr "Žiariaca bodka."
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Glowing dot color"
-msgstr ""
+msgstr "Farba žiariacej bodky"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
@@ -546,15 +546,15 @@ msgstr "Združovať podobné okná"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
-msgstr ""
+msgstr "Balancujúca animácia:"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
-msgstr ""
+msgstr "Efekt_ikon:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
-msgstr ""
+msgstr "Ikona alfa"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
@@ -626,7 +626,7 @@ msgstr "Farba Pozadia Panelu"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Panel Look Refinements"
-msgstr ""
+msgstr "Upresnenie Vzhľadu Panela"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
@@ -634,15 +634,15 @@ msgstr "Panel Štýl & Šírka"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Vzor Alfa"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Pattern Image"
-msgstr ""
+msgstr "Vzor Obrázok"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "Násobiteľ multiplikátora alfa"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
@@ -963,7 +963,7 @@ msgstr "Obrys, Obrátený"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Použiť špecifické ikony aplikácie"
 
 #: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
@@ -1065,7 +1065,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "Farba pozadia pre titulok AwnDialóg"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
@@ -1081,7 +1081,7 @@ msgstr "Farba aktívneho obdĺžnika."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Farba žiariacej bodky."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
@@ -1107,7 +1107,7 @@ msgstr "Kresliť oddeľovače."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Umožní kreslenie vzorov."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
@@ -1131,7 +1131,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "Farba textu ikon. Nechajte prázdne pre použitie gtk motívu vzhľadu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
@@ -1139,19 +1139,19 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "Ak je aktivované, maximalizované okno neprekryje panel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
-msgstr ""
+msgstr "Ak je aktivované, panel sa rozšíri na plnú šírku/výšku monitora."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
-msgstr ""
+msgstr "Farba vnútorného okraja."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
-msgstr ""
+msgstr "Hlavná farba okraja."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
@@ -1161,15 +1161,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "Odsadenie medzi ikonami a ich dialógom."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Odsadenie ikon od okraja okna."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr ""
+msgstr "Orientácia Awn. (vľavo: 0, vpravo: 1, navrchu: 2 a dole: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1177,7 +1177,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Cesta k aktuálnemu motívu vzhľadu súborov."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
@@ -1232,7 +1232,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
-msgstr ""
+msgstr "Vynútená šírka monitora. Použije sa iba ak je aktívne monitor_force."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
@@ -1245,6 +1245,7 @@ msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
+"Zoznam appletov pre tento panel zoradený zľava doprava, alebo zhora dole."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
@@ -1256,7 +1257,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Odsadenie medzi ikonou a jej odrazom."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
@@ -1264,11 +1265,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "Nepriehľadnosť ikon, od 0.0 do 1.0"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Nepriehľadnosť vzoru."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid ""
@@ -1320,12 +1321,12 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "Prispôsobiť Applet"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
 msgid "About %s"
-msgstr ""
+msgstr "O programe %s"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
@@ -1349,7 +1350,7 @@ msgstr "Nahrávam applet..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Hups! Applet havaroval. Kliknite aby bol reštartovaný."
 
 #: ../src/awn-panel.c:3960
 msgid "Close docklet"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-19 23:53+0000\n"
+"PO-Revision-Date: 2010-07-22 00:11+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-21 03:44+0000\n"
+"X-Launchpad-Export-Date: 2010-07-22 03:57+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -420,7 +420,7 @@ msgstr "Valitse teema..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
-msgstr ""
+msgstr "Napsautustila"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
@@ -579,7 +579,7 @@ msgstr "Käynnistysanimaatio:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "Kuvakkeiden vastaavuustaso"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
@@ -639,7 +639,7 @@ msgstr "Kuvion kuvatiedosto"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "Peilikuvan peittokyky"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
@@ -958,19 +958,19 @@ msgstr "Ääriviiva, käänteinen"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Käytä sovellusten määrittämiä kuvakkeita"
 
 #: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Käytä paraslaatuisia kuvakkeita"
 
 #: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Peitä paraslaatuinen kuvake sovelluksen kuvakkeella"
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Peitä sovelluksen kuvake paraslaatuisella kuvakkella"
 
 #: ../awn-settings/awnSettings.py.in:1139
 msgid "Preferences"
