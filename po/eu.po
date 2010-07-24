@@ -1,42 +1,46 @@
 # Basque translation for awn
 # Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
 # This file is distributed under the same license as the awn package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+# Asier Sarasua Garmendia <asier.sarasua@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-08 02:31-0800\n"
-"PO-Revision-Date: 2010-02-08 12:51+0000\n"
-"Last-Translator: Mikel Pascual Aldabaldetreku <mikel.paskual@gmail.com>\n"
+"POT-Creation-Date: 2010-07-07 11:06+0200\n"
+"PO-Revision-Date: 2010-07-23 23:03+0000\n"
+"Last-Translator: Asier Sarasua Garmendia <Unknown>\n"
 "Language-Team: Basque <eu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:11+0000\n"
+"X-Launchpad-Export-Date: 2010-07-24 03:58+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Zabaltzailea"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Panelaren espazioa betetzen du zabaltze-moduan dagoenean"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Onartu WM_CLIENT_NAME balio ezberdinak dituzten leihoak elkarrekin "
+"multzokatzea."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Gainjartzearen gardentasuna kontrolatzen du overlay_application_icons "
+"egiazkoa bada. Balio-tarte baliagarria: 0.0tik 1.0ra."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -46,23 +50,35 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" Atazen Ikonoko leiho-ikonoen bistaratzea kontrolatzen du. Erakutsi beti "
+"aplikazioak berak hornitutako leiho-ikonoa leihoa aktibatuta dagoenean (kasu "
+"gutxi batzuetan salbu). 1) Saiatu aplikazioak berak hornitutako leiho-ikonoa "
+"erakusten informazio erabilgarria/testuingurukoa eskaintzen duenean soilik. "
+"2) Ezikusi aplikazioak berak hornitutako leiho-ikonoa eta abiarazle-ikonoa "
+"erakutsi soilik."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Gainjartzearen tamaina kontrolatzen du overlay_application_icons egiazkoa "
+"bada. Balio-tarte baliagarria: 0.2tik 0.7ra."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Taldekatu abiarazle bera duten ikonoak, leihoen taldekatzea desgaituta "
+"badago."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
 " If overlay_application_icons is true, this key will reverse the "
 "overlay/overlayee if set to true."
 msgstr ""
+" overlay_application_icons egiazkoa bada, gako honek alderantzikatu egingo "
+"du gainjartzailea/gainjarritakoa."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -70,40 +86,51 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" Egiazkoa bada, aplikazio-leihoen ikonoak abiarazle-ikonoari gainjarriko "
+"zaizkio, eta ez du ordeztuko icon_change_behavior-en definitutako "
+"portaeraren arabera."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Portaera beste laneko area baten leihoa aktibatzen denean. (0 balio "
+"lehenetsirako, 1 - aldatu laneko area aktiboa, 2 - mugitu uneko laneko "
+"areara)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Testuinguru-menuaren definizioa.  AWNren menuaren instalazio-direktorioan "
+"begiratuko du, bide-izen absolutu bat ematen ez bada."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
 msgstr ""
+"Ikono baten gainetik arrastatzean leihoa aktibatu arte dagoen atzerapena."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"Desktop copy behaviour on drag and drop of desktop files. 0.. Kopiatu denak, "
+"1.. Kopiatu erabiltzailea jabea bada, 2.. Ez kopiatu."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "Gaitu sakatze luzea elkarrizketa-koadroa irekitzeko."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Gaitu leihoen berrantolaketa arrastatze eta jaregite bitartez "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Atazen taldekatzea gaitzen."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -111,6 +138,9 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
+"Elementuak taldekatzeko zein indarrarekin aplikatzen den bat etortzea. "
+"Balioa 0 eta 99 artekoa izan behar da. 0 balioa ez taldekatzearen parekoa "
+"da. 99 balioak ia dena taldekatuko du."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -118,6 +148,9 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
+"Nola sortu ebakidurarako probatutako leihoen zerrenda Intellihide aktibo "
+"dagoenean.  0.. erabili laneko area aktiboko leihoak, 1.. erabili unean "
+"enfokatutako aplikazioaren leihoa."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -125,289 +158,733 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
+"Intellihide panelaren ezkutatzea gaituta badago.  Honek panela automatikoki "
+"ezkutatzea galaraziko du ebakitako leihorik ez badago leihoen zerrenda "
+"adierazgarrian (ikusi intellihide_mode)."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
+"Ikonoen azpian erakusten diren ataza-adierazleen kopuru maximoa. Balio-tarte "
+"baliagarria 0..3 da."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
 "Number of seconds to inhibit autohide when a application requests attention. "
 "A value of 0 disables."
 msgstr ""
+"Ezkutatze automatikoa galarazteko segundo-kopurua aplikazio batek arreta "
+"eskatzen duenean. 0 balioak desgaitu egiten du."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
 "Number of seconds to wait before nagging again, by inhibiting autohide, if "
 "attention is required by any windows. A value of 0 disables."
 msgstr ""
+"Number of seconds to wait before nagging again, by inhibiting autohide, if "
+"attention is required by any windows. 0 balioak desgaitu egiten du."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Abiarazle-leihoak soilik erakutsi eta kudeatu"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Erakutsi laneko area guztietako leihoak"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
 msgstr ""
+"Testu-zenbaketa erakusten hasten den atalasea. balio-tarte baliagarria 1.."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"a list of paths to .desktop files from which the taskmanager should create "
+"it's launchers"
 
-#: ../applets/taskmanager/task-launcher.c:1103
-#: ../applets/taskmanager/task-icon-build-context-menus.c:827
+#: ../applets/taskmanager/task-launcher.c:1109
+#: ../applets/taskmanager/task-icon-build-context-menus.c:955
 msgid "Launch"
-msgstr ""
+msgstr "Abiarazi"
 
-#: ../applets/taskmanager/task-launcher.c:1186
+#: ../applets/taskmanager/task-launcher.c:1192
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "Abiarazi %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Abiarazlea/Atazen kudeatzailea"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Abiarazlearen/Atazen kudeatzailearen appleta"
 
-#: ../applets/quick-prefs/applet.vala:118
-#: ../applets/quick-prefs/applet.vala:527 ../src/awn-panel.c:689
+#: ../applets/quick-prefs/applet.vala:130
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
 msgid "About Awn"
-msgstr ""
+msgstr "AWNi buruz"
 
-#: ../applets/quick-prefs/applet.vala:289
-#: ../applets/quick-prefs/applet.vala:465
+#: ../applets/quick-prefs/applet.vala:283
+#: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Arrastatu panelaren orientazioa aldatzeko"
 
-#: ../applets/quick-prefs/applet.vala:478
+#: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
-msgstr ""
+msgstr "Ikono-tamaina:"
 
-#: ../applets/quick-prefs/applet.vala:514 ../libawn/awn-applet.c:1078
-#: ../src/awn-panel.c:673
+#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
+#: ../src/awn-panel.c:689
 msgid "Dock Preferences"
 msgstr "Dock-hobespenak"
 
-#: ../applets/quick-prefs/applet.vala:578
+#: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Ezin dira AWNren hobespenak ireki: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "Atrakea kontrolatzeko eta AWNren hobespenak abiarazteko appleta."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Hobespenen appleta"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Bereizlea gehitzen du applet artean"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Bereizlea"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "%d laneko area"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "1_0 laneko area"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "%s%d laneko area"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:528
+#: ../applets/taskmanager/task-icon-build-context-menus.c:657
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Gehitu abiarazle modura"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:546
+#: ../applets/taskmanager/task-icon-build-context-menus.c:675
 msgid "_Close"
-msgstr ""
+msgstr "_Itxi"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:574
+#: ../applets/taskmanager/task-icon-build-context-menus.c:703
 msgid "_Close All"
-msgstr ""
+msgstr "Itxi _denak"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:743
+#: ../applets/taskmanager/task-icon-build-context-menus.c:872
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ximizatu"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:748
+#: ../applets/taskmanager/task-icon-build-context-menus.c:877
 msgid "Unma_ximize"
-msgstr ""
+msgstr "_Leheneratu"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:777
+#: ../applets/taskmanager/task-icon-build-context-menus.c:905
 msgid "Always on _Top"
-msgstr ""
+msgstr "Beti _gainean"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:801
+#: ../applets/taskmanager/task-icon-build-context-menus.c:929
 msgid "Mi_nimize"
-msgstr ""
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:806
-msgid "Unmi_nimize"
-msgstr ""
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:860
-msgid "Always on Visible Workspace"
-msgstr ""
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:864
-msgid "Only on This Workspace"
-msgstr ""
+msgstr "_Ikonotu"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:934
+msgid "Unmi_nimize"
+msgstr "_Leheneratu"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:988
+msgid "Always on Visible Workspace"
+msgstr "Beti laneko area ikusgaian"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:992
+msgid "Only on This Workspace"
+msgstr "Laneko area honetan soilik"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1081
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Mugitu e_zkerreko laneko areara"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:944
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1091
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Mugitu e_skuineko laneko areara"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:954
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1101
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Mugitu _goiko laneko areara"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:964
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1111
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Mugitu _beheko laneko areara"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:973
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1120
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Mugitu _beste laneko area batera"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
+#: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr ""
+msgstr "AWNren hobespenak"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr "Awn-ren hobespenak, abiarazleak, appletak eta gaiak kudeatu"
+msgstr "Kudeatu AWNren hobespenak, abiarazleak, appletak eta gaiak"
 
-#: ../awn-settings/awnClass.py:267
-msgid "Error, a sources.list already exist"
-msgstr ""
+#: ../awn-settings/awn-settings.ui.h:1
+msgid "3D Angle"
+msgstr "3D angelua"
 
-#: ../awn-settings/awnClass.py:335
-msgid "Error, the path is empty or already exist"
-msgstr ""
+#: ../awn-settings/awn-settings.ui.h:2
+msgid "<b>Active Applets</b>"
+msgstr "<b>Applet aktiboak</b>"
 
-#: ../awn-settings/awnClass.py:455
-#, python-format
+#: ../awn-settings/awn-settings.ui.h:3
+msgid "<b>Available Applets</b>"
+msgstr "<b>Applet eskuragarriak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:4
+msgid "<b>Categories</b>"
+msgstr "<b>Kategoriak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:5
+msgid "<b>Effects</b>"
+msgstr "<b>Efektuak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:6
+msgid "<b>Export Option Groups</b>"
+msgstr "<b>Esportatu aukera-taldeak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:7
+msgid "<b>Extras</b>"
+msgstr "<b>Estrak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:8
+msgid "<b>General</b>"
+msgstr "<b>Orokorra</b>"
+
+#: ../awn-settings/awn-settings.ui.h:9
+msgid "<b>Icons</b>"
+msgstr "<b>Ikonoak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:10
+msgid "<b>Launchers</b>"
+msgstr "<b>Abiarazleak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:11
+msgid "<b>Numeric Settings</b>"
+msgstr "<b>Zenbakizko ezarpenak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:12
+msgid "<b>Panel Colors</b>"
+msgstr "<b>Panel-koloreak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:13
+msgid "<b>Panel</b>"
+msgstr "<b>Panela</b>"
+
+#: ../awn-settings/awn-settings.ui.h:14
+msgid "<b>Repositories</b>"
+msgstr "<b>Biltegiak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:15
+msgid "<b>Settings</b>"
+msgstr "<b>Ezarpenak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:16
+msgid "<b>Taskmanagers</b>"
+msgstr "<b>Ataza-kudeatzaileak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:17
+msgid "<b>These settings require the Task Manager applet to be active. </b>"
+msgstr "<b>Ezarpen hauek Ataza-kudeatzailea behar dute aktibo izateko. </b>"
+
+#: ../awn-settings/awn-settings.ui.h:18
+msgid "<b>Tooltips</b>"
+msgstr "<b>Argibideak</b>"
+
+#: ../awn-settings/awn-settings.ui.h:19
 msgid ""
-"Error %s is missing on your system, please remove it from the sources.list"
+"<b>You need to enable desktop effects (compositor) to apply and customize "
+"themes.</b>"
 msgstr ""
+"<b>Mahaigaineko efektuak (konposatzailea) gaitu behar duzu gaiak aplikatu "
+"eta pertsonalizatzeko.</b>"
 
-#: ../awn-settings/awnClass.py:846 ../awn-settings/awnClass.py:907
-#: ../awn-settings/awnSettings.py.in:143
-msgid "None"
-msgstr "Batere ez"
+#: ../awn-settings/awn-settings.ui.h:20
+msgid "Activate applet"
+msgstr "Aktibatu appleta"
 
-#: ../awn-settings/awnClass.py:847 ../awn-settings/awnClass.py:908
-msgid "Simple"
-msgstr ""
+#: ../awn-settings/awn-settings.ui.h:21
+msgid "Active rectangle:"
+msgstr "Laukizuzen aktiboa:"
 
-#: ../awn-settings/awnClass.py:848 ../awn-settings/awnClass.py:909
-msgid "Classic"
-msgstr "Klasikoa"
+#: ../awn-settings/awn-settings.ui.h:22
+msgid "Arrow type"
+msgstr "Gezi-mota"
 
-#: ../awn-settings/awnClass.py:849 ../awn-settings/awnClass.py:910
-msgid "Fade"
-msgstr "Desagertu"
+#: ../awn-settings/awn-settings.ui.h:23
+msgid "Attention animation:"
+msgstr "Arreta-animazioa:"
 
-#: ../awn-settings/awnClass.py:850 ../awn-settings/awnClass.py:911
-msgid "Spotlight"
-msgstr "Argi-fokoa"
+#: ../awn-settings/awn-settings.ui.h:24
+msgid "Author:"
+msgstr "Egilea:"
 
-#: ../awn-settings/awnClass.py:851 ../awn-settings/awnClass.py:912
-msgid "Zoom"
-msgstr "Handitu"
+#: ../awn-settings/awn-settings.ui.h:25
+msgid "Autohide mode:"
+msgstr "Ezkutatze automatikoko modua:"
 
-#: ../awn-settings/awnClass.py:852 ../awn-settings/awnClass.py:913
-msgid "Squish"
-msgstr "Errebotatu"
+#: ../awn-settings/awn-settings.ui.h:27
+msgid "Background:"
+msgstr "Atzeko planoa:"
 
-#: ../awn-settings/awnClass.py:853 ../awn-settings/awnClass.py:914
-msgid "3D Turn"
-msgstr "3D Bira"
+#: ../awn-settings/awn-settings.ui.h:28
+msgid "Choose a theme..."
+msgstr "Hautatu gaia..."
 
-#: ../awn-settings/awnClass.py:854 ../awn-settings/awnClass.py:915
-msgid "3D Spotlight Turn"
-msgstr "3D Argi-foko Bira"
+#: ../awn-settings/awn-settings.ui.h:29
+msgid "Clickthrough"
+msgstr "Klik egite-kopurua"
 
-#: ../awn-settings/awnClass.py:855 ../awn-settings/awnClass.py:916
-msgid "Glow"
-msgstr "Argitu"
+#: ../awn-settings/awn-settings.ui.h:30
+msgid "Close animation:"
+msgstr "Ixte-animazioa:"
 
-#: ../awn-settings/awnClass.py:917 ../awn-settings/awnSettings.py.in:151
+#: ../awn-settings/awn-settings.ui.h:31
+msgid "Configured Effects"
+msgstr "Konfiguratutako efektuak"
+
+#: ../awn-settings/awn-settings.ui.h:32
+msgid "Corner Radius"
+msgstr "Izkina-erradioa"
+
+#: ../awn-settings/awn-settings.ui.h:33
+msgid "Curves Symmetry"
+msgstr "Kurben simetria"
+
+#: ../awn-settings/awn-settings.ui.h:34
+msgid "Curviness"
+msgstr "Kurbatze-maila"
+
+#: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
+#: ../awn-settings/awnSettings.py.in:153
 msgid "Custom"
 msgstr "Pertsonalizatua"
 
-#: ../awn-settings/awnClass.py:997
+#: ../awn-settings/awn-settings.ui.h:36
+msgid "Custom Arrow Image"
+msgstr "Gezi-irudi pertsonalizatua"
+
+#: ../awn-settings/awn-settings.ui.h:37
+msgid "Customize effects"
+msgstr "Pertsonalizatu efektuak"
+
+#: ../awn-settings/awn-settings.ui.h:38
+msgid "Customize..."
+msgstr "Pertsonalizatu..."
+
+#: ../awn-settings/awn-settings.ui.h:39
+msgid "Deactivate applet"
+msgstr "Desaktibatu appleta"
+
+#: ../awn-settings/awn-settings.ui.h:40
+msgid "Display launchers only"
+msgstr "Erakutsi abiarazleak soilik"
+
+#: ../awn-settings/awn-settings.ui.h:41
+msgid "Drag and drop reordering"
+msgstr "Arrastatu eta jaregin berrantolatzeko"
+
+#. Tooltip
+#: ../awn-settings/awn-settings.ui.h:43
+msgid "Drag available applets here to activate"
+msgstr "Arrastatu applet erabilgarriak hona haiek aktibatzeko"
+
+#. Tooltip
+#: ../awn-settings/awn-settings.ui.h:45
+msgid "Drag below or double click to activate applet"
+msgstr "Arrastatu behera edo egin klik bi aldiz appleta aktibatzeko"
+
+#: ../awn-settings/awn-settings.ui.h:46
+msgid "E_xpand the panel"
+msgstr "_Zabaldu panela"
+
+#: ../awn-settings/awn-settings.ui.h:47
+msgid "Export Theme..."
+msgstr "Esportatu gaia..."
+
+#: ../awn-settings/awn-settings.ui.h:48
+msgid "Extra Options"
+msgstr "Aukera gehiago"
+
+#: ../awn-settings/awn-settings.ui.h:49
+msgid "Fill Color"
+msgstr "Betegarriaren kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:50
+msgid "First Gradient Color"
+msgstr "Gradientearen lehen kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:51
+msgid "First Highlight Color"
+msgstr "Lehen nabarmentze-kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:52
+msgid "Floaty Offset"
+msgstr "Desplazamendu flotatzailea"
+
+#: ../awn-settings/awn-settings.ui.h:53
+msgid "Font"
+msgstr "Letra-tipoa"
+
+#: ../awn-settings/awn-settings.ui.h:54
+msgid "Font Color"
+msgstr "Letraren kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:55
+msgid "Font Mode"
+msgstr "Letraren modua"
+
+#: ../awn-settings/awn-settings.ui.h:56
+msgid "Font Outline Color"
+msgstr "Letraren ingeradaren kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:57
+msgid "Force monitor mode ?"
+msgstr "Behartu monitore-modua?"
+
+#: ../awn-settings/awn-settings.ui.h:58
+msgid "Glowing dot"
+msgstr "Puntu dirdiratsua"
+
+#: ../awn-settings/awn-settings.ui.h:59
+msgid "Glowing dot color"
+msgstr "Puntu dirdiratsuaren kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:60
+msgid "Group common windows"
+msgstr "Taldekatu leiho komunak"
+
+#: ../awn-settings/awn-settings.ui.h:61
+msgid "Hover animation:"
+msgstr "Animazioa gainetik pasatzean:"
+
+#: ../awn-settings/awn-settings.ui.h:62
+msgid "Icon _effects:"
+msgstr "Ikono-_efektuak:"
+
+#: ../awn-settings/awn-settings.ui.h:63
+msgid "Icon alpha"
+msgstr "Ikonoaren gardentasuna"
+
+#: ../awn-settings/awn-settings.ui.h:64
+msgid "Icons and Tooltips"
+msgstr "Ikonoak eta argibideak"
+
+#: ../awn-settings/awn-settings.ui.h:65
+msgid "Icons:"
+msgstr "Ikonoak:"
+
+#: ../awn-settings/awn-settings.ui.h:66
+msgid "Inner Border Color"
+msgstr "Barruko ertzaren kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:67
+msgid "Install applet..."
+msgstr "Instalatu appleta..."
+
+#: ../awn-settings/awn-settings.ui.h:68
+msgid "Install..."
+msgstr "Instalatu..."
+
+#: ../awn-settings/awn-settings.ui.h:69
+msgid "Launch animation:"
+msgstr "Abiarazte-animazioa:"
+
+#: ../awn-settings/awn-settings.ui.h:70
+msgid "Matching strength"
+msgstr "Bat etortzearen indarra"
+
+#: ../awn-settings/awn-settings.ui.h:71
+msgid "Monitor X-offset"
+msgstr "Monitorearen X desplazamendua"
+
+#: ../awn-settings/awn-settings.ui.h:72
+msgid "Monitor Y-offset"
+msgstr "Monitorearen Y desplazamendua"
+
+#: ../awn-settings/awn-settings.ui.h:73
+msgid "Monitor height"
+msgstr "Monitorearen altuera"
+
+#: ../awn-settings/awn-settings.ui.h:74
+msgid "Monitor width"
+msgstr "Monitorearen zabalera"
+
+#: ../awn-settings/awn-settings.ui.h:75
+msgid "Name:"
+msgstr "Izena:"
+
+#: ../awn-settings/awn-settings.ui.h:76
+msgid "Offset"
+msgstr "Desplazamendua"
+
+#: ../awn-settings/awn-settings.ui.h:77
+msgid "Open animation:"
+msgstr "Irekitze-animazioa:"
+
+#: ../awn-settings/awn-settings.ui.h:78
+msgid "Outer Border Color"
+msgstr "Kanpoko ertzaren kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:79
+msgid "Outline Color"
+msgstr "Ingerada-kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:80
+msgid "Panel Background Colors"
+msgstr "Panelaren atzeko planoaren koloreak"
+
+#: ../awn-settings/awn-settings.ui.h:81
+msgid "Panel Look Refinements"
+msgstr "Panelaren itxuraren finketak"
+
+#: ../awn-settings/awn-settings.ui.h:82
+msgid "Panel Style & Size"
+msgstr "Panelaren estiloa eta tamaina"
+
+#: ../awn-settings/awn-settings.ui.h:83
+msgid "Pattern Alpha"
+msgstr "Ereduaren gardentasuna"
+
+#: ../awn-settings/awn-settings.ui.h:84
+msgid "Pattern Image"
+msgstr "Ereduaren irudia"
+
+#: ../awn-settings/awn-settings.ui.h:85
+msgid "Reflection alpha multiplier"
+msgstr "Islatzearen gardentasunaren biderkatzailea"
+
+#: ../awn-settings/awn-settings.ui.h:86
+msgid "Reflection offset"
+msgstr "Islatzearen desplazamendua"
+
+#: ../awn-settings/awn-settings.ui.h:87
+msgid "Repositories"
+msgstr "Biltegiak"
+
+#: ../awn-settings/awn-settings.ui.h:88
+msgid "Second Gradient Color"
+msgstr "Gradientearen bigarren kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:89
+msgid "Second Highlight Color"
+msgstr "Bigarren nabarmentze-kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:90
+msgid "Select Custom Arrow"
+msgstr "Hautatu gezi pertsonalizatua"
+
+#. Tooltip
+#: ../awn-settings/awn-settings.ui.h:92
+msgid "Select item to filter by category"
+msgstr "Hautatu elementua kategoria bidezko iragazkiak erabiltzeko"
+
+#: ../awn-settings/awn-settings.ui.h:93
+msgid "Separator Color"
+msgstr "Bereizlearen kolorea"
+
+#: ../awn-settings/awn-settings.ui.h:94
+msgid "Show all windows"
+msgstr "Erakutsi leiho guztiak"
+
+#: ../awn-settings/awn-settings.ui.h:95
+msgid "Show dialog after long press"
+msgstr "Luze sakatu elkarrizketa-koadroa erakusteko"
+
+#: ../awn-settings/awn-settings.ui.h:96
+msgid "Show shadows"
+msgstr "Erakutsi itzalak"
+
+#: ../awn-settings/awn-settings.ui.h:97
+msgid "St_yle:"
+msgstr "Es_tiloa:"
+
+#: ../awn-settings/awn-settings.ui.h:98
+msgid "Start _Awn automatically"
+msgstr "Abiarazi _AWN automatikoki"
+
+#: ../awn-settings/awn-settings.ui.h:99
+msgid "Stripe Width"
+msgstr "Marraren zabalera"
+
+#: ../awn-settings/awn-settings.ui.h:100
+msgid "Theme Export"
+msgstr "Gaiaren esportazioa"
+
+#: ../awn-settings/awn-settings.ui.h:101
+msgid ""
+"To use Intellihide or Window Dodge modes, you need to have Taskmanager "
+"applet active."
+msgstr ""
+"Intellihide edo Window Dodge moduak erabiltzeko, ataza-kudeatzailearen "
+"appleta aktibo eduki behar duzu."
+
+#: ../awn-settings/awn-settings.ui.h:102
+msgid "Triangle"
+msgstr "Hirukia"
+
+#: ../awn-settings/awn-settings.ui.h:103
+msgid "Use Gtk theme colors"
+msgstr "Erabili Gtk gaiaren koloreak"
+
+#: ../awn-settings/awn-settings.ui.h:104
+msgid "Use Pattern as Background"
+msgstr "Erabili eredua atzeko planorako"
+
+#: ../awn-settings/awn-settings.ui.h:105
+msgid "Version:"
+msgstr "Bertsioa:"
+
+#: ../awn-settings/awn-settings.ui.h:106
+msgid "_Behavior:"
+msgstr "_Portaera:"
+
+#: ../awn-settings/awn-settings.ui.h:107
+msgid "_Orientation:"
+msgstr "_Orientazioa:"
+
+#: ../awn-settings/awn-settings.ui.h:108
+msgid "_Position on the screen:"
+msgstr "_Kokapena pantailan:"
+
+#: ../awn-settings/awn-settings.ui.h:109
+msgid "_Size of icons:"
+msgstr "_Ikonoen tamaina"
+
+#: ../awn-settings/awn-settings.ui.h:110
+msgid "pixels"
+msgstr "pixel"
+
+#: ../awn-settings/awnClass.py:233
+msgid "Error, a sources.list already exist"
+msgstr "Errorea, dagoeneko badago sources.list fitxategi bat"
+
+#: ../awn-settings/awnClass.py:301
+msgid "Error, the path is empty or already exist"
+msgstr "Errorea, bide-izena hutsik dago edo jadanik existitzen da"
+
+#: ../awn-settings/awnClass.py:421
+#, python-format
+msgid ""
+"Error %s is missing on your system, please remove it from the sources.list"
+msgstr "Errorea, %s ez dago zure sisteman, kendu sources.list fitxategitik"
+
+#: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
+#: ../awn-settings/awnSettings.py.in:143
+msgid "None"
+msgstr "Bat ere ez"
+
+#: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:877
+msgid "Simple"
+msgstr "Sinplea"
+
+#: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:878
+msgid "Classic"
+msgstr "Klasikoa"
+
+#: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:879
+msgid "Fade"
+msgstr "Iraungi"
+
+#: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:880
+msgid "Spotlight"
+msgstr "Argi-fokua"
+
+#: ../awn-settings/awnClass.py:820 ../awn-settings/awnClass.py:881
+msgid "Zoom"
+msgstr "Handitu"
+
+#: ../awn-settings/awnClass.py:821 ../awn-settings/awnClass.py:882
+msgid "Squish"
+msgstr "Errebotatu"
+
+#: ../awn-settings/awnClass.py:822 ../awn-settings/awnClass.py:883
+msgid "3D Turn"
+msgstr "3D bira"
+
+#: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
+msgid "3D Spotlight Turn"
+msgstr "3D bira argi-fokoarekin"
+
+#: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
+msgid "Glow"
+msgstr "Dirdira"
+
+#: ../awn-settings/awnClass.py:966
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
-msgstr ""
-"Errorea sortze automatikoan. Eskuz sortu ezazu direktorioa:\n"
-"%s"
+msgstr "Sorrera automatikoak huts egin du. Sortu %s direktorioa eskuz"
 
-#: ../awn-settings/awnClass.py:1007
+#: ../awn-settings/awnClass.py:976
 msgid "Confirm directory creation"
-msgstr "Direktorio-sorrera baieztu"
+msgstr "Berretsi direktorioaren sorrera"
 
-#: ../awn-settings/awnClass.py:1008
+#: ../awn-settings/awnClass.py:977
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
-"Ez dago autoabiarazte direktoriorik zure erabiltzaile-konturako.\n"
+"Ez dago autoabiarazte-direktoriorik zure erabiltzaile-konturako.\n"
 "Zuretzat automatikoki sortzea nahi al duzu?"
 
-#: ../awn-settings/awnClass.py:1067
+#: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Ezin dira hurrengo ikonoak aurkitu: %s\n"
 
-#: ../awn-settings/awnClass.py:1074
+#: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Ezin dira hurrengo ikonoak aurkitu: %s\n"
 
-#: ../awn-settings/awnClass.py:1096
+#: ../awn-settings/awnClass.py:1067
 msgid "AWN has been successfully refreshed"
-msgstr "Arrakastaz freskatu da AWN"
+msgstr "AWM arrakastaz freskatu da"
 
-#: ../awn-settings/awnClass.py:1102
+#: ../awn-settings/awnClass.py:1073
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr "Awn (Avant Leiho-Nabigatzailea)"
+msgstr "Avant Window Navigator"
 
-#: ../awn-settings/awnClass.py:1120
+#: ../awn-settings/awnClass.py:1091
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr "GNOMErentzako dock moduko leiho-nabigatzaile pertsonalizagarria."
+msgstr ""
+"GNOMErentzako atrake (dock) moduko leiho-nabigatzaile pertsonalizagarria."
 
-#: ../awn-settings/awnClass.py:1122
+#: ../awn-settings/awnClass.py:1093
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -416,9 +893,9 @@ msgid ""
 msgstr ""
 "Programa hau software librea da; Free Software Foundation-en GNU Lizentzia "
 "Orokor Publikoaren (2garren edo ondorengo ezein bertsioren) arauen arabera "
-"distribuitu eta/edo aldatu dezakezu."
+"banatu eta/edo aldatu dezakezu."
 
-#: ../awn-settings/awnClass.py:1124
+#: ../awn-settings/awnClass.py:1095
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -427,120 +904,140 @@ msgid ""
 msgstr ""
 "Erabilgarria izango den esperantzarekin banatzen da programa hau, baina "
 "INONGO BERMERIK GABE; MERKATURATZE edo HELBURU BATERAKO EGOKITASUNAREN "
-"garantia inpliziturik gabe ere. GNU Lizentzia Orokor Publikoa ikus dezakezu "
-"xehetasun gehiagorako."
+"garantia inpliziturik gabe ere.  Ikusi GNUren Lizentzia Publiko Orokorra "
+"xehetasun gehiago jasotzeko."
 
-#: ../awn-settings/awnClass.py:1126
+#: ../awn-settings/awnClass.py:1097
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
-"GNU Lizentzia Orokor Publikoaren kopia bat jaso beharko zenuke programa "
-"honekin batera; bestela, hona idatz ezazu: Free Software Foundation, Inc., "
+"GNU Lizentzia Publiko Orokorraren kopia bat jaso beharko zenuke programa "
+"honekin batera; bestela, idatz ezazu hona: Free Software Foundation, Inc., "
 "51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "AWNren ezarpenak ezin dira exekutatu root modura."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Ezkerra"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Eskuina"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "Goia"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "Behea"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Laua"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3D"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Okertua"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Ertzduna"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Flotatzailea"
 
-#: ../awn-settings/awnSettings.py.in:148
-msgid "Standard"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:148
-msgid "Panel mode"
-msgstr ""
+#: ../awn-settings/awnSettings.py.in:145
+msgid "Lucido"
+msgstr "Lucido"
 
 #: ../awn-settings/awnSettings.py.in:149
-msgid "Autohide Keep below"
-msgstr ""
+msgid "Panel mode"
+msgstr "Panel modua"
 
 #: ../awn-settings/awnSettings.py.in:150
-msgid "Autohide Fade out"
-msgstr ""
+msgid "Always visible"
+msgstr "Beti ikusgai"
 
 #: ../awn-settings/awnSettings.py.in:151
-msgid "Transparency"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:155
-msgid "Always"
-msgstr ""
-
-#: ../awn-settings/awnSettings.py.in:155
 msgid "Intellihide"
-msgstr ""
+msgstr "Intellihide"
 
-#: ../awn-settings/awnSettings.py.in:156
+#: ../awn-settings/awnSettings.py.in:152
 msgid "Window dodge"
-msgstr ""
+msgstr "Window dodge"
 
-#: ../awn-settings/awnSettings.py.in:757
+#: ../awn-settings/awnSettings.py.in:157
+msgid "Fade out"
+msgstr "Itxiera-iraungipena"
+
+#: ../awn-settings/awnSettings.py.in:157
+msgid "Transparency"
+msgstr "Gardentasuna"
+
+#: ../awn-settings/awnSettings.py.in:158
+msgid "Keep below"
+msgstr "Mantendu azpian"
+
+#: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
-msgstr ""
+msgstr "Solidoa"
 
-#: ../awn-settings/awnSettings.py.in:757
+#: ../awn-settings/awnSettings.py.in:797
 msgid "Outline"
-msgstr ""
+msgstr "Ingerada"
 
-#: ../awn-settings/awnSettings.py.in:758
+#: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "Ingerada alderantzikatua"
 
-#: ../awn-settings/awnSettings.py.in:942
+#: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Erabili aplikazio bakoitzerako zehaztutako ikonoak"
 
-#: ../awn-settings/awnSettings.py.in:943
+#: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Erabili kalitate onena duten ikonoak"
 
-#: ../awn-settings/awnSettings.py.in:944
+#: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Gainjarri kalitate oneneko ikonoa aplikazioaren ikonoan"
 
-#: ../awn-settings/awnSettings.py.in:945
+#: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Gainjarri aplikazioaren ikonoa kalitate oneneko ikonoan"
 
-#: ../bindings/python/__init__.py:118
+#: ../awn-settings/awnSettings.py.in:1139
+msgid "Preferences"
+msgstr "Hobespenak"
+
+#: ../awn-settings/awnSettings.py.in:1145
+msgid "Task Manager"
+msgstr "Atazak"
+
+#: ../awn-settings/awnSettings.py.in:1151
+msgid "Applets"
+msgstr "Appletak"
+
+#: ../awn-settings/awnSettings.py.in:1165
+msgid "Themes"
+msgstr "Gaiak"
+
+#: ../awn-settings/awnSettings.py.in:1171
+msgid "Advanced"
+msgstr "Aurreratua"
+
+#: ../bindings/python/__init__.py:126
 #, python-format
 msgid ""
 "The following Python modules could not be found: %s.  There are a few "
@@ -557,294 +1054,378 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Ezin izan dira aurkitu hurrengo Python moduluak: %s  hainbat azalpen ditu "
+"horrek: Python modulu hau ez duzu instalaturik.  Kasu honetan AWNren wikian "
+"appleten atala bisitatu beharko zenuke zure banaketan modulu hau eskaintzen "
+"duen paketearen izen zehatza ezagutzeko.\n"
+"\n"
+"2. Modulua estandarra ez den toki batean instalatu da.  Pakete bat eskuz "
+"instalatzean gertatzen da hau.  Egoera hau wikiko FAQ atalean azalduta "
+"dago.\n"
 
-#: ../bindings/python/__init__.py:133
+#: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr ""
+msgstr "AWNren wikia"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr "Dock moduko leiho-nabigatzailea."
+msgstr "Atrake (dock) moduko leiho-nabigatzailea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
-msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr ""
+msgid "0: solid, 1: outline, 2: outline, reversed."
+msgstr "0: solidoa, 1: ingerada, 2: ingerada, alderantzikatua."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
-msgid "3)"
-msgstr ""
+msgid "A bitmask which stores the type of effect for each event"
+msgstr "Gertaera bakoitzerako efektu-mota gordetzen duen bit-maskara."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
-msgid "5)"
-msgstr ""
+msgid "Alignment of a non-expanded panel on the monitor edge."
+msgstr "Zabaldu gabeko panel baten lerrokatzea monitorearen ertzean."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
-msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgid "An optional offset when you have more than 1 monitors."
+msgstr "Hautazko desplazamendua monitore bat baino gehiago daukazunerako."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
-msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:6
-msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"0 baino handiagoa den edozerk izkinak dituen panela marraztuko du. Erradioa "
+"handiagoa bada, izkinak handiagoak izango dira."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+msgid ""
+"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
+"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
+"through: 3)"
+msgstr ""
+"Atrakea automatikoki ezkutatzen du kurtsorea atrakean ez dagoenean (ez "
+"litzateke erabili beharko panel-moduarekin batera). (bat ere ez: 0, azpian "
+"mantendu: 1, itxiera-iraungipena: 2, gardena: 3)"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:7
+msgid "Background color for AwnDialog's title."
+msgstr "Atzeko planoaren kolorea AwnDialog koadroaren izenbururako."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
-msgid "Background color for AwnDialog's title."
-msgstr ""
+msgid "Background color for AwnDialog."
+msgstr "Atzeko planoaren kolorea AwnDialog koadrorako."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
-msgid "Background color for AwnDialog."
-msgstr ""
+msgid "Background color of the tooltip"
+msgstr "Atzeko planoaren kolorea argibideetarako."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
-msgid "Background color of the tooltip"
-msgstr ""
+msgid "Color of the active rectangle."
+msgstr "Laukizuzen aktiboaren kolorea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
-msgid "Color of the active rectangle."
-msgstr ""
+msgid "Color of the glowing dot."
+msgstr "Puntu dirdiratsuaren kolorea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
-msgid "Color of the glowing dot."
-msgstr ""
+msgid "Color of the outline of active rectangle."
+msgstr "Laukizuzen aktiboaren ingeradaren kolorea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
-msgid "Color of the outline of active rectangle."
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay between mouse leaving the panel and it hiding."
 msgstr ""
+"Kurtsoreak panela uzten duenetik hura ezkutatu arte dagoen atzerapena."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
+msgid "Delay for mouse position polling."
+msgstr "Kurtsorearen kokapenaren detekzioaren atzerapena."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
-msgid "Delay for mouse position polling."
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Hobespenen koadro pertsonalizatua ez duten appletetan konfigurazio-editore "
+"orokorra onartzen den zehazten du."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
+msgid "Draw separators."
+msgstr "Marraztu bereizleak."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
-msgid "Draw separators."
-msgstr ""
+msgid "Enable drawing of a pattern."
+msgstr "Gaitu eredu baten marrazketa."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
-msgid "Enable drawing of a pattern."
-msgstr ""
+msgid "First gradient step color."
+msgstr "Gradiente-urratsaren lehen kolorea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
-msgid "First gradient step color."
-msgstr ""
+msgid "First highlight gradient step color."
+msgstr "Gradiente-urratsaren lehen nabarmentze-kolorea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
-msgid "First highlight gradient step color."
-msgstr ""
+msgid "Font color of the tooltip"
+msgstr "Argibidearen letra-kolorea"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
-msgid "Font color of the tooltip"
-msgstr ""
+msgid "Font name of the tooltip"
+msgstr "Argibidearen letra-izena"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
-msgid "Font name of the tooltip"
-msgstr ""
+msgid "Force monitor geometry."
+msgstr "Behartu monitore-geometria."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
-msgid "Force monitor geometry."
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
+"Ikono-testuaren kolorea.  Utzi hutxik Gtk gaiaren kolorea erabiltzeko."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
+"Ikono-testuaren ingeradaren kolorea.  Utzi hutxik Gtk gaiaren kolorea "
+"erabiltzeko."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+msgid "If true, maximised windows will not cover the panel."
+msgstr "Egiazkoa bada, maximizatutako leihoek ez dute panela estaliko."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
-msgid "If true, maximised windows will not cover the panel."
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Egiazkoa bada, panela zabaldu egingo da monitorearen altuera/zabalera osoa "
+"betetzeko."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:27
+msgid "Internal border color."
+msgstr "Barruko ertzaren kolorea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
-msgid "Internal border color."
-msgstr ""
+msgid "Main border color."
+msgstr "Ertzaren kolore nagusia."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
-msgid "Main border color."
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
+"AWN kokatuta dagoen monitorearen zenbakia (monitor_force faltsua denean "
+"soilik sartzen da indarrean, erabili -1 monitorea automatikoki hautatzeko)."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
+msgid "Offset between the icons and their dialog."
+msgstr "Ikonoen eta haien koadroen arteko distantzia."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
-msgid "Offset between the icons and their dialog."
-msgstr ""
+msgid "Offset of the icons from window border."
+msgstr "Ikonoen eta leiho-ertzaren arteko distantzia."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
-msgid "Offset of the icons from window border."
-msgstr ""
+msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
+msgstr "AWNren orientazioa. (ezkerra: 0, eskuina: 1, goia: 2 eta behea: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
-msgid "Path to the current desktop file theme."
-msgstr ""
+msgid "Outline color of the tooltip"
+msgstr "Argibidearen ingerada-kolorea"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
-msgid "Path to the png containing the active icon background."
-msgstr ""
+msgid "Path to the current desktop file theme."
+msgstr "Uneko mahaigainaren gaiaren fitxategiaren bide-izena."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
-msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgid "Path to the png containing the active icon background."
+msgstr "Ikono aktiboaren atzeko planoa duen PNG fitxategiaren bide-izena."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
-msgid ""
-"Provides possibility to click on windows behind the panel. (0 - never click "
-"through, 1 - click through when holding CTRL, 2 - always click through and "
-"interact with panel only when holding CTRL)"
-msgstr ""
+msgid "Path to the png containing the arrow icon."
+msgstr "Gezi-ikonoa duen PNG fitxategiaren bide-izena."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
-msgid "Reflection alpha as a multiple of the current alpha of the icon."
+msgid ""
+"Provides possibility to click on windows behind the panel. (0: never click "
+"through, 1: click through when holding CTRL, 2: always click through and "
+"interact with panel only when holding CTRL)"
 msgstr ""
+"Panelaren atzean dauden leihoetan klik egiteko aukera ematen du. (0: inoiz "
+"ez egin klik leihoak zeharkatuz, 1: leihoak zeharkatzen duen klik egin Ktrl "
+"tekla sakatzean, 2: beti egin klik leihoak zeharkatuz eta panelarekin "
+"elkarrekin soilik Ktrl tekla sakatuta dagoenean)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
-msgid "Second gradient step color."
+msgid "Reflection alpha as a multiple of the current alpha of the icon."
 msgstr ""
+"Islatzearen gardentasuna ikonoaren uneko gardentasunaren balio anizkoitz "
+"modura."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
-msgid "Second highlight gradient step color."
-msgstr ""
+msgid "Second gradient step color."
+msgstr "Gradiente-urratsaren bigarren kolorea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
-msgid "Separator color."
-msgstr ""
+msgid "Second highlight gradient step color."
+msgstr "Gradiente-urratsaren bigarren nabarmentze-kolorea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
-msgid "Show shadows for icons."
-msgstr ""
+msgid "Separator color."
+msgstr "Bereizlearen kolorea."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
-msgid "The active list UA Screenlets for this panel."
-msgstr ""
+msgid "Show shadows for icons."
+msgstr "Erakutsi itzalak ikonoetan."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
-msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgid "The active list UA Screenlets for this panel."
+msgstr "Panel honetarako UA Screenlet-en zerrenda aktiboa."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
-msgid "The curviness of the panel in Curves mode."
-msgstr ""
+msgid "The angle of the panel in 3D mode."
+msgstr "Panelaren angelua 3D moduan."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
-msgid "The forced monitor height. Only used if monitor_force is true."
-msgstr ""
+msgid "The curviness of the panel in Curves mode."
+msgstr "Panelaren kurbatze-maila Kurbak moduan."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
-msgid "The forced monitor width. Only used if monitor_force is true."
+msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
+"Behartutako monitore-altuera. monitor_force egiazkoa denean soilik "
+"erabiltzen da."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
+msgid "The forced monitor width. Only used if monitor_force is true."
+msgstr ""
+"Behartutako monitore-zabalera. monitor_force egiazkoa denean soilik "
+"erabiltzen da."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
+"ScreeneletInstance::Position formularioan aurretiaz erantsi diren UA "
+"Screenlet-en zerrenda aktiboa."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:48
+#: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:49
-msgid "The list of panel instances."
-msgstr ""
+"Panel honetarako appleten zerrenda, ezkerretik eskuinera edo goitik behera "
+"ordenatuta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
-msgid "The location of the pattern to draw."
-msgstr ""
+msgid "The list of panel instances."
+msgstr "Panel-instantzien zerrenda."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
-msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgid "The location of the pattern to draw."
+msgstr "Marraztuko den ereduaren kokapena."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
-msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgid "The offset between the icon and it's reflection"
+msgstr "Ikonoaren eta haren islatzearen arteko distantzia"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
-msgid "The opacity of the pattern."
-msgstr ""
+msgid "The offset of the Floaty background."
+msgstr "Atzeko plano flotatzailearen distantzia."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
-msgid "The symmetry of the curve in Curves mode."
-msgstr ""
+msgid "The opacity of the icons, from 0.0 to 1.0"
+msgstr "Ikonoen opakotasuna, 0.0tik 1.0ra"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
-msgid "The user-visible size of Awn."
-msgstr ""
+msgid "The opacity of the pattern."
+msgstr "Ereduaren opakotasuna."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
-msgid "Time in ms after which AwnIcon will emit long-press signal."
+msgid ""
+"The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
+"4, floaty: 5, lucido: 6)"
 msgstr ""
+"Barraren estiloa. (bat ere ez: 0, barra laua: 1, 3D barra: 2, barra okertua: "
+"3, ertzduna: 4, flotatzailea; 5, lucido: 6)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
-msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
+msgid "The symmetry of the curve in Curves mode."
+msgstr "Kurbaren simetria Kurbak moduan."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
-msgid "Whether to close dialogs on loss of focus."
-msgstr ""
+msgid "The user-visible size of Awn."
+msgstr "Erabiltzailearentzako ikusgai dagoen AWNren tamaina."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
-msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgid "The width of the stripe in Lucido mode."
+msgstr "Marraren zabalera Lucido moduan."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
+msgid "Time in ms after which AwnIcon will emit long-press signal."
+msgstr ""
+"AwnIcon-ek sakatze luzearen seinalea igortzeko denbora-muga (ms-tan)."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:61
+msgid "Whether AwnDialog should use Gtk theme colors."
+msgstr "AwnDialog-ek Gtk gaiaren koloreak erabili behar dituen ala ez."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:62
+msgid "Whether to close dialogs on loss of focus."
+msgstr "Fokua galtzean koadroak itxi behar diren ala ez."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:63
+msgid "Whether to use colors from the current Gtk theme."
+msgstr "Uneko Gtk gaiaren koloreak erabiliko diren ala ez."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
+"Ikono-testuaren iingeradaren zabalera ingerada-modua gaituta badago.  "
+"iradokitako balioak: 1.0 - 5.0."
 
-#: ../libawn/awn-themed-icon.c:1976
+#: ../data/awn-themed-icon.ui.h:1
+msgid ""
+"<b>Theme Panel Icon</b>\n"
+"You have chosen to replace an icon on the panel. Please select whether this "
+"change should effect only this applet, all applets of this type, or every "
+"icon on the panel of this type."
+msgstr ""
+"<b>Panelaren gaiaren ikonoa</b>\n"
+"Panelean ikono bat ordezkatzea hautatu duzu. Hautatu aldaketa hau applet "
+"honetan soilik aplikatuko den, mota honetako applet guztiean ala panelean "
+"dagoen mota honetako edozein ikonotan."
+
+#: ../data/awn-themed-icon.ui.h:3
+msgid "Customise Applet"
+msgstr "Pertsonalizatu appleta"
+
+#: ../libawn/awn-applet.c:1234
+#, c-format
+msgid "About %s"
+msgstr "%s-(e)ri buruz"
+
+#: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "Ikonoak"
 
-#: ../libawn/awn-themed-icon.c:1978
+#: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Hautatu ikono pertsonalizatua"
 
-#: ../libawn/awn-themed-icon.c:2065
+#: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Pertsonalizatu ikonoa"
 
-#: ../libawn/awn-themed-icon.c:2152
+#: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Kendu ikono pertsonalizatua"
 
-#: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:317
+#: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "Appleta kargatzen..."
 
-#: ../src/awn-applet-proxy.c:371 ../src/awn-applet-proxy.c:472
+#: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Ai ene! Appleta kraskatu egin da. Egin klik hura berrabiarazteko."
 
-#: ../src/awn-panel.c:3898
+#: ../src/awn-panel.c:3960
 msgid "Close docklet"
-msgstr ""
+msgstr "Itxi dockleta"
