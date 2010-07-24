@@ -160,6 +160,7 @@ awn_background_lucido_constructed (GObject *object)
   g_return_if_fail (manager);
   g_signal_connect_swapped (manager, "applets-refreshed",
                       G_CALLBACK (awn_background_lucido_applets_refreshed), bg);
+  awn_background_lucido_applets_refreshed (AWN_BACKGROUND (bg));
 }
 
 static void
@@ -234,7 +235,6 @@ awn_background_lucido_init (AwnBackgroundLucido *bg)
   priv->tid = 0;
   priv->pos = g_array_new (FALSE, TRUE, sizeof (gfloat));
   priv->pos_size = 0;
-  awn_background_lucido_applets_refreshed (AWN_BACKGROUND (bg));
 }
 
 AwnBackground *
