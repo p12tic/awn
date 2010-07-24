@@ -15,7 +15,7 @@ namespace Awn {
     [CCode (array_length = false, array_null_terminated = true)]
     public string[] get_inhibitors ();
 
-    public bool get_snapshot (out GLib.Value val) throws GLib.Error;
+    public bool get_snapshot (out int width, out int height, out int rowstride, out bool has_alpha, out int bits_per_sample, out int num_channels, out char[] pixel_data) throws GLib.Error;
 
     public int64 docklet_request (int min_size, bool shrink, bool expand) throws GLib.Error;
 

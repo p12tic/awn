@@ -21,6 +21,17 @@
 
 namespace Awn
 {
+  public struct ImageStruct
+  {
+    int width;
+    int height;
+    int rowstride;
+    bool has_alpha;
+    int bits_per_sample;
+    int num_channels;
+    char[] pixel_data;
+  }
+
   [DBus (name="org.awnproject.Awn.Panel")]
   public interface PanelDBusInterface: Object
   {
@@ -32,7 +43,7 @@ namespace Awn
                                            bool expand) throws DBus.Error;
 
     public abstract string[] get_inhibitors () throws DBus.Error;
-    public abstract Value get_snapshot () throws DBus.Error;
+    public abstract ImageStruct get_snapshot () throws DBus.Error;
 
     public abstract uint inhibit_autohide (DBus.BusName sender,
                                            string app_name,
@@ -95,6 +106,8 @@ namespace Awn
       panel.delete_applet (uid);
     }
 
+    // FIXME: break this API and add the docklet flags from
+    //        set_applet_flags () method here
     public int64 docklet_request (int min_size, bool shrink, bool expand) throws DBus.Error
     {
       return panel.docklet_request (min_size, shrink, expand);
@@ -107,15 +120,23 @@ namespace Awn
       return reasons;
     }
 
-    public Value get_snapshot () throws DBus.Error
+    public ImageStruct get_snapshot () throws DBus.Error
     {
-      Value val;
-      panel.get_snapshot (out val);
+      var result = ImageStruct ();
+      panel.get_snapshot (out result.width,
+                          out result.height,
+                          out result.rowstride,
+                          out result.has_alpha,
+                          out result.bits_per_sample,
+                          out result.num_channels,
+                          out result.pixel_data);
 
-      return val;
+      return result;
     }
 
-    public uint inhibit_autohide (DBus.BusName sender, string app_name, string reason) throws DBus.Error
+    public uint inhibit_autohide (DBus.BusName sender,
+                                  string app_name,
+                                  string reason) throws DBus.Error
     {
       return panel.inhibit_autohide (sender, app_name, reason);
     }
@@ -127,14 +148,75 @@ namespace Awn
 
     public void set_applet_flags (string uid, int flags) throws DBus.Error
     {
+      panel.set_applet_flags (uid, flags);
     }
 
-    public double offset_modifier { get { return panel.offset_modifier; } }
-    public int max_size { get { return panel.max_size; } }
-    public int offset { get { return panel.offset; } set { panel.offset = value;} }
-    public int path_type { get { return panel.path_type; } }
-    public int position { get { return panel.position; } set { panel.position = value; } }
-    public int size { get { return panel.size; } set { panel.size = value; } }
-    public int64 panel_xid { get { return panel.panel_xid; } }
+    public double offset_modifier
+    {
+      get
+      {
+        return panel.offset_modifier;
+      }
+    }
+
+    public int max_size
+    {
+      get
+      {
+        return panel.max_size;
+      }
+    }
+
+    public int offset
+    {
+      get
+      {
+        return panel.offset;
+      }
+      set
+      {
+        panel.offset = value;
+      }
+    }
+
+    public int path_type
+    {
+      get
+      {
+        return panel.path_type;
+      }
+    }
+
+    public int position
+    {
+      get
+      {
+        return panel.position;
+      }
+      set
+      {
+        panel.position = value;
+      }
+    }
+
+    public int size
+    {
+      get
+      {
+        return panel.size;
+      }
+      set
+      {
+        panel.size = value;
+      }
+    }
+
+    public int64 panel_xid
+    {
+      get
+      {
+        return panel.panel_xid;
+      }
+    }
   }
 }

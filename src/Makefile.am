@@ -29,7 +29,7 @@ VALA_FLAGS = \
 awn-core.vala.stamp: $(VALA_FILES)
 	$(foreach vala_file,$(VALA_FILES),\
 	$(VALAC) -C -H $(vala_file:.vala=.h) $(vala_file) $(VALA_FLAGS) && \
-	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(vala_file:.vala=.)[ch];)
+	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(vala_file:.vala=.)[ch] || exit 1;)
 	touch "$@"
 
 VALA_GENERATED_FILES = \

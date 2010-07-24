@@ -503,6 +503,7 @@ awn_panel_set_drag_proxy (AwnPanel *panel, gboolean check_mouse_pos)
   return priv->dnd_proxy_win != NULL;
 }
 
+#if !GTK_CHECK_VERSION(2, 19, 5)
 static gboolean
 awn_panel_drag_motion (GtkWidget *widget, GdkDragContext *context, 
                        gint x, gint y, guint time_)
@@ -521,6 +522,7 @@ awn_panel_drag_motion (GtkWidget *widget, GdkDragContext *context,
 
   return TRUE;
 }
+#endif
 
 static gboolean
 on_startup_complete (AwnPanel *panel)
@@ -4085,47 +4087,20 @@ awn_panel_docklet_request (AwnPanel *panel,
   return window_id;
 }
 
-static void
-value_array_append_int (GValueArray *array, gint i)
-{
-  GValue *value = g_new0 (GValue, 1);
-
-  g_value_init (value, G_TYPE_INT);
-  g_value_set_int (value, i);
-
-  g_value_array_append (array, value);
-}
-
-static void
-value_array_append_bool (GValueArray *array, gboolean b)
-{
-  GValue *value = g_new0 (GValue, 1);
-
-  g_value_init (value, G_TYPE_BOOLEAN);
-  g_value_set_boolean (value, b);
-
-  g_value_array_append (array, value);
-}
-
-static void
-value_array_append_array (GValueArray *array, guchar *data, gsize data_len)
-{
-  GArray *byte_array;
-  GValue *value = g_new0 (GValue, 1);
-
-  byte_array = g_array_sized_new (FALSE, FALSE, sizeof(guchar), data_len);
-  g_array_append_vals (byte_array, data, data_len);
-
-  g_value_init (value, dbus_g_type_get_collection ("GArray", G_TYPE_CHAR));
-  g_value_take_boxed (value, byte_array);
-
-  g_value_array_append (array, value);
-}
-
 gboolean
-awn_panel_get_snapshot (AwnPanel *panel, GValue *value, GError **error)
+awn_panel_get_snapshot (AwnPanel *panel,
+                        gint     *width,
+                        gint     *height,
+                        gint     *rowstride,
+                        gboolean *has_alpha,
+                        gint     *bits_per_sample,
+                        gint     *num_channels,
+                        gchar   **pixels,
+                        gint     *pixels_length,
+                        GError **error)
 {
   GdkRectangle rect;
+  guint        data_len;
   g_return_val_if_fail (AWN_IS_PANEL (panel), FALSE);
 
   awn_panel_get_draw_rect (panel, &rect, 0, 0);
@@ -4149,28 +4124,20 @@ awn_panel_get_snapshot (AwnPanel *panel, GValue *value, GError **error)
   cairo_surface_flush (surface);  
 
   // stuff the pixbuf to our out param
-  gint width = rect.width;
-  gint height = rect.height;
-  gint rowstride = cairo_image_surface_get_stride (surface);
-  gint n_channels = 4;
-  gint bits_per_sample = 8;
+  *width = rect.width;
+  *height = rect.height;
+  *rowstride = cairo_image_surface_get_stride (surface);
+  *has_alpha = TRUE;
+  *bits_per_sample = 8;
+  *num_channels = 4;
+
+  data_len = rect.height * cairo_image_surface_get_stride (surface);
   //gint image_len = (height - 1) * rowstride + width *
   //  ((n_channels * bits_per_sample + 7) / 8);
 
   guchar *image = cairo_image_surface_get_data (surface);
-
-  GValueArray *image_struct = g_value_array_new (1);
-
-  value_array_append_int (image_struct, width);
-  value_array_append_int (image_struct, height);
-  value_array_append_int (image_struct, rowstride);
-  value_array_append_bool (image_struct, TRUE);
-  value_array_append_int (image_struct, bits_per_sample);
-  value_array_append_int (image_struct, n_channels);
-  value_array_append_array (image_struct, image, height * rowstride);
-
-  g_value_init (value, G_TYPE_VALUE_ARRAY);
-  g_value_take_boxed (value, image_struct);
+  *pixels = g_memdup (image, data_len);
+  *pixels_length = data_len;
 
   cairo_surface_destroy (surface);
 

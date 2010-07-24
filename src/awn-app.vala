@@ -46,7 +46,7 @@ namespace Awn
 
       Gtk.Window.set_default_icon_name ("avant-window-navigator");
 
-      this.connection = Bus.get (BusType.SESSION);
+      this.connection = DBus.Bus.get (DBus.BusType.SESSION);
       this.connection.register_object ("/org/awnproject/Awn", this);
 
       try
