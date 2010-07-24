@@ -66,7 +66,7 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     });
     */
 
-    var conn = Bus.get (BusType.SESSION);
+    var conn = DBus.Bus.get (DBus.BusType.SESSION);
     string obj_path = "/org/freedesktop/DockManager";
     conn.register_object (obj_path, this);
   }
@@ -244,7 +244,7 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
   {
     this.icon = icon;
 
-    var conn = Bus.get (BusType.SESSION);
+    var conn = DBus.Bus.get (DBus.BusType.SESSION);
     this.object_path = "/org/freedesktop/DockManager/Item%d".printf (counter++);
     conn.register_object (this.object_path, this);
 

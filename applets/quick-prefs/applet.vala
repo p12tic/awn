@@ -54,9 +54,9 @@ public class PrefsApplet : AppletSimple
 
   public PrefsApplet (string canonical_name, string uid, int panel_id)
   {
-    this.canonical_name = canonical_name;
-    this.uid = uid;
-    this.panel_id = panel_id;
+    GLib.Object (canonical_name: canonical_name,
+                 uid: uid,
+                 panel_id: panel_id);
   }
 
   construct
