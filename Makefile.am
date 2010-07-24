@@ -1,8 +1,6 @@
 NULL = 
 
-if HAVE_VALA
 VALA_BINDINGS = bindings/vala
-endif
 
 SUBDIRS = \
 	libawn \

@@ -714,7 +714,7 @@ awn_background_init (AwnBackground *bg)
 
 void 
 awn_background_draw (AwnBackground  *bg,
-                     cairo_t        *cr, 
+                     cairo_t        *cr,
                      GtkPositionType  position,
                      GdkRectangle   *area)
 {
@@ -735,8 +735,11 @@ awn_background_draw (AwnBackground  *bg,
     if (klass->get_needs_redraw (bg, position, area))
     {
       cairo_t *temp_cr;
+      gdouble clip_x1, clip_x2, clip_y1, clip_y2;
       gint full_width = area->x + area->width;
       gint full_height = area->y + area->height;
+
+      cairo_clip_extents (cr, &clip_x1, &clip_y1, &clip_x2, &clip_y2);
 
       gboolean realloc_needed = bg->helper_surface == NULL ||
         cairo_image_surface_get_width (bg->helper_surface) != full_width ||
@@ -753,10 +756,16 @@ awn_background_draw (AwnBackground  *bg,
                                                          full_width,
                                                          full_height);
         temp_cr = cairo_create (bg->helper_surface);
+        cairo_rectangle (temp_cr, clip_x1, clip_y1, 
+                         clip_x2-clip_x1, clip_y2-clip_y1);
+        cairo_clip (temp_cr);
       }
       else
       {
         temp_cr = cairo_create (bg->helper_surface);
+        cairo_rectangle (temp_cr, clip_x1, clip_y1,
+                         clip_x2-clip_x1, clip_y2-clip_y1);
+        cairo_clip (temp_cr);
         cairo_set_operator (temp_cr, CAIRO_OPERATOR_CLEAR);
         cairo_paint (temp_cr);
         cairo_set_operator (temp_cr, CAIRO_OPERATOR_OVER);

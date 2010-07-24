@@ -60,20 +60,11 @@ dnl ==============================================
 dnl Vala support
 dnl ==============================================
 
-AC_ARG_WITH(vala, AS_HELP_STRING([--with-vala],[Enables installation of the Vala bindings]),,[with_vala=yes])
-
-if test "$with_vala" != "no"; then
-  VALA_PROG_VALAC(0.7.10)
-  if test -n "$VALAC"; then
-    if test "$USE_MAINTAINER_MODE" = "yes"; then
-      AC_PATH_PROG(VALA_GEN_INTROSPECT, vala-gen-introspect, vala-gen-introspect, [])
-      AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
-    fi
-  else
-    with_vala=no
-  fi
+VALA_PROG_VALAC(0.8.1)
+if test "$USE_MAINTAINER_MODE" = "yes"; then
+    AC_PATH_PROG(VALA_GEN_INTROSPECT, vala-gen-introspect, vala-gen-introspect, [])
+    AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])
 fi
-AM_CONDITIONAL(HAVE_VALA, test -n "$VALAC")
 
 dnl ==============================================
 dnl Check for Python modules
@@ -145,10 +136,8 @@ AC_SUBST(LDA_BINDIR)
 LDA_DEFSDIR=`$PKG_CONFIG --variable=defsdir desktop-agnostic`
 AC_SUBST(LDA_DEFSDIR)
 
-if test "$with_vala" != "no"; then
-    LDA_VAPIDIR="`$PKG_CONFIG --variable=vapidir desktop-agnostic`"
-    AC_SUBST(LDA_VAPIDIR)
-fi
+LDA_VAPIDIR="`$PKG_CONFIG --variable=vapidir desktop-agnostic`"
+AC_SUBST(LDA_VAPIDIR)
 
 AC_CHECK_LIB(m, lround)
 
@@ -237,8 +226,6 @@ echo "             Avant Window Navigator $VERSION"
 echo "             ============================"
 echo ""
 echo "                   prefix:   ${prefix}"
-echo ""
-echo "             Vala Support:   ${with_vala}"
 echo ""
 echo "            Documentation:   ${enable_gtk_doc}"
 echo ""

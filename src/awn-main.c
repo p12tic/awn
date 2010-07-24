@@ -70,7 +70,7 @@ GOptionEntry entries[] =
 gint 
 main (gint argc, gchar *argv[])
 {
-  AwnApp          *app;
+  AwnApplication  *app;
   GOptionContext  *context;
   DBusGConnection *connection;
   DBusGProxy      *proxy;
@@ -147,10 +147,7 @@ main (gint argc, gchar *argv[])
   textdomain (GETTEXT_PACKAGE);
 
   /* Launch Awn */
-  app = awn_app_get_default ();
-  dbus_g_connection_register_g_object (connection, 
-                                       AWN_DBUS_APP_PATH,
-                                       G_OBJECT (app));
+  app = awn_application_get_default ();
 
   g_unsetenv ("DESKTOP_AUTOSTART_ID");
   gtk_main ();

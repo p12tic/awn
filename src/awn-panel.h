@@ -94,27 +94,33 @@ gboolean    awn_panel_set_applet_flags    (AwnPanel         *panel,
                                            gint              flags,
                                            GError          **error);
 
-void        awn_panel_inhibit_autohide    (AwnPanel *panel,
+guint       awn_panel_inhibit_autohide    (AwnPanel *panel,
+                                           const gchar *sender,
                                            const gchar *app_name,
-                                           const gchar *reason,
-                                           DBusGMethodInvocation *context);
+                                           const gchar *reason);
 
 gboolean    awn_panel_uninhibit_autohide  (AwnPanel         *panel,
                                            guint             cookie);
 
-gboolean    awn_panel_get_inhibitors      (AwnPanel         *panel,
-                                           GStrv            *reasons);
+GStrv       awn_panel_get_inhibitors      (AwnPanel         *panel);
 
-void        awn_panel_docklet_request     (AwnPanel         *panel,
+gint64      awn_panel_docklet_request     (AwnPanel         *panel,
                                            gint              min_size,
                                            gboolean          shrink,
                                            gboolean          expand,
-                                           DBusGMethodInvocation *context);
+                                           GError          **error);
 
 gboolean    awn_panel_get_docklet_mode    (AwnPanel         *panel);
 
 gboolean    awn_panel_get_snapshot        (AwnPanel *panel,
-                                           GValue *value,
+                                           gint     *width,
+                                           gint     *height,
+                                           gint     *rowstride,
+                                           gboolean *has_alpha,
+                                           gint     *bits_per_sample,
+                                           gint     *num_channels,
+                                           gchar   **pixels,
+                                           gint     *pixels_length,
                                            GError **error);
 
 gboolean    awn_panel_get_all_server_flags(AwnPanel *panel,

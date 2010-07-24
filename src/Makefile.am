@@ -13,6 +13,30 @@ AM_CPPFLAGS =				\
 	-I$(builddir)			\
 	$(NULL)
 
+VALA_FILES = \
+	awn-panel-dispatcher.vala \
+	awn-app.vala \
+	$(NULL)
+
+VALA_FLAGS = \
+	$(top_builddir)/bindings/vala/awn.vapi \
+	awn-panel.vapi \
+	--pkg dbus-glib-1 \
+	--pkg gtk+-2.0 \
+	--pkg desktop-agnostic-cfg \
+	$(NULL)
+
+awn-core.vala.stamp: $(VALA_FILES)
+	$(foreach vala_file,$(VALA_FILES),\
+	$(VALAC) -C -H $(vala_file:.vala=.h) $(vala_file) $(VALA_FLAGS) && \
+	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(vala_file:.vala=.)[ch] || exit 1;)
+	touch "$@"
+
+VALA_GENERATED_FILES = \
+	$(VALA_FILES:.vala=.c) \
+	$(VALA_FILES:.vala=.h) \
+	$(NULL)
+
 bin_PROGRAMS = avant-window-navigator
 
 avant_window_navigator_LDADD =			\
@@ -22,9 +46,6 @@ avant_window_navigator_LDADD =			\
 
 avant_window_navigator_SOURCES =	\
 	awn-main.c \
-	awn-app.c \
-	awn-app.h \
-	awn-app-glue.h \
 	awn-applet-manager.c \
 	awn-applet-manager.h \
 	awn-applet-proxy.c \
@@ -50,7 +71,6 @@ avant_window_navigator_SOURCES =	\
 	awn-monitor.h \
 	awn-panel.c \
 	awn-panel.h \
-	awn-panel-glue.h \
 	awn-separator.c \
 	awn-separator.h \
 	awn-throbber.c \
@@ -62,27 +82,22 @@ avant_window_navigator_SOURCES =	\
 	inlinepixbufs.h \
 	xutils.h \
 	xutils.c \
+	$(VALA_GENERATED_FILES) \
 	$(NULL)
 
-# DBus glue
-awn-app-glue.h: awn-app-dbus.xml Makefile
-	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_app --mode=glib-server --output=$@ $<
-
-awn-panel-glue.h: awn-panel-dbus.xml Makefile
-	$(QUIET_GEN)$(LIBTOOL) --mode=execute $(DBUS_GLIB_BIN)/dbus-binding-tool --prefix=awn_panel --mode=glib-server --output=$@ $<
-
 BUILT_SOURCES = \
-	awn-app-glue.h \
-	awn-panel-glue.h \
+	awn-core.vala.stamp \
 	$(MARSHALFILES) \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES)
+CLEANFILES = \
+	$(BUILT_SOURCES) \
+	$(VALA_GENERATED_FILES) \
+	$(NULL)
 
 EXTRA_DIST = \
-	awn-app-dbus.xml \
-	awn-panel-dbus.xml \
 	awn-marshal.list \
+	$(VALA_GENERATED_FILES) \
 	$(NULL)
 
 # vim: set ts=8 sts=8 sw=8 :

@@ -41,7 +41,6 @@ EXTRA_DIST = 	test-awn-dialog.py 	\
 		test-taskmanager-dnd.py	\
 		test-taskmanager-windows.py
 
-if HAVE_VALA
 noinst_PROGRAMS += test-vala-awn-dialog
 
 VALA_FILES = \
@@ -58,4 +57,3 @@ test_vala_awn_dialog_LDADD = $(top_builddir)/libawn/libawn.la
 
 EXTRA_DIST += $(VALA_FILES)
 CLEANFILES = test-vala-awn-dialog.c
-endif
