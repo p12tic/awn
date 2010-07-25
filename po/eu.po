@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-23 23:03+0000\n"
+"PO-Revision-Date: 2010-07-24 11:11+0000\n"
 "Last-Translator: Asier Sarasua Garmendia <Unknown>\n"
 "Language-Team: Basque <eu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-24 03:58+0000\n"
+"X-Launchpad-Export-Date: 2010-07-25 04:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -24,7 +24,7 @@ msgstr "Zabaltzailea"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr "Panelaren espazioa betetzen du zabaltze-moduan dagoenean"
+msgstr "Paneleko espazioa betetzen du zabaltze-moduan"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
@@ -50,7 +50,7 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
-" Atazen Ikonoko leiho-ikonoen bistaratzea kontrolatzen du. Erakutsi beti "
+" Atazen Ikonoko leiho-ikonoen bistaratzea kontrolatzen du. 0) Erakutsi beti "
 "aplikazioak berak hornitutako leiho-ikonoa leihoa aktibatuta dagoenean (kasu "
 "gutxi batzuetan salbu). 1) Saiatu aplikazioak berak hornitutako leiho-ikonoa "
 "erakusten informazio erabilgarria/testuingurukoa eskaintzen duenean soilik. "
@@ -104,7 +104,7 @@ msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
-"Testuinguru-menuaren definizioa.  AWNren menuaren instalazio-direktorioan "
+"Testuinguru-menuaren definizioa. Awn-ren menuaren instalazio-direktorioan "
 "begiratuko du, bide-izen absolutu bat ematen ez bada."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
@@ -228,7 +228,7 @@ msgstr "Abiarazlearen/Atazen kudeatzailearen appleta"
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
 msgid "About Awn"
-msgstr "AWNi buruz"
+msgstr "Awn-ri buruz"
 
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
@@ -247,12 +247,12 @@ msgstr "Dock-hobespenak"
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr "Ezin dira AWNren hobespenak ireki: %s"
+msgstr "Ezin dira Awn-ren hobespenak ireki: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr "Atrakea kontrolatzeko eta AWNren hobespenak abiarazteko appleta."
+msgstr "Atrakea kontrolatzeko eta Awn-ren hobespenak abiarazteko appleta."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -344,11 +344,11 @@ msgstr "Mugitu _beste laneko area batera"
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr "AWNren hobespenak"
+msgstr "Awn-ren hobespenak"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr "Kudeatu AWNren hobespenak, abiarazleak, appletak eta gaiak"
+msgstr "Kudeatu Awn-ren hobespenak, abiarazleak, appletak eta gaiak"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
@@ -732,7 +732,7 @@ msgstr "Es_tiloa:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr "Abiarazi _AWN automatikoki"
+msgstr "Abiarazi _Awn automatikoki"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Stripe Width"
@@ -872,7 +872,7 @@ msgstr "Ezin dira hurrengo ikonoak aurkitu: %s\n"
 
 #: ../awn-settings/awnClass.py:1067
 msgid "AWN has been successfully refreshed"
-msgstr "AWM arrakastaz freskatu da"
+msgstr "Awn arrakastaz freskatu da"
 
 #: ../awn-settings/awnClass.py:1073
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -919,7 +919,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr "AWNren ezarpenak ezin dira exekutatu root modura."
+msgstr "Awn-ren ezarpenak ezin dira exekutatu root modura."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
@@ -1054,18 +1054,19 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
-"Ezin izan dira aurkitu hurrengo Python moduluak: %s  hainbat azalpen ditu "
-"horrek: Python modulu hau ez duzu instalaturik.  Kasu honetan AWNren wikian "
+"Ezin izan dira aurkitu hurrengo Python moduluak: %s hainbat azalpen ditu "
+"horrek:\n"
+"\n"
+"1. Python modulu hau ez duzu instalaturik. Kasu honetan Awn-ren wikian "
 "appleten atala bisitatu beharko zenuke zure banaketan modulu hau eskaintzen "
 "duen paketearen izen zehatza ezagutzeko.\n"
 "\n"
-"2. Modulua estandarra ez den toki batean instalatu da.  Pakete bat eskuz "
-"instalatzean gertatzen da hau.  Egoera hau wikiko FAQ atalean azalduta "
-"dago.\n"
+"2. Modulua estandarra ez den toki batean instalatu da. Pakete bat eskuz "
+"instalatzean gertatzen da hau. Egoera hau wikiko MEG atalean azalduta dago.\n"
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr "AWNren wikia"
+msgstr "Awn-ren wikia"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -1208,7 +1209,7 @@ msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
-"AWN kokatuta dagoen monitorearen zenbakia (monitor_force faltsua denean "
+"Awn kokatuta dagoen monitorearen zenbakia (monitor_force faltsua denean "
 "soilik sartzen da indarrean, erabili -1 monitorea automatikoki hautatzeko)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
@@ -1221,7 +1222,7 @@ msgstr "Ikonoen eta leiho-ertzaren arteko distantzia."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr "AWNren orientazioa. (ezkerra: 0, eskuina: 1, goia: 2 eta behea: 3)"
+msgstr "Awn-ren orientazioa. (ezkerra: 0, eskuina: 1, goia: 2 eta behea: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1350,7 +1351,7 @@ msgstr "Kurbaren simetria Kurbak moduan."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The user-visible size of Awn."
-msgstr "Erabiltzailearentzako ikusgai dagoen AWNren tamaina."
+msgstr "Erabiltzailearentzako ikusgai dagoen Awn-ren tamaina."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The width of the stripe in Lucido mode."

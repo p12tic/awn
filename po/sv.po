@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-21 14:31+0000\n"
+"PO-Revision-Date: 2010-07-24 17:23+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-22 03:57+0000\n"
+"X-Launchpad-Export-Date: 2010-07-25 04:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -345,7 +345,8 @@ msgstr "Inställningar för Awn"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr "Hantera Awn-inställningar, programstartare, panelprogram och teman"
+msgstr ""
+"Hantera inställningar, programstartare, panelprogram och teman för Awn."
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
@@ -1120,7 +1121,7 @@ msgstr "Bakgrundsfärg för Awn-dialogrutans titel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
-msgstr "Bakgrundsfärg för AwnDialog."
+msgstr "Bakgrundsfärg för Awn-dialogruta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
@@ -1128,11 +1129,11 @@ msgstr "Bakgrundsfärg för verktygstips."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
-msgstr "Färg för aktiv rektangel."
+msgstr "Färg för den aktiva rektangeln."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr "Färg för glödande punkt."
+msgstr "Färg för den glödande punkten."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
@@ -1172,7 +1173,7 @@ msgstr "Förstastegsfärg för framhävningsgradient."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
-msgstr "Typsnittsfärg för verktygstips"
+msgstr "Typsnittsfärg för verktygstipset"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
@@ -1203,7 +1204,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
-msgstr "Färg för intern ram."
+msgstr "Innerkantsfärg."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
@@ -1231,7 +1232,7 @@ msgstr "Orientering för Awn. (Vänster: 0, höger: 1, överst: 2, nederst: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
-msgstr "Konturfärg för verktygstips."
+msgstr "Konturfärg för verktygstipset."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
