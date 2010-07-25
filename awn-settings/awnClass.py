@@ -1064,7 +1064,7 @@ class awnManager:
     def refresh(self, button):
         dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_INFO,
                                    gtk.BUTTONS_OK,
-                                   _('AWN has been successfully refreshed'))
+                                   _('Awn has been successfully refreshed'))
         dialog.run()
         dialog.hide()
 
@@ -1221,7 +1221,7 @@ class awnApplet(awnBzr):
         dialog.set_default_response(gtk.RESPONSE_OK)
 
         filter = gtk.FileFilter()
-        filter.set_name("AWN Applet Package")
+        filter.set_name(_("Awn Applet Package"))
         filter.add_pattern("*.tar.gz")
         filter.add_pattern("*.tgz")
         filter.add_pattern("*.bz2")
@@ -1266,7 +1266,7 @@ class awnApplet(awnBzr):
             else:
                 self.register_applet(appletpath, False, applet_exists)
         else:
-            message = "Applet Installation Failed"
+            message = _("Applet Installation Failed")
             success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
             success.run()
             success.destroy()
@@ -1278,7 +1278,7 @@ class awnApplet(awnBzr):
             model = self.appmodel
 
         if applet_exists:
-            message = "Applet Successfully Updated"
+            message = _("Applet Successfully Updated")
         else:
             icon, text, name = self.make_row (appletpath)
             if len (text) > 2:
@@ -1294,9 +1294,9 @@ class awnApplet(awnBzr):
                     model.set_value (row, 3, name)
 
             if msg:
-                message = "Applet Successfully Added"
+                message = _("Applet Successfully Added")
             else:
-                message = "Applet Installation Failed"
+                message = _("Applet Installation Failed")
 
         if msg:
             success = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_OK, message_format=message)
@@ -1346,15 +1346,15 @@ class awnApplet(awnBzr):
 
         self.active_model.foreach(self.test_active, path)
         if self.active_found:
-            self.popup_msg("Can not delete active applet")
+            self.popup_msg(_("Can not delete active applet"))
             return
 
-        dialog = gtk.Dialog("Delete Applet",
+        dialog = gtk.Dialog(_("Delete Applet"),
                             None,
                             gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
                             (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                             gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-        label = gtk.Label("<b>Delete %s?</b>" % item.getName())
+        label = gtk.Label(_("<b>Delete %s?</b>") % item.getName())
         label.set_use_markup(True)
         align = gtk.Alignment()
         align.set_padding(5,5,5,5)
@@ -1374,7 +1374,7 @@ class awnApplet(awnBzr):
                 dialog.destroy()
             else:
                 dialog.destroy()
-                self.popup_msg("Unable to Delete Applet")
+                self.popup_msg(_("Unable to Delete Applet"))
         else:
             dialog.destroy()
             
@@ -1580,7 +1580,8 @@ class awnThemeCustomize(awnBzr):
                 shutil.rmtree(themedir)
         if os.path.exists(themedir):
             self.hide_export_dialog(None)
-            msg = themedir+" already exists, unable to export theme."
+            # Translators: This string is preceded by a filename
+            msg = themedir+_(" already exists, unable to export theme.")
             self.theme_message(msg)
             return
 
@@ -1656,7 +1657,7 @@ class awnThemeCustomize(awnBzr):
                 themedir = os.path.join(defs.HOME_THEME_DIR, filename)
                 
                 if os.path.exists(themefile):
-                    msg = "Theme already installed, do you wish to overwrite it?"
+                    msg = _("Theme already installed, do you wish to overwrite it?")
                     message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_YES_NO, message_format=msg)
                     resp = message.run()
                     if resp != gtk.RESPONSE_YES:
@@ -1690,7 +1691,7 @@ class awnThemeCustomize(awnBzr):
                 f.close()
                 self.add_uris_to_model(self.treeview_themes.get_model(),[themefile])
             else:
-                msg = "This is an incompatible theme file."
+                msg = _("This is an incompatible theme file.")
                 self.theme_message(msg)
                 
     def delete_theme(self):

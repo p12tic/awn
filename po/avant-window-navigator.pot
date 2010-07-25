@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-25 02:24+0200\n"
+"POT-Creation-Date: 2010-07-25 02:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -822,7 +822,7 @@ msgid "Could not locate the following icon: %s\n"
 msgstr ""
 
 #: ../awn-settings/awnClass.py:1067
-msgid "AWN has been successfully refreshed"
+msgid "Awn has been successfully refreshed"
 msgstr ""
 
 #: ../awn-settings/awnClass.py:1073
@@ -855,6 +855,52 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1224
+msgid "Awn Applet Package"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1269 ../awn-settings/awnClass.py:1299
+msgid "Applet Installation Failed"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1281
+msgid "Applet Successfully Updated"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1297
+msgid "Applet Successfully Added"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1349
+msgid "Can not delete active applet"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1352
+msgid "Delete Applet"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1357
+#, python-format
+msgid "<b>Delete %s?</b>"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1377
+msgid "Unable to Delete Applet"
+msgstr ""
+
+#. Translators: This string is preceded by a filename
+#: ../awn-settings/awnClass.py:1584
+msgid " already exists, unable to export theme."
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1660
+msgid "Theme already installed, do you wish to overwrite it?"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1694
+msgid "This is an incompatible theme file."
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:71
@@ -929,6 +975,22 @@ msgstr ""
 msgid "Keep below"
 msgstr ""
 
+#: ../awn-settings/awnSettings.py.in:629
+msgid "PNG Image"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:641
+msgid "Images"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:759
+msgid "Save Theme..."
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:768
+msgid "Awn Theme"
+msgstr ""
+
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
 msgstr ""
@@ -939,6 +1001,14 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:883
+msgid "Select Tooltip Font"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:923
+msgid "Awn Theme File"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:990
