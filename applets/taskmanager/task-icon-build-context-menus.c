@@ -812,7 +812,7 @@ task_icon_get_minimize_all (TaskIcon * icon)
     {
       continue;
     }
-    menuitem = gtk_image_menu_item_new_with_label ("Minimize all");
+    menuitem = gtk_image_menu_item_new_with_label (_("Minimize all"));
     gtk_widget_show (menuitem);
     g_signal_connect (menuitem,"activate",G_CALLBACK(_minimize_all_cb),icon);
   }
@@ -848,7 +848,7 @@ task_icon_get_unminimize_all (TaskIcon * icon)
     {
       continue;
     }
-    menuitem = gtk_image_menu_item_new_with_label ("Unminimize all");
+    menuitem = gtk_image_menu_item_new_with_label (_("Unminimize all"));
     gtk_widget_show (menuitem);
     g_signal_connect (menuitem,"activate",G_CALLBACK(_unminimize_all_cb),icon);
   }
@@ -884,7 +884,7 @@ task_icon_get_maximize_all (TaskIcon * icon)
     {
       continue;
     }
-    menuitem = gtk_image_menu_item_new_with_label ("Maximize all");
+    menuitem = gtk_image_menu_item_new_with_label (_("Maximize all"));
     gtk_widget_show (menuitem);
     g_signal_connect (menuitem,"activate",G_CALLBACK(_maximize_all_cb),icon);
   }
@@ -920,7 +920,7 @@ task_icon_get_unmaximize_all (TaskIcon * icon)
     {
       continue;
     }
-    menuitem = gtk_image_menu_item_new_with_label ("Unmaximize all");
+    menuitem = gtk_image_menu_item_new_with_label (_("Unmaximize all"));
     gtk_widget_show (menuitem);
     g_signal_connect (menuitem,"activate",G_CALLBACK(_unmaximize_all_cb),icon);
   }
