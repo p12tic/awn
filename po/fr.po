@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-20 19:51+0000\n"
+"PO-Revision-Date: 2010-07-26 11:20+0000\n"
 "Last-Translator: Nicolas Delvaux <Unknown>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-07-21 03:44+0000\n"
+"X-Launchpad-Export-Date: 2010-07-27 03:59+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -396,7 +396,7 @@ msgstr "<b>Lanceurs</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr "<b>Configuration numérique>/b>"
+msgstr "<b>Configuration numérique</b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
@@ -557,7 +557,7 @@ msgstr "Première couleur de surbrillance"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "Hauteur du flottement"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
@@ -742,7 +742,7 @@ msgstr "Lancer _Awn au démarrage"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Stripe Width"
-msgstr ""
+msgstr "Largeur du segment"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Theme Export"
@@ -972,7 +972,7 @@ msgstr "Flottant"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
-msgstr ""
+msgstr "Lucido"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
@@ -1036,19 +1036,19 @@ msgstr "Préférences"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"
-msgstr ""
+msgstr "Gestionnaire de tâches"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr ""
+msgstr "Applets"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
-msgstr ""
+msgstr "Thèmes"
 
 #: ../awn-settings/awnSettings.py.in:1171
 msgid "Advanced"
-msgstr ""
+msgstr "Options avancées"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
@@ -1089,7 +1089,7 @@ msgstr "Une barre des tâches de type « dock »"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0: solid, 1: outline, 2: outline, reversed."
-msgstr ""
+msgstr "0 : opaque, 1 : contours, 2 : contours, inversés."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "A bitmask which stores the type of effect for each event"
@@ -1117,6 +1117,9 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
+"Cacher automatiquement le dock quand le curseur n'est pas sur le dock (ne "
+"devrait pas être utilisé avec le mode panneau). (aucun : 0, garder en "
+"dessous : 1, fondu : 2, voir à travers : 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
@@ -1257,6 +1260,9 @@ msgid ""
 "through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
+"Permet de cliquer sur les fenêtres derrière le panneau. (0 : ne jamais "
+"cliquer à travers, 1 :cliquer à travers en pressant « CTRL », 2 : toujours "
+"cliquer à travers et interagir avec la barre seulement en pressant « CTRL »)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
@@ -1330,7 +1336,7 @@ msgstr "Écart entre l'icône et son reflet"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
-msgstr ""
+msgstr "Hauteur de l'arrière plan flottant."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
@@ -1345,6 +1351,8 @@ msgid ""
 "The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
 "4, floaty: 5, lucido: 6)"
 msgstr ""
+"Le style de la barre. (aucun : 0, barre plate : 1, barre 3d : 2, barre "
+"incurvée : 3, en coin : 4, flottante : 5, lucido : 6)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
@@ -1402,7 +1410,7 @@ msgstr "Personnaliser l'applet"
 #: ../libawn/awn-applet.c:1234
 #, c-format
 msgid "About %s"
-msgstr ""
+msgstr "À Propos de %s"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
