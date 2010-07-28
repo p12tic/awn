@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-26 17:09+0000\n"
+"PO-Revision-Date: 2010-07-27 19:21+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-27 03:59+0000\n"
+"X-Launchpad-Export-Date: 2010-07-28 03:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Swedish\n"
 
@@ -94,9 +94,9 @@ msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
-"Beteende när ett fönster på en annan arbetsyta tillkallar uppmärksamhet. (0. "
+"Beteende när ett fönster på en annan arbetsyta tillkallar uppmärksamhet. 0. "
 "Standardvärde, 1. Byt till aktuell arbetsyta, 2. Förflytta fönster till "
-"nuvarande arbetsyta)."
+"nuvarande arbetsyta."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
@@ -217,11 +217,11 @@ msgstr "Starta %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr "Programstartare/Aktivitetshanterare"
+msgstr "Programstartare/aktivitetshanterare"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr "Starta och hantera program och aktiviteter"
+msgstr "Panelprogram för programstartare/aktivitetshantering"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
@@ -1083,7 +1083,7 @@ msgstr "En dock-liknande fönsternavigator."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0: solid, 1: outline, 2: outline, reversed."
-msgstr "0: solid, 1: kontur, 2: kontur, omvänd"
+msgstr "0. Solid, 1. Kontur, 2. Kontur, omvänd"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "A bitmask which stores the type of effect for each event"
@@ -1111,9 +1111,9 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
-"Döljer panelen automatiskt när pekaren inte fokuserar på den. (Ska inte "
-"användas tillsammans med panel_mode. 0. Inget, 1. Behåll under, 2. Tona ut, "
-"3. Genomskinlighet)."
+"Döljer panelen automatiskt när pekaren inte fokuserar på den (ska inte "
+"användas tillsammans med panel_mode). 0. Inget, 1. Behåll under, 2. Tona ut, "
+"3. Genomskinlighet."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
@@ -1214,8 +1214,8 @@ msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
-"Skärmnummer där Avant är belägen. (Gäller endast när monitor_force är "
-"inaktiverat. Använd -1 för att skärm ska väljas automatiskt)."
+"Skärmnummer där Avant är belägen. Gäller endast när monitor_force är "
+"inaktiverat. Använd -1 för att skärm ska väljas automatiskt."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
@@ -1227,8 +1227,7 @@ msgstr "Kompensation av ikoner från fönsterram."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr ""
-"Orientering för Avant. (0. Vänster, 1. Höger, 2. Överst, 3. Nederst)."
+msgstr "Orientering för Avant. 0. Vänster, 1. Höger, 2. Överst, 3. Nederst."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1252,9 +1251,9 @@ msgid ""
 "through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
-"Tillhandahåller möjlighet att klicka på fönster bakom panelen. (0. Klicka "
+"Tillhandahåller möjlighet att klicka på fönster bakom panelen. 0. Klicka "
 "aldrig igenom, 1. Klicka igenom när ctrl hålls nedtryckt, 2. Klicka alltid "
-"igenom och påverka endast panelen när ctrl hålls nedtryckt)."
+"igenom och påverka endast panelen när ctrl hålls nedtryckt."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
@@ -1345,8 +1344,8 @@ msgid ""
 "The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
 "4, floaty: 5, lucido: 6)"
 msgstr ""
-"Stilen på panelen. (0. Ingen, 1. Platt, 2. 3d, 3. Kurvformad, 4. Kantig, 5. "
-"Flytande, 6. Lucido)."
+"Stilen på panelen. 0. Ingen, 1. Platt, 2. 3d, 3. Kurvformad, 4. Kantig, 5. "
+"Flytande, 6. Lucido."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
