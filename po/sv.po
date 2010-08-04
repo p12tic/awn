@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-27 19:21+0000\n"
+"PO-Revision-Date: 2010-08-03 18:36+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-28 03:47+0000\n"
+"X-Launchpad-Export-Date: 2010-08-04 03:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Swedish\n"
 
@@ -221,7 +221,7 @@ msgstr "Programstartare/aktivitetshanterare"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr "Panelprogram för programstartare/aktivitetshantering"
+msgstr "Panelprogram för programstartare/aktivitetshanterare"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
@@ -254,7 +254,7 @@ msgstr "Panelprogram för att ändra inställningar för Avant"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr "Inställningar"
+msgstr "Inställningsprogram"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
@@ -347,7 +347,7 @@ msgstr "Inställningar för Avant"
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
-"Hantera inställningar, programstartare, panelprogram och teman för Avant."
+"Hantera inställningar, programstartare, panelprogram och teman för Avant"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
@@ -524,7 +524,7 @@ msgstr "Dra hit tillgängliga panelprogram för att aktivera"
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr "Dra och släpp nedan eller dubbelklicka för att aktivera panelprogram"
+msgstr "Dra-och-släpp nedan eller dubbelklicka för att aktivera panelprogram"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
@@ -612,7 +612,7 @@ msgstr "Innerkantsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr "Installera panelprogram..."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
@@ -1031,7 +1031,7 @@ msgstr "Aktivitetshanterare"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr "Panelprogram"
+msgstr "Miniprogram"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
@@ -1075,7 +1075,7 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr "Avant-wikin"
+msgstr "Avant-wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -1117,11 +1117,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
-msgstr "Bakgrundsfärg för dialogrutors titlar."
+msgstr "Bakgrundsfärg för dialogrutors titlar"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
-msgstr "Bakgrundsfärg för dialogruta."
+msgstr "Bakgrundsfärg för dialogruta"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
@@ -1153,7 +1153,7 @@ msgid ""
 "not have a customized preferences dialog."
 msgstr ""
 "Avgör om allmän konfigurationsredigerare är tillåten för panelprogram som "
-"inte har en anpassad dialogruta för inställningar."
+"inte har en anpassad dialogruta för inställningar"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
@@ -1227,7 +1227,7 @@ msgstr "Kompensation av ikoner från fönsterram."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr "Orientering för Avant. 0. Vänster, 1. Höger, 2. Överst, 3. Nederst."
+msgstr "Orientering av Avant. 0. Vänster, 1. Höger, 2. Överst, 3. Nederst."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1353,7 +1353,7 @@ msgstr "Symmetrin av kurvorna i kurvformat läge."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The user-visible size of Awn."
-msgstr "Den synliga storleken av Avant."
+msgstr "Den synliga storleken av Avant"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The width of the stripe in Lucido mode."
@@ -1362,11 +1362,11 @@ msgstr "Bredden av randen i lucido-läge."
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
-"Tid i millisekunder varefter ikon kommer avge signal för \"längre tryck\"."
+"Tid i millisekunder varefter ikon kommer avge signal för \"längre tryck\""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr "Huruvida dialogruta ska använda färger från Gtk-tema."
+msgstr "Huruvida dialogruta ska använda färger från Gtk-tema"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
