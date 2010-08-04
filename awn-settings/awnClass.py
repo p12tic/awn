@@ -1061,13 +1061,6 @@ class awnManager:
     def changeTab(self, iconView):
         self.notebook.set_current_page(iconView.get_cursor()[0][0])
 
-    def refresh(self, button):
-        dialog = gtk.MessageDialog(self.window, 0, gtk.MESSAGE_INFO,
-                                   gtk.BUTTONS_OK,
-                                   _('Awn has been successfully refreshed'))
-        dialog.run()
-        dialog.hide()
-
     def about(self, button):
         self.about = gtk.AboutDialog()
         self.about.set_name(_("Avant Window Navigator"))
@@ -1581,7 +1574,7 @@ class awnThemeCustomize(awnBzr):
         if os.path.exists(themedir):
             self.hide_export_dialog(None)
             # Translators: This string is preceded by a filename
-            msg = themedir+_(" already exists, unable to export theme.")
+            msg = _("%s already exists, unable to export theme.") % (themedir)
             self.theme_message(msg)
             return
 
