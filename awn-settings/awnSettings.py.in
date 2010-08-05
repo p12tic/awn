@@ -626,7 +626,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             self.custom_arrow_chooser.set_filename(filename)
         self.custom_arrow_chooser.connect('file-set', self.arrow_select_callback)
         filter = gtk.FileFilter()
-        filter.set_name("PNG Image")
+        filter.set_name(_("PNG Image"))
         filter.add_pattern("*.png")
         self.custom_arrow_chooser.add_filter(filter)
         self.custom_arrow_chooser.set_filter(filter)
@@ -638,7 +638,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             self.pattern_chooser.set_filename(filename)
         self.pattern_chooser.connect('file-set', self.pattern_select_callback)
         filter = gtk.FileFilter()
-        filter.set_name("Images")
+        filter.set_name(_("Images"))
         filter.add_pattern("*.png")
         filter.add_pattern("*.svg")
         filter.add_pattern("*.xpm")
@@ -756,7 +756,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 
 		filename = "".join([x for x in name if x.isalpha() or x.isdigit()])
 		
-		fc = gtk.FileChooserDialog(title='Save Theme...',
+		fc = gtk.FileChooserDialog(title=_('Save Theme...'),
                                    parent=None,
                                    action=gtk.FILE_CHOOSER_ACTION_SAVE,
                                    buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_SAVE,gtk.RESPONSE_OK))
@@ -765,7 +765,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 		fc.set_current_name(filename+'.tgz')
 		fc.set_do_overwrite_confirmation(True)
 		filter = gtk.FileFilter()
-		filter.set_name('Awn Theme')
+		filter.set_name(_('Awn Theme'))
 		filter.add_pattern('*.tgz')
 		fc.add_filter(filter)
 		response = fc.run()
@@ -880,7 +880,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         return state
 		
 	def tooltip_font_name_callback(self, data=None):
-		fontselect = gtk.FontSelectionDialog('Select Tooltip Font')	
+		fontselect = gtk.FontSelectionDialog(_('Select Tooltip Font'))	
 		fontselect.set_font_name(fontname)
 		
     def update_view_themes(self, data=None):
@@ -920,7 +920,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         dialog.set_default_response(gtk.RESPONSE_OK)
         
         filter = gtk.FileFilter()
-        filter.set_name("AWN Theme File")
+        filter.set_name(_("Awn Theme File"))
         filter.add_pattern("*.tar.gz")
         filter.add_pattern("*.tgz")
         dialog.add_filter(filter)

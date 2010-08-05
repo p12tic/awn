@@ -8,16 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-04 16:33+0200\n"
-"PO-Revision-Date: 2010-06-05 17:18+0000\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-07-10 13:43+0000\n"
 "Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-06-06 03:35+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2010-07-11 03:42+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -74,8 +74,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the "
-"overlay/overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the overlay/"
+"overlayee if set to true."
 msgstr ""
 " Якщо значення overlay_application_icons — true, цей ключ переверне "
 "накладання, якщо встановити true."
@@ -108,8 +108,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
-"Затримка активування вікна, якщо вказівник проходить над піктограмою."
+msgstr "Затримка активування вікна, якщо вказівник проходить над піктограмою."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -207,7 +206,7 @@ msgstr ""
 "кнопки запуску"
 
 #: ../applets/taskmanager/task-launcher.c:1109
-#: ../applets/taskmanager/task-icon-build-context-menus.c:955
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1020
 msgid "Launch"
 msgstr "Запуск"
 
@@ -225,7 +224,7 @@ msgid "Launcher/Taskmanager applet"
 msgstr "Аплет для кнопок запуску та менеджер завдань"
 
 #: ../applets/quick-prefs/applet.vala:130
-#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
 msgid "About Awn"
 msgstr "Про Awn"
 
@@ -239,7 +238,7 @@ msgid "Icon size:"
 msgstr "Розмір піктограми:"
 
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
-#: ../src/awn-panel.c:689
+#: ../src/awn-panel.c:703
 msgid "Dock Preferences"
 msgstr "Налаштування панелі"
 
@@ -280,63 +279,88 @@ msgstr "Робоча область 1_0"
 msgid "Workspace %s%d"
 msgstr "Робоча область %s%d"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:657
+#: ../applets/taskmanager/task-icon-build-context-menus.c:683
 msgid "Add as Launcher"
 msgstr "Додати як кнопку запуску"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:675
+#: ../applets/taskmanager/task-icon-build-context-menus.c:722
+#, fuzzy
+msgid "Remove Launcher"
+msgstr "Додати як кнопку запуску"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
 msgstr "_Закрити"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:703
+#: ../applets/taskmanager/task-icon-build-context-menus.c:768
 msgid "_Close All"
 msgstr "_Закрити все"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:872
+#: ../applets/taskmanager/task-icon-build-context-menus.c:815
+#, fuzzy
+msgid "Minimize all"
+msgstr "_Згорути"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:851
+#, fuzzy
+msgid "Unminimize all"
+msgstr "_Розгорнути"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:887
+#, fuzzy
+msgid "Maximize all"
+msgstr "Розгорнути на ве_сь екран"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:923
+#, fuzzy
+msgid "Unmaximize all"
+msgstr "В_ідновити попередній розмір"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
 msgstr "Розгорнути на ве_сь екран"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:877
+#: ../applets/taskmanager/task-icon-build-context-menus.c:942
 msgid "Unma_ximize"
 msgstr "В_ідновити попередній розмір"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:905
+#: ../applets/taskmanager/task-icon-build-context-menus.c:970
 msgid "Always on _Top"
 msgstr "Завжди звер_ху"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:929
+#: ../applets/taskmanager/task-icon-build-context-menus.c:994
 msgid "Mi_nimize"
 msgstr "_Згорути"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:934
+#: ../applets/taskmanager/task-icon-build-context-menus.c:999
 msgid "Unmi_nimize"
 msgstr "_Розгорнути"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:988
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1053
 msgid "Always on Visible Workspace"
 msgstr "Завжди у видимій робочій області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:992
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
 msgstr "Лише в цій робочій області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1081
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
 msgstr "Перемістити _ліворуч робочої області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1091
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1156
 msgid "Move to Workspace _Right"
 msgstr "Перемістити _праворуч робочої області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1101
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1166
 msgid "Move to Workspace _Up"
 msgstr "П_еремістити угору робочої області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1111
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1176
 msgid "Move to Workspace _Down"
 msgstr "Перемістити в_низ робочої області"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1120
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1185
 msgid "Move to Another _Workspace"
 msgstr "Перемістити до іншої робочої _області"
 
@@ -427,8 +451,8 @@ msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
-"<b>Потрібно увімкнути ефекти стільниці, щоб налаштувати та застосувати "
-"теми.</b>"
+"<b>Потрібно увімкнути ефекти стільниці, щоб налаштувати та застосувати теми."
+"</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
@@ -736,12 +760,12 @@ msgid "Start _Awn automatically"
 msgstr "Запускати _Awn автоматично"
 
 #: ../awn-settings/awn-settings.ui.h:99
-msgid "Stripe Width"
-msgstr "Ширина смуги"
-
-#: ../awn-settings/awn-settings.ui.h:100
 msgid "Theme Export"
 msgstr "Експорт теми"
+
+#: ../awn-settings/awn-settings.ui.h:100
+msgid "Thickness"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -873,20 +897,16 @@ msgstr "Не вдалося знайти жодної з цих піктогра
 msgid "Could not locate the following icon: %s\n"
 msgstr "Не вдалося знайти піктограму: %s\n"
 
-#: ../awn-settings/awnClass.py:1067
-msgid "AWN has been successfully refreshed"
-msgstr "AWN успішно оновлено"
-
-#: ../awn-settings/awnClass.py:1073
+#: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
-#: ../awn-settings/awnClass.py:1091
+#: ../awn-settings/awnClass.py:1084
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "Повністю налаштовуваний віконний навігатор для GNOME."
 
-#: ../awn-settings/awnClass.py:1093
+#: ../awn-settings/awnClass.py:1086
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -898,7 +918,7 @@ msgstr ""
 "опублікована Free Software Foundation; версії 2 цієї ліцензії, чи (на ваш "
 "розсуд) будь-якою пізнішою версією."
 
-#: ../awn-settings/awnClass.py:1095
+#: ../awn-settings/awnClass.py:1088
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -909,7 +929,7 @@ msgstr ""
 "ЯКИХ ГАРАНТІЙ, навіть без неявної гарантії КОМЕРЦІЙНОЇ ЦІННОСТІ чи "
 "ПРИДАТНОСТІ ДЛЯ ЗАСТОСУВАННЯ. Детальніше дивіться GNU General Public License."
 
-#: ../awn-settings/awnClass.py:1097
+#: ../awn-settings/awnClass.py:1090
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -918,6 +938,55 @@ msgstr ""
 "Ви мали отримати копію GNU General Public License разом з цією програмою; "
 "якщо це не так, напишіть у Free Software Foundation, Inc., 51 Franklin "
 "Street, Fifth Floor, Boston, MA 02110-1301, USA."
+
+#: ../awn-settings/awnClass.py:1217
+msgid "Awn Applet Package"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
+msgid "Applet Installation Failed"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1274
+msgid "Applet Successfully Updated"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1290
+msgid "Applet Successfully Added"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1342
+#, fuzzy
+msgid "Can not delete active applet"
+msgstr "Деактивувати аплет"
+
+#: ../awn-settings/awnClass.py:1345
+#, fuzzy
+msgid "Delete Applet"
+msgstr "Деактивувати аплет"
+
+#: ../awn-settings/awnClass.py:1350
+#, fuzzy, python-format
+msgid "<b>Delete %s?</b>"
+msgstr "<b>Ефекти</b>"
+
+#: ../awn-settings/awnClass.py:1370
+msgid "Unable to Delete Applet"
+msgstr ""
+
+#. Translators: This string is preceded by a filename
+#: ../awn-settings/awnClass.py:1577
+#, python-format
+msgid "%s already exists, unable to export theme."
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1653
+msgid "Theme already installed, do you wish to overwrite it?"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1687
+msgid "This is an incompatible theme file."
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -991,6 +1060,25 @@ msgstr "Прозорість"
 msgid "Keep below"
 msgstr "Під вікнами"
 
+#: ../awn-settings/awnSettings.py.in:629
+#, fuzzy
+msgid "PNG Image"
+msgstr "Шаблон зображення"
+
+#: ../awn-settings/awnSettings.py.in:641
+msgid "Images"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:759
+#, fuzzy
+msgid "Save Theme..."
+msgstr "Експорт теми..."
+
+#: ../awn-settings/awnSettings.py.in:768
+#, fuzzy
+msgid "Awn Theme"
+msgstr "Теми"
+
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
 msgstr "Суцільний"
@@ -1002,6 +1090,14 @@ msgstr "Обрис"
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
 msgstr "Обрис — зворотний бік"
+
+#: ../awn-settings/awnSettings.py.in:883
+msgid "Select Tooltip Font"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:923
+msgid "Awn Theme File"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1076,30 +1172,22 @@ msgid "A dock-like window navigator."
 msgstr "Панельіконний навігатор на основі панелей."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
-msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr "0 - суцільний, 1 - обрис, 2 - обрис — зворотний бік."
+msgid "0: solid, 1: outline, 2: outline, reversed."
+msgstr "0: суцільний, 1: контур, 2: зворотний контур."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
-msgid "3)"
-msgstr "3)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:3
-msgid "6)"
-msgstr "6)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
 msgstr "Бітова маска, в якій зберігається тип ефекту для кожної події"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:5
+#: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
 msgstr "Вирівнювання не розтягнутої панелі відносно країв монітора."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+#: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
 msgstr "Можливе зміщення, якщо у вас кілька моніторів."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:7
+#: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
@@ -1107,39 +1195,49 @@ msgstr ""
 "Всі значення більше 0 витягуватимуть кути панелі. Чим більший радіус, тим "
 "більші кути."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:8
+#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+msgid ""
+"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
+"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
+"through: 3)"
+msgstr ""
+"Автоматично приховувати док, якщо вказівник не над ним (потрібно "
+"використовувати разом з panel_mode). (немає: 0, за край екрана: 1, згасання: "
+"2, прозорість: 3)"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
 msgstr "Колір фону заголовків діалогових вікон Awn."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:9
+#: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
 msgstr "Колір фону діалогових вікон Awn."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:10
+#: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
 msgstr "Колір фону підказок."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:11
+#: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
 msgstr "Колір активного чотирикутника."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:12
+#: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
 msgstr "Колір яскравої цятки."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:13
+#: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
 msgstr "Колір обрису активного чотирикутника."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:14
+#: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Delay between mouse leaving the panel and it hiding."
 msgstr "Затримка між відведенням вказівника з панелі та її приховуванням."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:15
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
 msgstr "Затримка вибору розташування вказівника."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:16
+#: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
@@ -1147,65 +1245,65 @@ msgstr ""
 "Визначає спільний редактор конфігурації, що дає змогу редагувати аплети, які "
 "не мають власного діалогу налаштувань."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:17
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
 msgstr "Малює розділювачі."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:18
+#: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
 msgstr "Увімкнути перетягування шаблонів."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:19
+#: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
 msgstr "Перший ступінь кольору градієнта."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:20
+#: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First highlight gradient step color."
 msgstr "Перший ступінь підсвічування кольору градієнта."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:21
+#: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
 msgstr "Колір шрифту підказок"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:22
+#: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
 msgstr "Шрифт назви підказок"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:23
+#: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
 msgstr "Форсувати геометрію монітора."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:24
+#: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
 "Колір тексту піктограми.  Залиште порожнім, щоб використовувати схему "
 "кольорів теми GTK."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
 "Колір обрису тексту піктограми.  Залиште порожнім, щоб використовувати схему "
 "кольорів теми GTK."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:26
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
 msgstr "Якщо значення true, розгорнуті вікна не перекривають панель."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:27
+#: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 "Якщо значення true, панель розтягуватиметься на всю ширину або висоту "
 "монітора."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:28
+#: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
 msgstr "Внутрішній колір рамки."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:29
+#: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
 msgstr "Основний колір рамки."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:30
+#: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
@@ -1214,13 +1312,17 @@ msgstr ""
 "monitor_force встановлено як False, використовуйте значення -1, щоб "
 "автоматично вибирати монітор)."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:31
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
 msgstr "Зміщення ярликів піктограм відносно самих піктограм."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+#: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
 msgstr "Зміщення піктограм відносно рамки вікна."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
+msgstr "Орієнтація Awn. (ліворуч: 0, праворуч: 1, уверху: 2 та внизу: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1240,13 +1342,13 @@ msgstr "Шлях до файла формату png, який містить п�
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
-"Provides possibility to click on windows behind the panel. (0 - never click "
-"through, 1 - click through when holding CTRL, 2 - always click through and "
+"Provides possibility to click on windows behind the panel. (0: never click "
+"through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
-"Надає можливість клацати у вікнах за панеллю. (0 — ніколи не клацати через "
-"панель, 1 — клацати через панель утримуючи CTRL, 2 — завжди клацати через "
-"панель та взаємодіяти з панеллю лише утримуючи CTRL)"
+"Надає можливість клацати у вікнах, розташованих за панеллю. (0: ніколи не "
+"клацати через панель, 1: клацати утримуючи CTRL, 2: завжди клацати через "
+"панель та взаємодіяти з панеллю лише натиснувши CTRL)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
@@ -1332,35 +1434,44 @@ msgid "The opacity of the pattern."
 msgstr "Прозорість шаблонів."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
+msgid ""
+"The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
+"4, floaty: 5, lucido: 6)"
+msgstr ""
+"Стиль панелі. (немає: 0, пласка: 1, 3d панель: 2, викривлена: 3, з чіткими "
+"краями: 4, плавуча: 5, прозора: 6)"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
 msgstr "Симетрія вигину у «Вигнутому» режимі."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:57
+#: ../data/avant-window-navigator.schema-ini.in.in.h:58
+#, fuzzy
+msgid "The thickness in 3D mode."
+msgstr "Кут панелі в тривимірному режимі."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
 msgstr "Розмір Awn видимий користувачу."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:58
-msgid "The width of the stripe in Lucido mode."
-msgstr "Ширина смужки в режимі Lucido."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:59
+#: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
 "Час у мілісекундах, після чого AwnIcon видасть сигнал для довгого натискання."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:60
+#: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
 msgstr "Чи AwnDialog буде використовувати кольори теми Gtk."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:61
+#: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
 msgstr "Чи закривати діалоги після втрати фокусу."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:62
+#: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
 msgstr "Чи використовувати кольори чинної теми Gtk."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:63
+#: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
@@ -1413,9 +1524,36 @@ msgstr "Завантаження аплету..."
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr "Отакої! Аплет дав збій. Натисніть, щоб перезапустити його."
 
-#: ../src/awn-panel.c:3960
+#: ../src/awn-panel.c:4015
 msgid "Close docklet"
 msgstr "Закрити панель"
 
+#~ msgid "Stripe Width"
+#~ msgstr "Ширина смуги"
+
+#~ msgid "AWN has been successfully refreshed"
+#~ msgstr "AWN успішно оновлено"
+
+#~ msgid "The width of the stripe in Lucido mode."
+#~ msgstr "Ширина смужки в режимі Lucido."
+
+#~ msgid "0 - solid, 1 - outline, 2 - outline, reversed."
+#~ msgstr "0 - суцільний, 1 - обрис, 2 - обрис — зворотний бік."
+
+#~ msgid "3)"
+#~ msgstr "3)"
+
 #~ msgid "5)"
 #~ msgstr "5)"
+
+#~ msgid ""
+#~ "Provides possibility to click on windows behind the panel. (0 - never "
+#~ "click through, 1 - click through when holding CTRL, 2 - always click "
+#~ "through and interact with panel only when holding CTRL)"
+#~ msgstr ""
+#~ "Надає можливість клацати у вікнах за панеллю. (0 — ніколи не клацати "
+#~ "через панель, 1 — клацати через панель утримуючи CTRL, 2 — завжди клацати "
+#~ "через панель та взаємодіяти з панеллю лише утримуючи CTRL)"
+
+#~ msgid "6)"
+#~ msgstr "6)"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-04 16:33+0200\n"
-"PO-Revision-Date: 2010-06-15 09:18+0000\n"
+"POT-Creation-Date: 2010-08-05 16:56+0200\n"
+"PO-Revision-Date: 2010-07-22 09:25+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-06-16 03:49+0000\n"
+"X-Launchpad-Export-Date: 2010-07-23 04:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the "
-"overlay/overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the overlay/"
+"overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -163,7 +163,7 @@ msgid ""
 msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1109
-#: ../applets/taskmanager/task-icon-build-context-menus.c:955
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1020
 msgid "Launch"
 msgstr "Käynnistä"
 
@@ -181,7 +181,7 @@ msgid "Launcher/Taskmanager applet"
 msgstr "Sovelma käynnistimille ja tehtävähallintaan"
 
 #: ../applets/quick-prefs/applet.vala:130
-#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
 msgid "About Awn"
 msgstr "Tietoja Awn:stä"
 
@@ -195,7 +195,7 @@ msgid "Icon size:"
 msgstr "Kuvakkeiden koko:"
 
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
-#: ../src/awn-panel.c:689
+#: ../src/awn-panel.c:703
 msgid "Dock Preferences"
 msgstr "Telakan asetukset"
 
@@ -236,63 +236,88 @@ msgstr "Työtila 1_0"
 msgid "Workspace %s%d"
 msgstr "Työtila %s%d"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:657
+#: ../applets/taskmanager/task-icon-build-context-menus.c:683
 msgid "Add as Launcher"
 msgstr "Lisää käynnistimenä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:675
+#: ../applets/taskmanager/task-icon-build-context-menus.c:722
+#, fuzzy
+msgid "Remove Launcher"
+msgstr "Lisää käynnistimenä"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
 msgstr "_Sulje"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:703
+#: ../applets/taskmanager/task-icon-build-context-menus.c:768
 msgid "_Close All"
 msgstr "Sulje _kaikki"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:872
+#: ../applets/taskmanager/task-icon-build-context-menus.c:815
+#, fuzzy
+msgid "Minimize all"
+msgstr "Pie_nennä"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:851
+#, fuzzy
+msgid "Unminimize all"
+msgstr "Palau_ta"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:887
+#, fuzzy
+msgid "Maximize all"
+msgstr "S_uurenna"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:923
+#, fuzzy
+msgid "Unmaximize all"
+msgstr "_Palauta koko"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
 msgstr "S_uurenna"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:877
+#: ../applets/taskmanager/task-icon-build-context-menus.c:942
 msgid "Unma_ximize"
 msgstr "_Palauta koko"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:905
+#: ../applets/taskmanager/task-icon-build-context-menus.c:970
 msgid "Always on _Top"
 msgstr "Aina pää_llimmäisenä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:929
+#: ../applets/taskmanager/task-icon-build-context-menus.c:994
 msgid "Mi_nimize"
 msgstr "Pie_nennä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:934
+#: ../applets/taskmanager/task-icon-build-context-menus.c:999
 msgid "Unmi_nimize"
 msgstr "Palau_ta"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:988
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1053
 msgid "Always on Visible Workspace"
 msgstr "Aina aktiivisessa työtilassa"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:992
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
 msgstr "Vain tässä työtilassa"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1081
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
 msgstr "Siirrä _vasemmalla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1091
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1156
 msgid "Move to Workspace _Right"
 msgstr "Siirrä _oikealla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1101
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1166
 msgid "Move to Workspace _Up"
 msgstr "Siirrä _yllä olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1111
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1176
 msgid "Move to Workspace _Down"
 msgstr "Siirrä _alla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1120
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1185
 msgid "Move to Another _Workspace"
 msgstr "Siirrä toiseen _työtilaan"
 
@@ -420,7 +445,7 @@ msgstr "Valitse teema..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
-msgstr ""
+msgstr "Napsautustila"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
@@ -579,7 +604,7 @@ msgstr "Käynnistysanimaatio:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "Kuvakkeiden ja ikkunoiden vastaavuus"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
@@ -639,7 +664,7 @@ msgstr "Kuvion kuvatiedosto"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "Peilikuvan peittokyky"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
@@ -676,7 +701,7 @@ msgstr "Näytä kaikki ikkunat"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Näytä valintaikkuna pitämållä painike pohjassa"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
@@ -691,12 +716,12 @@ msgid "Start _Awn automatically"
 msgstr "Käy_nnistä Awn automaattisesti"
 
 #: ../awn-settings/awn-settings.ui.h:99
-msgid "Stripe Width"
-msgstr ""
-
-#: ../awn-settings/awn-settings.ui.h:100
 msgid "Theme Export"
 msgstr "Teeman vienti"
+
+#: ../awn-settings/awn-settings.ui.h:100
+msgid "Thickness"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -826,20 +851,16 @@ msgstr "Seuraavia kuvakkeita ei löytynyt: %s\n"
 msgid "Could not locate the following icon: %s\n"
 msgstr "Seuraavaa kuvaketta ei löytynyt: %s\n"
 
-#: ../awn-settings/awnClass.py:1067
-msgid "AWN has been successfully refreshed"
-msgstr "AWN on virkistetty onnistuneesti"
-
-#: ../awn-settings/awnClass.py:1073
+#: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
-#: ../awn-settings/awnClass.py:1091
+#: ../awn-settings/awnClass.py:1084
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "Täysin muokattava telakkatyylinen ikkunanavigaattori Gnomelle."
 
-#: ../awn-settings/awnClass.py:1093
+#: ../awn-settings/awnClass.py:1086
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -847,10 +868,10 @@ msgid ""
 "any later version."
 msgstr ""
 "Tämä on vapaa ohjelma; voit levittää ja muuttaa sitä GNU General Public -"
-"lisenssin sopimusehtojen mukaisesti sellaisina kun Free Software Foundation "
+"lisenssin sopimusehtojen mukaisesti sellaisina kuin Free Software Foundation "
 "on ne julkaissut. Voit soveltaa lisenssin versiota 2 tai myöhempää."
 
-#: ../awn-settings/awnClass.py:1095
+#: ../awn-settings/awnClass.py:1088
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -862,7 +883,7 @@ msgstr ""
 "SOVELTUMISESTA TIETTYYN ERITYISEEN TARKOITUKSEEN. Yksityiskohtien osalta "
 "katso GNU:n GPL-lisenssiä."
 
-#: ../awn-settings/awnClass.py:1097
+#: ../awn-settings/awnClass.py:1090
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -871,6 +892,55 @@ msgstr ""
 "Tämän ohjelman mukana pitäisi tulla kopio GPL-lisenssistä; jos näin ei ole, "
 "kirjoita osoitteeseen Free Software Foundation, Inc., 51 Franklin St, Fifth "
 "Floor, Boston, MA 02110-1301 USA."
+
+#: ../awn-settings/awnClass.py:1217
+msgid "Awn Applet Package"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
+msgid "Applet Installation Failed"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1274
+msgid "Applet Successfully Updated"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1290
+msgid "Applet Successfully Added"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1342
+#, fuzzy
+msgid "Can not delete active applet"
+msgstr "Poista sovelma käytöstä"
+
+#: ../awn-settings/awnClass.py:1345
+#, fuzzy
+msgid "Delete Applet"
+msgstr "Poista sovelma käytöstä"
+
+#: ../awn-settings/awnClass.py:1350
+#, fuzzy, python-format
+msgid "<b>Delete %s?</b>"
+msgstr "<b>Tehosteet</b>"
+
+#: ../awn-settings/awnClass.py:1370
+msgid "Unable to Delete Applet"
+msgstr ""
+
+#. Translators: This string is preceded by a filename
+#: ../awn-settings/awnClass.py:1577
+#, python-format
+msgid "%s already exists, unable to export theme."
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1653
+msgid "Theme already installed, do you wish to overwrite it?"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1687
+msgid "This is an incompatible theme file."
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -942,7 +1012,26 @@ msgstr "Läpinäkyvyys"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
+msgstr "Pidä alla"
+
+#: ../awn-settings/awnSettings.py.in:629
+#, fuzzy
+msgid "PNG Image"
+msgstr "Kuvion kuvatiedosto"
+
+#: ../awn-settings/awnSettings.py.in:641
+msgid "Images"
 msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:759
+#, fuzzy
+msgid "Save Theme..."
+msgstr "Vie teema..."
+
+#: ../awn-settings/awnSettings.py.in:768
+#, fuzzy
+msgid "Awn Theme"
+msgstr "Teemat"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -956,21 +1045,29 @@ msgstr "Ääriviiva"
 msgid "Outline, Reversed"
 msgstr "Ääriviiva, käänteinen"
 
+#: ../awn-settings/awnSettings.py.in:883
+msgid "Select Tooltip Font"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:923
+msgid "Awn Theme File"
+msgstr ""
+
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Käytä sovellusten määrittämiä kuvakkeita"
 
 #: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Käytä paraslaatuisia kuvakkeita"
 
 #: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Peitä paraslaatuinen kuvake sovelluksen kuvakkeella"
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Peitä sovelluksen kuvake paraslaatuisella kuvakkella"
 
 #: ../awn-settings/awnSettings.py.in:1139
 msgid "Preferences"
@@ -1019,30 +1116,22 @@ msgid "A dock-like window navigator."
 msgstr "Telakkamainen ikkunanavigaattori."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
-msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-msgstr "0 - tasainen, 1 - ääriviiva, 2 ääriviiva, käänteinen."
+msgid "0: solid, 1: outline, 2: outline, reversed."
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
-msgid "3)"
-msgstr "3)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:3
-msgid "6)"
-msgstr "6)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "A bitmask which stores the type of effect for each event"
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:5
+#: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
 msgstr "Laajentamattoman paneelin sijainti näytön reunalla."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+#: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
 msgstr "Valinnainen siirtymä, kun sinulla useampi kuin yksi näyttö."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:7
+#: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
@@ -1050,110 +1139,121 @@ msgstr ""
 "0:aa suurempi arvo piirtää kulmat paneeliin. Mitä suurempi säde, sitä "
 "suuremmat kulmat."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:8
+#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+msgid ""
+"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
+"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
+"through: 3)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:9
+#: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:10
+#: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
 msgstr "Työkaluohjeen taustaväri"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:11
+#: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
 msgstr "Aktiivisen neliön (kuvakkeen) väri."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:12
+#: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
 msgstr "Hohtavan pisteen väri."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:13
+#: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:14
+#: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Delay between mouse leaving the panel and it hiding."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:15
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:16
+#: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:17
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
 msgstr "Piirrä erottimet."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:18
+#: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:19
+#: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:20
+#: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First highlight gradient step color."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:21
+#: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
 msgstr "Työkaluohjeen kirjasimen väri"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:22
+#: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
 msgstr "Työkaluohjeen kirjasimen nimi"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:23
+#: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
 msgstr "Pakota näytön geometria."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:24
+#: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
 "Kuvaketekstin väri. Jätä tyhjäksi, jos haluat käyttää gtk-teeman väriä."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:26
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
 msgstr "Jos tosi, suurennetut ikkunat eivät peitä paneelia."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:27
+#: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr "Jos tosi, paneeli laajenee näytön täyteen leveyteen/korkeuteen."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:28
+#: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
 msgstr "Sisäisen reunan väri."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:29
+#: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
 msgstr "Pääreunan väri."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:30
+#: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:31
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
 msgstr "Kuvakkeen ja tekstikentän välinen etäisyys"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+#: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
 msgstr "Kuvakkeen etäisyys ikkunan reunasta."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1173,8 +1273,8 @@ msgstr "Polku, josta löytyy nuolen png-muodossa oleva kuvake."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
-"Provides possibility to click on windows behind the panel. (0 - never click "
-"through, 1 - click through when holding CTRL, 2 - always click through and "
+"Provides possibility to click on windows behind the panel. (0: never click "
+"through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
 
@@ -1257,34 +1357,41 @@ msgid "The opacity of the pattern."
 msgstr "Kuvion peittokyky."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
+msgid ""
+"The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
+"4, floaty: 5, lucido: 6)"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
 msgstr "Kaaren symmetria Kaari-tilassa."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:57
+#: ../data/avant-window-navigator.schema-ini.in.in.h:58
+#, fuzzy
+msgid "The thickness in 3D mode."
+msgstr "Paneelin kulma 3D-tilassa."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:58
-msgid "The width of the stripe in Lucido mode."
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:59
+#: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:60
+#: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:61
+#: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:62
+#: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
 msgstr "Käytetäänkö nykyisen Gtk-teeman värejä."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:63
+#: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
@@ -1331,9 +1438,21 @@ msgstr "Ladataan sovelmaa..."
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr "Sovelma sulkeutui yllättäen. Napsauta käynnistääksesi sen uudelleen."
 
-#: ../src/awn-panel.c:3960
+#: ../src/awn-panel.c:4015
 msgid "Close docklet"
 msgstr "Sulje telakan asetukset"
 
+#~ msgid "AWN has been successfully refreshed"
+#~ msgstr "AWN on virkistetty onnistuneesti"
+
 #~ msgid "PNG Files"
 #~ msgstr "PNG-tiedostot"
+
+#~ msgid "3)"
+#~ msgstr "3)"
+
+#~ msgid "0 - solid, 1 - outline, 2 - outline, reversed."
+#~ msgstr "0 - tasainen, 1 - ääriviiva, 2 ääriviiva, käänteinen."
+
+#~ msgid "6)"
+#~ msgstr "6)"
