@@ -229,7 +229,7 @@ static void
 awn_background_lucido_init (AwnBackgroundLucido *bg)
 {
   AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (bg);
-  priv->lastx = 0;
+  priv->lastx = -1;
   priv->lastxend = INT_MAX;
   priv->needs_animation = FALSE;
   priv->tid = 0;
@@ -342,6 +342,10 @@ _get_applet_widgets (AwnBackground* bg)
 {
   AwnAppletManager *manager = NULL;
   g_object_get (bg->panel, "applet-manager", &manager, NULL);
+  if (!manager)
+  {
+    return NULL;
+  }
 
   return gtk_container_get_children (GTK_CONTAINER (manager));
 }
@@ -454,6 +458,10 @@ _create_path_lucido ( AwnBackground*  bg,
       x += applet_manager_x - dc;
     }
     x = lroundf (x);
+    if (priv->lastx == -1)
+    {
+      priv->lastx = x;
+    }
     if (x != priv->lastx)
     {
       needs_animation = TRUE;
@@ -616,7 +624,7 @@ _create_path_lucido ( AwnBackground*  bg,
       if (priv->pos_size <= j)
       {
         /* New special applet found, resize the array */
-        _add_n_positions (priv, 1, lx);
+        _add_n_positions (priv, 1, MAX (lx, curx));
       }
       /************************************************************************/
       /*****************    UPDATE SINGLE CURVE POSITION  *********************/
