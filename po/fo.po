@@ -1,46 +1,42 @@
-# Georgian translation for awn
-# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
+# Faroese translation for awn
+# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the awn package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-22 14:56+0000\n"
-"Last-Translator: George Salukvadze <giosal90@gmail.com>\n"
-"Language-Team: Georgian <ka@li.org>\n"
+"PO-Revision-Date: 2010-08-04 04:27+0000\n"
+"Last-Translator: Gunleif Joensen <Unknown>\n"
+"Language-Team: Faroese <fo@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-07-23 04:08+0000\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2010-08-05 03:35+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr "გამფართოებელი"
+msgstr ""
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr "ავსებს სივრცეს პანელზე გაფართოვებულ რეჟიმში"
+msgstr "Fyllur pláss á panelinum í víðkaðum standi"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
-" შესაძლებელს ხდის იმ ფანჯრების დაჯგუფებას, რომლებსაც აქვთ სხვა და სხვა "
-"WM_CLIENT_NAME მნიშვნელობა."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
-" აკონტროლებს გადაფარების ალფა-მნიშვნელობას, თუ overlay_application_icons "
-"ჩართულია. მნიშვნელობები 0.0-დან 1.0-მდე."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -56,8 +52,6 @@ msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
-" აკონტროლებს გადაფარების ზომას, თუ overlay_application_icons ჩართულია. "
-"მნიშვნელობები 0.2-დან 0.7-მდე."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
@@ -155,7 +149,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Vís gluggar frá øllum arbeiðsøkjum"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -171,12 +165,12 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:955
 msgid "Launch"
-msgstr ""
+msgstr "Koyr"
 
 #: ../applets/taskmanager/task-launcher.c:1192
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "Koyr %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -189,7 +183,7 @@ msgstr ""
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
 msgid "About Awn"
-msgstr ""
+msgstr "Um AWN"
 
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
@@ -198,17 +192,17 @@ msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
-msgstr ""
+msgstr "Ímyndastødd:"
 
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:689
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Dokk innstillingar"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Kundi ikki lata upp Awn innstillingar: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
@@ -248,11 +242,11 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:675
 msgid "_Close"
-msgstr ""
+msgstr "Lat _aftur"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:703
 msgid "_Close All"
-msgstr ""
+msgstr "Lat øll _aftur"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:872
 msgid "Ma_ximize"
@@ -264,7 +258,7 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:905
 msgid "Always on _Top"
-msgstr ""
+msgstr "Al_tíð ovast"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:929
 msgid "Mi_nimize"
@@ -309,7 +303,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr "Awn-ის პარამეტრებით, გამშვებები, აპპლეტებითა და თემებით მართვა"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
