@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-07 11:06+0200\n"
-"PO-Revision-Date: 2010-07-22 09:25+0000\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-08-05 17:14+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-23 04:08+0000\n"
+"X-Launchpad-Export-Date: 2010-08-06 03:45+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -163,7 +163,7 @@ msgid ""
 msgstr ""
 
 #: ../applets/taskmanager/task-launcher.c:1109
-#: ../applets/taskmanager/task-icon-build-context-menus.c:955
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1020
 msgid "Launch"
 msgstr "Käynnistä"
 
@@ -181,7 +181,7 @@ msgid "Launcher/Taskmanager applet"
 msgstr "Sovelma käynnistimille ja tehtävähallintaan"
 
 #: ../applets/quick-prefs/applet.vala:130
-#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:705
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
 msgid "About Awn"
 msgstr "Tietoja Awn:stä"
 
@@ -195,7 +195,7 @@ msgid "Icon size:"
 msgstr "Kuvakkeiden koko:"
 
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
-#: ../src/awn-panel.c:689
+#: ../src/awn-panel.c:703
 msgid "Dock Preferences"
 msgstr "Telakan asetukset"
 
@@ -236,63 +236,83 @@ msgstr "Työtila 1_0"
 msgid "Workspace %s%d"
 msgstr "Työtila %s%d"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:657
+#: ../applets/taskmanager/task-icon-build-context-menus.c:683
 msgid "Add as Launcher"
 msgstr "Lisää käynnistimenä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:675
+#: ../applets/taskmanager/task-icon-build-context-menus.c:722
+msgid "Remove Launcher"
+msgstr "Poista käynnistin"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
 msgstr "_Sulje"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:703
+#: ../applets/taskmanager/task-icon-build-context-menus.c:768
 msgid "_Close All"
 msgstr "Sulje _kaikki"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:872
+#: ../applets/taskmanager/task-icon-build-context-menus.c:815
+msgid "Minimize all"
+msgstr "Pienennä kaikki"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:851
+msgid "Unminimize all"
+msgstr "Palauta koko"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:887
+msgid "Maximize all"
+msgstr "Suurenna kaikki"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:923
+msgid "Unmaximize all"
+msgstr "Palauta koko"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
 msgstr "S_uurenna"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:877
+#: ../applets/taskmanager/task-icon-build-context-menus.c:942
 msgid "Unma_ximize"
 msgstr "_Palauta koko"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:905
+#: ../applets/taskmanager/task-icon-build-context-menus.c:970
 msgid "Always on _Top"
 msgstr "Aina pää_llimmäisenä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:929
+#: ../applets/taskmanager/task-icon-build-context-menus.c:994
 msgid "Mi_nimize"
 msgstr "Pie_nennä"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:934
+#: ../applets/taskmanager/task-icon-build-context-menus.c:999
 msgid "Unmi_nimize"
 msgstr "Palau_ta"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:988
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1053
 msgid "Always on Visible Workspace"
 msgstr "Aina aktiivisessa työtilassa"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:992
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
 msgstr "Vain tässä työtilassa"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1081
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
 msgstr "Siirrä _vasemmalla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1091
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1156
 msgid "Move to Workspace _Right"
 msgstr "Siirrä _oikealla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1101
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1166
 msgid "Move to Workspace _Up"
 msgstr "Siirrä _yllä olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1111
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1176
 msgid "Move to Workspace _Down"
 msgstr "Siirrä _alla olevaan työtilaan"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1120
+#: ../applets/taskmanager/task-icon-build-context-menus.c:1185
 msgid "Move to Another _Workspace"
 msgstr "Siirrä toiseen _työtilaan"
 
@@ -691,12 +711,12 @@ msgid "Start _Awn automatically"
 msgstr "Käy_nnistä Awn automaattisesti"
 
 #: ../awn-settings/awn-settings.ui.h:99
-msgid "Stripe Width"
-msgstr ""
-
-#: ../awn-settings/awn-settings.ui.h:100
 msgid "Theme Export"
 msgstr "Teeman vienti"
+
+#: ../awn-settings/awn-settings.ui.h:100
+msgid "Thickness"
+msgstr "Paksuus"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -826,20 +846,16 @@ msgstr "Seuraavia kuvakkeita ei löytynyt: %s\n"
 msgid "Could not locate the following icon: %s\n"
 msgstr "Seuraavaa kuvaketta ei löytynyt: %s\n"
 
-#: ../awn-settings/awnClass.py:1067
-msgid "AWN has been successfully refreshed"
-msgstr "AWN on virkistetty onnistuneesti"
-
-#: ../awn-settings/awnClass.py:1073
+#: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
-#: ../awn-settings/awnClass.py:1091
+#: ../awn-settings/awnClass.py:1084
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr "Täysin muokattava telakkatyylinen ikkunanavigaattori Gnomelle."
 
-#: ../awn-settings/awnClass.py:1093
+#: ../awn-settings/awnClass.py:1086
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -850,7 +866,7 @@ msgstr ""
 "lisenssin sopimusehtojen mukaisesti sellaisina kuin Free Software Foundation "
 "on ne julkaissut. Voit soveltaa lisenssin versiota 2 tai myöhempää."
 
-#: ../awn-settings/awnClass.py:1095
+#: ../awn-settings/awnClass.py:1088
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -862,7 +878,7 @@ msgstr ""
 "SOVELTUMISESTA TIETTYYN ERITYISEEN TARKOITUKSEEN. Yksityiskohtien osalta "
 "katso GNU:n GPL-lisenssiä."
 
-#: ../awn-settings/awnClass.py:1097
+#: ../awn-settings/awnClass.py:1090
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -871,6 +887,53 @@ msgstr ""
 "Tämän ohjelman mukana pitäisi tulla kopio GPL-lisenssistä; jos näin ei ole, "
 "kirjoita osoitteeseen Free Software Foundation, Inc., 51 Franklin St, Fifth "
 "Floor, Boston, MA 02110-1301 USA."
+
+#: ../awn-settings/awnClass.py:1217
+msgid "Awn Applet Package"
+msgstr "Awn-sovelmapaketti"
+
+#: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
+msgid "Applet Installation Failed"
+msgstr "Sovelman asennus epäonnistui"
+
+#: ../awn-settings/awnClass.py:1274
+msgid "Applet Successfully Updated"
+msgstr "Sovelma päivitetty onnistuneesti"
+
+#: ../awn-settings/awnClass.py:1290
+msgid "Applet Successfully Added"
+msgstr "Sovelma lisätty onnistuneesti"
+
+#: ../awn-settings/awnClass.py:1342
+msgid "Can not delete active applet"
+msgstr "Aktiivista sovelmaa ei voi poistaa"
+
+#: ../awn-settings/awnClass.py:1345
+msgid "Delete Applet"
+msgstr "Poista sovelma"
+
+#: ../awn-settings/awnClass.py:1350
+#, python-format
+msgid "<b>Delete %s?</b>"
+msgstr "<b>Poistetaanko %s?</b>"
+
+#: ../awn-settings/awnClass.py:1370
+msgid "Unable to Delete Applet"
+msgstr "Sovelman poisto epäonnistui"
+
+#. Translators: This string is preceded by a filename
+#: ../awn-settings/awnClass.py:1577
+#, python-format
+msgid "%s already exists, unable to export theme."
+msgstr "%s on jo olemassa, teeman viesti ei onnistu."
+
+#: ../awn-settings/awnClass.py:1653
+msgid "Theme already installed, do you wish to overwrite it?"
+msgstr "Teema on jo asennettu, haluatko korvata sen?"
+
+#: ../awn-settings/awnClass.py:1687
+msgid "This is an incompatible theme file."
+msgstr "Kyseessä on yhteensopimaton teematiedosto."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -944,6 +1007,22 @@ msgstr "Läpinäkyvyys"
 msgid "Keep below"
 msgstr "Pidä alla"
 
+#: ../awn-settings/awnSettings.py.in:629
+msgid "PNG Image"
+msgstr "PNG-kuva"
+
+#: ../awn-settings/awnSettings.py.in:641
+msgid "Images"
+msgstr "Kuvat"
+
+#: ../awn-settings/awnSettings.py.in:759
+msgid "Save Theme..."
+msgstr "Tallenna teema..."
+
+#: ../awn-settings/awnSettings.py.in:768
+msgid "Awn Theme"
+msgstr "Awn-teema"
+
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
 msgstr "Tasainen"
@@ -955,6 +1034,14 @@ msgstr "Ääriviiva"
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
 msgstr "Ääriviiva, käänteinen"
+
+#: ../awn-settings/awnSettings.py.in:883
+msgid "Select Tooltip Font"
+msgstr ""
+
+#: ../awn-settings/awnSettings.py.in:923
+msgid "Awn Theme File"
+msgstr "Awn-teematiedosto"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1270,11 +1357,11 @@ msgid "The symmetry of the curve in Curves mode."
 msgstr "Kaaren symmetria Kaari-tilassa."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
-msgid "The user-visible size of Awn."
+msgid "The thickness in 3D mode."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
-msgid "The width of the stripe in Lucido mode."
+msgid "The user-visible size of Awn."
 msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
@@ -1340,9 +1427,12 @@ msgstr "Ladataan sovelmaa..."
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr "Sovelma sulkeutui yllättäen. Napsauta käynnistääksesi sen uudelleen."
 
-#: ../src/awn-panel.c:3960
+#: ../src/awn-panel.c:4015
 msgid "Close docklet"
 msgstr "Sulje telakan asetukset"
+
+#~ msgid "AWN has been successfully refreshed"
+#~ msgstr "AWN on virkistetty onnistuneesti"
 
 #~ msgid "PNG Files"
 #~ msgstr "PNG-tiedostot"
