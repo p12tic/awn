@@ -29,7 +29,7 @@ using DBus;
 // only here so that config.h is before gi18n-lib.h
 private const string not_used = Build.APPLETSDIR;
 
-[DBus (name="org.freedesktop.DockManager")]
+[DBus (name="net.launchpad.DockManager")]
 interface DockManager: GLib.Object
 {
   public async abstract string[] get_capabilities () throws DBus.Error;
@@ -101,7 +101,7 @@ public class PrefsApplet : AppletSimple
     this.initialize_menu ();
 
     unowned DBusWatcher watcher = DBusWatcher.get_default ();
-    watcher.name_appeared["org.freedesktop.DockManager"].
+    watcher.name_appeared["net.launchpad.DockManager"].
         connect (this.taskmanager_appeared);
 
     // ask taskman to hide awn-settings
@@ -151,9 +151,9 @@ public class PrefsApplet : AppletSimple
       DBus.Connection con = DBus.Bus.get (DBus.BusType.SESSION);
 
       var taskman = (DockManager) 
-        con.get_object ("org.freedesktop.DockManager",
-                        "/org/freedesktop/DockManager",
-                        "org.freedesktop.DockManager");
+        con.get_object ("net.launchpad.DockManager",
+                        "/net/launchpad/DockManager",
+                        "net.launchpad.DockManager");
 
       string[] caps = yield taskman.get_capabilities ();
       bool supports_visibility_setting = false;

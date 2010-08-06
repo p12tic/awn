@@ -57,7 +57,7 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
                                      DBUS_PATH_DBUS,
                                      DBUS_INTERFACE_DBUS);
   if (!org_freedesktop_DBus_request_name (proxy,
-                                          "org.freedesktop.DockManager",
+                                          "net.launchpad.DockManager",
                                           0, &ret, &error))
   {
     g_warning ("There was an error requesting the D-Bus name:%s\n",

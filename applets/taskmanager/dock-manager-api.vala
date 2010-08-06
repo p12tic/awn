@@ -20,7 +20,7 @@
 
 using DBus;
 
-[DBus (name="org.freedesktop.DockManager")]
+[DBus (name="net.launchpad.DockManager")]
 public interface DockManagerDBusInterface: GLib.Object
 {
   public abstract string[] get_capabilities () throws DBus.Error;
@@ -38,7 +38,7 @@ public interface DockManagerDBusInterface: GLib.Object
   public signal void item_removed (ObjectPath path);
 }
 
-[DBus (name="org.freedesktop.DockItem")]
+[DBus (name="net.launchpad.DockItem")]
 public interface DockItemDBusInterface: GLib.Object
 {
   public abstract int add_menu_item (HashTable<string, Value?> menu_hints) throws DBus.Error;
@@ -67,7 +67,7 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     */
 
     var conn = DBus.Bus.get (DBus.BusType.SESSION);
-    string obj_path = "/org/freedesktop/DockManager";
+    string obj_path = "/net/launchpad/DockManager";
     conn.register_object (obj_path, this);
   }
 
@@ -245,7 +245,7 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
     this.icon = icon;
 
     var conn = DBus.Bus.get (DBus.BusType.SESSION);
-    this.object_path = "/org/freedesktop/DockManager/Item%d".printf (counter++);
+    this.object_path = "/net/launchpad/DockManager/Item%d".printf (counter++);
     conn.register_object (this.object_path, this);
 
     this.emit_item_added ();

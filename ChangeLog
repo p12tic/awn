@@ -1,3 +1,10 @@
+2010-08-07  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/dock-manager-api.vala:
+	Use net.launchpad.DockManager.
+
 2010-07-16  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:
