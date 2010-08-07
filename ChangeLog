@@ -1,3 +1,8 @@
+2010-08-08  Alberto  <albyrock87+dev@gmail.com>
+
+	* src/awn-background.c:
+	Fixed drawing glitches when changing Size of icons.
+
 2010-08-08  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-main.c:

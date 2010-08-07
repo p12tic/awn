@@ -735,11 +735,8 @@ awn_background_draw (AwnBackground  *bg,
     if (klass->get_needs_redraw (bg, position, area))
     {
       cairo_t *temp_cr;
-      gdouble clip_x1, clip_x2, clip_y1, clip_y2;
       gint full_width = area->x + area->width;
       gint full_height = area->y + area->height;
-
-      cairo_clip_extents (cr, &clip_x1, &clip_y1, &clip_x2, &clip_y2);
 
       gboolean realloc_needed = bg->helper_surface == NULL ||
         cairo_image_surface_get_width (bg->helper_surface) != full_width ||
@@ -756,19 +753,17 @@ awn_background_draw (AwnBackground  *bg,
                                                          full_width,
                                                          full_height);
         temp_cr = cairo_create (bg->helper_surface);
-        cairo_rectangle (temp_cr, clip_x1, clip_y1, 
-                         clip_x2-clip_x1, clip_y2-clip_y1);
+        cairo_rectangle (temp_cr, 0., 0., full_width, full_height);
         cairo_clip (temp_cr);
       }
       else
       {
         temp_cr = cairo_create (bg->helper_surface);
-        cairo_rectangle (temp_cr, clip_x1, clip_y1,
-                         clip_x2-clip_x1, clip_y2-clip_y1);
-        cairo_clip (temp_cr);
         cairo_set_operator (temp_cr, CAIRO_OPERATOR_CLEAR);
         cairo_paint (temp_cr);
         cairo_set_operator (temp_cr, CAIRO_OPERATOR_OVER);
+        cairo_rectangle (temp_cr, 0., 0., full_width, full_height);
+        cairo_clip (temp_cr);
       }
       /* Draw background on temp cairo_t */
       klass->draw (bg, temp_cr, position, area);
@@ -1130,13 +1125,15 @@ static gboolean awn_background_get_needs_redraw (AwnBackground *bg,
                                                  GtkPositionType position,
                                                  GdkRectangle *area)
 {
+  gint h = area->height + area->y;
+  gint w = area->width + area->x;
   if (bg->needs_redraw == 1 ||
-      bg->last_height != area->height ||
-      bg->last_width != area->width)
+      bg->last_height != h ||
+      bg->last_width != w)
   {
     bg->needs_redraw = 0;
-    bg->last_height = area->height;
-    bg->last_width = area->width;
+    bg->last_height = h;
+    bg->last_width = w;
     return TRUE;
   }
   return FALSE;
