@@ -1,3 +1,8 @@
+2010-08-08  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-main.c:
+	Change the way --startup parameter works.
+
 2010-08-07  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/quick-prefs/applet.vala:
