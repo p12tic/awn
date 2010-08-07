@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-05 14:55+0000\n"
-"Last-Translator: David Bengtsson <Unknown>\n"
+"PO-Revision-Date: 2010-08-07 01:47+0000\n"
+"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-08-06 03:45+0000\n"
+"X-Launchpad-Export-Date: 2010-08-07 03:44+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Swedish\n"
 
@@ -632,7 +632,7 @@ msgstr "Innerkantsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr "Installera panelprogram..."
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
@@ -1531,3 +1531,12 @@ msgstr "Stäng docklet"
 
 #~ msgid "Standard"
 #~ msgstr "Standard"
+
+#~ msgid "Stripe Width"
+#~ msgstr "Randbredd"
+
+#~ msgid "The width of the stripe in Lucido mode."
+#~ msgstr "Bredden av randen i lucido-läge."
+
+#~ msgid "AWN has been successfully refreshed"
+#~ msgstr "Uppdatering av Avant lyckades"
