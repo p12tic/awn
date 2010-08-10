@@ -954,6 +954,7 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
   {
     if (*target_size != *current_draw_size && !priv->resize_timer_id)
     {
+      /* background invalidation is in awn_panel_resize_timeout */
       priv->resize_timer_id = g_timeout_add (40, awn_panel_resize_timeout,
                                              widget); // 25 FPS
     }
@@ -962,6 +963,18 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
   {
     // this ensures there's a shrinking animation when expand is turned off
     *current_draw_size = *target_size;
+    if (priv->bg)
+    {
+      awn_background_invalidate (priv->bg);
+    }
+  }
+  else
+  {
+    /* If in non-composited mode, invalidate background on size changed */
+    if (priv->bg)
+    {
+      awn_background_invalidate (priv->bg);
+    }
   }
 }
 

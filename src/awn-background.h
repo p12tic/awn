@@ -83,8 +83,6 @@ struct _AwnBackground
   gboolean          cache_enabled;
   gboolean          needs_redraw;
   cairo_surface_t*  helper_surface;
-  gint              last_height;
-  gint              last_width;
 
   /* FIXME:
    * These two should ultimately go somewhere else (once we do multiple panels)

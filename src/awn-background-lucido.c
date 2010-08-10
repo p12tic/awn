@@ -439,6 +439,7 @@ _create_path_lucido ( AwnBackground*  bg,
                       gboolean        internal,
                       gboolean        expanded,
                       gfloat          align,
+                      gboolean        composited,
                       gboolean        update_positions)
 {
   AwnBackgroundLucido *lbg = AWN_BACKGROUND_LUCIDO (bg);
@@ -451,7 +452,12 @@ _create_path_lucido ( AwnBackground*  bg,
   /********************     UPDATE STARTING POINT     *************************/
   /****************************************************************************/
   /* x variable stores the starting x point for draw the panel */
-  if (update_positions)
+  if (!composited)
+  {
+    /* animation disabled if not composited */
+    priv->lastx = x;
+  }
+  else if (update_positions)
   {
     if (!expanded)
     {
@@ -572,7 +578,12 @@ _create_path_lucido ( AwnBackground*  bg,
   /********************     UPDATE WIDTH FOR LAST X   *************************/
   /****************************************************************************/
   /* w stores the "right corner", lastxend equals to last w */
-  if (update_positions)
+  if (!composited)
+  {
+    /* animation disabled if not composited */
+    priv->lastxend = w;
+  }
+  else if (update_positions)
   {
     w = lroundf (w);
     if (w != priv->lastxend)
@@ -597,7 +608,8 @@ _create_path_lucido ( AwnBackground*  bg,
   }
   curx = lx;
   gint wx, wy;
-  if (!docklet_mode)
+  /* fake docklet mode if not composited */
+  if (!docklet_mode && composited)
   {
     for (; i; i = i->next)
     {
@@ -716,12 +728,13 @@ _create_path_lucido ( AwnBackground*  bg,
   /****************************************************************************/
   if (update_positions)
   {
-    if (needs_animation)
+    if (needs_animation && composited)
     {
       _restart_timeout (bg, priv);
     }
     else
     {
+      /* animation disabled if not composited */
       priv->needs_animation = FALSE;
     }
   }
@@ -758,7 +771,8 @@ draw_top_bottom_background (AwnBackground*   bg,
     width += 1.;
   }
 
-  if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
+  gboolean composited = gtk_widget_is_composited (GTK_WIDGET (bg->panel));
+  if (composited == FALSE)
   {
     goto paint_lines;
   }
@@ -771,7 +785,7 @@ draw_top_bottom_background (AwnBackground*   bg,
   y_pat = _create_path_lucido (bg, position, cr, x, y, width, height,
                                TRANSFORM_RADIUS (bg->corner_radius),
                                TRANSFORM_RADIUS (bg->corner_radius),
-                               TRUE, expand, align, TRUE);
+                               TRUE, expand, align, composited, TRUE);
 
   /* Draw internal pattern if needed */
   if (bg->enable_pattern && bg->pattern)
@@ -806,7 +820,7 @@ draw_top_bottom_background (AwnBackground*   bg,
   y_pat = _create_path_lucido (bg, position, cr, x, y, width, height,
                                TRANSFORM_RADIUS (bg->corner_radius),
                                TRANSFORM_RADIUS (bg->corner_radius),
-                               FALSE, expand, align, FALSE);
+                               FALSE, expand, align, composited, FALSE);
 
   /* Prepare external background gradient*/
   cairo_pattern_destroy (pat);
@@ -851,13 +865,13 @@ paint_lines:
     _create_path_lucido (bg, position, cr, 0., 0., width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         FALSE, expand, align, TRUE);
+                         FALSE, expand, align, composited, TRUE);
     cairo_stroke (cr);
     awn_cairo_set_source_color (cr, bg->hilight_color);
     _create_path_lucido (bg, position, cr, 1., 1., width-1., height-1.,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         FALSE, expand, align, FALSE);
+                         FALSE, expand, align, composited, FALSE);
   }
   cairo_stroke (cr);
 }
@@ -1052,15 +1066,16 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   }
   else
   {
+    gboolean composited = gtk_widget_is_composited (GTK_WIDGET (bg->panel));
     _create_path_lucido (bg, position, cr, 0., 0., width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         FALSE, expand, align, FALSE);
+                         FALSE, expand, align, composited, FALSE);
     cairo_fill (cr);
     _create_path_lucido (bg, position, cr, 0., 0., width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         TRUE, expand, align, FALSE);
+                         TRUE, expand, align, composited, FALSE);
 
   }
   cairo_fill (cr);

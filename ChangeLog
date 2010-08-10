@@ -1,3 +1,13 @@
+2010-08-10  Alberto  <albyrock87+dev@gmail.com>
+
+	* src/awn-background-lucido.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-panel.c:
+	Fix to Lucido in non-composited mode.
+	Remembering last width/height (in awn_background_needs_redraw)
+	is no more needed thanks to rev 720 and little edits to awn-panel.c
+
 2010-08-10  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-background-edgy.c:

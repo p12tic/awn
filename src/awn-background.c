@@ -708,8 +708,6 @@ awn_background_init (AwnBackground *bg)
   bg->needs_redraw = TRUE;
   bg->helper_surface = NULL;
   bg->cache_enabled = TRUE;
-  bg->last_height = 0;
-  bg->last_width = 0;
 }
 
 void 
@@ -753,8 +751,6 @@ awn_background_draw (AwnBackground  *bg,
                                                          full_width,
                                                          full_height);
         temp_cr = cairo_create (bg->helper_surface);
-        cairo_rectangle (temp_cr, 0., 0., full_width, full_height);
-        cairo_clip (temp_cr);
       }
       else
       {
@@ -762,8 +758,6 @@ awn_background_draw (AwnBackground  *bg,
         cairo_set_operator (temp_cr, CAIRO_OPERATOR_CLEAR);
         cairo_paint (temp_cr);
         cairo_set_operator (temp_cr, CAIRO_OPERATOR_OVER);
-        cairo_rectangle (temp_cr, 0., 0., full_width, full_height);
-        cairo_clip (temp_cr);
       }
       /* Draw background on temp cairo_t */
       klass->draw (bg, temp_cr, position, area);
@@ -1125,15 +1119,9 @@ static gboolean awn_background_get_needs_redraw (AwnBackground *bg,
                                                  GtkPositionType position,
                                                  GdkRectangle *area)
 {
-  gint h = area->height + area->y;
-  gint w = area->width + area->x;
-  if (bg->needs_redraw == 1 ||
-      bg->last_height != h ||
-      bg->last_width != w)
+  if (bg->needs_redraw)
   {
     bg->needs_redraw = 0;
-    bg->last_height = h;
-    bg->last_width = w;
     return TRUE;
   }
   return FALSE;
