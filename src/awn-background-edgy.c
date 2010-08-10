@@ -481,7 +481,7 @@ awn_background_edgy_get_shape_mask (AwnBackground  *bg,
   gint width = area->width, height = area->height;
   const gboolean in_corner = AWN_BACKGROUND_EDGY (bg)->priv->in_corner;
 
-  if (awn_background_edgy_flat_needed (bg, width))
+  if (awn_background_edgy_flat_needed (bg, MAX (width, height)))
   {
     GdkRectangle areaf = {x, y, width, height};
     cairo_save (cr);
@@ -550,7 +550,7 @@ awn_background_edgy_draw (AwnBackground  *bg,
   gint x = area->x, y = area->y;
   gint width = area->width, height = area->height;
 
-  if (awn_background_edgy_flat_needed (bg, width))
+  if (awn_background_edgy_flat_needed (bg, MAX (width, height)))
   {
     GdkRectangle areaf = {x, y, width, height};
     cairo_save (cr);

@@ -1,5 +1,10 @@
 2010-08-10  Alberto  <albyrock87+dev@gmail.com>
 
+	* src/awn-background-edgy.c:
+	Little fix for Edgy background when in Left/Right position.
+
+2010-08-10  Alberto  <albyrock87+dev@gmail.com>
+
 	* src/awn-background-lucido.c:
 	* src/awn-background.c:
 	* src/awn-background.h:
