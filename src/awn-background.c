@@ -28,12 +28,8 @@
 
 #include "awn-defines.h"
 #include "libawn/gseal-transition.h"
-#include "libawn/awn-effects-ops-helpers.h"
 
 G_DEFINE_ABSTRACT_TYPE (AwnBackground, awn_background, G_TYPE_OBJECT)
-
-#define GLOW_RADIUS 10.
-#define DEBUG_GLOW 1
 
 enum 
 {
@@ -737,8 +733,8 @@ awn_background_draw (AwnBackground  *bg,
     if (klass->get_needs_redraw (bg, position, area))
     {
       cairo_t *temp_cr;
-      gfloat full_width = area->x + area->width;
-      gfloat full_height = area->y + area->height;
+      gint full_width = area->x + area->width;
+      gint full_height = area->y + area->height;
 
       gboolean realloc_needed = bg->helper_surface == NULL ||
         cairo_image_surface_get_width (bg->helper_surface) != full_width ||
@@ -763,53 +759,8 @@ awn_background_draw (AwnBackground  *bg,
         cairo_paint (temp_cr);
         cairo_set_operator (temp_cr, CAIRO_OPERATOR_OVER);
       }
-#if DEBUG_GLOW
-      /* remove extra glow padding from draw area */
-      gboolean expand = FALSE;
-      g_object_get (bg->panel, "expand", &expand, NULL);
-      if (awn_background_get_panel_alignment (bg) != 1. && !expand)
-      {
-        switch (position)
-        {
-        case GTK_POS_BOTTOM:
-        case GTK_POS_TOP:
-          area->width -= GLOW_RADIUS;
-          break;
-        default:
-          area->height -= GLOW_RADIUS;
-          break;
-        }
-      }
-#endif
       /* Draw background on temp cairo_t */
       klass->draw (bg, temp_cr, position, area);
-#if DEBUG_GLOW
-      /* Create a surface to apply the glow */
-      cairo_surface_t *blur_srfc = cairo_surface_create_similar
-                                              (bg->helper_surface,
-                                               CAIRO_CONTENT_COLOR_ALPHA,
-                                               full_width,
-                                               full_height);
-      /* clone helper_surface */
-      cairo_t *blur_ctx = cairo_create (blur_srfc);
-      cairo_set_operator (blur_ctx, CAIRO_OPERATOR_SOURCE);
-      cairo_set_source_surface (blur_ctx, bg->helper_surface, 0, 0);
-      cairo_paint (blur_ctx);
-      cairo_destroy (blur_ctx);
-      /* create green blur */
-      /* remove 2 pixels to avoid glitches */
-      float rad = GLOW_RADIUS - 2;
-      blur_surface_shadow_rgba (blur_srfc, full_width, full_height, 
-                                rad, 0., 1., 0., 1.3);
-      cairo_scale(temp_cr, (full_width + rad) / full_width,
-                           (full_height + rad) / full_height);
-      cairo_set_source_surface(temp_cr, blur_srfc,
-                               - rad / 2., - rad / 2.);
-      cairo_set_operator (temp_cr, CAIRO_OPERATOR_DEST_OVER);
-      /* paint the blur on helper_surface */
-      cairo_paint (temp_cr);
-      cairo_surface_destroy (blur_srfc);
-#endif
       cairo_destroy (temp_cr);
     }
     /* Paint saved surface */
@@ -849,23 +800,7 @@ awn_background_padding_request (AwnBackground *bg,
     *padding_bottom = 0;
     *padding_right = 0;
     *padding_left = 0;
-    return;
   }
-#if DEBUG_GLOW
-  gboolean expand = FALSE;
-  g_object_get (bg->panel, "expand", &expand, NULL);
-  if (awn_background_get_panel_alignment (bg) == 1. || expand) return;
-  switch (position)
-  {
-  case GTK_POS_BOTTOM:
-  case GTK_POS_TOP:
-    *padding_right += GLOW_RADIUS;
-    break;
-  default:
-    *padding_bottom += GLOW_RADIUS;
-    break;
-  }
-#endif
 }
 
 void 
@@ -881,18 +816,6 @@ awn_background_get_shape_mask (AwnBackground *bg,
   klass = AWN_BACKGROUND_GET_CLASS (bg);
   g_return_if_fail (klass->get_shape_mask != NULL);
 
-#if DEBUG_GLOW
-  switch (position)
-  {
-  case GTK_POS_BOTTOM:
-  case GTK_POS_TOP:
-    area->width -= GLOW_RADIUS;
-    break;
-  default:
-    area->height -= GLOW_RADIUS;
-    break;
-  }
-#endif
   klass->get_shape_mask (bg, cr, position, area);
 }
 
