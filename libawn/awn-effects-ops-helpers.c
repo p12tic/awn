@@ -266,9 +266,22 @@ void
 blur_surface_shadow (cairo_surface_t *src,
                      gint surface_width, gint surface_height, const int radius)
 {
+  blur_surface_shadow_rgba (src, surface_width, surface_height, radius, 0., 0., 0., 1.);
+}
+
+/**
+ * r,g,b is the color of the shadow (0. <-> 1.) - default = black = 0., 0., 0.
+ * alpha_intensity set the intensity of the glow (default = 1.)
+ */
+void
+blur_surface_shadow_rgba (cairo_surface_t *src,
+                          gint surface_width, gint surface_height, const int radius,
+                          gfloat r, gfloat g, gfloat b, gfloat alpha_intensity)
+{
   guchar * pixdest, * target_pixels_dest, * target_pixels, * pixsrc;
   cairo_surface_t * temp_srfc, * temp_srfc_dest;
   cairo_t         * temp_ctx, * temp_ctx_dest;
+  alpha_intensity = MAX (alpha_intensity, 0.);
 
   g_return_if_fail(src);
 
@@ -321,7 +334,7 @@ blur_surface_shadow (cairo_surface_t *src,
       pixdest = (target_pixels_dest + y * row_stride);
       pixdest += x*4;
       pixdest += 3;
-      *pixdest = (guchar) total_a;
+      *pixdest = (guchar) MIN((alpha_intensity * total_a), 0xFF);
     }
   }
 
@@ -350,15 +363,19 @@ blur_surface_shadow (cairo_surface_t *src,
       pixdest = (target_pixels_dest + y * row_stride);
       pixdest += x*4;
       pixdest += 3;
-      *pixdest = (guchar) total_a;
+      *pixdest = (guchar) MIN((alpha_intensity * total_a), 0xFF);
     }
   }
   /* ---------- */
-  
-  cairo_surface_mark_dirty(temp_srfc);
 
   if (temp_ctx)
   {
+    /* Apply a color to the shadow */
+    cairo_surface_mark_dirty(temp_srfc);
+    cairo_set_source_rgba (temp_ctx, r, g, b, 1.);
+    cairo_set_operator (temp_ctx, CAIRO_OPERATOR_IN);
+    cairo_paint (temp_ctx);
+
     cairo_destroy(temp_ctx);
   }
 
