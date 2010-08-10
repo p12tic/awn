@@ -767,7 +767,7 @@ awn_background_draw (AwnBackground  *bg,
       /* remove extra glow padding from draw area */
       gboolean expand = FALSE;
       g_object_get (bg->panel, "expand", &expand, NULL);
-      if (awn_background_get_panel_alignment (bg) != 1. || !expand)
+      if (awn_background_get_panel_alignment (bg) != 1. && !expand)
       {
         switch (position)
         {
@@ -849,10 +849,11 @@ awn_background_padding_request (AwnBackground *bg,
     *padding_bottom = 0;
     *padding_right = 0;
     *padding_left = 0;
+    return;
   }
 #if DEBUG_GLOW
   gboolean expand = FALSE;
-      g_object_get (bg->panel, "expand", &expand, NULL);
+  g_object_get (bg->panel, "expand", &expand, NULL);
   if (awn_background_get_panel_alignment (bg) == 1. || expand) return;
   switch (position)
   {
