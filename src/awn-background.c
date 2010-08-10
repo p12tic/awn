@@ -765,7 +765,9 @@ awn_background_draw (AwnBackground  *bg,
       }
 #if DEBUG_GLOW
       /* remove extra glow padding from draw area */
-      if (awn_background_get_panel_alignment (bg) != 1.)
+      gboolean expand = FALSE;
+      g_object_get (bg->panel, "expand", &expand, NULL);
+      if (awn_background_get_panel_alignment (bg) != 1. || !expand)
       {
         switch (position)
         {
@@ -849,7 +851,9 @@ awn_background_padding_request (AwnBackground *bg,
     *padding_left = 0;
   }
 #if DEBUG_GLOW
-  if (awn_background_get_panel_alignment (bg) == 1.) return;
+  gboolean expand = FALSE;
+      g_object_get (bg->panel, "expand", &expand, NULL);
+  if (awn_background_get_panel_alignment (bg) == 1. || expand) return;
   switch (position)
   {
   case GTK_POS_BOTTOM:
