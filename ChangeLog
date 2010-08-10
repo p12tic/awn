@@ -1,3 +1,9 @@
+2010-08-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-background-edgy.c:
+	* src/awn-panel.c:
+	Make sure we invalidate background on resizes.
+
 2010-08-08  Alberto  <albyrock87+dev@gmail.com>
 
 	* src/awn-background.c:

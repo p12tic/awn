@@ -203,8 +203,10 @@ awn_background_edgy_dispose (GObject *object)
   }
 
   if (monitor)
+  {
     g_signal_handlers_disconnect_by_func (monitor, 
         G_CALLBACK (awn_background_edgy_align_changed), object);
+  }
 
   GtkWidget *widget = AWN_BACKGROUND_EDGY_GET_PRIVATE (object)->separator;
 

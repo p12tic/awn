@@ -1034,6 +1034,10 @@ awn_panel_resize_timeout (gpointer data)
   };
   gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (panel)),
                               &invalid_rect, FALSE);
+  if (priv->bg)
+  {
+    awn_background_invalidate (priv->bg);
+  }
   // without this there are some artifacts on sad face & throbbers
   awn_applet_manager_redraw_throbbers (AWN_APPLET_MANAGER (priv->manager));
 
