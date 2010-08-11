@@ -2,6 +2,7 @@ NULL =
 
 themedir   = $(pkgdatadir)/themes
 theme_DATA = \
+	clearlooks-dark.awn-theme \
 	dust.awn-theme \
 	dark.awn-theme \
 	light.awn-theme \
@@ -10,6 +11,7 @@ theme_DATA = \
 
 thumb_themedir = $(themedir)/thumbnails
 thumb_theme_DATA = \
+	thumbnails/clearlooks-dark-thumb.png \
 	thumbnails/dust-thumb.png \
 	thumbnails/dark-thumb.png \
 	thumbnails/light-thumb.png \
