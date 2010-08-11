@@ -28,7 +28,7 @@ G_DEFINE_TYPE (AwnBackgroundNull, awn_background_null, AWN_TYPE_BACKGROUND)
 static void
 awn_background_null_constructed (GObject *object)
 {
-
+  G_OBJECT_CLASS (awn_background_null_parent_class)->constructed (object);
 }
 
 static void
