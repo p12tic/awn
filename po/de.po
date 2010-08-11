@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-06 18:29+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-08-10 18:14+0000\n"
+"Last-Translator: Gabor Karsay <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-08-07 03:43+0000\n"
+"X-Launchpad-Export-Date: 2010-08-11 03:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -299,7 +299,7 @@ msgstr "Als Starter hinzufügen"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr ""
+msgstr "Starter entfernen"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -311,19 +311,19 @@ msgstr "_Alle schließen"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
-msgstr ""
+msgstr "Alle minimieren"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
 msgid "Unminimize all"
-msgstr ""
+msgstr "Alle wiederherstellen"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
 msgid "Maximize all"
-msgstr ""
+msgstr "Alle maximieren"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
 msgid "Unmaximize all"
-msgstr ""
+msgstr "Alle Maximierungen aufheben"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -776,7 +776,7 @@ msgstr "Thema exportieren"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Dicke"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -961,7 +961,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Installation des Applets fehlgeschlagen"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
@@ -969,7 +969,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Applet erfolgreich hinzugefügt"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
@@ -977,16 +977,16 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
-msgstr ""
+msgstr "Applet löschen"
 
 #: ../awn-settings/awnClass.py:1350
 #, python-format
 msgid "<b>Delete %s?</b>"
-msgstr ""
+msgstr "<b>%s löschen?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Applet kann nicht gelöscht werden"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
@@ -1081,15 +1081,15 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Bilder"
 
 #: ../awn-settings/awnSettings.py.in:759
 msgid "Save Theme..."
-msgstr ""
+msgstr "Thema speichern …"
 
 #: ../awn-settings/awnSettings.py.in:768
 msgid "Awn Theme"
-msgstr ""
+msgstr "Awn-Thema"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1109,7 +1109,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Awn-Themendatei"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
