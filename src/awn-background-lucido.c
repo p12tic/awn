@@ -199,6 +199,11 @@ awn_background_lucido_dispose (GObject *object)
     g_signal_handlers_disconnect_by_func (manager, 
         G_CALLBACK (awn_background_lucido_applets_refreshed), object);
   }
+  /* remove animation timer */
+  if (priv->tid)
+  {
+    g_source_remove (priv->tid);
+  }
 
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->dispose (object);
 }
@@ -274,10 +279,7 @@ _add_n_positions (AwnBackgroundLucidoPrivate *priv, gint n, gfloat startpos)
 static gboolean
 awn_background_lucido_redraw (AwnBackgroundLucido *lbg)
 {
-  if (!AWN_IS_BACKGROUND_LUCIDO (lbg))
-  {
-    return FALSE;
-  }
+  g_return_val_if_fail (AWN_IS_BACKGROUND_LUCIDO (lbg), FALSE);
 
   AwnBackgroundLucidoPrivate *priv;
   AwnBackground *bg = AWN_BACKGROUND (lbg);

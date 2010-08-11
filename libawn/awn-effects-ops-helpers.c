@@ -334,7 +334,7 @@ blur_surface_shadow_rgba (cairo_surface_t *src,
       pixdest = (target_pixels_dest + y * row_stride);
       pixdest += x*4;
       pixdest += 3;
-      *pixdest = (guchar) MIN((alpha_intensity * total_a), 0xFF);
+      *pixdest = (guchar) total_a;
     }
   }
 
@@ -363,7 +363,7 @@ blur_surface_shadow_rgba (cairo_surface_t *src,
       pixdest = (target_pixels_dest + y * row_stride);
       pixdest += x*4;
       pixdest += 3;
-      *pixdest = (guchar) MIN((alpha_intensity * total_a), 0xFF);
+      *pixdest = (guchar) total_a;
     }
   }
   /* ---------- */
@@ -371,10 +371,19 @@ blur_surface_shadow_rgba (cairo_surface_t *src,
 
   if (temp_ctx)
   {
-    /* Apply a color to the shadow */
-    cairo_set_source_rgba (temp_ctx, r, g, b, 1.);
-    cairo_set_operator (temp_ctx, CAIRO_OPERATOR_IN);
-    cairo_paint (temp_ctx);
+    /* Apply a color to the shadow if needed */
+    if ((r + g + b) > 0. || alpha_intensity != 1.)
+    {
+      cairo_set_operator (temp_ctx, CAIRO_OPERATOR_IN);
+      cairo_set_source_rgba (temp_ctx, r, g, b, alpha_intensity);
+      cairo_paint (temp_ctx);
+      while (--alpha_intensity > 0.)
+      {
+        cairo_set_source_surface (temp_ctx, cairo_get_target (temp_ctx), 0, 0);
+        cairo_set_operator (temp_ctx, CAIRO_OPERATOR_OVER);
+        cairo_paint_with_alpha (temp_ctx, alpha_intensity);
+      }
+    }
 
     cairo_destroy(temp_ctx);
   }

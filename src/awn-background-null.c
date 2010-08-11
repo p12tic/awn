@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2008 Alberto Aldegheri <albyrock87+dev@gmail.com>
+ *  Copyright (C) 2010 Alberto Aldegheri <albyrock87+dev@gmail.com>
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

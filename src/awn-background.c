@@ -64,7 +64,7 @@ enum
   PROP_THICKNESS
 };
 
-//#define DEBUG_GLOW   //define to start background with glow enabled
+#define DEBUG_GLOW   //define to start background with glow enabled
 
 enum 
 {
