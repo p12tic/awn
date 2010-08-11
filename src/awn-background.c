@@ -716,7 +716,7 @@ awn_background_init (AwnBackground *bg)
   bg->needs_redraw = TRUE;
   bg->helper_surface = NULL;
   bg->cache_enabled = TRUE;
-  bg->draw_glow = TRUE;
+  bg->draw_glow = FALSE;
 }
 
 static void
