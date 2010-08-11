@@ -367,11 +367,11 @@ blur_surface_shadow_rgba (cairo_surface_t *src,
     }
   }
   /* ---------- */
+  cairo_surface_mark_dirty(temp_srfc);
 
   if (temp_ctx)
   {
     /* Apply a color to the shadow */
-    cairo_surface_mark_dirty(temp_srfc);
     cairo_set_source_rgba (temp_ctx, r, g, b, 1.);
     cairo_set_operator (temp_ctx, CAIRO_OPERATOR_IN);
     cairo_paint (temp_ctx);
