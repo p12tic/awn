@@ -274,7 +274,10 @@ _add_n_positions (AwnBackgroundLucidoPrivate *priv, gint n, gfloat startpos)
 static gboolean
 awn_background_lucido_redraw (AwnBackgroundLucido *lbg)
 {
-  g_return_val_if_fail (AWN_IS_BACKGROUND_LUCIDO (lbg), FALSE);
+  if (!AWN_IS_BACKGROUND_LUCIDO (lbg))
+  {
+    return FALSE;
+  }
 
   AwnBackgroundLucidoPrivate *priv;
   AwnBackground *bg = AWN_BACKGROUND (lbg);

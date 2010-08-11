@@ -39,6 +39,7 @@
 
 #include "awn-applet-manager.h"
 #include "awn-background.h"
+#include "awn-background-null.h"
 #include "awn-background-flat.h"
 #include "awn-background-3d.h"
 #include "awn-background-curves.h"
@@ -963,18 +964,12 @@ awn_panel_size_request (GtkWidget *widget, GtkRequisition *requisition)
   {
     // this ensures there's a shrinking animation when expand is turned off
     *current_draw_size = *target_size;
-    if (priv->bg)
-    {
-      awn_background_invalidate (priv->bg);
-    }
+    awn_background_invalidate (priv->bg);
   }
   else
   {
     /* If in non-composited mode, invalidate background on size changed */
-    if (priv->bg)
-    {
-      awn_background_invalidate (priv->bg);
-    }
+    awn_background_invalidate (priv->bg);
   }
 }
 
@@ -1047,10 +1042,7 @@ awn_panel_resize_timeout (gpointer data)
   };
   gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (panel)),
                               &invalid_rect, FALSE);
-  if (priv->bg)
-  {
-    awn_background_invalidate (priv->bg);
-  }
+  awn_background_invalidate (priv->bg);
   // without this there are some artifacts on sad face & throbbers
   awn_applet_manager_redraw_throbbers (AWN_APPLET_MANAGER (priv->manager));
 
@@ -1109,6 +1101,9 @@ awn_panel_refresh_alignment (AwnPanel *panel)
 
   awn_panel_queue_masks_update (panel);
 
+  /* do not remove this check, because this method 
+   * is called also before priv->bg
+   */
   if (priv->bg)
   {
     awn_background_invalidate (priv->bg);
@@ -1120,15 +1115,6 @@ void awn_panel_refresh_padding (AwnPanel *panel, gpointer user_data)
 {
   AwnPanelPrivate *priv = panel->priv;
   guint top, left, bottom, right;
-
-  if (!priv->bg || !AWN_IS_BACKGROUND (priv->bg))
-  {
-    gtk_alignment_set_padding (GTK_ALIGNMENT (priv->alignment), 0, 0, 0, 0);
-    priv->extra_padding = AWN_EFFECTS_ACTIVE_RECT_PADDING;
-
-    gtk_widget_queue_draw (GTK_WIDGET (panel));
-    return;
-  }
 
   /* refresh the padding */
   awn_background_padding_request (priv->bg, priv->position,
@@ -2527,21 +2513,19 @@ awn_panel_update_masks (GtkWidget *panel,
     cairo_paint (cr);
 
     cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-    if (priv->bg)
+
+    GdkRectangle area;
+    awn_panel_get_draw_rect (AWN_PANEL (panel), &area,
+                             real_width, real_height);
+    /* Set the input shape of the window if the window is composited */
+    if (priv->composited)
     {
-      GdkRectangle area;
-      awn_panel_get_draw_rect (AWN_PANEL (panel), &area,
-                               real_width, real_height);
-      /* Set the input shape of the window if the window is composited */
-      if (priv->composited)
-      {
-        awn_background_get_input_shape_mask (priv->bg, cr, priv->position, &area);
-      }
-      /* If window is not composited set shape of the window */
-      else
-      {
-        awn_background_get_shape_mask (priv->bg, cr, priv->position, &area);
-      }
+      awn_background_get_input_shape_mask (priv->bg, cr, priv->position, &area);
+    }
+    /* If window is not composited set shape of the window */
+    else
+    {
+      awn_background_get_shape_mask (priv->bg, cr, priv->position, &area);
     }
 
     /* combine with applet's eventbox (with proper dimensions) */
@@ -2730,12 +2714,9 @@ on_eb_expose (GtkWidget *eb, GdkEventExpose *event, AwnPanel *panel)
   gdk_cairo_region (cr, event->region);
   cairo_clip (cr);
 
-  if (priv->bg)
-  {
-    GdkRectangle area;
-    awn_panel_get_draw_rect (panel, &area, 0, 0);
-    awn_background_draw (priv->bg, cr, priv->position, &area);
-  }
+  GdkRectangle area;
+  awn_panel_get_draw_rect (panel, &area, 0, 0);
+  awn_background_draw (priv->bg, cr, priv->position, &area);
 
   return FALSE;
 }
@@ -2778,12 +2759,9 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
   cairo_set_operator (cr, CAIRO_OPERATOR_CLEAR);
   cairo_paint (cr); */
 
-  if (priv->bg)
-  {
-    GdkRectangle area;
-    awn_panel_get_draw_rect (AWN_PANEL (widget), &area, 0, 0);
-    awn_background_draw (priv->bg, cr, priv->position, &area);
-  }
+  GdkRectangle area;
+  awn_panel_get_draw_rect (AWN_PANEL (widget), &area, 0, 0);
+  awn_background_draw (priv->bg, cr, priv->position, &area);
 
 #if 0
   if (1)
@@ -3244,7 +3222,7 @@ awn_panel_set_style (AwnPanel *panel, gint style)
   switch (priv->style)
   {
     case STYLE_NONE:
-      priv->bg = NULL;
+      priv->bg = awn_background_null_new (priv->client, panel);
       break;
     case STYLE_FLAT:
       priv->bg = awn_background_flat_new (priv->client, panel);
@@ -3270,14 +3248,11 @@ awn_panel_set_style (AwnPanel *panel, gint style)
 
   if (old_bg) g_object_unref (old_bg);
 
-  if (priv->bg)
-  {
-    g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed),
-                      panel);
-    g_signal_connect_swapped (priv->bg, "padding-changed",
-                              G_CALLBACK (awn_panel_refresh_padding), panel);
-    path = awn_background_get_path_type (priv->bg, &offset_mod);
-  }
+  g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed),
+                    panel);
+  g_signal_connect_swapped (priv->bg, "padding-changed",
+                            G_CALLBACK (awn_panel_refresh_padding), panel);
+  path = awn_background_get_path_type (priv->bg, &offset_mod);
 
   awn_panel_refresh_padding (panel, NULL);
 
@@ -3590,9 +3565,8 @@ awn_panel_set_strut (AwnPanel *panel)
   }
  
   /* allow AwnBackground to change the strut */
-  if (priv->bg != NULL)
-    awn_background_get_strut_offsets (priv->bg, priv->position, &area,
-                                      &strut, &strut_start, &strut_end);
+  awn_background_get_strut_offsets (priv->bg, priv->position, &area,
+                                    &strut, &strut_start, &strut_end);
 
   win = gtk_widget_get_window (GTK_WIDGET (panel));
 

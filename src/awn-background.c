@@ -64,6 +64,8 @@ enum
   PROP_THICKNESS
 };
 
+//#define DEBUG_GLOW   //define to start background with glow enabled
+
 enum 
 {
   CHANGED,
@@ -87,6 +89,12 @@ static void awn_background_padding_zero (AwnBackground *bg,
                                          guint *padding_bottom,
                                          guint *padding_left,
                                          guint *padding_right);
+
+static void
+awn_background_draw_none   (AwnBackground  *bg,
+                            cairo_t        *cr,
+                            GtkPositionType  position,
+                            GdkRectangle   *area);
 
 static void awn_background_mask_none (AwnBackground  *bg,
                                       cairo_t        *cr,
@@ -436,6 +444,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
   klass->get_input_shape_mask = awn_background_mask_none;
   klass->get_path_type        = awn_background_path_default;
   klass->get_strut_offsets    = NULL;
+  klass->draw                 = awn_background_draw_none;
   klass->get_needs_redraw     = awn_background_get_needs_redraw;
 
   /* Object properties */
@@ -709,14 +718,22 @@ awn_background_init (AwnBackground *bg)
   bg->needs_redraw = TRUE;
   bg->helper_surface = NULL;
   bg->cache_enabled = TRUE;
+#ifdef DEBUG_GLOW
+  bg->draw_glow = TRUE;
+#else
+  bg->draw_glow = FALSE;
+#endif
 }
 
 static void
-_draw_glow (cairo_t *cr, gfloat full_width, gfloat full_height,
-                         gfloat x, gfloat y)
+awn_background_draw_glow (AwnBackgroundClass *klass, cairo_t *cr, 
+                          gfloat full_width, gfloat full_height,
+                          gfloat x, gfloat y)
 {
   float rad = GLOW_RADIUS;
   x -= rad; y-= rad;
+  full_height += GLOW_RADIUS * 2.;
+  full_width += GLOW_RADIUS * 2.;
   cairo_save (cr);
   /* Create a surface to apply the glow */
   cairo_surface_t *blur_srfc = cairo_surface_create_similar
@@ -727,7 +744,18 @@ _draw_glow (cairo_t *cr, gfloat full_width, gfloat full_height,
   /* clone original surface */
   cairo_t *blur_ctx = cairo_create (blur_srfc);
   cairo_set_operator (blur_ctx, CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface (blur_ctx, cairo_get_target (cr), -x, -y);
+  if (klass->draw != awn_background_draw_none)
+  {
+    cairo_set_source_surface (blur_ctx, cairo_get_target (cr), -x, -y);
+  }
+  else
+  {
+    /* if no background, glow a rectangle */
+    cairo_set_source_rgba (blur_ctx, 0., 1., 0., 0.5);
+    cairo_rectangle (blur_ctx, rad * 2, rad * 2, 
+                               full_width - rad * 4, full_height - rad * 4);
+    cairo_clip (blur_ctx);
+  }
   cairo_paint (blur_ctx);
   cairo_destroy (blur_ctx);
   /* create green blur */
@@ -793,9 +821,12 @@ awn_background_draw (AwnBackground  *bg,
       }
       /* Draw background on temp cairo_t */
       klass->draw (bg, temp_cr, position, area);
-      _draw_glow (temp_cr, area->width + GLOW_RADIUS * 2.,
-                           area->height + GLOW_RADIUS * 2.,
-                           area->x, area->y);
+      if (bg->draw_glow)
+      {
+        awn_background_draw_glow (klass, temp_cr, area->width,
+                                                  area->height,
+                                                  area->x, area->y);
+      }
       cairo_destroy (temp_cr);
     }
     /* Paint saved surface */
@@ -1142,6 +1173,25 @@ static void awn_background_mask_none (AwnBackground *bg,
   cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
   cairo_rectangle (cr, area->x, area->y, area->width, area->height);
   cairo_fill (cr);
+}
+
+static void
+awn_background_draw_none   (AwnBackground  *bg,
+                            cairo_t        *cr,
+                            GtkPositionType  position,
+                            GdkRectangle   *area)
+{
+
+}
+
+void awn_background_set_glow (AwnBackground  *bg, gboolean activate)
+{
+  if (bg->draw_glow != activate)
+  {
+    bg->draw_glow = activate;
+    awn_background_invalidate (bg);
+    awn_background_emit_changed (bg);
+  }
 }
 
 static AwnPathType awn_background_path_default (AwnBackground *bg,
