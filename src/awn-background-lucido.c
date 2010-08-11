@@ -212,11 +212,8 @@ awn_background_lucido_class_init (AwnBackgroundLucidoClass *klass)
   obj_class->constructed  = awn_background_lucido_constructed;
   obj_class->dispose = awn_background_lucido_dispose;
 
-#if DEBUG_SHAPE_MASK
-  bg_class->draw = awn_background_lucido_get_shape_mask;
-#else
   bg_class->draw = awn_background_lucido_draw;
-#endif
+
   bg_class->padding_request = awn_background_lucido_padding_request;
   bg_class->get_shape_mask = awn_background_lucido_get_shape_mask;
   bg_class->get_input_shape_mask = awn_background_lucido_get_shape_mask;
@@ -447,6 +444,7 @@ _create_path_lucido ( AwnBackground*  bg,
   gfloat applet_manager_x = 0.;
   _get_applet_manager_size (bg, position, &applet_manager_x);
   gboolean needs_animation = FALSE;
+  gfloat x_start_limit = x;
 
   /****************************************************************************/
   /********************     UPDATE STARTING POINT     *************************/
@@ -459,6 +457,7 @@ _create_path_lucido ( AwnBackground*  bg,
   }
   else if (update_positions)
   {
+    x = 0;
     if (!expanded)
     {
       x += applet_manager_x - dc;
@@ -473,6 +472,7 @@ _create_path_lucido ( AwnBackground*  bg,
       needs_animation = TRUE;
     }
     x = coord_get_near (priv->lastx, x);
+    x = MAX (x, x_start_limit);
     priv->lastx = x;
   }
   else
@@ -746,7 +746,8 @@ draw_top_bottom_background (AwnBackground*   bg,
                             GtkPositionType  position,
                             cairo_t*         cr,
                             gfloat           width,
-                            gfloat           height)
+                            gfloat           height,
+                            gint             x_start_limit)
 {
   cairo_pattern_t *pat = NULL;
 
@@ -777,7 +778,7 @@ draw_top_bottom_background (AwnBackground*   bg,
     goto paint_lines;
   }
 
-  gfloat x = 0.,
+  gfloat x = x_start_limit,
          y = 0.;
   gfloat y_pat;
 
@@ -803,7 +804,7 @@ draw_top_bottom_background (AwnBackground*   bg,
   }
 
   /* Prepare the internal background */
-  pat = cairo_pattern_create_linear (x, y_pat, 0., height);
+  pat = cairo_pattern_create_linear (x, y_pat, x, height);
   awn_cairo_pattern_add_color_stop_color (pat, 0., bg->g_histep_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_2);
 
@@ -824,7 +825,7 @@ draw_top_bottom_background (AwnBackground*   bg,
 
   /* Prepare external background gradient*/
   cairo_pattern_destroy (pat);
-  pat = cairo_pattern_create_linear (x, y_pat, 0., height);
+  pat = cairo_pattern_create_linear (x, y_pat, x, height);
   awn_cairo_pattern_add_color_stop_color (pat, 0.0, bg->g_step_1);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_step_2);
 
@@ -942,6 +943,7 @@ awn_background_lucido_draw (AwnBackground  *bg,
   gint temp;
   gint x = area->x, y = area->y;
   gint width = area->width, height = area->height;
+  gint x_start_limit = x;
   cairo_save (cr);
 
   switch (position)
@@ -955,6 +957,7 @@ awn_background_lucido_draw (AwnBackground  *bg,
       temp = width;
       width = height;
       height = temp;
+      x_start_limit = y;
       break;
     case GTK_POS_LEFT:
       height += y;
@@ -963,6 +966,7 @@ awn_background_lucido_draw (AwnBackground  *bg,
       temp = width;
       width = height;
       height = temp;
+      x_start_limit = y;
       break;
     case GTK_POS_TOP:
       width += x;
@@ -975,9 +979,12 @@ awn_background_lucido_draw (AwnBackground  *bg,
       break;
   }
 
-  draw_top_bottom_background (bg, position, cr, width, height);
+  draw_top_bottom_background (bg, position, cr, width, height, x_start_limit);
 
   cairo_restore (cr);
+#if DEBUG_SHAPE_MASK
+  awn_background_lucido_get_shape_mask (bg, cr, position, area);
+#endif
 }
 
 static void 
@@ -1024,6 +1031,7 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   gint width = area->width, height = area->height;
   gfloat   align = 0.5;
   gboolean expand = FALSE;
+  gint x_start_limit = x;
 
   cairo_save (cr);
 
@@ -1041,6 +1049,7 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
       temp = width;
       width = height;
       height = temp;
+      x_start_limit = y;
       break;
     case GTK_POS_LEFT:
       height += y;
@@ -1049,6 +1058,7 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
       temp = width;
       width = height;
       height = temp;
+      x_start_limit = y;
       break;
     case GTK_POS_TOP:
       width += x;
@@ -1067,12 +1077,16 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   else
   {
     gboolean composited = gtk_widget_is_composited (GTK_WIDGET (bg->panel));
-    _create_path_lucido (bg, position, cr, 0., 0., width, height,
+    if (!composited)
+    {
+      x_start_limit = 0;
+    }
+    _create_path_lucido (bg, position, cr, x_start_limit, 0., width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
                          FALSE, expand, align, composited, FALSE);
     cairo_fill (cr);
-    _create_path_lucido (bg, position, cr, 0., 0., width, height,
+    _create_path_lucido (bg, position, cr, x_start_limit, 0., width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRUE, expand, align, composited, FALSE);

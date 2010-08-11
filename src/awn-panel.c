@@ -53,7 +53,6 @@
 #include "awn-x.h"
 
 #include "libawn/gseal-transition.h"
-#include "libawn/awn-effects-ops-helpers.h"
 #include "xutils.h"
 
 G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)
@@ -167,7 +166,6 @@ typedef struct _AwnInhibitItem
 } AwnInhibitItem;
 
 #define CLICKTHROUGH_OPACITY 0.3
-#define GLOW_RADIUS 10.
 
 #define ROUND(x) (x < 0 ? x - 0.5 : x + 0.5)
 
@@ -1042,10 +1040,10 @@ awn_panel_resize_timeout (gpointer data)
   gint end_y = MAX (rect1.y + rect1.height, rect2.y + rect2.height);
   GdkRectangle invalid_rect =
   {
-    .x = MIN (rect1.x, rect2.x) - GLOW_RADIUS,
-    .y = MIN (rect1.y, rect2.y) - GLOW_RADIUS,
-    .width = end_x - MIN (rect1.x, rect2.x) + GLOW_RADIUS * 2,
-    .height = end_y - MIN (rect1.y, rect2.y) + GLOW_RADIUS * 2
+    .x = MIN (rect1.x, rect2.x),
+    .y = MIN (rect1.y, rect2.y),
+    .width = end_x - MIN (rect1.x, rect2.x),
+    .height = end_y - MIN (rect1.y, rect2.y)
   };
   gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (panel)),
                               &invalid_rect, FALSE);
@@ -2742,40 +2740,6 @@ on_eb_expose (GtkWidget *eb, GdkEventExpose *event, AwnPanel *panel)
   return FALSE;
 }
 
-static void
-awn_panel_draw_glow (AwnPanel *panel, cairo_t *cr, GdkRectangle *area)
-{
-  GtkAllocation alloc;
-  gtk_widget_get_allocation (GTK_WIDGET (panel), &alloc);
-  gfloat full_width = alloc.width;
-  gfloat full_height = alloc.height;
-  cairo_save (cr);
-  /* Create a surface to apply the glow */
-  cairo_surface_t *blur_srfc = cairo_surface_create_similar
-                                          (cairo_get_target (cr),
-                                           CAIRO_CONTENT_COLOR_ALPHA,
-                                           full_width,
-                                           full_height);
-  /* clone original surface */
-  cairo_t *blur_ctx = cairo_create (blur_srfc);
-  cairo_set_operator (blur_ctx, CAIRO_OPERATOR_SOURCE);
-  cairo_set_source_surface (blur_ctx, cairo_get_target (cr), 0, 0);
-  cairo_paint (blur_ctx);
-  cairo_destroy (blur_ctx);
-  /* create green blur */
-  float rad = GLOW_RADIUS;
-  blur_surface_shadow_rgba (blur_srfc, full_width, full_height, 
-                            rad, 0., 1., 0., 1.3);
-  cairo_scale(cr, (full_width + rad) / full_width,
-                  (full_height + rad) / full_height);
-  cairo_set_source_surface(cr, blur_srfc,
-                           - rad / 2., - rad / 2.);
-  cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OVER);
-  /* paint the blur on original surface */
-  cairo_paint (cr);
-  cairo_surface_destroy (blur_srfc);
-  cairo_restore (cr);
-}
 /*
  * Draw the panel 
  */
@@ -2819,7 +2783,6 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     GdkRectangle area;
     awn_panel_get_draw_rect (AWN_PANEL (widget), &area, 0, 0);
     awn_background_draw (priv->bg, cr, priv->position, &area);
-    awn_panel_draw_glow (AWN_PANEL (widget), cr, &area);
   }
 
 #if 0
