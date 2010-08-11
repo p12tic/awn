@@ -499,17 +499,16 @@ _create_path_lucido ( AwnBackground*  bg,
   /****************************************************************************/
   /********************     CURVES SYMMETRY HANDLER   *************************/
   /****************************************************************************/
-  sym = fabs (sym - 0.5);
-  gfloat exty = y + h * sym * 2.;
+  gfloat exty = y + h * fabs (sym - 0.5) * 2.;
   if (exty > y2)
   {
     y2 = exty;
   }
-  if (internal && bg->curves_symmetry > 0.5)
+  if (internal && sym > 0.5)
   {
     y = exty;
   }
-  else if (!internal && bg->curves_symmetry < 0.5)
+  else if (!internal && sym < 0.5)
   {
     y = exty;
   }
@@ -1086,17 +1085,16 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
     if (!composited)
     {
       x_start_limit = 0;
+      width -= x_start_limit;
     }
-    _create_path_lucido (bg, position, cr, x_start_limit, 0., width, height,
-                         TRANSFORM_RADIUS (bg->corner_radius),
-                         TRANSFORM_RADIUS (bg->corner_radius),
-                         FALSE, expand, align, composited, FALSE);
-    cairo_fill (cr);
-    _create_path_lucido (bg, position, cr, x_start_limit, 0., width, height,
-                         TRANSFORM_RADIUS (bg->corner_radius),
-                         TRANSFORM_RADIUS (bg->corner_radius),
-                         TRUE, expand, align, composited, FALSE);
-
+    gfloat rad = TRANSFORM_RADIUS (bg->corner_radius);
+    cairo_new_path (cr);
+    gfloat lx = x_start_limit, ly = height;
+    cairo_move_to (cr, lx, ly);
+    _line_from_to (cr, &lx, &ly, lx + rad, 0);
+    _line_from_to (cr, &lx, &ly, width - rad, 0);
+    _line_from_to (cr, &lx, &ly, width, height);
+    cairo_close_path (cr);
   }
   cairo_fill (cr);
 
