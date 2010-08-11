@@ -54,7 +54,7 @@ blur_surface_shadow (cairo_surface_t *src,
 void
 blur_surface_shadow_rgba (cairo_surface_t *src,
                           gint surface_width, gint surface_height, const int radius,
-                          gfloat r, gfloat g, gfloat b, gfloat alpha_intensity);
+                          guchar r, guchar g, guchar b, gfloat alpha_intensity);
 
 void
 surface_saturate(cairo_surface_t * icon_srfc, const gfloat saturation);

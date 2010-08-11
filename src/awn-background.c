@@ -64,8 +64,6 @@ enum
   PROP_THICKNESS
 };
 
-#define DEBUG_GLOW   //define to start background with glow enabled
-
 enum 
 {
   CHANGED,
@@ -718,27 +716,21 @@ awn_background_init (AwnBackground *bg)
   bg->needs_redraw = TRUE;
   bg->helper_surface = NULL;
   bg->cache_enabled = TRUE;
-#ifdef DEBUG_GLOW
   bg->draw_glow = TRUE;
-#else
-  bg->draw_glow = FALSE;
-#endif
 }
 
 static void
 awn_background_draw_glow (AwnBackgroundClass *klass, cairo_t *cr, 
                           gfloat full_width, gfloat full_height,
-                          gfloat x, gfloat y)
+                          gfloat x, gfloat y, gint rad)
 {
-  float rad = GLOW_RADIUS;
   x -= rad; y-= rad;
-  full_height += GLOW_RADIUS * 2.;
-  full_width += GLOW_RADIUS * 2.;
+  full_height += rad * 2.;
+  full_width += rad * 2.;
   cairo_save (cr);
   /* Create a surface to apply the glow */
-  cairo_surface_t *blur_srfc = cairo_surface_create_similar
-                                          (cairo_get_target (cr),
-                                           CAIRO_CONTENT_COLOR_ALPHA,
+  cairo_surface_t *blur_srfc = cairo_image_surface_create
+                                          (CAIRO_FORMAT_ARGB32,
                                            full_width,
                                            full_height);
   /* clone original surface */
@@ -760,7 +752,7 @@ awn_background_draw_glow (AwnBackgroundClass *klass, cairo_t *cr,
   cairo_destroy (blur_ctx);
   /* create green blur */
   blur_surface_shadow_rgba (blur_srfc, full_width, full_height, 
-                            rad, 0., 1., 0., 1.7);
+                            rad, 0x00, 0xFF, 0x00, 1.7);
   cairo_set_source_surface(cr, blur_srfc,
                            x, y);
   cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OVER);
@@ -793,8 +785,9 @@ awn_background_draw (AwnBackground  *bg,
     if (klass->get_needs_redraw (bg, position, area))
     {
       cairo_t *temp_cr;
-      gint full_width = area->x + area->width + GLOW_RADIUS;
-      gint full_height = area->y + area->height + GLOW_RADIUS;
+      gint rad = awn_panel_get_glow_size (bg->panel);
+      gint full_width = area->x + area->width + rad;
+      gint full_height = area->y + area->height + rad;
 
       gboolean realloc_needed = bg->helper_surface == NULL ||
         cairo_image_surface_get_width (bg->helper_surface) != full_width ||
@@ -825,7 +818,8 @@ awn_background_draw (AwnBackground  *bg,
       {
         awn_background_draw_glow (klass, temp_cr, area->width,
                                                   area->height,
-                                                  area->x, area->y);
+                                                  area->x, area->y,
+                                                  rad);
       }
       cairo_destroy (temp_cr);
     }

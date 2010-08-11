@@ -93,6 +93,7 @@ struct _AwnPanelPrivate
   gboolean animated_resize;
 
   gint size;
+  gint glow_size;
   gint offset;
   gfloat offset_mod;
   GtkPositionType position;
@@ -1035,10 +1036,10 @@ awn_panel_resize_timeout (gpointer data)
   gint end_y = MAX (rect1.y + rect1.height, rect2.y + rect2.height);
   GdkRectangle invalid_rect =
   {
-    .x = MIN (rect1.x, rect2.x) - GLOW_RADIUS,
-    .y = MIN (rect1.y, rect2.y) - GLOW_RADIUS,
-    .width = end_x - MIN (rect1.x, rect2.x) + GLOW_RADIUS * 2,
-    .height = end_y - MIN (rect1.y, rect2.y) + GLOW_RADIUS * 2
+    .x = MIN (rect1.x, rect2.x) - priv->glow_size,
+    .y = MIN (rect1.y, rect2.y) - priv->glow_size,
+    .width = end_x - MIN (rect1.x, rect2.x) + priv->glow_size * 2,
+    .height = end_y - MIN (rect1.y, rect2.y) + priv->glow_size * 2
   };
   gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (panel)),
                               &invalid_rect, FALSE);
@@ -2207,6 +2208,13 @@ awn_panel_arrow_out (AwnPanel *panel, GdkEventCrossing *event,
   return FALSE;
 }
 
+gint 
+awn_panel_get_glow_size (AwnPanel *panel)
+{
+  AwnPanelPrivate *priv = AWN_PANEL_GET_PRIVATE (panel);
+  return priv->glow_size;
+}
+
 static void
 awn_panel_init (AwnPanel *panel)
 {
@@ -2219,6 +2227,8 @@ awn_panel_init (AwnPanel *panel)
 
   priv->docklet_alpha = 1.0;
   priv->docklet_close_on_pos_change = TRUE;
+
+  priv->glow_size = 10;
 
   priv->inhibits = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                                           NULL, free_inhibit_item);
@@ -3049,6 +3059,7 @@ awn_panel_set_size (AwnPanel *panel, gint size)
   AwnPanelPrivate *priv = panel->priv;
   
   priv->size = size;
+  priv->glow_size = MIN (14, size / 3);
 
   if (!gtk_widget_get_realized (GTK_WIDGET (panel)))
     return;

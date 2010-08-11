@@ -266,17 +266,13 @@ void
 blur_surface_shadow (cairo_surface_t *src,
                      gint surface_width, gint surface_height, const int radius)
 {
-  blur_surface_shadow_rgba (src, surface_width, surface_height, radius, 0., 0., 0., 1.);
+  blur_surface_shadow_rgba (src, surface_width, surface_height, radius, 0, 0, 0, 1.);
 }
 
-/**
- * r,g,b is the color of the shadow (0. <-> 1.) - default = black = 0., 0., 0.
- * alpha_intensity set the intensity of the glow (default = 1.)
- */
 void
 blur_surface_shadow_rgba (cairo_surface_t *src,
                           gint surface_width, gint surface_height, const int radius,
-                          gfloat r, gfloat g, gfloat b, gfloat alpha_intensity)
+                          guchar r, guchar g, guchar b, gfloat alpha_intensity)
 {
   guchar * pixdest, * target_pixels_dest, * target_pixels, * pixsrc;
   cairo_surface_t * temp_srfc, * temp_srfc_dest;
@@ -366,25 +362,26 @@ blur_surface_shadow_rgba (cairo_surface_t *src,
       *pixdest = (guchar) total_a;
     }
   }
+  if ((r + g + b) > 0 || alpha_intensity != 1.)
+  {
+    for (y = 0; y < surface_height; ++y)
+    {
+      for (x = 0; x < surface_width; ++x)
+      {
+        pixdest = (target_pixels_dest + y * row_stride);
+        pixdest += x*4;
+        pixdest[3] = MIN (0xFF, pixdest[3] * alpha_intensity);
+        pixdest[2] = r * pixdest[3] / 0xFF;
+        pixdest[1] = g * pixdest[3] / 0xFF;
+        pixdest[0] = b * pixdest[3] / 0xFF;
+      }
+    }
+  }
   /* ---------- */
-  cairo_surface_mark_dirty(temp_srfc);
+  cairo_surface_mark_dirty (temp_srfc);
 
   if (temp_ctx)
   {
-    /* Apply a color to the shadow if needed */
-    if ((r + g + b) > 0. || alpha_intensity != 1.)
-    {
-      cairo_set_operator (temp_ctx, CAIRO_OPERATOR_IN);
-      cairo_set_source_rgba (temp_ctx, r, g, b, alpha_intensity);
-      cairo_paint (temp_ctx);
-      while (--alpha_intensity > 0.)
-      {
-        cairo_set_source_surface (temp_ctx, cairo_get_target (temp_ctx), 0, 0);
-        cairo_set_operator (temp_ctx, CAIRO_OPERATOR_OVER);
-        cairo_paint_with_alpha (temp_ctx, alpha_intensity);
-      }
-    }
-
     cairo_destroy(temp_ctx);
   }
 

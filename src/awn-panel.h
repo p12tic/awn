@@ -48,8 +48,6 @@ G_BEGIN_DECLS
 #define AWN_PANEL_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), \
         AWN_TYPE_PANEL, AwnPanelClass))
 
-#define GLOW_RADIUS 10.
-
 typedef struct _AwnPanel AwnPanel;
 typedef struct _AwnPanelClass AwnPanelClass;
 typedef struct _AwnPanelPrivate AwnPanelPrivate;
@@ -95,6 +93,8 @@ gboolean    awn_panel_set_applet_flags    (AwnPanel         *panel,
                                            const gchar      *uid,
                                            gint              flags,
                                            GError          **error);
+
+gint        awn_panel_get_glow_size       (AwnPanel *panel);
 
 guint       awn_panel_inhibit_autohide    (AwnPanel *panel,
                                            const gchar *sender,
