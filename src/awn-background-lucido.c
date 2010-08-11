@@ -203,6 +203,7 @@ awn_background_lucido_dispose (GObject *object)
   if (priv->tid)
   {
     g_source_remove (priv->tid);
+    priv->tid = 0;
   }
 
   G_OBJECT_CLASS (awn_background_lucido_parent_class)->dispose (object);
