@@ -28,6 +28,7 @@
 
 #include "awn-defines.h"
 #include "libawn/gseal-transition.h"
+#include "libawn/awn-effects-ops-helpers.h"
 
 G_DEFINE_ABSTRACT_TYPE (AwnBackground, awn_background, G_TYPE_OBJECT)
 
@@ -710,6 +711,37 @@ awn_background_init (AwnBackground *bg)
   bg->cache_enabled = TRUE;
 }
 
+static void
+_draw_glow (cairo_t *cr, gfloat full_width, gfloat full_height,
+                         gfloat x, gfloat y)
+{
+  float rad = GLOW_RADIUS;
+  x -= rad; y-= rad;
+  cairo_save (cr);
+  /* Create a surface to apply the glow */
+  cairo_surface_t *blur_srfc = cairo_surface_create_similar
+                                          (cairo_get_target (cr),
+                                           CAIRO_CONTENT_COLOR_ALPHA,
+                                           full_width,
+                                           full_height);
+  /* clone original surface */
+  cairo_t *blur_ctx = cairo_create (blur_srfc);
+  cairo_set_operator (blur_ctx, CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_surface (blur_ctx, cairo_get_target (cr), -x, -y);
+  cairo_paint (blur_ctx);
+  cairo_destroy (blur_ctx);
+  /* create green blur */
+  blur_surface_shadow_rgba (blur_srfc, full_width, full_height, 
+                            rad, 0., 1., 0., 1.7);
+  cairo_set_source_surface(cr, blur_srfc,
+                           x, y);
+  cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OVER);
+  /* paint the blur on original surface */
+  cairo_paint (cr);
+  cairo_surface_destroy (blur_srfc);
+  cairo_restore (cr);
+}
+
 void 
 awn_background_draw (AwnBackground  *bg,
                      cairo_t        *cr,
@@ -733,8 +765,8 @@ awn_background_draw (AwnBackground  *bg,
     if (klass->get_needs_redraw (bg, position, area))
     {
       cairo_t *temp_cr;
-      gint full_width = area->x + area->width;
-      gint full_height = area->y + area->height;
+      gint full_width = area->x + area->width + GLOW_RADIUS;
+      gint full_height = area->y + area->height + GLOW_RADIUS;
 
       gboolean realloc_needed = bg->helper_surface == NULL ||
         cairo_image_surface_get_width (bg->helper_surface) != full_width ||
@@ -761,6 +793,9 @@ awn_background_draw (AwnBackground  *bg,
       }
       /* Draw background on temp cairo_t */
       klass->draw (bg, temp_cr, position, area);
+      _draw_glow (temp_cr, area->width + GLOW_RADIUS * 2.,
+                           area->height + GLOW_RADIUS * 2.,
+                           area->x, area->y);
       cairo_destroy (temp_cr);
     }
     /* Paint saved surface */

@@ -1040,10 +1040,10 @@ awn_panel_resize_timeout (gpointer data)
   gint end_y = MAX (rect1.y + rect1.height, rect2.y + rect2.height);
   GdkRectangle invalid_rect =
   {
-    .x = MIN (rect1.x, rect2.x),
-    .y = MIN (rect1.y, rect2.y),
-    .width = end_x - MIN (rect1.x, rect2.x),
-    .height = end_y - MIN (rect1.y, rect2.y)
+    .x = MIN (rect1.x, rect2.x) - GLOW_RADIUS,
+    .y = MIN (rect1.y, rect2.y) - GLOW_RADIUS,
+    .width = end_x - MIN (rect1.x, rect2.x) + GLOW_RADIUS * 2,
+    .height = end_y - MIN (rect1.y, rect2.y) + GLOW_RADIUS * 2
   };
   gdk_window_invalidate_rect (gtk_widget_get_window (GTK_WIDGET (panel)),
                               &invalid_rect, FALSE);

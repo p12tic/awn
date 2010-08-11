@@ -48,6 +48,8 @@ G_BEGIN_DECLS
 #define AWN_PANEL_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), \
         AWN_TYPE_PANEL, AwnPanelClass))
 
+#define GLOW_RADIUS 10.
+
 typedef struct _AwnPanel AwnPanel;
 typedef struct _AwnPanelClass AwnPanelClass;
 typedef struct _AwnPanelPrivate AwnPanelPrivate;
