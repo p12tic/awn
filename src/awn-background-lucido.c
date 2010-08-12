@@ -450,7 +450,7 @@ _create_path_lucido ( AwnBackground*  bg,
   gfloat applet_manager_x = 0.;
   _get_applet_manager_size (bg, position, &applet_manager_x);
   gboolean needs_animation = FALSE;
-  gfloat x_start_limit = x;
+  gfloat x_start_limit = lroundf (x);
 
   /****************************************************************************/
   /********************     UPDATE STARTING POINT     *************************/
@@ -477,8 +477,8 @@ _create_path_lucido ( AwnBackground*  bg,
     {
       needs_animation = TRUE;
     }
+    priv->lastx = MAX (priv->lastx, x_start_limit);
     x = coord_get_near (priv->lastx, x);
-    x = MAX (x, x_start_limit);
     priv->lastx = x;
   }
   else
