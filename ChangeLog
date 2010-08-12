@@ -1,3 +1,20 @@
+2010-08-12  Alberto  <albyrock87+dev@gmail.com>
+
+	* configure.in:
+	* libawn/awn-effects-ops-helpers.c:
+	* libawn/awn-effects-ops-helpers.h:
+	* src/Makefile.am:
+	* src/awn-background-lucido.c:
+	* src/awn-background.c:
+	* src/awn-background.h:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	* themes/Makefile.am:
+	* themes/clearlooks-dark.awn-theme.in:
+	Added a default theme with Lucido style.
+	Added AwnBackgroundNull replacing priv->bg = NULL
+	Added awn_background_set_glow to enable or disable glow painting for bg
+
 2010-08-10  Alberto  <albyrock87+dev@gmail.com>
 
 	* src/awn-background-edgy.c:

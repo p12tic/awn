@@ -33,11 +33,11 @@ active_rect_outline = #0000000000000000
 style = 6
 orient = 3
 expand = False
-size = 34
+size = 48
 
 [theme-info]
 awn-theme-version = 0.4.0
-author = Awn-core Team
+author = Awn-core team
 name = Clearlooks Dark
 version = 1.0
 icon = @PKGDATADIR@/themes/thumbnails/clearlooks-dark-thumb.png

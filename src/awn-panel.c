@@ -3009,6 +3009,11 @@ awn_panel_set_offset  (AwnPanel *panel,
   awn_icon_set_offset (AWN_ICON (priv->arrow1), offset);
   awn_icon_set_offset (AWN_ICON (priv->arrow2), offset);
 
+  if (priv->bg)
+  {
+    awn_background_invalidate (priv->bg);
+  }
+
   g_signal_emit (panel, _panel_signals[OFFSET_CHANGED], 0, priv->offset);
 
   gtk_widget_queue_resize (GTK_WIDGET (panel));
@@ -3063,7 +3068,11 @@ awn_panel_set_size (AwnPanel *panel, gint size)
 
   if (!gtk_widget_get_realized (GTK_WIDGET (panel)))
     return;
-  
+
+  if (priv->bg)
+  {
+    awn_background_invalidate (priv->bg);
+  }
   g_signal_emit (panel, _panel_signals[SIZE_CHANGED], 0, priv->size);
 
   position_window (panel);
