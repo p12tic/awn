@@ -1613,7 +1613,7 @@ class awnThemeCustomize(awnBzr):
     def get_dock_image(self, themedir):
         bus = dbus.SessionBus()
         panel = bus.get_object('org.awnproject.Awn',
-                               '/org/awnproject/Awn/Panel1',
+                               '/org/awnproject/Awn/Panel%d' % (current_panel_id),
                                'org.awnproject.Awn.Panel')
         data = panel.GetSnapshot(byte_arrays=True)
         width, height, rowstride, has_alpha, bits_per_sample, n_channels, pixels = data

@@ -541,8 +541,10 @@ on_prefs_activated (GtkMenuItem *item, AwnPanel *panel)
 {
   GError *err = NULL;
 
+  gchar cmd[45];
+  sprintf (cmd, "awn-settings --panel-id=%d", panel->priv->panel_id);
   gdk_spawn_command_line_on_screen (gtk_widget_get_screen (GTK_WIDGET (panel)),
-                                    "awn-settings", &err);
+                                    cmd, &err);
 
   if (err)
   {

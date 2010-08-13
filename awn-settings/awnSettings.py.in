@@ -25,6 +25,7 @@ import os
 import shutil
 import time
 import pwd
+import getopt
 
 PLAT_PKG = '@PY_PLAT_PKG@'
 SITE_PKG = '@PY_SITE_PKG@'
@@ -54,11 +55,12 @@ from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet, awnThem
 #from awnApplet import awnApplet
 #from awnLauncher import awnLauncher
 
-
-from awnSettingsHelper import bind_to_gtk_component
-
 import awn
 import awnDefs as defs
+
+current_panel_id = awn.PANEL_ID_DEFAULT
+
+from awnSettingsHelper import set_panel_glow, bind_to_gtk_component
 
 from desktopagnostic import config
 from desktopagnostic import vfs
@@ -108,7 +110,7 @@ class awnPreferencesMini(awnPreferences):
         awnPreferences.__init__(self)
         
         self.wTree = wTree
-        self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
+        self.client = awn.config_get_default(current_panel_id)
         self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "")
 
         self.btn_edit_custom_effects = self.wTree.get_object("btn_edit_custom_effects")
@@ -493,7 +495,7 @@ class awnAppletMini(awnApplet):
         if not os.path.isdir(defs.HOME_APPLET_DIR):
             os.mkdir(defs.HOME_APPLET_DIR)
 
-        self.client = awn.config_get_default(1)
+        self.client = awn.config_get_default(current_panel_id)
 
         self.treeview_current = None
 
@@ -604,7 +606,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         if gtk.gdk.screen_get_default().is_composited() == False:
             infobar.get_parent().show_all()
 		
-        self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
+        self.client = awn.config_get_default(current_panel_id)
         self.view_themes_scroll = self.wTree.get_object("list_themes_scroll")
         self.treeview_themes = self.wTree.get_object("list_themes_view")
         treeview_themes_selection = self.treeview_themes.get_selection()
@@ -977,7 +979,7 @@ class awnTaskManagerMini(awnTaskManager):
         awnTaskManager.__init__(self)
 			
         self.wTree = wTree
-        self.client = awn.config_get_default(awn.PANEL_ID_DEFAULT)
+        self.client = awn.config_get_default(current_panel_id)
         self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "")
         
         infobar = self.wTree.get_object("tm_infobar")
@@ -1107,7 +1109,15 @@ class awnManagerMini(awnManager):
         close = self.wTree.get_object("buttonClose")
         close.connect("clicked", gtk.main_quit)
 
+        self.window.connect("focus-in-event", self.activateGlow)
+        self.window.connect("focus-out-event", self.deactivateGlow)
         self.window.show()
+    
+    def activateGlow(self, w, e):
+        set_panel_glow(True, current_panel_id)
+        
+    def deactivateGlow(self, w, e):
+        set_panel_glow(False, current_panel_id)
         
     def createMainMenu(self):
         self.main_menu_icon_view = self.wTree.get_object("mainMenuIconView")
@@ -1222,14 +1232,24 @@ class awnManagerMini(awnManager):
         self.panel_container.add(self.current_panel)
 		
         
-if __name__ == "__main__":
+def main(argv):
     vfs.init()
     try:
-        if '--about' in sys.argv:
+        opts, args = getopt.getopt(argv, "", ["about", "panel-id="])
+        args = dict(opts)
+        if '--about' in args:
             awnmanager = awnManager()
             awnmanager.about(None)
         else:
+            if '--panel-id' in args:
+                global current_panel_id
+                current_panel_id = int(args['--panel-id'])
+            set_panel_glow(True, current_panel_id)
             awnmanager = awnManagerMini()
             awnmanager.main()
     finally:
+        set_panel_glow(False, current_panel_id)
         vfs.shutdown()
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
