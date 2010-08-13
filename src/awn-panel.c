@@ -3266,7 +3266,11 @@ awn_panel_set_style (AwnPanel *panel, gint style)
       g_assert_not_reached ();
   }
 
-  if (old_bg) g_object_unref (old_bg);
+  if (old_bg)
+  {
+    awn_background_set_glow (priv->bg, awn_background_get_glow (old_bg));
+    g_object_unref (old_bg);
+  }
 
   g_signal_connect (priv->bg, "changed", G_CALLBACK (on_theme_changed),
                     panel);
@@ -3646,6 +3650,16 @@ awn_panel_delete_applet (AwnPanel  *panel,
   	
   g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
   priv = panel->priv;
+
+  return TRUE;
+}
+
+gboolean    awn_panel_set_glow (AwnPanel         *panel,
+                                gboolean          activate,
+                                GError          **error)
+{
+  g_return_val_if_fail (AWN_IS_PANEL (panel), TRUE);
+  awn_background_set_glow (panel->priv->bg, activate);
 
   return TRUE;
 }

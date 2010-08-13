@@ -54,6 +54,9 @@ namespace Awn
     public abstract void set_applet_flags (string uid,
                                            int flags) throws DBus.Error;
 
+    public abstract void set_glow (bool activate) throws DBus.Error;
+
+
     public abstract double offset_modifier { get; }
     public abstract int max_size { get; }
     public abstract int offset { get; set; }
@@ -149,6 +152,11 @@ namespace Awn
     public void set_applet_flags (string uid, int flags) throws DBus.Error
     {
       panel.set_applet_flags (uid, flags);
+    }
+
+    public void set_glow (bool activate) throws DBus.Error
+    {
+      panel.set_glow (activate);
     }
 
     public double offset_modifier

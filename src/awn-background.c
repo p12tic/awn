@@ -1178,6 +1178,11 @@ awn_background_draw_none   (AwnBackground  *bg,
 
 }
 
+gboolean awn_background_get_glow (AwnBackground  *bg)
+{
+  return bg->draw_glow;
+}
+
 void awn_background_set_glow (AwnBackground  *bg, gboolean activate)
 {
   if (bg->draw_glow != activate)
