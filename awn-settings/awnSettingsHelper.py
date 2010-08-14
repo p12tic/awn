@@ -24,10 +24,10 @@ import dbus
 
 def set_panel_glow (active, panel_id):
     bus = dbus.SessionBus()
-    panel_dbus = bus.get_object('org.awnproject.Awn',
-                                '/org/awnproject/Awn/Panel%d' % (panel_id),
-                                'org.awnproject.Awn.Panel')
     try:
+        panel_dbus = bus.get_object('org.awnproject.Awn',
+                                    '/org/awnproject/Awn/Panel%d' % (panel_id),
+                                    'org.awnproject.Awn.Panel')
         panel_dbus.SetGlow(active)
     except:
         # cannot connect to the panel, ok, that's no problem
