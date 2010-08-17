@@ -84,6 +84,8 @@ struct _AwnBackground
   gboolean          needs_redraw;
   cairo_surface_t*  helper_surface;
 
+  gboolean          draw_glow;
+
   /* FIXME:
    * These two should ultimately go somewhere else (once we do multiple panels)
    */
@@ -182,6 +184,9 @@ void awn_background_get_strut_offsets (AwnBackground *bg,
                                        GdkRectangle *area,
                                        gint *strut,
                                        gint *strut_start, gint *strut_end);
+
+void awn_background_set_glow (AwnBackground  *bg, gboolean activate);
+gboolean awn_background_get_glow (AwnBackground  *bg);
 
 /* These should be "protected" (used only by derived classes) */
 void awn_background_emit_padding_changed (AwnBackground *bg);

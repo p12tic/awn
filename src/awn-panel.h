@@ -94,6 +94,12 @@ gboolean    awn_panel_set_applet_flags    (AwnPanel         *panel,
                                            gint              flags,
                                            GError          **error);
 
+void        awn_panel_set_glow            (AwnPanel         *panel,
+                                           const gchar      *sender,
+                                           gboolean          activate);
+
+gint        awn_panel_get_glow_size       (AwnPanel *panel);
+
 guint       awn_panel_inhibit_autohide    (AwnPanel *panel,
                                            const gchar *sender,
                                            const gchar *app_name,

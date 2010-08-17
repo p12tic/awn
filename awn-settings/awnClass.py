@@ -1563,7 +1563,7 @@ class awnApplet(awnBzr):
                 
 class awnThemeCustomize(awnBzr):
 
-    def export_theme(self, config, filename, newfilename, save_pattern):
+    def export_theme(self, config, filename, newfilename, panel_id, save_pattern):
         tmpdir = tempfile.gettempdir()
         themedir = os.path.join(tmpdir, filename)
         themefile = os.path.join(tmpdir, filename+'.awn-theme')
@@ -1597,7 +1597,7 @@ class awnThemeCustomize(awnBzr):
         if active_icon_path and os.path.exists(active_icon_path):
             shutil.copy(active_icon_path, themedir+'/active_icon.png')
 
-        self.get_dock_image(themedir)
+        self.get_dock_image(themedir, panel_id)
 
         tarpath = os.path.join(tmpdir, filename+'.tgz')
         tFile = tarfile.open(tarpath, "w:gz")
@@ -1610,10 +1610,10 @@ class awnThemeCustomize(awnBzr):
         os.remove(themefile)
         self.hide_export_dialog(None)
 
-    def get_dock_image(self, themedir):
+    def get_dock_image(self, themedir, panel_id):
         bus = dbus.SessionBus()
         panel = bus.get_object('org.awnproject.Awn',
-                               '/org/awnproject/Awn/Panel1',
+                               '/org/awnproject/Awn/Panel%d' % (panel_id),
                                'org.awnproject.Awn.Panel')
         data = panel.GetSnapshot(byte_arrays=True)
         width, height, rowstride, has_alpha, bits_per_sample, n_channels, pixels = data

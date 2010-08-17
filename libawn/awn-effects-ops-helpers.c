@@ -266,9 +266,18 @@ void
 blur_surface_shadow (cairo_surface_t *src,
                      gint surface_width, gint surface_height, const int radius)
 {
+  blur_surface_shadow_rgba (src, surface_width, surface_height, radius, 0, 0, 0, 1.);
+}
+
+void
+blur_surface_shadow_rgba (cairo_surface_t *src,
+                          gint surface_width, gint surface_height, const int radius,
+                          guchar r, guchar g, guchar b, gfloat alpha_intensity)
+{
   guchar * pixdest, * target_pixels_dest, * target_pixels, * pixsrc;
   cairo_surface_t * temp_srfc, * temp_srfc_dest;
   cairo_t         * temp_ctx, * temp_ctx_dest;
+  alpha_intensity = MAX (alpha_intensity, 0.);
 
   g_return_if_fail(src);
 
@@ -353,9 +362,23 @@ blur_surface_shadow (cairo_surface_t *src,
       *pixdest = (guchar) total_a;
     }
   }
+  if ((r + g + b) > 0 || alpha_intensity != 1.)
+  {
+    for (y = 0; y < surface_height; ++y)
+    {
+      for (x = 0; x < surface_width; ++x)
+      {
+        pixdest = (target_pixels_dest + y * row_stride);
+        pixdest += x*4;
+        pixdest[3] = MIN (0xFF, pixdest[3] * alpha_intensity);
+        pixdest[2] = r * pixdest[3] / 0xFF;
+        pixdest[1] = g * pixdest[3] / 0xFF;
+        pixdest[0] = b * pixdest[3] / 0xFF;
+      }
+    }
+  }
   /* ---------- */
-  
-  cairo_surface_mark_dirty(temp_srfc);
+  cairo_surface_mark_dirty (temp_srfc);
 
   if (temp_ctx)
   {

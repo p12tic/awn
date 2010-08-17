@@ -20,7 +20,18 @@ import gtk
 from desktopagnostic import config
 from desktopagnostic import Color
 from desktopagnostic.ui import ColorButton
+import dbus
 
+def set_panel_glow (active, panel_id):
+    bus = dbus.SessionBus()
+    try:
+        panel_dbus = bus.get_object('org.awnproject.Awn',
+                                    '/org/awnproject/Awn/Panel%d' % (panel_id),
+                                    'org.awnproject.Awn.Panel')
+        panel_dbus.SetGlow(active)
+    except:
+        # cannot connect to the panel, ok, that's no problem
+        pass
 
 def bind_to_gtk_component (client, group, key, obj, prop_name, widget,
                            read_only=True,

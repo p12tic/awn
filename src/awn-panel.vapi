@@ -9,6 +9,7 @@ namespace Awn {
     public bool add_applet (string desktop_file) throws GLib.Error;
     public bool delete_applet (string uid) throws GLib.Error;
     public bool set_applet_flags (string uid, int flags) throws GLib.Error;
+    public bool set_glow (string sender, bool activate);
     public uint inhibit_autohide (string sender, string app_name, string reason); 
     public bool uninhibit_autohide (uint cookie);
 

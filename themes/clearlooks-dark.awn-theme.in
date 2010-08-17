@@ -1,0 +1,44 @@
+[config/theme]
+floaty_offset = 10
+border = #47ae47ae47aeffff
+tooltip_outline_color = #0000000000005b5b
+icon_text_color = #ffffffffffffffff
+ghistep1 = #6c6c9595c7c7ffff
+ghistep2 = #6c6c9595c7c79898
+icon_text_outline_color = #000000000000ffff
+gtk_theme_mode = False
+thickness = 0.850000023842
+corner_radius = 21.0
+hilight = #6c6c9595c7c7ffff
+curviness = 1.0
+curves_symmetry = 0.699999988079
+tooltip_font_color = #000000000000ffff
+draw_pattern = False
+panel_angle = 45.0
+tooltip_bg_color = #f7f7e4e4c5c5e0e0
+gstep1 = #442144214421f7f7
+gstep2 = #000000000000ffff
+tooltip_font_name = Aller Bold 10
+icon_font_mode = 1
+sep_color = #ffffffffffff0000
+
+[config/effects]
+icon_effect = 349525
+arrow_icon = __awn_internal_arrow2
+show_shadows = False
+active_rect_color = #9090878779796666
+active_rect_outline = #0000000000000000
+
+[config/panel/1]
+style = 6
+orient = 3
+expand = False
+size = 48
+
+[theme-info]
+awn-theme-version = 0.4.0
+author = Awn-core team
+name = Clearlooks Dark
+version = 1.0
+icon = @PKGDATADIR@/themes/thumbnails/clearlooks-dark-thumb.png
+

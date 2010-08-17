@@ -52,6 +52,8 @@ avant_window_navigator_SOURCES =	\
 	awn-applet-proxy.h \
 	awn-background.c \
 	awn-background.h \
+	awn-background-null.c \
+	awn-background-null.h \
 	awn-background-flat.c \
 	awn-background-flat.h \
 	awn-background-3d.c \

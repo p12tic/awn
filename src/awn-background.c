@@ -28,6 +28,7 @@
 
 #include "awn-defines.h"
 #include "libawn/gseal-transition.h"
+#include "libawn/awn-effects-ops-helpers.h"
 
 G_DEFINE_ABSTRACT_TYPE (AwnBackground, awn_background, G_TYPE_OBJECT)
 
@@ -86,6 +87,12 @@ static void awn_background_padding_zero (AwnBackground *bg,
                                          guint *padding_bottom,
                                          guint *padding_left,
                                          guint *padding_right);
+
+static void
+awn_background_draw_none   (AwnBackground  *bg,
+                            cairo_t        *cr,
+                            GtkPositionType  position,
+                            GdkRectangle   *area);
 
 static void awn_background_mask_none (AwnBackground  *bg,
                                       cairo_t        *cr,
@@ -435,6 +442,7 @@ awn_background_class_init (AwnBackgroundClass *klass)
   klass->get_input_shape_mask = awn_background_mask_none;
   klass->get_path_type        = awn_background_path_default;
   klass->get_strut_offsets    = NULL;
+  klass->draw                 = awn_background_draw_none;
   klass->get_needs_redraw     = awn_background_get_needs_redraw;
 
   /* Object properties */
@@ -708,6 +716,67 @@ awn_background_init (AwnBackground *bg)
   bg->needs_redraw = TRUE;
   bg->helper_surface = NULL;
   bg->cache_enabled = TRUE;
+  bg->draw_glow = FALSE;
+}
+
+static void
+awn_background_draw_glow (AwnBackground *bg, cairo_t *cr, 
+                          GdkRectangle *area, gint rad)
+{
+  gfloat x, y, width, height;
+  gboolean non_null_draw;
+
+  x = area->x - rad;
+  y = area->y - rad;
+  width = area->width + rad * 2.;
+  height = area->height + rad * 2.;
+  non_null_draw =
+    AWN_BACKGROUND_GET_CLASS (bg)->draw != awn_background_draw_none;
+
+  cairo_save (cr);
+  /* Create a surface to apply the glow */
+  cairo_surface_t *blur_srfc = cairo_image_surface_create
+                                          (CAIRO_FORMAT_ARGB32,
+                                           width,
+                                           height);
+  /* clone original surface */
+  cairo_t *blur_ctx = cairo_create (blur_srfc);
+  cairo_set_operator (blur_ctx, CAIRO_OPERATOR_SOURCE);
+  if (non_null_draw)
+  {
+    cairo_set_source_surface (blur_ctx, cairo_get_target (cr), -x, -y);
+  }
+  else
+  {
+    /* if no background, glow a rectangle */
+    cairo_set_source_rgba (blur_ctx, 0., 1., 0., 0.5);
+    cairo_rectangle (blur_ctx, rad * 2, rad * 2, 
+                               width - rad * 4, height - rad * 4);
+    cairo_clip (blur_ctx);
+  }
+  cairo_paint (blur_ctx);
+  /* create blur */
+  GdkColor bg_color =
+    gtk_widget_get_style (GTK_WIDGET (bg->panel))->bg[GTK_STATE_SELECTED];
+  blur_surface_shadow_rgba (blur_srfc, width, height, MAX (1, rad),
+                            bg_color.red / 256,
+                            bg_color.green / 256,
+                            bg_color.blue / 256,
+                            2.5);
+  if (non_null_draw)
+  {
+    cairo_set_source_surface (blur_ctx, cairo_get_target (cr), -x, -y);
+    cairo_set_operator (blur_ctx, CAIRO_OPERATOR_DEST_OUT);
+    cairo_paint (blur_ctx);
+  }
+  cairo_destroy (blur_ctx);
+
+  cairo_set_source_surface(cr, blur_srfc, x, y);
+  cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OVER);
+  /* paint the blur on original surface */
+  cairo_paint (cr);
+  cairo_surface_destroy (blur_srfc);
+  cairo_restore (cr);
 }
 
 void 
@@ -733,8 +802,9 @@ awn_background_draw (AwnBackground  *bg,
     if (klass->get_needs_redraw (bg, position, area))
     {
       cairo_t *temp_cr;
-      gint full_width = area->x + area->width;
-      gint full_height = area->y + area->height;
+      gint rad = awn_panel_get_glow_size (bg->panel);
+      gint full_width = area->x + area->width + rad;
+      gint full_height = area->y + area->height + rad;
 
       gboolean realloc_needed = bg->helper_surface == NULL ||
         cairo_image_surface_get_width (bg->helper_surface) != full_width ||
@@ -761,6 +831,10 @@ awn_background_draw (AwnBackground  *bg,
       }
       /* Draw background on temp cairo_t */
       klass->draw (bg, temp_cr, position, area);
+      if (bg->draw_glow)
+      {
+        awn_background_draw_glow (bg, temp_cr, area, rad);
+      }
       cairo_destroy (temp_cr);
     }
     /* Paint saved surface */
@@ -1107,6 +1181,34 @@ static void awn_background_mask_none (AwnBackground *bg,
   cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
   cairo_rectangle (cr, area->x, area->y, area->width, area->height);
   cairo_fill (cr);
+}
+
+static void
+awn_background_draw_none   (AwnBackground  *bg,
+                            cairo_t        *cr,
+                            GtkPositionType  position,
+                            GdkRectangle   *area)
+{
+
+}
+
+gboolean awn_background_get_glow (AwnBackground *bg)
+{
+  g_return_val_if_fail (AWN_IS_BACKGROUND (bg), FALSE);
+
+  return bg->draw_glow;
+}
+
+void awn_background_set_glow (AwnBackground *bg, gboolean activate)
+{
+  g_return_if_fail (AWN_IS_BACKGROUND (bg));
+
+  if (bg->draw_glow != activate)
+  {
+    bg->draw_glow = activate;
+    awn_background_invalidate (bg);
+    awn_background_emit_changed (bg);
+  }
 }
 
 static AwnPathType awn_background_path_default (AwnBackground *bg,
