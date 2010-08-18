@@ -1727,5 +1727,12 @@ class awnThemeCustomize(awnBzr):
                                    
 class awnTaskManager(awnBzr):
     
+    def runDockmanagerSettings(self, xid):
+        bus = dbus.SessionBus()
+        daemon = bus.get_object('net.launchpad.DockManager.Daemon',
+                                '/net/launchpad/DockManager/Daemon',
+                                'net.launchpad.DockManager.Daemon')
+        daemon.EmbedPreferences(xid)
+
     def ding(self):
         pass

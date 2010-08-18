@@ -984,6 +984,20 @@ class awnTaskManagerMini(awnTaskManager):
         infobar = self.wTree.get_object("tm_infobar")
         infobar.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#F7F7BD"))
 
+        self.helpers_unavailable = self.wTree.get_object("helpers_unavailable")
+        self.helpers_panel = self.wTree.get_object("helpers_panel")
+        self.launchers_panel = self.wTree.get_object("launchers_panel")
+        self.socket = gtk.Socket()
+        self.helpers_panel.pack_start(self.socket)
+        self.helpers_panel.reorder_child(self.socket, 0)
+        self.socket.show()
+
+        self.helpersButton = self.wTree.get_object("helpers_button")
+        self.helpersButton.connect('clicked', self.show_helpers)
+        self.helpersButton.set_sensitive(False) # FIXME: remove
+        self.launchersButton = self.wTree.get_object("launchers_button")
+        self.launchersButton.connect('clicked', self.hide_helpers)
+
         if not self.check_for_task_manager():
 			infobar.get_parent().show_all()
 
@@ -1052,10 +1066,28 @@ class awnTaskManagerMini(awnTaskManager):
         self.client_taskman.bind (GROUP_DEFAULT, defs.OVERLAY_ICON_SWAP, self, "icon-overlay-swap",
                           False, config.BIND_METHOD_FALLBACK)
 
-        refresh_behaviour()   			
-		
+        refresh_behaviour()
+
         icon_behave.connect('changed', icon_behave_callback)
-			                                                                      
+
+    def show_helpers (self, w = None):
+        self.launchers_panel.hide()
+        self.helpers_panel.show()
+
+        if self.socket.get_plug_window() is None:
+            try:
+                self.socket.show()
+                self.runDockmanagerSettings(self.socket.get_id())
+                self.helpers_unavailable.hide()
+            except:
+                self.socket.hide()
+                self.helpers_unavailable.show()
+
+    def hide_helpers (self, w = None):
+        self.helpers_panel.hide()
+        self.launchers_panel.show()
+
+
 class awnManagerMini(awnManager):
     PREFERENCE_PANEL = 0
     APPLET_PANEL = 1
