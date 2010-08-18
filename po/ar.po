@@ -10,15 +10,15 @@ msgstr ""
 "Project-Id-Version: _avant-window-navigator-ar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-07 03:54+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-08-18 05:20+0000\n"
+"Last-Translator: AMINE Tarik <Unknown>\n"
 "Language-Team: Arabic\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
 "3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
-"X-Launchpad-Export-Date: 2010-08-08 03:49+0000\n"
+"X-Launchpad-Export-Date: 2010-08-18 06:59+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -33,7 +33,7 @@ msgstr "إملأ المساحة على اللوحة في الوضع الموسع
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
-msgstr " اسمح بتجميع النوافذ ذات WM_CLIENT_NAME المختلف"
+msgstr " السماح بتجميع النوافذ ذات WM_CLIENT_NAME المختلف"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
