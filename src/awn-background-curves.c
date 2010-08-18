@@ -46,6 +46,11 @@ static void awn_background_curves_draw (AwnBackground  *bg,
                                         GtkPositionType  position,
                                         GdkRectangle   *area);
 
+static void awn_background_curves_mask (AwnBackground  *bg,
+                                        cairo_t        *cr,
+                                        GtkPositionType  position,
+                                        GdkRectangle   *area);
+
 static void
 awn_background_curves_constructed (GObject *object)
 {
@@ -65,7 +70,7 @@ awn_background_curves_class_init (AwnBackgroundCurvesClass *klass)
 
   bg_class->draw = awn_background_curves_draw;
   bg_class->padding_request = awn_background_curves_padding_request;
-  bg_class->get_input_shape_mask = awn_background_curves_draw;
+  bg_class->get_input_shape_mask = awn_background_curves_mask;
   bg_class->get_path_type = awn_background_curves_get_path_type;
 }
 
@@ -343,6 +348,58 @@ awn_background_curves_draw (AwnBackground  *bg,
 
   draw_top_bottom_background (bg, cr, 0, 0, width, height);
 
+  cairo_restore (cr);
+}
+
+static void awn_background_curves_mask (AwnBackground  *bg,
+                                        cairo_t        *cr,
+                                        GtkPositionType  position,
+                                        GdkRectangle   *area)
+{
+  gint temp;
+  gint x = area->x, y = area->y;
+  gint width = area->width, height = area->height;
+  cairo_save (cr);
+
+  switch (position)
+  {
+    case GTK_POS_RIGHT:
+      cairo_translate (cr, x, y+height);
+      cairo_rotate (cr, M_PI * 1.5);
+      temp = width;
+      width = height; height = temp;
+      break;
+    case GTK_POS_LEFT:
+      cairo_translate (cr, x+width, y);
+      cairo_rotate (cr, M_PI * 0.5);
+      temp = width;
+      width = height; height = temp;
+      break;
+    case GTK_POS_TOP:
+      cairo_translate (cr, x+width, y+height);
+      cairo_rotate (cr, M_PI);
+      break;
+    default:
+      cairo_translate (cr, x, y);
+      break;
+  }
+
+  gdouble curves_height;
+
+  /* Basic set-up */
+  cairo_set_line_width (cr, 1.0);
+  cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+  cairo_translate (cr, 0.5, 0.5);
+  width -= 1;
+  curves_height = height;
+  if (bg->curviness < 1.0)
+  {
+    curves_height = height*bg->curviness;
+  }
+  draw_rect_path (bg, cr, 0, height-curves_height, width, curves_height);
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_rgba (cr, 1., 1., 1., 1.);
+  cairo_fill (cr);
   cairo_restore (cr);
 }
 

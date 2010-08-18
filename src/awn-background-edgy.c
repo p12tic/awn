@@ -272,11 +272,11 @@ awn_background_edgy_new (DesktopAgnosticConfigClient *client, AwnPanel *panel)
  * Drawing functions
  */
 static void
-draw_path (cairo_t *cr, gdouble radius, gint width, gint height,
+draw_path (cairo_t *cr, gint x, gdouble radius, gint width, gint height,
            gboolean bottom_left)
 {
   if (bottom_left)
-    cairo_arc (cr, 0, height, radius, -M_PI / 2.0, 0.0);
+    cairo_arc (cr, x, height, radius, -M_PI / 2.0, 0.0);
   else
     cairo_arc_negative (cr, width, height, radius, -M_PI / 2.0, -M_PI);
 }
@@ -297,7 +297,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   /* Basic set-up */
   cairo_set_line_width (cr, 1.0);
 
-  if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
+  if (awn_panel_get_composited (bg->panel) == FALSE)
   {
     goto paint_lines;
   }
@@ -329,7 +329,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   cairo_save (cr);
 
-  draw_path(cr, height - 1.0, width, height, bottom_left);
+  draw_path(cr, 0, height - 1.0, width, height, bottom_left);
   cairo_line_to (cr, bottom_left ? 0.0 : width, height);
   cairo_clip (cr);
   cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
@@ -353,7 +353,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   awn_cairo_pattern_add_color_stop_color (pat, 0.2, bg->g_histep_2);
   awn_cairo_pattern_add_color_stop_color (pat, 1.0, bg->g_histep_1);
 
-  draw_path (cr, height * 3/4, width, height, bottom_left);
+  draw_path (cr, 0, height * 3/4, width, height, bottom_left);
   if (bottom_left)
     cairo_arc_negative (cr, 0, height, height-2.0, 0.0, -M_PI / 2.0);
   else
@@ -367,12 +367,12 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   /* Internal border */
   awn_cairo_set_source_color (cr, bg->hilight_color);
-  draw_path(cr, height - 2.0, width, height, bottom_left);
+  draw_path(cr, 0, height - 2.0, width, height, bottom_left);
   cairo_stroke (cr);
 
   /* External border */
   awn_cairo_set_source_color (cr, bg->border_color);
-  draw_path(cr, height - 1.0, width, height, bottom_left);
+  draw_path(cr, 0, height - 1.0, width, height, bottom_left);
   cairo_stroke (cr);
 }
 
@@ -531,9 +531,9 @@ awn_background_edgy_get_shape_mask (AwnBackground  *bg,
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   gboolean bottom_left = awn_background_get_panel_alignment (bg) == 0.;
-  draw_path(cr, height - 1.0, width, height, bottom_left);
+  draw_path(cr, x, height - 1.0, width, height, bottom_left);
   cairo_line_to (cr, bottom_left ? 0.0 : width, height);
-  cairo_set_source_rgba (cr, 0., 0., 0., 1.);
+  cairo_set_source_rgba (cr, 1., 1., 1., 1.);
   cairo_clip (cr);
   cairo_paint (cr);
 

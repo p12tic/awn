@@ -118,6 +118,8 @@ gint64      awn_panel_docklet_request     (AwnPanel         *panel,
 
 gboolean    awn_panel_get_docklet_mode    (AwnPanel         *panel);
 
+gboolean    awn_panel_get_composited      (AwnPanel         *panel);
+
 gboolean    awn_panel_get_snapshot        (AwnPanel *panel,
                                            gint     *width,
                                            gint     *height,

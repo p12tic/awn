@@ -118,6 +118,7 @@ awn_background_flat_class_init (AwnBackgroundFlatClass *klass)
   bg_class->draw = awn_background_flat_draw;
   bg_class->padding_request = awn_background_flat_padding_request;
   bg_class->get_shape_mask = awn_background_flat_get_shape_mask;
+  bg_class->get_input_shape_mask = awn_background_flat_get_shape_mask;
 }
 
 
@@ -193,7 +194,7 @@ draw_top_bottom_background (AwnBackground  *bg,
   align = awn_background_get_panel_alignment (bg);
   g_object_get (bg->panel, "expand", &expand, NULL);
 
-  if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
+  if (awn_panel_get_composited (bg->panel) == FALSE)
   {
     goto paint_lines;
   }
@@ -367,26 +368,31 @@ awn_background_flat_get_shape_mask (AwnBackground  *bg,
   switch (position)
   {
     case GTK_POS_RIGHT:
-      cairo_translate (cr, x, y+height);
+      cairo_translate (cr, 0., y + height);
+      cairo_scale (cr, 1., -1.);
+      cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_LEFT:
-      cairo_translate (cr, x+width, y);
+      cairo_translate (cr, x + width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
-      width = height; height = temp;
+      width = height;
+      height = temp;
       break;
     case GTK_POS_TOP:
-      cairo_translate (cr, x+width, y+height);
-      cairo_rotate (cr, M_PI);
+      cairo_translate (cr, x, y + height);
+      cairo_scale (cr, 1., -1.);
       break;
     default:
       cairo_translate (cr, x, y);
       break;
   }
-
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_rgba (cr, 1., 1., 1., 1.);
   draw_rect (bg, cr, position, 0, 0, width, height+3, align, expand);
   cairo_fill (cr);
 

@@ -4029,6 +4029,12 @@ awn_panel_get_docklet_mode (AwnPanel *panel)
   return panel->priv->docklet != NULL;
 }
 
+gboolean
+awn_panel_get_composited (AwnPanel *panel)
+{
+  return panel->priv->composited;
+}
+
 static void
 awn_panel_docklet_destroy (AwnPanel *panel)
 {

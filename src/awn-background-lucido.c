@@ -777,7 +777,7 @@ draw_top_bottom_background (AwnBackground*   bg,
     width += 1.;
   }
 
-  gboolean composited = gtk_widget_is_composited (GTK_WIDGET (bg->panel));
+  gboolean composited = awn_panel_get_composited (bg->panel);
   if (composited == FALSE)
   {
     goto paint_lines;
@@ -1075,13 +1075,15 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
       cairo_translate (cr, 0., y);
       break;
   }
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_rgba (cr, 1., 1., 1., 1.);
   if (expand)
   {
     cairo_rectangle (cr, 0., 0., width, height + 2.);
   }
   else
   {
-    gboolean composited = gtk_widget_is_composited (GTK_WIDGET (bg->panel));
+    gboolean composited = awn_panel_get_composited (bg->panel);
     if (!composited)
     {
       x_start_limit = 0;
@@ -1091,8 +1093,8 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
     cairo_new_path (cr);
     gfloat lx = x_start_limit, ly = height;
     cairo_move_to (cr, lx, ly);
-    _line_from_to (cr, &lx, &ly, lx + rad, 0);
-    _line_from_to (cr, &lx, &ly, width - rad, 0);
+    _line_from_to (cr, &lx, &ly, lx + (align == 0. ? 0. : rad), 0);
+    _line_from_to (cr, &lx, &ly, width - (align == 1. ? 0. : rad), 0);
     _line_from_to (cr, &lx, &ly, width, height);
     cairo_close_path (cr);
   }

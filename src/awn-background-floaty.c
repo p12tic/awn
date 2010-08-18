@@ -160,7 +160,7 @@ draw_top_bottom_background (AwnBackground  *bg,
 
   bg_size = height - bg->floaty_offset + 1;
 
-  if (gtk_widget_is_composited (GTK_WIDGET (bg->panel)) == FALSE)
+  if (awn_panel_get_composited (bg->panel) == FALSE)
   {
     goto paint_lines;
   }
@@ -331,7 +331,18 @@ awn_background_floaty_get_shape_mask (AwnBackground  *bg,
       cairo_translate (cr, x, y);
       break;
   }
+  cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+  cairo_set_source_rgba (cr, 1., 1., 1., 1.);
 
+  // eyecandy in expand mode
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+  if (expand)
+  {
+    gint extra_space = bg->floaty_offset * 3 / 4;
+    cairo_translate (cr, extra_space, 0.0);
+    width -= 2*extra_space;
+  }
   draw_rect (bg, cr, position, 0, 0, width, height - bg->floaty_offset + 2, TRUE);
   cairo_fill (cr);
 

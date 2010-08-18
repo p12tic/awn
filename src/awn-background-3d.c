@@ -793,7 +793,7 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
   width -= DRAW_XPADDING * 2.;
 
   /* Draw the background (in black color) */
-  cairo_set_source_rgba(cr, 0., 0., 0., 1.);
+  cairo_set_source_rgba(cr, 1., 1., 1., 1.);
   /* for shape mask draw only top and bottom plane */
   Point3 *vertices = calc_points (bg, 0., 0., width, height);
   draw_rect_path (cr, vertices, 0.);

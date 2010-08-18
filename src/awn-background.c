@@ -721,7 +721,8 @@ awn_background_init (AwnBackground *bg)
 
 static void
 awn_background_draw_glow (AwnBackground *bg, cairo_t *cr, 
-                          GdkRectangle *area, gint rad)
+                          GdkRectangle *area, gint rad,
+                          GtkPositionType  position)
 {
   gfloat x, y, width, height;
   gboolean non_null_draw;
@@ -732,6 +733,8 @@ awn_background_draw_glow (AwnBackground *bg, cairo_t *cr,
   height = area->height + rad * 2.;
   non_null_draw =
     AWN_BACKGROUND_GET_CLASS (bg)->draw != awn_background_draw_none;
+  /* GdkRectangle for _input_shape_mask */
+  GdkRectangle rect = {rad, rad, area->width, area->height};
 
   cairo_save (cr);
   /* Create a surface to apply the glow */
@@ -739,23 +742,9 @@ awn_background_draw_glow (AwnBackground *bg, cairo_t *cr,
                                           (CAIRO_FORMAT_ARGB32,
                                            width,
                                            height);
-  /* clone original surface */
+  /* paint the shape mask */
   cairo_t *blur_ctx = cairo_create (blur_srfc);
-  cairo_set_operator (blur_ctx, CAIRO_OPERATOR_SOURCE);
-  if (non_null_draw)
-  {
-    cairo_set_source_surface (blur_ctx, cairo_get_target (cr), -x, -y);
-  }
-  else
-  {
-    /* if no background, glow a rectangle */
-    cairo_set_source_rgba (blur_ctx, 0., 1., 0., 0.5);
-    cairo_rectangle (blur_ctx, rad * 2, rad * 2, 
-                               width - rad * 4, height - rad * 4);
-    cairo_clip (blur_ctx);
-  }
-  cairo_paint (blur_ctx);
-  /* create blur */
+  awn_background_get_input_shape_mask (bg, blur_ctx, position, &rect);
   GdkColor bg_color =
     gtk_widget_get_style (GTK_WIDGET (bg->panel))->bg[GTK_STATE_SELECTED];
   blur_surface_shadow_rgba (blur_srfc, width, height, MAX (1, rad),
@@ -765,7 +754,9 @@ awn_background_draw_glow (AwnBackground *bg, cairo_t *cr,
                             2.5);
   if (non_null_draw)
   {
-    cairo_set_source_surface (blur_ctx, cairo_get_target (cr), -x, -y);
+    cairo_push_group (blur_ctx);
+    awn_background_get_input_shape_mask (bg, blur_ctx, position, &rect);
+    cairo_pop_group_to_source (blur_ctx);
     cairo_set_operator (blur_ctx, CAIRO_OPERATOR_DEST_OUT);
     cairo_paint (blur_ctx);
   }
@@ -831,9 +822,9 @@ awn_background_draw (AwnBackground  *bg,
       }
       /* Draw background on temp cairo_t */
       klass->draw (bg, temp_cr, position, area);
-      if (bg->draw_glow)
+      if (bg->draw_glow && awn_panel_get_composited (bg->panel))
       {
-        awn_background_draw_glow (bg, temp_cr, area, rad);
+        awn_background_draw_glow (bg, temp_cr, area, rad, position);
       }
       cairo_destroy (temp_cr);
     }

@@ -1,3 +1,17 @@
+2010-08-19  Alberto  <albyrock87+dev@gmail.com>
+
+	* src/awn-background-3d.c:
+	* src/awn-background-curves.c:
+	* src/awn-background-edgy.c:
+	* src/awn-background-flat.c:
+	* src/awn-background-floaty.c:
+	* src/awn-background-lucido.c:
+	* src/awn-background.c:
+	* src/awn-panel.c:
+	* src/awn-panel.h:
+	Adjusted some shape masks.
+	Now using input_shape_mask to paint the glow.
+
 2010-08-18  Michal Hruby  <michal.mhr@gmail.com>
 
 	* awn-settings/awn-settings.ui:
