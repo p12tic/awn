@@ -988,13 +988,15 @@ class awnTaskManagerMini(awnTaskManager):
         self.helpers_panel = self.wTree.get_object("helpers_panel")
         self.launchers_panel = self.wTree.get_object("launchers_panel")
         self.socket = gtk.Socket()
+        self.socket.connect('plug-removed', lambda w: True)
+        self.socket.connect('plug-added', lambda w: w.show())
         self.helpers_panel.pack_start(self.socket)
         self.helpers_panel.reorder_child(self.socket, 0)
         self.socket.show()
+        self.socket.hide()
 
         self.helpersButton = self.wTree.get_object("helpers_button")
         self.helpersButton.connect('clicked', self.show_helpers)
-        self.helpersButton.set_sensitive(False) # FIXME: remove
         self.launchersButton = self.wTree.get_object("launchers_button")
         self.launchersButton.connect('clicked', self.hide_helpers)
 
@@ -1070,14 +1072,18 @@ class awnTaskManagerMini(awnTaskManager):
 
         icon_behave.connect('changed', icon_behave_callback)
 
+    def refresh (self):
+        if gtk.VISIBLE & self.helpers_panel.flags() != 0:
+            self.show_helpers()
+
     def show_helpers (self, w = None):
         self.launchers_panel.hide()
         self.helpers_panel.show()
 
         if self.socket.get_plug_window() is None:
+            socket_xid = self.socket.get_id()
             try:
-                self.socket.show()
-                self.runDockmanagerSettings(self.socket.get_id())
+                self.runDockmanagerSettings(socket_xid)
                 self.helpers_unavailable.hide()
             except:
                 self.socket.hide()
@@ -1253,6 +1259,8 @@ class awnManagerMini(awnManager):
     def showLaunchPanel(self):
         self.current_panel = self.wTree.get_object("launchPanel")
         self.panel_container.add(self.current_panel)
+        # Taskman panel needs a ping
+        self.taskManager.refresh()
 
     def showThemePanel(self):
         self.current_panel = self.wTree.get_object("themePanel")
