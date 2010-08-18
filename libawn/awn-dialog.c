@@ -316,7 +316,8 @@ _enable_unfocus (GtkWidget *widget)
 
   priv->unfocus_timer_id = 0;
   if (priv->unfocus_hide &&
-      gtk_window_is_active (GTK_WINDOW (widget)) == FALSE)
+      gtk_window_is_active (GTK_WINDOW (widget)) == FALSE &&
+      gtk_grab_get_current () == NULL)
   {
     gtk_widget_hide (widget);
   }
@@ -615,7 +616,10 @@ _on_active_changed(GObject *dialog, GParamSpec *spec, gpointer null)
                   "active", gtk_window_is_active (GTK_WINDOW (dialog)), NULL);
   }
 
-  if (priv->unfocus_hide && priv->unfocus_timer_id == 0)
+  if (gtk_window_is_active (GTK_WINDOW (dialog))) return;
+
+  if (priv->unfocus_hide && priv->unfocus_timer_id == 0 &&
+      gtk_grab_get_current () == NULL)
   {
     gtk_widget_hide (GTK_WIDGET (dialog));
   }

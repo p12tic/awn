@@ -1,5 +1,10 @@
 2010-08-18  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-dialog.c:
+	Hide-on-unfocus property should deal with popup menus now.
+
+2010-08-18  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnClass.py:
 	* awn-settings/awnSettings.py.in:
