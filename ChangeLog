@@ -1,5 +1,10 @@
 2010-08-20  Michal Hruby  <michal.mhr@gmail.com>
 
+	* libawn/awn-effects-ops-helpers.c:
+	Implement faster box filter (for blurring).
+
+2010-08-20  Michal Hruby  <michal.mhr@gmail.com>
+
 	* src/awn-background.c:
 	Fix issues with glow painting.
 

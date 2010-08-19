@@ -311,26 +311,35 @@ blur_surface_shadow_rgba (cairo_surface_t *src,
 
   for (y = 0; y < surface_height; ++y)
   {
+    total_a = 0;
+
     for (x = 0; x < surface_width; ++x)
     {
-      total_a = 0;
-
-      for (kx = -radius; kx <= radius; ++kx)
+      // we're filtering with ones only, so we can do this extra speedup
+      if (x == 0)
       {
-        if((x+kx)>0 && (x+kx)<surface_width)
-        {
-          pixsrc = (target_pixels + y * row_stride) + ((x+kx)*4) + 3;
+        pixsrc = (target_pixels + y * row_stride) + 3;
+        total_a += (*pixsrc) * (radius + 1);
 
+        int kx_max = MIN (radius, surface_width-1);
+        for (kx = 1; kx <= kx_max; kx++)
+        {
+          pixsrc = (target_pixels + y * row_stride) + (kx*4) + 3;
           total_a += *pixsrc;
         }
       }
+      else
+      {
+        int last_pixel = MAX (x-radius-1, 0);
+        pixsrc = (target_pixels + y * row_stride) + (last_pixel*4) + 3;
+        total_a -= *pixsrc;
+        int next_pixel = MIN (x+radius, surface_width-1);
+        pixsrc = (target_pixels + y * row_stride) + (next_pixel*4) + 3;
+        total_a += *pixsrc;
+      }
 
-      total_a /= kernel_size;
-
-      pixdest = (target_pixels_dest + y * row_stride);
-      pixdest += x*4;
-      pixdest += 3;
-      *pixdest = (guchar) total_a;
+      pixdest = (target_pixels_dest + y * row_stride) + (x*4) + 3;
+      *pixdest = (guchar) (total_a / kernel_size);
     }
   }
 
@@ -338,28 +347,37 @@ blur_surface_shadow_rgba (cairo_surface_t *src,
   target_pixels_dest = cairo_image_surface_get_data (temp_srfc);
   target_pixels = cairo_image_surface_get_data (temp_srfc_dest);
 
-  for (y = 0; y < surface_height; ++y)
+  for (x = 0; x < surface_width; ++x)
   {
-    for (x = 0; x < surface_width; ++x)
+    total_a = 0;
+
+    for (y = 0; y < surface_height; ++y)
     {
-      total_a = 0;
-
-      for (ky = -radius; ky <= radius; ++ky)
+      // we're filtering with ones only, so we can do this extra speedup
+      if (y == 0)
       {
-        if ((y+ky)>0 && (y+ky)<surface_height)
-        {
-          pixsrc = (target_pixels + (y+ky) * row_stride) + (x*4) + 3;
+        pixsrc = target_pixels + (x*4) + 3;
+        total_a += (*pixsrc) * (radius + 1);
 
+        int ky_max = MIN (radius, surface_height-1);
+        for (ky = 1; ky <= ky_max; ky++)
+        {
+          pixsrc = (target_pixels + ky * row_stride) + (x*4) + 3;
           total_a += *pixsrc;
         }
       }
+      else
+      {
+        int last_pixel = MAX (y-radius-1, 0);
+        pixsrc = (target_pixels + last_pixel * row_stride) + (x*4) + 3;
+        total_a -= *pixsrc;
+        int next_pixel = MIN (y+radius, surface_height-1);
+        pixsrc = (target_pixels + next_pixel * row_stride) + (x*4) + 3;
+        total_a += *pixsrc;
+      }
 
-      total_a /= kernel_size;
-
-      pixdest = (target_pixels_dest + y * row_stride);
-      pixdest += x*4;
-      pixdest += 3;
-      *pixdest = (guchar) total_a;
+      pixdest = (target_pixels_dest + y * row_stride) + (x*4) + 3;
+      *pixdest = (guchar) (total_a / kernel_size);
     }
   }
   if ((r + g + b) > 0 || alpha_intensity != 1.)
