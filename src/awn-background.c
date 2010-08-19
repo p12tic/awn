@@ -744,7 +744,20 @@ awn_background_draw_glow (AwnBackground *bg, cairo_t *cr,
                                            height);
   /* paint the shape mask */
   cairo_t *blur_ctx = cairo_create (blur_srfc);
-  awn_background_get_input_shape_mask (bg, blur_ctx, position, &rect);
+  cairo_push_group (blur_ctx);
+  if (non_null_draw)
+  {
+    cairo_set_source_surface (blur_ctx, cairo_get_target (cr), -x, -y);
+    cairo_paint (blur_ctx);
+  }
+  else
+  {
+    awn_background_get_input_shape_mask (bg, blur_ctx, position, &rect);
+  }
+  cairo_pattern_t *pat = cairo_pop_group (blur_ctx);
+  cairo_set_source (blur_ctx, pat);
+  cairo_set_operator (blur_ctx, CAIRO_OPERATOR_SOURCE);
+  cairo_paint (blur_ctx);
   GdkColor bg_color =
     gtk_widget_get_style (GTK_WIDGET (bg->panel))->bg[GTK_STATE_SELECTED];
   blur_surface_shadow_rgba (blur_srfc, width, height, MAX (1, rad),
@@ -754,15 +767,14 @@ awn_background_draw_glow (AwnBackground *bg, cairo_t *cr,
                             2.5);
   if (non_null_draw)
   {
-    cairo_push_group (blur_ctx);
-    awn_background_get_input_shape_mask (bg, blur_ctx, position, &rect);
-    cairo_pop_group_to_source (blur_ctx);
+    cairo_set_source (blur_ctx, pat);
     cairo_set_operator (blur_ctx, CAIRO_OPERATOR_DEST_OUT);
     cairo_paint (blur_ctx);
   }
+  cairo_pattern_destroy (pat);
   cairo_destroy (blur_ctx);
 
-  cairo_set_source_surface(cr, blur_srfc, x, y);
+  cairo_set_source_surface (cr, blur_srfc, x, y);
   cairo_set_operator (cr, CAIRO_OPERATOR_DEST_OVER);
   /* paint the blur on original surface */
   cairo_paint (cr);
@@ -1113,6 +1125,7 @@ static void
 on_style_set (GtkWidget *widget, GtkStyle *old, AwnBackground *bg)
 {
   update_widget_colors (widget, bg);
+  awn_background_invalidate (bg);
 }
 
 static void
