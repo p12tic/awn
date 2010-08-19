@@ -468,7 +468,7 @@ _create_path_lucido ( AwnBackground*  bg,
     {
       x += applet_manager_x - dc;
     }
-    x = lroundf (x);
+    x = MAX (lroundf (x), 0.);
     if (priv->lastx == -1)
     {
       priv->lastx = x;

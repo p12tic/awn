@@ -477,7 +477,7 @@ awn_background_edgy_get_shape_mask (AwnBackground  *bg,
                                     GdkRectangle   *area)
 {
   gint temp;
-  gint x = area->x, y = area->y;
+  gint x = area->x, y = area->y, start_x = area->x;
   gint width = area->width, height = area->height;
   const gboolean in_corner = AWN_BACKGROUND_EDGY (bg)->priv->in_corner;
 
@@ -499,31 +499,29 @@ awn_background_edgy_get_shape_mask (AwnBackground  *bg,
   switch (position)
   {
     case GTK_POS_RIGHT:
-      height += y;
-      cairo_translate (cr, 0., height);
+      cairo_translate (cr, 0., y + height);
       cairo_scale (cr, 1., -1.);
       cairo_translate (cr, x, height);
       cairo_rotate (cr, M_PI * 1.5);
       temp = width;
       width = height;
       height = temp;
+      start_x = y;
       break;
     case GTK_POS_LEFT:
-      height += y;
-      cairo_translate (cr, x + width, 0.);
+      cairo_translate (cr, x + width, y);
       cairo_rotate (cr, M_PI * 0.5);
       temp = width;
       width = height;
       height = temp;
+      start_x = y;
       break;
     case GTK_POS_TOP:
-      width += x;
-      cairo_translate (cr, 0., y + height);
+      cairo_translate (cr, x, y + height);
       cairo_scale (cr, 1., -1.);
       break;
     default:
-      width += x;
-      cairo_translate (cr, 0., y);
+      cairo_translate (cr, x, y);
       break;
   }
   
@@ -531,8 +529,8 @@ awn_background_edgy_get_shape_mask (AwnBackground  *bg,
   cairo_set_line_width (cr, 1.0);
   cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
   gboolean bottom_left = awn_background_get_panel_alignment (bg) == 0.;
-  draw_path(cr, x, height - 1.0, width, height, bottom_left);
-  cairo_line_to (cr, bottom_left ? 0.0 : width, height);
+  draw_path(cr, start_x, height - 1.0, width, height, bottom_left);
+  cairo_line_to (cr, bottom_left ? start_x : width, height);
   cairo_set_source_rgba (cr, 1., 1., 1., 1.);
   cairo_clip (cr);
   cairo_paint (cr);
