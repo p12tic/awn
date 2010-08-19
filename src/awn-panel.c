@@ -171,6 +171,7 @@ typedef struct _AwnInhibitItem
 
 #define ROUND(x) (x < 0 ? x - 0.5 : x + 0.5)
 
+//#define DEBUG_INPUT_SHAPE
 //#define DEBUG_DRAW_AREA
 //#define DEBUG_APPLET_AREA
 
@@ -2893,6 +2894,23 @@ awn_panel_expose (GtkWidget *widget, GdkEventExpose *event)
     }
     gdk_region_destroy (region);
   }
+
+#ifdef DEBUG_INPUT_SHAPE
+  if (1)
+  {
+    cairo_save (cr);
+    cairo_reset_clip (cr);
+    cairo_push_group (cr);
+    awn_background_get_input_shape_mask (priv->bg, cr, priv->position, &area);
+    cairo_pattern_t *mask = cairo_pop_group (cr);
+    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+    cairo_set_source_rgba (cr, 0.0, 1.0, 0.0, 0.5);
+    cairo_mask (cr, mask);
+    cairo_restore (cr);
+
+    cairo_pattern_destroy (mask);
+  }
+#endif
 
   cairo_destroy (cr);
 

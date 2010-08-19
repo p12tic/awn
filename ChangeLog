@@ -1,3 +1,8 @@
+2010-08-19  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Make input shape mask debugging easy. (I thought we already had this?)
+
 2010-08-19  Alberto  <albyrock87+dev@gmail.com>
 
 	* src/awn-background-3d.c:
