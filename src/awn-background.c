@@ -733,8 +733,6 @@ awn_background_draw_glow (AwnBackground *bg, cairo_t *cr,
   height = area->height + rad * 2.;
   non_null_draw =
     AWN_BACKGROUND_GET_CLASS (bg)->draw != awn_background_draw_none;
-  /* GdkRectangle for _input_shape_mask */
-  GdkRectangle rect = {rad, rad, area->width, area->height};
 
   cairo_save (cr);
   /* Create a surface to apply the glow */
@@ -752,9 +750,11 @@ awn_background_draw_glow (AwnBackground *bg, cairo_t *cr,
   }
   else
   {
-    awn_background_get_input_shape_mask (bg, blur_ctx, position, &rect);
+    cairo_translate (blur_ctx, -area->x + rad, -area->y + rad);
+    awn_background_get_input_shape_mask (bg, blur_ctx, position, area);
   }
   cairo_pattern_t *pat = cairo_pop_group (blur_ctx);
+
   cairo_set_source (blur_ctx, pat);
   cairo_set_operator (blur_ctx, CAIRO_OPERATOR_SOURCE);
   cairo_paint (blur_ctx);

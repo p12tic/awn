@@ -1103,6 +1103,7 @@ class awnManagerMini(awnManager):
     
     current_panel = None
     current_panel_id = awn.PANEL_ID_DEFAULT
+    global_configuration = False
     
     def __init__(self, panel_id):
         awnManager.__init__(self)
@@ -1154,7 +1155,7 @@ class awnManagerMini(awnManager):
     def activateGlow(self, w, p):
         return # TODO: glow only if we have multiple panels?
         grabbed = gtk.grab_get_current() is not None
-        set_panel_glow(w.is_active() or grabbed, self.current_panel_id)
+        set_panel_glow((w.is_active() or grabbed) and (not self.global_configuration), self.current_panel_id)
 
     def createMainMenu(self):
         self.main_menu_icon_view = self.wTree.get_object("mainMenuIconView")
@@ -1247,28 +1248,35 @@ class awnManagerMini(awnManager):
             self.showAdvPanel()
         else:
             self.showPrefPanel()
+        return # TODO: glow only if we have multiple panels?
+        set_panel_glow(not self.global_configuration, self.current_panel_id)
 
     def showPrefPanel(self):
         self.current_panel = self.wTree.get_object("prefPanel")
         self.panel_container.add(self.current_panel)
+        self.global_configuration = False
         
     def showAppletPanel(self):
         self.current_panel = self.wTree.get_object("appletPanel")
         self.panel_container.add(self.current_panel)
+        self.global_configuration = False
 
     def showLaunchPanel(self):
         self.current_panel = self.wTree.get_object("launchPanel")
         self.panel_container.add(self.current_panel)
         # Taskman panel needs a ping
         self.taskManager.refresh()
+        self.global_configuration = True
 
     def showThemePanel(self):
         self.current_panel = self.wTree.get_object("themePanel")
         self.panel_container.add(self.current_panel)
+        self.global_configuration = True
 	
     def showAdvPanel(self):
         self.current_panel = self.wTree.get_object("advPanel")
         self.panel_container.add(self.current_panel)
+        self.global_configuration = False
 		
         
 def main(argv):

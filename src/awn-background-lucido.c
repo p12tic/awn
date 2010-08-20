@@ -443,10 +443,15 @@ _create_path_lucido ( AwnBackground*  bg,
                       gboolean        expanded,
                       gfloat          align,
                       gboolean        composited,
-                      gboolean        update_positions)
+                      gboolean        update_positions,
+                      gboolean        shape_mask)
 {
   AwnBackgroundLucido *lbg = AWN_BACKGROUND_LUCIDO (bg);
   AwnBackgroundLucidoPrivate *priv = AWN_BACKGROUND_LUCIDO_GET_PRIVATE (lbg);
+  if (shape_mask)
+  {
+    update_positions = FALSE;
+  }
   gfloat applet_manager_x = 0.;
   _get_applet_manager_size (bg, position, &applet_manager_x);
   gboolean needs_animation = FALSE;
@@ -463,23 +468,8 @@ _create_path_lucido ( AwnBackground*  bg,
   }
   else if (update_positions)
   {
-    x = 0;
-    if (!expanded)
-    {
-      x += applet_manager_x - dc;
-    }
-    x = MAX (lroundf (x), 0.);
-    if (priv->lastx == -1)
-    {
-      priv->lastx = x;
-    }
-    if (x != priv->lastx)
-    {
-      needs_animation = TRUE;
-    }
-    priv->lastx = MAX (priv->lastx, x_start_limit);
-    x = coord_get_near (priv->lastx, x);
-    priv->lastx = x;
+    /* the start position is animated by the panel */
+    x = priv->lastx = MAX (x_start_limit, 0.);
   }
   else
   {
@@ -583,21 +573,10 @@ _create_path_lucido ( AwnBackground*  bg,
   /********************     UPDATE WIDTH FOR LAST X   *************************/
   /****************************************************************************/
   /* w stores the "right corner", lastxend equals to last w */
-  if (!composited)
+  if (!composited || update_positions)
   {
-    /* animation disabled if not composited */
+    /* the width is animated by the panel */
     priv->lastxend = w;
-  }
-  else if (update_positions)
-  {
-    w = lroundf (w);
-    if (w != priv->lastxend)
-    {
-      needs_animation = TRUE;
-      gfloat neww = coord_get_near (priv->lastxend, w);
-      w = MIN (w, neww);
-      priv->lastxend = w;
-    }
   }
   else
   {
@@ -660,7 +639,8 @@ _create_path_lucido ( AwnBackground*  bg,
         }
         g_array_index (priv->pos, gfloat, j) = curx;
       }
-      else
+      /* when drawing shape mask, use the final coord */
+      else if (!shape_mask)
       {
         curx = g_array_index (priv->pos, gfloat, j);
       }
@@ -783,7 +763,7 @@ draw_top_bottom_background (AwnBackground*   bg,
   y_pat = _create_path_lucido (bg, position, cr, x, y, width, height,
                                TRANSFORM_RADIUS (bg->corner_radius),
                                TRANSFORM_RADIUS (bg->corner_radius),
-                               TRUE, expand, align, composited, TRUE);
+                               TRUE, expand, align, composited, TRUE, FALSE);
 
   /* Draw internal pattern if needed */
   if (bg->enable_pattern && bg->pattern)
@@ -818,7 +798,7 @@ draw_top_bottom_background (AwnBackground*   bg,
   y_pat = _create_path_lucido (bg, position, cr, x, y, width, height,
                                TRANSFORM_RADIUS (bg->corner_radius),
                                TRANSFORM_RADIUS (bg->corner_radius),
-                               FALSE, expand, align, composited, FALSE);
+                               FALSE, expand, align, composited, FALSE, FALSE);
 
   /* Prepare external background gradient*/
   cairo_pattern_destroy (pat);
@@ -863,13 +843,13 @@ paint_lines:
     _create_path_lucido (bg, position, cr, 0., 0., width, height,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         FALSE, expand, align, composited, TRUE);
+                         FALSE, expand, align, composited, TRUE, FALSE);
     cairo_stroke (cr);
     awn_cairo_set_source_color (cr, bg->hilight_color);
     _create_path_lucido (bg, position, cr, 1., 1., width-1., height-1.,
                          TRANSFORM_RADIUS (bg->corner_radius),
                          TRANSFORM_RADIUS (bg->corner_radius),
-                         FALSE, expand, align, composited, FALSE);
+                         FALSE, expand, align, composited, FALSE, FALSE);
   }
   cairo_stroke (cr);
 }
@@ -1026,14 +1006,13 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   gint temp;
   gint x = area->x, y = area->y;
   gint width = area->width, height = area->height;
-  gfloat   align = 0.5;
-  gboolean expand = FALSE;
   gint x_start_limit = x;
+  gboolean expand = FALSE;
+  g_object_get (bg->panel, "expand", &expand, NULL);
+
+  gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
 
   cairo_save (cr);
-
-  align = awn_background_get_panel_alignment (bg);
-  g_object_get (bg->panel, "expand", &expand, NULL);
 
   switch (position)
   {
@@ -1069,31 +1048,51 @@ awn_background_lucido_get_shape_mask (AwnBackground   *bg,
   }
   cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
   cairo_set_source_rgba (cr, 1., 1., 1., 1.);
-  if (expand)
+
+  gboolean composited = awn_panel_get_composited (bg->panel);
+  if (!composited)
   {
-    cairo_rectangle (cr, 0., 0., width, height + 2.);
-  }
-  else
-  {
-    gboolean composited = awn_panel_get_composited (bg->panel);
-    if (!composited)
-    {
-      x_start_limit = 0;
-      width -= x_start_limit;
-    }
     gfloat rad = TRANSFORM_RADIUS (bg->corner_radius);
+    if (expand)
+    {
+      rad = 0.;
+    }
     cairo_new_path (cr);
-    gfloat lx = x_start_limit, ly = height;
+    gfloat lx = 0., ly = height;
     cairo_move_to (cr, lx, ly);
     _line_from_to (cr, &lx, &ly, lx + (align == 0. ? 0. : rad), 0);
     _line_from_to (cr, &lx, &ly, width - (align == 1. ? 0. : rad), 0);
     _line_from_to (cr, &lx, &ly, width, height);
     cairo_close_path (cr);
   }
-  cairo_fill (cr);
+  else
+  {
+    cairo_set_line_width (cr, 1.0);
+    cairo_set_operator (cr, CAIRO_OPERATOR_OVER);
+    /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
+    cairo_translate (cr, -0.5, 0.5);
+    width += 1.;
+      /* create internal path */
+    _create_path_lucido (bg, position, cr, 0., 0., width, height,
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         TRUE, expand, align, composited, FALSE, TRUE);
+    /* Draw the internal background */
+    cairo_fill (cr);
+    /* create external path */
+    _create_path_lucido (bg, position, cr, 0., 0., width, height,
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         TRANSFORM_RADIUS (bg->corner_radius),
+                         FALSE, expand, align, composited, FALSE, TRUE);
 
+    /* Draw the external background */
+    cairo_fill (cr);
+  }
+
+  cairo_fill (cr);
   cairo_restore (cr);
 }
+
 static gboolean
 awn_background_lucido_get_needs_redraw (AwnBackground *bg,
                                         GtkPositionType position,

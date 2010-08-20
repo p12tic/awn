@@ -81,8 +81,8 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
     if (!org_freedesktop_DBus_start_service_by_name 
                   (proxy, "net.launchpad.DockManager.Daemon", 0, &ret, &error))
     {
-		  g_warning ("Helpers are not available...\nPlease make sure you have dockmanager package installed.");
-		  g_clear_error (&error);
+      g_warning ("Helpers are not available...\nPlease make sure you have dockmanager package installed.");
+      g_clear_error (&error);
     }
   }
 
