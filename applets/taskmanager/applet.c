@@ -75,6 +75,16 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
     dbus_g_connection_unref (connection);
     connection = NULL;
   }
+  else
+  {
+    // start DockManager Daemon
+    if (!org_freedesktop_DBus_start_service_by_name 
+                  (proxy, "net.launchpad.DockManager.Daemon", 0, &ret, &error))
+    {
+		  g_warning ("Helpers are not available...\nPlease make sure you have dockmanager package installed.");
+		  g_clear_error (&error);
+    }
+  }
 
   textdomain (GETTEXT_PACKAGE);
 

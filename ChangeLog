@@ -1,3 +1,12 @@
+2010-08-20  Alberto  <albyrock87@gmail.com>
+
+	* applets/taskmanager/applet.c:
+	* applets/taskmanager/menus/minimal.xml:
+	* src/awn-background-lucido.c:
+	Make sure DockManager Daemon is started when creating taskmanager.
+	Added minimal.xml menu style to taskmanager.
+	Little adjustment to Lucido.
+
 2010-08-20  Alberto  <albyrock87+dev@gmail.com>
 
 	* src/awn-background-edgy.c:

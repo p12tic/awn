@@ -766,16 +766,8 @@ draw_top_bottom_background (AwnBackground*   bg,
   gfloat align = awn_background_get_panel_alignment (AWN_BACKGROUND (bg));
 
   /* Make sure the bar gets drawn on the 0.5 pixels (for sharp edges) */
-  if (!expand)
-  {
-    cairo_translate (cr, 0.5, 0.5);
-    width -= 0.5;
-  }
-  else
-  {
-    cairo_translate (cr, -0.5, 0.5);
-    width += 1.;
-  }
+  cairo_translate (cr, -0.5, 0.5);
+  width += 1.;
 
   gboolean composited = awn_panel_get_composited (bg->panel);
   if (composited == FALSE)

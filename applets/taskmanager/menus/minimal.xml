@@ -1,0 +1,16 @@
+<menu>
+  <submenu text="Dock">
+    <menuitem type="Internal-Dock-Prefs"></menuitem>
+    <menuitem type="Internal-Customize-Icon"></menuitem>
+    <menuitem type="Internal-Remove-Customized-Icon"></menuitem>
+    <menuitem type="Internal-Add-To-Launcher-List"></menuitem>  
+    <menuitem type="Internal-Remove-From-Launcher-List"></menuitem>
+  </submenu>
+  <menuitem type="Internal-Separator"></menuitem>
+  <menuitem type="Internal-Launch"/>
+  <menuitem type="Internal-Separator"></menuitem>
+  <menuitem type="Internal-Inline-Plugins"></menuitem>
+  <menuitem type="Internal-Separator"></menuitem>
+  <menuitem type="Internal-Close-All"></menuitem>
+  <menuitem type="Internal-Close-Active"></menuitem>
+</menu>
