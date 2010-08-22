@@ -1,3 +1,9 @@
+2010-08-23  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/labelled-separator.vala:
+	Added LabelledSeparator class.
+
 2010-08-20  Alberto  <albyrock87+dev@gmail.com>
 
 	* applets/taskmanager/applet.c:

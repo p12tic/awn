@@ -3,24 +3,33 @@ APPLET_CFLAGS = \
 	$(TASKMANAGER_CFLAGS) \
 	-DWNCK_I_KNOW_THIS_IS_UNSTABLE \
 	$(NULL)
-VALA_FILES = \
-	dock-manager-api.vala \
-	$(NULL)
 MARSHAL_PREFIX = taskmanager
-include $(top_srcdir)/Makefile.vala-applet
+include $(top_srcdir)/Makefile.c-applet
 include $(top_srcdir)/Makefile.marshal
 include $(top_srcdir)/Makefile.schemas
+
+VALA_FILES = \
+	dock-manager-api.vala \
+	labelled-separator.vala \
+	$(NULL)
 
 VALA_H_FILES = \
 	$(VALA_FILES:.vala=.h) \
 	$(NULL)
 
-AM_VALAFLAGS = \
-	$(foreach header,$(VALA_H_FILES),-H $(header)) \
+VALA_FLAGS = \
+	$(top_srcdir)/bindings/vala/awn.vapi \
 	--pkg dbus-glib-1 \
 	--pkg libwnck-1.0 \
+	--pkg desktop-agnostic \
+	--pkg desktop-agnostic-cfg \
 	$(srcdir)/task-manager.vapi \
 	$(NULL)
+
+task-manager.vala.stamp: $(VALA_FILES)
+	$(foreach vala_file,$(VALA_FILES),\
+	$(VALAC) -C -H $(vala_file:.vala=.h) $(vala_file) $(VALA_FLAGS) || exit 1;)
+	touch "$@"
 
 VALA_GENERATED_FILES = \
 	$(VALA_C_FILES) \
@@ -92,7 +101,8 @@ dist_taskmanager_menus_DATA = \
 
 # miscellaneous
 
-BUILT_SOURCES += \
+BUILT_SOURCES = \
+	task-manager.vala.stamp \
 	task-manager-api-wrapper-glue.h \
 	$(MARSHALFILES) \
 	$(NULL)
@@ -100,6 +110,8 @@ BUILT_SOURCES += \
 EXTRA_DIST += \
 	$(schema_in_files) \
 	$(DBUS_XML) \
+	task-manager.vala.stamp \
+	$(VALA_GENERATED_FILES) \
 	taskmanager-marshal.list \
 	task-manager.vapi \
 	$(NULL)
