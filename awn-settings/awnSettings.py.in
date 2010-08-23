@@ -1151,7 +1151,29 @@ class awnManagerMini(awnManager):
 
         self.window.connect("notify::is-active", self.activateGlow)
         self.window.show()
+
+    def reloadSettingsForPanel(self, panel_id):
+        if panel_id == self.current_panel_id: return
+
+        if self.current_panel is not None:
+            self.panel_container.remove(self.current_panel)
+            self.current_panel = None
+
+        self.current_panel_id = panel_id
+
+        self.wTree = gtk.Builder()
+        self.wTree.set_translation_domain(defs.I18N_DOMAIN)
+        self.wTree.add_from_file(self.XML_PATH)
     
+        self.prefManager = awnPreferencesMini(self.wTree, panel_id)
+        self.prefLauncher = awnLauncherMini(self.wTree)
+        self.appletManager = awnAppletMini(self.wTree, panel_id)
+        self.themeCustomize = awnThemeCustomizeMini(self.wTree, panel_id)
+        self.taskManager = awnTaskManagerMini(self.wTree, panel_id)
+
+        self.main_menu_icon_view.select_path(self.PREFERENCE_PANEL)
+        self.main_menu_icon_view.item_activated(self.PREFERENCE_PANEL)
+
     def activateGlow(self, w, p):
         return # TODO: glow only if we have multiple panels?
         grabbed = gtk.grab_get_current() is not None

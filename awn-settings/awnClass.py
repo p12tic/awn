@@ -42,8 +42,6 @@ except Exception, e:
     sys.exit(1)
 from xdg.DesktopEntry import DesktopEntry
 
-from awnSettingsHelper import bind_to_gtk_component
-
 import awn
 import awnDefs as defs
 from desktopagnostic import config

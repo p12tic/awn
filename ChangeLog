@@ -1,5 +1,11 @@
 2010-08-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awnClass.py:
+	* awn-settings/awnSettings.py.in:
+	Add a method to reload settings from different panel id.
+
+2010-08-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applets/taskmanager/Makefile.am:
 	* applets/taskmanager/labelled-separator.vala:
 	Added LabelledSeparator class.
