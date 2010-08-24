@@ -8,36 +8,39 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-06 22:22+0000\n"
-"Last-Translator: Manuel R. Ciosici <manuelciosici@yahoo.com>\n"
+"PO-Revision-Date: 2010-08-23 18:48+0000\n"
+"Last-Translator: marianvasile <marianvasile@upcmail.ro>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
 "== 0) && (n != 0))) ? 2: 1));\n"
-"X-Launchpad-Export-Date: 2010-08-08 03:49+0000\n"
+"X-Launchpad-Export-Date: 2010-08-24 03:41+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Extindere"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Umple spațiul de pe panou în modul extins"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Permite gruparea ferestrelor care au valori diferite pentru WM_CLIENT_NAME."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Controlează valoarea alfa pe overlay dacă este configurată ca adevărată "
+"opțiunea overlay_application_icons. Domeniul valid este între 0.0 și 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -47,23 +50,37 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" Controlează afișarea pictogramelor ferestrelor în zona pentru pictogramele "
+"sarcinilor. 0) Întotdeauna se afișează pictogramele cu aplicațiile "
+"desfășurate în fereastră atunci când fereastra este activă (cu excepția unor "
+"cazuri speciale, destul de puține). 1) Se urmărește afișarea pictogramelor "
+"aplicațiilor numai atunci când acestea conțin informații relevante în "
+"context. 2) Se ignoră pictogramele aplicațiilor și se afișează numai "
+"pictograma Lansator."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Controlează dimensiunea pe overlay dacă valoarea overlay_application_icons "
+"este configurată pe adevărat. Domeniul valid este între 0.2 și 0.7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Grupează pictogramele în același lansator, dacă este dezactivată gruparea "
+"ferestrelor."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
 " If overlay_application_icons is true, this key will reverse the "
 "overlay/overlayee if set to true."
 msgstr ""
+" Dacă valoarea pentru overlay_application_icons este configurată pe "
+"adevărat, această cheie va realiza inversarea overlay, configurată pe "
+"adevărat."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -71,40 +88,53 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" Dacă este configurată ca adevărat, pictogramele aplicațiilor vor fi afișate "
+"în zona pentru pictogramele sarcinilor în loc de a fi înlocuite după "
+"regulile definite de icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Comportamentul în cazul în care este activată o fereastră într-un spațiu de "
+"lucru diferit. (0 pentru implicit, 1 - schimbă spațiul de lucru activ, 2 - "
+"mută în spațiul de lucru curent)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Definire meniu contextual. Va fi citit meniul din directorul în care este "
+"instalat awn, în afară de cazul în care este furnizat un traseu absolut."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
 msgstr ""
+"Întârzierea înainte de activarea unei ferestre prin deplasarea unei "
+"pictograme."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"Comportamentul comenzii de copiere în cazul tragerii și plasării fișierelor. "
+"0.. Copiază tot, 1.. Copiază numai dacă deținătorul este utilizatorul, 2.. "
+"Nu copia."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "Activează apăsarea lungă pentru deschiderea Dialog."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Activează rearanjarea ferestrelor prin tragere și plasare "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Activare grupare sarcini."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -112,6 +142,9 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
+"Cât de restrictiv este criteriul pentru potrivire în cazul grupării "
+"articolelor. Valoarea trebuie să fie cuprinsă între 0 și 99. 0 înseamnă "
+"practic nicio grupare (potrivire). 99 va grupa practic tot."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -119,6 +152,10 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
+"Cum va fi generată lista de ferestre testate pentru intersectare atunci când "
+"funcția de ascundere inteligentă (Intellihide) este activă. 0.. utilizează "
+"ferestrele din spațiul de lucru activ, 1.. utilizează ferestrele "
+"aplicațiilor active."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -126,11 +163,16 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
+"Ascundere inteligentă dacă este activată funcția de ascundere pentru panou. "
+"Prin aceasta va fi prevenită autoascunderea panoului dacă nu sunt ferestre "
+"intersectate în lista de ferestre (consultați intellihide_mode)."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
+"Numărul maxim de indicatoare de sarcini care pot fi arătate dedesubtul "
+"pictogramelor. Domeniul valid este 0..3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
