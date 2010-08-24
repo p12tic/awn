@@ -1728,9 +1728,10 @@ class awnTaskManager(awnBzr):
     def runDockmanagerSettings(self, xid):
         bus = dbus.SessionBus()
         daemon = bus.get_object('net.launchpad.DockManager.Daemon',
-                                '/net/launchpad/DockManager/Daemon',
-                                'net.launchpad.DockManager.Daemon')
-        daemon.EmbedPreferences(xid)
+                                '/net/launchpad/DockManager/Daemon')
+        daemon_interface = dbus.Interface(daemon, 
+                                          'net.launchpad.DockManager.Daemon')
+        daemon_interface.EmbedPreferences(xid, {'no-install': True})
 
     def ding(self):
         pass

@@ -2945,33 +2945,94 @@
     </child>
     <child>
       <object class="GtkVBox" id="helpers_panel">
-        <property name="spacing">2</property>
         <child>
-          <object class="GtkLabel" id="helpers_unavailable">
+          <object class="GtkFrame" id="frame13">
             <property name="visible">True</property>
-            <property name="label" translatable="yes">Helpers are not available...
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment4">
+                <property name="visible">True</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkVBox" id="helpers_container">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkLabel" id="helpers_unavailable">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Helpers are not available...
 Please make sure you have dockmanager package installed.</property>
-            <property name="justify">center</property>
+                        <property name="justify">center</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label69">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Helpers&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkHButtonBox" id="hbuttonbox9">
+          <object class="GtkHBox" id="hbox27">
             <property name="visible">True</property>
-            <property name="layout_style">start</property>
             <child>
-              <object class="GtkButton" id="launchers_button">
-                <property name="label" translatable="yes">Launchers...</property>
+              <object class="GtkHButtonBox" id="hbuttonbox9">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="layout_style">start</property>
+                <child>
+                  <object class="GtkButton" id="launchers_button">
+                    <property name="label" translatable="yes">Launchers...</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">False</property>
                 <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHButtonBox" id="hbuttonbox10">
+                <property name="visible">True</property>
+                <property name="layout_style">end</property>
+                <child>
+                  <object class="GtkButton" id="install_helper_button">
+                    <property name="label" translatable="yes">Install helper...</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>

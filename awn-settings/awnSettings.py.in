@@ -984,21 +984,25 @@ class awnTaskManagerMini(awnTaskManager):
         infobar = self.wTree.get_object("tm_infobar")
         infobar.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#F7F7BD"))
 
-        self.helpers_unavailable = self.wTree.get_object("helpers_unavailable")
         self.helpers_panel = self.wTree.get_object("helpers_panel")
         self.launchers_panel = self.wTree.get_object("launchers_panel")
-        self.socket = gtk.Socket()
-        self.socket.connect('plug-removed', lambda w: True)
-        self.socket.connect('plug-added', lambda w: w.show())
-        self.helpers_panel.pack_start(self.socket)
-        self.helpers_panel.reorder_child(self.socket, 0)
-        self.socket.show()
-        self.socket.hide()
 
         self.helpersButton = self.wTree.get_object("helpers_button")
         self.helpersButton.connect('clicked', self.show_helpers)
         self.launchersButton = self.wTree.get_object("launchers_button")
         self.launchersButton.connect('clicked', self.hide_helpers)
+        self.installHelper = self.wTree.get_object("install_helper_button")
+        self.installHelper.set_sensitive(False)
+
+        self.helpers_unavailable = self.wTree.get_object("helpers_unavailable")
+        self.helpers_container = self.wTree.get_object("helpers_container")
+        self.socket = gtk.Socket()
+        self.socket.connect('plug-removed', lambda w: True)
+        self.socket.connect('plug-added', lambda w: w.show())
+        self.helpers_container.pack_start(self.socket)
+        self.helpers_container.reorder_child(self.socket, 0)
+        self.socket.show()
+        self.socket.hide()
 
         if not self.check_for_task_manager():
 			infobar.get_parent().show_all()
