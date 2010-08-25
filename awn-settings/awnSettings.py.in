@@ -1111,6 +1111,7 @@ class awnManagerMini(awnManager):
     
     def __init__(self, panel_id):
         awnManager.__init__(self)
+        self.panel_list = []
         self.current_panel_id = panel_id
         self.XML_PATH = os.path.join(AWN_SETTINGS_DIR, 'awn-settings.ui')
 
@@ -1125,7 +1126,11 @@ class awnManagerMini(awnManager):
         self.window = self.wTree.get_object("awnManagerWindow")
         self.panel_container = self.wTree.get_object("panelContainer")
         self.createMainMenu()
-        
+
+        self.client = awn.config_get_default(0)
+        self.panel_list = self.client.get_value("panels", "panel_list")
+        self.client.notify_add("panels", "panel_list", self.panel_list_changed)
+
         icon_list = []
         icon_sizes = self.theme.get_icon_sizes('awn-settings')
         for size in icon_sizes:
@@ -1153,8 +1158,27 @@ class awnManagerMini(awnManager):
         close = self.wTree.get_object("buttonClose")
         close.connect("clicked", gtk.main_quit)
 
+        self.connect_panel_buttons()
+
         self.window.connect("notify::is-active", self.activateGlow)
         self.window.show()
+
+    def connect_panel_buttons(self):
+        create_panel_button = self.wTree.get_object("create_panel_button")
+        create_panel_button.connect("clicked", self.createPanel)
+        delete_panel_button = self.wTree.get_object("delete_panel_button")
+        delete_panel_button.connect("clicked", self.removePanel)
+        delete_panel_button.set_sensitive(self.current_panel_id > 1)
+
+    def panel_list_changed(self, g, k, val):
+        self.panel_list = val
+        if len(self.panel_list) > 1:
+            if self.global_configuration: return
+            grabbed = gtk.grab_get_current() is not None
+            active = self.window.is_active()
+            self.toggleGlow(active or grabbed)
+        else:
+            self.toggleGlow(False)
 
     def reloadSettingsForPanel(self, panel_id):
         if panel_id == self.current_panel_id: return
@@ -1162,6 +1186,8 @@ class awnManagerMini(awnManager):
         if self.current_panel is not None:
             self.panel_container.remove(self.current_panel)
             self.current_panel = None
+
+        self.toggleGlow(False)
 
         self.current_panel_id = panel_id
 
@@ -1178,10 +1204,34 @@ class awnManagerMini(awnManager):
         self.main_menu_icon_view.select_path(self.PREFERENCE_PANEL)
         self.main_menu_icon_view.item_activated(self.PREFERENCE_PANEL)
 
+        self.connect_panel_buttons()
+
+    def createPanel(self, w = None):
+        i = 1
+        while i in self.panel_list: i = i+1
+
+        panel_client = awn.config_get_default(i)
+
+        new_panel_list = self.panel_list[:]
+        new_panel_list.append(i)
+        new_panel_list.sort()
+        self.client.set_value("panels", "panel_list", new_panel_list)
+
+        self.reloadSettingsForPanel(i)
+
+    def removePanel(self, w = None):
+        if self.current_panel_id == 1: return
+        new_panel_list = filter(lambda x: x != self.current_panel_id, self.panel_list)
+        self.client.set_value("panels", "panel_list", new_panel_list)
+        self.reloadSettingsForPanel(new_panel_list[-1])
+
     def activateGlow(self, w, p):
-        return # TODO: glow only if we have multiple panels?
         grabbed = gtk.grab_get_current() is not None
-        set_panel_glow((w.is_active() or grabbed) and (not self.global_configuration), self.current_panel_id)
+        self.toggleGlow((w.is_active() or grabbed) and (not self.global_configuration))
+
+    def toggleGlow(self, active):
+        if len(self.panel_list) <= 1: active = False
+        set_panel_glow(active, self.current_panel_id)
 
     def createMainMenu(self):
         self.main_menu_icon_view = self.wTree.get_object("mainMenuIconView")
@@ -1274,8 +1324,8 @@ class awnManagerMini(awnManager):
             self.showAdvPanel()
         else:
             self.showPrefPanel()
-        return # TODO: glow only if we have multiple panels?
-        set_panel_glow(not self.global_configuration, self.current_panel_id)
+
+        self.toggleGlow(not self.global_configuration)
 
     def showPrefPanel(self):
         self.current_panel = self.wTree.get_object("prefPanel")

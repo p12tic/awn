@@ -1,5 +1,12 @@
 2010-08-25  Michal Hruby  <michal.mhr@gmail.com>
 
+	* awn-settings/awn-settings.ui:
+	* awn-settings/awnSettings.py.in:
+	* libawn/awn-applet.c:
+	Added "Add & Remove dock" buttons to awn-settings.
+
+2010-08-25  Michal Hruby  <michal.mhr@gmail.com>
+
 	* configure.in:
 	Removed Werror=shadow from flags as it doesn't like Vala code.
 

@@ -1047,15 +1047,19 @@ awn_applet_get_canonical_name (AwnApplet *applet)
  * Callback to start the settings App. See awn_applet_create_default_menu().
  */
 static gboolean
-_start_awn_settings (GtkMenuItem *menuitem, gpointer null)
+_start_awn_settings (GtkMenuItem *menuitem, gpointer data)
 {
   GError *err = NULL;
-  
-  g_spawn_command_line_async(AWN_SETTINGS_APP, &err);
+
+  gchar cmd[45];
+  gint panel_id = GPOINTER_TO_INT (data);
+  if (panel_id == 0) panel_id = 1;
+  sprintf (cmd, AWN_SETTINGS_APP " --panel-id=%d", panel_id);
+  g_spawn_command_line_async (cmd, &err);
 
   if (err)
   {
-    g_warning("Failed to start %s: %s\n", AWN_SETTINGS_APP, err->message);
+    g_warning("Failed to start %s: %s\n", cmd, err->message);
     g_error_free(err);
   }
 
@@ -1339,6 +1343,11 @@ awn_applet_create_default_menu (AwnApplet *applet)
 
   /* The preferences (awn-settings) menu item  */
   item = awn_applet_create_pref_item ();
+  g_signal_handlers_disconnect_by_func (item, _start_awn_settings, NULL);
+  g_signal_connect (item, "activate", 
+                    G_CALLBACK (_start_awn_settings),
+                    GINT_TO_POINTER (priv->panel_id));
+
   gtk_menu_shell_append (GTK_MENU_SHELL(menu), item);
 
   /* And Neil said: "Let there be customisation of thy menu" */
