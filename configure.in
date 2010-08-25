@@ -60,7 +60,7 @@ dnl ==============================================
 dnl Vala support
 dnl ==============================================
 
-VALA_PROG_VALAC(0.8.1)
+VALA_PROG_VALAC(0.9.1)
 if test "$USE_MAINTAINER_MODE" = "yes"; then
     AC_PATH_PROG(VALA_GEN_INTROSPECT, vala-gen-introspect, vala-gen-introspect, [])
     AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])

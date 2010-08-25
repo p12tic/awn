@@ -1,5 +1,12 @@
 2010-08-25  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/Makefile.am:
+	* configure.in:
+	* debian/control:
+	Bump required Vala version, fix taskmanager's Makefile.
+
+2010-08-25  Michal Hruby  <michal.mhr@gmail.com>
+
 	* awn-settings/awn-settings.ui:
 	* awn-settings/awnSettings.py.in:
 	* libawn/awn-applet.c:

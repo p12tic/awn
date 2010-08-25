@@ -13,6 +13,10 @@ VALA_FILES = \
 	labelled-separator.vala \
 	$(NULL)
 
+VALA_C_FILES = \
+	$(VALA_FILES:.vala=.c) \
+	$(NULL)
+
 VALA_H_FILES = \
 	$(VALA_FILES:.vala=.h) \
 	$(NULL)
