@@ -27,10 +27,9 @@ public class AwnTest : Window
 {
   public AwnTest ()
   {
+    GLib.Object (type: WindowType.TOPLEVEL, title: "Awn Dialog Test (Vala)");
     Gtk.Label label;
 
-    this.type = WindowType.TOPLEVEL;
-    this.title = "Awn Dialog Test (Vala)";
     this.delete_event.connect (this.on_quit);
     label = new Gtk.Label ("One of the dialogs points to this window.");
     this.add (label);
