@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-13 10:11+0000\n"
+"PO-Revision-Date: 2010-08-26 10:05+0000\n"
 "Last-Translator: kawaji <jiro.kawada@gmail.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-08-14 06:13+0000\n"
+"X-Launchpad-Export-Date: 2010-08-27 03:42+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -242,7 +242,7 @@ msgstr "ランチャーとして追加"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr "ランチャーを削除"
+msgstr "ランチャーの削除"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -1407,7 +1407,7 @@ msgstr "アイコンのカスタマイズ"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr "カスタマイズ・アイコンの削除"
+msgstr "カスタム・アイコンの削除"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
