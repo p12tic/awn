@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-10 18:14+0000\n"
-"Last-Translator: Gabor Karsay <Unknown>\n"
+"PO-Revision-Date: 2010-08-27 20:49+0000\n"
+"Last-Translator: Jakob Kramer <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-08-11 03:52+0000\n"
+"X-Launchpad-Export-Date: 2010-08-28 03:45+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -965,7 +965,7 @@ msgstr "Installation des Applets fehlgeschlagen"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Applet erfolgreich aktualisiert"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
@@ -996,11 +996,11 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Das Thema ist bereits installiert, wollen Sie es überschreiben?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Das ist eine inkompatible Themendatei."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -1105,7 +1105,7 @@ msgstr "Kontur, invertiert"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Minihilfen-Schriftart wählen"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
@@ -1469,7 +1469,7 @@ msgstr "Die Symmetrie der Wölbung im gewölbten Modus."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The thickness in 3D mode."
-msgstr ""
+msgstr "Die Dicke im 3D-Modus."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-24 15:37+0000\n"
+"PO-Revision-Date: 2010-08-27 07:45+0000\n"
 "Last-Translator: marianvasile <marianvasile@upcmail.ro>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
 "== 0) && (n != 0))) ? 2: 1));\n"
-"X-Launchpad-Export-Date: 2010-08-25 03:56+0000\n"
+"X-Launchpad-Export-Date: 2010-08-28 03:45+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -445,72 +445,76 @@ msgstr "<b>Gestionare de sarcini</b>"
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
+"<b>Aceste configurări solicită activarea miniaplicației Gestionar de sarcini "
+"</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Indicații</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
+"<b>Trebuie să activați efectele de birou (compozitorul) pentru a activa și "
+"personaliza temele.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Activează miniaplicația"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "Arie activă:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Tipul de săgeată"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Animație pentru atenționare:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Autor:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Mod autoascundere:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Fundal:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Choose a theme..."
-msgstr ""
+msgstr "Alegeți o temă..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
-msgstr ""
+msgstr "Navigare"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
-msgstr ""
+msgstr "Închide animație:"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Configured Effects"
-msgstr ""
+msgstr "Efecte configurate"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr ""
+msgstr "Rază pe colț"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Simetrie curbe"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
-msgstr ""
+msgstr "Curbare"
 
 #: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:153
@@ -519,93 +523,94 @@ msgstr "Personalizat"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "Imagine particularizată pentru săgeată"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
-msgstr ""
+msgstr "Personalizare efecte"
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Customize..."
-msgstr ""
+msgstr "Personalizează..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Dezactivează miniaplicație"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr ""
+msgstr "Afișează numai lansatoarele"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "Rearanjare trage și plasează"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr ""
+msgstr "Plasați aici miniaplicațiile disponibile pentru a fi activate"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
 msgstr ""
+"Plasați dedesubt sau efectuați clic dublu pentru a activa miniaplicația"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "E_xtinde panoul"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Export Theme..."
-msgstr ""
+msgstr "Exportă tema..."
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Extra Options"
-msgstr ""
+msgstr "Opțiuni suplimentare"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Fill Color"
-msgstr ""
+msgstr "Culoare de umplere"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
-msgstr ""
+msgstr "Culoare gradient primar"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "First Highlight Color"
-msgstr ""
+msgstr "Culoare evidențiere primară"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "Compensare echilibru"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
-msgstr ""
+msgstr "Font"
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Font Color"
-msgstr ""
+msgstr "Culoare font"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "Mod font"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Culoare evidențiere font"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Se forțează modul monitorului?"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
-msgstr ""
+msgstr "Punct strălucitor"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Glowing dot color"
-msgstr ""
+msgstr "Culoare punct strălucitor"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
