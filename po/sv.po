@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-09 16:58+0000\n"
+"PO-Revision-Date: 2010-08-28 15:41+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-08-10 03:39+0000\n"
+"X-Launchpad-Export-Date: 2010-08-29 03:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Swedish\n"
 
@@ -124,7 +124,7 @@ msgstr "Aktivera \"längre tryck\" för att öppna dialogruta."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr "Aktivera \"dra och släpp\"-omplacering av fönster . "
+msgstr "Aktivera dra-och-släpp-omplacering av fönster. "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
@@ -535,7 +535,7 @@ msgstr "Visa endast programstartare"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr "\"Dra och släpp\"-omplacering"
+msgstr "Dra-och-släpp-omplacering"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43

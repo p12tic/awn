@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-27 07:45+0000\n"
+"PO-Revision-Date: 2010-08-28 09:04+0000\n"
 "Last-Translator: marianvasile <marianvasile@upcmail.ro>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
 "== 0) && (n != 0))) ? 2: 1));\n"
-"X-Launchpad-Export-Date: 2010-08-28 03:45+0000\n"
+"X-Launchpad-Export-Date: 2010-08-29 03:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -614,229 +614,232 @@ msgstr "Culoare punct strălucitor"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
-msgstr ""
+msgstr "Grupează ferestrele obișnuite"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
-msgstr ""
+msgstr "Animație la trecerea mouse-ului:"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
-msgstr ""
+msgstr "_Efecte pictograme"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
-msgstr ""
+msgstr "Pictogramă alfa"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "Pictograme și indicații"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Icons:"
-msgstr ""
+msgstr "Pictograme:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
-msgstr ""
+msgstr "Culoare contur interior"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr ""
+msgstr "Instalează miniaplicație..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
-msgstr ""
+msgstr "Instalează..."
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "Pornește animație..."
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "Potrivire la nivel"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Compensare X pentru monitor"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Compensare Y pentru monitor"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr ""
+msgstr "Înălțime monitorului"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "Lățime monitorului"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
-msgstr ""
+msgstr "Nume:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
-msgstr ""
+msgstr "Compensare"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr ""
+msgstr "Deschide animație:"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
-msgstr ""
+msgstr "Culoare contur exterior"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
-msgstr ""
+msgstr "Culoare exterioară"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "Culori de fundal pentru panou"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Panel Look Refinements"
-msgstr ""
+msgstr "Configurări suplimentare pentru aspectul panoului"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Stil și mărime panou"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Tipar alfa"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Pattern Image"
-msgstr ""
+msgstr "Imagine fundal"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "Multiplicator reflexie alfa"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "Reflexie compensare"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
-msgstr ""
+msgstr "Arhive de programe"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Culoare gradient secundar"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Culoare evidențiere secundară"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Configurare săgeată personalizată"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Select item to filter by category"
-msgstr ""
+msgstr "Configurare articole pentru filtrare după categorie"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
-msgstr ""
+msgstr "Culoare separator"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
-msgstr ""
+msgstr "Arată toate ferestrele"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Arată dialogul după apăsare lungă"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
-msgstr ""
+msgstr "Arată umbre"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
-msgstr ""
+msgstr "St_il"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "Pornește automat _Awn"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "Export temă"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Grosime"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
 msgstr ""
+"Pentru a utiliza modul de ascundere inteligentă sau ascundere ferestre, "
+"trebuie să activați gestionarul de sarcini."
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
-msgstr ""
+msgstr "Triunghi"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Utilizează culorile temei Gtk"
 
 #: ../awn-settings/awn-settings.ui.h:104
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Utilizează tiparul ca fundal"
 
 #: ../awn-settings/awn-settings.ui.h:105
 msgid "Version:"
-msgstr ""
+msgstr "Versiune:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr ""
+msgstr "_Comportament:"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
-msgstr ""
+msgstr "_Orientare:"
 
 #: ../awn-settings/awn-settings.ui.h:108
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_Poziție pe ecran:"
 
 #: ../awn-settings/awn-settings.ui.h:109
 msgid "_Size of icons:"
-msgstr ""
+msgstr "_Dimensiune pictograme:"
 
 #: ../awn-settings/awn-settings.ui.h:110
 msgid "pixels"
-msgstr ""
+msgstr "pixeli"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Eroare, un fișier cu surse de programe (sources.list) există deja"
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Eroare, fișierul este gol sau există deja"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
+"Eroare %s lipsește din sistem, ștergeți și din fișierul cu surse de programe"
 
 #: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
 msgid "None"
-msgstr "Niciunul"
+msgstr "Nimic"
 
 #: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:877
 msgid "Simple"
-msgstr ""
+msgstr "Simplu"
 
 #: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:878
 msgid "Classic"
@@ -856,7 +859,7 @@ msgstr "Mărire"
 
 #: ../awn-settings/awnClass.py:821 ../awn-settings/awnClass.py:882
 msgid "Squish"
-msgstr ""
+msgstr "Strivire"
 
 #: ../awn-settings/awnClass.py:822 ../awn-settings/awnClass.py:883
 msgid "3D Turn"
@@ -895,12 +898,12 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Următoarele pictograme nu pot fi găsite: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Următoarea pictogramă nu poate fi găsită: %s\n"
 
 #: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -919,10 +922,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
-"Acest program este liber; îl puteţi redistribui şi/sau modifica atăt timp "
-"căt respectaţi Licenta Publică Generală GNU aşa cum a fost ea publicată de "
-"către 'Free Software Foundation'; fie versiunea 2 a licenţei, sau, dacă "
-"doriţi, orice altă versiune ulterioară."
+"Acest program este software liber; îl puteți redistribui și/sau modifica în "
+"conformitate cu termenii Licenței Publice Generale GNU așa cum este "
+"publicată de Free Software Foundation; fie versiunea 2 a Licenței, fie (la "
+"latitudinea dumneavoastră) orice versiune ulterioară."
 
 #: ../awn-settings/awnClass.py:1088
 msgid ""
@@ -931,10 +934,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
-"Acest program este distribuit în speranța că va fi folositor, dar FĂRĂ NICI "
-"O GARANȚIE; nici măcar cu garanția subînțeleasă de VANDABILITATE sau "
-"POTRIVIRE LA UN ANUMIT SCOP. Pentru detalii consultați Licența Generală "
-"Publică (GPL) GNU."
+"Acest program este distribuit cu speranța că va fi util, dar FĂRĂ NICI O "
+"GARANȚIE, fără garanție implicită de vandabilitate și conformitate unui "
+"anumit scop. Citiți Licența Publică Generală GNU pentru detalii."
 
 #: ../awn-settings/awnClass.py:1090
 msgid ""
@@ -942,181 +944,184 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
-"Ar fi trebuit să fi primit împreună cu acest program o copie a Licenței "
-"Publice Generale GNU; dacă nu ați primit puteți scrie Fundației pentru "
-"Software Liber la adresa Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-"
-"1301 USA."
+"Împreună cu acest program ar trebui să primiți o copie a Licenței Publice "
+"Generale GNU; dacă nu ați primit puteți scrie Fundației pentru Software "
+"Liber la adresa Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Pachet cu miniaplicații pentru Awn"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Instalarea miniaplicației a eșuat"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Miniaplicația a fost actualizată cu succes"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Miniaplicația a fost adăugată cu succes"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
-msgstr ""
+msgstr "Miniaplicația activă nu poate fi ștearsă"
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
-msgstr ""
+msgstr "Șterge miniaplicație"
 
 #: ../awn-settings/awnClass.py:1350
 #, python-format
 msgid "<b>Delete %s?</b>"
-msgstr ""
+msgstr "<b>Ștergeți %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Nu se poate șterge miniaplicația"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s există deja, tema nu poate fi exportată."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Tema este deja instalată, doriți suprascriere?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Acesta este un fișier temă incompatibil."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "Configurările Awn nu pot fi rulate ca root."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Stânga"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Dreapta"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "Sus"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "Jos"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Plat"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3D"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Curbat"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Marginal"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Mobil"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
-msgstr ""
+msgstr "Lucido"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
-msgstr ""
+msgstr "Mod panou"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
-msgstr ""
+msgstr "Vizibil întotdeauna"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Intellihide"
-msgstr ""
+msgstr "Ascundere inteligentă"
 
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Window dodge"
-msgstr ""
+msgstr "Ascundere ferestre"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Fade out"
-msgstr ""
+msgstr "Estompare"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Transparency"
-msgstr ""
+msgstr "Transparenţă"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "Dedesubt"
 
 #: ../awn-settings/awnSettings.py.in:629
 msgid "PNG Image"
-msgstr ""
+msgstr "Imagine PNG"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Imagini"
 
 #: ../awn-settings/awnSettings.py.in:759
 msgid "Save Theme..."
-msgstr ""
+msgstr "Salvează tema..."
 
 #: ../awn-settings/awnSettings.py.in:768
 msgid "Awn Theme"
-msgstr ""
+msgstr "Temă Awn"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
-msgstr ""
+msgstr "Solidă"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Outline"
-msgstr ""
+msgstr "Evidenţiere"
 
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "Evidențiere, inversată"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Alegeți fontul pentru indicații"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Fișier cu temă Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Utilizează pictogramele specifice aplicațiilor"
 
 #: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Utilizează pictogramele cu cea mai bună calitate"
 
 #: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
 msgstr ""
+"Suprapune pictogramele cu cea mai bună calitate peste pictogramele "
+"aplicațiilor"
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
 msgstr ""
+"Suprapune pictogramele aplicațiilor peste pictogramele cu cea mai bună "
+"calitate"
 
 #: ../awn-settings/awnSettings.py.in:1139
 msgid "Preferences"
@@ -1124,19 +1129,19 @@ msgstr "Preferințe"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"
-msgstr ""
+msgstr "Gestionar de sarcini"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr ""
+msgstr "Miniaplicații"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
-msgstr ""
+msgstr "Teme"
 
 #: ../awn-settings/awnSettings.py.in:1171
 msgid "Advanced"
-msgstr ""
+msgstr "Configurări avansate"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
@@ -1155,10 +1160,21 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Următoarele module Python nu sunt găsite: %s. Există câteva explicații\n"
+"posibile:\n"
+"\n"
+"1. Nu aveți aceste module instalate. În acest caz vizitați secțiunea wiki\n"
+"despre miniaplicațiile AWN pentru a găsi numele exact al pachetelor\n"
+"care furnizează aceste module pentru distribuția folosită.\n"
+"\n"
+"2. Modulele sunt instalate într-un loc care nu figurează în standarde.\n"
+"Acest caz apare de regulă în cazul instalării manuale a pachetelor,\n"
+"fără a folosi administratorul de pachete al distribuției. Situația este\n"
+"explicată în secțiunea FAQ de pe wiki.\n"
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn Wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -1166,25 +1182,28 @@ msgstr "Un navigator de ferestre asemănător barei de docare."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0: solid, 1: outline, 2: outline, reversed."
-msgstr ""
+msgstr "0: solid, 1: evidențiat, 2: evidențiat, inversat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgstr "Configurare care reține tipul de efect pentru fiecare eveniment"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
+msgstr "Aliniere la marginile monitorului pentru panoul ne-extins"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
 msgstr ""
+"Compensare opțională pentru cazul în care aveți mai mult de un monitor."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"Orice valoare mai mare de 0 va produce un panou cu colțuri. Cu cât este mai "
+"mare raza, cu atât sunt mai largi colțurile."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid ""
@@ -1192,52 +1211,59 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
+"Autoascunde bara de andocare când cursorul nu se află deasupra acesteia (a "
+"nu se folosi împreună cu modul panou). (nimic:0, dedesubt: 1, estompare: 2, "
+"transparență: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "Culoare de fundal pentru titlul dialogurilor Awn."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "Culoare fundal pentru dialogul Awn."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "Culoare fundal pentru indicații"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Culoare pentru aria activă."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Culoare pentru punctul strălucitor."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Culoare pentru evidențierea ariei active."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Delay between mouse leaving the panel and it hiding."
 msgstr ""
+"Întârzierea dintre momentul în care cursorul părăsește panoul și ascunderea "
+"acestuia."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Întârziere pentru urmărirea poziției cursorului."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Determină dacă editorul pentru configurare generică este permis pentru "
+"miniaplicațiile care nu dispun de un dialog pentru configurări personalizate."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
-msgstr ""
+msgstr "Desenează separatori."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Permite desenarea unui tipar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
