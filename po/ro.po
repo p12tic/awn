@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-28 09:04+0000\n"
+"PO-Revision-Date: 2010-08-29 11:50+0000\n"
 "Last-Translator: marianvasile <marianvasile@upcmail.ro>\n"
 "Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
 "== 0) && (n != 0))) ? 2: 1));\n"
-"X-Launchpad-Export-Date: 2010-08-29 03:48+0000\n"
+"X-Launchpad-Export-Date: 2010-08-30 03:59+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -112,8 +112,8 @@ msgstr ""
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
 msgstr ""
-"Întârzierea înainte de activarea unei ferestre prin deplasarea unei "
-"pictograme."
+"Întârzierea înainte de activarea unei ferestre prin deplasarea cursorului "
+"deasupra unei pictograme."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -286,7 +286,7 @@ msgstr "Spațiul de lucru 1_0"
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr "Spațiul de lucru %s%d"
+msgstr "Spaţiul %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:683
 msgid "Add as Launcher"
@@ -298,7 +298,7 @@ msgstr "Elimină lansatorul"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
-msgstr "Î_nchide"
+msgstr "În_chide"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:768
 msgid "_Close All"
@@ -310,7 +310,7 @@ msgstr "Minimizează tot"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
 msgid "Unminimize all"
-msgstr "Maximizează tot"
+msgstr "Restaurează tot"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
 msgid "Maximize all"
@@ -318,7 +318,7 @@ msgstr "Maximizează tot"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
 msgid "Unmaximize all"
-msgstr "Minimizează tot"
+msgstr "Restaurează tot"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -658,19 +658,19 @@ msgstr "Potrivire la nivel"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr "Compensare X pentru monitor"
+msgstr "Decalaj X pentru monitor"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr "Compensare Y pentru monitor"
+msgstr "Decalaj Y pentru monitor"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr "Înălțime monitorului"
+msgstr "Înălțimea monitorului"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr "Lățime monitorului"
+msgstr "Lățimea monitorului"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
@@ -678,7 +678,7 @@ msgstr "Nume:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
-msgstr "Compensare"
+msgstr "Decalaj"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
@@ -1194,8 +1194,7 @@ msgstr "Aliniere la marginile monitorului pentru panoul ne-extins"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
-"Compensare opțională pentru cazul în care aveți mai mult de un monitor."
+msgstr "Decalaj opțional pentru cazul în care aveți mai mult de un monitor."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid ""
@@ -1267,81 +1266,93 @@ msgstr "Permite desenarea unui tipar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
-msgstr ""
+msgstr "Culoarea secundară a primului gradient"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "Culoarea secundară pentru evidențierea primului gradient."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Culoarea pentru fontul indicațiilor"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Font pentru indicații"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
-msgstr ""
+msgstr "Forțează geometria monitorului."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
+"Culoarea pentru textul pictogramelor. Lăsați necompletat pentru utilizarea "
+"temei de culori gtk."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
+"Culoarea pentru evidențierea textului pictogramelor. Lăsați necompletat "
+"pentru utilizarea temei de culori gtk."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
 msgstr ""
+"Dacă este configurat pe adevărat (true), ferestrele maximizate nu vor "
+"acoperi panoul."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Dacă este configurat pe adevărat (true), panoul va fi extins pe toată "
+"lungimea/lățimea monitorului."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
-msgstr ""
+msgstr "Culoarea pentru conturul interior."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
-msgstr ""
+msgstr "Culoarea pentru conturul principal."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
+"Numărul monitorului în care este activ Awn (produce efecte în cazul în care "
+"monitor_force este configurat pe fals (false); pentru alegere automată "
+"folosiți -1)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "Decalajul dintre pictograme și dialogul acestora."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Decalajul dintre pictograme și conturul ferestrelor."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr ""
+msgstr "Orientarea Awn. (stânga: 0, dreapta:1, sus: 2, jos: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
-msgstr ""
+msgstr "Culoarea pentru evidențierea indicațiilor"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Traseul către fișierul care conține tema curentă pentru desktop."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
 msgstr ""
+"Traseul către fișierul .png care conține fundalul pentru pictogramele active."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Traseul către fișierul .png care conține pictograma săgeată."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
@@ -1349,122 +1360,141 @@ msgid ""
 "through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
+"Asigură posibilitatea de a efectua clic într-o fereastră situată în spatele "
+"panoului. (0: nu este niciodată permis, 1: este permis numai la apăsarea și "
+"menținerea tastei CTRL, 2: este permis întotdeauna iar interacțiunea cu "
+"panoul se face doar cu ajutorul tastei CTRL)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
-msgstr ""
+msgstr "Reflexie alfa ca multiplu al valorii curente alfa pentru pictograme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
-msgstr ""
+msgstr "Culoarea secundară pentru cel de-al doilea gradient."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "Culoarea secundară pentru evidențierea celui de-al doilea gradient."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "Culoarea pentru separator."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Arată umbre pentru pictograme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
 msgstr ""
+"Lista activă cu screenlet-urile aduse de utilizator pentru acest panou."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "Unghiul panoului în modul 3D."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
-msgstr ""
+msgstr "Curbarea panoului în modul Curbat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
+"Înălțimea forțată pentru monitor. A se folosi numai dacă valoarea "
+"monitor_force este adevărată."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
+"Lățimea forțată pentru monitor. A se folosi numai dacă valoarea "
+"monitor_force este adevărată."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
+"Lista cu screenlet-urile adăugate de utilizator care au fost instalate în "
+"forma ScreeneletInstance::Position."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
+"Lista miniaplicațiilor pentru acest panou, ordonate de la stânga la dreapta "
+"sau de sus în jos."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
-msgstr ""
+msgstr "Lista cu instanțele panoului."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
-msgstr ""
+msgstr "Locul în care se află tiparul pe care-l doriți utilizat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Decalajul dintre pictogramă și reflexia sa."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
-msgstr ""
+msgstr "Decalajul pentru fundalul mobil."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "Opacitatea pictogramelor, de la 0.0 la 1.0"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Opacitatea tiparului."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid ""
 "The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
 "4, floaty: 5, lucido: 6)"
 msgstr ""
+"Stilul panoului. (none:0, panou simplu: 1, panou 3D: 2, panou curbat: 3, "
+"panou marginal: 4, panou mobil: 5, lucido:6)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
-msgstr ""
+msgstr "Simetria curbelor în modul Curbat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The thickness in 3D mode."
-msgstr ""
+msgstr "Grosimea în modul 3D."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
-msgstr ""
+msgstr "Dimensiunea vizibilă pentru utilizator a Awn."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
+"Timpul, în milisecunde, după care pictogramele Awn emit semnalul pentru "
+"apăsare lungă."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
+msgstr "Configurare culori temă Gtk pentru dialogul Awn."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
-msgstr ""
+msgstr "Închidere dialoguri în lipsă de interes."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgstr "Configurare pentru utilizare culori din tema Gtk curentă."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
+"Lățimea pentru evidențierea textului pictogramei în cazul activării modului "
+"evidențiere. Valori sugerate 1.0 - 5.0."
 
 #: ../data/awn-themed-icon.ui.h:1
 msgid ""
@@ -1473,43 +1503,50 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
+"<b>Pictogramă temă panou</b>\n"
+"Ați ales să înlocuiți o pictogramă din panou. Stabiliți dacă această "
+"modificare va produce efecte numai pentru această miniaplicație, pentru "
+"toate miniaplicațiile de acest tip sau pentru fiecare pictogramă de acest "
+"tip din panou."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "Personalizare miniaplicație"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
 msgid "About %s"
-msgstr ""
+msgstr "Despre %s"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "Pictograme"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Alegeți pictogramă personalizată"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Personalizați picograma"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Ștergeți pictograma personalizată"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "Se încarcă miniaplicația..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr ""
+"Vai! Miniaplicația a ieșit neașteptat. Efectuați clic pentru repornirea "
+"acesteia."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
-msgstr ""
+msgstr "Închide bara de andocare"
 
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN s-a împrospătat cu succes"
