@@ -1,3 +1,10 @@
+2010-09-10  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/util.c:
+	* src/Makefile.am:
+	Fix build issue.
+
 2010-08-26  Michal Hruby  <michal.mhr@gmail.com>
 
 	* tests/test-vala-awn-dialog.vala:

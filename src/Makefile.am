@@ -22,6 +22,7 @@ VALA_FLAGS = \
 	$(top_builddir)/bindings/vala/awn.vapi \
 	awn-panel.vapi \
 	--pkg dbus-glib-1 \
+	--vapidir=$(LDA_VAPIDIR) \
 	--pkg gtk+-2.0 \
 	--pkg desktop-agnostic-cfg \
 	$(NULL)

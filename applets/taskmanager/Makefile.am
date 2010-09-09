@@ -25,6 +25,7 @@ VALA_FLAGS = \
 	$(top_srcdir)/bindings/vala/awn.vapi \
 	--pkg dbus-glib-1 \
 	--pkg libwnck-1.0 \
+	--vapidir=$(LDA_VAPIDIR) \
 	--pkg desktop-agnostic \
 	--pkg desktop-agnostic-cfg \
 	$(srcdir)/task-manager.vapi \

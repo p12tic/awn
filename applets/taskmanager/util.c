@@ -704,6 +704,7 @@ utils_gdk_pixbuf_similar_to (GdkPixbuf *i1, GdkPixbuf *i2)
 gboolean
 usable_desktop_entry (  DesktopAgnosticFDODesktopEntry * entry)
 {
+  // FIXME: add support for Link-type entries, not just Applications
   if (  !desktop_agnostic_fdo_desktop_entry_key_exists (entry, "Name")
       ||
         !desktop_agnostic_fdo_desktop_entry_key_exists (entry, "Exec") )
