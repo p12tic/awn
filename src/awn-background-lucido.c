@@ -57,7 +57,7 @@ struct _AwnBackgroundLucidoPrivate
 /* draw shape mask for debug */
 #define DEBUG_SHAPE_MASK      FALSE
 
-#define TRANSFORM_RADIUS(x) MAX(sqrt(x/60.)*60.,1)
+#define TRANSFORM_RADIUS(x) sqrt(x/60.)*60.
 
 #define IS_SPECIAL(x) AWN_IS_SEPARATOR(x)
 

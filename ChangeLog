@@ -1,5 +1,10 @@
 2010-09-10  Alberto  <albyrock87+dev@gmail.com>
 
+	* src/awn-background-lucido.c:
+	Fix to https://bugs.launchpad.net/awn/+bug/634150 (Lucido + Radius = 0)
+
+2010-09-10  Alberto  <albyrock87+dev@gmail.com>
+
 	* applets/quick-prefs/applet.vala:
 	* applets/taskmanager/task-icon.c:
 	* bindings/python/awn.defs:
