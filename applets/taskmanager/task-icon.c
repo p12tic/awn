@@ -2870,8 +2870,7 @@ task_icon_button_press_event (GtkWidget *widget,GdkEventButton *event)
 
   if (priv->menu)
   {
-    gtk_menu_popup (GTK_MENU (priv->menu), NULL, NULL, 
-                    NULL, NULL, event->button, event->time);
+    awn_icon_popup_gtk_menu (AWN_ICON(icon), priv->menu, event->button, event->time);
     
     g_signal_connect_swapped (priv->menu,"deactivate", 
                               G_CALLBACK(gtk_widget_hide),priv->dialog);

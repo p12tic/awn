@@ -79,6 +79,7 @@ namespace Awn {
 		public uint inhibit_autohide (string reason);
 		[NoWrapper]
 		public virtual void panel_configure (Gdk.EventConfigure event);
+		public void popup_gtk_menu (Gtk.Widget menu, uint button, uint32 activate_time);
 		public void set_behavior (Awn.AppletFlags flags);
 		public void set_offset (int offset);
 		public void set_path_type (Awn.PathType path);
@@ -296,6 +297,7 @@ namespace Awn {
 		public virtual void icon_padding2 ();
 		[NoWrapper]
 		public virtual void icon_padding3 ();
+		public void popup_gtk_menu (Gtk.Widget menu, uint button, uint32 activate_time);
 		public void set_custom_paint (int width, int height);
 		public void set_effect (Awn.Effect effect);
 		public void set_from_context (Cairo.Context ctx);
@@ -616,4 +618,6 @@ namespace Awn {
 	public const int PANEL_ID_DEFAULT;
 	[CCode (cheader_filename = "libawn/libawn.h")]
 	public static unowned string utils_get_gtk_icon_theme_name (Gtk.IconTheme theme);
+	[CCode (cheader_filename = "libawn/libawn.h")]
+	public static void utils_menu_set_position_widget_relative (Gtk.Menu menu, int px, int py, bool push_in, void* data);
 }

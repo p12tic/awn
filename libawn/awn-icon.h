@@ -122,6 +122,11 @@ GdkRegion*      awn_icon_get_input_mask      (AwnIcon *icon);
 void            awn_icon_clicked             (AwnIcon *icon);
 void            awn_icon_middle_clicked      (AwnIcon *icon);
 
+void            awn_icon_popup_gtk_menu      (AwnIcon   *icon,
+                                              GtkWidget *menu,
+                                              guint      button,
+                                              guint32    activate_time);
+
 G_END_DECLS
 
 #endif /* _AWN_ICON_H_ */

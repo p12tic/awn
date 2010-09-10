@@ -130,6 +130,16 @@
 				<parameter name="widget" type="GtkWidget*"/>
 			</parameters>
 		</function>
+		<function name="utils_menu_set_position_widget_relative" symbol="awn_utils_menu_set_position_widget_relative">
+			<return-type type="void"/>
+			<parameters>
+				<parameter name="menu" type="GtkMenu*"/>
+				<parameter name="px" type="gint*"/>
+				<parameter name="py" type="gint*"/>
+				<parameter name="push_in" type="gboolean*"/>
+				<parameter name="data" type="gpointer"/>
+			</parameters>
+		</function>
 		<function name="utils_show_menu_images" symbol="awn_utils_show_menu_images">
 			<return-type type="void"/>
 			<parameters>
@@ -356,6 +366,15 @@
 					<parameter name="panel_id" type="gint"/>
 				</parameters>
 			</constructor>
+			<method name="popup_gtk_menu" symbol="awn_applet_popup_gtk_menu">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="applet" type="AwnApplet*"/>
+					<parameter name="menu" type="GtkWidget*"/>
+					<parameter name="button" type="guint"/>
+					<parameter name="activate_time" type="guint32"/>
+				</parameters>
+			</method>
 			<method name="set_behavior" symbol="awn_applet_set_behavior">
 				<return-type type="void"/>
 				<parameters>
@@ -955,6 +974,15 @@
 			<constructor name="new" symbol="awn_icon_new">
 				<return-type type="GtkWidget*"/>
 			</constructor>
+			<method name="popup_gtk_menu" symbol="awn_icon_popup_gtk_menu">
+				<return-type type="void"/>
+				<parameters>
+					<parameter name="icon" type="AwnIcon*"/>
+					<parameter name="menu" type="GtkWidget*"/>
+					<parameter name="button" type="guint"/>
+					<parameter name="activate_time" type="guint32"/>
+				</parameters>
+			</method>
 			<method name="set_custom_paint" symbol="awn_icon_set_custom_paint">
 				<return-type type="void"/>
 				<parameters>

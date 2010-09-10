@@ -1,3 +1,20 @@
+2010-09-10  Alberto  <albyrock87+dev@gmail.com>
+
+	* applets/quick-prefs/applet.vala:
+	* applets/taskmanager/task-icon.c:
+	* bindings/python/awn.defs:
+	* bindings/vala/awn.gi:
+	* bindings/vala/awn.vapi:
+	* libawn/awn-applet.c:
+	* libawn/awn-applet.h:
+	* libawn/awn-icon.c:
+	* libawn/awn-icon.h:
+	* libawn/awn-utils.c:
+	* libawn/awn-utils.h:
+	Added APIs to popup GtkMenu in a standard way Icon/Applet relative:
+	AwnIcon.popup_gtk_menu (menu, button, activate_time)
+	AwnApplet.popup_gtk_menu (menu, button, activate_time)
+
 2010-09-10  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/Makefile.am:

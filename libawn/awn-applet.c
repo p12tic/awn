@@ -1317,6 +1317,30 @@ _menu_hidden (AwnApplet *applet)
 }
 
 /**
+ * awn_applet_popup_gtk_menu:
+ * @icon: an #AwnApplet.
+ * @menu: a #GtkMenu to popup.
+ * @button: the mouse button which was pressed to initiate the event.
+ * @activate_time: the time at which the activation event occurred.
+ *
+ * Displays a menu relative to the applet's position.
+ */
+void
+awn_applet_popup_gtk_menu (AwnApplet *applet,
+                           GtkWidget *menu,
+                           guint      button,
+                           guint32    activate_time)
+{
+  g_return_if_fail (menu);
+  g_return_if_fail (GTK_IS_MENU (menu));
+
+  gtk_menu_popup (
+            GTK_MENU (menu), NULL, NULL, 
+            ((GtkMenuPositionFunc) awn_utils_menu_set_position_widget_relative),
+            applet, button, activate_time);
+}
+
+/**
  * awn_applet_create_default_menu:
  * @applet: An AwnApplet.
  *

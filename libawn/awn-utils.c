@@ -24,6 +24,9 @@
 #include <gtk/gtk.h>
 
 #include "awn-utils.h"
+#include "awn-icon.h"
+#include "awn-themed-icon.h"
+#include "awn-applet.h"
 #include "gseal-transition.h"
 
 
@@ -220,4 +223,96 @@ const gchar *
 awn_utils_get_gtk_icon_theme_name (GtkIconTheme * theme)
 {
   return theme->priv->current_theme;
+}
+
+void awn_utils_menu_set_position_widget_relative (GtkMenu *menu,
+                                                  gint *px,
+                                                  gint *py,
+                                                  gboolean *push_in,
+                                                  gpointer data)
+{
+  *push_in = TRUE;
+  #define PANEL_PADDING 5
+
+  gint w, h, mw, mh, icon_size = 0;
+  GtkWidget *widget = GTK_WIDGET (data);
+  GtkPositionType pos = GTK_POS_BOTTOM;
+  g_return_if_fail (widget);
+
+  GtkRequisition r;
+  gtk_widget_size_request (GTK_WIDGET (menu), &r);
+
+  mw = r.width;
+  mh = r.height;
+  gint extra_offset = 0;
+
+  GtkAllocation alloc;
+  gtk_widget_get_allocation (widget, &alloc);
+
+  w = alloc.width;
+  h = alloc.height;
+
+  gdk_window_get_origin (widget->window, px, py);
+
+  if (AWN_IS_ICON (widget))
+  {
+    AwnIcon *ico = AWN_ICON (widget);
+    GtkWidget *app = gtk_widget_get_toplevel (widget);
+    if (AWN_IS_APPLET (app))
+    {
+      icon_size = awn_applet_get_size (AWN_APPLET (app));
+    }
+    else
+    {
+      g_warning ("popup_gtk_menu: Cannot retrive icon size. AwnIcon is not a child of AwnApplet.");
+      icon_size = (w + h) / 2;
+    }
+    pos = awn_icon_get_pos_type (ico);
+    extra_offset = awn_icon_get_offset (ico);
+  }
+  else if (AWN_IS_APPLET (widget))
+  {
+    AwnApplet *app = AWN_APPLET (widget);
+    icon_size = awn_applet_get_size (app);
+    pos = awn_applet_get_pos_type (app);
+    extra_offset = awn_applet_get_offset_at (app,
+                                             alloc.x + w / 2,
+                                             alloc.y + h / 2);
+  }
+
+  extra_offset += PANEL_PADDING;
+  switch (pos)
+  {
+    case GTK_POS_BOTTOM:
+      *py = *py + h - icon_size - extra_offset - mh;
+      break;
+    case GTK_POS_TOP:
+      *py = *py + icon_size + extra_offset;
+      break;
+    case GTK_POS_LEFT:
+      *px = *px + icon_size + extra_offset;
+      break;
+    case GTK_POS_RIGHT:
+      *px = *px + w - icon_size - extra_offset - mw;
+      break;
+  }
+  /* fits to screen? */
+  GdkScreen *screen = NULL;
+  if (gtk_widget_has_screen (GTK_WIDGET (menu)))
+  {
+    screen = gtk_widget_get_screen (GTK_WIDGET (menu));
+  }
+  else
+  {
+    screen = gdk_screen_get_default ();
+  }
+  if (screen)
+  {
+    gint screen_w = gdk_screen_get_width (screen);
+    gint screen_h = gdk_screen_get_height (screen);
+    *px = MIN (*px, screen_w - mw);
+    *py = MIN (*py, screen_h - mh);
+    if (*px < 0) *px = 0;
+    if (*py < 0) *py = 0;
+  }
 }

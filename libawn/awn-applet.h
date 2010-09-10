@@ -171,6 +171,11 @@ GtkWidget *        awn_applet_create_about_item_simple (AwnApplet        *applet
                                                         AwnAppletLicense  license,
                                                         const gchar      *version);
 
+void               awn_applet_popup_gtk_menu  (AwnApplet *applet,
+                                               GtkWidget *menu,
+                                               guint      button,
+                                               guint32    activate_time);
+
 G_END_DECLS
 
 #endif

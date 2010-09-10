@@ -602,7 +602,7 @@ public class PrefsApplet : AppletSimple
   private void
   on_context_menu_popup (EventButton evt)
   {
-    this.ctx_menu.popup (null, null, null, evt.button, evt.time);
+    this.get_icon().popup_gtk_menu (this.ctx_menu, evt.button, evt.time);
   }
 }
 

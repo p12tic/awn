@@ -1114,6 +1114,29 @@ awn_icon_get_input_mask (AwnIcon *icon)
   return gdk_region_rectangle (&alloc);
 }
 
+/**
+ * awn_icon_popup_gtk_menu:
+ * @icon: an #AwnIcon.
+ * @menu: a #GtkMenu to popup.
+ * @button: the mouse button which was pressed to initiate the event.
+ * @activate_time: the time at which the activation event occurred.
+ *
+ * Displays a menu relative to the icon's position.
+ */
+void awn_icon_popup_gtk_menu (AwnIcon   *icon,
+                              GtkWidget *menu,
+                              guint      button,
+                              guint32    activate_time)
+{
+  g_return_if_fail (menu);
+  g_return_if_fail (GTK_IS_MENU (menu));
+
+  gtk_menu_popup (
+            GTK_MENU (menu), NULL, NULL, 
+            ((GtkMenuPositionFunc) awn_utils_menu_set_position_widget_relative),
+            icon, button, activate_time);
+}
+
 /*
  * ICON EMBLEMS
  */

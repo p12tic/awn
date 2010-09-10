@@ -395,6 +395,16 @@
   )
 )
 
+(define-method popup_gtk_menu
+  (of-object "AwnApplet")
+  (c-name "awn_applet_popup_gtk_menu")
+  (parameters
+    '("GtkWidget*" "menu")
+    '("guint" "button")
+    '("guint32" "activate_time")
+  )
+)
+
 (define-method create_default_menu
   (of-object "AwnApplet")
   (c-name "awn_applet_create_default_menu")
@@ -950,6 +960,16 @@
   (of-object "AwnIcon")
   (c-name "awn_icon_get_indicator_count")
   (return-type "gint")
+)
+
+(define-method popup_gtk_menu
+  (of-object "AwnIcon")
+  (c-name "awn_icon_popup_gtk_menu")
+  (parameters
+    '("GtkWidget*" "menu")
+    '("guint" "button")
+    '("guint32" "activate_time")
+  )
 )
 
 ;; From awn-icon-box.h

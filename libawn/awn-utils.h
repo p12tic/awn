@@ -88,5 +88,27 @@ GValueArray* awn_utils_gslist_to_gvaluearray (GSList *list);
 void awn_utils_show_menu_images (GtkMenu * menu);
 
 const gchar *awn_utils_get_gtk_icon_theme_name (GtkIconTheme * theme);
+
+/**
+ * awn_utils_menu_set_position_widget_relative:
+ * @menu: a GtkMenu
+ * @px: address of the gint representing the horizontal position 
+        where the menu shall be drawn. This is an output parameter.
+ * @py: address of the gint representing the vertical position 
+ *       where the menu shall be drawn. This is an output parameter.
+ * @push_in: This parameter controls how menus placed outside the monitor are 
+ *           handled. This doesn't work well.
+ * @data: the data supplied by the user in the gtk_menu_popup() data parameter.
+ *
+ * This function (*GtkMenuPositionFunc) is used when calling gtk_menu_popup() 
+ * which controls the positioning of the menu when it is displayed.
+ * We use this custom positioning to popup menu relative to an icon/applet.
+ * See for example "awn_icon_popup_gtk_menu" into awn-icon.c
+ */
+void awn_utils_menu_set_position_widget_relative (GtkMenu *menu,
+                                                  gint *px,
+                                                  gint *py,
+                                                  gboolean *push_in,
+                                                  gpointer data);
 #endif
 
