@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-09-11 17:40+0000\n"
+"PO-Revision-Date: 2010-09-12 07:46+0000\n"
 "Last-Translator: Michael2009 <Unknown>\n"
 "Language-Team: Slovak <sk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
-"X-Launchpad-Export-Date: 2010-09-12 05:01+0000\n"
+"X-Launchpad-Export-Date: 2010-09-13 05:11+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -530,7 +530,7 @@ msgstr "Prvá Zvýraznená Farba"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "Vysoké vyrovnanie"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
@@ -546,11 +546,11 @@ msgstr "Mód písma"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Náčrt farby písma"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Platí režim monitoru ?"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
@@ -602,15 +602,15 @@ msgstr "Spustiť animáciu:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "Zodpovedajúca pevnosť"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Monitor X-vyváženie"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Monitor Y-vyváženie"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
@@ -674,11 +674,11 @@ msgstr "Repozitáre"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Iný odtieň farby"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Iná svetlosť farby"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
