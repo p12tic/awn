@@ -1,3 +1,8 @@
+2010-09-16  Alberto  <albyrock87+dev@gmail.com>
+
+	* src/awn-background-lucido.c:
+	Fix to Lucido style in RTL mode.
+
 2010-09-10  Alberto  <albyrock87+dev@gmail.com>
 
 	* src/awn-background-lucido.c:
