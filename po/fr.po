@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-13 18:04+0000\n"
-"Last-Translator: Nicolas Delvaux <Unknown>\n"
+"PO-Revision-Date: 2010-09-16 14:39+0000\n"
+"Last-Translator: Ptitphysik <amalpeyre@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-08-14 06:13+0000\n"
+"X-Launchpad-Export-Date: 2010-09-17 05:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -123,7 +123,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr "Activer le « clic long » pour ouvir la boite de dialogue"
+msgstr "Activer le « clic long » pour ouvrir la boîte de dialogue"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
@@ -139,9 +139,9 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
-"Avec quelle exactitude la correspondance est appliquée pour le regroupement. "
-"La valeur devrait être entre 0 et 99. 0 reviens à ne rien regrouper. 99 "
-"regroupera quasiment tout."
+"Indique avec quelle exactitude la correspondance est appliquée pour le "
+"regroupement. La valeur doit être comprise entre 0 et 99. 0 revient à ne "
+"rien regrouper. 99 regroupera quasiment tout."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -150,8 +150,8 @@ msgid ""
 "currently focused app."
 msgstr ""
 "Liste des fenêtres dont l'intersection avec la barre doit être testée si le "
-"masquage « intelligent » est actif. 0.. utiliser les fenêtres de l'espace de "
-"travail actif, 1.. utiliser les fenêtres de l'application active."
+"masquage « intelligent » est actif. 0 pour utiliser les fenêtres de l'espace "
+"de travail actif, 1 pour utiliser les fenêtres de l'application active."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -159,15 +159,15 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
-"Masquage « intelligent » si le masquage est activé pour la barre. Cela "
-"empêchera le masquage automatique de la barre si aucune des fenêtres de la "
-"liste de fenêtres correspondante ne la recouvre."
+"Masquage « intelligent » si le masquage est activé pour la barre. Cela "
+"empêchera le masquage automatique de la barre si aucune fenêtre de la liste "
+"de fenêtres correspondantes ne la recouvre."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
-"Nombre maximum d'indicateurs de taches à afficher sous les icônes. Les "
+"Nombre maximum d'indicateurs de tâches à afficher sous les icônes. Les "
 "valeurs possibles vont de 0 à 3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
