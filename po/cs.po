@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-09-17 21:01+0000\n"
+"PO-Revision-Date: 2010-09-19 09:14+0000\n"
 "Last-Translator: Konki <pavel.konkol@seznam.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-09-18 05:29+0000\n"
+"X-Launchpad-Export-Date: 2010-09-20 05:41+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -560,7 +560,7 @@ msgstr "Barva obrysu písma"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Silový monitorovací mód ?"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
@@ -676,7 +676,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "Posun odrazu"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
@@ -1128,7 +1128,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
+msgstr "Sladění nerozšiřitelných panelů na okraji monitoru."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
