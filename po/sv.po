@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-29 13:49+0000\n"
+"PO-Revision-Date: 2010-09-25 18:34+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-08-30 03:59+0000\n"
+"X-Launchpad-Export-Date: 2010-09-26 05:22+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Swedish\n"
 
@@ -221,7 +221,7 @@ msgstr "Programstartare/aktivitetshanterare"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr "Panelprogram för programstartare/aktivitetshanterare"
+msgstr "Miniprogram för programstartare och aktivitetshantering"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
@@ -251,15 +251,15 @@ msgstr "Det gick inte att öppna inställningar för Awn: %s"
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
-"Panelprogram för att kontrollera docken och starta inställningar för Awn"
+"Miniprogram för att kontrollera docken och starta inställningarna för Awn"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr "Inställningsprogram"
+msgstr "Inställningar"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr "Lägger till en avgränsare mellan panelprogram"
+msgstr "Lägger till en avgränsare mellan miniprogram"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -368,7 +368,7 @@ msgstr "Inställningar för Awn"
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
-"Hantera inställningar, programstartare, panelprogram och teman för Awn"
+"Hantera inställningar, programstartare, miniprogram och teman för Awn"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
@@ -376,11 +376,11 @@ msgstr "3d-vinkel"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr "<b>Aktiva panelprogram</b>"
+msgstr "<b>Aktiva miniprogram</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr "<b>Tillgängliga panelprogram</b>"
+msgstr "<b>Tillgängliga miniprogram</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
@@ -437,7 +437,7 @@ msgstr "<b>Aktivitetshanterare</b>"
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
-"<b>För dessa inställningar behöver panelprogrammet för aktivitetshantering "
+"<b>För dessa inställningar behöver miniprogrammet för aktivitetshantering "
 "vara aktiverat.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
@@ -454,7 +454,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr "Aktivera panelprogram"
+msgstr "Aktivera miniprogram"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
@@ -527,7 +527,7 @@ msgstr "Anpassa..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr "Inaktivera panelprogram"
+msgstr "Inaktivera miniprogram"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
@@ -540,12 +540,12 @@ msgstr "Dra-och-släpp-omplacering"
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr "Dra hit tillgängliga panelprogram för att aktivera"
+msgstr "Dra hit tillgängliga miniprogram för att aktivera dem"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr "Dra-och-släpp nedan eller dubbelklicka för att aktivera panelprogram"
+msgstr "Dra-och-släpp nedan eller dubbelklicka för att aktivera miniprogram"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
@@ -633,7 +633,7 @@ msgstr "Innerkantsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr "Installera panelprogram..."
+msgstr "Installera miniprogram..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
@@ -770,7 +770,7 @@ msgid ""
 "applet active."
 msgstr ""
 "För att använda lägena \"Dölj smart\" eller \"Undvik fönster\", måste du ha "
-"panelprogrammet för aktivitetshantering aktiverat."
+"miniprogrammet för aktivitetshantering aktiverat."
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
@@ -940,27 +940,27 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr "Paket för panelprogram"
+msgstr "Paket för miniprogram"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr "Installation av panelprogram misslyckades"
+msgstr "Installation av miniprogram misslyckades"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr "Uppdatering av panelprogram lyckades"
+msgstr "Uppdatering av miniprogram lyckades"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr "Panelprogram har lagts till"
+msgstr "Tilläggande av miniprogram lyckades"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
-msgstr "Det går inte att radera aktivt panelprogram"
+msgstr "Kan inte radera aktivt panelprogram"
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
-msgstr "Radera panelprogram"
+msgstr "Radera miniprogram"
 
 #: ../awn-settings/awnClass.py:1350
 #, python-format
@@ -969,13 +969,13 @@ msgstr "<b>Radera %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr "Det gick inte att radera panelprogram"
+msgstr "Det går inte att radera panelprogrammet"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr "%s existerar redan, det går inte att exportera tema."
+msgstr "%s existerar redan, det går inte att exportera temat."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
@@ -1119,7 +1119,7 @@ msgstr "Aktivitetshanterare"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr "Panelprogram"
+msgstr "Miniprogram"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
@@ -1151,7 +1151,7 @@ msgstr ""
 "förklaringar till detta.\n"
 "\n"
 "1. Du har inte Python-modulen installerad. I detta fall, bör du besöka\n"
-"avsnittet för panelprogram (applets) i Awn-wikin, för att lista ut det\n"
+"avsnittet för miniprogram (applets) i Awn-wikin, för att lista ut det\n"
 "korrekta paketnamnet för din distribution som tillhandahåller modulen.\n"
 "\n"
 "2. Modulen är installerad på en icke-standardiserad plats. Detta är "
@@ -1241,8 +1241,8 @@ msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
-"Avgör om allmän konfigurationsredigerare är tillåten för panelprogram som "
-"inte har en anpassad dialogruta för inställningar"
+"Avgör om allmän konfigurationsredigerare är tillåten för miniprogram som "
+"inte har en anpassad dialogruta för inställningar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
@@ -1401,7 +1401,7 @@ msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
-"Listan över panelprogram för denna panel, sorterade från vänster till höger "
+"Listan över miniprogram för denna dock, sorterade från vänster till höger "
 "eller överst till nederst."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
@@ -1480,14 +1480,14 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
-"<b>Anpassa panelikon</b>\n"
-"Du har valt att ersätta en ikon på panelen. Välj huruvida denna förändring "
-"ska gälla för endast detta panelprogram, för alla panelprogram av denna typ "
-"eller för alla ikoner på panelen av denna typ."
+"<b>Anpassa dockikon</b>\n"
+"Du har valt att ersätta en ikon på docken. Välj huruvida denna förändring "
+"ska gälla för endast detta miniprogram, för alla miniprogram av denna typ "
+"eller för alla ikoner på docken av denna typ."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr "Anpassa panelprogram"
+msgstr "Anpassa miniprogram"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
@@ -1512,11 +1512,11 @@ msgstr "Ta bort anpassad ikon"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr "Läser in panelprogram..."
+msgstr "Läser in miniprogram..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr "Hoppsan! Panelprogrammet kraschade. Klicka för att starta om det."
+msgstr "Hoppsan! Miniprogrammet kraschade. Klicka för att starta om det."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
