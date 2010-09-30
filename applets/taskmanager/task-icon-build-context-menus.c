@@ -414,7 +414,7 @@ _close_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
 }
 
 static void
-_close_window_cb (GtkMenuItem *menuitem, TaskIcon * icon)
+_close_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
 {
   /*
    This might actually be a key event?  but it doesn't matter... the time
@@ -422,10 +422,7 @@ _close_window_cb (GtkMenuItem *menuitem, TaskIcon * icon)
   GdkEventButton * event = (GdkEventButton*)gtk_get_current_event ();
 
   g_return_if_fail (event);
-  if (TASK_IS_WINDOW (task_icon_get_main_item (icon)))
-  {
-    wnck_window_close (task_window_get_window (TASK_WINDOW(task_icon_get_main_item (icon))),event->time);
-  }
+  wnck_window_close (win,event->time);
   gdk_event_free ((GdkEvent*)event);
 }
 
@@ -728,7 +725,7 @@ task_icon_get_menu_item_remove_from_launcher_list (TaskIcon * icon)
 }
 
 static GtkWidget *
-task_icon_get_menu_item_close_active (TaskIcon * icon)
+task_icon_get_menu_item_close_active (TaskIcon * icon, WnckWindow * win)
 {
   GtkWidget * item;
   const TaskItem * main_item = task_icon_get_main_item (icon);
@@ -747,7 +744,7 @@ task_icon_get_menu_item_close_active (TaskIcon * icon)
   gtk_widget_show (item);
   g_signal_connect (item,"activate",
                 G_CALLBACK(_close_window_cb),
-                icon);
+                win);
   return item;
 }
 
@@ -1237,7 +1234,7 @@ task_icon_inline_action_simple_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow
     gtk_widget_show (menuitem);
   }
   
-  menuitem = task_icon_get_menu_item_close_active (icon);
+  menuitem = task_icon_get_menu_item_close_active (icon,win);
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
   gtk_widget_show (menuitem);
 }
@@ -1300,7 +1297,7 @@ task_icon_inline_action_menu (TaskIcon * icon, GtkMenu * menu, WnckWindow * win)
   gtk_widget_show (menuitem);
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
   
-  menuitem = task_icon_get_menu_item_close_active (icon);
+  menuitem = task_icon_get_menu_item_close_active (icon,win);
   gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
 
 }
@@ -1663,7 +1660,10 @@ menu_parse_start_element (GMarkupParseContext *context,
       menuitem = task_icon_get_menu_item_add_to_launcher_list (icon);
       break;
     case INTERNAL_CLOSE_ACTIVE:
-      menuitem = task_icon_get_menu_item_close_active (icon);
+      if (TASK_IS_WINDOW (task_icon_get_main_item (icon)))
+      {      
+        menuitem = task_icon_get_menu_item_close_active (icon,TASK_WINDOW(task_icon_get_main_item (icon)));
+      }
       break;
     case INTERNAL_CLOSE_ALL:
       menuitem = task_icon_get_menu_item_close_all (icon);

@@ -1,5 +1,11 @@
-2010-09-30  Michal Hruby  <michal.mhr@gmail.com>
+2010-09-30 Rodney Cryderman <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon-build-context-menus.c:
+        Fix issue where active window would be closed from a grouped 
+        sequence regardless of what window was selected from the context 
+        menu.
+
+2010-09-30  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
 	Fix bug #633993.
