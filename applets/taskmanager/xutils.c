@@ -36,6 +36,12 @@
 
 typedef struct _WnckIconCache WnckIconCache;
 
+static Display *
+_wnck_get_default_display (void)
+{
+  return GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+}
+
 static void
 _wnck_error_trap_push (void)
 {
@@ -45,7 +51,7 @@ _wnck_error_trap_push (void)
 static int
 _wnck_error_trap_pop (void)
 {
-  XSync (gdk_display, False);
+  XSync (_wnck_get_default_display (), False);
   return gdk_error_trap_pop ();
 }
 
@@ -80,7 +86,7 @@ _wnck_get_wmclass (Window xwindow,
   ch.res_name = NULL;
   ch.res_class = NULL;
 
-  XGetClassHint (gdk_display, xwindow,
+  XGetClassHint (_wnck_get_default_display (), xwindow,
                  &ch);
 
   _wnck_error_trap_pop ();
@@ -119,7 +125,7 @@ _wnck_get_client_name (Window xwindow, char **client_name)
   
   _wnck_error_trap_push ();
 
-	status = XGetWMClientMachine(gdk_display, xwindow, &text_prop);
+	status = XGetWMClientMachine(_wnck_get_default_display (), xwindow, &text_prop);
 
   _wnck_error_trap_pop ();
   
@@ -161,7 +167,7 @@ _wnck_atom_get (const char *atom_name)
   retval = GPOINTER_TO_UINT (g_hash_table_lookup (atom_hash, atom_name));
   if (!retval)
   {
-    retval = XInternAtom (gdk_display, atom_name, FALSE);
+    retval = XInternAtom (_wnck_get_default_display (), atom_name, FALSE);
 
     if (retval != None)
     {
@@ -360,7 +366,7 @@ read_rgb_icon (Window xwindow,
   _wnck_error_trap_push ();
   type = None;
   data = NULL;
-  result = XGetWindowProperty (gdk_display,
+  result = XGetWindowProperty (_wnck_get_default_display (),
 			       xwindow,
 			       _wnck_atom_get ("_NET_WM_ICON"),
 			       0, G_MAXLONG,
@@ -429,7 +435,7 @@ get_pixmap_geometry (Pixmap pixmap, int *w, int *h, int *d)
   if (d)
     *d = 1;
 
-  XGetGeometry (gdk_display,
+  XGetGeometry (_wnck_get_default_display (),
 		pixmap, &root_ignored, &x_ignored, &y_ignored,
 		&width, &height, &border_width_ignored, &depth);
 
@@ -654,7 +660,7 @@ get_kwm_win_icon (Window xwindow, Pixmap * pixmap, Pixmap * mask)
 
   _wnck_error_trap_push ();
   icons = NULL;
-  result = XGetWindowProperty (gdk_display, xwindow,
+  result = XGetWindowProperty (_wnck_get_default_display (), xwindow,
 			       _wnck_atom_get ("KWM_WIN_ICON"),
 			       0, G_MAXLONG,
 			       False,
@@ -795,7 +801,7 @@ _wnck_read_icons_ (Window xwindow,
 
 
   _wnck_error_trap_push ();
-  hints = XGetWMHints (gdk_display, xwindow);
+  hints = XGetWMHints (_wnck_get_default_display (), xwindow);
   _wnck_error_trap_pop ();
   pixmap = None;
   mask = None;

@@ -1,3 +1,10 @@
+2010-09-30  Alberto  <albyrock87+dev@gmail.com>
+
+	* applets/taskmanager/xutils.c:
+	* src/awn-background-lucido.c:
+	Do not use deprecated extern gdk_display. (Compile error fix)
+	Use awn_background_do_rtl_swap to check if rtl.
+
 2010-09-16  Alberto  <albyrock87+dev@gmail.com>
 
 	* src/awn-background-lucido.c:

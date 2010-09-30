@@ -507,7 +507,7 @@ _create_path_lucido ( AwnBackground*  bg,
   /****************************************************************************/
   gboolean docklet_mode = awn_panel_get_docklet_mode (bg->panel);
   GList *widgets = _get_applet_widgets (bg);
-  if (widgets && gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL)
+  if (widgets && awn_background_do_rtl_swap (bg))
   {
     widgets = g_list_reverse (widgets);
   }
@@ -975,7 +975,7 @@ _set_special_widget_width_and_transparent (AwnBackground *bg,
                                            gboolean      dispose)
 {
   GList *widgets = _get_applet_widgets (bg);
-  if (widgets && gtk_widget_get_default_direction () == GTK_TEXT_DIR_RTL)
+  if (widgets && awn_background_do_rtl_swap (bg))
   {
     widgets = g_list_reverse (widgets);
   }
