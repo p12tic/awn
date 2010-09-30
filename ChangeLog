@@ -1,3 +1,9 @@
+2010-09-30  Michal Hruby  <michal.mhr@gmail.com>
+
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Fix bug #633993.
+
 2010-09-30  Alberto  <albyrock87+dev@gmail.com>
 
 	* applets/taskmanager/xutils.c:

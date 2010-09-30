@@ -51,7 +51,7 @@ _description=Enabling group of tasks.
 [DEFAULT/icon_change_behavior]
 type = integer
 default = 1
-_description= Controls the display of window icons in the Task Icon. 0) Alway display application provided window icons when window is active (except for a very few special cases). 1) Attempt to only display application provided icons when they are likely to provide useful/context info. 2) Ignore all application provide icons and only display the Lauuncher icon
+_description= Controls the display of window icons in the Task Icon. 0) Alway display application provided window icons when window is active (except for a very few special cases). 1) Attempt to only display application provided icons when they are likely to provide useful/context info. 2) Ignore all application provide icons and only display the Launcher icon
 
 [DEFAULT/icon_grouping]
 type = boolean
