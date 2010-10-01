@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-09-25 18:34+0000\n"
+"PO-Revision-Date: 2010-09-30 13:20+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-09-26 05:22+0000\n"
+"X-Launchpad-Export-Date: 2010-10-01 08:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Swedish\n"
 
@@ -240,18 +240,18 @@ msgstr "Ikonstorlek:"
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:703
 msgid "Dock Preferences"
-msgstr "Inställningar för dock"
+msgstr "Dock-inställningar"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr "Det gick inte att öppna inställningar för Awn: %s"
+msgstr "Kunde inte öppna Awn-inställningarna: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
-"Miniprogram för att kontrollera docken och starta inställningarna för Awn"
+"Miniprogram för att kontrollera docken och starta Awn-inställningarna"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -363,7 +363,7 @@ msgstr "Flytta till en annan _arbetsyta"
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr "Inställningar för Awn"
+msgstr "Awn-inställningar"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -437,8 +437,8 @@ msgstr "<b>Aktivitetshanterare</b>"
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
-"<b>För dessa inställningar behöver miniprogrammet för aktivitetshantering "
-"vara aktiverat.</b>"
+"<b>Dessa inställningar kräver att miniprogrammet för aktivitetshantering är "
+"aktiverat.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -778,7 +778,7 @@ msgstr "Triangel"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
-msgstr "Använd färger från Gtk-tema"
+msgstr "Använd färger från GTK-tema"
 
 #: ../awn-settings/awn-settings.ui.h:104
 msgid "Use Pattern as Background"
@@ -887,12 +887,12 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr "Det gick inte att hitta någon av dessa ikoner: %s\n"
+msgstr "Kunde inte hitta någon av dessa ikoner: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr "Det gick inte att hitta följande ikon: %s\n"
+msgstr "Kunde inte hitta följande ikon: %s\n"
 
 #: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -956,7 +956,7 @@ msgstr "Tilläggande av miniprogram lyckades"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
-msgstr "Kan inte radera aktivt panelprogram"
+msgstr "Kan inte radera aktivt miniprogram"
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
@@ -969,13 +969,13 @@ msgstr "<b>Radera %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr "Det går inte att radera panelprogrammet"
+msgstr "Kan inte radera miniprogrammet"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr "%s existerar redan, det går inte att exportera temat."
+msgstr "%s existerar redan, kan inte exportera temat."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
@@ -987,7 +987,7 @@ msgstr "Det här är en inkompatibel temafil."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr "Inställnignar för Awn kan inte köras som root."
+msgstr "Awn-inställningarna kan inte köras som root."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
@@ -1146,8 +1146,7 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
-"Det gick inte att hitta följande Python-moduler: %s. Det finns några "
-"möjliga\n"
+"Följande Python-moduler kunde inte hittas: %s. Det finns några möjliga\n"
 "förklaringar till detta.\n"
 "\n"
 "1. Du har inte Python-modulen installerad. I detta fall, bör du besöka\n"
@@ -1274,12 +1273,12 @@ msgstr "Tvinga skärmgeometri."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr "Färg för ikontext. Lämna tomt för att använda färg från Gtk-tema."
+msgstr "Färg för ikontext. Lämna tomt för att använda färg från GTK-tema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
-"Konturfärg för ikontext. Lämna tomt för att använda färg från Gtk-tema."
+"Konturfärg för ikontext. Lämna tomt för att använda färg från GTK-tema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
@@ -1324,7 +1323,7 @@ msgstr "Konturfärg för verktygstipset."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr "Sökväg till det nuvarande sktivbordstemat."
+msgstr "Sökväg till det aktuella sktivbordstemat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
@@ -1446,7 +1445,7 @@ msgstr "Tjockleken i 3d-läge"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
-msgstr "Den användarsynliga storleken av Awn."
+msgstr "Den användarsynliga storleken på Awn."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
@@ -1455,7 +1454,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr "Huruvida dialogruta ska använda färger från Gtk-tema."
+msgstr "Huruvida dialogruta ska använda färger från GTK-tema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
@@ -1463,7 +1462,7 @@ msgstr "Huruvida dialogrutor ska stängas vid förlorad fokus."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
-msgstr "Huruvida färger från nuvarande Gtk-tema ska användas."
+msgstr "Huruvida färger från det aktuella GTK-temat ska användas."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
