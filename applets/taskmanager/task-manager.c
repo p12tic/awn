@@ -69,20 +69,23 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
 
 static GQuark win_quark = 0;
 
+typedef struct
+{
+  GdkWindow * foreign_window;
+  GdkRegion * foreign_region;
+  AwnApplet * connector_applet;
+  /*Used by Intellihide*/
+  guint           autohide_cookie;
+} TaskManagerAwnPanelInfo;
+
 struct _TaskManagerPrivate
 {
   DesktopAgnosticConfigClient *client;
+  DesktopAgnosticConfigClient *awn_client;
+  
   TaskSettings    *settings;
   WnckScreen      *screen;
 
-  /*Used by Intellihide*/
-  guint           autohide_cookie;
-  GdkWindow       *awn_gdk_window;
-  GdkRegion       * awn_gdk_region;
-  
-  guint           attention_cookie;
-  guint           attention_source;
-  
   /* Dragging properties */
   TaskIcon          *dragged_icon;
   TaskDragIndicator *drag_indicator;
@@ -97,12 +100,19 @@ struct _TaskManagerPrivate
   
   GHashTable *win_table;
   GHashTable *desktops_table;
+  GHashTable *intellihide_panel_instances;
+
   /*
    Used during grouping configuration changes for optimization purposes
    */
   GList *grouping_list;
   /* Properties */
   GValueArray *launcher_paths;
+  GValueArray *panel_list;
+
+  guint           attention_cookie;
+  guint           attention_source;
+
   gboolean     show_all_windows;
   gboolean     only_show_launchers;
   gboolean     drag_and_drop;
@@ -148,7 +158,8 @@ enum
   PROP_INTELLIHIDE_MODE,
   PROP_ATTENTION_AUTOHIDE_TIMER,
   PROP_ATTENTION_REQUIRED_REMINDER,
-  PROP_ATTENTION_REQUIED_REMINDER_ID
+
+  PROP_PANEL_LIST
 };
 
 
@@ -178,6 +189,8 @@ static void task_manager_set_show_all_windows    (TaskManager *manager,
                                                   gboolean     show_all);
 static void task_manager_set_show_only_launchers (TaskManager *manager, 
                                                   gboolean     show_only);
+static void task_manager_refresh_panel_list (TaskManager *manager,
+                                                  GValueArray *list);
 static void task_manager_refresh_launcher_paths  (TaskManager *manager,
                                                   GValueArray *list);
 static void task_manager_set_drag_and_drop (TaskManager *manager, 
@@ -302,11 +315,26 @@ task_manager_get_property (GObject    *object,
       g_value_set_int (value, manager->priv->attention_required_reminder);
       break;
 
+    case PROP_PANEL_LIST:
+      g_value_set_boolean (value, manager->priv->only_show_launchers); 
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
 }
 
+/*
+static void
+task_manager_set_panel_info_instances_intellihide_cb (gpointer key,
+                                                      TaskManagerAwnPanelInfo *panel_info,
+                                                      gpointer user_data)
+{
+  g_return_if_fail (panel_info);
+
+  panel_info->autohide_
+}
+*/
 static void
 task_manager_set_property (GObject      *object,
                           guint         prop_id,
@@ -354,7 +382,11 @@ task_manager_set_property (GObject      *object,
       
     case PROP_INTELLIHIDE:
       /* TODO move into a function */
+/*      g_hash_table_foreach ( manager->priv->intellihide_panel_instances,
+                             task_manager_set_panel_info_instances_intellihide_cb,
+                             GINT_TO_POINTER (g_value_get_boolean (value) ));*/
       manager->priv->intellihide = g_value_get_boolean (value);
+      /*
       if (!manager->priv->intellihide && manager->priv->autohide_cookie)
       {     
         awn_applet_uninhibit_autohide (AWN_APPLET(manager), manager->priv->autohide_cookie);
@@ -363,7 +395,11 @@ task_manager_set_property (GObject      *object,
       if (manager->priv->intellihide && !manager->priv->autohide_cookie)
       {     
         manager->priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager),"Intellihide" );
-      }      
+      } */
+      if (manager->priv->panel_list)
+      {
+        task_manager_refresh_panel_list (manager,manager->priv->panel_list);
+      }
       break;
 
     case PROP_INTELLIHIDE_MODE:
@@ -387,6 +423,17 @@ task_manager_set_property (GObject      *object,
                                                                              (GSourceFunc)_attention_required_reminder_cb,
                                                                              object);
       }
+      break;
+
+    case PROP_PANEL_LIST:
+      g_debug ("%s",__func__);
+      if (manager->priv->panel_list)
+      {
+        g_value_array_free (manager->priv->panel_list);
+        manager->priv->panel_list = NULL;
+      }
+      manager->priv->panel_list = (GValueArray*)g_value_dup_boxed (value);
+      task_manager_refresh_panel_list (manager,manager->priv->panel_list);
       break;
 
     default:
@@ -415,9 +462,12 @@ task_manager_constructed (GObject *object)
                NULL);
 
   priv->desktops_table = g_hash_table_new_full (g_str_hash,g_str_equal,g_free,g_free);
+  priv->intellihide_panel_instances = g_hash_table_new_full (g_direct_hash,g_direct_equal,
+                                                             NULL,g_free); //FIXME replace g_free.                                             
 
   priv->client = awn_config_get_default_for_applet (AWN_APPLET (object), NULL);
-
+  priv->awn_client = awn_config_get_default (0, NULL);
+  
   /* Connect up the important bits */
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
@@ -483,6 +533,13 @@ task_manager_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "attention_required_reminder",
                                        object, "attention_required_reminder", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+
+  desktop_agnostic_config_client_bind (priv->awn_client,
+                                       "panels",
+                                       "panel_list",
+                                       object, "panel_list", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 
@@ -598,6 +655,13 @@ task_manager_class_init (TaskManagerClass *klass)
                             G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ATTENTION_REQUIRED_REMINDER, pspec);
 
+  pspec = g_param_spec_boxed ("panel_list",
+                              "panel list",
+                              "List of panels",
+                              G_TYPE_VALUE_ARRAY,
+                              G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_PANEL_LIST, pspec);
+
   /* Install signals */
   _taskman_signals[GROUPING_CHANGED] =
 		g_signal_new ("grouping_changed",
@@ -625,6 +689,7 @@ task_manager_init (TaskManager *manager)
   priv->screen = wnck_screen_get_default ();
   priv->launcher_paths = NULL;
   priv->hidden_list = NULL;
+  priv->panel_list = NULL;
 
   wnck_set_client_type (WNCK_CLIENT_TYPE_PAGER);
 
@@ -755,16 +820,17 @@ task_manager_dispose (GObject *object)
   desktop_agnostic_config_client_unbind_all_for_object (priv->client,
                                                         object,
                                                         NULL);
+  /*
   if (priv->autohide_cookie)
   {     
     awn_applet_uninhibit_autohide (AWN_APPLET(object), priv->autohide_cookie);
     priv->autohide_cookie = 0;
-  }
-  if (priv->awn_gdk_window)
+  }*/
+/*  if (priv->awn_gdk_window)
   {
     g_object_unref (priv->awn_gdk_window);
     priv->awn_gdk_window = NULL;
-  }
+  }*/
 
   G_OBJECT_CLASS (task_manager_parent_class)->dispose (object);
 }
@@ -1734,14 +1800,47 @@ task_manager_remove_launcher(TaskManager  *manager, const gchar * launcher_path)
   g_value_array_free (launcher_paths);
 }
 
+static void
+task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
+{
+  TaskManagerPrivate *priv;
+
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+  /*
+   Find launchers in the the launcher list do not yet have a TaskIcon and 
+   add them
+   */
+  for (guint idx = 0; idx < list->n_values; idx++)
+  {
+    gint id = g_value_get_int (g_value_array_get_nth (list, idx));
+    TaskManagerAwnPanelInfo * panel_info = NULL;
+    
+    panel_info = g_hash_table_lookup (priv->intellihide_panel_instances,GINT_TO_POINTER(id));
+    if (!panel_info)
+    {
+      panel_info = g_malloc0 (sizeof (TaskManagerAwnPanelInfo) );
+      panel_info->connector_applet = awn_applet_new ("taskman_connector_applet","-1",id);
+      g_hash_table_insert (priv->intellihide_panel_instances,GINT_TO_POINTER(id),panel_info);
+    }
+    if (!priv->intellihide && panel_info->autohide_cookie)
+    {     
+      awn_applet_uninhibit_autohide (panel_info->connector_applet, panel_info->autohide_cookie);
+      panel_info->autohide_cookie = 0;
+    }
+    if (priv->intellihide && !panel_info->autohide_cookie)
+    {     
+      panel_info->autohide_cookie = awn_applet_inhibit_autohide (panel_info->connector_applet,"Intellihide" );
+    }    
+  }
+}
 /*
  * Checks when launchers got added/removed in the list in gconf/file.
  * It removes the launchers from the task-icons and add those
  * that aren't already on the bar.
  */
 static void
-task_manager_refresh_launcher_paths (TaskManager *manager,
-                                     GValueArray *list)
+task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
 {
   TaskManagerPrivate *priv;
 
@@ -2434,14 +2533,9 @@ xutils_get_input_shape (GdkWindow *window)
   return region;
 }
 
-/* 
- Governs the panel autohide when Intellihide is enabled.
- If a window in the relevant window list intersects with the awn panel then
- autohide will be uninhibited otherwise it will be inhibited.
- */
-
 static void
-task_manager_check_for_intersection (TaskManager * manager,
+task_manager_check_for_panel_instance_intersection (TaskManager * manager,
+                                     TaskManagerAwnPanelInfo * panel_info,
                                      WnckWorkspace * space,
                                      WnckApplication * app)
 {
@@ -2451,35 +2545,24 @@ task_manager_check_for_intersection (TaskManager * manager,
   gboolean  intersect = FALSE;
   GdkRectangle awn_rect;
   gint depth;
-  gint64 xid; 
   GdkRegion * updated_region;
-  
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
-  /*
-   Generate a GdkRegion for the awn panel_size
-   */
-  if (!priv->awn_gdk_window)
-  {
-    g_object_get (manager, "panel-xid", &xid, NULL);    
-    priv->awn_gdk_window = gdk_window_foreign_new ( xid);
-  }
-  g_return_if_fail (priv->awn_gdk_window);
-  gdk_window_get_geometry (priv->awn_gdk_window,&awn_rect.x,
+  gdk_window_get_geometry (panel_info->foreign_window,&awn_rect.x,
                            &awn_rect.y,&awn_rect.width,
                            &awn_rect.height,&depth);  
   /*
    gdk_window_get_geometry gives us an x,y or 0,0
    Fix that using get root origin.
    */
-  gdk_window_get_root_origin (priv->awn_gdk_window,&awn_rect.x,&awn_rect.y);
+  gdk_window_get_root_origin (panel_info->foreign_window,&awn_rect.x,&awn_rect.y);
   /*
    We cache the region for reuse for situations where the input mask is an empty
    region when the panel is hidden.  In that case we reuse the last good 
    region.
    */
-  updated_region = xutils_get_input_shape (priv->awn_gdk_window);
+  updated_region = xutils_get_input_shape (panel_info->foreign_window);
   g_return_if_fail (updated_region);
   if (gdk_region_empty(updated_region))
   {
@@ -2487,12 +2570,12 @@ task_manager_check_for_intersection (TaskManager * manager,
   }
   else
   {
-    if (priv->awn_gdk_region)
+    if (panel_info->foreign_region)
     {
-      gdk_region_destroy (priv->awn_gdk_region);
+      gdk_region_destroy (panel_info->foreign_region);
     }
-    priv->awn_gdk_region = updated_region; 
-    gdk_region_offset (priv->awn_gdk_region,awn_rect.x,awn_rect.y);    
+    panel_info->foreign_region = updated_region; 
+    gdk_region_offset (panel_info->foreign_region,awn_rect.x,awn_rect.y);    
   }
   
   /*
@@ -2506,7 +2589,14 @@ task_manager_check_for_intersection (TaskManager * manager,
     case INTELLIHIDE_GROUP:  /*TODO... Implement this for now same as app*/
     case INTELLIHIDE_APP:
     default:
-      windows = wnck_application_get_windows (app);
+      if (app)
+      {
+        windows = wnck_application_get_windows (app);
+      }
+      else
+      {
+        windows = wnck_screen_get_windows (priv->screen);
+      }
       break;
   }
   
@@ -2543,7 +2633,7 @@ task_manager_check_for_intersection (TaskManager * manager,
                               &win_rect.y,&win_rect.width,
                               &win_rect.height);
 
-    if (gdk_region_rect_in (priv->awn_gdk_region, &win_rect) != 
+    if (gdk_region_rect_in (panel_info->foreign_region, &win_rect) != 
           GDK_OVERLAP_RECTANGLE_OUT)
     {
 #ifdef DEBUG
@@ -2558,26 +2648,77 @@ task_manager_check_for_intersection (TaskManager * manager,
   /*
    Allow panel to hide (if necessary)
    */
-  if (intersect && priv->autohide_cookie)
+  if (intersect && panel_info->autohide_cookie)
   {     
-    awn_applet_uninhibit_autohide (AWN_APPLET(manager), priv->autohide_cookie);
+    awn_applet_uninhibit_autohide (AWN_APPLET(panel_info->connector_applet), panel_info->autohide_cookie);
 #ifdef DEBUG
-    g_debug ("me eat cookie: %u",priv->autohide_cookie);
+    g_debug ("me eat cookie: %u",panel_info->autohide_cookie);
 #endif
-    priv->autohide_cookie = 0;
+    panel_info->autohide_cookie = 0;
   }
   
   /*
    Inhibit Hide if not already doing so
    */
-  if (!intersect && !priv->autohide_cookie)
+  if (!intersect && !panel_info->autohide_cookie)
   {
-    priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
+    gchar * identifier = g_strdup_printf ("Intellihide:applet_conector=%p",panel_info->connector_applet);
+    panel_info->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(panel_info->connector_applet), identifier);
+    g_free (identifier);
 #ifdef DEBUG    
-    g_debug ("cookie is %u",priv->autohide_cookie);
+    g_debug ("cookie is %u",panel_info->autohide_cookie);
 #endif
   }
 
+}
+
+/* 
+ Governs the panel autohide when Intellihide is enabled.
+ If a window in the relevant window list intersects with the awn panel then
+ autohide will be uninhibited otherwise it will be inhibited.
+ */
+
+static void
+task_manager_check_for_intersection (TaskManager * manager,
+                                     WnckWorkspace * space,
+                                     WnckApplication * app)
+{
+  TaskManagerPrivate  *priv;
+  gint64 xid; 
+  
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  priv = manager->priv;
+  g_return_if_fail (priv->panel_list);
+  for (guint idx = 0; idx < priv->panel_list->n_values; idx++)
+  {
+    int id;
+    TaskManagerAwnPanelInfo * panel_info;
+    id = g_value_get_int (g_value_array_get_nth (priv->panel_list, idx));
+
+    panel_info = g_hash_table_lookup (priv->intellihide_panel_instances,GINT_TO_POINTER(id));
+    if (panel_info)
+    {
+      gint64 mxid;
+      g_object_get (manager, "panel-xid", &mxid, NULL);
+//      g_debug ("manager derived id = %ld",mxid);
+      g_object_get (panel_info->connector_applet, "panel-xid", &xid, NULL);
+//      g_debug ("%s: xid = %ld",__func__,xid);
+      if (!panel_info->foreign_window)
+      {
+        panel_info->foreign_window = gdk_window_foreign_new ( xid);
+      }
+      task_manager_check_for_panel_instance_intersection(manager,
+                                                         panel_info,
+                                                         space,
+                                                         app);
+    }
+    else
+    {
+      g_debug ("%s: panel_info failure",__func__);
+    }
+  }
+
+  return;
 }
 
 /*
@@ -2612,13 +2753,17 @@ task_manager_active_window_changed_cb (WnckScreen *screen,
      we had intersection and the panel was hidden, it will continue hide.
      So inhibit the autohide if there is no active window.
      */
+    task_manager_check_for_intersection (manager,
+                                         wnck_screen_get_active_workspace(screen),
+                                         NULL);
+/*
     if (!priv->autohide_cookie)
     {
       priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
 #ifdef DEBUG    
       g_debug ("%s: cookie is %u",__func__,priv->autohide_cookie);
 #endif
-    }
+    }*/
     return;
   }
   app = wnck_window_get_application (win);
@@ -2649,13 +2794,16 @@ task_manager_active_workspace_changed_cb (WnckScreen    *screen,
   win = wnck_screen_get_active_window (screen);
   if (!win)
   {
-    if (!priv->autohide_cookie)
+    task_manager_check_for_intersection (manager,
+                                         wnck_screen_get_active_workspace(screen),
+                                         NULL);
+/*    if (!priv->autohide_cookie)
     {
       priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
 #ifdef DEBUG    
       g_debug ("%s: cookie is %u",__func__,priv->autohide_cookie);
 #endif
-    }    
+    }    */
     return;
   }
   
