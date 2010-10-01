@@ -71,11 +71,12 @@ static GQuark win_quark = 0;
 
 typedef struct
 {
+  DesktopAgnosticConfigClient *panel_instance_client;
   GdkWindow * foreign_window;
   GdkRegion * foreign_region;
   AwnApplet * connector_applet;
-  /*Used by Intellihide*/
-  guint           autohide_cookie;
+  gint        intellihide_mode;
+  guint       autohide_cookie;
 } TaskManagerAwnPanelInfo;
 
 struct _TaskManagerPrivate
@@ -110,16 +111,14 @@ struct _TaskManagerPrivate
   GValueArray *launcher_paths;
   GValueArray *panel_list;
 
-  guint           attention_cookie;
-  guint           attention_source;
+  guint        attention_cookie;
+  guint        attention_source;
 
   gboolean     show_all_windows;
   gboolean     only_show_launchers;
   gboolean     drag_and_drop;
   gboolean     grouping;
-  gboolean     intellihide;
   gboolean     icon_grouping;
-  gint         intellihide_mode;
   gint         match_strength;
   gint         attention_autohide_timer;
   
@@ -138,6 +137,7 @@ typedef struct
 
 enum
 {
+  INTELLIHIDE_NONE,
   INTELLIHIDE_WORKSPACE,
   INTELLIHIDE_APP,
   INTELLIHIDE_GROUP  
@@ -154,8 +154,6 @@ enum
   PROP_GROUPING,
   PROP_ICON_GROUPING,
   PROP_MATCH_STRENGTH,
-  PROP_INTELLIHIDE,
-  PROP_INTELLIHIDE_MODE,
   PROP_ATTENTION_AUTOHIDE_TIMER,
   PROP_ATTENTION_REQUIRED_REMINDER,
 
@@ -295,14 +293,6 @@ task_manager_get_property (GObject    *object,
       g_value_set_boolean (value, manager->priv->icon_grouping);
       break;
 
-    case PROP_INTELLIHIDE:
-      g_value_set_boolean (value, manager->priv->intellihide);
-      break;
-
-    case PROP_INTELLIHIDE_MODE:
-      g_value_set_int (value, manager->priv->intellihide_mode);
-      break;
-
     case PROP_MATCH_STRENGTH:
       g_value_set_int (value, manager->priv->match_strength);
       break;
@@ -324,17 +314,6 @@ task_manager_get_property (GObject    *object,
   }
 }
 
-/*
-static void
-task_manager_set_panel_info_instances_intellihide_cb (gpointer key,
-                                                      TaskManagerAwnPanelInfo *panel_info,
-                                                      gpointer user_data)
-{
-  g_return_if_fail (panel_info);
-
-  panel_info->autohide_
-}
-*/
 static void
 task_manager_set_property (GObject      *object,
                           guint         prop_id,
@@ -379,33 +358,7 @@ task_manager_set_property (GObject      *object,
     case PROP_ICON_GROUPING:
       manager->priv->icon_grouping = g_value_get_boolean (value);
       break;
-      
-    case PROP_INTELLIHIDE:
-      /* TODO move into a function */
-/*      g_hash_table_foreach ( manager->priv->intellihide_panel_instances,
-                             task_manager_set_panel_info_instances_intellihide_cb,
-                             GINT_TO_POINTER (g_value_get_boolean (value) ));*/
-      manager->priv->intellihide = g_value_get_boolean (value);
-      /*
-      if (!manager->priv->intellihide && manager->priv->autohide_cookie)
-      {     
-        awn_applet_uninhibit_autohide (AWN_APPLET(manager), manager->priv->autohide_cookie);
-        manager->priv->autohide_cookie = 0;
-      }
-      if (manager->priv->intellihide && !manager->priv->autohide_cookie)
-      {     
-        manager->priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager),"Intellihide" );
-      } */
-      if (manager->priv->panel_list)
-      {
-        task_manager_refresh_panel_list (manager,manager->priv->panel_list);
-      }
-      break;
-
-    case PROP_INTELLIHIDE_MODE:
-      manager->priv->intellihide_mode = g_value_get_int (value);
-      break;
-      
+            
     case PROP_ATTENTION_AUTOHIDE_TIMER:
       manager->priv->attention_autohide_timer = g_value_get_int (value);
       break;
@@ -504,19 +457,7 @@ task_manager_constructed (GObject *object)
                                        "icon_grouping",
                                        object, "icon_grouping", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
-  desktop_agnostic_config_client_bind (priv->client,
-                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
-                                       "intellihide",
-                                       object, "intellihide", TRUE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);  
-  desktop_agnostic_config_client_bind (priv->client,
-                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
-                                       "intellihide_mode",
-                                       object, "intellihide_mode", TRUE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);    
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "match_strength",
@@ -611,22 +552,6 @@ task_manager_class_init (TaskManagerClass *klass)
                                 TRUE,
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ICON_GROUPING, pspec);
-
-  pspec = g_param_spec_boolean ("intellihide",
-                                "intellihide",
-                                "Intellihide",
-                                TRUE,
-                                G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_INTELLIHIDE, pspec);
-
-  pspec = g_param_spec_int ("intellihide_mode",
-                                "intellihide mode",
-                                "Intellihide mode",
-                                0,
-                                2,
-                                1,
-                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_INTELLIHIDE_MODE, pspec);
 
   pspec = g_param_spec_int ("match_strength",
                             "match_strength",
@@ -1801,10 +1726,20 @@ task_manager_remove_launcher(TaskManager  *manager, const gchar * launcher_path)
 }
 
 static void
+task_manager_intellihide_change_cb (const char* group, 
+                                    const char* key, 
+                                    GValue* value, 
+                                    int * user_data)
+{
+  *user_data = g_value_get_int (value);
+}
+
+static void
 task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
 {
   TaskManagerPrivate *priv;
-
+  GError * error = NULL;
+  
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
   /*
@@ -1821,14 +1756,38 @@ task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
     {
       panel_info = g_malloc0 (sizeof (TaskManagerAwnPanelInfo) );
       panel_info->connector_applet = awn_applet_new ("taskman_connector_applet","-1",id);
+      panel_info->panel_instance_client = awn_config_get_default (id, NULL);
+      panel_info->intellihide_mode = desktop_agnostic_config_client_get_int (
+                                                 panel_info->panel_instance_client, 
+                                                 "panel", 
+                                                 "intellihide_mode", 
+                                                  &error);
+      if (error)
+      {
+        g_debug ("%s: error accessing intellihide_mode. \"%s\"",__func__,error->message);
+        g_error_free (error);
+        error = NULL;
+      }
+      desktop_agnostic_config_client_notify_add (panel_info->panel_instance_client, 
+                                                 "panel", 
+                                                 "intellihide_mode", 
+                                                 (DesktopAgnosticConfigNotifyFunc)task_manager_intellihide_change_cb, 
+                                                 &panel_info->intellihide_mode, 
+                                                 &error);
+      if (error)
+      {
+        g_debug ("%s: error binding intellihide_mode. \"%s\"",__func__,error->message);
+        g_error_free (error);
+        error = NULL;
+      }
       g_hash_table_insert (priv->intellihide_panel_instances,GINT_TO_POINTER(id),panel_info);
     }
-    if (!priv->intellihide && panel_info->autohide_cookie)
+    if (!panel_info->intellihide_mode && panel_info->autohide_cookie)
     {     
       awn_applet_uninhibit_autohide (panel_info->connector_applet, panel_info->autohide_cookie);
       panel_info->autohide_cookie = 0;
     }
-    if (priv->intellihide && !panel_info->autohide_cookie)
+    if (panel_info->intellihide_mode && !panel_info->autohide_cookie)
     {     
       panel_info->autohide_cookie = awn_applet_inhibit_autohide (panel_info->connector_applet,"Intellihide" );
     }    
@@ -2581,7 +2540,7 @@ task_manager_check_for_panel_instance_intersection (TaskManager * manager,
   /*
    Get the list of windows to check for intersection
    */
-  switch (priv->intellihide_mode)
+  switch (panel_info->intellihide_mode)
   {
     case INTELLIHIDE_WORKSPACE:
       windows = wnck_screen_get_windows (priv->screen);
@@ -2700,17 +2659,24 @@ task_manager_check_for_intersection (TaskManager * manager,
     {
       gint64 mxid;
       g_object_get (manager, "panel-xid", &mxid, NULL);
-//      g_debug ("manager derived id = %ld",mxid);
       g_object_get (panel_info->connector_applet, "panel-xid", &xid, NULL);
-//      g_debug ("%s: xid = %ld",__func__,xid);
       if (!panel_info->foreign_window)
       {
         panel_info->foreign_window = gdk_window_foreign_new ( xid);
       }
-      task_manager_check_for_panel_instance_intersection(manager,
+      if (panel_info->intellihide_mode)
+      {
+        task_manager_check_for_panel_instance_intersection(manager,
                                                          panel_info,
                                                          space,
                                                          app);
+      }
+      else if ( !panel_info->intellihide_mode && panel_info->autohide_cookie)
+      {
+        awn_applet_uninhibit_autohide (panel_info->connector_applet, panel_info->autohide_cookie);
+        panel_info->autohide_cookie = 0;
+      }
+
     }
     else
     {
@@ -2737,12 +2703,6 @@ task_manager_active_window_changed_cb (WnckScreen *screen,
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-
-  if (!priv->intellihide)
-  {
-/*    g_warning ("%s: Intellihide callback invoked with Intellihide off",__func__);*/
-    return;
-  }
   
   win = wnck_screen_get_active_window (screen);
   if (!win)
@@ -2786,24 +2746,13 @@ task_manager_active_workspace_changed_cb (WnckScreen    *screen,
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-  if (!priv->intellihide)
-  {
-/*    g_warning ("%s: Intellihide callback invoked with Intellihide off",__func__);    */
-    return;
-  }
+
   win = wnck_screen_get_active_window (screen);
   if (!win)
   {
     task_manager_check_for_intersection (manager,
                                          wnck_screen_get_active_workspace(screen),
                                          NULL);
-/*    if (!priv->autohide_cookie)
-    {
-      priv->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(manager), "Intellihide");
-#ifdef DEBUG    
-      g_debug ("%s: cookie is %u",__func__,priv->autohide_cookie);
-#endif
-    }    */
     return;
   }
   
@@ -2821,11 +2770,7 @@ task_manager_win_closed_cb (WnckScreen *screen,WnckWindow *window, TaskManager *
   WnckWorkspace       *space;
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-  if (!priv->intellihide)
-  {
-/*    g_warning ("%s: Intellihide callback invoked with Intellihide off",__func__);*/
-    return;
-  }
+
   win = wnck_screen_get_active_window (priv->screen);
   if (!win)
   {
@@ -2851,11 +2796,6 @@ task_manager_win_geom_changed_cb (WnckWindow *window, TaskManager * manager)
   WnckWorkspace       *space;
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-  if (!priv->intellihide)
-  {
-/*    g_warning ("%s: Intellihide callback invoked with Intellihide off",__func__);*/
-    return;
-  }
   win = wnck_screen_get_active_window (priv->screen);
   if (!win)
   {
@@ -2878,10 +2818,6 @@ static void task_manager_win_state_changed_cb (WnckWindow * window,
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
    
-  if (!priv->intellihide)
-  {
-    return;
-  }
   win = wnck_screen_get_active_window (priv->screen);
   if (!win)
   {
