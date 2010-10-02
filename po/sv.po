@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-09-30 13:20+0000\n"
+"PO-Revision-Date: 2010-10-01 09:33+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
 "Language-Team: Launchpad Swedish Translators <lp-l10n-"
 "sv@lists.launchpad.net>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-10-01 08:48+0000\n"
+"X-Launchpad-Export-Date: 2010-10-02 05:06+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Swedish\n"
 
@@ -26,7 +26,7 @@ msgstr "Expanderare"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr "Fyller upp utrymme på panelen i expanderat läge"
+msgstr "Fyller upp utrymme på docken i expanderat läge"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
@@ -1179,7 +1179,7 @@ msgstr "En bitmask som lagrar effekttypen för varje händelse."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr "Position för en icke-expanderad panel på skärmkanten."
+msgstr "Position för en icke-expanderad dock på skärmkanten."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
@@ -1199,7 +1199,7 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
-"Döljer panelen automatiskt när pekaren inte fokuserar på den (ska inte "
+"Döljer docken automatiskt när pekaren inte fokuserar på den (ska inte "
 "användas tillsammans med panel_mode). 0. Inget, 1. Behåll under, 2. Tona ut, "
 "3. Genomskinlighet."
 
@@ -1287,7 +1287,7 @@ msgstr "Om aktiverat, kommer maximerade fönster inte att täcka panelen."
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
-"Om aktiverat, kommer panelen expandera till fullständig skärm-bredd/höjd."
+"Om aktiverat, kommer docken expandera till fullständig skärm-bredd/höjd."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
