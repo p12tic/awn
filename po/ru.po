@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-09-18 22:32+0000\n"
-"Last-Translator: diablo <Unknown>\n"
+"PO-Revision-Date: 2010-10-03 16:07+0000\n"
+"Last-Translator: Xamuh <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-09-19 05:29+0000\n"
+"X-Launchpad-Export-Date: 2010-10-04 04:57+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -1474,7 +1474,7 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr "Настроить аплет"
+msgstr "Настроить апплет"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
@@ -1491,11 +1491,11 @@ msgstr "Выбрать другую иконку"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr "Изменить значок"
+msgstr "Изменить иконку"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr "Значок по умолчанию"
+msgstr "Иконка по умолчанию"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
@@ -1503,7 +1503,7 @@ msgstr "Загрузка апплета..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr "Упс. Апплет упал. Кликните для перезагрузки."
+msgstr "Ой! Апплет поврежден.Щелкните для перезагрузки"
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
