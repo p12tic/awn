@@ -798,6 +798,7 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
 
   if (size<=0)
   {
+    g_warning ("Requested pixbuf for invalid size (%d).", size);
     return NULL;
   }
   /* Find the index of the current state in states */

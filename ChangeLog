@@ -1,3 +1,8 @@
+2010-10-09  Michal Hruby  <michal.mhr@gmail.com>
+
+	* libawn/awn-themed-icon.c:
+	Spit a warning if ThemedIcon's size is uninitialized.
+
 2010-09-30 Rodney Cryderman <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon-build-context-menus.c:
