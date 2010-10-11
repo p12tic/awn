@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-07-10 13:43+0000\n"
+"PO-Revision-Date: 2010-08-07 02:15+0000\n"
 "Last-Translator: Sergiy Gavrylov <sergiovana@bigmir.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-07-11 03:42+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2010-08-08 03:49+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -74,8 +74,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 " Якщо значення overlay_application_icons — true, цей ключ переверне "
 "накладання, якщо встановити true."
@@ -108,7 +108,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr "Затримка активування вікна, якщо вказівник проходить над піктограмою."
+msgstr ""
+"Затримка активування вікна, якщо вказівник проходить над піктограмою."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -284,9 +285,8 @@ msgid "Add as Launcher"
 msgstr "Додати як кнопку запуску"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
-#, fuzzy
 msgid "Remove Launcher"
-msgstr "Додати як кнопку запуску"
+msgstr "Вилучити інструмент запуску"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -297,24 +297,20 @@ msgid "_Close All"
 msgstr "_Закрити все"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "_Згорути"
+msgstr "Мінімізувати все"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "_Розгорнути"
+msgstr "Демінізувати все"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "Розгорнути на ве_сь екран"
+msgstr "Максимізувати все"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "В_ідновити попередній розмір"
+msgstr "Демаксимізувати все"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -451,8 +447,8 @@ msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
-"<b>Потрібно увімкнути ефекти стільниці, щоб налаштувати та застосувати теми."
-"</b>"
+"<b>Потрібно увімкнути ефекти стільниці, щоб налаштувати та застосувати "
+"теми.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
@@ -765,7 +761,7 @@ msgstr "Експорт теми"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Товщина"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -941,52 +937,50 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Пакунок аплетів Awn"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Помилка встановлення аплету"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Аплет успішно оновлено"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Аплет успішно додано"
 
 #: ../awn-settings/awnClass.py:1342
-#, fuzzy
 msgid "Can not delete active applet"
-msgstr "Деактивувати аплет"
+msgstr "Не вдається вилучити активний аплет"
 
 #: ../awn-settings/awnClass.py:1345
-#, fuzzy
 msgid "Delete Applet"
-msgstr "Деактивувати аплет"
+msgstr "Вилучити аплет"
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>Ефекти</b>"
+msgstr "<b>Вилучити %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Не вдалось вилучити аплет"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s вже наявний. Не вдалось експортувати тему."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Тема вже встановлена. Хочете перезаписати її?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Цей файл несумісний з файлом теми."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -1061,23 +1055,20 @@ msgid "Keep below"
 msgstr "Під вікнами"
 
 #: ../awn-settings/awnSettings.py.in:629
-#, fuzzy
 msgid "PNG Image"
-msgstr "Шаблон зображення"
+msgstr "Зображення PNG"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Зображення"
 
 #: ../awn-settings/awnSettings.py.in:759
-#, fuzzy
 msgid "Save Theme..."
-msgstr "Експорт теми..."
+msgstr "Зберегти тему..."
 
 #: ../awn-settings/awnSettings.py.in:768
-#, fuzzy
 msgid "Awn Theme"
-msgstr "Теми"
+msgstr "Тема Awn"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1093,11 +1084,11 @@ msgstr "Обрис — зворотний бік"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Вибрати шрифт підказки"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Файл теми Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1446,9 +1437,8 @@ msgid "The symmetry of the curve in Curves mode."
 msgstr "Симетрія вигину у «Вигнутому» режимі."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
-#, fuzzy
 msgid "The thickness in 3D mode."
-msgstr "Кут панелі в тривимірному режимі."
+msgstr "Товщина в тривимірному режимі."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
@@ -1528,14 +1518,8 @@ msgstr "Отакої! Аплет дав збій. Натисніть, щоб п�
 msgid "Close docklet"
 msgstr "Закрити панель"
 
-#~ msgid "Stripe Width"
-#~ msgstr "Ширина смуги"
-
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN успішно оновлено"
-
-#~ msgid "The width of the stripe in Lucido mode."
-#~ msgstr "Ширина смужки в режимі Lucido."
 
 #~ msgid "0 - solid, 1 - outline, 2 - outline, reversed."
 #~ msgstr "0 - суцільний, 1 - обрис, 2 - обрис — зворотний бік."
@@ -1547,13 +1531,19 @@ msgstr "Закрити панель"
 #~ msgstr "5)"
 
 #~ msgid ""
-#~ "Provides possibility to click on windows behind the panel. (0 - never "
-#~ "click through, 1 - click through when holding CTRL, 2 - always click "
-#~ "through and interact with panel only when holding CTRL)"
+#~ "Provides possibility to click on windows behind the panel. (0 - never click "
+#~ "through, 1 - click through when holding CTRL, 2 - always click through and "
+#~ "interact with panel only when holding CTRL)"
 #~ msgstr ""
-#~ "Надає можливість клацати у вікнах за панеллю. (0 — ніколи не клацати "
-#~ "через панель, 1 — клацати через панель утримуючи CTRL, 2 — завжди клацати "
-#~ "через панель та взаємодіяти з панеллю лише утримуючи CTRL)"
+#~ "Надає можливість клацати у вікнах за панеллю. (0 — ніколи не клацати через "
+#~ "панель, 1 — клацати через панель утримуючи CTRL, 2 — завжди клацати через "
+#~ "панель та взаємодіяти з панеллю лише утримуючи CTRL)"
 
 #~ msgid "6)"
 #~ msgstr "6)"
+
+#~ msgid "Stripe Width"
+#~ msgstr "Ширина смуги"
+
+#~ msgid "The width of the stripe in Lucido mode."
+#~ msgstr "Ширина смужки в режимі Lucido."

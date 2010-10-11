@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:56+0200\n"
-"PO-Revision-Date: 2010-07-22 09:25+0000\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-08-28 15:20+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-23 04:08+0000\n"
+"X-Launchpad-Export-Date: 2010-08-29 03:48+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -188,7 +188,7 @@ msgstr "Tietoja Awn:stä"
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
-msgstr "Raahaa vaihtaaksesi paneelin sijaintia"
+msgstr "Vedä vaihtaaksesi paneelin sijaintia"
 
 #: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
@@ -241,9 +241,8 @@ msgid "Add as Launcher"
 msgstr "Lisää käynnistimenä"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
-#, fuzzy
 msgid "Remove Launcher"
-msgstr "Lisää käynnistimenä"
+msgstr "Poista käynnistin"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -254,24 +253,20 @@ msgid "_Close All"
 msgstr "Sulje _kaikki"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "Pie_nennä"
+msgstr "Pienennä kaikki"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "Palau_ta"
+msgstr "Palauta koko"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "S_uurenna"
+msgstr "Suurenna kaikki"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "_Palauta koko"
+msgstr "Palauta koko"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -494,7 +489,7 @@ msgstr "Näytä vain käynnistimet"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr "Järjestä kuvakkeet napsauttamalla ja siirtämällä"
+msgstr "Järjestä kuvakkeet napsauttamalla ja vetämällä"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
@@ -504,7 +499,7 @@ msgstr ""
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr "Raahaa alle tai tuplanapsauta aktivoidaksesi sovelman"
+msgstr "Vedä alle tai kaksoisnapsauta aktivoidaksesi sovelman"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
@@ -721,7 +716,7 @@ msgstr "Teeman vienti"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Paksuus"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -895,52 +890,50 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Awn-sovelmapaketti"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Sovelman asennus epäonnistui"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Sovelma päivitetty onnistuneesti"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Sovelma lisätty onnistuneesti"
 
 #: ../awn-settings/awnClass.py:1342
-#, fuzzy
 msgid "Can not delete active applet"
-msgstr "Poista sovelma käytöstä"
+msgstr "Aktiivista sovelmaa ei voi poistaa"
 
 #: ../awn-settings/awnClass.py:1345
-#, fuzzy
 msgid "Delete Applet"
-msgstr "Poista sovelma käytöstä"
+msgstr "Poista sovelma"
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>Tehosteet</b>"
+msgstr "<b>Poistetaanko %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Sovelman poisto epäonnistui"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s on jo olemassa, teeman viesti ei onnistu."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Teema on jo asennettu, haluatko korvata sen?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Kyseessä on yhteensopimaton teematiedosto."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -1015,23 +1008,20 @@ msgid "Keep below"
 msgstr "Pidä alla"
 
 #: ../awn-settings/awnSettings.py.in:629
-#, fuzzy
 msgid "PNG Image"
-msgstr "Kuvion kuvatiedosto"
+msgstr "PNG-kuva"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Kuvat"
 
 #: ../awn-settings/awnSettings.py.in:759
-#, fuzzy
 msgid "Save Theme..."
-msgstr "Vie teema..."
+msgstr "Tallenna teema..."
 
 #: ../awn-settings/awnSettings.py.in:768
-#, fuzzy
 msgid "Awn Theme"
-msgstr "Teemat"
+msgstr "Awn-teema"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1051,7 +1041,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Awn-teematiedosto"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1367,9 +1357,8 @@ msgid "The symmetry of the curve in Curves mode."
 msgstr "Kaaren symmetria Kaari-tilassa."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
-#, fuzzy
 msgid "The thickness in 3D mode."
-msgstr "Paneelin kulma 3D-tilassa."
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."

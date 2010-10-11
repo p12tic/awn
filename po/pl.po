@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:56+0200\n"
-"PO-Revision-Date: 2010-07-07 11:00+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-10-06 18:09+0000\n"
+"Last-Translator: bts1985 <Unknown>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-07-08 03:51+0000\n"
+"X-Launchpad-Export-Date: 2010-10-08 04:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -66,8 +66,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -94,7 +94,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr "Opóźnienie przed aktywacją okna po przeciągnięciu ikony na ikonę okna."
+msgstr ""
+"Opóźnienie przed aktywacją okna po przeciągnięciu ikony na ikonę okna."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -260,9 +261,8 @@ msgid "Add as Launcher"
 msgstr "Dodaj jako aktywator"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
-#, fuzzy
 msgid "Remove Launcher"
-msgstr "Dodaj jako aktywator"
+msgstr "Usuń aktywator"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -273,24 +273,20 @@ msgid "_Close All"
 msgstr "_Zamknij wszystko"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "Mi_nimalizuj"
+msgstr "Zminimalizuj wszystkie okna"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "Cofnij m_inimalizację"
+msgstr "Cofnij minimalizację wszystkich okien"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "Ma_ksymalizuj"
+msgstr "Zmaksymalizuj wszystkie okna"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "Cofnij m_aksymalizację"
+msgstr "Cofnij maksymalizację wszystkich okien"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -351,7 +347,7 @@ msgstr "Zarządzaj ustawieniami, aktywatorami, apletami oraz motywami AWN."
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr ""
+msgstr "Kąt nachylenia tła w trybie 3D"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
@@ -371,7 +367,7 @@ msgstr "<b>Efekty</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Eksportuj grupę opcji</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
@@ -739,7 +735,7 @@ msgstr "Eksportuj skórkę"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Grubość"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -887,8 +883,8 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
-"Niniejszy program jest wolnym oprogramowaniem; można go rozprowadzać dalej i/"
-"lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
+"Niniejszy program jest wolnym oprogramowaniem; można go rozprowadzać dalej "
+"i/lub modyfikować na warunkach Powszechnej Licencji Publicznej GNU, wydanej "
 "przez Fundację Wolnego Oprogramowania - według wersji drugiej tej Licencji "
 "lub którejś z późniejszych wersji."
 
@@ -916,52 +912,50 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Aplet Awn"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Instalacja apletu nieudana"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Aktualizacja apletu zakończona pomyślnie"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Dodawanie apletu zakończone pomyślnie"
 
 #: ../awn-settings/awnClass.py:1342
-#, fuzzy
 msgid "Can not delete active applet"
-msgstr "Deaktywacja apletu"
+msgstr "Nie można usunąć aktywnego apletu"
 
 #: ../awn-settings/awnClass.py:1345
-#, fuzzy
 msgid "Delete Applet"
-msgstr "Deaktywacja apletu"
+msgstr "Usuń aplet"
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>Efekty</b>"
+msgstr "<b>Usunąć %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Nie można usunąć apletu"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s już istanieje, nie można weksportować motywu."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Motyw obecnie zainstalowany, czy chcesz go nadpisać?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Ten motyw jest niekompatybilny"
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -1036,23 +1030,20 @@ msgid "Keep below"
 msgstr "Wyświetlaj pod spodem"
 
 #: ../awn-settings/awnSettings.py.in:629
-#, fuzzy
 msgid "PNG Image"
-msgstr "Obrazek tła"
+msgstr "Obraz PNG"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Obrazy"
 
 #: ../awn-settings/awnSettings.py.in:759
-#, fuzzy
 msgid "Save Theme..."
-msgstr "Eksportuj motyw..."
+msgstr "Zapisz motyw..."
 
 #: ../awn-settings/awnSettings.py.in:768
-#, fuzzy
 msgid "Awn Theme"
-msgstr "Tematy"
+msgstr "Motyw Awn"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1072,7 +1063,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Plik motywu Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1135,8 +1126,8 @@ msgstr ""
 "stronę apletów na AWN Wiki aby poznać nazwę paczki dla Twojej dystrybucji\n"
 "która dostarcza ten moduł.\n"
 "\n"
-"2. Moduł został zainstalowany w niestandardowej lokalizacji. To "
-"najczęściej \n"
+"2. Moduł został zainstalowany w niestandardowej lokalizacji. To najczęściej "
+"\n"
 "zdarza się kiedy instalujesz paczkę ręcznie, a nie przy użyciu menadżera "
 "paczek.\n"
 "Ta sytuacja jest opisana w FAQ na AWN Wiki.\n"
@@ -1210,7 +1201,7 @@ msgstr "Opóźnienie pomiędzy zjechaniem myszy z panelu, a jego ukryciem."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Opóźnienie sprawdzania położenia kursora myszy."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid ""
@@ -1407,9 +1398,8 @@ msgid "The symmetry of the curve in Curves mode."
 msgstr "Symetria krzywych w Trybie Krzywych"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
-#, fuzzy
 msgid "The thickness in 3D mode."
-msgstr "Kąt położenia panelu w trybie 3D."
+msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
@@ -1489,14 +1479,8 @@ msgstr ""
 msgid "Close docklet"
 msgstr "Zamknij docklet"
 
-#~ msgid "Stripe Width"
-#~ msgstr "Szerokość pasa"
-
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN został pomyślnie odświeżony"
-
-#~ msgid "The width of the stripe in Lucido mode."
-#~ msgstr "Szerokość pasa w trybie Lucido."
 
 #~ msgid "3)"
 #~ msgstr "3)"
@@ -1510,6 +1494,9 @@ msgstr "Zamknij docklet"
 #~ msgid "Always"
 #~ msgstr "Zawsze"
 
+#~ msgid "Stripe Width"
+#~ msgstr "Szerokość pasa"
+
 #~ msgid "0 - solid, 1 - outline, 2 - outline, reversed."
 #~ msgstr "0 - pełne, 1 - obramowanie, 2 - obramowanie, odwrócone."
 
@@ -1517,11 +1504,14 @@ msgstr "Zamknij docklet"
 #~ msgstr "6)"
 
 #~ msgid ""
-#~ "Provides possibility to click on windows behind the panel. (0 - never "
-#~ "click through, 1 - click through when holding CTRL, 2 - always click "
-#~ "through and interact with panel only when holding CTRL)"
+#~ "Provides possibility to click on windows behind the panel. (0 - never click "
+#~ "through, 1 - click through when holding CTRL, 2 - always click through and "
+#~ "interact with panel only when holding CTRL)"
 #~ msgstr ""
-#~ "Umożliwia klikanie okien znajdujących się za panelem. (0 - nigdy nie "
-#~ "klikaj przez panel, 1 - klikaj przez panel przy trzymanym klawiszu CTRL, "
-#~ "2 - zawsze klikaj i umożliwiaj klikanie przez panel i pozwalaj na "
-#~ "operacje na panelu tylko z trzymanym klawiszem CTRL)"
+#~ "Umożliwia klikanie okien znajdujących się za panelem. (0 - nigdy nie klikaj "
+#~ "przez panel, 1 - klikaj przez panel przy trzymanym klawiszu CTRL, 2 - zawsze "
+#~ "klikaj i umożliwiaj klikanie przez panel i pozwalaj na operacje na panelu "
+#~ "tylko z trzymanym klawiszem CTRL)"
+
+#~ msgid "The width of the stripe in Lucido mode."
+#~ msgstr "Szerokość pasa w trybie Lucido."

@@ -8,23 +8,23 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-02-08 13:38+0000\n"
-"Last-Translator: Mark Lee <Unknown>\n"
+"PO-Revision-Date: 2010-10-06 10:21+0000\n"
+"Last-Translator: Lê Trường An <Unknown>\n"
 "Language-Team: Vietnamese <vi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-02-09 05:12+0000\n"
+"X-Launchpad-Export-Date: 2010-10-08 04:40+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Độ giãn"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Lấp đầy khoảng trống trên thanh panel trong chế độ giãn"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -856,8 +856,8 @@ msgid ""
 "any later version."
 msgstr ""
 "Chương trình này là phần mềm mở ; bạn có thể phân phối hoặc thay đổi nó dưới "
-"Giấy phép GNU General Public License được xuất bản bởi tổ chức phần mềm mở "
-"( Free Software Foundation) ; hoặc phiên bản 2 của giấy phép hoặc (tùy chọn "
+"Giấy phép GNU General Public License được xuất bản bởi tổ chức phần mềm mở ( "
+"Free Software Foundation) ; hoặc phiên bản 2 của giấy phép hoặc (tùy chọn "
 "của bạn) với bất cứ phiên bản mới nào"
 
 #: ../awn-settings/awnClass.py:1088
@@ -1053,9 +1053,8 @@ msgid "Overlay application icon with best quality icon"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:1139
-#, fuzzy
 msgid "Preferences"
-msgstr "Tùy chỉnh Dock"
+msgstr "Tùy chỉnh"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"

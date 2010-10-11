@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:56+0200\n"
-"PO-Revision-Date: 2010-07-14 15:17+0000\n"
-"Last-Translator: devcode <klaider@yandex.ru>\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-10-03 16:07+0000\n"
+"Last-Translator: Xamuh <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-07-15 03:37+0000\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Launchpad-Export-Date: 2010-10-04 04:57+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -31,7 +31,7 @@ msgstr "Заполняет место на панели в развёрнуто�
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
-msgstr " Разрешить группировку окон с разными значениями WM_CLIENT_NAME."
+msgstr " Группировать окна с разными значениями WM_CLIENT_NAME."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
@@ -66,12 +66,12 @@ msgstr ""
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
-msgstr " Систематизировать одинаковые ярлыки, если группировка окон отключена."
+msgstr " Объединять одинаковые ярлыки, если группировка окон отключена."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 " Если значение overlay_application_icons истинно, этот ключ отменит "
 "наложение, если оно включено."
@@ -82,8 +82,8 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
-" Если true, то иконка приложения будет наложена на кнопку запуска вместо ее "
-"замены, в соответствии с режимом наложения, определенным в "
+" Если значение истинно, то иконка приложения будет наложена на кнопку "
+"запуска вместо ее замены, в соответствии с режимом наложения, определенным в "
 "icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
@@ -191,7 +191,8 @@ msgstr "Показывать окна со всех рабочих мест"
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
-msgstr "Порог, при котором текст будет отображаться. Диапазон значений от 1.."
+msgstr ""
+"Порог, при котором текст будет отображаться. Диапазон значений от 1.."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
@@ -280,9 +281,8 @@ msgid "Add as Launcher"
 msgstr "Закрепить на панели"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
-#, fuzzy
 msgid "Remove Launcher"
-msgstr "Закрепить на панели"
+msgstr "Удалить значок"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -293,24 +293,20 @@ msgid "_Close All"
 msgstr "_Закрыть всё"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "Свернуть"
+msgstr "Свернуть всё"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "_Развернуть"
+msgstr "Разверуть все"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "_Развернуть"
+msgstr "Максимально все"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "Восстановить прежний размер"
+msgstr "Обычные все"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -759,7 +755,7 @@ msgstr "Экспорт темы"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Толщина"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -818,8 +814,8 @@ msgstr "Ошибка, каталог пуст или уже существует
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
-"Ошибка, %s отсутствует в вашей системе, пожалуйста, удалите его из sources."
-"list"
+"Ошибка, %s отсутствует в вашей системе, пожалуйста, удалите его из "
+"sources.list"
 
 #: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
@@ -938,52 +934,50 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "awn пакет приложений"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Установка аплета не удалась"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Аплет успешно обновлен"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Аплет успешно добавлен"
 
 #: ../awn-settings/awnClass.py:1342
-#, fuzzy
 msgid "Can not delete active applet"
-msgstr "Отключить апплет"
+msgstr "Немогу удалить используемый апплет"
 
 #: ../awn-settings/awnClass.py:1345
-#, fuzzy
 msgid "Delete Applet"
-msgstr "Отключить апплет"
+msgstr "Удалить апплет"
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>Эффекты</b>"
+msgstr "<b>Удалить %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Немогу удалить апплет"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s уже существует, не могу экспортировать тему"
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Тема уже установлена, вы хотите переписать ее?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Это не поддерживаемый файл темы."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -1058,23 +1052,20 @@ msgid "Keep below"
 msgstr "Всегда снизу"
 
 #: ../awn-settings/awnSettings.py.in:629
-#, fuzzy
 msgid "PNG Image"
-msgstr "Картинка шаблона"
+msgstr "PNG изображение"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Изображения"
 
 #: ../awn-settings/awnSettings.py.in:759
-#, fuzzy
 msgid "Save Theme..."
-msgstr "Экспортировать тему..."
+msgstr "Сохранить Тему ..."
 
 #: ../awn-settings/awnSettings.py.in:768
-#, fuzzy
 msgid "Awn Theme"
-msgstr "Темы оформления"
+msgstr "Тема Awn"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1090,11 +1081,11 @@ msgstr "Обводка (инверсия)"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Выбор шрифта для подсказок"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Файл темы Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1437,9 +1428,8 @@ msgid "The symmetry of the curve in Curves mode."
 msgstr "Симметрия кривой в режиме Кривых."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
-#, fuzzy
 msgid "The thickness in 3D mode."
-msgstr "Угол наклона панели в режиме 3D."
+msgstr "Толщина в 3D режиме."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
@@ -1477,14 +1467,14 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
-"<b>Иконка темы панели</b>\n"
-"Вы собираетесь заменить иконкиу на панели. Пожалуйста, укажите если это "
-"изменение должно затронуть только этот апплет, все апплеты этого вида, или "
-"каждую иконку панели этого типа."
+"<b>Иконка на панели</b>\n"
+"Вы решили заменить иконку на панели. Пожалуйста, выберите должно ли это "
+"изменение примениться только для этого апплета, для всех апплетов этого "
+"типа, или для иконки на панели этого типа."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr "Настроить аплет"
+msgstr "Настроить апплет"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
@@ -1493,7 +1483,7 @@ msgstr "О программе \"%s\""
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr "Значки"
+msgstr "Иконки"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
@@ -1501,11 +1491,11 @@ msgstr "Выбрать другую иконку"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr "Изменить значок"
+msgstr "Изменить иконку"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr "Значок по умолчанию"
+msgstr "Иконка по умолчанию"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
@@ -1513,20 +1503,14 @@ msgstr "Загрузка апплета..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr "Упс. Апплет упал. Кликните для перезагрузки."
+msgstr "Ой! Апплет поврежден.Щелкните для перезагрузки"
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
 msgstr "Закрыть панель"
 
-#~ msgid "Stripe Width"
-#~ msgstr "Длинна полоски"
-
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN был успешно обновлён"
-
-#~ msgid "The width of the stripe in Lucido mode."
-#~ msgstr "Длинна полосы в режиме Lucido."
 
 #~ msgid "PNG Files"
 #~ msgstr "PNG файлы"
@@ -1547,13 +1531,19 @@ msgstr "Закрыть панель"
 #~ msgstr "3)"
 
 #~ msgid ""
-#~ "Provides possibility to click on windows behind the panel. (0 - never "
-#~ "click through, 1 - click through when holding CTRL, 2 - always click "
-#~ "through and interact with panel only when holding CTRL)"
+#~ "Provides possibility to click on windows behind the panel. (0 - never click "
+#~ "through, 1 - click through when holding CTRL, 2 - always click through and "
+#~ "interact with panel only when holding CTRL)"
 #~ msgstr ""
 #~ "Предоставляет возможность нажимать на окна за панелью. (0 - никогда не "
 #~ "нажимать, 1 - нажимать когда удерживается CTRL, 2 - всегда нажимать и "
 #~ "взаимодействовать с панелью только когда удерживается CTRL)."
+
+#~ msgid "Stripe Width"
+#~ msgstr "Длинна полоски"
+
+#~ msgid "The width of the stripe in Lucido mode."
+#~ msgstr "Длинна полосы в режиме Lucido."
 
 #~ msgid "6)"
 #~ msgstr "6)"

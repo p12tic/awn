@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:56+0200\n"
-"PO-Revision-Date: 2010-07-07 11:05+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-09-09 22:09+0000\n"
+"Last-Translator: Papp Bence <papp.bence89@gmail.com>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-08 03:50+0000\n"
+"X-Launchpad-Export-Date: 2010-09-10 04:49+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -39,6 +39,8 @@ msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Az elfedő ikonok átlátszóságát kezeli, ha az overlay_application_icons "
+"engedélyezve van. Érvényes határértékek: 0.0-tól 1.0-ig."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -48,12 +50,20 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" Az ablak ikonokat kezeli a Feladat ikonban. 0) Mindig megjeleníti az "
+"alkalmazás ablak ikonját, feltéve, hogy az aktív (leszámítva néhány nagyon "
+"speciális és ritka esetet). 1) Megpróbálja csak azokat az alkalmazásokat "
+"megjeleníteni, amelyek valószínűleg hasznos vagy összefüggő információt "
+"nyújtanak. 2) Csak az indító ikont jeleníti meg, az alkalmazások ikonjait "
+"nem."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Az elfedő ikonok méretét szabályozza, ha az overlay_application_icons "
+"engedélyezve van. Érvényes határérték: 0.2-től 0.7-ig."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
@@ -64,9 +74,11 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
+" Ha az overlay_application_icons engedélyezve van, ez a kulcs megfordítja a "
+"borítást, ha engedélyezve van."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -74,30 +86,37 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" Ha be van kapcsolva akkor az alkalmazás ablaka be lesz borítva az indító "
+"ikonnal ahelyett, hogy az icon_change_behavior szerint viselkedne."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
-"Viselkedés a más munkaterületen aktivál ablak esetében. (0 alapértelmezett, "
-"1 - aktív munkaterület váltása, 2 - mozgatás az aktív munkaterületre)"
+"Viselkedés, amikor az \"ablak más munkaterületen\" funkció aktiválva van. (0 "
+"- alapértelmezett, 1 - aktív munkaterület váltása, 2 - mozgatás az aktív "
+"munkaterületre)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Környezeti menü definiálása. Az awn menü telepítési könyvtárában keresi, "
+"hacsak nincs konkrét útvonal megadva."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr "Eltérés, mielőtt aktiválja az ablakot amikor ráhúzunk egy ikont."
+msgstr "Várakozás, mielőtt aktiválja az ablakot amikor ráhúzunk egy ikont."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"Asztal másolási viselkedése fájlok húzása és ejtése esetén. 0.. Mindet "
+"másolja, 1.. Másolja, ha a felhasználó a tulajdonos, 2.. Ne másolja."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
@@ -105,11 +124,11 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Ablakok átrendezése húzd és ejtsd módszerrel "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Feladatok csoportosításának engedélyezése."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -136,6 +155,8 @@ msgstr ""
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
+"Az ikonok alatt megjelenő feladatjelzők maximális száma. Érvényes tartomány "
+"0..3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
@@ -151,7 +172,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Csak az indítóablakok kezelése és mutatása."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
@@ -167,6 +188,8 @@ msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"útvonalak a .desktop fájlokhoz melyekből a feladatkezelő létrehozhatja az "
+"indítókat"
 
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1020
@@ -180,21 +203,21 @@ msgstr "%s indítása"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Indító/Feladatkezelő"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Indító/Feladatkezelő kisalkalmazás"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
 msgid "About Awn"
-msgstr ""
+msgstr "AWN Névjegye"
 
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Húzza, hogy megváltoztassa a panel elhelyezkedését"
 
 #: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
@@ -208,12 +231,12 @@ msgstr "Dokk beállítások"
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Az AWN beállításokat nem lehet megnyitni: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "Kisalkalmazás a dokk kezelésére és az AWN beállításainak indítására."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -244,7 +267,7 @@ msgstr "%s%d munkaterület"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:683
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Hozzáadás Indítóként"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
@@ -259,24 +282,20 @@ msgid "_Close All"
 msgstr "_Mindent bezár"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "Mi_nimalizálás"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "_Eredeti méret"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "Ma_ximalizálás"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "_Eredeti méret"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -300,11 +319,11 @@ msgstr "_Eredeti méret"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1053
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Mindig a látható munkaterületen van"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Csak ezen a munkaterületen"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
@@ -359,7 +378,7 @@ msgstr "<b>Effektusok</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Beállítás-csoportok exportálása</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
@@ -421,11 +440,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "Aktív négyzet:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Nyíl típusa"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
@@ -449,23 +468,23 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
-msgstr ""
+msgstr "Átkattintható"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
-msgstr ""
+msgstr "Bezárás animáció:"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Configured Effects"
-msgstr ""
+msgstr "Beállított effektek"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr ""
+msgstr "Sarok sugara"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Ívek szimmetriája"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
@@ -478,11 +497,11 @@ msgstr "Egyéni"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "Egyedi nyíl képe"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
-msgstr ""
+msgstr "Effektek beállítása"
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Customize..."
@@ -494,11 +513,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr ""
+msgstr "Csak az Indítók mutatása"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "Húzd és ejtsd átrendezés"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
@@ -512,7 +531,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "Panel _kiterjesztése"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Export Theme..."
@@ -520,7 +539,7 @@ msgstr "Téma exportálása…"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Extra Options"
-msgstr ""
+msgstr "További beállítások"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Fill Color"
@@ -592,7 +611,7 @@ msgstr "Ikonok:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
-msgstr ""
+msgstr "Belső él színe"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
@@ -604,7 +623,7 @@ msgstr "Telepítés…"
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "Indítás animáció:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
@@ -612,19 +631,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Monitor X-eltolás"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Monitor Y-eltolás"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr ""
+msgstr "Monitor magassága"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "Monitor szélessége"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
@@ -636,15 +655,15 @@ msgstr "Eltolás"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr ""
+msgstr "Megnyitás animáció:"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
-msgstr ""
+msgstr "Külső él színe"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
-msgstr ""
+msgstr "Körvonal színe"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Panel Background Colors"
@@ -656,7 +675,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Panel stílusa és mérete"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
@@ -672,7 +691,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "Tükröződés eltolása"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
@@ -688,7 +707,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Egyedi nyíl kiválasztása"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
@@ -697,7 +716,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
-msgstr ""
+msgstr "Elválasztó színe"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
@@ -713,15 +732,15 @@ msgstr "Árnyékok mutatása"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
-msgstr ""
+msgstr "St_ílus:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "_AWN automatikus indítása"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "Téma exportálása"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
@@ -739,7 +758,7 @@ msgstr "Háromszög"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "GTK téma színeinek használata"
 
 #: ../awn-settings/awn-settings.ui.h:104
 msgid "Use Pattern as Background"
@@ -771,17 +790,18 @@ msgstr "képpontok"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Hiba, már létezik egy sources.list"
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Hiba, az útvonal üres vagy már létezik"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
+"Hiba, %s hiányzik a rendszeréről, kérem távolítsa el a sources.list-ből"
 
 #: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
@@ -849,12 +869,12 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Nem találhatók az alábbi ikonok: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Nem található az alábbi ikon: %s\n"
 
 #: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -924,9 +944,9 @@ msgid "Delete Applet"
 msgstr ""
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>Effektusok</b>"
+msgstr ""
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
@@ -948,7 +968,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "Az AWN beállítások nem futtathatók rendszergazdaként."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
@@ -984,7 +1004,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Lebegő"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
@@ -1027,9 +1047,8 @@ msgid "Images"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:759
-#, fuzzy
 msgid "Save Theme..."
-msgstr "Téma exportálása…"
+msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:768
 msgid "Awn Theme"
@@ -1041,7 +1060,7 @@ msgstr "Homogén"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Outline"
-msgstr ""
+msgstr "Körvonal"
 
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
@@ -1108,10 +1127,20 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Az alábbi Python modulok nem találhatók: %s. Ennek több lehetséges\n"
+"magyarázata van:\n"
+"\n"
+"1. Önnek nincs telepítve ez a Python modul. Ez esetben, nézze meg\n"
+"az AWN wiki kisalkalmazások fejezetét, hogy kiderítse a csomag\n"
+"pontos nevét, mely az ön disztribúciójában ezt a modult biztosítja.\n"
+"\n"
+"2. A modul nem szokványos helyre lett telepítve. Ez általában akkor\n"
+"fordul elő, ha kézzel telepít egy csomagot, vagyis nem a disztribúciója\n"
+"csomagkezelőjével. Ezt az esetet a wiki FAQ fejezete tárgyalja.\n"
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn Wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
