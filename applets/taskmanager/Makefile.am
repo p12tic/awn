@@ -67,6 +67,8 @@ taskmanager_la_SOURCES = \
 	task-manager-api-wrapper.c \
 	task-manager-api-wrapper.h \
 	task-manager-api-wrapper-glue.h \
+	task-manager-panel-connector.c \
+	task-manager-panel-connector.h \
 	task-settings.c \
 	task-settings.h \
 	task-window.c \

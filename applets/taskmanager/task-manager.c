@@ -47,6 +47,8 @@
 #include "libawn/awn-pixbuf-cache.h"
 #include "awn-desktop-lookup-cached.h"
 #include "task-manager.h"
+#include "task-manager-panel-connector.h"
+
 #include "dock-manager-api.h"
 
 #include "task-drag-indicator.h"
@@ -74,7 +76,7 @@ typedef struct
   DesktopAgnosticConfigClient *panel_instance_client;
   GdkWindow * foreign_window;
   GdkRegion * foreign_region;
-  AwnApplet * connector_applet;
+  TaskManagerPanelConnector * connector;
   gint        intellihide_mode;
   guint       autohide_cookie;
 } TaskManagerAwnPanelInfo;
@@ -303,10 +305,6 @@ task_manager_get_property (GObject    *object,
 
     case PROP_ATTENTION_REQUIRED_REMINDER:
       g_value_set_int (value, manager->priv->attention_required_reminder);
-      break;
-
-    case PROP_PANEL_LIST:
-      g_value_set_boolean (value, manager->priv->only_show_launchers); 
       break;
 
     default:
@@ -1742,10 +1740,8 @@ task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
   
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-  /*
-   Find launchers in the the launcher list do not yet have a TaskIcon and 
-   add them
-   */
+
+  g_debug ("%s",__func__);
   for (guint idx = 0; idx < list->n_values; idx++)
   {
     gint id = g_value_get_int (g_value_array_get_nth (list, idx));
@@ -1754,8 +1750,12 @@ task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
     panel_info = g_hash_table_lookup (priv->intellihide_panel_instances,GINT_TO_POINTER(id));
     if (!panel_info)
     {
+      gchar * uid = g_strdup_printf("-999%d",id);
       panel_info = g_malloc0 (sizeof (TaskManagerAwnPanelInfo) );
-      panel_info->connector_applet = awn_applet_new ("taskman_connector_applet","-1",id);
+      g_debug ("%s new constructor applet connecting to %d",__func__,id);
+      panel_info->connector = task_manager_panel_connector_new (id);
+      g_debug ("%s Success new constructor applet",__func__);
+      g_free (uid);
       panel_info->panel_instance_client = awn_config_get_default (id, NULL);
       panel_info->intellihide_mode = desktop_agnostic_config_client_get_int (
                                                  panel_info->panel_instance_client, 
@@ -1781,15 +1781,16 @@ task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
         error = NULL;
       }
       g_hash_table_insert (priv->intellihide_panel_instances,GINT_TO_POINTER(id),panel_info);
+      g_debug ("Done adding connnector");
     }
     if (!panel_info->intellihide_mode && panel_info->autohide_cookie)
     {     
-      awn_applet_uninhibit_autohide (panel_info->connector_applet, panel_info->autohide_cookie);
+      task_manager_panel_connector_uninhibit_autohide (panel_info->connector, panel_info->autohide_cookie);
       panel_info->autohide_cookie = 0;
     }
     if (panel_info->intellihide_mode && !panel_info->autohide_cookie)
     {     
-      panel_info->autohide_cookie = awn_applet_inhibit_autohide (panel_info->connector_applet,"Intellihide" );
+      panel_info->autohide_cookie = task_manager_panel_connector_inhibit_autohide (panel_info->connector,"Intellihide" );
     }    
   }
 }
@@ -2609,7 +2610,7 @@ task_manager_check_for_panel_instance_intersection (TaskManager * manager,
    */
   if (intersect && panel_info->autohide_cookie)
   {     
-    awn_applet_uninhibit_autohide (AWN_APPLET(panel_info->connector_applet), panel_info->autohide_cookie);
+    task_manager_panel_connector_uninhibit_autohide (panel_info->connector, panel_info->autohide_cookie);
 #ifdef DEBUG
     g_debug ("me eat cookie: %u",panel_info->autohide_cookie);
 #endif
@@ -2621,8 +2622,8 @@ task_manager_check_for_panel_instance_intersection (TaskManager * manager,
    */
   if (!intersect && !panel_info->autohide_cookie)
   {
-    gchar * identifier = g_strdup_printf ("Intellihide:applet_conector=%p",panel_info->connector_applet);
-    panel_info->autohide_cookie = awn_applet_inhibit_autohide (AWN_APPLET(panel_info->connector_applet), identifier);
+    gchar * identifier = g_strdup_printf ("Intellihide:applet_conector=%p",panel_info->connector);
+    panel_info->autohide_cookie = task_manager_panel_connector_inhibit_autohide (panel_info->connector, identifier);
     g_free (identifier);
 #ifdef DEBUG    
     g_debug ("cookie is %u",panel_info->autohide_cookie);
@@ -2657,9 +2658,11 @@ task_manager_check_for_intersection (TaskManager * manager,
     panel_info = g_hash_table_lookup (priv->intellihide_panel_instances,GINT_TO_POINTER(id));
     if (panel_info)
     {
-      gint64 mxid;
-      g_object_get (manager, "panel-xid", &mxid, NULL);
-      g_object_get (panel_info->connector_applet, "panel-xid", &xid, NULL);
+      g_object_get (panel_info->connector, "panel-xid", &xid, NULL);
+      if (!xid)
+      {
+        continue;  /*this panel is not done initializing yet...*/
+      }
       if (!panel_info->foreign_window)
       {
         panel_info->foreign_window = gdk_window_foreign_new ( xid);
@@ -2673,7 +2676,7 @@ task_manager_check_for_intersection (TaskManager * manager,
       }
       else if ( !panel_info->intellihide_mode && panel_info->autohide_cookie)
       {
-        awn_applet_uninhibit_autohide (panel_info->connector_applet, panel_info->autohide_cookie);
+        task_manager_panel_connector_uninhibit_autohide (panel_info->connector, panel_info->autohide_cookie);
         panel_info->autohide_cookie = 0;
       }
 

@@ -1252,8 +1252,8 @@ awn_applet_create_about_item (AwnApplet         *applet,
                     G_CALLBACK (_cleanup_about_dialog), dialog);
   g_signal_connect_swapped (dialog, "response",
                             G_CALLBACK (gtk_widget_hide), dialog);
-  g_signal_connect_swapped (dialog, "delete-event",
-                            G_CALLBACK (gtk_widget_hide), dialog);
+  g_signal_connect (dialog, "delete-event",
+                            G_CALLBACK (gtk_widget_hide_on_delete), dialog);
   return item;
 }
 
