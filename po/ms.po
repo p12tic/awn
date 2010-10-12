@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:56+0200\n"
-"PO-Revision-Date: 2010-07-16 05:35+0000\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-08-23 05:52+0000\n"
 "Last-Translator: abuyop <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-07-17 03:53+0000\n"
+"X-Launchpad-Export-Date: 2010-08-24 03:41+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -74,8 +74,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 " Jika overlay_application_icons adalah benar, kekunci ini akan "
 "menterbalikkan lapisan/pelapis jika ditetapkan benar."
@@ -233,7 +233,8 @@ msgstr "Tidak dapat membuka tetapan Awn: %s"
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr "Applet yang digunakan untuk mengawal dock dan melancarkan tetapan Awn."
+msgstr ""
+"Applet yang digunakan untuk mengawal dock dan melancarkan tetapan Awn."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -267,9 +268,8 @@ msgid "Add as Launcher"
 msgstr "Tambah sebagai Pelancar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
-#, fuzzy
 msgid "Remove Launcher"
-msgstr "Tambah sebagai Pelancar"
+msgstr "Buang Pelancar"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -280,24 +280,20 @@ msgid "_Close All"
 msgstr "_Tutup Semua"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "Mi_nima"
+msgstr "Minimakan semua"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "Nyahmi_nima"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "Ma_ksimakan"
+msgstr "Maksimakan semua"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "Nyahma_ksimum"
+msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -746,7 +742,7 @@ msgstr "Eksport Tema"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Ketebalan"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -924,52 +920,50 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Pakej Aplet Awn"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Pemasangan Applet Gagal"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Aplet Berjaya Dikemaskini"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Aplet Berjaya Ditambah"
 
 #: ../awn-settings/awnClass.py:1342
-#, fuzzy
 msgid "Can not delete active applet"
-msgstr "Applet dinyahaktif"
+msgstr "Tidak dapat mengesan aplet aktif"
 
 #: ../awn-settings/awnClass.py:1345
-#, fuzzy
 msgid "Delete Applet"
-msgstr "Applet dinyahaktif"
+msgstr "Padam Aplet"
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>Kesan</b>"
+msgstr "<b>Padam %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Tidak boleh Memadam Aplet"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s sudah wujud, tidak boleh mengeksport tema."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Tema sudah dipasang, adakah anda ingin menulis gantikannya?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Ini adalah fail tema yang tidak serasi."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -1044,23 +1038,20 @@ msgid "Keep below"
 msgstr "Letak dibawah"
 
 #: ../awn-settings/awnSettings.py.in:629
-#, fuzzy
 msgid "PNG Image"
-msgstr "Pola Imej"
+msgstr "Imej PNG"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Imej"
 
 #: ../awn-settings/awnSettings.py.in:759
-#, fuzzy
 msgid "Save Theme..."
-msgstr "Eksport Tema..."
+msgstr "Simpan Tema..."
 
 #: ../awn-settings/awnSettings.py.in:768
-#, fuzzy
 msgid "Awn Theme"
-msgstr "Tema"
+msgstr "Tema Awn"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1076,11 +1067,11 @@ msgstr "Outline, Terbalik"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Pilih Fon Tip Alat"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Fail Tema Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1342,11 +1333,13 @@ msgstr "Kelengkungan panel dalam mod Melengkung"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
-msgstr "Tinggi monitor paksa. Hanya digunakan jika monitor_force adalah benar."
+msgstr ""
+"Tinggi monitor paksa. Hanya digunakan jika monitor_force adalah benar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
-msgstr "Lebar monitor paksa. Hanya digunakan jika monitor_force adalah benar."
+msgstr ""
+"Lebar monitor paksa. Hanya digunakan jika monitor_force adalah benar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
@@ -1398,9 +1391,8 @@ msgid "The symmetry of the curve in Curves mode."
 msgstr "Simetri lengkung didalam mod Melengkung"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
-#, fuzzy
 msgid "The thickness in 3D mode."
-msgstr "Sudut panel dalam mod 3D"
+msgstr "Ketebalan dalam mod 3D"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
@@ -1435,6 +1427,10 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
+"<b>Ikon Panel Tema</b>\n"
+"Anda telah memilih untuk menganti ikon pada panel. Sila pilih sama ada "
+"perubahan ini hanya memberi kesan kepada aplet ini, keseluruhan aplet jenis "
+"ini, atau setiap ikon pada panel jenis ini."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
@@ -1473,11 +1469,11 @@ msgstr "Ops! Aplet rosak. Klik untuk mula semulakannya."
 msgid "Close docklet"
 msgstr "Tutup docklet"
 
-#~ msgid "Stripe Width"
-#~ msgstr "Lebar Jalur"
-
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN telah berjaya dijernihkan"
+
+#~ msgid "Stripe Width"
+#~ msgstr "Lebar Jalur"
 
 #~ msgid "The width of the stripe in Lucido mode."
 #~ msgstr "Lebar jalur didalam mod Lucido."

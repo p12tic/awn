@@ -8,15 +8,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:56+0200\n"
-"PO-Revision-Date: 2010-07-26 11:20+0000\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-09-17 08:32+0000\n"
 "Last-Translator: Nicolas Delvaux <Unknown>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-07-27 03:59+0000\n"
+"X-Launchpad-Export-Date: 2010-09-18 05:29+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -74,8 +74,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 " Si overlay_application_icons est vraie, cette clé inversera la "
 "superposition (si elle est également vraie)."
@@ -123,7 +123,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr "Activer le « clic long » pour ouvir la boite de dialogue"
+msgstr "Activer le « clic long » pour ouvrir la boîte de dialogue"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
@@ -139,9 +139,9 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
-"Avec quelle exactitude la correspondance est appliquée pour le regroupement. "
-"La valeur devrait être entre 0 et 99. 0 reviens à ne rien regrouper. 99 "
-"regroupera quasiment tout."
+"Indique avec quelle exactitude la correspondance est appliquée pour le "
+"regroupement. La valeur doit être comprise entre 0 et 99. 0 revient à ne "
+"rien regrouper. 99 regroupera quasiment tout."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -150,8 +150,8 @@ msgid ""
 "currently focused app."
 msgstr ""
 "Liste des fenêtres dont l'intersection avec la barre doit être testée si le "
-"masquage « intelligent » est actif. 0.. utiliser les fenêtres de l'espace de "
-"travail actif, 1.. utiliser les fenêtres de l'application active."
+"masquage « intelligent » est actif. 0 pour utiliser les fenêtres de l'espace "
+"de travail actif, 1 pour utiliser les fenêtres de l'application active."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -159,15 +159,15 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
-"Masquage « intelligent » si le masquage est activé pour la barre. Cela "
-"empêchera le masquage automatique de la barre si aucune des fenêtres de la "
-"liste de fenêtres correspondante ne la recouvre."
+"Masquage « intelligent » si le masquage est activé pour la barre. Cela "
+"empêchera le masquage automatique de la barre si aucune fenêtre de la liste "
+"de fenêtres correspondantes ne la recouvre."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
-"Nombre maximum d'indicateurs de taches à afficher sous les icônes. Les "
+"Nombre maximum d'indicateurs de tâches à afficher sous les icônes. Les "
 "valeurs possibles vont de 0 à 3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
@@ -290,9 +290,8 @@ msgid "Add as Launcher"
 msgstr "Ajouter en tant que lanceur"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
-#, fuzzy
 msgid "Remove Launcher"
-msgstr "Ajouter en tant que lanceur"
+msgstr "Supprimer le lanceur"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -303,24 +302,20 @@ msgid "_Close All"
 msgstr "_Fermer tout"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "Mi_nimiser"
+msgstr "Minimiser tout"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "R_estaurer"
+msgstr "Restaurer tout"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "Ma_ximiser"
+msgstr "Maximiser tout"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "R_estaurer"
+msgstr "Démaximiser tout"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -771,7 +766,7 @@ msgstr "Exportation du thème"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Épaisseur"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -953,52 +948,50 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Paquet d'applet Awn"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "L'installation de l'applet a échoué"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "L'applet a été mis à jour"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "L'applet a été ajoutée avec succès."
 
 #: ../awn-settings/awnClass.py:1342
-#, fuzzy
 msgid "Can not delete active applet"
-msgstr "Désactiver l'applet"
+msgstr "Impossible de supprimer une applet active"
 
 #: ../awn-settings/awnClass.py:1345
-#, fuzzy
 msgid "Delete Applet"
-msgstr "Désactiver l'applet"
+msgstr "Supprimer l'applet"
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>Effets</b>"
+msgstr "<b>Supprimer %s ?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Impossible de supprimer l'applet"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s existe déjà, impossible d'exporter le thème."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Ce thème est déjà installé, voulez-vous le réinstaller?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Ce fichier de thème est incompatible."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -1073,23 +1066,20 @@ msgid "Keep below"
 msgstr "Garder en dessous"
 
 #: ../awn-settings/awnSettings.py.in:629
-#, fuzzy
 msgid "PNG Image"
-msgstr "Modèle d'image"
+msgstr "Image PNG"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Images"
 
 #: ../awn-settings/awnSettings.py.in:759
-#, fuzzy
 msgid "Save Theme..."
-msgstr "Exporter le thème..."
+msgstr "Enregistrer le thème..."
 
 #: ../awn-settings/awnSettings.py.in:768
-#, fuzzy
 msgid "Awn Theme"
-msgstr "Thèmes"
+msgstr "Thème Awn"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1105,11 +1095,11 @@ msgstr "Contour, inversé"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Sélectionner la police des infobulles"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Fichier thème de Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1408,8 +1398,8 @@ msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
-"Liste des UA Screenlets ayant été rajoutés depuis ScreeneletInstance::"
-"Position."
+"Liste des UA Screenlets ayant été rajoutés depuis "
+"ScreeneletInstance::Position."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
@@ -1456,9 +1446,8 @@ msgid "The symmetry of the curve in Curves mode."
 msgstr "Symétrie de la courbe en mode incurvé."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
-#, fuzzy
 msgid "The thickness in 3D mode."
-msgstr "Angle de la barre en mode 3D."
+msgstr "Épaisseur en mode 3D"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
@@ -1466,7 +1455,8 @@ msgstr "Taille de Awn visible par l'utilisateur."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
-msgstr "Temps en ms avant que AwnIcon considère le clic comme étant « long »."
+msgstr ""
+"Temps en ms avant que AwnIcon considère le clic comme étant « long »."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
@@ -1537,14 +1527,8 @@ msgstr "Oups ! L'applet a planté. Cliquez pour le redémarrer."
 msgid "Close docklet"
 msgstr "Fermer le docklet"
 
-#~ msgid "Stripe Width"
-#~ msgstr "Largeur du segment"
-
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN a été réactualisé avec succès."
-
-#~ msgid "The width of the stripe in Lucido mode."
-#~ msgstr "Largeur du bandeau en mode Lucido"
 
 #~ msgid "Standard"
 #~ msgstr "Standard"
@@ -1562,11 +1546,17 @@ msgstr "Fermer le docklet"
 #~ msgstr "Toujours"
 
 #~ msgid ""
-#~ "Provides possibility to click on windows behind the panel. (0 - never "
-#~ "click through, 1 - click through when holding CTRL, 2 - always click "
-#~ "through and interact with panel only when holding CTRL)"
+#~ "Provides possibility to click on windows behind the panel. (0 - never click "
+#~ "through, 1 - click through when holding CTRL, 2 - always click through and "
+#~ "interact with panel only when holding CTRL)"
 #~ msgstr ""
-#~ "Donne la possibilité de cliquer sur les fenêtres derrière la barre (0 - "
-#~ "ne jamais cliquer à travers, 1 - cliquer à travers si CTRL est maintenu, "
-#~ "2 - toujours cliquer à travers et n'interagit avec la barre que lorsque "
-#~ "CTRL est maintenu)"
+#~ "Donne la possibilité de cliquer sur les fenêtres derrière la barre (0 - ne "
+#~ "jamais cliquer à travers, 1 - cliquer à travers si CTRL est maintenu, 2 - "
+#~ "toujours cliquer à travers et n'interagit avec la barre que lorsque CTRL est "
+#~ "maintenu)"
+
+#~ msgid "The width of the stripe in Lucido mode."
+#~ msgstr "Largeur du bandeau en mode Lucido"
+
+#~ msgid "Stripe Width"
+#~ msgstr "Largeur du segment"

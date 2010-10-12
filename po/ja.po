@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:56+0200\n"
-"PO-Revision-Date: 2010-04-11 15:27+0000\n"
-"Last-Translator: ITO Naoharu <ito.naoharu@gmail.com>\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-08-26 10:05+0000\n"
+"Last-Translator: kawaji <jiro.kawada@gmail.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-04-12 03:54+0000\n"
+"X-Launchpad-Export-Date: 2010-08-27 03:42+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -60,8 +60,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -188,7 +188,7 @@ msgstr "Awn について"
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
-msgstr "パネル表示位置変更"
+msgstr "ドラッグしてパネル表示位置変更"
 
 #: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
@@ -207,7 +207,7 @@ msgstr ""
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "ドックの制御やAwnの設定を開くために使用するアプレットです。"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -215,7 +215,7 @@ msgstr "お気に入り設定 アプレット"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr "アイコンの間にセパレータを追加する"
+msgstr "アプレットの間にセパレータを追加する"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -224,7 +224,7 @@ msgstr "セパレータ"
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "ワークスペース %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
@@ -241,9 +241,8 @@ msgid "Add as Launcher"
 msgstr "ランチャーとして追加"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
-#, fuzzy
 msgid "Remove Launcher"
-msgstr "ランチャーとして追加"
+msgstr "ランチャーの削除"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -254,24 +253,20 @@ msgid "_Close All"
 msgstr "すべて閉じる(_C)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "最小化(_N)"
+msgstr "全て最小化"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "最小化解除(_N)"
+msgstr "全て最小化解除"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "最大化(_X)"
+msgstr "全て最大化"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "最大化解除(_X)"
+msgstr "全て最大化解除"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -410,15 +405,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "アプレットを起動します"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "アクティブ状態を示す矩形:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "矢印の種類"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
@@ -430,7 +425,7 @@ msgstr "作者:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "自動的に隠すときの方法:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -438,11 +433,11 @@ msgstr "背景:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Choose a theme..."
-msgstr ""
+msgstr "テーマの選択..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
-msgstr ""
+msgstr "クリックスルー"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
@@ -454,15 +449,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr ""
+msgstr "角の丸み"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "カーブの対称性"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
-msgstr ""
+msgstr "カーブの度合い"
 
 #: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:153
@@ -471,7 +466,7 @@ msgstr "カスタム"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "矢印のカスタム画像"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
@@ -479,37 +474,37 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Customize..."
-msgstr ""
+msgstr "カスタマイズ..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr ""
+msgstr "アプレットの起動を解除します"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr ""
+msgstr "ランチャーのみ表示する"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "ドラッグ＆ドロップによる並べ替え"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr ""
+msgstr "ここへ利用可能なアプレットをドラッグすると起動します"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr ""
+msgstr "アプレットを下へドラッグまたはダブルクリックすると起動します"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "パネルを伸張する(_X)"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Export Theme..."
-msgstr ""
+msgstr "テーマのエクスポート..."
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Extra Options"
@@ -517,51 +512,51 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Fill Color"
-msgstr ""
+msgstr "塗り色"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
-msgstr ""
+msgstr "グラデーションの開始色"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "First Highlight Color"
-msgstr ""
+msgstr "ハイライトの開始色"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "フロートのオフセット"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
-msgstr ""
+msgstr "フォント"
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Font Color"
-msgstr ""
+msgstr "フォントの色"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "フォントの表示モード"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "フォントの縁取りの色"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "モニタのモード設定を強制適用？"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
-msgstr ""
+msgstr "発光ドット"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Glowing dot color"
-msgstr ""
+msgstr "発光ドットの色"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
-msgstr ""
+msgstr "共通のウィンドウをグループ化する"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
@@ -569,79 +564,79 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
-msgstr ""
+msgstr "アイコンのエフェクト(_E):"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
-msgstr ""
+msgstr "アイコンの不透過率"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "アイコンとツールチップ"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Icons:"
-msgstr ""
+msgstr "アイコン:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
-msgstr ""
+msgstr "境界線の内側の色"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr ""
+msgstr "アプレットのインストール..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
-msgstr ""
+msgstr "インストール..."
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "起動時のアニメーション:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "マッチング強度"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "モニタのXオフセット"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "モニタのYオフセット"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr ""
+msgstr "モニタの高さ"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "モニタの幅"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
-msgstr ""
+msgstr "名前:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
-msgstr ""
+msgstr "オフセット"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr ""
+msgstr "開く時のアニメーション"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
-msgstr ""
+msgstr "境界線の外側の色"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
-msgstr ""
+msgstr "縁取りの色"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "パネルの背景の色"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Panel Look Refinements"
@@ -649,72 +644,72 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "パネルのスタイルと大きさ"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "パターンの不透過率"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Pattern Image"
-msgstr ""
+msgstr "パターンの画像"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "反射効果の不透過率を表す乗数"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "反射効果のオフセット"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
-msgstr ""
+msgstr "リポジトリ"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "グラデーションの終了色"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "ハイライトの終了色"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "カスタムの矢印の選択"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Select item to filter by category"
-msgstr ""
+msgstr "カテゴリによるフィルタのアイテムを選択してください"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
-msgstr ""
+msgstr "セパレータの色"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
-msgstr ""
+msgstr "全て‌のウィンドウを表示する"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "マウスの長押しでダイアログを表示する"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
-msgstr ""
+msgstr "影を表示する"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
-msgstr ""
+msgstr "スタイル(_Y):"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "Awn を自動的にスタートさせる(_A)"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "テーマのエキスポート"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
@@ -724,43 +719,43 @@ msgstr ""
 msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
-msgstr ""
+msgstr "賢く隠すモードやウィンドウ回避モードを使用するには、タスクマネージャ・アプレットを起動させる必要があります。"
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
-msgstr ""
+msgstr "三角"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Gtkテーマの配色を使用する"
 
 #: ../awn-settings/awn-settings.ui.h:104
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "パターンを背景として使用する"
 
 #: ../awn-settings/awn-settings.ui.h:105
 msgid "Version:"
-msgstr ""
+msgstr "バージョン:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr ""
+msgstr "挙動(_B):"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
-msgstr ""
+msgstr "配置方向(_O):"
 
 #: ../awn-settings/awn-settings.ui.h:108
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "スクリーン上の位置(_P):"
 
 #: ../awn-settings/awn-settings.ui.h:109
 msgid "_Size of icons:"
-msgstr ""
+msgstr "アイコンの大きさ(_S):"
 
 #: ../awn-settings/awn-settings.ui.h:110
 msgid "pixels"
-msgstr ""
+msgstr "ピクセル"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
@@ -783,7 +778,7 @@ msgstr "なし"
 
 #: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:877
 msgid "Simple"
-msgstr ""
+msgstr "シンプル"
 
 #: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:878
 msgid "Classic"
@@ -864,10 +859,9 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
-"本プログラムはフリー・ソフトウェアです。あなたは、Free Software Foundation が"
-"公表したGNU一般公有使用許諾の「バージョン2」あるいはそれ以降の各バージョンの"
-"中からいずれかを選択し、そのバージョンが定める条項に従って本プログラムを再頒"
-"布または変更することができます。"
+"本プログラムはフリー・ソフトウェアです。あなたは、Free Software Foundation "
+"が公表したGNU一般公有使用許諾の「バージョン2」あるいはそれ以降の各バージョンの中からいずれかを選択し、そのバージョンが定める条項に従って本プログラムを"
+"再頒布または変更することができます。"
 
 #: ../awn-settings/awnClass.py:1088
 msgid ""
@@ -876,9 +870,8 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
-"このプログラムは有用であることを願って頒布されますが、 *全くの無保証* です。*"
-"商業可能性の保証* や *特定の目的への適合性* は、言外に示されたものも含め全く"
-"存在しません。詳しくはGNU一般公衆利用許諾契約書をご覧ください。"
+"このプログラムは有用であることを願って頒布されますが、 *全くの無保証* です。*商業可能性の保証* や *特定の目的への適合性* "
+"は、言外に示されたものも含め全く存在しません。詳しくはGNU一般公衆利用許諾契約書をご覧ください。"
 
 #: ../awn-settings/awnClass.py:1090
 msgid ""
@@ -886,9 +879,8 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
-"あなたはこのプログラムと共に、GNU一般公衆利用許諾契約書の複製を一部受け取った"
-"はずです。もし受け取っていなければ、フリーソフトウェア財団まで請求してくださ"
-"い(宛先は the Free Software Foundation,Inc., 51 Franklin St, Fifth Floor, "
+"あなたはこのプログラムと共に、GNU一般公衆利用許諾契約書の複製を一部受け取ったはずです。もし受け取っていなければ、フリーソフトウェア財団まで請求してくだ"
+"さい(宛先は the Free Software Foundation,Inc., 51 Franklin St, Fifth Floor, "
 "Boston, MA 02110-1301 USA)。"
 
 #: ../awn-settings/awnClass.py:1217
@@ -916,9 +908,9 @@ msgid "Delete Applet"
 msgstr ""
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>エフェクト</b>"
+msgstr ""
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
@@ -944,19 +936,19 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "左"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "右"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "上"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "下"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
@@ -964,7 +956,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3d"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
@@ -984,31 +976,31 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
-msgstr ""
+msgstr "パネルモード"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
-msgstr ""
+msgstr "常時表示"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Intellihide"
-msgstr ""
+msgstr "賢く隠す"
 
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Window dodge"
-msgstr ""
+msgstr "ウィンドウ回避"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Fade out"
-msgstr ""
+msgstr "フェードアウト"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Transparency"
-msgstr ""
+msgstr "半透明"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "最後面へ"
 
 #: ../awn-settings/awnSettings.py.in:629
 msgid "PNG Image"
@@ -1028,15 +1020,15 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
-msgstr ""
+msgstr "塗りつぶし"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Outline"
-msgstr ""
+msgstr "縁取り"
 
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "縁取り, 反転"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
@@ -1048,41 +1040,39 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "アプリケーション固有のアイコンを使用する"
 
 #: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
-msgstr ""
+msgstr "最高画質のアイコンを使用する"
 
 #: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "最高画質アイコンにアプリケーション固有アイコンを重ねる"
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "アプリケーション固有アイコンに最高画質アイコンを重ねる"
 
 #: ../awn-settings/awnSettings.py.in:1139
-#, fuzzy
 msgid "Preferences"
-msgstr "ドックの設定"
+msgstr "設定"
 
 #: ../awn-settings/awnSettings.py.in:1145
-#, fuzzy
 msgid "Task Manager"
-msgstr "<b>タスクマネージャ</b>"
+msgstr "タスクマネージャ"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr ""
+msgstr "アプレット"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
-msgstr ""
+msgstr "テーマ"
 
 #: ../awn-settings/awnSettings.py.in:1171
 msgid "Advanced"
-msgstr ""
+msgstr "詳細設定"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
@@ -1396,40 +1386,40 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "アプレットのカスタマイズ"
 
 #: ../libawn/awn-applet.c:1234
-#, fuzzy, c-format
+#, c-format
 msgid "About %s"
-msgstr "Awn について"
+msgstr "%s について"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "アイコン"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "カスタムアイコンの選択"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "アイコンのカスタマイズ"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "カスタム・アイコンの削除"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "アプレットを読み込んでいます..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "おぉっと！ アプレットがクラッシュしました。再スタートするにはクリックしてください。"
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
-msgstr ""
+msgstr "ドックレットを閉じる"
 
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "Awn のリフレッシュに成功しました"

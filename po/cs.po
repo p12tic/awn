@@ -7,36 +7,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:56+0200\n"
-"PO-Revision-Date: 2010-04-10 22:14+0000\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-09-20 17:42+0000\n"
 "Last-Translator: Roman Horník <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2010-04-11 04:14+0000\n"
+"X-Launchpad-Export-Date: 2010-09-21 05:41+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Rozbalovač"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Vyplní prostor na panelu v rozbaleném režimu"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Povolit seskupování oken, která mají odlišné hodnoty WM_CLIENT_NAME ."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Ovládá odstín překrytí pokud má overlay_application_icons hodnotu true. "
+"Povolený rozsah je 0,0 až 1,0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -52,16 +55,19 @@ msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Ovládá velikost překrytí, pokud overlay_application_icons má hodnotu true. "
+"Povolený rozsah 0.2 až 0.7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Pokud je seskupování oken vypnuto, seskupovat ikony se stejným spouštěčem."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
@@ -76,16 +82,20 @@ msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Chování při aktivaci okna na jiné ploše. (0 pro výchozí, 1 - změnit aktivní "
+"plochu, 2 - přesunout na současnou plochu)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Určení kontextového menu. Pokud není poskytnuta absolutní cesta rozhlédne se "
+"v instalační složce awn menu."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
+msgstr "Zpoždění před aktivací okna při držení kurzoru nad ikonou."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -95,15 +105,15 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "Povolit dlouhý stisk pro otevření dialogu"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Povolit změnu pořadí oken přetažením "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Povolit seskupení úloh"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -130,12 +140,16 @@ msgstr ""
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
+"Maximální počet ukazatelů úloh zobrazených pod ikonou. Platné jsou hodnoty "
+"od 0 do 3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
 "Number of seconds to inhibit autohide when a application requests attention. "
 "A value of 0 disables."
 msgstr ""
+"Počet sekund pro potlačení automatického skrývání když aplikace vyžaduje "
+"pozornost. Hodnota 0 zakáže."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
@@ -149,7 +163,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr "Zobrazit okna ze všech pracovních prostorů"
+msgstr "Zobrazovat okna ze všech pracovních ploch"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -161,6 +175,8 @@ msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"výčet cest k .desktop souborům ze kterých by měl správce úloh vytvořit své "
+"spouštěče"
 
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1020
@@ -174,11 +190,11 @@ msgstr "Spustit %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Spouštěč/Správce úloh"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Aplet spouštěče/správce úloh"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
@@ -188,7 +204,7 @@ msgstr "O Awn"
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Změnit orientaci panelu přetažením"
 
 #: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
@@ -202,20 +218,20 @@ msgstr "Nastavení dokování"
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Nemohu otevřít nastavení Awn: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "Applet používaný pro ovládání panelu a spouštění Awn konfigurace"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Applet nastavení"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Přidá oddělovač mezi aplety"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -241,9 +257,8 @@ msgid "Add as Launcher"
 msgstr "Přidat jako spouštěč"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
-#, fuzzy
 msgid "Remove Launcher"
-msgstr "Přidat jako spouštěč"
+msgstr "Odstranit spouštěč"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -251,27 +266,23 @@ msgstr "_Zavřít"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:768
 msgid "_Close All"
-msgstr "Zavřít vš_e"
+msgstr "_Zavřít vše"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "Mi_nimalizovat"
+msgstr "Minimalizovat vše"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "Zr_ušit minimalizaci"
+msgstr "Zobrazit vše"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "Ma_ximalizovat"
+msgstr "Maximalizovat vše"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "Zrušit _maximalizaci"
+msgstr "Obnovit vše"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -283,7 +294,7 @@ msgstr "Zrušit _maximalizaci"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:970
 msgid "Always on _Top"
-msgstr "Vždy na_vrchu"
+msgstr "Vždy _nahoře"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:994
 msgid "Mi_nimize"
@@ -291,23 +302,23 @@ msgstr "Mi_nimalizovat"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:999
 msgid "Unmi_nimize"
-msgstr "Zr_ušit minimalizaci"
+msgstr "Zrušit mi_nimalizaci"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1053
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Vždy na viditelné ploše"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Pouze na této ploše"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Přesunout na plochu v_levo"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1156
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Přesunout na plochu vp_ravo"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1166
 msgid "Move to Workspace _Up"
@@ -336,11 +347,11 @@ msgstr "3D úhel"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Aktivní aplety</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Dostupné aplety</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
@@ -352,7 +363,7 @@ msgstr "<b>Efekty</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Exportovat nastavení skupin</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
@@ -372,11 +383,11 @@ msgstr "<b>Spouštěče</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr ""
+msgstr "<b>Číselné nastavení</b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Barvy panelu</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
@@ -384,7 +395,7 @@ msgstr "<b>Panel</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Repozitáře</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
@@ -392,11 +403,11 @@ msgstr "<b>Nastavení</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>Správci úloh</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
-msgstr ""
+msgstr "<b>Toto nastavení vyžaduje aktivní aplet \"Správce úloh\". </b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -407,22 +418,24 @@ msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
+"<b>Je nutné mít aktivní efekty plochy (compositor) pro aktivování a "
+"přispůsobení motivů vzhledu.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Aktivovat aplet"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "Aktivní obdelník:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Typ šipky"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Upozorňovací animace:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
@@ -430,7 +443,7 @@ msgstr "Autor:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Mód automatického skrývání:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -438,31 +451,31 @@ msgstr "Pozadí:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Choose a theme..."
-msgstr ""
+msgstr "Vyberte motiv..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
-msgstr ""
+msgstr "Prokliknout"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
-msgstr ""
+msgstr "Zavřít animaci:"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Configured Effects"
-msgstr ""
+msgstr "Nastavené efekty"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr ""
+msgstr "Zaoblení rohů"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Symetrie křivek"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
-msgstr ""
+msgstr "Zakřivení"
 
 #: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:153
@@ -471,11 +484,11 @@ msgstr "Vlastní"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "Vlastní obrázek šipky"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
-msgstr ""
+msgstr "Upravit efekty"
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Customize..."
@@ -483,33 +496,33 @@ msgstr "Přizpůsobit..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Deaktivovat aplet"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr ""
+msgstr "Zobrazit pouze spouštěče"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "Změna pořadí přetažením"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr ""
+msgstr "Přetáhněte sem aplety které chcete aktivovat"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr ""
+msgstr "Přetáhněte níže nebo udělejte dvojklik pro aktivaci apletu"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "Ro_ztáhnout panel"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Export Theme..."
-msgstr ""
+msgstr "Exportovat motiv..."
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Extra Options"
@@ -521,16 +534,15 @@ msgstr "Barva výplně"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
-msgstr ""
+msgstr "První barva přechodu"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "First Highlight Color"
-msgstr ""
+msgstr "První barva zvýraznění"
 
 #: ../awn-settings/awn-settings.ui.h:52
-#, fuzzy
 msgid "Floaty Offset"
-msgstr "Posun"
+msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
@@ -542,43 +554,43 @@ msgstr "Barva písma"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "Mód písma"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Barva obrysu písma"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Silový monitorovací mód ?"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
-msgstr ""
+msgstr "Zářící tečka"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Glowing dot color"
-msgstr ""
+msgstr "Barva zářící tečky"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
-msgstr ""
+msgstr "Seskupovat společná okna"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
-msgstr ""
+msgstr "Animace po najetí kurzorem:"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
-msgstr ""
+msgstr "Efekty _ikon:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
-msgstr ""
+msgstr "Průhlednost ikony"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "Ikony a bublinová nápověda"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Icons:"
@@ -586,12 +598,11 @@ msgstr "Ikony:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
-msgstr ""
+msgstr "Vnitřní barva okraje"
 
 #: ../awn-settings/awn-settings.ui.h:67
-#, fuzzy
 msgid "Install applet..."
-msgstr "Instalovat..."
+msgstr "Instalovat aplet..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
@@ -599,7 +610,7 @@ msgstr "Instalovat..."
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "Spustit animaci:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
@@ -615,11 +626,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr ""
+msgstr "Výška monitoru"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "Šířka monitoru"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
@@ -631,11 +642,11 @@ msgstr "Posun"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr ""
+msgstr "Otevřít animaci:"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
-msgstr ""
+msgstr "Vnější barva okraje"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
@@ -643,23 +654,23 @@ msgstr "Barva obrysu"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "Barvy na pozadí panelu"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Panel Look Refinements"
-msgstr ""
+msgstr "Upřesnění vzhledu panelu"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Vzhled a velikost panelu"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Průhlednost vzoru"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Pattern Image"
-msgstr ""
+msgstr "Vzorový obrázek"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
@@ -667,7 +678,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "Posun odrazu"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
@@ -675,36 +686,36 @@ msgstr "Repozitáře"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Druhá barva přechodu"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Druhá barva zvýraznění"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Vybrat vlastní šipku"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Select item to filter by category"
-msgstr ""
+msgstr "Zvolte položku pro filtrování podle kategorie"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
-msgstr ""
+msgstr "Barva oddělovače"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
-msgstr ""
+msgstr "Zobrazit všechna okna"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Zobrazit dialog po dlouhém stisku"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
-msgstr ""
+msgstr "Zobrazit stíny"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
@@ -712,11 +723,11 @@ msgstr "_Styl:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "Spouštět _Awn automaticky"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "Export motivu"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
@@ -734,11 +745,11 @@ msgstr "Trojúhelník"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Použít barvy motivu Gtk"
 
 #: ../awn-settings/awn-settings.ui.h:104
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Použít vzor jako pozadí"
 
 #: ../awn-settings/awn-settings.ui.h:105
 msgid "Version:"
@@ -746,7 +757,7 @@ msgstr "Verze:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr ""
+msgstr "_Chování"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
@@ -754,11 +765,11 @@ msgstr "_Orientace:"
 
 #: ../awn-settings/awn-settings.ui.h:108
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_Pozice na obrazovce:"
 
 #: ../awn-settings/awn-settings.ui.h:109
 msgid "_Size of icons:"
-msgstr ""
+msgstr "_Velikost ikon:"
 
 #: ../awn-settings/awn-settings.ui.h:110
 msgid "pixels"
@@ -766,17 +777,18 @@ msgstr "pixelů"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Chyba, source.list již existuje"
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Chyba, cesta je prázdná, nebo již existuje"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
+"Chyba %s ve vašem systému chybí, odstraňte jej prosím ze sources.list"
 
 #: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
@@ -797,7 +809,7 @@ msgstr "Prolnutí"
 
 #: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:880
 msgid "Spotlight"
-msgstr "Podsvícení"
+msgstr "Bodové světlo"
 
 #: ../awn-settings/awnClass.py:820 ../awn-settings/awnClass.py:881
 msgid "Zoom"
@@ -843,12 +855,12 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Nemohu najít žádnou z těchto ikon: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Nemohu najít následující ikonu: %s\n"
 
 #: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -897,50 +909,50 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Instalace apletu selhala"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Aplet úspěšně aktualuzován"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Aplet úspěšně přidán"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
-msgstr ""
+msgstr "Nemohu odstranit aktivní aplet"
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
-msgstr ""
+msgstr "Smazat aplet"
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>Efekty</b>"
+msgstr "<b>Smazat %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Nemohu smazat aplet"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s již existuje, nemohu provést export."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Motiv je již nainstalován, přejete si jej přepsat?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Toto je nekompatibilní soubor motivu."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "Nastavení Awn nemůže být spuštěno pod superuživatelem."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
@@ -972,11 +984,11 @@ msgstr "Zakřivený"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Hranatý"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Plovoucí"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
@@ -984,7 +996,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
-msgstr ""
+msgstr "Druh panelu"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
@@ -996,7 +1008,7 @@ msgstr "Inteligentní skrývání"
 
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Window dodge"
-msgstr ""
+msgstr "Uskakování oken"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Fade out"
@@ -1012,19 +1024,19 @@ msgstr "Udržovat v pozadí"
 
 #: ../awn-settings/awnSettings.py.in:629
 msgid "PNG Image"
-msgstr ""
+msgstr "PNG obrázek"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Obrázky"
 
 #: ../awn-settings/awnSettings.py.in:759
 msgid "Save Theme..."
-msgstr ""
+msgstr "Uložit motiv..."
 
 #: ../awn-settings/awnSettings.py.in:768
 msgid "Awn Theme"
-msgstr ""
+msgstr "Motiv Awn"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1040,48 +1052,47 @@ msgstr "Reverzní obrys"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Vyberte písmo bublinové nápovědy"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Soubor motivu Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Použit specifické ikony aplikací"
 
 #: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Použít nejlepší kvalitu ikon"
 
 #: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Překrýt ikonu nejlepší kvality ikonou aplikace"
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Překrýt ikonu aplikace ikonou nejlepší kvality"
 
 #: ../awn-settings/awnSettings.py.in:1139
-#, fuzzy
 msgid "Preferences"
-msgstr "Nastavení dokování"
+msgstr "Nastavení"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"
-msgstr ""
+msgstr "Správce úloh"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr ""
+msgstr "Aplety"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
-msgstr ""
+msgstr "Motivy"
 
 #: ../awn-settings/awnSettings.py.in:1171
 msgid "Advanced"
-msgstr ""
+msgstr "Rozšířené"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
@@ -1100,6 +1111,16 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Následující Python mouly nelze nalézt: %s.  Pro to existuje několik\n"
+"vysvětlení:\n"
+"\n"
+"1. Nemáte tyto Python moduly nainstalovány.  V tomto případě\n"
+"navštivte AWN wiki, sekci aplety pro nalezení přesného názvu\n"
+"balíčku pro vaši distribuci, který tento modul poskytuje.\n"
+"\n"
+"2. Modul je instalován na nestandartním umístění.  Toto se stává\n"
+"pokud instalujete balíček ručně, tzn. ne přes správce balíčků\n"
+"distribuce.  tato situace je vysvětlena ve FAQ sekci na AWN wiki.\n"
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
@@ -1111,7 +1132,7 @@ msgstr "Dokovací přepínač oken"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0: solid, 1: outline, 2: outline, reversed."
-msgstr ""
+msgstr "0: výplň, 1: obrys, 2: inverzní obrys"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "A bitmask which stores the type of effect for each event"
@@ -1119,7 +1140,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
+msgstr "Sladění nerozšiřitelných panelů na okraji monitoru."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
@@ -1130,6 +1151,7 @@ msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"Cokoli větší než 0 vykreslí panel s rohy. Větší poloměr znamená větší rohy."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid ""
@@ -1140,31 +1162,31 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "Barva na pozadí dialogů Awn s názvy."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "Barva na pozadí dialogu Awn"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "Barva pozadí bublinové nápovědy"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Barva aktivního obdelníku"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Barva zářící tečky."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Barva obrysu aktivního obdelníku."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Delay between mouse leaving the panel and it hiding."
-msgstr ""
+msgstr "Zpoždění mezi opuštěním panelu kurzorem a jeho shováním."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
@@ -1182,23 +1204,23 @@ msgstr "Vykreslit oddělovače."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Povolit vykreslení výplně."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
-msgstr ""
+msgstr "Barva prvního kroku přechodu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "Barva prvního kroku přechodu při zvýraznění."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Barva písma bublinové nápovědy"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Písmo bublinové nápovědy"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
@@ -1206,27 +1228,29 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "Barva textu ikony. Nechte prázdné pro použití barvy z GTK motivu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
+"Barva obrysu textu ikon. Nechte prázdné pro použití barvy z GTK motivu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "Pokud je zaškrtnuto, maximalizovaná okna nepřekryjí panel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Pokud je zaškrtnuto, panel se rozprostře po celé šířce/výšce monitoru."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
-msgstr ""
+msgstr "Barva vnitřního okraje."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
-msgstr ""
+msgstr "Hlavní barva okraje."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
@@ -1240,27 +1264,27 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Odstup mezi ikonami a okrajem okna."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr ""
+msgstr "Orientace Awn. (vlevo: 0, vpravo: 1, nahoře: 2 a dole: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
-msgstr ""
+msgstr "Barva obrysu bublinové nápovědy"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Cesta k současnému motivu plochy."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Cesta k PNG obsahující pozadí aktivní ikony."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Cesta k PNG obsahující ikonu šipky."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
@@ -1275,19 +1299,19 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
-msgstr ""
+msgstr "Barva druhého kroku přechodu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "Barva druhého kroku přechodu při zvýraznění."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "Barva oddělovače."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Zobrazit stíny pro ikony."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
@@ -1295,11 +1319,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "Úhel panelu v 3D zobrazení."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
-msgstr ""
+msgstr "Zakřivení panelu v zakřiveném zobrazení."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
@@ -1323,15 +1347,15 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
-msgstr ""
+msgstr "Seznam instancí panelu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
-msgstr ""
+msgstr "Umístění vzoru pro vykreslení."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Odstup mezi ikonou a jejím odrazem."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
@@ -1339,11 +1363,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "Neprůhlednost ikon, od 0.0 do 1.0"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Neprůhlednost výplně."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid ""
@@ -1353,19 +1377,19 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
-msgstr ""
+msgstr "Symetrie křivek v zakřiveném zobrazení."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The thickness in 3D mode."
-msgstr ""
+msgstr "Tloušťka v 3D zobrazení."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
-msgstr ""
+msgstr "Uživatelem viditelná velikost Awn"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
-msgstr ""
+msgstr "Čas v milisekundách, po kterém ikona vyšle signál dlouhého stisku."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
@@ -1395,12 +1419,12 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "Upravit aplet"
 
 #: ../libawn/awn-applet.c:1234
-#, fuzzy, c-format
+#, c-format
 msgid "About %s"
-msgstr "O Awn"
+msgstr "O %s"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
@@ -1408,23 +1432,23 @@ msgstr "Ikony"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Vybrat vlastní ikonu"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Upravit ikonu"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Odstranit upravenou ikonu"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "Načítání apletu..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Sakra práce! Aplet selhal. Kliknutím jej restartujete."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"

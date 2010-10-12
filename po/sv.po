@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-03 18:36+0000\n"
+"PO-Revision-Date: 2010-10-09 16:07+0000\n"
 "Last-Translator: David Bengtsson <Unknown>\n"
-"Language-Team: Launchpad Swedish Translators <lp-l10n-sv@lists.launchpad."
-"net>\n"
+"Language-Team: Launchpad Swedish Translators <lp-l10n-"
+"sv@lists.launchpad.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-08-04 03:48+0000\n"
+"X-Launchpad-Export-Date: 2010-10-10 04:56+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "X-Poedit-Language: Swedish\n"
 
@@ -73,8 +73,8 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
+" If overlay_application_icons is true, this key will reverse the "
+"overlay/overlayee if set to true."
 msgstr ""
 " Om overlay_application_icons är aktiverat, kommer den här nyckeln att "
 "spegelvända överlappningen vid aktivering."
@@ -124,7 +124,7 @@ msgstr "Aktivera \"längre tryck\" för att öppna dialogruta."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr "Aktivera \"dra och släpp\"-omplacering av fönster . "
+msgstr "Aktivera dra-och-släpp-omplacering av fönster. "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
@@ -146,9 +146,9 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
-"Hur listan över fönster som testas för korsning ska skapas, när \"Dölj smart"
-"\" är aktivt. 0. Använd fönster på aktiv arbetsyta, 1. Använd fönster för "
-"närvarande fokuserat program."
+"Hur listan över fönster som testas för korsning ska skapas, när \"Dölj "
+"smart\" är aktivt. 0. Använd fönster på aktiv arbetsyta, 1. Använd fönster "
+"för närvarande fokuserat program."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -221,12 +221,12 @@ msgstr "Programstartare/aktivitetshanterare"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr "Panelprogram för programstartare/aktivitetshanterare"
+msgstr "Miniprogram för programstartare och aktivitetshantering"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
 msgid "About Awn"
-msgstr "Om Avant"
+msgstr "Om Awn"
 
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
@@ -240,25 +240,26 @@ msgstr "Ikonstorlek:"
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:703
 msgid "Dock Preferences"
-msgstr "Inställningar för dock"
+msgstr "Dock-inställningar"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr "Det gick inte att öppna inställningar för Avant: %s"
+msgstr "Kunde inte öppna Awn-inställningarna: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr "Panelprogram för att ändra inställningar för Avant"
+msgstr ""
+"Miniprogram för att kontrollera docken och starta Awn-inställningarna"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr "Inställningsprogram"
+msgstr "Inställningar"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr "Lägger till en avgränsare mellan panelprogram"
+msgstr "Lägger till en avgränsare mellan miniprogram"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -284,9 +285,8 @@ msgid "Add as Launcher"
 msgstr "Lägg till som programstartare"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
-#, fuzzy
 msgid "Remove Launcher"
-msgstr "Lägg till som programstartare"
+msgstr "Ta bort programstartare"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -297,24 +297,20 @@ msgid "_Close All"
 msgstr "S_täng alla"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
-#, fuzzy
 msgid "Minimize all"
-msgstr "Mi_nimera"
+msgstr "Minimera alla"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
-#, fuzzy
 msgid "Unminimize all"
-msgstr "Avmi_nimera"
+msgstr "Avminimera alla"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
-#, fuzzy
 msgid "Maximize all"
-msgstr "Ma_ximera"
+msgstr "Maximera alla"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
-#, fuzzy
 msgid "Unmaximize all"
-msgstr "Avma_ximera"
+msgstr "Avmaximera alla"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -367,12 +363,12 @@ msgstr "Flytta till en annan _arbetsyta"
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr "Inställningar för Avant"
+msgstr "Awn-inställningar"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
-"Hantera inställningar, programstartare, panelprogram och teman för Avant"
+"Hantera inställningar, programstartare, miniprogram och teman för Awn"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
@@ -380,11 +376,11 @@ msgstr "3d-vinkel"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr "<b>Aktiva panelprogram</b>"
+msgstr "<b>Aktiva miniprogram</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr "<b>Tillgängliga panelprogram</b>"
+msgstr "<b>Tillgängliga miniprogram</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
@@ -441,8 +437,8 @@ msgstr "<b>Aktivitetshanterare</b>"
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
-"<b>För dessa inställningar behöver panelprogrammet för aktivitetshantering "
-"vara aktiverat.</b>"
+"<b>Dessa inställningar kräver att miniprogrammet för aktivitetshantering är "
+"aktiverat.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -458,7 +454,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr "Aktivera panelprogram"
+msgstr "Aktivera miniprogram"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
@@ -531,7 +527,7 @@ msgstr "Anpassa..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr "Inaktivera panelprogram"
+msgstr "Inaktivera miniprogram"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
@@ -539,17 +535,17 @@ msgstr "Visa endast programstartare"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr "\"Dra och släpp\"-omplacering"
+msgstr "Dra-och-släpp-omplacering"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr "Dra hit tillgängliga panelprogram för att aktivera"
+msgstr "Dra hit tillgängliga miniprogram för att aktivera dem"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr "Dra-och-släpp nedan eller dubbelklicka för att aktivera panelprogram"
+msgstr "Dra-och-släpp nedan eller dubbelklicka för att aktivera miniprogram"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
@@ -637,7 +633,7 @@ msgstr "Innerkantsfärg"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr ""
+msgstr "Installera miniprogram..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
@@ -709,7 +705,7 @@ msgstr "Mönsterbild"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
-msgstr "Multiplikator av alfakanal för reflektion"
+msgstr "Multiplikator av reflektionsalfa"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
@@ -758,7 +754,7 @@ msgstr "St_il:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr "Starta _Avant automatiskt"
+msgstr "Starta _Awn automatiskt"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
@@ -766,7 +762,7 @@ msgstr "Exportera tema"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Tjocklek"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -774,7 +770,7 @@ msgid ""
 "applet active."
 msgstr ""
 "För att använda lägena \"Dölj smart\" eller \"Undvik fönster\", måste du ha "
-"panelprogrammet för aktivitetshantering aktiverat."
+"miniprogrammet för aktivitetshantering aktiverat."
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
@@ -782,7 +778,7 @@ msgstr "Triangel"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
-msgstr "Använd färger från Gtk-tema"
+msgstr "Använd färger från GTK-tema"
 
 #: ../awn-settings/awn-settings.ui.h:104
 msgid "Use Pattern as Background"
@@ -891,21 +887,22 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr "Det gick inte att hitta någon av dessa ikoner: %s\n"
+msgstr "Kunde inte hitta någon av dessa ikoner: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr "Det gick inte att hitta följande ikon: %s\n"
+msgstr "Kunde inte hitta följande ikon: %s\n"
 
 #: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr "Fönsternavigatorn Avant"
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1084
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr "Fullständigt anpassningsbar dock-liknande fönsternavigator för GNOME."
+msgstr ""
+"Fullständigt anpassningsbar dock-liknande fönsternavigator för GNOME."
 
 #: ../awn-settings/awnClass.py:1086
 msgid ""
@@ -943,56 +940,54 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Paket för miniprogram"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Installation av miniprogram misslyckades"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Uppdatering av miniprogram lyckades"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Tilläggande av miniprogram lyckades"
 
 #: ../awn-settings/awnClass.py:1342
-#, fuzzy
 msgid "Can not delete active applet"
-msgstr "Inaktivera panelprogram"
+msgstr "Kan inte radera aktivt miniprogram"
 
 #: ../awn-settings/awnClass.py:1345
-#, fuzzy
 msgid "Delete Applet"
-msgstr "Inaktivera panelprogram"
+msgstr "Radera miniprogram"
 
 #: ../awn-settings/awnClass.py:1350
-#, fuzzy, python-format
+#, python-format
 msgid "<b>Delete %s?</b>"
-msgstr "<b>Effekter</b>"
+msgstr "<b>Radera %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Kan inte radera miniprogrammet"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s existerar redan, kan inte exportera temat."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Temat är redan installerat, vill du skriva över det?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Det här är en inkompatibel temafil."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr "Inställnignar för Avant kan inte köras som root."
+msgstr "Awn-inställningarna kan inte köras som root."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
@@ -1063,23 +1058,20 @@ msgid "Keep below"
 msgstr "Behåll under"
 
 #: ../awn-settings/awnSettings.py.in:629
-#, fuzzy
 msgid "PNG Image"
-msgstr "Mönsterbild"
+msgstr "PNG-bild"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Bilder"
 
 #: ../awn-settings/awnSettings.py.in:759
-#, fuzzy
 msgid "Save Theme..."
-msgstr "Exportera tema..."
+msgstr "Spara tema..."
 
 #: ../awn-settings/awnSettings.py.in:768
-#, fuzzy
 msgid "Awn Theme"
-msgstr "Teman"
+msgstr "Awn-tema"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1095,11 +1087,11 @@ msgstr "Kontur, omvänd"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Välj typsnitt för verktygstips"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Awn-temafil"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1154,24 +1146,24 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
-"Det gick inte att hitta följande Pythonmoduler: %s. Det finns några möjliga\n"
-"förklaringar för detta:\n"
+"Följande Python-moduler kunde inte hittas: %s. Det finns några möjliga\n"
+"förklaringar till detta.\n"
 "\n"
-"1. Du har inte denna Pythonmodulen installerad. I detta fall, bör du besöka\n"
-"sektionen för panelprogram (applets) i Avant-wikin, för att lista ut det "
-"korrekta\n"
-"paketnamnet för din distribution, som tillhandahåller denna modul.\n"
+"1. Du har inte Python-modulen installerad. I detta fall, bör du besöka\n"
+"avsnittet för miniprogram (applets) i Awn-wikin, för att lista ut det\n"
+"korrekta paketnamnet för din distribution som tillhandahåller modulen.\n"
 "\n"
-"2.Modulen är installerad på en icke-standardiserad plats. Detta är "
+"2. Modulen är installerad på en icke-standardiserad plats. Detta är "
 "vanligtvis\n"
 "anledningen när du installerar ett paket manuellt, det vill säga inte genom "
 "din\n"
-"distributions pakethanterare. Denna situation är förklarad i FAQ-sektionen i "
-"wikin.\n"
+"distributions pakethanterare. Den här situationen är förklarad i FAQ-"
+"avsnittet\n"
+"i wikin.\n"
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr "Avant-wiki"
+msgstr "Awn-wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -1207,17 +1199,17 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
-"Döljer panelen automatiskt när pekaren inte fokuserar på den (ska inte "
-"användas tillsammans med panel_mode). 0. Inget, 1. Behåll under, 2. Tona ut, "
+"Döljer panelen automatiskt när muspekaren inte fokuserar på den, ska inte "
+"användas tillsammans med panel_mode. 0. Inget, 1. Behåll under, 2. Tona ut, "
 "3. Genomskinlighet."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
-msgstr "Bakgrundsfärg för dialogrutors titlar"
+msgstr "Bakgrundsfärg för dialogrutors titlar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
-msgstr "Bakgrundsfärg för dialogruta"
+msgstr "Bakgrundsfärg för dialogruta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
@@ -1248,8 +1240,8 @@ msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
-"Avgör om allmän konfigurationsredigerare är tillåten för panelprogram som "
-"inte har en anpassad dialogruta för inställningar"
+"Avgör om allmän konfigurationsredigerare är tillåten för miniprogram som "
+"inte har en anpassad dialogruta för inställningar."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
@@ -1281,12 +1273,12 @@ msgstr "Tvinga skärmgeometri."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr "Färg för ikontext. Lämna tomt för att använda färg från Gtk-tema."
+msgstr "Färg för ikontext. Lämna tomt för att använda färg från GTK-tema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
 msgstr ""
-"Konturfärg för ikontext. Lämna tomt för att använda färg från Gtk-tema."
+"Konturfärg för ikontext. Lämna tomt för att använda färg från GTK-tema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
@@ -1295,7 +1287,7 @@ msgstr "Om aktiverat, kommer maximerade fönster inte att täcka panelen."
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
-"Om aktiverat, kommer panelen expandera till fullständig skärm-bredd/höjd."
+"Om aktiverat, kommer panelen expandera till fullständig skärmbredd/-höjd."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
@@ -1310,7 +1302,7 @@ msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
-"Skärmnummer där Avant är belägen. Gäller endast när monitor_force är "
+"Skärmnummer där Awn är belägen. Gäller endast när monitor_force är "
 "inaktiverat. Använd -1 för att skärm ska väljas automatiskt."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
@@ -1323,7 +1315,7 @@ msgstr "Kompensation av ikoner från fönsterram."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr "Orientering av Avant. 0. Vänster, 1. Höger, 2. Överst, 3. Nederst."
+msgstr "Orientering av Awn. 0. Vänster, 1. Höger, 2. Överst, 3. Nederst."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1331,7 +1323,7 @@ msgstr "Konturfärg för verktygstipset."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr "Sökväg till det nuvarande sktivbordstemat."
+msgstr "Sökväg till det aktuella sktivbordstemat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
@@ -1408,7 +1400,7 @@ msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
-"Listan över panelprogram för denna panel, sorterade från vänster till höger "
+"Listan över miniprogram för denna panel, ordnade från vänster till höger "
 "eller överst till nederst."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
@@ -1448,22 +1440,21 @@ msgid "The symmetry of the curve in Curves mode."
 msgstr "Symmetrin av kurvorna i kurvformat läge."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
-#, fuzzy
 msgid "The thickness in 3D mode."
-msgstr "Vinkeln på panelen i 3d-läge."
+msgstr "Tjockleken i 3d-läge"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
-msgstr "Den synliga storleken av Avant"
+msgstr "Den användarsynliga storleken på Awn."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
 msgstr ""
-"Tid i millisekunder varefter ikon kommer avge signal för \"längre tryck\""
+"Tid i millisekunder varefter ikon kommer avge signal för \"längre tryck\"."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr "Huruvida dialogruta ska använda färger från Gtk-tema"
+msgstr "Huruvida dialogruta ska använda färger från GTK-tema."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
@@ -1471,7 +1462,7 @@ msgstr "Huruvida dialogrutor ska stängas vid förlorad fokus."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
-msgstr "Huruvida färger från nuvarande Gtk-tema ska användas."
+msgstr "Huruvida färger från det aktuella GTK-temat ska användas."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
@@ -1490,12 +1481,12 @@ msgid ""
 msgstr ""
 "<b>Anpassa panelikon</b>\n"
 "Du har valt att ersätta en ikon på panelen. Välj huruvida denna förändring "
-"ska gälla för endast detta panelprogram, för alla panelprogram av denna typ "
+"ska gälla för endast detta miniprogram, för alla miniprogram av denna typ, "
 "eller för alla ikoner på panelen av denna typ."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr "Anpassa panelprogram"
+msgstr "Anpassa miniprogram"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
@@ -1520,24 +1511,15 @@ msgstr "Ta bort anpassad ikon"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr "Läser in panelprogram..."
+msgstr "Läser in miniprogram..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr "Hoppsan! Panelprogrammet kraschade. Klicka för att starta om det."
+msgstr "Hoppsan! Miniprogrammet kraschade. Klicka för att starta om det."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
 msgstr "Stäng docklet"
-
-#~ msgid "Stripe Width"
-#~ msgstr "Randbredd"
-
-#~ msgid "AWN has been successfully refreshed"
-#~ msgstr "Uppdatering av Avant lyckades"
-
-#~ msgid "The width of the stripe in Lucido mode."
-#~ msgstr "Bredden av randen i lucido-läge."
 
 #~ msgid "3)"
 #~ msgstr "3)"
@@ -1550,3 +1532,12 @@ msgstr "Stäng docklet"
 
 #~ msgid "Standard"
 #~ msgstr "Standard"
+
+#~ msgid "Stripe Width"
+#~ msgstr "Randbredd"
+
+#~ msgid "The width of the stripe in Lucido mode."
+#~ msgstr "Bredden av randen i lucido-läge."
+
+#~ msgid "AWN has been successfully refreshed"
+#~ msgstr "Uppdatering av Avant lyckades"
