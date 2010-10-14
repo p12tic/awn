@@ -193,11 +193,9 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
   public void 
   awn_set_visibility (string win_name, bool visible) throws DBus.Error
   {
-    HashTable<string, unowned Value?> hints;
-    hints = new HashTable<string, unowned Value?> (str_hash, str_equal);
-    // workaround bug in Vala 0.10+? - implicit GValue conversion doesn't work
-    Value visibility_value = visible;
-    hints.insert ("visible", visibility_value);
+    HashTable<string, Value?> hints;
+    hints = new HashTable<string, Value?> (str_hash, str_equal);
+    hints.insert ("visible", visible);
 
     this.manager.update (win_name, hints);
   }

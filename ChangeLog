@@ -1,6 +1,11 @@
 2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/dock-manager-api.vala:
+	Stupid me, it wasn't a bug in Vala, they just fixed a leak.
+
+2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
 	Workaround bug in Vala 0.10.
 
 2010-10-09  Rodney Cryderman <rcryderman@gmail.com>
