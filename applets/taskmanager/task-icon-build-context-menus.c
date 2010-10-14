@@ -1662,7 +1662,7 @@ menu_parse_start_element (GMarkupParseContext *context,
     case INTERNAL_CLOSE_ACTIVE:
       if (TASK_IS_WINDOW (task_icon_get_main_item (icon)))
       {      
-        menuitem = task_icon_get_menu_item_close_active (icon,TASK_WINDOW(task_icon_get_main_item (icon)));
+        menuitem = task_icon_get_menu_item_close_active (icon,task_window_get_window(TASK_WINDOW(task_icon_get_main_item (icon))));
       }
       break;
     case INTERNAL_CLOSE_ALL:
