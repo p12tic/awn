@@ -1,5 +1,10 @@
 2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/quick-prefs/applet.vala:
+	Set correct panel-id when running awn-settings via Preferences applet.
+
+2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
+
 	* Makefile.am:
 	* applets/simple-launcher/Makefile.am:
 	* applets/simple-launcher/awn-applet-simple-launcher.schema-ini.in:

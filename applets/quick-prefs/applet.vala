@@ -560,7 +560,8 @@ public class PrefsApplet : AppletSimple
       }
       else
       {
-        argv = new string[] { "awn-settings" };
+        argv = new string[] { "awn-settings",
+                              "--panel-id=%d".printf (this.panel_id) };
       }
       spawn_on_screen (this.get_screen (),
                        null,
