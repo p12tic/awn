@@ -95,13 +95,26 @@ task_manager_panel_connector_set_property (GObject *object, guint property_id,
 
 static void
 task_manager_panel_connector_dispose (GObject *object)
-{
+{  
   G_OBJECT_CLASS (task_manager_panel_connector_parent_class)->dispose (object);
 }
 
 static void
 task_manager_panel_connector_finalize (GObject *object)
 {
+	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(object);
+  
+  if (priv->connection)
+  {
+    if (priv->proxy) 
+    {
+      g_object_unref (priv->proxy);
+    }
+    dbus_g_connection_unref (priv->connection);
+    priv->connection = NULL;
+    priv->proxy = NULL;
+  }
+  
   G_OBJECT_CLASS (task_manager_panel_connector_parent_class)->finalize (object);
 }
 
@@ -127,7 +140,8 @@ static gboolean
 _do_connect_dbus (TaskManagerPanelConnector * conn)
 {
 	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(conn);
-  
+
+  g_debug ("%s:  start",__func__);
   gchar *object_path = g_strdup_printf ("/org/awnproject/Awn/Panel%d",
                                         priv->panel_id);
   if (!priv->proxy)
@@ -213,6 +227,7 @@ _do_connect_dbus (TaskManagerPanelConnector * conn)
   if (prop_proxy) g_object_unref (prop_proxy);
 
   g_free (object_path);
+  g_debug ("%s:  end - false",__func__);
   return FALSE;
 
   crap_out:
@@ -224,6 +239,7 @@ _do_connect_dbus (TaskManagerPanelConnector * conn)
   {
     g_object_unref (prop_proxy);
   }
+  g_debug ("%s:  end - true",__func__);
   return TRUE;
 }
 

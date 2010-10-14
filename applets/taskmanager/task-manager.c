@@ -377,7 +377,6 @@ task_manager_set_property (GObject      *object,
       break;
 
     case PROP_PANEL_LIST:
-      g_debug ("%s",__func__);
       if (manager->priv->panel_list)
       {
         g_value_array_free (manager->priv->panel_list);
@@ -1741,7 +1740,6 @@ task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
-  g_debug ("%s",__func__);
   for (guint idx = 0; idx < list->n_values; idx++)
   {
     gint id = g_value_get_int (g_value_array_get_nth (list, idx));
@@ -1752,9 +1750,7 @@ task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
     {
       gchar * uid = g_strdup_printf("-999%d",id);
       panel_info = g_malloc0 (sizeof (TaskManagerAwnPanelInfo) );
-      g_debug ("%s new constructor applet connecting to %d",__func__,id);
       panel_info->connector = task_manager_panel_connector_new (id);
-      g_debug ("%s Success new constructor applet",__func__);
       g_free (uid);
       panel_info->panel_instance_client = awn_config_get_default (id, NULL);
       panel_info->intellihide_mode = desktop_agnostic_config_client_get_int (
@@ -1781,7 +1777,6 @@ task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
         error = NULL;
       }
       g_hash_table_insert (priv->intellihide_panel_instances,GINT_TO_POINTER(id),panel_info);
-      g_debug ("Done adding connnector");
     }
     if (!panel_info->intellihide_mode && panel_info->autohide_cookie)
     {     
