@@ -1,3 +1,24 @@
+2010-10-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Fix bug with close active menu menuitem. Was not sending
+	the correct object.
+
+2010-10-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Special case OpenOffice's love child.
+
+2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	Stupid me, it wasn't a bug in Vala, they just fixed a leak.
+
+2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	Workaround bug in Vala 0.10.
+
 2010-10-09  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet.c:

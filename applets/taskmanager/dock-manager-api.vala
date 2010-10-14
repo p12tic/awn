@@ -193,10 +193,10 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
   public void 
   awn_set_visibility (string win_name, bool visible) throws DBus.Error
   {
-    HashTable<string, unowned Value?> hints;
-    hints = new HashTable<string, unowned Value?> (str_hash, str_equal);
+    HashTable<string, Value?> hints;
+    hints = new HashTable<string, Value?> (str_hash, str_equal);
     hints.insert ("visible", visible);
- 
+
     this.manager.update (win_name, hints);
   }
 
