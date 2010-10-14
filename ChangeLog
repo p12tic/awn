@@ -1,3 +1,8 @@
+2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	Workaround bug in Vala 0.10.
+
 2010-10-09  Rodney Cryderman <rcryderman@gmail.com>
 
 	* libawn/awn-applet.c:

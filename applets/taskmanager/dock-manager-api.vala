@@ -195,8 +195,10 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
   {
     HashTable<string, unowned Value?> hints;
     hints = new HashTable<string, unowned Value?> (str_hash, str_equal);
-    hints.insert ("visible", visible);
- 
+    // workaround bug in Vala 0.10+? - implicit GValue conversion doesn't work
+    Value visibility_value = visible;
+    hints.insert ("visible", visibility_value);
+
     this.manager.update (win_name, hints);
   }
 
