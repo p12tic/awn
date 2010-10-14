@@ -116,6 +116,14 @@ static DesktopMatch desktop_regexes[] =
   {".*ooffice.*-calc.*",NULL,NULL,"OpenOffice-Calc"},
   {".*ooffice.*-math.*",NULL,NULL,"OpenOffice-Math"},
   {".*ooffice.*-base.*",NULL,NULL,"OpenOffice-Base"},  
+
+  {".*libre.*-writer.*",NULL,NULL,"LibreOffice-Writer"},
+  {".*libre.*-draw.*",NULL,NULL,"LibreOffice-Draw"},
+  {".*libre.*-impress.*",NULL,NULL,"LibreOffice-Impress"},
+  {".*libre.*-calc.*",NULL,NULL,"LibreOffice-Calc"},
+  {".*libre.*-math.*",NULL,NULL,"LibreOffice-Math"},
+  {".*libre.*-base.*",NULL,NULL,"LibreOffice-Base"},  
+  
   {".*amsn.*","aMSN",".*amsn.*desktop.*","aMSN"},
   {".*prism-google-calendar",".*Google.*Calendar.*","prism-google-calendar","prism-google-calendar"},
   {".*prism-google-analytics",".*Google.*Analytics.*","prism-google-analytics","prism-google-analytics"},
@@ -150,6 +158,15 @@ static  WindowMatch window_regexes[] =
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Math.*","OpenOffice-Math"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Base.*","OpenOffice-Base"},
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","OpenOffice-Base"},      
+
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Writer.*","LibreOffice-Writer"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Draw.*","LibreOffice-Draw"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Impress.*","LibreOffice-Impress"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Calc.*","LibreOffice-Calc"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Math.*","LibreOffice-Math"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Base.*","LibreOffice-Base"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","LibreOffice-Base"},      
+
   {NULL,"Amsn","amsn",".*aMSN.*","aMSN"},
   {NULL,"Chatwindow","container.*",".*Buddies.*Chat.*","aMSN"},
   {NULL,"Chatwindow","container.*",".*Untitled.*[wW]indow.*","aMSN"},
@@ -211,6 +228,14 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*",".*Base.*","ooo-base"},  
   {".*office.*",".*OpenOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","ooo-base"},
   
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Writer.*","libreoffice3-writer"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Draw.*","libreoffice3-draw"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Impress.*","libreoffice3-impress"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Calc.*","libreoffice3-calc"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Math.*","libreoffice3-math"},
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*",".*Base.*","libreoffice3-base"},  
+  {".*office.*",".*LibreOffice.*",".*VCLSalFrame.*","^Database.*Wizard$","libreoffice3-base"},
+
   {".*gimp.*",".*Gimp.*",".*gimp.*",".*GNU.*Image.*Manipulation.*Program.*","gimp"},
   {".*system-config-printer.*applet.*py.*",".*Applet.*py.*",".*applet.*",".*Print.*Status.*","redhat-manage-print-jobs"},  
   {".*amsn","Amsn","amsn",".*aMSN.*","amsn"},
@@ -229,6 +254,7 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
 static  WindowWait windows_to_wait[] = 
 {
   {".*OpenOffice.*",".*VCLSalFrame.*","^OpenOffice\\.org.*",1000},
+  {".*LibreOffice.*",".*VCLSalFrame.*","^LibreOffice.*",1000},
   {NULL,NULL,NULL,0}
 };
 

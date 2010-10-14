@@ -1,3 +1,8 @@
+2010-10-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Special case OpenOffice's love child.
+
 2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/dock-manager-api.vala:
