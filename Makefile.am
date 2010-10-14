@@ -13,6 +13,7 @@ SUBDIRS = \
 	applets/quick-prefs \
 	applets/separator \
 	applets/taskmanager \
+	applets/simple-launcher \
 	po \
 	data \
 	tests \

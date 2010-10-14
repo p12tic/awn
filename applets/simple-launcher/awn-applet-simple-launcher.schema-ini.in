@@ -1,0 +1,9 @@
+[DEFAULT]
+single_instance = false
+
+[DEFAULT/launcher_list]
+type=list-string
+default=
+_description=List of desktop files displayed by the launcher.
+
+# vim: set ft=cfg :

@@ -115,7 +115,7 @@ dnl ==============================================
 MIN_GLIB_VERSION=2.16.0
 MIN_GTK_VERSION=2.12.0
 MIN_WNCK_VERSION=2.22
-MIN_LDA_VERSION=0.3.9
+MIN_LDA_VERSION=0.3.91
 
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, glib-genmarshal)
 
@@ -193,6 +193,8 @@ applets/quick-prefs/Makefile
 applets/quick-prefs/quick-prefs.desktop.in
 applets/separator/Makefile
 applets/separator/separator.desktop.in
+applets/simple-launcher/Makefile
+applets/simple-launcher/simple-launcher.desktop.in
 applets/taskmanager/Makefile
 applets/taskmanager/taskmanager.desktop.in
 awn.pc

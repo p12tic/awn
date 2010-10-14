@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+X-AWN-Type=Applet
+X-AWN-AppletType=Vala
+_Name=Simple Launcher
+_Comment=Applet used to launch stuff
+Exec=awn-applet -p %k
+X-AWN-AppletExec=@LIBDIR@/awn/applets/simple-launcher/simple-launcher.so
+Icon=system-run
+X-AWN-AppletCategory=Utilities

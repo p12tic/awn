@@ -1,3 +1,14 @@
+2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
+
+	* Makefile.am:
+	* applets/simple-launcher/Makefile.am:
+	* applets/simple-launcher/awn-applet-simple-launcher.schema-ini.in:
+	* applets/simple-launcher/simple-launcher.desktop.in.in:
+	* applets/simple-launcher/simple-launcher.vala:
+	* configure.in:
+	Add simple-launcher applet.
+	Bump required lda version.
+
 2010-10-14  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon-build-context-menus.c:
