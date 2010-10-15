@@ -218,6 +218,10 @@ static void task_manager_active_window_changed_cb (WnckScreen *screen,
 static void task_manager_active_workspace_changed_cb (WnckScreen    *screen,
                                                       WnckWorkspace *previous_space,
                                                       TaskManager * manager);
+static void task_manager_check_for_intersection (TaskManager * manager,
+                                                  WnckWorkspace * space,
+                                                  WnckApplication * app);
+
 static void task_manager_win_geom_changed_cb (WnckWindow *window, 
                                               TaskManager * manager);
 static void task_manager_win_closed_cb (WnckScreen *screen,
@@ -320,6 +324,8 @@ task_manager_set_property (GObject      *object,
 {
   TaskManager *manager = TASK_MANAGER (object);
 
+  g_return_if_fail (TASK_IS_MANAGER (object));
+
   switch (prop_id)
   {
     case PROP_SHOW_ALL_WORKSPACES:
@@ -392,6 +398,13 @@ task_manager_set_property (GObject      *object,
 }
 
 static void
+_delete_panel_info_cb (TaskManagerAwnPanelInfo * panel_info)
+{
+  g_object_unref (panel_info->connector);
+  g_free (panel_info);
+}
+
+static void
 task_manager_constructed (GObject *object)
 {
   TaskManagerPrivate *priv;
@@ -413,7 +426,8 @@ task_manager_constructed (GObject *object)
 
   priv->desktops_table = g_hash_table_new_full (g_str_hash,g_str_equal,g_free,g_free);
   priv->intellihide_panel_instances = g_hash_table_new_full (g_direct_hash,g_direct_equal,
-                                                             NULL,g_free); //FIXME replace g_free.                                             
+                                                             NULL,
+                                                             (GDestroyNotify)_delete_panel_info_cb);                                    
 
   priv->client = awn_config_get_default_for_applet (AWN_APPLET (object), NULL);
   priv->awn_client = awn_config_get_default (0, NULL);
@@ -1738,7 +1752,12 @@ task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
   GError * error = NULL;
   
   g_return_if_fail (TASK_IS_MANAGER (manager));
+  g_return_if_fail (list);
+  
   priv = manager->priv;
+
+  GHashTableIter iter;
+  gpointer key, value;
 
   for (guint idx = 0; idx < list->n_values; idx++)
   {
@@ -1788,6 +1807,34 @@ task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
       panel_info->autohide_cookie = task_manager_panel_connector_inhibit_autohide (panel_info->connector,"Intellihide" );
     }    
   }
+
+  if (priv->intellihide_panel_instances)
+  {
+    g_hash_table_iter_init (&iter, priv->intellihide_panel_instances);
+    while (g_hash_table_iter_next (&iter, &key, &value)) 
+    {
+      gboolean found = FALSE;
+      if (key)
+      {
+        gint key_val;
+        key_val = GPOINTER_TO_INT (key);
+        
+        for (guint idx = 0; idx < list->n_values; idx++)
+        {
+          if ( g_value_get_int (g_value_array_get_nth (list, idx)) == key_val)
+          {
+            found = TRUE;
+            break;
+          }
+        }
+      }
+      if (!found)
+      {
+        g_hash_table_iter_remove (&iter);
+      }
+    }
+  }
+        
 }
 /*
  * Checks when launchers got added/removed in the list in gconf/file.
@@ -2627,6 +2674,19 @@ task_manager_check_for_panel_instance_intersection (TaskManager * manager,
 
 }
 
+static gboolean
+_waiting_for_panel_dbus (TaskManager * manager)
+{
+  TaskManagerPrivate  *priv;
+  
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),FALSE);
+  priv = manager->priv;
+  
+  task_manager_check_for_intersection (manager,
+                                       wnck_screen_get_active_workspace (priv->screen),
+                                       wnck_application_get (wnck_window_get_xid(wnck_screen_get_active_window (priv->screen))));
+  return FALSE;
+}
 /* 
  Governs the panel autohide when Intellihide is enabled.
  If a window in the relevant window list intersects with the awn panel then
@@ -2656,32 +2716,33 @@ task_manager_check_for_intersection (TaskManager * manager,
       g_object_get (panel_info->connector, "panel-xid", &xid, NULL);
       if (!xid)
       {
-        continue;  /*this panel is not done initializing yet...*/
+        g_timeout_add (1000,(GSourceFunc)_waiting_for_panel_dbus,manager);
       }
-      if (!panel_info->foreign_window)
+      else
       {
-        panel_info->foreign_window = gdk_window_foreign_new ( xid);
+        if (!panel_info->foreign_window)
+        {
+          panel_info->foreign_window = gdk_window_foreign_new ( xid);
+        }
+        if (panel_info->intellihide_mode)
+        {
+          task_manager_check_for_panel_instance_intersection(manager,
+                                                           panel_info,
+                                                           space,
+                                                           app);
+        }
+        else if ( !panel_info->intellihide_mode && panel_info->autohide_cookie)
+        {
+          task_manager_panel_connector_uninhibit_autohide (panel_info->connector, panel_info->autohide_cookie);
+          panel_info->autohide_cookie = 0;
+        }
       }
-      if (panel_info->intellihide_mode)
-      {
-        task_manager_check_for_panel_instance_intersection(manager,
-                                                         panel_info,
-                                                         space,
-                                                         app);
-      }
-      else if ( !panel_info->intellihide_mode && panel_info->autohide_cookie)
-      {
-        task_manager_panel_connector_uninhibit_autohide (panel_info->connector, panel_info->autohide_cookie);
-        panel_info->autohide_cookie = 0;
-      }
-
     }
     else
     {
       g_debug ("%s: panel_info failure",__func__);
     }
   }
-
   return;
 }
 
@@ -2766,9 +2827,9 @@ task_manager_win_closed_cb (WnckScreen *screen,WnckWindow *window, TaskManager *
   WnckWindow          *win;
   WnckApplication     *app;
   WnckWorkspace       *space;
+  
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-
   win = wnck_screen_get_active_window (priv->screen);
   if (!win)
   {

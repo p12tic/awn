@@ -103,7 +103,6 @@ static void
 task_manager_panel_connector_finalize (GObject *object)
 {
 	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(object);
-  
   if (priv->connection)
   {
     if (priv->proxy) 
@@ -141,7 +140,6 @@ _do_connect_dbus (TaskManagerPanelConnector * conn)
 {
 	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(conn);
 
-  g_debug ("%s:  start",__func__);
   gchar *object_path = g_strdup_printf ("/org/awnproject/Awn/Panel%d",
                                         priv->panel_id);
   if (!priv->proxy)
@@ -227,7 +225,6 @@ _do_connect_dbus (TaskManagerPanelConnector * conn)
   if (prop_proxy) g_object_unref (prop_proxy);
 
   g_free (object_path);
-  g_debug ("%s:  end - false",__func__);
   return FALSE;
 
   crap_out:
@@ -239,7 +236,6 @@ _do_connect_dbus (TaskManagerPanelConnector * conn)
   {
     g_object_unref (prop_proxy);
   }
-  g_debug ("%s:  end - true",__func__);
   return TRUE;
 }
 
@@ -294,19 +290,20 @@ task_manager_panel_connector_new (gint id)
                        NULL);
 }
 
-
-
 guint
 task_manager_panel_connector_inhibit_autohide (TaskManagerPanelConnector *conn, const gchar *reason)
 {
   TaskManagerPanelConnectorPrivate *priv;
   GError *error = NULL;
   guint ret = 0;
-
+  
   g_return_val_if_fail (TASK_MANAGER_IS_PANEL_CONNECTOR (conn), 0);
   priv = GET_PRIVATE(conn);
 
-  g_return_val_if_fail (priv->proxy, 0);
+  if (!priv->proxy)
+  {
+    return 0;
+  }
 
   gchar *app_name = g_strdup_printf ("%s:%d", g_get_prgname(), getpid());
 
@@ -334,11 +331,14 @@ task_manager_panel_connector_uninhibit_autohide (TaskManagerPanelConnector *conn
 {
   TaskManagerPanelConnectorPrivate *priv;
   GError *error = NULL;
-
+  
   g_return_if_fail (TASK_MANAGER_IS_PANEL_CONNECTOR (conn));
   priv = GET_PRIVATE(conn);
 
-  g_return_if_fail (priv->proxy);
+  if (!priv->proxy)
+  {
+    return;
+  }
 
   dbus_g_proxy_call (priv->proxy, "UninhibitAutohide",
                      &error,
