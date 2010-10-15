@@ -1358,6 +1358,7 @@ task_icon_insert_plugin_menu_items (TaskIcon * icon,GtkMenu * menu)
   TaskIconPrivate * priv = TASK_ICON_GET_PRIVATE (icon);
   GList * i;
 
+  g_debug ("%s",__func__);
   for (i=priv->plugin_menu_items;i;i=i->next)
   {
     gtk_widget_show (i->data);

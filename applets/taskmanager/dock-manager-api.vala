@@ -89,6 +89,7 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
   {
     string[] capabilities =
     {
+      "container-title",
       "dock-item-badge",
       "dock-item-message",
       "dock-item-progress",
@@ -284,6 +285,7 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
   {
     Gtk.ImageMenuItem? item = null;
     Gtk.Image? image = null;
+    string? group = null;
 
     HashTableIter<string, Value?> iter =
       HashTableIter<string, Value?>(menu_hints);
@@ -304,6 +306,10 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
       {
         image = new Gtk.Image.from_file (value.get_string ());
       }
+      else if (key == "container-title")
+      {
+        group = value.get_string ();
+      }
       else if (key == "uri")
       {
         // TODO: implement
@@ -313,7 +319,7 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
     if (item != null)
     {
       if (image != null) item.set_image (image);
-      int id = this.icon.add_menu_item (item);
+      int id = this.icon.add_menu_item (item,group);
       item.show ();
 
       item.activate.connect ((w) =>

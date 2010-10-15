@@ -6,7 +6,7 @@ namespace Task {
 	public class Icon : Awn.ThemedIcon, Gtk.Buildable, Atk.Implementor, Awn.Overlayable {
 		[CCode (type = "GtkWidget*", has_construct_function = false)]
 		public Icon (Awn.Applet applet);
-		public int add_menu_item (Gtk.MenuItem p2);
+		public int add_menu_item (Gtk.MenuItem p2, string group);
 		public void append_ephemeral_item (Task.Item item);
 		public void append_item (Task.Item item);
 		public bool contains_launcher ();
