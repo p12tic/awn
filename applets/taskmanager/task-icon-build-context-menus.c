@@ -443,10 +443,15 @@ _minimize_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
 static void
 _maximize_window_cb (GtkMenuItem *menuitem, WnckWindow *win)
 {
+  GdkEventButton * event = (GdkEventButton*)gtk_get_current_event ();
+  
   if (wnck_window_is_maximized (win))
     wnck_window_unmaximize (win);
   else
+  {
+    wnck_window_unminimize (win,event->time);
     wnck_window_maximize (win);
+  }
 }
 
 static void
@@ -557,6 +562,7 @@ static void
 _maximize_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
 {
   TaskIconPrivate * priv = NULL;
+  GdkEventButton * event = (GdkEventButton*)gtk_get_current_event ();
 
   g_return_if_fail (TASK_IS_ICON(icon));
   
@@ -579,6 +585,7 @@ _maximize_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
     {
       continue;
     }
+    wnck_window_unminimize (task_window_get_window (TASK_WINDOW(iter->data)),event->time);
     wnck_window_maximize (task_window_get_window (TASK_WINDOW(iter->data)));
   }
 }
@@ -587,7 +594,8 @@ static void
 _unmaximize_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
 {
   TaskIconPrivate * priv = NULL;
-
+  GdkEventButton * event = (GdkEventButton*)gtk_get_current_event ();
+  
   g_return_if_fail (TASK_IS_ICON(icon));
   
   GSList * items = task_icon_get_items (icon);
@@ -609,6 +617,7 @@ _unmaximize_all_cb (GtkMenuItem *menuitem, TaskIcon * icon)
     {
       continue;
     }
+    wnck_window_unminimize (task_window_get_window (TASK_WINDOW(iter->data)),event->time);
     wnck_window_unmaximize (task_window_get_window (TASK_WINDOW(iter->data)));
   }
 }
@@ -1358,7 +1367,6 @@ task_icon_insert_plugin_menu_items (TaskIcon * icon,GtkMenu * menu)
   TaskIconPrivate * priv = TASK_ICON_GET_PRIVATE (icon);
   GList * i;
 
-  g_debug ("%s",__func__);
   for (i=priv->plugin_menu_items;i;i=i->next)
   {
     gtk_widget_show (i->data);

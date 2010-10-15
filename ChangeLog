@@ -1,5 +1,10 @@
 2010-10-15  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Fix some maximize, unmaximize issues when windows minimized.
+
+2010-10-15  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/dock-manager-api.vala:
   	* applets/taskmanager/menus/simple.xml:
   	* applets/taskmanager/menus/standard.xml:
