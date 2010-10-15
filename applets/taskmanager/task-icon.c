@@ -47,12 +47,15 @@
 #include "task-launcher.h"
 #include "task-settings.h"
 #include "task-manager.h"
+#include "labelled-separator.h"
 
 #include "task-icon-build-context-menus.h"
 #include "config.h"
 
 //#define DEBUG 1
 #define TASK_ICON_PLUGIN_MENU_ITEM "TASK_ICON_PLUGIN_MENU_ITEM"
+#define TASK_ICON_PLUGIN_MENU_GROUP_ITEM "TASK_ICON_PLUGIN_MENU_GROUP_ITEM"
+
 enum{
   DESKTOP_COPY_ALL=0,
   DESKTOP_COPY_OWNER,
@@ -924,7 +927,7 @@ task_icon_init (TaskIcon *icon)
   priv->visible = FALSE;
   priv->overlay_text = NULL;
   priv->ephemeral_count = 0;
-  priv->plugin_menu_items = NULL;
+  priv->plugin_menu_items = g_list_append (priv->plugin_menu_items, g_object_ref_sink (gtk_separator_menu_item_new ()));
   priv->autohide_cookie = 0;
   
   priv->overlay_app_icon = awn_overlay_pixbuf_new ();
@@ -2287,13 +2290,13 @@ task_icon_set_inhibit_focus_loss (TaskIcon *icon, gboolean val)
 }
 
 gint
-task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *item)
+task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *item, gchar * group)
 {
   TaskIconPrivate *priv;
   static gint cookie = 0;
   GList * needle = NULL;
   GQuark q = g_quark_from_static_string (TASK_ICON_PLUGIN_MENU_ITEM);
-  
+
   g_return_val_if_fail (TASK_IS_ICON (icon),-1);
   g_return_val_if_fail (GTK_IS_MENU_ITEM (item),-1);
   priv = icon->priv;
@@ -2301,9 +2304,48 @@ task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *item)
   needle = g_list_find (priv->plugin_menu_items,item);
   if (!needle )
   {
-    cookie++;
-    priv->plugin_menu_items = g_list_append (priv->plugin_menu_items,
-                                             g_object_ref_sink (item));
+    if (!group)
+    {
+      cookie++;
+      priv->plugin_menu_items = g_list_insert_before (priv->plugin_menu_items,
+                                                      g_list_last (priv->plugin_menu_items),
+                                                      g_object_ref_sink (item));
+    }
+    else
+    {
+      GList  * i;
+      GQuark gq = g_quark_from_static_string (TASK_ICON_PLUGIN_MENU_GROUP_ITEM);
+      gboolean found = FALSE;
+      
+      for (i=priv->plugin_menu_items;i;i=i->next)
+      {
+        /*does this menu item have a group name attached. is it the one we want?*/
+        if ( g_strcmp0 (group, g_object_get_qdata (G_OBJECT(i->data), gq)) ==0  )
+        {
+          /*if yes, search forward until we find a new group or the default (separator)*/
+          for (i=i->next;i;i=i->next)
+          {
+            if (GTK_IS_SEPARATOR_MENU_ITEM (i->data) || g_object_get_qdata (G_OBJECT(i->data), gq) )
+            {
+              priv->plugin_menu_items = g_list_insert_before (priv->plugin_menu_items,i,g_object_ref_sink (item));
+              found = TRUE;
+              break;
+            }
+          }
+          break;
+        }
+      }
+      if (!found)
+      {
+        GtkWidget * new_group_item = GTK_WIDGET(task_manager_labelled_separator_new (group));
+        gchar * group_text = g_strdup (group);
+        
+        g_object_set_qdata (G_OBJECT(new_group_item),gq,group_text );
+        g_object_weak_ref (G_OBJECT(new_group_item), (GWeakNotify)g_free,group_text);
+        priv->plugin_menu_items = g_list_prepend (priv->plugin_menu_items,g_object_ref_sink (item));
+        priv->plugin_menu_items = g_list_prepend (priv->plugin_menu_items,g_object_ref_sink (new_group_item));
+      }
+    }
     g_object_set_qdata (G_OBJECT(item), q, GINT_TO_POINTER (cookie));
   }
   else

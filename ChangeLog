@@ -1,3 +1,14 @@
+2010-10-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+  	* applets/taskmanager/menus/simple.xml:
+  	* applets/taskmanager/menus/standard.xml:
+  	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-manager.vapi:
+	Support "container-title" component of the dockmanager menu api.
+
 2010-10-14  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/quick-prefs/applet.vala:

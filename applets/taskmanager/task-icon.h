@@ -122,7 +122,7 @@ const gchar *   task_icon_get_custom_name (TaskIcon * icon);
 
 GObject*        task_icon_get_dbus_dispatcher (TaskIcon *icon);
 
-gint            task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *);
+gint            task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *, gchar * group);
 
 void            task_icon_remove_menu_item(TaskIcon * icon,gint id);
 
