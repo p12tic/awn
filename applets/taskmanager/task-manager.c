@@ -85,6 +85,9 @@ struct _TaskManagerPrivate
 {
   DesktopAgnosticConfigClient *client;
   DesktopAgnosticConfigClient *awn_client;
+
+  DBusGConnection *connection;
+  DBusGProxy      *proxy;
   
   TaskSettings    *settings;
   WnckScreen      *screen;
@@ -405,6 +408,18 @@ _delete_panel_info_cb (TaskManagerAwnPanelInfo * panel_info)
 }
 
 static void
+_on_panel_added (DBusGProxy *proxy,guint panel_id,gpointer data)
+{
+  g_debug ("%s",__func__);
+}
+
+static void
+_on_panel_removed (DBusGProxy *proxy,guint panel_id,gpointer data)
+{
+  g_debug ("%s",__func__);
+}
+
+static void
 task_manager_constructed (GObject *object)
 {
   TaskManagerPrivate *priv;
@@ -415,6 +430,28 @@ task_manager_constructed (GObject *object)
   priv = TASK_MANAGER_GET_PRIVATE (object);
   widget = GTK_WIDGET (object);
 
+  priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
+                                           "org.awnproject.Awn",
+                                            "/org/awnproject/Awn/App",
+                                           "/org/awnproject/Awn/App");
+  if (!priv->proxy)
+  {
+    g_warning("%s: Could not connect to mothership!\n",__func__);
+  }
+  else
+  {
+    dbus_g_proxy_add_signal (priv->proxy, "PanelAdded",
+                             G_TYPE_UINT, G_TYPE_INVALID);
+    dbus_g_proxy_add_signal (priv->proxy, "PanelRemoved",
+                             G_TYPE_UINT, G_TYPE_INVALID);
+    dbus_g_proxy_connect_signal (priv->proxy, "PanelAdded",
+                                 G_CALLBACK (_on_panel_added), object, 
+                                 NULL);
+    dbus_g_proxy_connect_signal (priv->proxy, "PanelRemoved",
+                                 G_CALLBACK (_on_panel_removed), object, 
+                                 NULL);
+  }    
+  
   /*
    Set the cache size of our AwnPixbufCache to something a bit bigger.
 
@@ -619,9 +656,10 @@ static void
 task_manager_init (TaskManager *manager)
 {
   TaskManagerPrivate *priv;
-  	
-  priv = manager->priv = TASK_MANAGER_GET_PRIVATE (manager);
+  GError         *error = NULL;	
 
+  priv = manager->priv = TASK_MANAGER_GET_PRIVATE (manager);
+  
   priv->screen = wnck_screen_get_default ();
   priv->launcher_paths = NULL;
   priv->hidden_list = NULL;
@@ -647,6 +685,14 @@ task_manager_init (TaskManager *manager)
   /* TODO: free !!! */
   priv->dragged_icon = NULL;
   priv->drag_timeout = 0;
+
+  priv->connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
+  priv->proxy = NULL;  
+  if (error)
+  {
+    g_warning ("%s", error->message);
+    g_error_free(error);
+  }
 
   /* connect to the relevent WnckScreen signals */
   g_signal_connect (priv->screen, "window-opened", 
@@ -756,6 +802,14 @@ task_manager_dispose (GObject *object)
   desktop_agnostic_config_client_unbind_all_for_object (priv->client,
                                                         object,
                                                         NULL);
+  if (priv->connection)
+  {
+    if (priv->proxy) g_object_unref (priv->proxy);
+    dbus_g_connection_unref (priv->connection);
+    priv->connection = NULL;
+    priv->proxy = NULL;
+  }
+  
   /*
   if (priv->autohide_cookie)
   {     

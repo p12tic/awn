@@ -109,7 +109,7 @@ namespace Awn
           this.panels.insert ((owned)path, panel);
 
           panel.show ();
-          this.panel_added (p.panel_id);
+          this.panel_added (panel_id);
         }
         else
         {
@@ -119,9 +119,10 @@ namespace Awn
 
       foreach (unowned Panel p in untouched_panels)
       {
+        int panel_id = p.panel_id;
         string path = "/org/awnproject/Awn/Panel%d".printf (p.panel_id);
         this.panels.remove (path);
-        this.panel_removed (p.panel_id);
+        this.panel_removed (panel_id);
         p.destroy ();
       }
     }
