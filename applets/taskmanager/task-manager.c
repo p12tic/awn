@@ -239,6 +239,11 @@ static TaskIcon * task_manager_find_icon_containing_desktop (TaskManager * manag
 
 static gboolean _attention_required_reminder_cb (TaskManager * manager);
 
+static void task_manager_intellihide_change_cb (const char* group, 
+                                    const char* key, 
+                                    GValue* value, 
+                                    int * user_data);
+
 typedef enum 
 {
   TASK_MANAGER_ERROR_UNSUPPORTED_WINDOW_TYPE,
@@ -392,7 +397,6 @@ task_manager_set_property (GObject      *object,
         manager->priv->panel_list = NULL;
       }
       manager->priv->panel_list = (GValueArray*)g_value_dup_boxed (value);
-      task_manager_refresh_panel_list (manager,manager->priv->panel_list);
       break;
 
     default:
@@ -408,15 +412,64 @@ _delete_panel_info_cb (TaskManagerAwnPanelInfo * panel_info)
 }
 
 static void
-_on_panel_added (DBusGProxy *proxy,guint panel_id,gpointer data)
+_on_panel_added (DBusGProxy *proxy,guint panel_id,TaskManager *applet)
 {
   g_debug ("%s",__func__);
+
+  TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (applet);
+  GError * error = NULL;
+  TaskManagerAwnPanelInfo * panel_info = NULL;
+  gchar * uid = g_strdup_printf("-999%d",panel_id);
+  
+  g_assert (!g_hash_table_lookup (priv->intellihide_panel_instances,GINT_TO_POINTER (panel_id)));
+  panel_info = g_malloc0 (sizeof (TaskManagerAwnPanelInfo) );
+  panel_info->connector = task_manager_panel_connector_new (panel_id);
+  g_free (uid);
+  panel_info->panel_instance_client = awn_config_get_default (panel_id, NULL);
+  panel_info->intellihide_mode = desktop_agnostic_config_client_get_int (
+                                             panel_info->panel_instance_client, 
+                                             "panel", 
+                                             "intellihide_mode", 
+                                              &error);
+  if (error)
+  {
+    g_debug ("%s: error accessing intellihide_mode. \"%s\"",__func__,error->message);
+    g_error_free (error);
+    error = NULL;
+  }
+  desktop_agnostic_config_client_notify_add (panel_info->panel_instance_client, 
+                                             "panel", 
+                                             "intellihide_mode", 
+                                             (DesktopAgnosticConfigNotifyFunc)task_manager_intellihide_change_cb, 
+                                             &panel_info->intellihide_mode, 
+                                             &error);
+  if (error)
+  {
+    g_debug ("%s: error binding intellihide_mode. \"%s\"",__func__,error->message);
+    g_error_free (error);
+    error = NULL;
+  }
+
+  if (!panel_info->intellihide_mode && panel_info->autohide_cookie)
+  {     
+    task_manager_panel_connector_uninhibit_autohide (panel_info->connector, panel_info->autohide_cookie);
+    panel_info->autohide_cookie = 0;
+  }
+  if (panel_info->intellihide_mode && !panel_info->autohide_cookie)
+  {     
+    panel_info->autohide_cookie = task_manager_panel_connector_inhibit_autohide (panel_info->connector,"Intellihide" );
+  }   
+
+  g_hash_table_insert (priv->intellihide_panel_instances,GINT_TO_POINTER(panel_id),panel_info);                                                                           
 }
 
 static void
-_on_panel_removed (DBusGProxy *proxy,guint panel_id,gpointer data)
+_on_panel_removed (DBusGProxy *proxy,guint panel_id,TaskManager * applet)
 {
   g_debug ("%s",__func__);
+  TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (applet);
+  
+  g_assert (g_hash_table_remove (priv->intellihide_panel_instances,GINT_TO_POINTER (panel_id)));
 }
 
 static void
@@ -432,8 +485,8 @@ task_manager_constructed (GObject *object)
 
   priv->proxy = dbus_g_proxy_new_for_name (priv->connection,
                                            "org.awnproject.Awn",
-                                            "/org/awnproject/Awn/App",
-                                           "/org/awnproject/Awn/App");
+                                            "/org/awnproject/Awn",
+                                           "org.awnproject.Awn.App");
   if (!priv->proxy)
   {
     g_warning("%s: Could not connect to mothership!\n",__func__);
@@ -441,9 +494,9 @@ task_manager_constructed (GObject *object)
   else
   {
     dbus_g_proxy_add_signal (priv->proxy, "PanelAdded",
-                             G_TYPE_UINT, G_TYPE_INVALID);
+                             G_TYPE_INT, G_TYPE_INVALID);
     dbus_g_proxy_add_signal (priv->proxy, "PanelRemoved",
-                             G_TYPE_UINT, G_TYPE_INVALID);
+                             G_TYPE_INT, G_TYPE_INVALID);
     dbus_g_proxy_connect_signal (priv->proxy, "PanelAdded",
                                  G_CALLBACK (_on_panel_added), object, 
                                  NULL);
@@ -541,6 +594,7 @@ task_manager_constructed (GObject *object)
 
   /* DBus interface */
   priv->dbus_proxy = task_manager_dispatcher_new (TASK_MANAGER (object));
+  task_manager_refresh_panel_list (TASK_MANAGER(object),priv->panel_list);
 }
 
 static void
