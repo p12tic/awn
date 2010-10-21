@@ -981,7 +981,8 @@ _left_click (TaskItem *item, GdkEventButton *event)
   launcher = TASK_LAUNCHER (item);
   priv = launcher->priv;
 
-  if (desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY))
+  if (desktop_agnostic_fdo_desktop_entry_key_exists (priv->entry,G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY)&&
+      desktop_agnostic_fdo_desktop_entry_get_boolean (priv->entry, G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY))
   {
     GStrv tokens1;
     GStrv tokens2;
