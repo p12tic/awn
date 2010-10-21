@@ -28,6 +28,8 @@ namespace Awn
   {
     public abstract ObjectPath[] get_panels () throws DBus.Error;
     public abstract void remove_panel (int panel_id) throws DBus.Error;
+    public signal void panel_added (int panel_id);
+    public signal void panel_removed (int panel_id);
   }
 
   public class Application: GLib.Object, AppDBusInterface
@@ -107,6 +109,7 @@ namespace Awn
           this.panels.insert ((owned)path, panel);
 
           panel.show ();
+          this.panel_added (p.panel_id);
         }
         else
         {
@@ -118,6 +121,7 @@ namespace Awn
       {
         string path = "/org/awnproject/Awn/Panel%d".printf (p.panel_id);
         this.panels.remove (path);
+        this.panel_removed (p.panel_id);
         p.destroy ();
       }
     }
