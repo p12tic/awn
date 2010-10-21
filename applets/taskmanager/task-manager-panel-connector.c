@@ -261,7 +261,10 @@ task_manager_panel_connector_constructed (GObject *obj)
 
   if (priv->panel_id > 0)
   {
-    priv->source = g_timeout_add (1000,(GSourceFunc)_do_connect_dbus,obj);
+    if (!_do_connect_dbus (TASK_MANAGER_PANEL_CONNECTOR(obj)) )
+    {
+      priv->source = g_timeout_add (1000,(GSourceFunc)_do_connect_dbus,obj);
+    }
   }
 }
 
