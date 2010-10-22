@@ -114,7 +114,6 @@ struct _TaskManagerPrivate
   GList *grouping_list;
   /* Properties */
   GValueArray *launcher_paths;
-  GValueArray *panel_list;
 
   guint        attention_cookie;
   guint        attention_source;
@@ -160,9 +159,7 @@ enum
   PROP_ICON_GROUPING,
   PROP_MATCH_STRENGTH,
   PROP_ATTENTION_AUTOHIDE_TIMER,
-  PROP_ATTENTION_REQUIRED_REMINDER,
-
-  PROP_PANEL_LIST
+  PROP_ATTENTION_REQUIRED_REMINDER
 };
 
 
@@ -192,8 +189,6 @@ static void task_manager_set_show_all_windows    (TaskManager *manager,
                                                   gboolean     show_all);
 static void task_manager_set_show_only_launchers (TaskManager *manager, 
                                                   gboolean     show_only);
-static void task_manager_refresh_panel_list (TaskManager *manager,
-                                                  GValueArray *list);
 static void task_manager_refresh_launcher_paths  (TaskManager *manager,
                                                   GValueArray *list);
 static void task_manager_set_drag_and_drop (TaskManager *manager, 
@@ -390,15 +385,6 @@ task_manager_set_property (GObject      *object,
       }
       break;
 
-    case PROP_PANEL_LIST:
-      if (manager->priv->panel_list)
-      {
-        g_value_array_free (manager->priv->panel_list);
-        manager->priv->panel_list = NULL;
-      }
-      manager->priv->panel_list = (GValueArray*)g_value_dup_boxed (value);
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -414,8 +400,6 @@ _delete_panel_info_cb (TaskManagerAwnPanelInfo * panel_info)
 static void
 _on_panel_added (DBusGProxy *proxy,guint panel_id,TaskManager *applet)
 {
-  g_debug ("%s",__func__);
-
   TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (applet);
   GError * error = NULL;
   TaskManagerAwnPanelInfo * panel_info = NULL;
@@ -466,7 +450,6 @@ _on_panel_added (DBusGProxy *proxy,guint panel_id,TaskManager *applet)
 static void
 _on_panel_removed (DBusGProxy *proxy,guint panel_id,TaskManager * applet)
 {
-  g_debug ("%s",__func__);
   TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (applet);
   
   g_assert (g_hash_table_remove (priv->intellihide_panel_instances,GINT_TO_POINTER (panel_id)));
@@ -505,17 +488,7 @@ task_manager_constructed (GObject *object)
     dbus_g_proxy_connect_signal (priv->proxy, "PanelRemoved",
                                  G_CALLBACK (_on_panel_removed), object, 
                                  NULL);
-/*    dbus_g_proxy_call (priv->proxy, "GetPanels",
-                     &error,
-                     G_TYPE_INVALID, 
-                     G_TYPE_STRV, &panel_paths,
-                     G_TYPE_INVALID);*/
-    if (error)
-    {
-      g_debug ("%s: %s",__func__,error->message);
-      g_error_free (error);
-      error = NULL;
-    }
+
   }    
   
   /*
@@ -607,7 +580,33 @@ task_manager_constructed (GObject *object)
 
   /* DBus interface */
   priv->dbus_proxy = task_manager_dispatcher_new (TASK_MANAGER (object));
-  task_manager_refresh_panel_list (TASK_MANAGER(object),priv->panel_list);
+
+  if (priv->proxy)
+  {
+    dbus_g_proxy_call (priv->proxy, "GetPanels",
+                     &error,
+                     G_TYPE_INVALID, 
+                     G_TYPE_STRV, &panel_paths,
+                     G_TYPE_INVALID);
+    if (error)
+    {
+      g_debug ("%s: %s",__func__,error->message);
+      g_error_free (error);
+      error = NULL;
+    }
+    else
+    {
+      for (gint i=0; panel_paths[i];i++)
+      {
+        //strlen is like this as a reminder.
+        g_debug ("%s: %s",panel_paths[i],panel_paths[i] + strlen("/org/awnproject/Awn/Panel"));
+        _on_panel_added (priv->proxy,
+                         atoi(panel_paths[i] + strlen("/org/awnproject/Awn/Panel")),
+                         TASK_MANAGER(object));
+        
+      }
+    }    
+  }  
 }
 
 static void
@@ -695,13 +694,6 @@ task_manager_class_init (TaskManagerClass *klass)
                             G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ATTENTION_REQUIRED_REMINDER, pspec);
 
-  pspec = g_param_spec_boxed ("panel_list",
-                              "panel list",
-                              "List of panels",
-                              G_TYPE_VALUE_ARRAY,
-                              G_PARAM_READWRITE);
-  g_object_class_install_property (obj_class, PROP_PANEL_LIST, pspec);
-
   /* Install signals */
   _taskman_signals[GROUPING_CHANGED] =
 		g_signal_new ("grouping_changed",
@@ -730,7 +722,6 @@ task_manager_init (TaskManager *manager)
   priv->screen = wnck_screen_get_default ();
   priv->launcher_paths = NULL;
   priv->hidden_list = NULL;
-  priv->panel_list = NULL;
 
   wnck_set_client_type (WNCK_CLIENT_TYPE_PAGER);
 
@@ -1866,97 +1857,6 @@ task_manager_intellihide_change_cb (const char* group,
   *user_data = g_value_get_int (value);
 }
 
-static void
-task_manager_refresh_panel_list (TaskManager *manager, GValueArray *list)
-{
-  TaskManagerPrivate *priv;
-  GError * error = NULL;
-  
-  g_return_if_fail (TASK_IS_MANAGER (manager));
-  g_return_if_fail (list);
-  
-  priv = manager->priv;
-
-  GHashTableIter iter;
-  gpointer key, value;
-
-  for (guint idx = 0; idx < list->n_values; idx++)
-  {
-    gint id = g_value_get_int (g_value_array_get_nth (list, idx));
-    TaskManagerAwnPanelInfo * panel_info = NULL;
-    
-    panel_info = g_hash_table_lookup (priv->intellihide_panel_instances,GINT_TO_POINTER(id));
-    if (!panel_info)
-    {
-      gchar * uid = g_strdup_printf("-999%d",id);
-      panel_info = g_malloc0 (sizeof (TaskManagerAwnPanelInfo) );
-      panel_info->connector = task_manager_panel_connector_new (id);
-      g_free (uid);
-      panel_info->panel_instance_client = awn_config_get_default (id, NULL);
-      panel_info->intellihide_mode = desktop_agnostic_config_client_get_int (
-                                                 panel_info->panel_instance_client, 
-                                                 "panel", 
-                                                 "intellihide_mode", 
-                                                  &error);
-      if (error)
-      {
-        g_debug ("%s: error accessing intellihide_mode. \"%s\"",__func__,error->message);
-        g_error_free (error);
-        error = NULL;
-      }
-      desktop_agnostic_config_client_notify_add (panel_info->panel_instance_client, 
-                                                 "panel", 
-                                                 "intellihide_mode", 
-                                                 (DesktopAgnosticConfigNotifyFunc)task_manager_intellihide_change_cb, 
-                                                 &panel_info->intellihide_mode, 
-                                                 &error);
-      if (error)
-      {
-        g_debug ("%s: error binding intellihide_mode. \"%s\"",__func__,error->message);
-        g_error_free (error);
-        error = NULL;
-      }
-      g_hash_table_insert (priv->intellihide_panel_instances,GINT_TO_POINTER(id),panel_info);
-    }
-    if (!panel_info->intellihide_mode && panel_info->autohide_cookie)
-    {     
-      task_manager_panel_connector_uninhibit_autohide (panel_info->connector, panel_info->autohide_cookie);
-      panel_info->autohide_cookie = 0;
-    }
-    if (panel_info->intellihide_mode && !panel_info->autohide_cookie)
-    {     
-      panel_info->autohide_cookie = task_manager_panel_connector_inhibit_autohide (panel_info->connector,"Intellihide" );
-    }    
-  }
-
-  if (priv->intellihide_panel_instances)
-  {
-    g_hash_table_iter_init (&iter, priv->intellihide_panel_instances);
-    while (g_hash_table_iter_next (&iter, &key, &value)) 
-    {
-      gboolean found = FALSE;
-      if (key)
-      {
-        gint key_val;
-        key_val = GPOINTER_TO_INT (key);
-        
-        for (guint idx = 0; idx < list->n_values; idx++)
-        {
-          if ( g_value_get_int (g_value_array_get_nth (list, idx)) == key_val)
-          {
-            found = TRUE;
-            break;
-          }
-        }
-      }
-      if (!found)
-      {
-        g_hash_table_iter_remove (&iter);
-      }
-    }
-  }
-        
-}
 /*
  * Checks when launchers got added/removed in the list in gconf/file.
  * It removes the launchers from the task-icons and add those
@@ -2820,11 +2720,43 @@ task_manager_check_for_intersection (TaskManager * manager,
                                      WnckApplication * app)
 {
   TaskManagerPrivate  *priv;
-  gint64 xid; 
+  gint64 xid;
+  GHashTableIter iter;
+  gpointer key,value;
   
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
-  g_return_if_fail (priv->panel_list);
+
+  g_hash_table_iter_init (&iter, priv->intellihide_panel_instances);
+  while (g_hash_table_iter_next (&iter, &key, &value) )
+  {
+    TaskManagerAwnPanelInfo * panel_info = value;
+    g_object_get (panel_info->connector, "panel-xid", &xid, NULL);
+    if (!xid)
+    {
+      g_timeout_add (1000,(GSourceFunc)_waiting_for_panel_dbus,manager);
+    }
+    else
+    {
+      if (!panel_info->foreign_window)
+      {
+        panel_info->foreign_window = gdk_window_foreign_new ( xid);
+      }
+      if (panel_info->intellihide_mode)
+      {
+        task_manager_check_for_panel_instance_intersection(manager,
+                                                         panel_info,
+                                                         space,
+                                                         app);
+      }
+      else if ( !panel_info->intellihide_mode && panel_info->autohide_cookie)
+      {
+        task_manager_panel_connector_uninhibit_autohide (panel_info->connector, panel_info->autohide_cookie);
+        panel_info->autohide_cookie = 0;
+      }
+    }                                                           
+  }
+/*  
   for (guint idx = 0; idx < priv->panel_list->n_values; idx++)
   {
     int id;
@@ -2863,7 +2795,7 @@ task_manager_check_for_intersection (TaskManager * manager,
     {
       g_debug ("%s: panel_info failure",__func__);
     }
-  }
+  }*/
   return;
 }
 

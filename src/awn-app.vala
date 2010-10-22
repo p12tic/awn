@@ -132,13 +132,12 @@ namespace Awn
       var keys = this.panels.get_keys ();
       keys.sort (strcmp);
 
-      string[] paths = new string[keys.length ()+1];
+      string[] paths = new string[keys.length ()];
       int i = 0;
       foreach (unowned string path in keys)
       {
         paths[i++] = path;
       }
-      paths [i]=null;
       return paths;
     }
 
