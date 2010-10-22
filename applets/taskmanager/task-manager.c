@@ -477,6 +477,8 @@ task_manager_constructed (GObject *object)
 {
   TaskManagerPrivate *priv;
   GtkWidget          *widget;
+  GError             *error=NULL;
+  GStrv              panel_paths;
   
   G_OBJECT_CLASS (task_manager_parent_class)->constructed (object);
   
@@ -503,6 +505,17 @@ task_manager_constructed (GObject *object)
     dbus_g_proxy_connect_signal (priv->proxy, "PanelRemoved",
                                  G_CALLBACK (_on_panel_removed), object, 
                                  NULL);
+/*    dbus_g_proxy_call (priv->proxy, "GetPanels",
+                     &error,
+                     G_TYPE_INVALID, 
+                     G_TYPE_STRV, &panel_paths,
+                     G_TYPE_INVALID);*/
+    if (error)
+    {
+      g_debug ("%s: %s",__func__,error->message);
+      g_error_free (error);
+      error = NULL;
+    }
   }    
   
   /*

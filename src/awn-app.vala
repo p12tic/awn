@@ -26,7 +26,7 @@ namespace Awn
   [DBus (name="org.awnproject.Awn.App")]
   public interface AppDBusInterface: GLib.Object
   {
-    public abstract ObjectPath[] get_panels () throws DBus.Error;
+    public abstract string[] get_panels () throws DBus.Error;
     public abstract void remove_panel (int panel_id) throws DBus.Error;
     public signal void panel_added (int panel_id);
     public signal void panel_removed (int panel_id);
@@ -127,18 +127,18 @@ namespace Awn
       }
     }
 
-    public ObjectPath[] get_panels () throws DBus.Error
+    public string[] get_panels () throws DBus.Error
     {
       var keys = this.panels.get_keys ();
       keys.sort (strcmp);
 
-      ObjectPath[] paths = new ObjectPath[keys.length ()];
+      string[] paths = new string[keys.length ()+1];
       int i = 0;
       foreach (unowned string path in keys)
       {
-        paths[i++] = new ObjectPath (path);
+        paths[i++] = path;
       }
-
+      paths [i]=null;
       return paths;
     }
 
