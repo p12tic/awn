@@ -84,7 +84,6 @@ typedef struct
 struct _TaskManagerPrivate
 {
   DesktopAgnosticConfigClient *client;
-  DesktopAgnosticConfigClient *awn_client;
 
   DBusGConnection *connection;
   DBusGProxy      *proxy;
@@ -506,7 +505,6 @@ task_manager_constructed (GObject *object)
                                                              (GDestroyNotify)_delete_panel_info_cb);                                    
 
   priv->client = awn_config_get_default_for_applet (AWN_APPLET (object), NULL);
-  priv->awn_client = awn_config_get_default (0, NULL);
   
   /* Connect up the important bits */
   desktop_agnostic_config_client_bind (priv->client,
@@ -561,13 +559,6 @@ task_manager_constructed (GObject *object)
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "attention_required_reminder",
                                        object, "attention_required_reminder", TRUE,
-                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
-                                       NULL);
-
-  desktop_agnostic_config_client_bind (priv->awn_client,
-                                       "panels",
-                                       "panel_list",
-                                       object, "panel_list", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
 
