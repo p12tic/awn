@@ -88,6 +88,11 @@ type = integer
 default = 3
 _description=Maximum number of task indicators to show under icons. Valid range is 0..3.
 
+[DEFAULT/monitor_desktops]
+type = boolean
+default = true
+_description= Monitor desktop files. If set to false then changes to desktop files will not be reflected immediately.
+
 [DEFAULT/only_show_launchers]
 type = boolean
 default = false

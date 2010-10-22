@@ -1,3 +1,11 @@
+2010-10-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-launcher.c:
+	Added a monitor_desktops config key.  Allows disabling of monitoring
+	desktop files for changes.  Which can be a resource issue in multi-user
+	installations.
+
 2010-10-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-launcher.c:
