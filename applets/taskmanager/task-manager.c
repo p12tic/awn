@@ -599,7 +599,6 @@ task_manager_constructed (GObject *object)
       for (gint i=0; panel_paths[i];i++)
       {
         //strlen is like this as a reminder.
-        g_debug ("%s: %s",panel_paths[i],panel_paths[i] + strlen("/org/awnproject/Awn/Panel"));
         _on_panel_added (priv->proxy,
                          atoi(panel_paths[i] + strlen("/org/awnproject/Awn/Panel")),
                          TASK_MANAGER(object));
@@ -2756,46 +2755,6 @@ task_manager_check_for_intersection (TaskManager * manager,
       }
     }                                                           
   }
-/*  
-  for (guint idx = 0; idx < priv->panel_list->n_values; idx++)
-  {
-    int id;
-    TaskManagerAwnPanelInfo * panel_info;
-    id = g_value_get_int (g_value_array_get_nth (priv->panel_list, idx));
-
-    panel_info = g_hash_table_lookup (priv->intellihide_panel_instances,GINT_TO_POINTER(id));
-    if (panel_info)
-    {
-      g_object_get (panel_info->connector, "panel-xid", &xid, NULL);
-      if (!xid)
-      {
-        g_timeout_add (1000,(GSourceFunc)_waiting_for_panel_dbus,manager);
-      }
-      else
-      {
-        if (!panel_info->foreign_window)
-        {
-          panel_info->foreign_window = gdk_window_foreign_new ( xid);
-        }
-        if (panel_info->intellihide_mode)
-        {
-          task_manager_check_for_panel_instance_intersection(manager,
-                                                           panel_info,
-                                                           space,
-                                                           app);
-        }
-        else if ( !panel_info->intellihide_mode && panel_info->autohide_cookie)
-        {
-          task_manager_panel_connector_uninhibit_autohide (panel_info->connector, panel_info->autohide_cookie);
-          panel_info->autohide_cookie = 0;
-        }
-      }
-    }
-    else
-    {
-      g_debug ("%s: panel_info failure",__func__);
-    }
-  }*/
   return;
 }
 
