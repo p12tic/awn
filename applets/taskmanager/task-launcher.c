@@ -63,6 +63,7 @@ struct _TaskLauncherPrivate
   DesktopAgnosticFDODesktopEntry *entry;
   DesktopAgnosticVFSFile* file_vfs;
   DesktopAgnosticVFSFileMonitor* monitor_vfs;
+  DesktopAgnosticConfigClient *client;
   
   const gchar *name;
   gchar *exec;
@@ -79,12 +80,15 @@ struct _TaskLauncherPrivate
   GtkWidget *image;   /*placed in button (TaskItem) with label*/
   GtkWidget *launcher_image;
 
+  gboolean  monitor_desktops;
+
 };
 
 enum
 {
   PROP_0,
-  PROP_DESKTOP_FILE
+  PROP_DESKTOP_FILE,
+  PROP_MONITOR_DESKTOPS
 };
 
 //#define DEBUG 1
@@ -122,6 +126,9 @@ task_launcher_get_property (GObject    *object,
     case PROP_DESKTOP_FILE:
       g_value_set_string (value, launcher->priv->path); 
       break;
+    case PROP_MONITOR_DESKTOPS:
+      g_value_set_boolean (value, launcher->priv->monitor_desktops);
+      break;
     
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -135,13 +142,15 @@ task_launcher_set_property (GObject      *object,
                           GParamSpec   *pspec)
 {
   TaskLauncher *launcher = TASK_LAUNCHER (object);
-
+  TaskLauncherPrivate * priv = TASK_LAUNCHER_GET_PRIVATE(object);
   switch (prop_id)
   {
     case PROP_DESKTOP_FILE:
       task_launcher_set_desktop_file (launcher, g_value_get_string (value));
       break;
-
+    case PROP_MONITOR_DESKTOPS:
+      priv->monitor_desktops = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -193,6 +202,31 @@ task_launcher_finalize (GObject *object)
 }
 
 static void
+task_launcher_constructed (GObject *object)
+{
+  TaskLauncherPrivate *priv;
+  AwnApplet * applet;
+  
+  G_OBJECT_CLASS (task_launcher_parent_class)->constructed (object);
+  
+  priv = TASK_LAUNCHER_GET_PRIVATE (object);
+
+  g_object_get (object,
+                "applet",&applet,
+                NULL);
+  priv->client = awn_config_get_default_for_applet (AWN_APPLET (applet), NULL);
+  
+  /* Connect up the important bits */
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "monitor_desktops",
+                                       object, "monitor-desktops", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
+}
+
+
+static void
 task_launcher_class_init (TaskLauncherClass *klass)
 {
   GParamSpec   *pspec;
@@ -203,6 +237,7 @@ task_launcher_class_init (TaskLauncherClass *klass)
   obj_class->get_property = task_launcher_get_property;
   obj_class->finalize = task_launcher_finalize;
   obj_class->dispose = task_launcher_dispose;
+  obj_class->constructed = task_launcher_constructed;
 
   /* We implement the necessary funtions for a normal window */
   item_class->get_name         = _get_name;
@@ -223,6 +258,13 @@ task_launcher_class_init (TaskLauncherClass *klass)
                                G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_DESKTOP_FILE, pspec);
 
+  pspec = g_param_spec_boolean ("monitor_desktops",
+                               "monitor-desktops",
+                               "Monitor Desktop File",
+                               TRUE,
+                               G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_MONITOR_DESKTOPS, pspec);
+
   g_type_class_add_private (obj_class, sizeof (TaskLauncherPrivate));
 }
 
@@ -238,6 +280,7 @@ task_launcher_init (TaskLauncher *launcher)
   
   priv->path = NULL;
   priv->entry = NULL;
+  priv->monitor_vfs = NULL;
   
   /* let this button listen to every event */
   gtk_widget_add_events (GTK_WIDGET (launcher), GDK_ALL_EVENTS_MASK);
@@ -517,8 +560,11 @@ task_launcher_set_desktop_file (TaskLauncher *launcher, const gchar *path)
     {
       g_object_unref (priv->monitor_vfs);
     }
-    priv->monitor_vfs = desktop_agnostic_vfs_file_monitor (priv->file_vfs);
-    g_signal_connect (G_OBJECT(priv->monitor_vfs),"changed", G_CALLBACK(_desktop_changed),launcher);
+    if (priv->monitor_desktops)
+    {
+      priv->monitor_vfs = desktop_agnostic_vfs_file_monitor (priv->file_vfs);
+      g_signal_connect (G_OBJECT(priv->monitor_vfs),"changed", G_CALLBACK(_desktop_changed),launcher);
+    }
   }
   
   g_object_unref (file);  
