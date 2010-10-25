@@ -31,8 +31,7 @@ struct _TaskManagerPanelConnectorPrivate
 {
   gint panel_id;
   gint64 panel_xid;
-  guint source;
-	
+  
   DBusGConnection *connection;
   DBusGProxy      *proxy;
 };
@@ -97,18 +96,6 @@ task_manager_panel_connector_set_property (GObject *object, guint property_id,
 static void
 task_manager_panel_connector_dispose (GObject *object)
 {
-	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(object);
-  if (priv->source)
-  {
-    if ( g_source_remove (priv->source))
-    {
-      priv->source = 0;
-    }
-    else
-    {
-      g_warning ("%s: Failed to remove source.",__func__);
-    }
-  }
   G_OBJECT_CLASS (task_manager_panel_connector_parent_class)->dispose (object);
 }
 
@@ -139,7 +126,6 @@ task_manager_panel_connector_init (TaskManagerPanelConnector *self)
   priv->connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
   priv->proxy = NULL;
   priv->panel_xid = 0;
-  priv->source = 0;
   
   if (error)
   {
@@ -149,7 +135,7 @@ task_manager_panel_connector_init (TaskManagerPanelConnector *self)
 }
 
 static gboolean
-_do_connect_dbus (TaskManagerPanelConnector * conn)
+task_manager_panel_connector_do_connect_dbus (GObject * conn)
 {
 	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(conn);
 
@@ -238,7 +224,6 @@ _do_connect_dbus (TaskManagerPanelConnector * conn)
   if (prop_proxy) g_object_unref (prop_proxy);
 
   g_free (object_path);
-  priv->source = 0;
   return FALSE;
 
   crap_out:
@@ -261,10 +246,7 @@ task_manager_panel_connector_constructed (GObject *obj)
 
   if (priv->panel_id > 0)
   {
-    if (_do_connect_dbus (TASK_MANAGER_PANEL_CONNECTOR(obj)) )
-    {
-      priv->source = g_timeout_add (1000,(GSourceFunc)_do_connect_dbus,obj);
-    }
+    task_manager_panel_connector_do_connect_dbus (obj);
   }
 }
 

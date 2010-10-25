@@ -450,7 +450,9 @@ static void
 _on_panel_removed (DBusGProxy *proxy,guint panel_id,TaskManager * applet)
 {
   TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (applet);
-  
+  TaskManagerAwnPanelInfo * panel_info = g_hash_table_lookup (priv->intellihide_panel_instances,GINT_TO_POINTER (panel_id));
+
+  desktop_agnostic_config_client_remove_instance (panel_info->panel_instance_client);
   g_assert (g_hash_table_remove (priv->intellihide_panel_instances,GINT_TO_POINTER (panel_id)));
 }
 
