@@ -50,7 +50,7 @@ static void
 on_prop_changed (DBusGProxy *proxy, const gchar *prop_name,
                  GValue *value, TaskManagerPanelConnector * conn)
 {
-	TaskManagerPanelConnectorPrivate * priv;
+  TaskManagerPanelConnectorPrivate * priv;
   g_return_if_fail (TASK_MANAGER_IS_PANEL_CONNECTOR (conn));
   priv = GET_PRIVATE(conn);
 
@@ -62,9 +62,9 @@ static void
 task_manager_panel_connector_get_property (GObject *object, guint property_id,
                               GValue *value, GParamSpec *pspec)
 {
-	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(object);
+  TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(object);
   switch (property_id)
-	{
+  {
     case PROP_PANEL_ID:
       g_value_set_int (value, priv->panel_id);
       break;
@@ -72,9 +72,8 @@ task_manager_panel_connector_get_property (GObject *object, guint property_id,
     case PROP_PANEL_XID:
       g_value_set_int64 (value, priv->panel_xid);
       break;
-
-		default:
-  		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);      
   }
 }
 
@@ -82,14 +81,18 @@ static void
 task_manager_panel_connector_set_property (GObject *object, guint property_id,
                               const GValue *value, GParamSpec *pspec)
 {
-	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(object);	
+  TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(object);  
   switch (property_id)
-	{
-		case PROP_PANEL_ID:
+  {
+    case PROP_PANEL_ID:
       priv->panel_id = g_value_get_int (value);
       break;
-		default:
-  		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+#ifdef DEBUG
+     /*Debug'd out.  Remove this if TaskManagerPanelConnector ever becomes a generic object that
+       supports all the props in panel*/
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+#endif
   }
 }
 
@@ -102,7 +105,7 @@ task_manager_panel_connector_dispose (GObject *object)
 static void
 task_manager_panel_connector_finalize (GObject *object)
 {
-	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(object);
+  TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(object);
   if (priv->connection)
   {
     if (priv->proxy) 
@@ -120,9 +123,9 @@ task_manager_panel_connector_finalize (GObject *object)
 static void
 task_manager_panel_connector_init (TaskManagerPanelConnector *self)
 {
-	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(self);
+  TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(self);
   GError         *error = NULL;
-	
+  
   priv->connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
   priv->proxy = NULL;
   priv->panel_xid = 0;
@@ -137,7 +140,7 @@ task_manager_panel_connector_init (TaskManagerPanelConnector *self)
 static gboolean
 task_manager_panel_connector_do_connect_dbus (GObject * conn)
 {
-	TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(conn);
+  TaskManagerPanelConnectorPrivate * priv = GET_PRIVATE(conn);
 
   gchar *object_path = g_strdup_printf ("/org/awnproject/Awn/Panel%d",
                                         priv->panel_id);
