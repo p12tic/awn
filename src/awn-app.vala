@@ -26,8 +26,10 @@ namespace Awn
   [DBus (name="org.awnproject.Awn.App")]
   public interface AppDBusInterface: GLib.Object
   {
-    public abstract ObjectPath[] get_panels () throws DBus.Error;
+    public abstract string[] get_panels () throws DBus.Error;
     public abstract void remove_panel (int panel_id) throws DBus.Error;
+    public signal void panel_added (int panel_id);
+    public signal void panel_removed (int panel_id);
   }
 
   public class Application: GLib.Object, AppDBusInterface
@@ -107,6 +109,7 @@ namespace Awn
           this.panels.insert ((owned)path, panel);
 
           panel.show ();
+          this.panel_added (panel_id);
         }
         else
         {
@@ -116,24 +119,25 @@ namespace Awn
 
       foreach (unowned Panel p in untouched_panels)
       {
+        int panel_id = p.panel_id;
         string path = "/org/awnproject/Awn/Panel%d".printf (p.panel_id);
         this.panels.remove (path);
+        this.panel_removed (panel_id);
         p.destroy ();
       }
     }
 
-    public ObjectPath[] get_panels () throws DBus.Error
+    public string[] get_panels () throws DBus.Error
     {
       var keys = this.panels.get_keys ();
       keys.sort (strcmp);
 
-      ObjectPath[] paths = new ObjectPath[keys.length ()];
+      string[] paths = new string[keys.length ()];
       int i = 0;
       foreach (unowned string path in keys)
       {
-        paths[i++] = new ObjectPath (path);
+        paths[i++] = path;
       }
-
       return paths;
     }
 

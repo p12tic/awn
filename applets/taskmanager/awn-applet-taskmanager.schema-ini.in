@@ -63,16 +63,6 @@ type = boolean
 default = false
 _description= Allow grouping of windows together that have different WM_CLIENT_NAME values.
 
-[DEFAULT/intellihide]
-type = boolean
-default = true
-_description=Intellihide if hide is enabled for the panel.  This will inhibit autohide of the panel if there are no intersecting windows in the relevant window list (see intellihide_mode).
-
-[DEFAULT/intellihide_mode]
-type = integer
-default = 1
-_description=How to generate the list of windows tested for intersection when Intellihide is active.  0.. use windows on active workspace, 1.. use windows of currently focused app.
-
 [DEFAULT/launcher_paths]
 type = list-string
 default = /usr/share/applications/firefox.desktop;

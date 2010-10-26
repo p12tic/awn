@@ -86,6 +86,11 @@ type = boolean
 default = false
 _description=If true, the panel will expand to full monitor width/height.
 
+[panel/intellihide_mode]
+type = integer
+default = 2
+_description= Intellihide mode.  0.. Disabled,  1.. use windows on active workspace, 2.. use windows of currently focused app.
+
 [panel/monitor_align]
 type = float
 default = 0.5

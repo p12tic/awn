@@ -1,3 +1,18 @@
+2010-10-26  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager-panel-connector.c:
+	* applets/taskmanager/task-manager-panel-connector.h:
+  	* applets/taskmanager/Makefile.am:
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	* applets/taskmanager/task-manager.c:
+	* data/avant-window-navigator.schema-ini.in.in:
+	* src/awn-app.vala:
+	Merged support for mult-panel intellihide in taskmanager.  Awn
+	Settings does not yet understand.  Intellihide is now a per panel
+	instance key.  Only one taskmanager instance needs/should be used, 
+	though not yet enforced (Note the recent addition of Simple Launcher 
+	applet to core).
+
 2010-10-22  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
