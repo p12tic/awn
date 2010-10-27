@@ -1,5 +1,12 @@
 2010-10-26  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/task-manager.c:
+	Trap x errors in the intellihide intersection code and replace
+	gdk_window_get_geometry () with gdk_window_get_position() and 
+	gdk_drawable_get_size().
+
+2010-10-26  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager-panel-connector.c:
 	* applets/taskmanager/task-manager-panel-connector.h:
   	* applets/taskmanager/Makefile.am:

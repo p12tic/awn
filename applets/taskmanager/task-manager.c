@@ -2559,14 +2559,14 @@ task_manager_check_for_panel_instance_intersection (TaskManager * manager,
   GList * iter;
   gboolean  intersect = FALSE;
   GdkRectangle awn_rect;
-  gint depth;
   GdkRegion * updated_region;
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
 
-  gdk_window_get_geometry (panel_info->foreign_window,&awn_rect.x,
-                           &awn_rect.y,&awn_rect.width,
-                           &awn_rect.height,&depth);  
+  gdk_error_trap_push ();
+
+  gdk_window_get_position (panel_info->foreign_window,&awn_rect.x,&awn_rect.y);
+  gdk_drawable_get_size (panel_info->foreign_window,&awn_rect.width,&awn_rect.height);
   /*
    gdk_window_get_geometry gives us an x,y or 0,0
    Fix that using get root origin.
@@ -2684,7 +2684,7 @@ task_manager_check_for_panel_instance_intersection (TaskManager * manager,
     g_debug ("cookie is %u",panel_info->autohide_cookie);
 #endif
   }
-
+  gdk_error_trap_pop();
 }
 
 static gboolean
