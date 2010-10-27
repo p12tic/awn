@@ -1809,7 +1809,33 @@ awn_themed_icon_drag_data_received (GtkWidget        *widget,
   pixbuf = gdk_pixbuf_new_from_file (sdata, NULL);
 
   if (!GDK_IS_PIXBUF (pixbuf))
+  {
     goto drag_out;
+  }
+  else
+  {
+    if ( gdk_pixbuf_get_width (pixbuf) > gdk_pixbuf_get_height (pixbuf) )
+    {
+      if (gdk_pixbuf_get_width (pixbuf) > 64)
+      {
+        GdkPixbuf * tmp = pixbuf;
+        pixbuf = gdk_pixbuf_scale_simple ( pixbuf,
+                                           64,
+                                           64 * gdk_pixbuf_get_height (pixbuf)/gdk_pixbuf_get_width(pixbuf),
+                                           GDK_INTERP_BILINEAR);
+        g_object_unref (tmp);
+      }
+    }
+    else if (gdk_pixbuf_get_height (pixbuf) > 64)
+    {
+      GdkPixbuf * tmp = pixbuf;
+      pixbuf = gdk_pixbuf_scale_simple ( pixbuf,
+                                         64 * gdk_pixbuf_get_width (pixbuf) / gdk_pixbuf_get_height(pixbuf),
+                                         64,
+                                         GDK_INTERP_BILINEAR);
+      g_object_unref (tmp);
+    }
+  }
 
   /* Construct the dialog used for changing icons */
   builder = gtk_builder_new ();

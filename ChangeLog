@@ -1,5 +1,11 @@
 2010-10-26  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Scale the icon displayed in the change icon dialog if it is too 
+	large.
+
+2010-10-26  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
 	Trap x errors in the intellihide intersection code and replace
 	gdk_window_get_geometry () with gdk_window_get_position() and 
