@@ -1,5 +1,10 @@
 2010-10-27  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/taskmanager.c:
+	Fix small leak when a dock is removed.
+
+2010-10-27  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon-build-context-menus.c:
 	Make pin/unpin work the way users expect when dealing with
 	compiz.  ie... pin it in the workspace and desktop.

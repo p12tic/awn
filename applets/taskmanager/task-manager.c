@@ -393,6 +393,8 @@ static void
 _delete_panel_info_cb (TaskManagerAwnPanelInfo * panel_info)
 {
   g_object_unref (panel_info->connector);
+  g_object_unref (panel_info->foreign_window);
+  gdk_region_destroy (panel_info->foreign_region);
   g_free (panel_info);
 }
 
