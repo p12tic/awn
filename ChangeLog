@@ -1,3 +1,10 @@
+2010-10-27  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-icon.c:
+	Suppress some of the wnck assertions that popup when using 
+	compiz.
+
 2010-10-26  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:

@@ -77,8 +77,15 @@ get_workspace_name_with_accel (WnckWindow *window, int idx)
 {
   const char *name;
   int number;
- 
-  name = wnck_workspace_get_name (wnck_screen_get_workspace (wnck_window_get_screen (window),idx));
+  WnckWorkspace * workspace;
+  const char * fallback_name = "Unnamed";
+
+  workspace = wnck_screen_get_workspace (wnck_window_get_screen (window),idx);
+  if (!workspace || !WNCK_IS_WORKSPACE(workspace))
+  {
+    return g_strdup (fallback_name);
+  }
+  name = wnck_workspace_get_name (workspace);
 
   g_assert (name != NULL);
 
@@ -230,7 +237,7 @@ _move_window_left_cb (GtkMenuItem *menuitem, WnckWindow * win)
 {
   WnckWorkspace *workspace;
   workspace = wnck_window_get_workspace (win);
-  if ( workspace && wnck_workspace_is_virtual (workspace) )
+  if ( workspace && WNCK_IS_WORKSPACE (workspace) && wnck_workspace_is_virtual (workspace) )
   {
     int x,y,w,h;
     wnck_window_get_geometry (win,&x,&y,&w,&h);
@@ -258,7 +265,7 @@ _move_window_right_cb (GtkMenuItem *menuitem, WnckWindow * win)
 {
   WnckWorkspace *workspace;
   workspace = wnck_window_get_workspace (win);
-  if ( workspace && wnck_workspace_is_virtual (workspace) )
+  if ( workspace && WNCK_IS_WORKSPACE (workspace) && wnck_workspace_is_virtual (workspace) )
   {
     int x,y,w,h;
     wnck_window_get_geometry (win,&x,&y,&w,&h);
@@ -286,7 +293,7 @@ _move_window_up_cb (GtkMenuItem *menuitem, WnckWindow * win)
   WnckWorkspace *workspace;
 
   workspace = wnck_window_get_workspace (win);
-  if ( workspace && wnck_workspace_is_virtual (workspace) )
+  if ( workspace && WNCK_IS_WORKSPACE (workspace) &&wnck_workspace_is_virtual (workspace) )
   {
     int x,y,w,h;
     wnck_window_get_geometry (win,&x,&y,&w,&h);
@@ -313,7 +320,7 @@ _move_window_down_cb (GtkMenuItem *menuitem, WnckWindow * win)
 {
   WnckWorkspace *workspace;
   workspace = wnck_window_get_workspace (win);
-  if ( workspace && wnck_workspace_is_virtual (workspace) )
+  if ( workspace && WNCK_IS_WORKSPACE (workspace) &&wnck_workspace_is_virtual (workspace) )
   {
     int x,y,w,h;
     wnck_window_get_geometry (win,&x,&y,&w,&h);
@@ -345,7 +352,7 @@ _move_window_to_index (GtkMenuItem *menuitem, WnckWindow * win)
 //  workspace_index = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (menuitem), "workspace"));
 
   workspace = wnck_window_get_workspace (win);
-  if ( workspace && wnck_workspace_is_virtual (workspace) )
+  if ( workspace && WNCK_IS_WORKSPACE (workspace) && wnck_workspace_is_virtual (workspace) )
   {
     int x,y,w,h;
     int viewport_x, viewport_y;
@@ -491,9 +498,13 @@ static void
 _pin_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
 {
   if (wnck_window_is_pinned (win))
+  {
     wnck_window_unpin (win);
+  }
   else
+  {
     wnck_window_pin (win);
+  }
 }
 
 static void
@@ -1107,13 +1118,13 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
   WnckWorkspaceLayout layout;
 
   num_workspaces = wnck_screen_get_workspace_count (wnck_window_get_screen (win));
-  if (num_workspaces == 1  && ( !workspace || !wnck_workspace_is_virtual (workspace) ) )
+  if (num_workspaces == 1  && ( !workspace || ( WNCK_IS_WORKSPACE(workspace) && !wnck_workspace_is_virtual (workspace))))
   {
     return;
   }
-  else if (num_workspaces > 1)
+  else if (num_workspaces > 1 )
   {
-    if (workspace)
+    if (workspace && WNCK_IS_WORKSPACE(workspace))
     {
       present_workspace = wnck_workspace_get_number (workspace);
     }
@@ -1127,7 +1138,7 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
                                        present_workspace,
                                        &layout);
   }
-  else
+  else if ( workspace && WNCK_IS_WORKSPACE (workspace) )
   {
     int x,y,w,h;
 
@@ -1144,6 +1155,10 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
                         layout.current_row * 
                         layout.cols;
   }
+  else
+  {
+    return;
+  }
   
   if (!wnck_window_is_pinned (win))
     {
@@ -1157,6 +1172,7 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
           gtk_widget_show (menuitem);          
         }
 
+      
       if ((layout.current_col < layout.cols - 1) && (layout.current_row * layout.cols + (layout.current_col + 1) < num_workspaces ))
         {
           menuitem = gtk_menu_item_new_with_mnemonic (_("Move to Workspace _Right"));
@@ -1201,7 +1217,7 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
       char *name, *label;
       GtkWidget *item;
 
-      if (!wnck_workspace_is_virtual (workspace) )
+      if (workspace && WNCK_IS_WORKSPACE (workspace) && !wnck_workspace_is_virtual (workspace) )
       {
         name = get_workspace_name_with_accel (win, i);
         label = g_strdup_printf ("%s", name);

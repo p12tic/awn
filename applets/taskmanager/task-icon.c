@@ -2447,8 +2447,11 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
 {
   TaskIconPrivate *priv;
   TaskItem        *main_item;
+  WnckWorkspace   *space = NULL;
+  
   priv = icon->priv;
-
+  space = wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)));
+    
   /*
    use of dbus visible may have left the main_item as a Launcher when there are
    valid Windows available.  Look for a window before we continue*/
@@ -2458,8 +2461,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     task_icon_search_main_item (icon,NULL);
   }
   /*A Compiz clause*/
-  if ( TASK_IS_WINDOW(priv->main_item) && 
-      wnck_workspace_is_virtual (wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)))))
+  if ( TASK_IS_WINDOW(priv->main_item) && space && WNCK_IS_WORKSPACE(space) && wnck_workspace_is_virtual (space))
   {
     if ( ! wnck_window_is_in_viewport (task_window_get_window (TASK_WINDOW(priv->main_item)),
                                        wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)))))
