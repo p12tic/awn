@@ -497,13 +497,32 @@ _shade_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
 static void
 _pin_window_cb (GtkMenuItem *menuitem, WnckWindow * win)
 {
+  WnckWorkspace *space = wnck_window_get_workspace (win);
+
+  /*all the extra crap in here is courtesy of compiz*/
+  if (!space)
+  {
+    space = wnck_screen_get_active_workspace (wnck_screen_get_default ());
+  }
   if (wnck_window_is_pinned (win))
   {
     wnck_window_unpin (win);
+    if (space && WNCK_IS_WORKSPACE(space) && wnck_workspace_is_virtual (space) )
+    {
+      GdkWindow *foreign_win = gdk_window_foreign_new(wnck_window_get_xid (win));
+      gdk_window_unstick (foreign_win);
+      g_object_unref (foreign_win);
+    }
   }
   else
   {
     wnck_window_pin (win);
+    if (space && WNCK_IS_WORKSPACE(space) && wnck_workspace_is_virtual (space) )
+    {
+      GdkWindow *foreign_win = gdk_window_foreign_new(wnck_window_get_xid (win));
+      gdk_window_stick (foreign_win);
+      g_object_unref (foreign_win);
+    }
   }
 }
 
