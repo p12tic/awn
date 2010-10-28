@@ -1,5 +1,10 @@
 2010-10-27  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/applet.c:
+	Only allow one instance of Taskmanager to run.
+
+2010-10-27  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/taskmanager.c:
 	Fix small leak when a dock is removed.
 
