@@ -101,7 +101,6 @@ class awnPreferencesMini(awnPreferences):
     show_shadows = gobject.property(type=bool, default=False)
     match_strength = gobject.property(type=int, default=99)
 
-    intellihide = gobject.property(type=bool, default=True)
     intellihide_type = gobject.property(type=int, default=1)
 
     def __init__(self, wTree, panel_id):
@@ -222,15 +221,15 @@ class awnPreferencesMini(awnPreferences):
             # "Custom" - otherwise
             new_active = 4 # custom
             if is_autohiding:
-                if self.intellihide:
-                    if behaviour == (1, False, 0):
+                if self.intellihide_type > 0:
+                    if behaviour == (2, False, 0):
                         new_active = 2
-                    elif behaviour == (0, False, 0):
+                    elif behaviour == (1, False, 0):
                         new_active = 3
             else:
-                if behaviour in [(0, True, 0), (1, True, 0)]:
+                if behaviour in [(0, True, 0), (1, True, 0), (2, True, 0)]:
                     new_active = 0
-                elif behaviour in [(0, False, 1), (1, False, 1)]:
+                elif behaviour in [(0, False, 1), (1, False, 1), (2, True, 1)]:
                     new_active = 1
 
             if (self.choose_behavior.get_active() != new_active):
@@ -250,40 +249,36 @@ class awnPreferencesMini(awnPreferences):
                 if not self.panel_mode: self.panel_mode = True
                 if self.clickthrough != 0: self.clickthrough = 0
                 if self.autohide_type != 0: self.autohide_type = 0
+                self.intellihide_type = 0
             elif widget.get_active() == 1:
                 if self.panel_mode: self.panel_mode = False
                 if self.clickthrough != 1: self.clickthrough = 1
                 if self.autohide_type != 0: self.autohide_type = 0
+                self.intellihide_type = 0
             elif widget.get_active() == 2:
                 if self.panel_mode: self.panel_mode = False
                 if self.clickthrough != 0: self.clickthrough = 0
                 if self.autohide_type == 0: self.autohide_type = 2
-                self.intellihide = True
-                self.intellihide_type = 1
+                self.intellihide_type = 2
             elif widget.get_active() == 3:
                 if self.panel_mode: self.panel_mode = False
                 if self.clickthrough != 0: self.clickthrough = 0
                 if self.autohide_type == 0: self.autohide_type = 2
-                self.intellihide = True
-                self.intellihide_type = 0
+                self.intellihide_type = 1
 
         self.client.bind (defs.PANEL, defs.PANEL_MODE, self, "panel-mode",
                           False, config.BIND_METHOD_FALLBACK)
         self.client.bind (defs.PANEL, defs.AUTOHIDE, self, "autohide-type",
                           False, config.BIND_METHOD_FALLBACK)
-        self.client_taskman.bind (GROUP_DEFAULT, defs.INTELLIHIDE,
-                                  self, "intellihide",
-                                  False, config.BIND_METHOD_FALLBACK)
-        self.client_taskman.bind (GROUP_DEFAULT, defs.INTELLIHIDE_TYPE,
-                                  self, "intellihide-type",
-                                  False, config.BIND_METHOD_FALLBACK)
+        self.client.bind (defs.PANEL, defs.INTELLIHIDE_TYPE,
+                          self, "intellihide-type",
+                          False, config.BIND_METHOD_FALLBACK)
 
         # clickthough is already bound
 
         self.connect("notify::panel-mode", refresh_behaviour)
         self.connect("notify::autohide-type", refresh_behaviour)
         self.connect("notify::clickthrough", refresh_behaviour)
-        self.connect("notify::intellihide", refresh_behaviour)
         self.connect("notify::intellihide-type", refresh_behaviour)
 
         refresh_behaviour()

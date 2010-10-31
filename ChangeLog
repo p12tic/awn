@@ -1,3 +1,9 @@
+2010-10-31  Michal Hruby  <michal.mhr@gmail.com>
+
+	* awn-settings/awnDefs.py.in:
+	* awn-settings/awnSettings.py.in:
+	Fix hiding options in awn-settings.
+
 2010-10-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/applet.c:
