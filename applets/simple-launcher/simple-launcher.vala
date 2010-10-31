@@ -134,6 +134,7 @@ class SimpleLauncher : Applet
     icon_box.show ();
 
     this.add (icon_box);
+    this.size_changed.connect (this.on_size_changed);
   }
 
   construct
@@ -156,6 +157,15 @@ class SimpleLauncher : Applet
     catch (DesktopAgnostic.Config.Error err)
     {
       critical ("Config Error: %s", err.message);
+    }
+  }
+
+  private void on_size_changed ()
+  {
+    foreach (unowned Gtk.Widget w in icon_box.get_children ())
+    {
+      unowned Awn.ThemedIcon i = w as Awn.ThemedIcon;
+      if (i != null) i.set_size (this.size);
     }
   }
 
