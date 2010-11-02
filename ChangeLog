@@ -1,3 +1,9 @@
+2010-11-02  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	We can only get the workspace for an icon if it's
+	actually managing a window...
+
 2010-10-31  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/simple-launcher/simple-launcher.vala:

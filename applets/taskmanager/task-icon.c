@@ -2450,7 +2450,10 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
   WnckWorkspace   *space = NULL;
   
   priv = icon->priv;
-  space = wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)));
+  if (TASK_IS_WINDOW (priv->main_item))
+  {
+    space = wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)));
+  }
     
   /*
    use of dbus visible may have left the main_item as a Launcher when there are
