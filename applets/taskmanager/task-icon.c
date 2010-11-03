@@ -1184,12 +1184,6 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
   {
     awn_effects_stop (effects,AWN_EFFECT_ATTENTION); 
   }
-#if 0
-  else if ( g_slist_length (priv->items) <= priv->ephemeral_count)
-  {    
-    awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
-  }
-#endif
   else if ( !task_icon_count_require_attention (icon) )
   {
     awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
@@ -1362,7 +1356,6 @@ task_icon_refresh_visible (TaskIcon *icon)
   g_return_if_fail (TASK_IS_ICON (icon));
   priv = icon->priv;
 
-//======
   if (task_icon_get_launcher (icon) )
   {
     g_object_get (G_OBJECT(task_icon_get_launcher (icon)),
@@ -1429,42 +1422,7 @@ task_icon_refresh_visible (TaskIcon *icon)
   {
     priv->visible = FALSE;
   }
-  g_debug ("%s: visible = %d, count = %d, count_win = %d",__func__,priv->visible,count,count_windows);
-#if 0    
-  if (count != priv->shown_items)
-
-
-    
-  {  
-
-    if (count <= task_icon_count_ephemeral_items(icon))
-    {
-      priv->visible = FALSE;
-    }
-    else      
-    {
-      if (!priv->main_item)
-        task_icon_search_main_item (icon,NULL);
-      
-      priv->visible = TRUE;
-    }
-    g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
-
-    if (!priv->main_item)
-      task_icon_search_main_item (icon,NULL);
-    
-    priv->visible = TRUE;
-    g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
-
-  }
-  else if ( count<=1 && !count_windows)  /*FIXME  this sort of thing will be resolved early in 0.6.  
-                                      FTM makes sure TaskIcons get destroyed if the icon is visible*/
-  {
-    g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
-  }
-#else
-  //  000
-#endif  
+  g_debug ("%s: visible = %d, count = %d, count_win = %d",__func__,priv->visible,count,count_windows);  
   priv->shown_items = count;
   g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);  
 }
@@ -1743,48 +1701,6 @@ task_icon_count_tasklist_windows (TaskIcon * icon)
   }
   return count;
 }
-#if 0
-guint
-task_icon_count_ephemeral_items (TaskIcon * icon)
-{
-  TaskIconPrivate *priv;
-
-  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
-  priv = icon->priv;
-
-  return priv->ephemeral_count; 
-}
-
-void
-task_icon_decrement_ephemeral_count (TaskIcon *icon)
-{
-  TaskIconPrivate *priv;
-
-  g_return_if_fail (TASK_IS_ICON (icon));
-  priv = icon->priv;
-
-  priv->ephemeral_count--;
-}
-
-void
-task_icon_increment_ephemeral_count (TaskIcon *icon)
-{
-  TaskIconPrivate *priv;
-
-  g_return_if_fail (TASK_IS_ICON (icon));
-  priv = icon->priv;
-
-  priv->ephemeral_count++;
-/* TODO
-   Leaving this here for a little bit.  Going to review some code am assure
-   myself this is no longer required.*/
- if (priv->ephemeral_count >= g_slist_length (priv->items) )
- {
-   gtk_widget_destroy (GTK_WIDGET(icon));
- }  
-}
-
-#endif
 
 /**
  * Returns the number of visible and unvisible items this TaskIcon contains.
@@ -2137,24 +2053,6 @@ task_icon_append_item (TaskIcon      *icon,
   task_icon_search_main_item (icon,item);
   task_icon_set_icon_pixbuf (icon,priv->main_item);
 }
-#if 0
-void
-task_icon_append_ephemeral_item (TaskIcon      *icon,
-                       TaskItem      *item)
-{
-  TaskIconPrivate *priv;
-  
-  g_assert (item);
-  g_assert (icon);
-  g_return_if_fail (TASK_IS_ICON (icon));
-  g_return_if_fail (TASK_IS_LAUNCHER (item));
-
-  priv = icon->priv;
-
-  priv->ephemeral_count++;
-  task_icon_append_item (icon,item); 
-}
-#endif
 
 GObject *
 task_icon_get_proxy (TaskIcon *icon)
