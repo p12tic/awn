@@ -926,10 +926,12 @@ task_icon_init (TaskIcon *icon)
   priv->main_item = NULL;
   priv->visible = FALSE;
   priv->overlay_text = NULL;
-  priv->ephemeral_count = 0;
   priv->plugin_menu_items = g_list_append (priv->plugin_menu_items, g_object_ref_sink (gtk_separator_menu_item_new ()));
   priv->autohide_cookie = 0;
   
+  priv->proxy_obj = g_object_new (G_TYPE_OBJECT,NULL);
+
+  g_object_weak_ref (priv->proxy_obj,g_object_unref,icon);
   priv->overlay_app_icon = awn_overlay_pixbuf_new ();
   awn_overlayable_add_overlay (AWN_OVERLAYABLE (icon), 
                                AWN_OVERLAY (priv->overlay_app_icon));
@@ -1169,10 +1171,12 @@ _destroyed_task_item (TaskIcon *icon, TaskItem *old_item)
   {
     awn_effects_stop (effects,AWN_EFFECT_ATTENTION); 
   }
+#if 0
   else if ( g_slist_length (priv->items) <= priv->ephemeral_count)
   {    
     awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
   }
+#endif
   else if ( !task_icon_count_require_attention (icon) )
   {
     awn_effects_stop (effects, AWN_EFFECT_ATTENTION);
@@ -1393,11 +1397,12 @@ task_icon_refresh_visible (TaskIcon *icon)
 
   if (count != priv->shown_items)
   {  
+#if 0    
     if (count <= task_icon_count_ephemeral_items(icon))
     {
       priv->visible = FALSE;
     }
-    else
+    else      
     {
       if (!priv->main_item)
         task_icon_search_main_item (icon,NULL);
@@ -1405,6 +1410,13 @@ task_icon_refresh_visible (TaskIcon *icon)
       priv->visible = TRUE;
     }
     g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
+#else
+    if (!priv->main_item)
+      task_icon_search_main_item (icon,NULL);
+    
+    priv->visible = TRUE;
+    g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
+#endif    
   }
   else if ( count<=1 && !count_windows)  /*FIXME  this sort of thing will be resolved early in 0.6.  
                                       FTM makes sure TaskIcons get destroyed if the icon is visible*/
@@ -1688,7 +1700,7 @@ task_icon_count_tasklist_windows (TaskIcon * icon)
   }
   return count;
 }
-
+#if 0
 guint
 task_icon_count_ephemeral_items (TaskIcon * icon)
 {
@@ -1696,7 +1708,7 @@ task_icon_count_ephemeral_items (TaskIcon * icon)
 
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
   priv = icon->priv;
-  
+
   return priv->ephemeral_count; 
 }
 
@@ -1728,6 +1740,9 @@ task_icon_increment_ephemeral_count (TaskIcon *icon)
    gtk_widget_destroy (GTK_WIDGET(icon));
  }  
 }
+
+#endif
+
 /**
  * Returns the number of visible and unvisible items this TaskIcon contains.
  */
@@ -2079,7 +2094,7 @@ task_icon_append_item (TaskIcon      *icon,
   task_icon_search_main_item (icon,item);
   task_icon_set_icon_pixbuf (icon,priv->main_item);
 }
-
+#if 0
 void
 task_icon_append_ephemeral_item (TaskIcon      *icon,
                        TaskItem      *item)
@@ -2096,7 +2111,18 @@ task_icon_append_ephemeral_item (TaskIcon      *icon,
   priv->ephemeral_count++;
   task_icon_append_item (icon,item); 
 }
+#endif
 
+GObject *
+task_icon_get_proxy (TaskIcon *icon)
+{
+  TaskIconPrivate *priv;
+  
+  g_assert (icon);
+  g_return_val_if_fail (TASK_IS_ICON (icon),NULL);
+  priv = TASK_ICON_GET_PRIVATE (icon);
+  return priv->proxy_obj;
+}
 
 GSList *  
 task_icon_get_items (TaskIcon     *icon)
@@ -2745,7 +2771,8 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
           }
           if (new_launcher)
           {
-            task_icon_append_ephemeral_item (TASK_ICON (new_icon), new_launcher);
+//            task_icon_append_ephemeral_item (TASK_ICON (new_icon), new_launcher);
+              task_icon_append_item (TASK_ICON (new_icon), new_launcher);
           }
           next = iter->next;
           priv->items = g_slist_remove (priv->items,item);

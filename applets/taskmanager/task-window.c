@@ -55,6 +55,8 @@ struct _TaskWindowPrivate
 {
   WnckWindow *window;
 
+  GObject * proxy;
+
   WnckWindow *last_active_non_taskmanager_window;
   // Workspace where the window should be in, before being visible.
   // NULL if it isn't important
@@ -101,7 +103,8 @@ enum
   PROP_WINDOW,
   PROP_ACTIVATE_BEHAVIOR,
   PROP_USE_WIN_ICON,
-  PROP_HIGHLIGHTED
+  PROP_HIGHLIGHTED,
+  PROP_PROXY
 };
 
 enum
@@ -206,6 +209,18 @@ task_window_set_property (GObject      *object,
       task_window_set_highlighted (taskwin,g_value_get_boolean (value));
       break;
 
+    case PROP_PROXY:
+      if (priv->proxy)
+      {
+        g_object_unref (priv->proxy);
+      }
+      priv->proxy = g_value_get_object (value);
+      if (priv->proxy)
+      {
+        g_object_ref (priv->proxy);
+      }
+      break;
+      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -290,7 +305,11 @@ task_window_dispose (GObject *object)
     gtk_widget_destroy (priv->box);
     priv->box=NULL;
   }
-  
+  if (priv->proxy)
+  {
+    g_object_unref (priv->proxy);
+    priv->proxy = NULL;
+  }
   G_OBJECT_CLASS (task_window_parent_class)->dispose (object);
 }
 
@@ -429,6 +448,13 @@ task_window_class_init (TaskWindowClass *klass)
                                 G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_HIGHLIGHTED, pspec);  
 
+  pspec = g_param_spec_object ("proxy",
+                               "Proxy",
+                               "Proxy",
+                                G_TYPE_OBJECT,
+                                G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_PROXY, pspec);  
+
   g_type_class_add_private (obj_class, sizeof (TaskWindowPrivate));
 }
 
@@ -479,11 +505,12 @@ task_window_init (TaskWindow *window)
 }
 
 TaskItem *
-task_window_new (AwnApplet * applet, WnckWindow *window)
+task_window_new (AwnApplet * applet, GObject * proxy, WnckWindow *window)
 {
   TaskItem *win = NULL;
 
   win = g_object_new (TASK_TYPE_WINDOW,
+                      "proxy",proxy,
                       "taskwindow", window,
                       "applet",applet,
                       NULL);
