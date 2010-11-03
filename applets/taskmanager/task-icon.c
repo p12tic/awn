@@ -352,6 +352,7 @@ task_icon_dispose (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
 
+  g_debug ("%s",__func__);
   desktop_agnostic_config_client_unbind_all_for_object (priv->client, object,
                                                         NULL);
   
@@ -399,6 +400,7 @@ task_icon_dispose (GObject *object)
 static void
 task_icon_finalize (GObject *object)
 {
+  g_debug ("%s",__func__);
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
   /*
    This needs to be an empty list.
@@ -942,7 +944,7 @@ task_icon_init (TaskIcon *icon)
   
   priv->proxy_obj = g_object_new (G_TYPE_OBJECT,NULL);
 
-  g_object_weak_ref (priv->proxy_obj,task_icon_close,icon);
+  g_object_weak_ref (priv->proxy_obj,(GWeakNotify)task_icon_close,icon);
   priv->overlay_app_icon = awn_overlay_pixbuf_new ();
   awn_overlayable_add_overlay (AWN_OVERLAYABLE (icon), 
                                AWN_OVERLAY (priv->overlay_app_icon));
@@ -1354,10 +1356,20 @@ task_icon_refresh_visible (TaskIcon *icon)
   GSList *w;
   guint count = 0;
   guint count_windows = 0;
-
+  gboolean ephemeral = TRUE;
+  GObject * launcher_proxy_obj = NULL;
+ 
   g_return_if_fail (TASK_IS_ICON (icon));
   priv = icon->priv;
 
+//======
+  if (task_icon_get_launcher (icon) )
+  {
+    g_object_get (G_OBJECT(task_icon_get_launcher (icon)),
+                  "proxy",&launcher_proxy_obj,
+                  NULL);
+  }
+  ephemeral = (launcher_proxy_obj == NULL);
   for (w = priv->items; w; w = w->next)
   {
     TaskItem *item = w->data;
@@ -1405,10 +1417,26 @@ task_icon_refresh_visible (TaskIcon *icon)
                     NULL);
     }
   }
-
-  if (count != priv->shown_items)
-  {  
+  if (ephemeral && count==1)
+  {
+    priv->visible = FALSE;
+  }
+  else if (count)
+  {
+    priv->visible = TRUE;
+  }
+  else
+  {
+    priv->visible = FALSE;
+  }
+  g_debug ("%s: visible = %d, count = %d, count_win = %d",__func__,priv->visible,count,count_windows);
 #if 0    
+  if (count != priv->shown_items)
+
+
+    
+  {  
+
     if (count <= task_icon_count_ephemeral_items(icon))
     {
       priv->visible = FALSE;
@@ -1421,20 +1449,24 @@ task_icon_refresh_visible (TaskIcon *icon)
       priv->visible = TRUE;
     }
     g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
-#else
+
     if (!priv->main_item)
       task_icon_search_main_item (icon,NULL);
     
     priv->visible = TRUE;
     g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
-#endif    
+
   }
   else if ( count<=1 && !count_windows)  /*FIXME  this sort of thing will be resolved early in 0.6.  
                                       FTM makes sure TaskIcons get destroyed if the icon is visible*/
   {
     g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);
   }
+#else
+  //  000
+#endif  
   priv->shown_items = count;
+  g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);  
 }
 
 /**

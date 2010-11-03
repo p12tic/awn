@@ -1966,6 +1966,9 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
         if (launcher)
         {
           icon = task_icon_new (AWN_APPLET (manager));
+          g_object_set (G_OBJECT(launcher),
+                        "proxy",task_icon_get_proxy (TASK_ICON(icon)),
+                        NULL);
           task_icon_append_item (TASK_ICON (icon), launcher);
           gtk_container_add (GTK_CONTAINER (priv->box), icon);
           gtk_box_reorder_child (GTK_BOX (priv->box), icon, idx);
