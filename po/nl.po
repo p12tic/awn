@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-10-11 23:47+0000\n"
+"PO-Revision-Date: 2010-11-02 11:23+0000\n"
 "Last-Translator: commodoor <commodoor@gmail.com>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-10-13 04:59+0000\n"
+"X-Launchpad-Export-Date: 2010-11-03 05:02+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -99,6 +99,8 @@ msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"Kopieer gedrag als snelkoppelingen naar Awn gesleept worden. (0: kopieer "
+"alles, 1: kopieer als het van de gebruiker is, 3: kopieer niet)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
@@ -127,6 +129,10 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
+"Hoe te bepalen wanneer Awn verborgen moet worden als Intellihide "
+"ingeschakeld is. (0: als Awn overlapt met een venster of het huidige "
+"bureaublad, 1: als Awn overlapt met vensters van het programma dat op dat "
+"moment geopend is)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -475,7 +481,7 @@ msgstr "Hoekradius"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Symmetrie van bochten"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
@@ -742,6 +748,8 @@ msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
 msgstr ""
+"Om Intellihide of Venster Ontwijk modes te gebruiken dient de taakmanager "
+"applet ingeschakeld te zijn."
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
@@ -1079,7 +1087,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Gebruik door applicatie-aangeleverde icoon als embleem"
 
 #: ../awn-settings/awnSettings.py.in:1139
 msgid "Preferences"
