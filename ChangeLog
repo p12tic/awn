@@ -1,3 +1,8 @@
+2010-11-03  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/simple-launcher/Makefile.am:
+	Fix build issues.
+
 2010-11-02  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
