@@ -1906,6 +1906,8 @@ static void
 task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
 {
   TaskManagerPrivate *priv;
+  gboolean ephemeral = TRUE;
+  GObject * launcher_proxy_obj = NULL;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
@@ -1926,7 +1928,8 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
          icon_iter = icon_iter->next)
     {
       GSList *items = task_icon_get_items (TASK_ICON (icon_iter->data));
-
+      TaskItem  *launcher = NULL;
+      
       for (GSList *item_iter = items;
            item_iter != NULL;
            item_iter = item_iter->next)
@@ -1938,6 +1941,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
                        path) == 0)
         {
           gint cur_pos;
+          launcher = item;
           found = TRUE;
           cur_pos = g_slist_position (priv->icons,icon_iter);
           if (cur_pos != (gint)idx)
@@ -1950,18 +1954,32 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
           break;
         }
       }
-      if (found)
+      if (found && launcher)
       {
+        if (task_icon_get_launcher (icon_iter->data) )
+        {
+          g_object_get (G_OBJECT(task_icon_get_launcher (icon_iter->data)),
+                        "proxy",&launcher_proxy_obj,
+                        NULL);
+        }
+        ephemeral = (launcher_proxy_obj == NULL);
+        if (ephemeral) /*then it should be*/
+        {
+          g_object_set (G_OBJECT(task_icon_get_launcher (icon_iter->data)),
+                          "proxy",task_icon_get_proxy (icon_iter->data),
+                          NULL);
+          icon_iter = priv->icons;
+        }
         break;
       }
     }
     if (!found)
-    {
-      TaskItem  *launcher = NULL;
+    {      
       GtkWidget *icon;
 
       if (usable_desktop_file_from_path (path) )
       {
+        TaskItem  *launcher = NULL;
         launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),path);
         if (launcher)
         {
@@ -2030,16 +2048,20 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
     } 
     if (launcher && !found)
     {
-#if 0
-      if ( !task_icon_count_ephemeral_items (icon_iter->data) )
+      if (task_icon_get_launcher (icon_iter->data) )
       {
-        /*if there are only ephemeral items in the icon then it will 
-         trigger it's removal.  Otherwise the it will be removed when it is
-         no longer managing ay TaskWindows*/        
-        task_icon_increment_ephemeral_count (icon_iter->data);
+        g_object_get (G_OBJECT(task_icon_get_launcher (icon_iter->data)),
+                      "proxy",&launcher_proxy_obj,
+                      NULL);
+      }
+      ephemeral = (launcher_proxy_obj == NULL);
+      if (!ephemeral) /*then it should be*/
+      {
+        g_object_set (G_OBJECT(task_icon_get_launcher (icon_iter->data)),
+                        "proxy",NULL,
+                        NULL);
         icon_iter = priv->icons;
       }
-#endif      
     }
   }
 }
