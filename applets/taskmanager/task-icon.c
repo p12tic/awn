@@ -909,6 +909,17 @@ task_icon_class_init (TaskIconClass *klass)
 }
 
 static void
+task_icon_close (TaskIcon * icon)
+{
+  TaskIconPrivate *priv;
+  priv = icon->priv = TASK_ICON_GET_PRIVATE (icon);
+  
+  awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
+                  AWN_EFFECT_CLOSING, 1, FALSE, TRUE);
+
+}
+
+static void
 task_icon_init (TaskIcon *icon)
 {
   TaskIconPrivate *priv;
@@ -931,7 +942,7 @@ task_icon_init (TaskIcon *icon)
   
   priv->proxy_obj = g_object_new (G_TYPE_OBJECT,NULL);
 
-  g_object_weak_ref (priv->proxy_obj,g_object_unref,icon);
+  g_object_weak_ref (priv->proxy_obj,task_icon_close,icon);
   priv->overlay_app_icon = awn_overlay_pixbuf_new ();
   awn_overlayable_add_overlay (AWN_OVERLAYABLE (icon), 
                                AWN_OVERLAY (priv->overlay_app_icon));

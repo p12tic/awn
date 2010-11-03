@@ -1200,6 +1200,11 @@ on_icon_effects_ends (TaskIcon   *icon,
       {
         destroy = TRUE;
       }
+#else
+      if (task_icon_count_items (icon)==1)
+      {
+        destroy = TRUE;
+      }
 #endif      
     }
     if (destroy)
