@@ -1907,7 +1907,6 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
 {
   TaskManagerPrivate *priv;
   gboolean ephemeral = TRUE;
-  GObject * launcher_proxy_obj = NULL;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
@@ -1956,14 +1955,8 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
       }
       if (found && launcher)
       {
-        if (task_icon_get_launcher (icon_iter->data) )
-        {
-          g_object_get (G_OBJECT(task_icon_get_launcher (icon_iter->data)),
-                        "proxy",&launcher_proxy_obj,
-                        NULL);
-        }
-        ephemeral = (launcher_proxy_obj == NULL);
-        if (ephemeral) /*then it should be*/
+        ephemeral = task_icon_is_ephemeral (icon_iter->data);
+        if (ephemeral) /*then it shouldn't be*/
         {
           g_object_set (G_OBJECT(task_icon_get_launcher (icon_iter->data)),
                           "proxy",task_icon_get_proxy (icon_iter->data),
@@ -2048,13 +2041,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
     } 
     if (launcher && !found)
     {
-      if (task_icon_get_launcher (icon_iter->data) )
-      {
-        g_object_get (G_OBJECT(task_icon_get_launcher (icon_iter->data)),
-                      "proxy",&launcher_proxy_obj,
-                      NULL);
-      }
-      ephemeral = (launcher_proxy_obj == NULL);
+      ephemeral = task_icon_is_ephemeral (icon_iter->data);
       if (!ephemeral) /*then it should be*/
       {
         g_object_set (G_OBJECT(task_icon_get_launcher (icon_iter->data)),

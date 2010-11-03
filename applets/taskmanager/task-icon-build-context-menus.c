@@ -162,8 +162,6 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
   {
     TaskManager * applet;
     gboolean grouping;
-    gboolean ephemeral = TRUE;
-    GObject * launcher_proxy_obj = NULL;
     
     g_object_get (icon,
                   "applet",&applet,
@@ -174,15 +172,8 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
 
     task_manager_append_launcher (TASK_MANAGER(applet),
                                   task_launcher_get_desktop_path(launcher));
-//    task_icon_decrement_ephemeral_count (TASK_ICON(icon));
-    if (task_icon_get_launcher (icon) )
-    {
-      g_object_get (G_OBJECT(task_icon_get_launcher (icon)),
-                    "proxy",&launcher_proxy_obj,
-                    NULL);
-    }
-    ephemeral = (launcher_proxy_obj == NULL);
-    if (ephemeral)
+
+    if ( task_icon_is_ephemeral(icon))
     {
       g_object_set (G_OBJECT(task_icon_get_launcher (icon)),
                     "proxy", task_icon_get_proxy (icon),
@@ -734,16 +725,9 @@ task_icon_get_menu_item_add_to_launcher_list (TaskIcon * icon)
     return NULL;
   }
 #else
-  if (found || !launcher  )
+  if (found || !task_icon_is_ephemeral (icon)  )
   {
-    GObject * launcher_proxy_obj = NULL;
-    g_object_get (G_OBJECT(task_icon_get_launcher (icon)),
-              "proxy",&launcher_proxy_obj,
-              NULL);
-    if (launcher_proxy_obj)
-    {
-      return NULL;
-    }
+    return NULL;
   }
 #endif  
   item = gtk_menu_item_new_with_label (_("Add as Launcher"));

@@ -1351,18 +1351,11 @@ task_icon_refresh_visible (TaskIcon *icon)
   guint count = 0;
   guint count_windows = 0;
   gboolean ephemeral = TRUE;
-  GObject * launcher_proxy_obj = NULL;
  
   g_return_if_fail (TASK_IS_ICON (icon));
   priv = icon->priv;
 
-  if (task_icon_get_launcher (icon) )
-  {
-    g_object_get (G_OBJECT(task_icon_get_launcher (icon)),
-                  "proxy",&launcher_proxy_obj,
-                  NULL);
-  }
-  ephemeral = (launcher_proxy_obj == NULL);
+  ephemeral = task_icon_is_ephemeral (icon);
   for (w = priv->items; w; w = w->next)
   {
     TaskItem *item = w->data;
@@ -1606,6 +1599,24 @@ task_icon_is_visible (TaskIcon      *icon)
   g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
   
   return icon->priv->visible;
+}
+
+gboolean
+task_icon_is_ephemeral (TaskIcon * icon)
+{
+  GObject * launcher_proxy_obj = NULL;
+  const TaskItem * launcher = NULL;
+  
+  g_return_val_if_fail (TASK_IS_ICON (icon), FALSE);
+  
+  launcher = task_icon_get_launcher (icon);
+  if (launcher)
+  {
+    g_object_get (G_OBJECT(launcher),
+                "proxy",&launcher_proxy_obj,
+                NULL);
+  }
+  return (launcher_proxy_obj == NULL);
 }
 
 /**

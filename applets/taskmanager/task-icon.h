@@ -128,6 +128,9 @@ gint            task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *, gchar * g
 
 void            task_icon_remove_menu_item(TaskIcon * icon,gint id);
 
+gboolean        task_icon_is_ephemeral (TaskIcon * icon);
+
+
 AwnApplet *task_icon_get_applet (TaskIcon * icon);
 
 #endif /* _TASK_ICON_H_ */
