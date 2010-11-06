@@ -352,7 +352,6 @@ task_icon_dispose (GObject *object)
 {
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
 
-  g_debug ("%s",__func__);
   desktop_agnostic_config_client_unbind_all_for_object (priv->client, object,
                                                         NULL);
   
@@ -400,8 +399,8 @@ task_icon_dispose (GObject *object)
 static void
 task_icon_finalize (GObject *object)
 {
-  g_debug ("%s",__func__);
   TaskIconPrivate *priv = TASK_ICON_GET_PRIVATE (object);
+
   /*
    This needs to be an empty list.
 
@@ -1415,7 +1414,6 @@ task_icon_refresh_visible (TaskIcon *icon)
   {
     priv->visible = FALSE;
   }
-  g_debug ("%s: visible = %d, count = %d, count_win = %d",__func__,priv->visible,count,count_windows);  
   priv->shown_items = count;
   g_signal_emit (icon, _icon_signals[VISIBLE_CHANGED], 0);  
 }
@@ -2723,7 +2721,6 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
           }
           if (new_launcher)
           {
-//            task_icon_append_ephemeral_item (TASK_ICON (new_icon), new_launcher);
               task_icon_append_item (TASK_ICON (new_icon), new_launcher);
           }
           next = iter->next;
@@ -2799,6 +2796,32 @@ window_closed_cb (WnckScreen *screen,WnckWindow *window,TaskIcon * icon)
   }
   if (taskwin)
   {
+    if (!task_icon_is_ephemeral (icon) )
+    {
+      GSList * iter_icons;
+      for (iter_icons=(GSList*)task_manager_get_icons(TASK_MANAGER(priv->applet));iter_icons;iter_icons=iter_icons->next)
+      {
+        if (icon == iter_icons->data)
+        {
+          continue;
+        }
+        const TaskItem * launcher = task_icon_get_launcher (iter_icons->data);
+        if (launcher)
+        {
+          if (g_strcmp0 (task_launcher_get_desktop_path (TASK_LAUNCHER(task_icon_get_launcher(icon))),
+                      task_launcher_get_desktop_path (TASK_LAUNCHER(launcher)) )== 0)
+          {
+            const TaskItem * moving = task_icon_get_main_item (iter_icons->data);
+            if (TASK_IS_WINDOW (moving) )
+            {
+              task_icon_moving_item (icon,iter_icons->data,TASK_ITEM(moving));
+              g_object_unref (task_icon_get_proxy(iter_icons->data));
+              break;
+            }
+          }
+        }
+      }
+    }
     on_window_needs_attention_changed (taskwin,FALSE,icon);
   }
 }
