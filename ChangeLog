@@ -1,5 +1,11 @@
 2010-11-06  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/applet.c:
+	Let people have more than one taskmanager instance if they 
+	want.
+
+2010-11-06  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-icon-build-context-menus.c:
   	* applets/taskmanager/task-icon-private.h:
   	* applets/taskmanager/task-icon.c:

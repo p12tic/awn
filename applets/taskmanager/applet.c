@@ -70,19 +70,19 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
   // check return value
   if (ret != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER)
   {
-    GtkWidget * dialog = NULL;
+//    GtkWidget * dialog = NULL;
     g_warning ("Another instance of Taskmanager is running\n");
     g_object_unref (proxy);
     dbus_g_connection_unref (connection);
     connection = NULL;
-    dialog = gtk_message_dialog_new (NULL,
+/*    dialog = gtk_message_dialog_new (NULL,
                                  GTK_DIALOG_DESTROY_WITH_PARENT,
                                  GTK_MESSAGE_ERROR,
                                  GTK_BUTTONS_CLOSE,
                                  "Another instance of Taskmanager is running - exiting.  Replace extra instances of Taskmanager with Simple Launcher applet.");
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_destroy (dialog);
-    exit(1);
+    exit(1);*/
   }
   else
   {
