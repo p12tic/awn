@@ -1,3 +1,19 @@
+2010-11-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+  	* applets/taskmanager/task-icon-private.h:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-icon.h:
+  	* applets/taskmanager/task-item.c:
+  	* applets/taskmanager/task-manager-panel-connector.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-window.c:
+  	* applets/taskmanager/task-window.h:
+	Removed ephemeral count abomination.  Using a proxy object
+	instead.  Various small fixes followed including when using
+	ungrouped config permanent launchers will claim another window
+	if their window is closed.
+
 2010-11-03  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/simple-launcher/Makefile.am:

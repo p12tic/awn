@@ -74,7 +74,9 @@ struct _TaskWindowClass
 
 GType           task_window_get_type          (void) G_GNUC_CONST;
 
-TaskItem      * task_window_new               (AwnApplet * applet, WnckWindow    *window);
+TaskItem      * task_window_new               (AwnApplet * applet,
+                                               GObject * proxy,
+                                               WnckWindow    *window);
 
 const gchar   * task_window_get_name          (TaskWindow    *window);
 

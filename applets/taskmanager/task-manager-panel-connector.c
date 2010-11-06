@@ -54,7 +54,15 @@ on_prop_changed (DBusGProxy *proxy, const gchar *prop_name,
   g_return_if_fail (TASK_MANAGER_IS_PANEL_CONNECTOR (conn));
   priv = GET_PRIVATE(conn);
 
-  g_object_set_property (G_OBJECT (conn), prop_name, value);
+  /*
+   Should probably just support all the props of panel
+   */
+  if ( (g_strcmp0 (prop_name,"panel-id")==0) ||
+        (g_strcmp0 (prop_name,"panel-xid")==0) )
+  {
+    g_debug ("Setting %s",prop_name);
+    g_object_set_property (G_OBJECT (conn), prop_name, value);
+  }
 }
 
 
@@ -87,12 +95,8 @@ task_manager_panel_connector_set_property (GObject *object, guint property_id,
     case PROP_PANEL_ID:
       priv->panel_id = g_value_get_int (value);
       break;
-#ifdef DEBUG
-     /*Debug'd out.  Remove this if TaskManagerPanelConnector ever becomes a generic object that
-       supports all the props in panel*/
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-#endif
   }
 }
 

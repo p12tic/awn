@@ -1108,13 +1108,13 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
   priv = manager->priv;
-  
+
   if ( task_icon_is_visible (icon) && ( !priv->only_show_launchers || 
-        (task_icon_contains_launcher (icon) && !task_icon_count_ephemeral_items(icon))))
+        (task_icon_contains_launcher (icon) )))
   {
     visible = TRUE;
   }
-
+  
   if ( !task_icon_contains_launcher (icon) )
   {
     if (task_icon_count_items(icon)==0)
@@ -1186,7 +1186,7 @@ on_icon_effects_ends (TaskIcon   *icon,
     }
     else
     {
-      if (task_icon_count_items (icon) <= task_icon_count_ephemeral_items (icon))
+      if (task_icon_count_items (icon)==1)
       {
         destroy = TRUE;
       }
@@ -1471,10 +1471,11 @@ window_name_changed_cb  (TaskWindow *item,const gchar *name, TaskIcon * icon)
     {
       TaskManager * manager = TASK_MANAGER(task_icon_get_applet (icon));
       TaskItem * launcher = get_launcher (manager,found_desktop);
+
       if (launcher)
       {
-        task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
-      }
+        task_icon_append_item (TASK_ICON (icon), launcher);
+      }      
     }          
   }
 }
@@ -1563,7 +1564,7 @@ process_window_opened (WnckWindow    *window,
                     G_CALLBACK (check_attention_requested), manager);    
   
   /* create a new TaskWindow containing the WnckWindow*/
-  item = task_window_new (AWN_APPLET(manager), window);
+  item = task_window_new (AWN_APPLET(manager), NULL, window);
   g_object_set_qdata (G_OBJECT (window), win_quark, TASK_WINDOW (item));
 
   priv->windows = g_slist_append (priv->windows, item);
@@ -1607,6 +1608,9 @@ process_window_opened (WnckWindow    *window,
        &&
        ( max_match_score > 99-priv->match_strength))
   {
+    g_object_set (item,
+                  "proxy",task_icon_get_proxy(match),
+                  NULL);
     task_icon_append_item (match, item);
   }
   else
@@ -1618,9 +1622,21 @@ process_window_opened (WnckWindow    *window,
     if (found_desktop)
     {
       TaskItem * launcher = get_launcher (manager,found_desktop);
+      g_object_set (item,
+                "proxy",task_icon_get_proxy(TASK_ICON(icon)),
+                NULL);
       if (launcher)
       {
-        task_icon_append_ephemeral_item (TASK_ICON (icon), launcher);
+        if (task_icon_count_items (TASK_ICON (icon))==0)
+        {
+          g_object_unref (task_icon_get_proxy(TASK_ICON(icon)));
+        }                                 
+        task_icon_append_item (TASK_ICON (icon), launcher);
+        task_icon_append_item (TASK_ICON (icon), item);
+      }
+      else
+      {
+        task_icon_append_item (TASK_ICON (icon), item);
       }
     }
     
@@ -1628,7 +1644,6 @@ process_window_opened (WnckWindow    *window,
     {
       g_signal_connect (item,"name-changed",G_CALLBACK(window_name_changed_cb), icon);
     }
-    task_icon_append_item (TASK_ICON (icon), item);
     task_manager_add_icon (manager,TASK_ICON (icon));
   }
 }
@@ -1860,6 +1875,7 @@ static void
 task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
 {
   TaskManagerPrivate *priv;
+  gboolean ephemeral = TRUE;
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
@@ -1880,7 +1896,8 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
          icon_iter = icon_iter->next)
     {
       GSList *items = task_icon_get_items (TASK_ICON (icon_iter->data));
-
+      TaskItem  *launcher = NULL;
+      
       for (GSList *item_iter = items;
            item_iter != NULL;
            item_iter = item_iter->next)
@@ -1892,6 +1909,7 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
                        path) == 0)
         {
           gint cur_pos;
+          launcher = item;
           found = TRUE;
           cur_pos = g_slist_position (priv->icons,icon_iter);
           if (cur_pos != (gint)idx)
@@ -1904,22 +1922,33 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
           break;
         }
       }
-      if (found)
+      if (found && launcher)
       {
+        ephemeral = task_icon_is_ephemeral (icon_iter->data);
+        if (ephemeral) /*then it shouldn't be*/
+        {
+          g_object_set (G_OBJECT(task_icon_get_launcher (icon_iter->data)),
+                          "proxy",task_icon_get_proxy (icon_iter->data),
+                          NULL);
+          icon_iter = priv->icons;
+        }
         break;
       }
     }
     if (!found)
-    {
-      TaskItem  *launcher = NULL;
+    {      
       GtkWidget *icon;
 
       if (usable_desktop_file_from_path (path) )
       {
+        TaskItem  *launcher = NULL;
         launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),path);
         if (launcher)
         {
           icon = task_icon_new (AWN_APPLET (manager));
+          g_object_set (G_OBJECT(launcher),
+                        "proxy",task_icon_get_proxy (TASK_ICON(icon)),
+                        NULL);
           task_icon_append_item (TASK_ICON (icon), launcher);
           gtk_container_add (GTK_CONTAINER (priv->box), icon);
           gtk_box_reorder_child (GTK_BOX (priv->box), icon, idx);
@@ -1981,12 +2010,12 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
     } 
     if (launcher && !found)
     {
-      if ( !task_icon_count_ephemeral_items (icon_iter->data) )
+      ephemeral = task_icon_is_ephemeral (icon_iter->data);
+      if (!ephemeral) /*then it should be*/
       {
-        /*if there are only ephemeral items in the icon then it will 
-         trigger it's removal.  Otherwise the it will be removed when it is
-         no longer managing ay TaskWindows*/        
-        task_icon_increment_ephemeral_count (icon_iter->data);
+        g_object_set (G_OBJECT(task_icon_get_launcher (icon_iter->data)),
+                        "proxy",NULL,
+                        NULL);
         icon_iter = priv->icons;
       }
     }
@@ -2080,8 +2109,9 @@ task_manager_regroup_launcher_icon (TaskManager * manager,TaskIcon * grouping_ic
     if (!launcher ) /* no launcher...  need to do matches on these eventually TODO */
     {
       continue;
-    }/* Is i an existing permanent launcher... if so then ignore.*/
-    else if ( task_icon_count_ephemeral_items (icon) == 0)
+    }
+    /* Is i an existing permanent launcher... if so then ignore.*/
+    else if ( !task_icon_is_ephemeral (icon))
     {
       continue;
     }
@@ -2210,10 +2240,11 @@ task_manager_regroup (TaskManager * manager)
     TaskIcon  * icon;
     icon = i->data;
     launcher = GTK_WIDGET(task_icon_get_launcher (icon));
-    if (launcher && (task_icon_count_ephemeral_items (icon) == 0) )
+
+    if (launcher)
     {
       task_manager_regroup_launcher_icon (manager,icon);      
-    }
+    }    
   }
 
   /* Find the ephemeral launchers and regroup them */
@@ -2223,7 +2254,7 @@ task_manager_regroup (TaskManager * manager)
     TaskIcon  * icon;
     icon = i->data;
     launcher = GTK_WIDGET(task_icon_get_launcher (icon));
-    if (launcher && (task_icon_count_ephemeral_items (icon) != 0) )
+    if (launcher )
     {
       task_manager_regroup_launcher_icon (manager,icon);      
     }
@@ -3279,12 +3310,12 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
     Search the launcherlist for the following desktop file
     Place the moved desktop in front of it.
    */
-  if ( priv->dragged_icon && !task_icon_count_ephemeral_items (priv->dragged_icon))
+
+  if ( priv->dragged_icon)
   {
-    g_assert (TASK_IS_ICON (priv->dragged_icon) );
     launcher = TASK_LAUNCHER(task_icon_get_launcher (priv->dragged_icon));
-  }
-      
+  }  
+  
   if (launcher)
   {
     g_assert (TASK_IS_LAUNCHER(launcher));
@@ -3312,10 +3343,11 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
           }
           g_assert (TASK_IS_ICON (iter->data) );
           const TaskItem * item = task_icon_get_launcher (iter->data);
-          if (!item || task_icon_count_ephemeral_items (iter->data))
+
+          if (!item )
           {
             continue;
-          }
+          }                 
           following_desktop_file = task_launcher_get_desktop_path (TASK_LAUNCHER(item));
           break;
         }

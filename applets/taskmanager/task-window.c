@@ -290,7 +290,6 @@ task_window_dispose (GObject *object)
     gtk_widget_destroy (priv->box);
     priv->box=NULL;
   }
-  
   G_OBJECT_CLASS (task_window_parent_class)->dispose (object);
 }
 
@@ -479,11 +478,12 @@ task_window_init (TaskWindow *window)
 }
 
 TaskItem *
-task_window_new (AwnApplet * applet, WnckWindow *window)
+task_window_new (AwnApplet * applet, GObject * proxy, WnckWindow *window)
 {
   TaskItem *win = NULL;
 
   win = g_object_new (TASK_TYPE_WINDOW,
+                      "proxy",proxy,
                       "taskwindow", window,
                       "applet",applet,
                       NULL);

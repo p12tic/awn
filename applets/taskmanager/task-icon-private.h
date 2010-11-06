@@ -85,7 +85,7 @@ struct _TaskIconPrivate
   /*Keep track if TaskLauncher was added through desktop file lookup
    FIXME _should_ be able to dump this by setting the task launcher visibility to false for ephemeral launchers.
    target for 0.6. */
-  guint ephemeral_count;
+  GObject   *proxy_obj;
 
   gboolean  inhibit_focus_loss;
   

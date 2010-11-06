@@ -162,6 +162,7 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
   {
     TaskManager * applet;
     gboolean grouping;
+    
     g_object_get (icon,
                   "applet",&applet,
                   NULL);
@@ -171,7 +172,13 @@ add_to_launcher_list_cb (GtkMenuItem * menu_item, TaskIcon * icon)
 
     task_manager_append_launcher (TASK_MANAGER(applet),
                                   task_launcher_get_desktop_path(launcher));
-    task_icon_decrement_ephemeral_count (TASK_ICON(icon));
+
+    if ( task_icon_is_ephemeral(icon))
+    {
+      g_object_set (G_OBJECT(task_icon_get_launcher (icon)),
+                    "proxy", task_icon_get_proxy (icon),
+                  NULL);
+    }
     g_object_set (applet,
                   "grouping",grouping,
                   NULL);
@@ -712,10 +719,17 @@ task_icon_get_menu_item_add_to_launcher_list (TaskIcon * icon)
     g_value_unset (&val);
     g_value_array_free (launcher_paths);
   }
+#if 0
   if (found || !launcher || !task_icon_count_ephemeral_items (icon) )
   {
     return NULL;
   }
+#else
+  if (found || !task_icon_is_ephemeral (icon)  )
+  {
+    return NULL;
+  }
+#endif  
   item = gtk_menu_item_new_with_label (_("Add as Launcher"));
   gtk_widget_show (item);
   g_signal_connect (item,"activate",
