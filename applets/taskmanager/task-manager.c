@@ -1110,7 +1110,7 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
   priv = manager->priv;
 
   if ( task_icon_is_visible (icon) && ( !priv->only_show_launchers || 
-        (task_icon_contains_launcher (icon) )))
+        (task_icon_contains_launcher (icon) && !task_icon_is_ephemeral (icon))))
   {
     visible = TRUE;
   }
