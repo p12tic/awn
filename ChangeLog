@@ -1,3 +1,13 @@
+2010-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+	Fix some of the inconsistent behaviours with drag and drop.
+
+2010-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	Fix launchers only.
+
 2010-11-06  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/applet.c:

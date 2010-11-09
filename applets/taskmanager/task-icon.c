@@ -105,9 +105,9 @@ static guint32 _icon_signals[LAST_SIGNAL] = { 0 };
 
 static const GtkTargetEntry drop_types[] = 
 {
+  { (gchar*)"text/uri-list", 0, 0 },
   { (gchar*)"STRING", 0, 0 },
   { (gchar*)"text/plain", 0,  },
-  { (gchar*)"text/uri-list", 0, 0 },
   { (gchar*)"awn/task-icon", 0, 0 }
 };
 static const gint n_drop_types = G_N_ELEMENTS (drop_types);
@@ -582,8 +582,9 @@ task_icon_constructed (GObject *object)
   {
     return;
   }
+  gtk_widget_add_events (GTK_WIDGET (object), GDK_ALL_EVENTS_MASK);
   gtk_drag_dest_set (GTK_WIDGET (object), 
-                     GTK_DEST_DEFAULT_DROP,
+                     GTK_DEST_DEFAULT_ALL,
                      drop_types, n_drop_types,
                      GDK_ACTION_COPY | GDK_ACTION_MOVE);
 
@@ -3144,7 +3145,6 @@ task_icon_source_drag_fail (GtkWidget      *widget,
 }
 
 /* DnD 'destination' forwards */
-
 static gboolean
 task_icon_dest_drag_motion (GtkWidget      *widget,
                             GdkDragContext *context,
@@ -3155,14 +3155,12 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
   TaskIconPrivate *priv;
   GdkAtom target;
   gchar *target_name;
-#ifdef DEBUG
-  g_debug ("%s",__func__);
-#endif
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
   priv = TASK_ICON (widget)->priv;
 
   target = gtk_drag_dest_find_target (widget, context, NULL);
   target_name = gdk_atom_name (target);
+  
   if (g_strcmp0("awn/task-icon", target_name) == 0)
   {
     if(!priv->draggable) return FALSE;
@@ -3211,6 +3209,7 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
                                         (GSourceFunc)drag_timeout, widget);
         priv->drag_time = t;
       }
+      return TRUE;
     }
     else
     {
@@ -3281,7 +3280,6 @@ copy_over_error:
   }
 }
 
-
 static void
 task_icon_dest_drag_data_received (GtkWidget      *widget,
                                    GdkDragContext *context,
@@ -3301,10 +3299,7 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   TaskLauncher    *launcher = NULL;
   GStrv           tokens = NULL;
   gchar           ** i;  
-  
-#ifdef DEBUG
-  g_debug ("%s",__func__);
-#endif
+
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = icon->priv;
 
