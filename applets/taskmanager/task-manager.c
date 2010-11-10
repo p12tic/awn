@@ -71,6 +71,16 @@ G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
 
 static GQuark win_quark = 0;
 
+static const GtkTargetEntry drop_types[] = 
+{
+  { (gchar*)"text/uri-list", 0, 0 },
+  { (gchar*)"STRING", 0, 0 },
+  { (gchar*)"text/plain", 0,  },
+  { (gchar*)"awn/task-icon", 0, 0 }
+};
+static const gint n_drop_types = G_N_ELEMENTS (drop_types);
+
+
 typedef struct
 {
   DesktopAgnosticConfigClient *panel_instance_client;
@@ -124,12 +134,17 @@ struct _TaskManagerPrivate
   gboolean     icon_grouping;
   gint         match_strength;
   gint         attention_autohide_timer;
+  gint         desktop_copy;
   
   guint        attention_required_reminder_id;
   gint         attention_required_reminder;
 
   AwnDesktopLookupCached * desktop_lookup;
   TaskManagerDispatcher *dbus_proxy;
+
+  GtkWidget * add_icon;
+  guint       add_icon_source;
+  
 };
 
 typedef struct
@@ -146,6 +161,12 @@ enum
   INTELLIHIDE_GROUP  
 };
 
+enum{
+  DESKTOP_COPY_ALL=0,
+  DESKTOP_COPY_OWNER,
+  DESKTOP_COPY_NONE
+}DesktopCopy;
+
 enum
 {
   PROP_0,
@@ -158,6 +179,7 @@ enum
   PROP_ICON_GROUPING,
   PROP_MATCH_STRENGTH,
   PROP_ATTENTION_AUTOHIDE_TIMER,
+  PROP_DESKTOP_COPY,
   PROP_ATTENTION_REQUIRED_REMINDER
 };
 
@@ -238,6 +260,15 @@ static void task_manager_intellihide_change_cb (const char* group,
                                     GValue* value, 
                                     int * user_data);
 
+static void _icon_dest_drag_data_received (GtkWidget      *widget,
+                                   GdkDragContext *context,
+                                   gint            x,
+                                   gint            y,
+                                   GtkSelectionData *sdata,
+                                   guint           info,
+                                   guint           time_,
+                                   TaskManager     *manager);
+
 typedef enum 
 {
   TASK_MANAGER_ERROR_UNSUPPORTED_WINDOW_TYPE,
@@ -313,6 +344,10 @@ task_manager_get_property (GObject    *object,
       g_value_set_int (value, manager->priv->attention_required_reminder);
       break;
 
+    case PROP_DESKTOP_COPY:
+      g_value_set_int (value, manager->priv->desktop_copy);
+      break;
+      
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -383,7 +418,8 @@ task_manager_set_property (GObject      *object,
                                                                              object);
       }
       break;
-
+      manager->priv->desktop_copy = g_value_get_int (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
   }
@@ -565,6 +601,12 @@ task_manager_constructed (GObject *object)
                                        object, "attention_required_reminder", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "desktop_copy",
+                                       object, "desktop copy", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
 
   g_signal_connect (priv->screen,"active-window-changed",
                     G_CALLBACK(task_manager_active_window_changed_cb),object);
@@ -600,7 +642,25 @@ task_manager_constructed (GObject *object)
         
       }
     }    
-  }  
+  }
+  priv->add_icon = awn_themed_icon_new ();
+  awn_themed_icon_set_size (AWN_THEMED_ICON(priv->add_icon),awn_applet_get_size (AWN_APPLET(object)));
+  awn_themed_icon_set_info_simple (AWN_THEMED_ICON (priv->add_icon),
+                                   "::no_drop::taskmanager",
+                                   "dummy",
+                                   "add");
+  gtk_container_add (GTK_CONTAINER (priv->box),priv->add_icon);
+  gtk_widget_hide (priv->add_icon);
+  gtk_widget_add_events (GTK_WIDGET (priv->add_icon), GDK_ALL_EVENTS_MASK);
+  gtk_drag_dest_set (GTK_WIDGET (priv->add_icon), 
+                     GTK_DEST_DEFAULT_ALL,
+                     drop_types, n_drop_types,
+                     GDK_ACTION_COPY | GDK_ACTION_MOVE);
+  g_signal_connect (priv->add_icon,
+                    "drag-data-received",
+                     G_CALLBACK(_icon_dest_drag_data_received),
+                    object);
+                    
 }
 
 static void
@@ -688,6 +748,15 @@ task_manager_class_init (TaskManagerClass *klass)
                             G_PARAM_READWRITE);
   g_object_class_install_property (obj_class, PROP_ATTENTION_REQUIRED_REMINDER, pspec);
 
+  pspec = g_param_spec_int ("desktop_copy",
+                            "When/if to copy desktop files",
+                            "When/if to copy desktop files",
+                            DESKTOP_COPY_ALL,
+                            DESKTOP_COPY_NONE,
+                            DESKTOP_COPY_OWNER,
+                            G_PARAM_CONSTRUCT | G_PARAM_READWRITE);
+  g_object_class_install_property (obj_class, PROP_DESKTOP_COPY, pspec);
+  
   /* Install signals */
   _taskman_signals[GROUPING_CHANGED] =
 		g_signal_new ("grouping_changed",
@@ -709,20 +778,20 @@ static void
 task_manager_init (TaskManager *manager)
 {
   TaskManagerPrivate *priv;
-  GError         *error = NULL;	
-
+  GError         *error = NULL;
   priv = manager->priv = TASK_MANAGER_GET_PRIVATE (manager);
   
   priv->screen = wnck_screen_get_default ();
   priv->launcher_paths = NULL;
-  priv->hidden_list = NULL;
-
+  priv->hidden_list = NULL; 
+  priv->add_icon_source = 0;
+  priv->add_icon = NULL;
+  
   wnck_set_client_type (WNCK_CLIENT_TYPE_PAGER);
 
   win_quark = g_quark_from_string ("task-window-quark");
 
   priv->settings = task_settings_get_default (AWN_APPLET(manager));
-  
   /* Create the icon box */
   priv->box = awn_icon_box_new_for_applet (AWN_APPLET (manager));
   gtk_container_add (GTK_CONTAINER (manager), priv->box);
@@ -732,6 +801,7 @@ task_manager_init (TaskManager *manager)
   priv->drag_indicator = TASK_DRAG_INDICATOR(task_drag_indicator_new());
   gtk_container_add (GTK_CONTAINER (priv->box), GTK_WIDGET(priv->drag_indicator));
   gtk_widget_hide (GTK_WIDGET(priv->drag_indicator));
+
   if(priv->drag_and_drop)
     _drag_add_signals(manager, GTK_WIDGET(priv->drag_indicator));
   /* TODO: free !!! */
@@ -1879,6 +1949,8 @@ task_manager_refresh_launcher_paths (TaskManager *manager, GValueArray *list)
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   priv = manager->priv;
+
+  task_manager_add_icon_hide (manager);
   /*
    Find launchers in the the launcher list do not yet have a TaskIcon and 
    add them
@@ -3125,6 +3197,39 @@ task_manager_update (TaskManager *manager,
   }
 }
 
+void
+task_manager_add_icon_show ( TaskManager * manager)
+{
+  TaskManagerPrivate *priv;
+  g_return_if_fail (TASK_IS_MANAGER (manager));
+  
+  priv = manager->priv;
+
+  if (priv->add_icon)
+  {
+    gtk_box_reorder_child (GTK_BOX(priv->box),priv->add_icon,-1);
+    gtk_widget_show_all (priv->add_icon);
+  }
+}
+
+gboolean
+task_manager_add_icon_hide ( TaskManager * manager)
+{
+  TaskManagerPrivate *priv;
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),FALSE);
+  
+  priv = manager->priv;
+  if (priv->add_icon)
+  {
+    gtk_widget_hide (priv->add_icon);
+    if (priv->add_icon_source)
+    {
+      g_source_remove (priv->add_icon_source);
+      priv->add_icon_source = 0;
+    }
+  }
+  return FALSE;
+}
 
 /*
  * Position Icons through dragging
@@ -3143,6 +3248,12 @@ _drag_dest_motion(TaskManager *manager, gint x, gint y, GtkWidget *icon)
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
   priv = TASK_MANAGER_GET_PRIVATE (manager);
+
+  if (priv->add_icon_source)
+  {
+    g_source_remove (priv->add_icon_source);
+    priv->add_icon_source = 0;
+  }
 
   g_return_if_fail(priv->dragged_icon != NULL);
 
@@ -3232,9 +3343,15 @@ static void
 _drag_dest_leave (TaskManager *manager, GtkWidget *icon)
 {
   g_return_if_fail (TASK_IS_MANAGER (manager));
-
-  /*
   TaskManagerPrivate *priv = TASK_MANAGER_GET_PRIVATE (manager);
+  if (priv->add_icon_source)
+  {
+    g_source_remove (priv->add_icon_source);
+  }
+  
+  priv->add_icon_source = g_timeout_add (4000,(GSourceFunc)task_manager_add_icon_hide,manager);
+  /*
+  
 
   //FIXME: REMOVE OLD TIMER AND SET NEW ONE
   if(!priv->drag_timeout)
@@ -3430,4 +3547,150 @@ _drag_remove_signals (TaskManager *manager, GtkWidget *icon)
 
   g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_dest_motion), manager);
   g_signal_handlers_disconnect_by_func(icon, G_CALLBACK (_drag_dest_leave), manager);
+}
+
+
+static void 
+copy_over (const gchar *src, const gchar *dest)
+{
+  DesktopAgnosticVFSFile *from = NULL;
+  DesktopAgnosticVFSFile *to = NULL;
+  GError                 *error = NULL;
+
+  from = desktop_agnostic_vfs_file_new_for_path (src, &error);
+  if (error)
+  {
+    goto copy_over_error;
+  }
+  to = desktop_agnostic_vfs_file_new_for_path (dest, &error);
+  if (error)
+  {
+    goto copy_over_error;
+  }
+
+  desktop_agnostic_vfs_file_copy (from, to, TRUE, &error);
+
+copy_over_error:
+
+  if (error)
+  {
+    g_warning ("Unable to copy %s to %s: %s", src, dest, error->message);
+    g_error_free (error);
+  }
+
+  if (to)
+  {
+    g_object_unref (to);
+  }
+  if (from)
+  {
+    g_object_unref (from);
+  }
+}
+
+static void
+_icon_dest_drag_data_received (GtkWidget      *widget,
+                                   GdkDragContext *context,
+                                   gint            x,
+                                   gint            y,
+                                   GtkSelectionData *sdata,
+                                   guint           info,
+                                   guint           time_,
+                                   TaskManager     *manager)
+{
+  TaskManagerPrivate * priv;
+  GError          *error;
+  GdkAtom         target;
+  gchar           *target_name;
+  gchar           *sdata_data;
+  GStrv           tokens = NULL;
+  gchar           ** i;  
+
+  g_return_if_fail (AWN_IS_THEMED_ICON (widget) );
+
+  priv = TASK_MANAGER_GET_PRIVATE (manager);
+  task_manager_add_icon_hide (TASK_MANAGER(manager));
+  
+  target = gtk_drag_dest_find_target (widget, context, NULL);
+  target_name = gdk_atom_name (target);
+
+  /* If it is dragging of the task icon, there is actually no data */
+  if (g_strcmp0("awn/task-icon", target_name) == 0)
+  {
+    gtk_drag_finish (context, TRUE, TRUE, time_);
+    return;
+  }
+  sdata_data = (gchar*)gtk_selection_data_get_data (sdata);
+
+  /* If we are dealing with a desktop file, then we want to do something else
+   * FIXME: This is a crude way of checking
+   */
+  if (strstr (sdata_data, ".desktop"))
+  {
+    /*TODO move into a separate function */
+    tokens = g_strsplit  (sdata_data, "\n",-1);    
+    for (i=tokens; *i;i++)
+    {
+      gchar * filename = g_filename_from_uri ((gchar*) *i,NULL,NULL);
+      if (!filename && ((gchar *)*i))
+      {
+        filename = g_strdup ((gchar*)*i);
+      }
+      if (filename)
+      {
+        g_strstrip(filename);
+      }
+      if (filename && strlen(filename) && strstr (filename,".desktop"))
+      {
+        if (filename)
+        {
+          gboolean make_copy = FALSE;
+          struct stat stat_buf;
+          switch (priv->desktop_copy)
+          {
+            case DESKTOP_COPY_ALL:
+              make_copy = TRUE;
+              break;
+            case DESKTOP_COPY_OWNER:
+              g_stat (filename,&stat_buf);
+              if ( stat_buf.st_uid == getuid())
+              {
+                make_copy = TRUE;
+              }
+              break;
+            case DESKTOP_COPY_NONE:
+            default:
+              break;
+          }
+          if (make_copy)
+          {
+            gchar * launcher_dir = NULL;
+            gchar * file_basename;
+            gchar * dest;
+            launcher_dir = g_strdup_printf ("%s/.config/awn/launchers", 
+                                              g_get_home_dir ());
+            g_mkdir_with_parents (launcher_dir,0755); 
+            file_basename = g_path_get_basename (filename);
+            dest = g_strdup_printf("%s/%lu-%s",launcher_dir,(gulong)time(NULL),file_basename);
+            copy_over (filename,dest);
+            g_free (file_basename);
+            g_free (filename);
+            g_free (launcher_dir);
+            filename = dest;
+          }
+          task_manager_append_launcher (TASK_MANAGER(manager),filename);
+        }
+      }
+      if (filename)
+      {
+        g_free (filename);
+      }
+    }
+    g_strfreev (tokens);
+    gtk_drag_finish (context, TRUE, FALSE, time_);
+    return;
+  }
+
+  error = NULL;
+  gtk_drag_finish (context, TRUE, FALSE, time_);
 }

@@ -3115,7 +3115,7 @@ task_icon_source_drag_end (GtkWidget      *widget,
 #endif
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
-
+  task_manager_add_icon_hide (TASK_MANAGER(priv->applet));
   if(!priv->gets_dragged) return;
 
   priv->gets_dragged = FALSE;
@@ -3133,7 +3133,7 @@ task_icon_source_drag_fail (GtkWidget      *widget,
 #endif
   g_return_val_if_fail (TASK_IS_ICON (widget), FALSE);
   priv = TASK_ICON (widget)->priv;
-
+  task_manager_add_icon_hide (TASK_MANAGER(priv->applet));
   if(!priv->draggable) return TRUE;
   if(!priv->gets_dragged) return TRUE;
 
@@ -3183,7 +3183,7 @@ task_icon_dest_drag_motion (GtkWidget      *widget,
 
     awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (widget)), 
                   AWN_EFFECT_LAUNCHING, 1, FALSE, FALSE); 
-    
+    task_manager_add_icon_show (TASK_MANAGER(priv->applet));    
     if (priv->drag_tag)
     {
       /* If it is a launcher it should show that it accepts the drag.
@@ -3231,7 +3231,6 @@ task_icon_dest_drag_leave (GtkWidget      *widget,
 #endif
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = TASK_ICON (widget)->priv;
-
   if(priv->drag_motion)
   {
     priv->drag_motion = FALSE;
@@ -3303,6 +3302,8 @@ task_icon_dest_drag_data_received (GtkWidget      *widget,
   g_return_if_fail (TASK_IS_ICON (widget));
   priv = icon->priv;
 
+  task_manager_add_icon_hide (TASK_MANAGER(priv->applet));
+  
   target = gtk_drag_dest_find_target (widget, context, NULL);
   target_name = gdk_atom_name (target);
 

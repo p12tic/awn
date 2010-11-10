@@ -1,6 +1,14 @@
 2010-11-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-manager.h:
+	Give a visual cue for users when they're dragging and dropping
+	a desktop.
+
+2010-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Fix some of the inconsistent behaviours with drag and drop.
 
 2010-11-10  Rodney Cryderman  <rcryderman@gmail.com>
