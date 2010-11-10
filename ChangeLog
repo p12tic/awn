@@ -2,6 +2,12 @@
 
 	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
+	Get rid of the rectangle.
+
+2010-11-10  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/task-manager.h:
 	Give a visual cue for users when they're dragging and dropping
 	a desktop.
