@@ -418,6 +418,7 @@ task_manager_set_property (GObject      *object,
                                                                              object);
       }
       break;
+    case PROP_DESKTOP_COPY:
       manager->priv->desktop_copy = g_value_get_int (value);
       break;
     default:
@@ -653,7 +654,7 @@ task_manager_constructed (GObject *object)
   gtk_widget_hide (priv->add_icon);
   gtk_widget_add_events (GTK_WIDGET (priv->add_icon), GDK_ALL_EVENTS_MASK);
   gtk_drag_dest_set (GTK_WIDGET (priv->add_icon), 
-                     GTK_DEST_DEFAULT_ALL & (~GTK_DEST_DEFAULT_HIGHLIGHT,
+                     GTK_DEST_DEFAULT_ALL & (~GTK_DEST_DEFAULT_HIGHLIGHT),
                      drop_types, n_drop_types,
                      GDK_ACTION_COPY | GDK_ACTION_MOVE);
   g_signal_connect (priv->add_icon,
