@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-11-02 11:23+0000\n"
-"Last-Translator: commodoor <commodoor@gmail.com>\n"
+"PO-Revision-Date: 2010-11-11 16:34+0000\n"
+"Last-Translator: megabyte <Unknown>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-11-03 05:02+0000\n"
+"X-Launchpad-Export-Date: 2010-11-12 04:49+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -38,6 +38,8 @@ msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Controleert de alphawaarde van de overlay als overlay_application_icons "
+"waar is. Geldige waarde van 0.0 tot 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -53,6 +55,8 @@ msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Controleert de grootte van de overlay als overlay_application_icons waar "
+"is. Geldige waarde van 0.2 tot 0.7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
@@ -88,6 +92,8 @@ msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Context menu definitie. Ik zal kijken in de awn menu installatiemap tenzij "
+"een absoluut pad is opgegeven."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
@@ -170,7 +176,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Toon alleen iconen voor programma's die bij een snelkoppeling horen."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
@@ -180,12 +186,17 @@ msgstr "Vensters van alle werkbladen tonen"
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
 msgstr ""
+"Het benodigde minimale hoeveelheid vensters van een programma voordat er een "
+"getal bij het icoon van het programma weergegeven wordt die deze hoeveelheid "
+"representeert. (Groter of gelijk aan 1)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"Een lijst van paden naar .desktop bestanden die gebruikt moeten worden bij "
+"het aanmaken van de snelkoppelingen."
 
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1020
@@ -588,7 +599,7 @@ msgstr "Groepeer gemeenschappelijke vensters"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
-msgstr ""
+msgstr "Hover animatie:"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
@@ -709,7 +720,7 @@ msgstr "Selecteer Gewone Pijl"
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Select item to filter by category"
-msgstr ""
+msgstr "Selecteer item om te filteren door categorie"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
@@ -721,7 +732,7 @@ msgstr "Toon alle vensters"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Toon dialoog na lange indruk"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
@@ -737,7 +748,7 @@ msgstr "Start _Awn automatisch"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "Thema Exporteren"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
@@ -769,7 +780,7 @@ msgstr "Versie:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr ""
+msgstr "_Gedrag:"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
@@ -1067,7 +1078,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Selecteer lettertype voor tooltip"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
@@ -1126,6 +1137,18 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"De volgende Python modules konden niet gevonden worden: %s. De volgende "
+"verklaringen zijn mogelijk:\n"
+"\n"
+"1. U heeft de desbetreffende Python module niet geïnstalleerd. In dit geval "
+"kunt u het applet gedeelte van de wiki van Awn bezoeken om uit te vogelen "
+"wat de exacte naam is van het pakket dat door uw distributie geleverd wordt "
+"die deze module bevat.\n"
+"\n"
+"2. De module is geïnstalleerd in een niet-standaard locatie. Dit is meestal "
+"het geval als u het pakket handmatig installeert i.p.v. via uw pakket "
+"beheerder. Deze situatie wordt in het FAQ gedeelte op de wiki van Awn "
+"uitgelegd.\n"
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
@@ -1166,11 +1189,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "Achtergrondkleur voor AwnDialog's titel."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "Achtergrodkleur voor AwnDialog."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
@@ -1204,7 +1227,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
-msgstr ""
+msgstr "Teken scheidingen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
