@@ -1679,10 +1679,27 @@ process_window_opened (WnckWindow    *window,
        &&
        ( max_match_score > 99-priv->match_strength))
   {
-    g_object_set (item,
-                  "proxy",task_icon_get_proxy(match),
-                  NULL);
-    task_icon_append_item (match, item);
+    if (TASK_IS_ICON (match))
+    {
+      GObject * p = task_icon_get_proxy (match);
+      if (p && G_IS_OBJECT(p))
+      {
+        g_object_set (item,
+                      "proxy",task_icon_get_proxy(match),
+                      NULL);
+        task_icon_append_item (match, item);
+      }
+      else
+      {
+        g_warning ("TaskIcon: Window closed before match");
+        return;
+      }
+    }
+    else
+    {
+      g_warning ("TaskIcon: not an icon... bailing");
+      return;
+    }
   }
   else
   {

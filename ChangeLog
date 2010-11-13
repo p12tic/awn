@@ -1,3 +1,10 @@
+2010-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	There's a nasty race on occasion (more likely to hit it under
+	load with grouping off), anyway...  if the window is already 
+	gone than just get out.
+
 2010-11-10  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
