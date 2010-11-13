@@ -915,7 +915,8 @@ task_icon_close (TaskIcon * icon)
 {
   TaskIconPrivate *priv;
   priv = icon->priv = TASK_ICON_GET_PRIVATE (icon);
-  
+
+  priv->proxy_obj = NULL;
   awn_effects_start_ex (awn_overlayable_get_effects (AWN_OVERLAYABLE (icon)), 
                   AWN_EFFECT_CLOSING, 1, FALSE, TRUE);
 
