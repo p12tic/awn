@@ -1,6 +1,12 @@
 2010-11-13  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+	Show TaskIcons for nodisplay = true and no desktop file.
+
+2010-11-13  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Set ->proxy_obj to NULL when it's gone.
 
 2010-11-13  Rodney Cryderman  <rcryderman@gmail.com>

@@ -1176,12 +1176,13 @@ update_icon_visible (TaskManager *manager, TaskIcon *icon)
    a better visual cue of what has changed*/
   gboolean do_hide_animation = FALSE;
 
+
   g_return_if_fail (TASK_IS_MANAGER (manager));
 
   priv = manager->priv;
-
-  if ( task_icon_is_visible (icon) && ( !priv->only_show_launchers || 
-        (task_icon_contains_launcher (icon) && !task_icon_is_ephemeral (icon))))
+  if ( task_icon_is_visible (icon) && 
+      ( !priv->only_show_launchers || !task_icon_is_ephemeral (icon))
+      )
   {
     visible = TRUE;
   }
@@ -1707,12 +1708,12 @@ process_window_opened (WnckWindow    *window,
     icon = task_icon_new (AWN_APPLET (manager));
 
     found_desktop = search_for_desktop (TASK_ICON(icon),item,TRUE);
+    g_object_set (item,
+              "proxy",task_icon_get_proxy(TASK_ICON(icon)),
+              NULL);
     if (found_desktop)
     {
       TaskItem * launcher = get_launcher (manager,found_desktop);
-      g_object_set (item,
-                "proxy",task_icon_get_proxy(TASK_ICON(icon)),
-                NULL);
       if (launcher)
       {
         if (task_icon_count_items (TASK_ICON (icon))==0)
@@ -1726,6 +1727,10 @@ process_window_opened (WnckWindow    *window,
       {
         task_icon_append_item (TASK_ICON (icon), item);
       }
+    }
+    else
+    {
+      task_icon_append_item (TASK_ICON (icon), item);
     }
     
     if ( !found_desktop)

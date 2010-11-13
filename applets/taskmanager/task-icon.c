@@ -1404,7 +1404,7 @@ task_icon_refresh_visible (TaskIcon *icon)
                     NULL);
     }
   }
-  if (ephemeral && count==1)
+  if (ephemeral && ( count==1 && count_windows==0) )
   {
     priv->visible = FALSE;
   }
