@@ -31,3 +31,8 @@ simple_launcher_la_LIBADD = \
 	$(AWN_LIBS) \
 	$(NULL)
 simple_launcher_la_LDFLAGS = $(APPLET_LINKER_FLAGS)
+
+EXTRA_DIST += \
+        $(schema_in_files) \
+        $(NULL)
+

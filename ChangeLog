@@ -1,3 +1,12 @@
+2010-11-17  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/simple-launcher/Makefile.am:
+  	* applets/taskmanager/Makefile.am:
+  	* src/Makefile.am:
+	An inconclusive attempt at getting make dist working.
+	Generated tarball seems ok... though make distcheck is still
+	not happy.
+
 2010-11-16  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:

@@ -100,6 +100,11 @@ CLEANFILES = \
 
 EXTRA_DIST = \
 	awn-marshal.list \
+	awn-app.vala \
+	awn-app.c \
+	awn-panel-dispatcher.vala \
+	awn-panel-dispatcher.c \
+	awn-panel.vapi  \
 	$(VALA_GENERATED_FILES) \
 	$(NULL)
 

@@ -121,6 +121,8 @@ EXTRA_DIST += \
 	$(VALA_GENERATED_FILES) \
 	taskmanager-marshal.list \
 	task-manager.vapi \
+	dock-manager-api.vala \
+	labelled-separator.vala \
 	$(NULL)
 
 CLEANFILES += $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
