@@ -3451,6 +3451,12 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
     Place the moved desktop in front of it.
    */
 
+  if (task_icon_is_ephemeral (priv->dragged_icon) )
+  {
+    priv->dragged_icon = NULL;
+    return;
+  }
+  
   if ( priv->dragged_icon)
   {
     launcher = TASK_LAUNCHER(task_icon_get_launcher (priv->dragged_icon));
@@ -3482,12 +3488,16 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
             continue;
           }
           g_assert (TASK_IS_ICON (iter->data) );
+          if (task_icon_is_ephemeral (iter->data) )
+          {
+            continue;
+          }
           const TaskItem * item = task_icon_get_launcher (iter->data);
 
           if (!item )
           {
             continue;
-          }                 
+          }
           following_desktop_file = task_launcher_get_desktop_path (TASK_LAUNCHER(item));
           break;
         }
@@ -3504,7 +3514,7 @@ _drag_source_end(TaskManager *manager, GtkWidget *icon)
       path = g_value_dup_string (g_value_array_get_nth (launcher_paths, idx));
       if (g_strcmp0 (path,moved_desktop_file)==0)
       {
-        g_free (path);        
+        g_free (path);
         g_value_array_remove (launcher_paths,idx);
         if (!following_desktop_file)
         {
