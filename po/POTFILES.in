@@ -2,11 +2,12 @@ applets/expander/expander.desktop.in.in
 [type: gettext/ini]applets/taskmanager/awn-applet-taskmanager.schema-ini.in
 applets/taskmanager/task-launcher.c
 applets/taskmanager/task-icon.c
+applets/taskmanager/task-icon-build-context-menus.c
 applets/taskmanager/taskmanager.desktop.in.in
 applets/quick-prefs/applet.vala
 applets/quick-prefs/quick-prefs.desktop.in.in
 applets/separator/separator.desktop.in.in
-applets/taskmanager/task-icon-build-context-menus.c
+applets/simple-launcher/simple-launcher.desktop.in.in
 awn-settings/awn-settings.desktop.in
 [type: gettext/glade]awn-settings/awn-settings.ui
 awn-settings/awnClass.py

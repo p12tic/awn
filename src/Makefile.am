@@ -19,8 +19,8 @@ VALA_FILES = \
 	$(NULL)
 
 VALA_FLAGS = \
-	$(top_builddir)/bindings/vala/awn.vapi \
-	awn-panel.vapi \
+	$(top_srcdir)/bindings/vala/awn.vapi \
+	$(top_srcdir)/src/awn-panel.vapi \
 	--pkg dbus-glib-1 \
 	--vapidir=$(LDA_VAPIDIR) \
 	--pkg gtk+-2.0 \
@@ -28,9 +28,9 @@ VALA_FLAGS = \
 	$(NULL)
 
 awn-core.vala.stamp: $(VALA_FILES)
-	$(foreach vala_file,$(VALA_FILES),\
-	$(VALAC) -C -H $(vala_file:.vala=.h) $(vala_file) $(VALA_FLAGS) && \
-	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(vala_file:.vala=.)[ch] || exit 1;)
+	$(foreach vala_file,$?,\
+	$(VALAC) -C -H $(notdir $(vala_file:.vala=.h)) $(vala_file) $(VALA_FLAGS) && \
+	$(SED) -i -r 's/^#include <(awn.+h)>$$/#include "\1"/' $(notdir $(vala_file:.vala=.))[ch] || exit 1;)
 	touch "$@"
 
 VALA_GENERATED_FILES = \
@@ -101,9 +101,7 @@ CLEANFILES = \
 EXTRA_DIST = \
 	awn-marshal.list \
 	awn-app.vala \
-	awn-app.c \
 	awn-panel-dispatcher.vala \
-	awn-panel-dispatcher.c \
 	awn-panel.vapi  \
 	$(VALA_GENERATED_FILES) \
 	$(NULL)

@@ -32,6 +32,8 @@ simple_launcher_la_LIBADD = \
 	$(NULL)
 simple_launcher_la_LDFLAGS = $(APPLET_LINKER_FLAGS)
 
+CLEANFILES += $(schema_DATA) $(schemas_DATA)
+
 EXTRA_DIST += \
         $(schema_in_files) \
         $(NULL)

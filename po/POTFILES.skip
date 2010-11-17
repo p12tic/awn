@@ -1,6 +1,7 @@
 applets/taskmanager/taskmanager.desktop.in
 applets/expander/expander.desktop.in
 applets/separator/separator.desktop.in
+applets/simple-launcher/simple-launcher.desktop.in
 applets/quick-prefs/applet.c
 applets/quick-prefs/quick-prefs.desktop.in
 awn-manager/
