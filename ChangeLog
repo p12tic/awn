@@ -1,3 +1,10 @@
+2010-11-17  Rodney Cryderman  <rcry derman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Never use the horribly ugly Libre Office application icon
+	in the same way we never show the horrible Open office 
+	application icon.
+
 2010-11-17  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/simple-launcher/Makefile.am:

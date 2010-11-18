@@ -269,6 +269,7 @@ static  WindowWait windows_to_wait[] =
 static  IconUse icon_regexes[] = 
 {
   {NULL,".*OpenOffice.*",".*VCLSalFrame.*",NULL,USE_NEVER},
+  {NULL,".*LibreOffice.*",".*VCLSalFrame.*",NULL,USE_NEVER},
   {NULL,"Pidgin","pidgin",NULL,USE_ALWAYS},
   {".*gimp.*",".*Gimp.*",".*gimp.*",NULL,USE_ALWAYS},  
   {NULL,NULL,NULL,NULL,USE_DEFAULT}
