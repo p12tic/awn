@@ -1282,6 +1282,10 @@ on_icon_effects_ends (TaskIcon   *icon,
     {
       gtk_widget_hide (GTK_WIDGET(icon));
     }
+    else
+    {
+      gtk_widget_show (GTK_WIDGET(icon));
+    }
   }
 }
 
@@ -1655,6 +1659,13 @@ process_window_opened (WnckWindow    *window,
 #ifdef DEBUG
     g_debug ("contains launcher is %d",task_icon_contains_launcher (taskicon) );
 #endif
+    /*
+     is the task icon in the midst of disappearing?
+     */
+    if (!task_icon_get_proxy (taskicon) )
+    {
+      continue;
+    }
     match_score = task_icon_match_item (taskicon, item);
     if (match_score > max_match_score)
     {

@@ -1,4 +1,12 @@
-2010-11-17  Rodney Cryderman  <rcry derman@gmail.com>
+2010-11-25  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/task-icon.c:
+	Fix a memory leak...  TaskLaunchers were not always destroyed.
+	Also deal with a matching window appearing when the Icon that
+	matches it is in the midst of closing.
+
+2010-11-17  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:
 	Never use the horribly ugly Libre Office application icon

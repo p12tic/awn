@@ -392,6 +392,14 @@ task_icon_dispose (GObject *object)
     g_list_free (priv->plugin_menu_items);
     priv->plugin_menu_items = NULL;
   }
+  if (priv->items)
+  {
+    GSList * i;
+    for ( i = priv->items; i; i=i->next)
+    {
+      gtk_widget_destroy (i->data);
+    }
+  }
 
   G_OBJECT_CLASS (task_icon_parent_class)->dispose (object);  
 }
