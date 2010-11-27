@@ -777,12 +777,10 @@ awn_dialog_constructed (GObject *object)
   /*
    AwnDialogs tend to periodically lose various hints (skip tasklist) under
      certain WMs (openbox) which leads to python AwnDialogs appearing briefly
-     until the hint is set again.  taskman has a fall back where it checks 
-     the window title for "awn-applet" which is the window title for non-python
-     applet dialogs... however if we don't set it explicity here python applet
-     dialogs will have a window title equal to the applet script name.
+     until the hint is set again. 
+   Make certain that wm_class is set.
    */
-  gtk_window_set_title (GTK_WINDOW(object),"awn-applet");
+  gtk_window_set_wmclass (GTK_WINDOW(object),"awn-applet","awn-applet");
 }
 
 static void

@@ -1805,19 +1805,22 @@ on_window_opened (WnckScreen    *screen,
 
   _wnck_get_wmclass (wnck_window_get_xid (window),
                      &res_name, &class_name);
-  if (get_special_wait_from_window_data (res_name, 
-                                         class_name,
-                                         wnck_window_get_name(window) ) )
+  if ( g_strcmp0(res_name,"awn-applet") != 0)
   {
-    win_timeout_data = g_malloc (sizeof (WindowOpenTimeoutData));
-    win_timeout_data->window = window;
-    win_timeout_data->manager = manager;    
-    g_signal_connect (window,"name-changed",G_CALLBACK(process_window_opened),manager);
-    g_timeout_add (2000,(GSourceFunc)_wait_for_name_change_timeout,win_timeout_data);
-  }
-  else
-  {
-    process_window_opened (window,manager);
+    if (get_special_wait_from_window_data (res_name, 
+                                           class_name,
+                                           wnck_window_get_name(window) ) )
+    {
+      win_timeout_data = g_malloc (sizeof (WindowOpenTimeoutData));
+      win_timeout_data->window = window;
+      win_timeout_data->manager = manager;    
+      g_signal_connect (window,"name-changed",G_CALLBACK(process_window_opened),manager);
+      g_timeout_add (2000,(GSourceFunc)_wait_for_name_change_timeout,win_timeout_data);
+    }
+    else
+    {
+      process_window_opened (window,manager);
+    }
   }
   g_free (res_name);
   g_free (class_name);  
