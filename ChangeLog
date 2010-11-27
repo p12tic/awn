@@ -1,7 +1,14 @@
 2010-11-27  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/task-manager.c:
+	If both WM_CLASS values are NULL when window opens then wait a
+	bit and see if they get set.
+
+2010-11-27  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* libawn/awn-dialog.c:
-	Workis around an openbox issue with AwnDialogs.  Also makes
+	Work around an openbox issue with AwnDialogs.  Also makes
 	AwnDialogs for python applets more consistent with non-python
 	applets.
 

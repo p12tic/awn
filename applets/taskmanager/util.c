@@ -515,6 +515,11 @@ get_special_wait_from_window_data (gchar *res_name, gchar * class_name,const gch
    TODO  optimize the regex handling.
    */
   WindowWait  *iter;
+  if (!res_name && !class_name)
+  {
+    return TRUE;
+  }
+  
   for (iter = windows_to_wait; iter->wait; iter++)
   {
     gboolean  match = TRUE;

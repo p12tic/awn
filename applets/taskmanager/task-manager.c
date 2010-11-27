@@ -1636,6 +1636,11 @@ process_window_opened (WnckWindow    *window,
     return;
   }
 
+  if (wnck_window_is_skip_pager (window))
+  {
+    return;
+  }
+
   g_signal_connect (window, "state-changed", 
                     G_CALLBACK (check_attention_requested), manager);    
   
