@@ -1217,15 +1217,28 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
     priv->applet_name = g_strdup (applet_name);
 
     /* Add the applet's system-wide icon dir first */ 
-    search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
     priv->cache_sentinel++; /*don't invalidate the pixbuf cache*/
+    search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/icons", applet_name);
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
     g_free (search_dir);
 
     search_dir = g_strdup_printf (PKGDATADIR"/applets/%s/themes", applet_name);
     gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
-    priv->cache_sentinel--; /*unprotect the pixbuf cache*/    
     g_free (search_dir); 
+
+    search_dir = g_strdup_printf ("%s/awn/applets/%s/icons",
+                                  g_get_user_config_dir (), 
+                                  applet_name);
+    gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    g_free (search_dir); 
+
+    search_dir = g_strdup_printf ("%s/awn/applets/%s/themes",
+                                  g_get_user_config_dir (), 
+                                  applet_name);
+    gtk_icon_theme_append_search_path (priv->gtk_theme, search_dir);
+    g_free (search_dir); 
+
+    priv->cache_sentinel--; /*unprotect the pixbuf cache*/    
   }
   if (state)
   {
