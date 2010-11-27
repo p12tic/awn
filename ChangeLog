@@ -1,5 +1,11 @@
 2010-11-27  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* libawn/awn-themed-icon.c:
+	Fix for bug 665848.  Allow removal of  customized icon (icon
+	name customization).
+
+2010-11-27  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager.c:
   	* libawn/awn-dialog.c:
 	A fix for the openbox AwnDialog issue that does not have 

@@ -848,13 +848,12 @@ get_pixbuf_at_size (AwnThemedIcon *icon, gint size, const gchar *state)
             break;
 
           case SCOPE_AWN_THEME:
-            base = g_path_get_basename (icon_name);
+            name = g_path_get_basename (icon_name);
             pixbuf = awn_themed_icon_lookup_pixbuf (icon,
                                                     "scope_awn_theme",
                                                     priv->awn_theme,
-                                                    base,
+                                                    name,
                                                     size);
-            g_free (base);
             break;
 
           case SCOPE_OVERRIDE_THEME:
