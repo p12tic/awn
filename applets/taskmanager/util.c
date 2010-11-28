@@ -110,6 +110,7 @@ typedef gchar *(*fn_gen_id)(const gchar *,const gchar*,const gchar*,const gchar*
  */
 static DesktopMatch desktop_regexes[] = 
 {
+  {".*eclipse","[Ee]clipse","eclipse","Eclipse"},  
   {".*ooffice.*-writer.*",NULL,NULL,"OpenOffice-Writer"},
   {".*ooffice.*-draw.*",NULL,NULL,"OpenOffice-Draw"},
   {".*ooffice.*-impress.*",NULL,NULL,"OpenOffice-Impress"},
@@ -140,6 +141,8 @@ static DesktopMatch desktop_regexes[] =
  */
 static  WindowMatch window_regexes[] = 
 {
+  {".*eclipse","\\.","\\.",NULL,"Eclipse"},    
+  {NULL,"[eE]clipse","[eE]clipse",NULL,"Eclipse"},    
   /*Do not bother trying to parse an open office command line for the type of window*/
   {".*prism.*google.*calendar.*","Prism","Navigator",".*[Cc]alendar.*","prism-google-calendar"},
   {".*prism.*google.*analytics.*","Prism","Navigator",".*[Aa]nalytics.*","prism-google-analytics"},
@@ -201,7 +204,8 @@ static  WindowMatch window_regexes[] =
  */
 static  WindowToDesktopMatch window_to_desktop_regexes[] = 
 {
-  /*Do not bother trying to parse an open office command line for the type of window*/
+  {".*eclipse.*",".*",".*","eclipse"},
+  /*Do not bother trying to parse an open office command line for the type of window*/  
   {".*prism.*google.*calendar.*","Prism","Navigator",".*[Cc]alendar.*","prism-google-calendar"},
   {".*prism.*google.*analytics.*","Prism","Navigator",".*[Aa]nalytics.*","prism-google-analytics"},
   {".*prism.*google.*docs.*","Prism","Navigator",".*[Dd]ocs.*","prism-google-docs"},
