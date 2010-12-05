@@ -42,6 +42,7 @@ bin_PROGRAMS = avant-window-navigator
 
 avant_window_navigator_LDADD =			\
 	$(DOCK_LIBS)				\
+	$(AWN_LIBS)				\
 	$(top_builddir)/libawn/libawn.la	\
 	$(NULL)
 

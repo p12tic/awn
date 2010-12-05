@@ -13,16 +13,24 @@ AM_CFLAGS = $(WARNING_FLAGS)
 INCLUDES = $(AWN_CFLAGS) -I$(top_srcdir)
 
 test_applet_simple_SOURCES = test-applet-simple.c
-test_applet_simple_LDADD = $(top_builddir)/libawn/libawn.la
+test_applet_simple_LDADD = 	\
+						$(top_builddir)/libawn/libawn.la \
+						$(AWN_LIBS)
 
 test_awn_effects_SOURCES = test-awn-effects.c
-test_awn_effects_LDADD = $(top_builddir)/libawn/libawn.la
+test_awn_effects_LDADD = \
+						$(top_builddir)/libawn/libawn.la \
+						$(AWN_LIBS)
 
 test_awn_icon_SOURCES = test-awn-icon.c
-test_awn_icon_LDADD = $(top_builddir)/libawn/libawn.la
+test_awn_icon_LDADD = \
+					$(top_builddir)/libawn/libawn.la \
+					$(AWN_LIBS)
 
 test_awn_icon_box_SOURCES = test-awn-icon-box.c
-test_awn_icon_box_LDADD = $(top_builddir)/libawn/libawn.la
+test_awn_icon_box_LDADD = \
+						$(top_builddir)/libawn/libawn.la \
+						$(AWN_LIBS)
 
 test_taskmanager_SOURCES = test-taskmanager.c
 test_taskmanager_LDADD = \
@@ -31,7 +39,9 @@ test_taskmanager_LDADD = \
 	$(NULL)
 
 test_themed_icon_SOURCES = test-themed-icon.c
-test_themed_icon_LDADD = $(top_builddir)/libawn/libawn.la
+test_themed_icon_LDADD = \
+						$(top_builddir)/libawn/libawn.la \
+						$(AWN_LIBS)
 
 EXTRA_DIST = 	test-awn-dialog.py 	\
 		test-awn-tooltip.py	\
@@ -49,7 +59,9 @@ VALA_FILES = \
 
 test_vala_awn_dialog_SOURCES = test-vala-awn-dialog.c
 test_vala_awn_dialog_CFLAGS = -Wall -Wno-redundant-decls
-test_vala_awn_dialog_LDADD = $(top_builddir)/libawn/libawn.la
+test_vala_awn_dialog_LDADD = \
+							$(top_builddir)/libawn/libawn.la \
+							$(AWN_LIBS)
 
 .vala.c:
 	$(QUIET_GEN)$(VALAC) -C $< --vapidir=$(top_srcdir)/bindings/vala \

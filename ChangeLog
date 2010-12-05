@@ -1,3 +1,12 @@
+2010-12-05  Julien Lavergne <gilir@ubuntu.com>
+
+	reviewed by: Julien Lavergne <gilir@ubuntu.com>
+	patch by: Matthias Klose <doko@ubuntu.com>
+
+	* src/Makefile.am:
+	* tests/Makefile.am:
+	Fix building failure with --no-as-needed.
+
 2010-12-05  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/labelled-separator.vala:
