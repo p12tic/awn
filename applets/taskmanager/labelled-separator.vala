@@ -12,12 +12,12 @@ namespace TaskManager
       label_widget.set_alignment (0.5f, 0.5f);
     }
 
-    private override Type child_type ()
+    protected override Type child_type ()
     {
       return typeof (Widget);
     }
 
-    private override bool expose_event (Gdk.EventExpose event)
+    protected override bool expose_event (Gdk.EventExpose event)
     {
       bool wide_separators;
       int separator_height;

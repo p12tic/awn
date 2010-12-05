@@ -1,3 +1,8 @@
+2010-12-05  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/labelled-separator.vala:
+	Fix method accessability issue.
+
 2010-11-27  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:
