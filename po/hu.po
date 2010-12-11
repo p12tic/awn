@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-11-08 22:14+0000\n"
-"Last-Translator: Péter Trombitás <Unknown>\n"
+"PO-Revision-Date: 2010-12-11 00:42+0000\n"
+"Last-Translator: Karesz <lengyel.karesz@gmail.com>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-11-09 04:50+0000\n"
+"X-Launchpad-Export-Date: 2010-12-11 05:09+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -240,11 +240,11 @@ msgstr "Kisalkalmazás a dokk kezelésére és az AWN beállításainak indítá
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Beállítások kisalkalmazás"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Elválasztó hozzadása a kisalakalmazások közé"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -271,7 +271,7 @@ msgstr "Hozzáadás Indítóként"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr ""
+msgstr "Indítóikon eltávolítása"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -410,7 +410,7 @@ msgstr "<b>Panel</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Tárolók</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
@@ -418,7 +418,7 @@ msgstr "<b>Beállítások</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>Feladatkezelők</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
@@ -426,7 +426,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Gyorstippek</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-12-10 04:59+0000\n"
+"PO-Revision-Date: 2010-12-10 09:42+0000\n"
 "Last-Translator: jmb_kz <Unknown>\n"
 "Language-Team: Kazakh <kk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-12-10 05:03+0000\n"
+"X-Launchpad-Export-Date: 2010-12-11 05:09+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -149,7 +149,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Барлық жұмыс орындар терезелерін көрсету"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -165,25 +165,25 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1020
 msgid "Launch"
-msgstr ""
+msgstr "Ашу"
 
 #: ../applets/taskmanager/task-launcher.c:1192
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "%s ашу"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Бағдарламаларды ашу (launcher)/тапсырмалар менеджері"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Бағдарламаларды ашу (launcher)/тапсырмалар менеджер апплеті"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
 msgid "About Awn"
-msgstr ""
+msgstr "Awn туралы"
 
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
@@ -192,17 +192,17 @@ msgstr ""
 
 #: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
-msgstr ""
+msgstr "Суреттеме өлшемі:"
 
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:703
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Панель баптаулары"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Awn баптауларын ашу мүмкін емес: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
@@ -211,46 +211,46 @@ msgstr ""
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Баптаулар апплеті"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Апплеттер арасына бөлгішті қосады"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Бөлгіш"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "%d жұмыс орны"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "1_0 жұмыс орны"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "%s%d жұмыс орны"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:683
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Бағдарламаны ашу (launcher) ретінде қосу"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr ""
+msgstr "Бағдарламаларды ашуын істен ажырату"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
-msgstr ""
+msgstr "_Жабу"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:768
 msgid "_Close All"
-msgstr ""
+msgstr "Ба_рлығын жабу"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
@@ -278,7 +278,7 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:970
 msgid "Always on _Top"
-msgstr ""
+msgstr "Әрқашан _үстінде"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:994
 msgid "Mi_nimize"
@@ -290,40 +290,42 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1053
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Әрқашан көрінетін жұмыс орнында"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Тек осы жұмыс орында"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "_Сол жақтағы жұмыс орнына ауыстыру"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1156
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Оң _жақтағы жұмыс орнына ауыстыру"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1166
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Жоға_рыдағы жұмыс орнына ауыстыру"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1176
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Тө_мендегі жұмыс орнына ауыстыру"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1185
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Басқа жұмыс орнына ау_ыстыру"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr ""
+msgstr "Awn баптаулары"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr ""
+"Awn баптауларын, бағдарламаларды ашу (launcher), апплеттерді және әсемдеу "
+"тақырыптын басқару"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
@@ -331,63 +333,63 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Іске қосылған апплеттер</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Жетімді апплеттер</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>Топтар</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>Эффекттер</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Топтар баптауларын экспорттау</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>Қосымша</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Жалпы</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>Суреттемелер</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr ""
+msgstr "<b>Бағдарламаларды ашу (launcher)</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr ""
+msgstr "<b>Сандар баптаулары</b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Панель түстері</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>Панель</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Репозиторийлар</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>Баптаулар</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>Тапсырмалар менеджері</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
@@ -395,7 +397,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Көмек жазулары</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
@@ -405,7 +407,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Апплетті іске қосу"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
@@ -417,23 +419,23 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Назар аудару анимациясы:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Автор:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Автожасыру режимі:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Фон:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Choose a theme..."
-msgstr ""
+msgstr "Әсемдеу тақырыбын таңдау..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
@@ -441,19 +443,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
-msgstr ""
+msgstr "Жабу анимациясы:"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Configured Effects"
-msgstr ""
+msgstr "Қалыпқа келтірілген эффекттер"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr ""
+msgstr "Бұрыш радиусы"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Қисықтардың симметриясы"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
@@ -466,7 +468,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "Өзіндік (пайдаланушылық) бағдарша суреті"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
@@ -474,15 +476,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Customize..."
-msgstr ""
+msgstr "Баптау..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Апплетті істен ажырату"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr ""
+msgstr "Тек бағдарламаларды ашу батырмаларын көрсету"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
@@ -500,15 +502,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "Панельді _жаю"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Export Theme..."
-msgstr ""
+msgstr "Әсемдеу тақырыбын экспорттау..."
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Extra Options"
-msgstr ""
+msgstr "Кеңейтілген баптаулар"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Fill Color"
@@ -528,15 +530,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
-msgstr ""
+msgstr "Қаріп"
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Font Color"
-msgstr ""
+msgstr "Қаріп түсу"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "Қаріп бейнеленуі"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
@@ -556,7 +558,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
-msgstr ""
+msgstr "Ұқсас/біртектес терезелерді топтастыру"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
@@ -572,11 +574,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "Суреттемелер мен көмек жазулары"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Icons:"
-msgstr ""
+msgstr "Суреттемелер:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
@@ -584,15 +586,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr ""
+msgstr "Апплаетті орнату..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
-msgstr ""
+msgstr "Орнату..."
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "Ашу анимациясы:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
@@ -616,7 +618,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
-msgstr ""
+msgstr "Аты:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
@@ -624,7 +626,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr ""
+msgstr "Ашылу анимациясы:"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
@@ -644,7 +646,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Панель стилі мен өлшемі"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
@@ -664,7 +666,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
-msgstr ""
+msgstr "Репозиторийлар"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
@@ -689,31 +691,31 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
-msgstr ""
+msgstr "Барлық терезелерді көрсету"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Тышқанмен ұзақ басу кезінде сұхбатты көрсету"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
-msgstr ""
+msgstr "Көлеңкелерді көрсету"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
-msgstr ""
+msgstr "Стиль:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "Компьютер қосылған кезде _Awn ашу"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "Әсемдеу тақырыбын экспорттау"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Қалыңдық"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -735,54 +737,55 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:105
 msgid "Version:"
-msgstr ""
+msgstr "Нұсқа:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr ""
+msgstr "Қа_сиеттер:"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
-msgstr ""
+msgstr "_Бағдар:"
 
 #: ../awn-settings/awn-settings.ui.h:108
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "Экрандағы _орналасуы:"
 
 #: ../awn-settings/awn-settings.ui.h:109
 msgid "_Size of icons:"
-msgstr ""
+msgstr "_Суреттемелер өлшемі:"
 
 #: ../awn-settings/awn-settings.ui.h:110
 msgid "pixels"
-msgstr ""
+msgstr "пиксель"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Қате, sources.list файлы бар болып тұр"
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Қате, орналасуы жеріндегі бума бос немесе бар болып тұр"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
+"Қате, %s жүйеңізде жоқ болып тұр, оны sources.list файылынан өшіріңіз"
 
 #: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
 msgid "None"
-msgstr ""
+msgstr "Жоқ"
 
 #: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:877
 msgid "Simple"
-msgstr ""
+msgstr "Қарапайым"
 
 #: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:878
 msgid "Classic"
-msgstr ""
+msgstr "Классикалық"
 
 #: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:879
 msgid "Fade"
