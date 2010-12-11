@@ -1,3 +1,10 @@
+2010-12-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager-dialog.c:
+        * applets/taskmanager/task-manager-dialog.h:
+        * applets/taskmanager/Makefile.am:
+        Added TaskManagerDialog skeletons.  Will be used sometime soon.
+
 2010-12-05  Julien Lavergne <gilir@ubuntu.com>
 
 	reviewed by: Julien Lavergne <gilir@ubuntu.com>
