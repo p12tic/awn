@@ -54,7 +54,7 @@ typedef struct {
 
 GType task_manager_dialog_get_type (void);
 
-TaskManagerDialog* task_manager_dialog_new (GtkWidget * widget, AwnApplet * applet);
+GtkWidget* task_manager_dialog_new (GtkWidget * widget, AwnApplet * applet);
 
 G_END_DECLS
 

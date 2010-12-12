@@ -50,6 +50,7 @@
 #include "labelled-separator.h"
 
 #include "task-icon-build-context-menus.h"
+#include "task-manager-dialog.h"
 #include "config.h"
 
 //#define DEBUG 1
@@ -483,8 +484,7 @@ task_icon_constructed (GObject *object)
     G_OBJECT_CLASS (task_icon_parent_class)->constructed (object);
   }
   
-  priv->dialog = awn_dialog_new_for_widget_with_applet (GTK_WIDGET (object),
-                                                        priv->applet);
+  priv->dialog = task_manager_dialog_new (GTK_WIDGET (object),priv->applet);
   g_signal_connect (G_OBJECT (priv->dialog),"focus-out-event",
                     G_CALLBACK (task_icon_dialog_unfocus), object);
   g_signal_connect  (wnck_screen_get_default (), 

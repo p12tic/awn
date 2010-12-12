@@ -1,5 +1,13 @@
 2010-12-11  Rodney Cryderman  <rcryderman@gmail.com>
 
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager-dialog.c:
+  	* applets/taskmanager/task-manager-dialog.h:
+	Something to play with.
+
+2010-12-11  Rodney Cryderman  <rcryderman@gmail.com>
+
 	* applets/taskmanager/task-manager-dialog.c:
         * applets/taskmanager/task-manager-dialog.h:
         * applets/taskmanager/Makefile.am:

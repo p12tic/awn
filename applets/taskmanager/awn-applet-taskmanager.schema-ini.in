@@ -38,6 +38,11 @@ type = integer
 default = 1
 _description=Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. Copy if owned by user, 2.. Do not copy.
 
+[DEFAULT/dialog_mode]
+type = integer
+default = 1
+_description=Dialog display mode. 0 = auto, 1 = standard text, 2 = kde/compiz previews.
+
 [DEFAULT/enable_long_press]
 type = boolean
 default = false
