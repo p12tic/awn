@@ -240,6 +240,10 @@ static gboolean
 task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul)
 {
   TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
+  GList * iter = NULL;
+  GList * children = NULL;
+  GtkWidget * container; 
+  
   g_message ("%s",__func__);
   
   switch (priv->dialog_mode)
@@ -261,6 +265,16 @@ task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul
 					(guchar*) priv->data,
 					1);
       }
+      container = awn_dialog_get_content_area (AWN_DIALOG(dialog));
+      children = gtk_container_get_children (GTK_CONTAINER(container));
+      for (iter = g_list_first(children); iter; iter=iter->next)
+      {
+        if (TASK_IS_WINDOW(iter->data))
+        {
+          gtk_widget_set_size_request (GTK_WIDGET(iter->data), -1, -1);
+        }
+      }
+      g_list_free (children);
       break;  
   }
 
