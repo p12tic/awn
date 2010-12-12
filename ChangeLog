@@ -1,3 +1,9 @@
+2010-12-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager-dialog.c:
+	Sizing of previews, orientation and tooltips along with
+	various other small fixes/optimizations.
+
 2010-12-11  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager-dialog.c:

@@ -171,6 +171,7 @@ static void
 task_manager_dalog_disp_preview (TaskManagerDialog *dialog) 
 {
 	gint height;
+  gint width;
 	gint data_length;
 
   gint win_x,win_y,win_width,win_height;
@@ -181,10 +182,18 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
   gint win_count = 0;
   int i = 0;
   TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
-
+  GtkPositionType pos_type = awn_applet_get_pos_type (priv->applet);
+  
   container = awn_dialog_get_content_area (AWN_DIALOG(dialog));
   children = gtk_container_get_children (GTK_CONTAINER(container));
-  
+  if (( pos_type == GTK_POS_BOTTOM) || (pos_type == GTK_POS_TOP) )
+  {
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (container),GTK_ORIENTATION_HORIZONTAL);
+  }
+  else
+  {
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (container),GTK_ORIENTATION_VERTICAL);
+  }
   for (iter = g_list_first(children); iter; iter=iter->next)
   {
     if (TASK_IS_WINDOW(iter->data))
@@ -204,22 +213,38 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
   {
     if (TASK_IS_WINDOW(iter->data))
     {
-      g_debug ("window");
       wnck_window_get_geometry (task_window_get_window (iter->data),
                                 &win_x,
                                 &win_y,
                                 &win_width,
                                 &win_height);
-      
+
       gtk_widget_get_allocation (GTK_WIDGET(iter->data), &allocation);
-      height = ((float)win_height) / ((float)win_width) * allocation.width;
-      gtk_widget_set_size_request (GTK_WIDGET(iter->data), -1, height);
-      	
+      gtk_widget_set_tooltip_text (GTK_WIDGET (iter->data),
+                                   task_window_get_name(TASK_WINDOW(iter->data)));
+      /* Change these calculations. Ultimately we can be much smarter about
+       layout.  After a certain point it will involve adding some more
+       containers in our container....*/
+      if ((pos_type == GTK_POS_TOP) || (pos_type == GTK_POS_BOTTOM))
+      {
+        /*conditional operator alert*/
+        height = gdk_screen_height () / (win_count<3?3:3+(win_count-2));
+
+        width = ((float)win_width) / ((float)win_height) * height;
+        gtk_widget_set_size_request (GTK_WIDGET(iter->data), width, height);
+      }
+      else
+      {
+        /*conditional operator alert*/
+        width = gdk_screen_width () / (win_count<4?4:4+(win_count-3));
+        height = ((float)win_height) / ((float)win_width) * width;
+        gtk_widget_set_size_request (GTK_WIDGET(iter->data), width, height);
+      }      	
 	    priv->data[i*6+1] = (long) 5;
 	    priv->data[i*6+2] = (long) task_window_get_xid (TASK_WINDOW(iter->data));
 	    priv->data[i*6+3] = (long) allocation.x;
 	    priv->data[i*6+4] = (long) allocation.y;
-	    priv->data[i*6+5] = (long) allocation.width;
+	    priv->data[i*6+5] = (long) width;
 	    priv->data[i*6+6] = (long) height;
       i++;
     }
@@ -235,6 +260,25 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
 					data_length);
 }
 
+static void
+task_manager_dialog_hide (GtkWidget *dialog,gpointer nul)
+{
+  TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
+
+  if (priv->data)
+  {
+    g_free (priv->data);
+    priv->data = g_new0 (long,1);
+    priv->data[0] = 0;
+    gdk_property_change ((GTK_WIDGET(dialog))->window, 
+			priv->kde_a,
+			priv->kde_a,
+			32, 
+			GDK_PROP_MODE_REPLACE, 
+			(guchar*) priv->data,
+			1);
+  }  
+}
 
 static gboolean 
 task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul)
@@ -243,8 +287,6 @@ task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul
   GList * iter = NULL;
   GList * children = NULL;
   GtkWidget * container; 
-  
-  g_message ("%s",__func__);
   
   switch (priv->dialog_mode)
   {
@@ -266,12 +308,15 @@ task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul
 					1);
       }
       container = awn_dialog_get_content_area (AWN_DIALOG(dialog));
+      gtk_orientable_set_orientation (GTK_ORIENTABLE (container),GTK_ORIENTATION_VERTICAL);
       children = gtk_container_get_children (GTK_CONTAINER(container));
       for (iter = g_list_first(children); iter; iter=iter->next)
       {
         if (TASK_IS_WINDOW(iter->data))
         {
           gtk_widget_set_size_request (GTK_WIDGET(iter->data), -1, -1);
+          gtk_widget_set_tooltip_text (GTK_WIDGET (iter->data),NULL);
+
         }
       }
       g_list_free (children);
@@ -284,20 +329,19 @@ task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul
 static void
 task_manager_dialog_init (TaskManagerDialog *self)
 {
-  g_message ("%s",__func__);
   TaskManagerDialogPrivate * priv = GET_PRIVATE (self);
   priv->dialog_mode = 1;
   priv->data = NULL;
 	priv->kde_a = gdk_atom_intern_static_string ("_KDE_WINDOW_PREVIEW");
   
   g_signal_connect (self,"expose-event",G_CALLBACK(task_manager_dialog_expose),NULL);
+  g_signal_connect (self,"hide",G_CALLBACK(task_manager_dialog_hide),NULL);
   
 }
 
 GtkWidget*
 task_manager_dialog_new (GtkWidget * widget, AwnApplet * applet)
 {
-  g_message ("%s",__func__);  
   return g_object_new (TASK_TYPE_MANAGER_DIALOG, 
                         "anchor", widget,
                         "anchor-applet", applet,
