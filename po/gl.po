@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-10-13 06:50+0000\n"
-"Last-Translator: Xose M <Unknown>\n"
+"PO-Revision-Date: 2010-12-12 09:51+0000\n"
+"Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-10-14 04:45+0000\n"
+"X-Launchpad-Export-Date: 2010-12-13 05:00+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -593,31 +593,31 @@ msgstr "Agrupar ventás comúns"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
-msgstr "Animación ó porse enrriba"
+msgstr "Animación ó pórse enriba"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
-msgstr "Efectos de iconos:"
+msgstr "Efectos de iconas:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
-msgstr "Icono alfa"
+msgstr "Icona alfa"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
-msgstr "Iconos e consellos"
+msgstr "Iconas e consellos"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Icons:"
-msgstr "Iconos:"
+msgstr "Iconas:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
-msgstr "Cor do borde inferior"
+msgstr "Cor do bordo inferior"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr "Instalar miniaplicativo"
+msgstr "Instalar miniaplicativo..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
@@ -633,11 +633,11 @@ msgstr "Forza da coincidencia"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr "Desplazamento X no monitor"
+msgstr "Desprazamento X no monitor"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr "Desplazamento Y no monitor"
+msgstr "Desprazamento Y no monitor"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
@@ -645,7 +645,7 @@ msgstr "Alto do monitor"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr "Ancho do monitor"
+msgstr "Largo do monitor"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
@@ -661,7 +661,7 @@ msgstr "Abrir animación"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
-msgstr "Cor do borde exterior"
+msgstr "Cor do bordo exterior"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
