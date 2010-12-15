@@ -106,7 +106,11 @@ task_manager_dialog_dispose (GObject *object)
                                                         NULL);
     priv->client=NULL;
   }
-  g_signal_handler_disconnect (wnck_screen_get_default(),priv->wm_change_id);
+  if ( priv->wm_change_id )
+  {
+    g_signal_handler_disconnect (wnck_screen_get_default(),priv->wm_change_id);
+    priv->wm_change_id = 0;
+  }
   
   G_OBJECT_CLASS (task_manager_dialog_parent_class)->dispose (object);
 }
@@ -359,6 +363,7 @@ task_manager_dialog_init (TaskManagerDialog *self)
   TaskManagerDialogPrivate * priv = GET_PRIVATE (self);
   priv->data = NULL;
   priv->analyzed = FALSE;
+  priv->wm_change_id = 0;
 	priv->kde_a = gdk_atom_intern_static_string ("_KDE_WINDOW_PREVIEW");
   
   g_signal_connect (self,"expose-event",G_CALLBACK(task_manager_dialog_expose),NULL);

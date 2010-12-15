@@ -1,6 +1,11 @@
 2010-12-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager-dialog.c:
+	Don't disconnect more than once.
+
+2010-12-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager-dialog.c:
 	Make the preview code smarter... Started mapping out
 	knowledge of various WMs.
 
