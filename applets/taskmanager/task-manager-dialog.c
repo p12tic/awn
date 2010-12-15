@@ -40,16 +40,24 @@ enum
 struct _TaskManagerDialogPrivate 
 {
   int dialog_mode;
+  int current_dialog_mode;
 	long * data;
+  gulong wm_change_id;
+  
+  gboolean analyzed;
 	GdkAtom kde_a;
   DesktopAgnosticConfigClient *client;
   AwnApplet * applet;
 
+  
   GtkWidget * main_box;
   GtkWidget * items_box;
-
+  
   GList * children;
 };
+
+static void
+task_manager_dialog_analyze_wm (TaskManagerDialog * dialog);
 
 static void
 task_manager_dialog_get_property (GObject *object, guint property_id,
@@ -59,7 +67,7 @@ task_manager_dialog_get_property (GObject *object, guint property_id,
   switch (property_id) 
   {
     case PROP_DIALOG_MODE:
-      g_value_set_int (value, priv->dialog_mode); 
+      g_value_set_int (value, priv->dialog_mode);
       break;
     case PROP_APPLET:
       g_value_set_object (value,priv->applet);
@@ -98,6 +106,8 @@ task_manager_dialog_dispose (GObject *object)
                                                         NULL);
     priv->client=NULL;
   }
+  g_signal_handler_disconnect (wnck_screen_get_default(),priv->wm_change_id);
+  
   G_OBJECT_CLASS (task_manager_dialog_parent_class)->dispose (object);
 }
 
@@ -116,20 +126,25 @@ task_manager_dialog_constructed (GObject *object)
     g_error_free (error);
     error=NULL;
   }
-  priv->children = NULL;
-  priv->main_box = gtk_vbox_new (FALSE,3);
-  priv->items_box = gtk_hbox_new (FALSE,3);
-  gtk_container_add (GTK_CONTAINER (priv->main_box),priv->items_box);
-  gtk_container_add (GTK_CONTAINER (object),priv->main_box);
-  gtk_widget_show_all (priv->main_box);
-  
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
                                        "dialog_mode",
                                        object, "dialog mode", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
+  
+  priv->children = NULL;
+  priv->main_box = gtk_vbox_new (FALSE,3);
+  priv->items_box = gtk_hbox_new (FALSE,3);
+  priv->current_dialog_mode = priv->dialog_mode;
+  gtk_container_add (GTK_CONTAINER (priv->main_box),priv->items_box);
+  gtk_container_add (GTK_CONTAINER (object),priv->main_box);
+  gtk_widget_show_all (priv->main_box);
 
+  task_manager_dialog_analyze_wm (TASK_MANAGER_DIALOG(object));
+  priv->wm_change_id = g_signal_connect_swapped (wnck_screen_get_default(),"window-manager-changed",
+                            G_CALLBACK(task_manager_dialog_analyze_wm),object);
+  
 }
 
 static void
@@ -297,7 +312,12 @@ task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul
   TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
   GList * iter = NULL;
 
-  switch (priv->dialog_mode)
+  if (!priv->analyzed)
+  {
+    task_manager_dialog_analyze_wm (TASK_MANAGER_DIALOG (dialog));
+  }
+  g_debug ("%s: current mode %d",__func__,priv->current_dialog_mode);
+  switch (priv->current_dialog_mode)
   {
     case 2:
       task_manager_dalog_disp_preview (TASK_MANAGER_DIALOG(dialog));
@@ -337,8 +357,8 @@ static void
 task_manager_dialog_init (TaskManagerDialog *self)
 {
   TaskManagerDialogPrivate * priv = GET_PRIVATE (self);
-  priv->dialog_mode = 1;
   priv->data = NULL;
+  priv->analyzed = FALSE;
 	priv->kde_a = gdk_atom_intern_static_string ("_KDE_WINDOW_PREVIEW");
   
   g_signal_connect (self,"expose-event",G_CALLBACK(task_manager_dialog_expose),NULL);
@@ -380,4 +400,112 @@ task_manager_dialog_remove (TaskManagerDialog * dialog,TaskItem * item)
   TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
   gtk_container_remove(GTK_CONTAINER(awn_dialog_get_content_area(AWN_DIALOG(dialog))), GTK_WIDGET(item));
   priv->children = g_list_remove (priv->children,item);
+}
+
+static gboolean
+task_manager_dialog_fn_true (TaskManagerDialog * dialog)
+{
+  return TRUE;
+}
+
+static gboolean
+task_manager_dialog_fn_false (TaskManagerDialog * dialog)
+{
+  return FALSE;
+}
+
+static gboolean
+task_manager_dialog_check_kde_preview_active (TaskManagerDialog * dialog)
+{
+  glong *data;
+  GdkAtom actual_type;
+  gint format,len;
+
+  TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);  
+  GdkWindow *root_win = gtk_widget_get_root_window (GTK_WIDGET(dialog));
+  if (root_win)
+  {
+    if (gdk_property_get (root_win,
+                      priv->kde_a,
+                      priv->kde_a,
+                      0,
+                      1,
+                      0,
+                      &actual_type,
+                      &format,
+                      &len,
+                      (guchar **)&data))
+    {
+      g_free (data);
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+#define FN_TRUE task_manager_dialog_fn_true
+#define FN_FALSE task_manager_dialog_fn_false
+
+enum {
+  WM_UNKNOWN,
+  WM_COMPIZ,
+  WM_KWIN,
+  WM_METACITY,
+  WM_MUTTER,
+  WM_OPENBOX,
+  WM_XFWM4,
+  WM_END
+}WM;
+
+typedef struct
+{
+  const gchar * wm_name;
+  gint  wm_code;
+  gboolean (*live_previews) (TaskManagerDialog*);
+  gboolean (*min_mapped) (TaskManagerDialog*);
+  gboolean (*inactive_ws_mapped) (TaskManagerDialog*);
+} WMStrings;
+
+WMStrings wm_strings[]={
+  {"compiz",WM_COMPIZ,task_manager_dialog_check_kde_preview_active,FN_FALSE,FN_TRUE},
+  {"KWin",WM_KWIN,task_manager_dialog_check_kde_preview_active,FN_TRUE,FN_TRUE},
+  {"Metacity",WM_METACITY,FN_FALSE,FN_FALSE,FN_TRUE},
+  {"Mutter",WM_MUTTER,FN_TRUE,FN_TRUE,FN_TRUE},
+  {"Openbox",WM_OPENBOX,FN_FALSE,FN_FALSE,FN_TRUE},
+  {"Xfwm4",WM_XFWM4,FN_FALSE,FN_FALSE,FN_TRUE},
+  {NULL,WM_UNKNOWN,FN_FALSE,FN_FALSE,FN_FALSE},
+  {NULL,WM_END,FN_FALSE,FN_FALSE,FN_FALSE}
+};
+
+static void 
+task_manager_dialog_analyze_wm (TaskManagerDialog * dialog)
+{
+  TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
+  WnckScreen * wnck_screen = wnck_screen_get_default ();
+  gint wm = WM_UNKNOWN;
+  
+  const gchar * wm_name = wnck_screen_get_window_manager_name (wnck_screen);
+//  g_debug ("%s:  %s",__func__,wm_name);
+  for (int i = 0; wm_strings[i].wm_code != WM_END ;i++)
+  {
+//    g_debug ("comp:%d  '%s', '%s'",i,wm_strings[i].wm_name,wm_name);
+    if (g_strcmp0 (wm_strings[i].wm_name,wm_name)==0)
+    {
+      wm = wm_strings[i].wm_code;
+ //     g_message ("WM = %s, code = %d",wm_name,wm);
+      if ( wm_strings[i].live_previews (dialog))
+      {
+        if ( (priv->dialog_mode == 0) || (priv->dialog_mode==2))
+        {
+          priv->current_dialog_mode = 2;
+        }
+      }
+      else
+      {
+        priv->current_dialog_mode = 1;
+      }
+      break;
+    }
+  }
+  priv->analyzed = TRUE;
 }
