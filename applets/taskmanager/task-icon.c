@@ -2027,13 +2027,14 @@ task_icon_append_item (TaskIcon      *icon,
   priv->items = g_slist_append (priv->items, item);
   gtk_widget_show_all (GTK_WIDGET (item));
 
-  gtk_container_add (GTK_CONTAINER (priv->dialog), GTK_WIDGET (item));
+//  gtk_container_add (GTK_CONTAINER (priv->dialog), GTK_WIDGET (item));
+  task_manager_dialog_add (priv->dialog,GTK_WIDGET (item));
   /*if we have a launcher move it to the top of the list*/
-  if (TASK_IS_LAUNCHER(item))
+/*  if (TASK_IS_LAUNCHER(item))
   {
     gtk_box_reorder_child (GTK_BOX(awn_dialog_get_content_area(AWN_DIALOG(priv->dialog))),
                            GTK_WIDGET(item),0);    
-  }
+  }*/
   
   g_object_weak_ref (G_OBJECT (item), (GWeakNotify)_destroyed_task_item, icon);
 
@@ -2736,7 +2737,8 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
           next = iter->next;
           priv->items = g_slist_remove (priv->items,item);
           g_object_ref (item);
-          gtk_container_remove(GTK_CONTAINER(awn_dialog_get_content_area(AWN_DIALOG(priv->dialog))), item);
+
+          task_manager_dialog_remove(priv->dialog,item);
           if (TASK_ICON_GET_PRIVATE(icon)->main_item == TASK_ITEM(item))
           {
             g_signal_handlers_disconnect_by_func(item, 

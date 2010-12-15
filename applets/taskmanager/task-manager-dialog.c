@@ -44,6 +44,11 @@ struct _TaskManagerDialogPrivate
 	GdkAtom kde_a;
   DesktopAgnosticConfigClient *client;
   AwnApplet * applet;
+
+  GtkWidget * main_box;
+  GtkWidget * items_box;
+
+  GList * children;
 };
 
 static void
@@ -111,6 +116,12 @@ task_manager_dialog_constructed (GObject *object)
     g_error_free (error);
     error=NULL;
   }
+  priv->children = NULL;
+  priv->main_box = gtk_vbox_new (FALSE,3);
+  priv->items_box = gtk_hbox_new (FALSE,3);
+  gtk_container_add (GTK_CONTAINER (priv->main_box),priv->items_box);
+  gtk_container_add (GTK_CONTAINER (object),priv->main_box);
+  gtk_widget_show_all (priv->main_box);
   
   desktop_agnostic_config_client_bind (priv->client,
                                        DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
@@ -130,6 +141,7 @@ task_manager_dialog_finalize (GObject *object)
     g_free (priv->data);
     priv->data = NULL;
   }
+  g_list_free (priv->children);
   G_OBJECT_CLASS (task_manager_dialog_parent_class)->finalize (object);
 }
 
@@ -176,8 +188,6 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
 
   gint win_x,win_y,win_width,win_height;
   GtkAllocation allocation;
-  GtkWidget * container = NULL;
-  GList * children = NULL;
   GList * iter = NULL;
   gint win_count = 0;
   int i = 0;
@@ -185,20 +195,18 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
   GtkPositionType pos_type = awn_applet_get_pos_type (priv->applet);
   GtkOrientation current_orientation;
   
-  container = awn_dialog_get_content_area (AWN_DIALOG(dialog));
-  children = gtk_container_get_children (GTK_CONTAINER(container));
-  current_orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (container));
+  current_orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (priv->items_box));
   if ( (current_orientation == GTK_ORIENTATION_VERTICAL) &&
       (( pos_type == GTK_POS_BOTTOM) || (pos_type == GTK_POS_TOP)) )
   {
-    gtk_orientable_set_orientation (GTK_ORIENTABLE (container),GTK_ORIENTATION_HORIZONTAL);
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (priv->items_box),GTK_ORIENTATION_HORIZONTAL);
   }
   else if ( (current_orientation == GTK_ORIENTATION_HORIZONTAL)&&
       (( pos_type == GTK_POS_LEFT) || (pos_type == GTK_POS_RIGHT)) )
   {
-    gtk_orientable_set_orientation (GTK_ORIENTABLE (container),GTK_ORIENTATION_VERTICAL);
+    gtk_orientable_set_orientation (GTK_ORIENTABLE (priv->items_box),GTK_ORIENTATION_VERTICAL);
   }
-  for (iter = g_list_first(children); iter; iter=iter->next)
+  for (iter = g_list_first(priv->children); iter; iter=iter->next)
   {
     if (TASK_IS_WINDOW(iter->data))
     {
@@ -213,7 +221,7 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
   priv->data = g_new0 (long, data_length);
   priv->data[0] = (long) win_count;
     
-  for (iter = g_list_first(children); iter; iter=iter->next)
+  for (iter = g_list_first(priv->children); iter; iter=iter->next)
   {
     if (TASK_IS_WINDOW(iter->data))
     {
@@ -253,7 +261,6 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
       i++;
     }
   }
-  g_list_free (children);
 
 	gdk_property_change ((GTK_WIDGET(dialog))->window, 
 					priv->kde_a,
@@ -289,10 +296,7 @@ task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul
 {
   TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
   GList * iter = NULL;
-  GList * children = NULL;
-  GtkWidget * container; 
 
-  g_debug ("%s",__func__);
   switch (priv->dialog_mode)
   {
     case 2:
@@ -312,22 +316,20 @@ task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul
 					(guchar*) priv->data,
 					1);
       }
-      container = awn_dialog_get_content_area (AWN_DIALOG(dialog));
-      gtk_orientable_set_orientation (GTK_ORIENTABLE (container),GTK_ORIENTATION_VERTICAL);
-      children = gtk_container_get_children (GTK_CONTAINER(container));
-      for (iter = g_list_first(children); iter; iter=iter->next)
+      if (gtk_orientable_get_orientation (GTK_ORIENTABLE(priv->items_box))!=GTK_ORIENTATION_VERTICAL)
+      {
+        gtk_orientable_set_orientation (GTK_ORIENTABLE (priv->items_box),GTK_ORIENTATION_VERTICAL);
+      }
+      for (iter = g_list_first(priv->children); iter; iter=iter->next)
       {
         if (TASK_IS_WINDOW(iter->data))
         {
           gtk_widget_set_size_request (GTK_WIDGET(iter->data), -1, -1);
           gtk_widget_set_tooltip_text (GTK_WIDGET (iter->data),NULL);
-
         }
       }
-      g_list_free (children);
       break;  
   }
-
   return FALSE;
 }
 
@@ -354,3 +356,28 @@ task_manager_dialog_new (GtkWidget * widget, AwnApplet * applet)
                         NULL);
 }
 
+
+void
+task_manager_dialog_add (TaskManagerDialog * dialog,TaskItem * item)
+{
+  TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
+  if (TASK_IS_LAUNCHER(item))
+  {
+    gtk_container_add (GTK_CONTAINER (priv->main_box), GTK_WIDGET (item));
+    gtk_box_reorder_child (GTK_BOX(priv->main_box),
+                           GTK_WIDGET(item),0);    
+  }
+  else
+  {
+    gtk_container_add (GTK_CONTAINER (priv->items_box), GTK_WIDGET (item));
+  }
+  priv->children = g_list_append (priv->children,item);
+}
+
+void
+task_manager_dialog_remove (TaskManagerDialog * dialog,TaskItem * item)
+{
+  TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
+  gtk_container_remove(GTK_CONTAINER(awn_dialog_get_content_area(AWN_DIALOG(dialog))), GTK_WIDGET(item));
+  priv->children = g_list_remove (priv->children,item);
+}

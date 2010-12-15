@@ -23,6 +23,7 @@
 #define _TASK_MANAGER_DIALOG
 
 #include "libawn/awn-dialog.h"
+#include "task-item.h"
 #include <glib-object.h>
 
 G_BEGIN_DECLS
@@ -55,6 +56,10 @@ typedef struct {
 GType task_manager_dialog_get_type (void);
 
 GtkWidget* task_manager_dialog_new (GtkWidget * widget, AwnApplet * applet);
+
+void task_manager_dialog_add (TaskManagerDialog * dialog,TaskItem * item);
+
+void task_manager_dialog_remove (TaskManagerDialog * dialog,TaskItem * item);
 
 G_END_DECLS
 
