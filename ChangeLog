@@ -1,3 +1,8 @@
+2010-12-17  Julien Lavergne <gilir@ubuntu.com>
+
+	* debian/control:
+	Build-depends on valac-0.10 when it's available, to build with stable Vala.
+
 2010-12-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager-dialog.c:
