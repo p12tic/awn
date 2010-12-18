@@ -1,3 +1,8 @@
+2010-12-18  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	Fix naming of the container-title capability.
+
 2010-12-18 Alberto <albyrock87+dev@gmail.com>
 
 	patch by: onox <denkpadje@gmail.com>

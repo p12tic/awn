@@ -89,11 +89,11 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
   {
     string[] capabilities =
     {
-      "container-title",
       "dock-item-badge",
       "dock-item-message",
       "dock-item-progress",
       "dock-item-icon-file",
+      "menu-item-container-title",
       "menu-item-with-label",
       "menu-item-icon-name",
       "menu-item-icon-file",
