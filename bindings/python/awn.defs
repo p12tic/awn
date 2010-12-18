@@ -1441,6 +1441,15 @@
   (return-type "none")
 )
 
+(define-method create_remove_custom_icon_item
+  (of-object "AwnThemedIcon")
+  (c-name "awn_themed_icon_create_remove_custom_icon_item")
+  (return-type "GtkWidget*")
+  (parameters
+   '("const-gchar*" "icon_name" (default "NULL") (null-ok))
+  )
+)
+
 ;; From awn-utils.h
 
 (define-function utils_ensure_transparent_bg

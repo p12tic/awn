@@ -1,3 +1,10 @@
+2010-12-18 Alberto <albyrock87+dev@gmail.com>
+
+	patch by: onox <denkpadje@gmail.com>
+
+	* bindings/python/awn.defs:
+	Fix bug #665847 : python bindings for ThemedIcon.create_remove_custom_icon_item
+
 2010-12-17  Julien Lavergne <gilir@ubuntu.com>
 
 	* debian/control:
