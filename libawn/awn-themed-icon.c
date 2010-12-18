@@ -1259,7 +1259,7 @@ awn_themed_icon_set_info (AwnThemedIcon  *icon,
       if (g_strstr_len (item->state,-1, "::no_drop::") !=  item->state)
       {
         gtk_drag_dest_set (GTK_WIDGET (icon),
-                           GTK_DEST_DEFAULT_ALL,
+                           GTK_DEST_DEFAULT_ALL & (~GTK_DEST_DEFAULT_HIGHLIGHT),
                            drop_types, n_drop_types,
                            GDK_ACTION_COPY | GDK_ACTION_ASK | GDK_ACTION_MOVE);        
         break;
