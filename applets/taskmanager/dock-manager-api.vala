@@ -304,7 +304,16 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
       }
       else if (key == "icon-file")
       {
-        image = new Gtk.Image.from_file (value.get_string ());
+        Gdk.Pixbuf pixbuf;
+        int w, h;
+        Gtk.icon_size_lookup (Gtk.IconSize.MENU, out w, out h);
+        try
+        {
+          pixbuf = new Gdk.Pixbuf.from_file_at_size (value.get_string (),
+                                                     w, h);
+          image = new Gtk.Image.from_pixbuf (pixbuf);
+        }
+        catch (GLib.Error err) { warning ("%s", err.message); }
       }
       else if (key == "container-title")
       {

@@ -1,3 +1,8 @@
+2010-12-21  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/dock-manager-api.vala:
+	Properly scale menu icons.
+
 2010-12-18  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* libawn/awn-themed-icon.c:
