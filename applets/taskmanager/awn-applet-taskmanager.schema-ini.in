@@ -43,6 +43,11 @@ type = integer
 default = 1
 _description=Dialog display mode. 0 = auto, 1 = standard text, 2 = kde/compiz previews.
 
+[DEFAULT/dialog_scale]
+type = float
+default = 0.3
+_description=Default dialog scale. Previews will be scaled down further as needed.
+
 [DEFAULT/enable_long_press]
 type = boolean
 default = false

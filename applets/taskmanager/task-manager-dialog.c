@@ -34,6 +34,7 @@ enum
 {
   PROP_0,
   PROP_DIALOG_MODE,
+  PROP_DIALOG_SCALE,
   PROP_APPLET
 };
 
@@ -48,6 +49,7 @@ struct _TaskManagerDialogPrivate
 	GdkAtom kde_a;
   DesktopAgnosticConfigClient *client;
   AwnApplet * applet;
+  gdouble dialog_scale;
 
   
   GtkWidget * main_box;
@@ -72,6 +74,9 @@ task_manager_dialog_get_property (GObject *object, guint property_id,
     case PROP_APPLET:
       g_value_set_object (value,priv->applet);
       break;  
+    case PROP_DIALOG_SCALE:
+      g_value_set_double (value, priv->dialog_scale);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
   }
@@ -89,6 +94,9 @@ task_manager_dialog_set_property (GObject *object, guint property_id,
       break;
     case PROP_APPLET:
       priv->applet = g_value_get_object (value);
+      break;
+    case PROP_DIALOG_SCALE:
+      priv->dialog_scale = g_value_get_double (value);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -136,7 +144,13 @@ task_manager_dialog_constructed (GObject *object)
                                        object, "dialog mode", TRUE,
                                        DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
                                        NULL);
-  
+
+  desktop_agnostic_config_client_bind (priv->client,
+                                       DESKTOP_AGNOSTIC_CONFIG_GROUP_DEFAULT,
+                                       "dialog_scale",
+                                       object, "dialog scale", TRUE,
+                                       DESKTOP_AGNOSTIC_CONFIG_BIND_METHOD_FALLBACK,
+                                       NULL);
   priv->children = NULL;
   priv->main_box = gtk_vbox_new (FALSE,3);
   priv->items_box = gtk_hbox_new (FALSE,3);
@@ -185,6 +199,15 @@ task_manager_dialog_class_init (TaskManagerDialogClass *klass)
                             G_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_DIALOG_MODE, pspec);
 
+  pspec = g_param_spec_double ("dialog_scale",
+                            "dialog_scale",
+                            "Dialog mode",
+                            0.05,
+                            1.0,
+                            0.3,
+                            G_PARAM_READWRITE);
+  g_object_class_install_property (object_class, PROP_DIALOG_SCALE, pspec);
+
   pspec = g_param_spec_object ("applet",
                                "Applet",
                                "AwnApplet this icon belongs to",
@@ -213,6 +236,11 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
   TaskManagerDialogPrivate * priv = GET_PRIVATE (dialog);
   GtkPositionType pos_type = awn_applet_get_pos_type (priv->applet);
   GtkOrientation current_orientation;
+  gdouble scale;
+  glong total_width = 0;
+  glong screen_width = gdk_screen_get_width (gdk_screen_get_default ());
+  glong screen_height = gdk_screen_get_height (gdk_screen_get_default ());
+  
   
   current_orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (priv->items_box));
   if ( (current_orientation == GTK_ORIENTATION_VERTICAL) &&
@@ -239,7 +267,54 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
 	data_length =  win_count*6 +1;
   priv->data = g_new0 (long, data_length);
   priv->data[0] = (long) win_count;
-    
+  scale = priv->dialog_scale;
+
+scaled_down:
+  total_width = 0;
+  if (screen_width && screen_height)
+  {
+    for (iter = g_list_first(priv->children); iter; iter=iter->next)
+    {
+      if (TASK_IS_WINDOW(iter->data))
+      {
+        wnck_window_get_geometry (task_window_get_window (iter->data),
+                                  &win_x,
+                                  &win_y,
+                                  &win_width,
+                                  &win_height);
+
+        gtk_widget_get_allocation (GTK_WIDGET(iter->data), &allocation);
+        if ((pos_type == GTK_POS_TOP) || (pos_type == GTK_POS_BOTTOM))
+        {
+          /*conditional operator alert*/
+          height = gdk_screen_height () / (win_count?1.0/scale:1.0/scale+(win_count-2));
+
+          width = ((float)win_width) / ((float)win_height) * height;
+          gtk_widget_set_size_request (GTK_WIDGET(iter->data), width, height);
+          total_width = total_width + width;
+          if (total_width > screen_width * 0.9)
+          {
+            scale = scale * 0.9;
+            goto scaled_down;
+          }
+        }
+        else
+        {
+          /*conditional operator alert*/
+          width = gdk_screen_width () / (win_count<4?1.0/scale+1:1.0/scale+1+(win_count-3));
+          height = ((float)win_height) / ((float)win_width) * width;
+          gtk_widget_set_size_request (GTK_WIDGET(iter->data), width, height);
+          total_width = total_width + height;
+          if (total_width > screen_height * 0.9)
+          {
+            scale = scale * 0.9;
+            goto scaled_down;
+          }
+        }
+      }
+    }
+  }
+  
   for (iter = g_list_first(priv->children); iter; iter=iter->next)
   {
     if (TASK_IS_WINDOW(iter->data))
@@ -259,7 +334,7 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
       if ((pos_type == GTK_POS_TOP) || (pos_type == GTK_POS_BOTTOM))
       {
         /*conditional operator alert*/
-        height = gdk_screen_height () / (win_count<3?3:3+(win_count-2));
+        height = gdk_screen_height () / (win_count?1.0/scale:1.0/scale+(win_count-2));
 
         width = ((float)win_width) / ((float)win_height) * height;
         gtk_widget_set_size_request (GTK_WIDGET(iter->data), width, height);
@@ -267,7 +342,7 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
       else
       {
         /*conditional operator alert*/
-        width = gdk_screen_width () / (win_count<4?4:4+(win_count-3));
+        width = gdk_screen_width () / (win_count<4?1.0/scale+1:1.0/scale+1+(win_count-3));
         height = ((float)win_height) / ((float)win_width) * width;
         gtk_widget_set_size_request (GTK_WIDGET(iter->data), width, height);
       }      	

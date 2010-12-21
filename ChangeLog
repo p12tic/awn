@@ -1,3 +1,10 @@
+2010-12-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+  	* applets/taskmanager/task-manager-dialog.c:
+	Allow setting of default preview scale.  Auto scale down when
+	needed.
+
 2010-12-21  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/dock-manager-api.vala:
