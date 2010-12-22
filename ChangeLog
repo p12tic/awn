@@ -1,6 +1,11 @@
 2010-12-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
+	Let's set the dialog mode to auto and see how that goes.
+
+2010-12-21  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:
   	* applets/taskmanager/task-manager-dialog.c:
 	Allow setting of default preview scale.  Auto scale down when
 	needed.
