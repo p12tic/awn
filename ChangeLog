@@ -1,5 +1,10 @@
 2010-12-23  Michal Hruby  <michal.mhr@gmail.com>
 
+	* applets/taskmanager/labelled-separator.vala:
+	Fix painting of LabelledSeparator.
+
+2010-12-23  Michal Hruby  <michal.mhr@gmail.com>
+
 	* applets/taskmanager/task-icon.c:
 	Fix problem with grouped menu items.
 

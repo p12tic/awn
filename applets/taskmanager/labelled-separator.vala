@@ -50,6 +50,22 @@ namespace TaskManager
                          alloc.y + (alloc.height - ythickness) / 2);
       }
 
+      Allocation child_alloc;
+      this.get_child ().get_allocation (out child_alloc);
+      Pango.Layout layout = (this.get_child () as Label).get_layout ();
+      Pango.Rectangle rect;
+      layout.get_pixel_extents (null, out rect);
+      unowned Widget parent = this.get_parent ();
+      int x, y;
+      x = (child_alloc.width - rect.width) / 2;
+      y = (child_alloc.height - rect.height) / 2;
+
+      Gtk.paint_flat_box (parent.get_style (), this.get_window (),
+                          StateType.NORMAL, ShadowType.NONE,
+                          null, this, null,
+                          child_alloc.x + x, child_alloc.y + y,
+                          rect.width, rect.height);
+
       this.propagate_expose (this.get_child (), event);
 
       return true;
