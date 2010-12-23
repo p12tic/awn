@@ -2291,9 +2291,9 @@ task_icon_add_menu_item(TaskIcon * icon,GtkMenuItem *item, gchar * group)
   needle = g_list_find (priv->plugin_menu_items,item);
   if (!needle )
   {
+    cookie++;
     if (!group)
     {
-      cookie++;
       priv->plugin_menu_items = g_list_insert_before (priv->plugin_menu_items,
                                                       g_list_last (priv->plugin_menu_items),
                                                       g_object_ref_sink (item));
