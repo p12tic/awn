@@ -1,3 +1,8 @@
+2010-12-22  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager-dialog.c:
+	Don't do any resizing of widgets in the calc of scale.
+
 2010-12-21  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/awn-applet-taskmanager.schema-ini.in:

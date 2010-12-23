@@ -224,9 +224,9 @@ task_manager_dialog_class_init (TaskManagerDialogClass *klass)
 static void
 task_manager_dalog_disp_preview (TaskManagerDialog *dialog) 
 {
-	gint height;
+  gint height;
   gint width;
-	gint data_length;
+  gint data_length;
 
   gint win_x,win_y,win_width,win_height;
   GtkAllocation allocation;
@@ -264,7 +264,7 @@ task_manager_dalog_disp_preview (TaskManagerDialog *dialog)
   {
     g_free (priv->data);
   }
-	data_length =  win_count*6 +1;
+  data_length =  win_count*6 +1;
   priv->data = g_new0 (long, data_length);
   priv->data[0] = (long) win_count;
   scale = priv->dialog_scale;
@@ -290,7 +290,6 @@ scaled_down:
           height = gdk_screen_height () / (win_count?1.0/scale:1.0/scale+(win_count-2));
 
           width = ((float)win_width) / ((float)win_height) * height;
-          gtk_widget_set_size_request (GTK_WIDGET(iter->data), width, height);
           total_width = total_width + width;
           if (total_width > screen_width * 0.9)
           {
@@ -303,7 +302,6 @@ scaled_down:
           /*conditional operator alert*/
           width = gdk_screen_width () / (win_count<4?1.0/scale+1:1.0/scale+1+(win_count-3));
           height = ((float)win_height) / ((float)win_width) * width;
-          gtk_widget_set_size_request (GTK_WIDGET(iter->data), width, height);
           total_width = total_width + height;
           if (total_width > screen_height * 0.9)
           {
