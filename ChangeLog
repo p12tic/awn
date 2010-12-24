@@ -1,3 +1,9 @@
+2010-12-24  Michal Hruby  <michal.mhr@gmail.com>
+
+	* src/awn-panel.c:
+	Unhide panel even when "under" the screen when using TwinView with
+	different resolutions.
+
 2010-12-23  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/labelled-separator.vala:

@@ -1383,7 +1383,9 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
   GtkWidget *widget = GTK_WIDGET (panel);
   AwnPanelPrivate *priv = panel->priv;
   GdkWindow *panel_win;
+  GdkScreen *screen;
   GdkRectangle area;
+  gint mouse_screen_num, panel_screen_num;
 
   gint x, y, window_x, window_y, width, height;
   /* FIXME: probably needs some love to work on multiple monitors */
@@ -1394,13 +1396,17 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
     return FALSE;
   }
 
-  gdk_display_get_pointer (gdk_display_get_default (), NULL, &x, &y, NULL);
+  gdk_display_get_pointer (gdk_display_get_default (), &screen, &x, &y, NULL);
   gdk_window_get_root_origin (panel_win, &window_x, &window_y);
 
   switch (check_type)
   {
     case MOUSE_CHECK_EDGE_ONLY:
     {
+      mouse_screen_num = gdk_screen_get_monitor_at_point (screen, x, y);
+      panel_screen_num = gdk_screen_get_monitor_at_window (screen, panel_win);
+      if (mouse_screen_num != panel_screen_num) return FALSE;
+
       /* edge detection */
       awn_panel_get_draw_rect (AWN_PANEL (panel), &area, 0, 0);
       window_x += area.x;
@@ -1412,17 +1418,17 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
       {
         case GTK_POS_LEFT:
           return y >= window_y && y < window_y + height &&
-                 x == window_x;
+                 x <= window_x;
         case GTK_POS_RIGHT:
           return y >= window_y && y < window_y + height &&
-                 x == window_x + width - 1;
+                 x >= window_x + width - 1;
         case GTK_POS_TOP:
           return x >= window_x && x < window_x + width &&
-                 y == window_y;
+                 y <= window_y;
         case GTK_POS_BOTTOM:
         default:
           return x >= window_x && x < window_x + width &&
-                 y == window_y + height - 1;
+                 y >= window_y + height - 1;
       }
     }
     case MOUSE_CHECK_ACTIVE_MASK:
@@ -1439,11 +1445,32 @@ static gboolean awn_panel_check_mouse_pos (AwnPanel *panel,
 
       if (inside_mask) return TRUE;
 
+      mouse_screen_num = gdk_screen_get_monitor_at_point (screen, x, y);
+      panel_screen_num = gdk_screen_get_monitor_at_window (screen, panel_win);
+      if (mouse_screen_num != panel_screen_num) return FALSE;
+
       awn_panel_get_draw_rect (AWN_PANEL (panel), &area, 0, 0);
       window_x += area.x;
       window_y += area.y;
       width = area.width;
       height = area.height;
+
+      switch (priv->position)
+      {
+        case GTK_POS_LEFT:
+          if (x < window_x) return TRUE;
+          break;
+        case GTK_POS_RIGHT:
+          if (x > window_x + width - 1) return TRUE;
+          break;
+        case GTK_POS_TOP:
+          if (y < window_y) return TRUE;
+          break;
+        case GTK_POS_BOTTOM:
+        default:
+          if (y > window_y + height - 1) return TRUE;
+          break;
+      }
 
       return (x >= window_x && x < window_x + width &&
               y >= window_y && y < window_y + height);
