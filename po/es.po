@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-12-28 05:23+0000\n"
+"PO-Revision-Date: 2010-12-30 20:25+0000\n"
 "Last-Translator: Fitoschido <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-12-29 04:59+0000\n"
+"X-Launchpad-Export-Date: 2010-12-31 05:29+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -1535,7 +1535,7 @@ msgstr "Cargando miniaplicación..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr "¡Vaya! La miniaplicación se colgó. Pulse aquí para reiniciarla."
+msgstr "¡Vaya! La miniaplicación falló. Pulse aquí para reiniciarla."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
