@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-12-30 20:25+0000\n"
+"PO-Revision-Date: 2011-01-03 23:10+0000\n"
 "Last-Translator: Fitoschido <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-12-31 05:29+0000\n"
+"X-Launchpad-Export-Date: 2011-01-04 14:11+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -1269,7 +1269,7 @@ msgstr "Primer punto de degradado de color."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "Primer color de resaltado con gradiente"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
@@ -1368,11 +1368,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
-msgstr ""
+msgstr "Segundo color de gradiente"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "Segundo color de resaltado con gradiente"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
