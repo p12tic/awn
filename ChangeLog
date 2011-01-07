@@ -1,3 +1,8 @@
+2011-01-06  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Don't show Add Launcher if we don't have a desktop file.
+
 2010-12-24  Michal Hruby  <michal.mhr@gmail.com>
 
 	* src/awn-panel.c:
