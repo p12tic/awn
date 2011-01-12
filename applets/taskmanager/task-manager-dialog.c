@@ -346,10 +346,10 @@ scaled_down:
       }      	
 	    priv->data[i*6+1] = (long) 5;
 	    priv->data[i*6+2] = (long) task_window_get_xid (TASK_WINDOW(iter->data));
-	    priv->data[i*6+3] = (long) allocation.x;
-	    priv->data[i*6+4] = (long) allocation.y;
-	    priv->data[i*6+5] = (long) width;
-	    priv->data[i*6+6] = (long) height;
+	    priv->data[i*6+3] = (long) allocation.x+4;
+	    priv->data[i*6+4] = (long) allocation.y+4;
+	    priv->data[i*6+5] = (long) width-8;
+	    priv->data[i*6+6] = (long) height-8;
       i++;
     }
   }

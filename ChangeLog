@@ -1,3 +1,8 @@
+2011-01-11  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-manager-dialog.c:
+	Make button outline visible.
+
 2011-01-06  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon-build-context-menus.c:
