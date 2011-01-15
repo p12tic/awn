@@ -1493,7 +1493,7 @@ search_for_desktop (TaskIcon * icon,TaskItem *item,gboolean thorough)
   TaskManager * manager;
   TaskManagerPrivate *priv;
   WnckWindow * win;
-  
+
   g_return_val_if_fail (TASK_IS_WINDOW(item),NULL);
   g_return_val_if_fail (TASK_IS_ICON(icon),NULL);
 
@@ -1502,7 +1502,6 @@ search_for_desktop (TaskIcon * icon,TaskItem *item,gboolean thorough)
   priv = manager->priv;
 
   found_desktop = awn_desktop_lookup_search_by_wnck_window (priv->desktop_lookup,win);  
-  
   if (TASK_IS_WINDOW(item))
   {
     gchar   *res_name = NULL;

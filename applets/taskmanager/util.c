@@ -136,7 +136,7 @@ static DesktopMatch desktop_regexes[] =
   {".*prism-google-mail",".*Google.*Mail.*","prism-google-mail","prism-google-mail"},
   {".*prism-google-reader",".*Google.*Reader.*","prism-google-reader","prism-google-reader"},
   {".*prism-google-talk",".*Google.*Talk.*","prism-google-talk","prism-google-talk"},
-  {NULL,NULL,NULL,NULL}
+  {"TERMINATOR",NULL,NULL,NULL}
 };
 
 /*
@@ -199,7 +199,7 @@ static  WindowMatch window_regexes[] =
   {NULL,"Toplevel","^dlgag$","^Add.*Group$","aMSN"},
   {NULL,"Toplevel",".*_hist$","^History.*","aMSN"},
   {NULL,"Toplevel","savecontacts","^Options$","aMSN"},
-  {NULL,NULL,NULL,NULL,NULL}
+  {"TERMINATOR",NULL,NULL,NULL,NULL}
 };
 
 /*
@@ -207,7 +207,7 @@ static  WindowMatch window_regexes[] =
  */
 static  WindowToDesktopMatch window_to_desktop_regexes[] = 
 {
-  {".*eclipse.*",".*",".*",NULL,"eclipse"},
+  {".*eclipse.*",".*",".*","eclipse","eclipse"},
   /*Do not bother trying to parse an open office command line for the type of window*/  
   {".*prism.*google.*calendar.*","Prism","Navigator",".*[Cc]alendar.*","prism-google-calendar"},
   {".*prism.*google.*analytics.*","Prism","Navigator",".*[Aa]nalytics.*","prism-google-analytics"},
@@ -256,14 +256,14 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {NULL,"[Nn]autilus","[Nn]autilus",NULL,"nautilus-browser"},
   {NULL,"[Nn]autilus","[Nn]autilus",NULL,"nautilus-home"},
   {NULL,NULL,NULL,"Moovida.*Media.*Cent.*","moovida"},
-  {NULL,NULL,NULL,NULL,NULL}
+  {"TERMINATOR",NULL,NULL,NULL,NULL}
 };
 
 static  WindowWait windows_to_wait[] = 
 {
   {".*OpenOffice.*",".*VCLSalFrame.*","^OpenOffice\\.org.*",1000},
   {".*LibreOffice.*",".*VCLSalFrame.*","^LibreOffice.*",1000},
-  {NULL,NULL,NULL,0}
+  {"TERMINATOR",NULL,NULL,0}
 };
 
 
@@ -371,6 +371,7 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
 #endif
     return g_strdup (iter->id);
   }
+  g_assert ( g_strcmp0 (iter->exec,"TERMINATOR")==0);
   return NULL;
 }
 
@@ -378,6 +379,7 @@ get_special_id_from_desktop (DesktopAgnosticFDODesktopEntry * entry)
  Special Casing should NOT be used for anything but a last resort.  
  Other matching algororithms are NOT used if something is special cased.
 */
+
 gchar *
 get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_name,const gchar *title)
 {
@@ -429,9 +431,11 @@ get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_nam
       if (!match)
         continue;
     } 
+#define DEBUG 1    
 #ifdef DEBUG    
     g_debug ("%s:  Special cased Window ID: '%s'",__func__,(gchar *)iter->id);
 #endif
+#undef DEBUG
     if ( iter->id && (iter->id != generate_id_from_cmd) )
     {
       return g_strdup (iter->id);
@@ -444,6 +448,7 @@ get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_nam
     }
     
   }
+  g_assert ( g_strcmp0 (iter->cmd,"TERMINATOR")==0);
   return NULL;
 }
 
@@ -508,6 +513,7 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
 #endif
     result = g_slist_append (result, (gchar*)iter->desktop);
   }
+  g_assert ( g_strcmp0 (iter->cmd,"TERMINATOR")==0);
   return result;
 }
 
@@ -563,6 +569,7 @@ get_special_wait_from_window_data (gchar *res_name, gchar * class_name,const gch
 #endif
     return TRUE;
   }
+  g_assert ( g_strcmp0 (iter->res_name,"TERMINATOR")==0);
   return FALSE;
 }
 
