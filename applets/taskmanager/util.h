@@ -35,6 +35,8 @@ GSList * get_special_desktop_from_window_data (gchar * cmd, gchar *res_name,
 
 gchar * get_full_cmd_from_pid (gint pid);
 
+gboolean check_no_display_override (const gchar * fname);
+
 gboolean check_if_blacklisted (gchar * name);
 
 gboolean get_special_wait_from_window_data (gchar *res_name, 

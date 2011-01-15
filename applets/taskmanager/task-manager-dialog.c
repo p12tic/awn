@@ -393,7 +393,6 @@ task_manager_dialog_expose (GtkWidget *dialog,GdkEventExpose *event,gpointer nul
   {
     task_manager_dialog_analyze_wm (TASK_MANAGER_DIALOG (dialog));
   }
-  g_debug ("%s: current mode %d",__func__,priv->current_dialog_mode);
   switch (priv->current_dialog_mode)
   {
     case 2:

@@ -1,3 +1,13 @@
+2011-01-14  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/awn-desktop-lookup-cached.c:
+	* applets/taskmanager/task-manager-dialog.c:
+	* applets/taskmanager/task-manager.c:
+	* applets/taskmanager/util.c:
+	* applets/taskmanager/util.h:
+	Make handling of nautilus a bit more sane on Ubuntu...  which seems
+	to believe you shouldn't start nautilus from your app menus.
+
 2011-01-11  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager-dialog.c:

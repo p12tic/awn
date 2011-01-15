@@ -105,7 +105,6 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
     gchar * new_path = g_strdup_printf ("%s/%s",applications_dir,fname);
     if ( g_file_test (new_path,G_FILE_TEST_IS_DIR) )
     {
-//      g_message ("Adding %s",new_path);
       awn_desktop_lookup_cached_add_dir (lookup,new_path);
     }
     else
@@ -122,7 +121,10 @@ awn_desktop_lookup_cached_add_dir (AwnDesktopLookupCached * lookup,const gchar *
           {
             if (desktop_agnostic_fdo_desktop_entry_get_boolean (entry,"NoDisplay"))
             {
-              goto NO_DISPLAY;
+              if (!check_no_display_override(fname) )
+              {
+                goto NO_DISPLAY;
+              }
             }
           }
           if (entry && desktop_agnostic_fdo_desktop_entry_key_exists (entry,"Name")
@@ -499,9 +501,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
   {
     cmd_basename = g_path_get_basename (cmd);
   }
-//  g_debug ("cmd = %s, full_cmd = %s, cmd_basename = %s",cmd,full_cmd,cmd_basename);
-//  g_debug ("%s: res_name = '%s', class_name = '%s'",__func__,res_name,class_name);
-
   /* Checked the special cased data*/
   if (!result)
   {
@@ -821,6 +820,6 @@ awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckW
   g_free (class_name_lwr);
   g_free (res_name_no_ext);
   g_free (class_name_no_ext);
-  g_free (res_name_no_ext_lwr);  
+  g_free (res_name_no_ext_lwr);
   return result;
 }

@@ -1341,11 +1341,7 @@ get_launcher(TaskManager * manager, const gchar * desktop)
   }
   if (entry)
   {
-    gboolean key_exists = desktop_agnostic_fdo_desktop_entry_key_exists (entry,"NoDisplay");
-    if (!key_exists || !desktop_agnostic_fdo_desktop_entry_get_boolean (entry,"NoDisplay"))
-    {
-      launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),desktop);
-    }
+    launcher = task_launcher_new_for_desktop_file (AWN_APPLET(manager),desktop);
     g_object_unref (entry);                                                    
   }
   return launcher;

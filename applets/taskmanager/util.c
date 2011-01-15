@@ -101,6 +101,9 @@ typedef struct
 const gchar * blacklist[] = {"prism",
                        NULL};
 
+const gchar * no_display_override_list[] = {"nautilus.desktop",
+                                             NULL};
+
 typedef gchar *(*fn_gen_id)(const gchar *,const gchar*,const gchar*,const gchar*);
 
 
@@ -204,7 +207,7 @@ static  WindowMatch window_regexes[] =
  */
 static  WindowToDesktopMatch window_to_desktop_regexes[] = 
 {
-  {".*eclipse.*",".*",".*","eclipse"},
+  {".*eclipse.*",".*",".*",NULL,"eclipse"},
   /*Do not bother trying to parse an open office command line for the type of window*/  
   {".*prism.*google.*calendar.*","Prism","Navigator",".*[Cc]alendar.*","prism-google-calendar"},
   {".*prism.*google.*analytics.*","Prism","Navigator",".*[Aa]nalytics.*","prism-google-analytics"},
@@ -249,8 +252,9 @@ static  WindowToDesktopMatch window_to_desktop_regexes[] =
   {NULL,"tvtime","TVWindow","^tvtime","net-tvtime"},
   {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox-ose"},
   {NULL,"VirtualBox",NULL,".*VirtualBox.*","virtualbox"},
-  {NULL,"Nautilus","nautilus",NULL,"nautilus-browser"},
-  {NULL,"Nautilus","nautilus",NULL,"nautilus-home"},
+  {NULL,"[Nn]autilus","[Nn]autilus",NULL,"nautilus"},
+  {NULL,"[Nn]autilus","[Nn]autilus",NULL,"nautilus-browser"},
+  {NULL,"[Nn]autilus","[Nn]autilus",NULL,"nautilus-home"},
   {NULL,NULL,NULL,"Moovida.*Media.*Cent.*","moovida"},
   {NULL,NULL,NULL,NULL,NULL}
 };
@@ -458,15 +462,15 @@ get_special_desktop_from_window_data (gchar * cmd, gchar *res_name, gchar * clas
   WindowToDesktopMatch  *iter;
 #ifdef DEBUG
   g_debug ("%s: cmd = '%s', res = '%s', class = '%s', title = '%s'",__func__,cmd,res_name,class_name,title);
+  g_debug ("%p, %p", window_to_desktop_regexes,window_to_desktop_regexes->desktop);
 #endif
   for (iter = window_to_desktop_regexes; iter->desktop; iter++)
   {
     gboolean  match = TRUE;
-    
     if (iter->cmd)
     {
 #ifdef DEBUG
-      g_debug ("%s: iter->cmd = %s, cmd = %s",__func__,iter->cmd,cmd);
+      g_debug ("%s: ite 10835r->cmd = %s, cmd = %s",__func__,iter->cmd,cmd);
 #endif
       match = cmd && g_regex_match_simple(iter->cmd, cmd,0,0);
       if (!match)
@@ -634,6 +638,22 @@ get_full_cmd_from_pid (gint pid)
   }
   g_strfreev (cmd_argv);   
   return full_cmd;
+}
+
+
+gboolean 
+check_no_display_override (const gchar * fname)
+{
+  const gchar ** iter;
+  for (iter = no_display_override_list; *iter;iter++)
+  {
+    if (g_strcmp0 (fname,*iter) == 0)
+    {
+      return TRUE;
+    }
+  }
+  return FALSE;
+
 }
 
 gboolean 
