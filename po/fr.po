@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-11-08 14:36+0000\n"
+"PO-Revision-Date: 2011-01-16 14:55+0000\n"
 "Last-Translator: Nicolas Delvaux <Unknown>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2010-11-09 04:50+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-01-17 04:52+0000\n"
+"X-Generator: Launchpad (build 12177)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -256,7 +256,7 @@ msgstr "Impossible d'ouvrir le Gestionnaire Awn : %s"
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
-"Applet utilisé pour contrôler la barre et lancer « Préférences de Awn »."
+"Applet utilisé pour contrôler la barre et lancer « Préférences de Awn »"
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -1527,11 +1527,32 @@ msgstr "Oups ! L'applet a planté. Cliquez pour le redémarrer."
 msgid "Close docklet"
 msgstr "Fermer le docklet"
 
+#~ msgid "PNG Files"
+#~ msgstr "Fichiers PNG"
+
+#, python-format
+#~ msgid ""
+#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+#~ "installed. It usually comes with librsvg, or a package similarly named."
+#~ msgstr ""
+#~ "Impossible de charger l'icône \"%s\". Assurez vous que le chargeur SVG pour "
+#~ "Gtk+ est installé. Il l'est habituellement avec librsvg, ou un paquet au nom "
+#~ "similaire."
+
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN a été réactualisé avec succès."
 
+#~ msgid "Add to Launcher List"
+#~ msgstr "Ajouter à la liste des lanceurs"
+
 #~ msgid "Standard"
 #~ msgstr "Standard"
+
+#~ msgid "Autohide Fade out"
+#~ msgstr "Masquage automatique : fondu"
+
+#~ msgid "Autohide Keep below"
+#~ msgstr "Masquage automatique : maintenir en dessous"
 
 #~ msgid "0 - solid, 1 - outline, 2 - outline, reversed."
 #~ msgstr "0- opaque,  1 - contour, 2 - contour, inversé."
@@ -1541,6 +1562,29 @@ msgstr "Fermer le docklet"
 
 #~ msgid "3)"
 #~ msgstr "3)"
+
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "Launchpad Contributions:\n"
+#~ "  Alexandre C https://launchpad.net/~exodus56\n"
+#~ "  Corentin https://launchpad.net/~corentinjule\n"
+#~ "  Cyril https://launchpad.net/~cyril78\n"
+#~ "  Gemini https://launchpad.net/~olivier-reboul\n"
+#~ "  Jean-Philippe Fleury https://launchpad.net/~jpfle\n"
+#~ "  Jörg BUCHMANN https://launchpad.net/~jorg-buchmann\n"
+#~ "  Marc Plano-Lesay https://launchpad.net/~marc31boss\n"
+#~ "  Nicolas Briche https://launchpad.net/~nbriche\n"
+#~ "  Nicolas Delvaux https://launchpad.net/~malaria\n"
+#~ "  Pierre Slamich https://launchpad.net/~pierre-slamich\n"
+#~ "  Ptitphysik https://launchpad.net/~amalpeyre\n"
+#~ "  Thibault Févry https://launchpad.net/~thibaultfevry\n"
+#~ "  Thom https://launchpad.net/~daronelaks\n"
+#~ "  lann https://launchpad.net/~lann\n"
+#~ "  maxs88 https://launchpad.net/~maxs88\n"
+#~ "  pat44100 https://launchpad.net/~patrick-lecleach"
+
+#~ msgid "The list of panels."
+#~ msgstr "Liste des panneaux."
 
 #~ msgid "Always"
 #~ msgstr "Toujours"
