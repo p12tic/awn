@@ -1,3 +1,8 @@
+2011-01-20  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/taskmanager/labelled-separator.vala:
+	Add license header to LabelledSeparator.
+
 2011-01-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-manager.c:
