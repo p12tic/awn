@@ -1,3 +1,8 @@
+2011-01-20  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* data/awn-themed-icon.ui:
+	Adjustments to the "Customise Applet" dialog courtesy of onox.
+
 2011-01-20  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/taskmanager/labelled-separator.vala:

@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 2.12 -->
   <!-- interface-naming-policy project-wide -->
@@ -21,9 +21,9 @@
   </object>
   <object class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Customise Applet</property>
+    <property name="title" translatable="yes">Customize Applet Icon</property>
     <property name="window_position">center-always</property>
-    <property name="icon_name">gtk-prefs</property>
+    <property name="icon_name">avant-window-navigator</property>
     <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -33,6 +33,7 @@
         <child>
           <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
+            <property name="border_width">5</property>
             <property name="spacing">12</property>
             <child>
               <object class="GtkImage" id="image1">
@@ -54,7 +55,8 @@
                   <object class="GtkLabel" id="label1">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">&lt;b&gt;Theme Panel Icon&lt;/b&gt;
+                    <property name="label" translatable="yes">&lt;b&gt;&lt;big&gt;Theme Panel Icon&lt;/big&gt;&lt;/b&gt;
+
 You have chosen to replace an icon on the panel. Please select whether this change should effect only this applet, all applets of this type, or every icon on the panel of this type.</property>
                     <property name="use_markup">True</property>
                     <property name="wrap">True</property>
