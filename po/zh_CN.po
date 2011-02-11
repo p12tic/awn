@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-12-05 14:53+0000\n"
-"Last-Translator: Careone <zzbusagain@yahoo.com.cn>\n"
+"PO-Revision-Date: 2011-02-10 08:56+0000\n"
+"Last-Translator: Douglas <Unknown>\n"
 "Language-Team: Simplified Chinese <zh_CN@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-12-06 04:51+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-02-11 05:01+0000\n"
+"X-Generator: Launchpad (build 12177)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -37,7 +37,7 @@ msgstr " 允许将不同 WM_CLIENT_NAME 值的窗口分在一组"
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
-msgstr ""
+msgstr " 在 overlay_application_icons 为真时控制 overlay 的透明度。取值范围为 0.0 到 1.0。"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -86,7 +86,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
+msgstr "当拖拽一个图标时，打开窗口前延迟"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
@@ -1418,8 +1418,17 @@ msgstr ""
 msgid "Close docklet"
 msgstr ""
 
+#~ msgid "PNG Files"
+#~ msgstr "PNG 文件"
+
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN 刷新成功"
+
+#, python-format
+#~ msgid ""
+#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+#~ "installed. It usually comes with librsvg, or a package similarly named."
+#~ msgstr "无法加载“%s”图标，请确认已安装 SVG 的 GTK+ 加载器，它通常位于 librsvg 或名称相似的软件包中。"
 
 #~ msgid "Arrow offset (requires restart): "
 #~ msgstr "箭头偏移(需要重启程序)： "
