@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-12-23 20:40+0000\n"
+"PO-Revision-Date: 2011-02-12 18:05+0000\n"
 "Last-Translator: Péter Trombitás <Unknown>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-12-24 06:00+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-02-13 04:39+0000\n"
+"X-Generator: Launchpad (build 12351)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -286,19 +286,19 @@ msgstr "_Mindent bezár"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
-msgstr ""
+msgstr "Mindent lekicsinyít"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
 msgid "Unminimize all"
-msgstr ""
+msgstr "Mindent visszaállít"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
 msgid "Maximize all"
-msgstr ""
+msgstr "Ablakok teljes képernyőre"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
 msgid "Unmaximize all"
-msgstr ""
+msgstr "Ablakok előző méretre"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -426,6 +426,8 @@ msgstr "<b>Feladatkezelők</b>"
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
+"<b>Ezekhez a beállításokhoz a Feladatkezelő kisalkalmazásnak aktívnak kell "
+"lennie. </b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -436,6 +438,8 @@ msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
+"<b>Engedélyezned kell az asztali effektusokat (compositor) ahhoz, hogy "
+"alkalmazhass és testreszabhass témákat.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
@@ -451,7 +455,7 @@ msgstr "Nyíl típusa"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Figyelmeztetés animációja:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
@@ -459,7 +463,7 @@ msgstr "Szerző:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Automatikus elrejtés mód:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
@@ -512,7 +516,7 @@ msgstr "Testreszabás…"
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Alkalmazás deaktiválása"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
