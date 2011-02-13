@@ -1,5 +1,13 @@
 2011-02-14  Julien Lavergne <gilir@ubuntu.com>
 
+	reviewed by: Julien Lavergne <gilir@ubuntu.com>
+	patch by: florianbruh
+
+	* awn-settings/awnSettings.py.in:
+    Use int instead of str to store value in the column. LP: #702701
+
+2011-02-14  Julien Lavergne <gilir@ubuntu.com>
+
 	* awn-settings/awnClass.py:
     Make bzr code optional (LP: #707863)
 	* debian/control:

@@ -1252,7 +1252,7 @@ class awnManagerMini(awnManager):
         self.main_menu_icon_view.connect("selection-changed", activate_on_select)
         self.main_menu_icon_view.connect("item-activated", self.showPanel)
 
-        store = gtk.ListStore(str, gtk.gdk.Pixbuf, str)
+        store = gtk.ListStore(str, gtk.gdk.Pixbuf, int)
         size = 32
         store.append([
             _('Preferences'), 
