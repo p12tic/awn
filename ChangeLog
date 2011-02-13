@@ -1,3 +1,10 @@
+2011-02-14  Julien Lavergne <gilir@ubuntu.com>
+
+	* awn-settings/awnClass.py:
+    Make bzr code optional (LP: #707863)
+	* debian/control:
+    Move bzr to Suggests.
+
 2011-01-20  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* data/awn-themed-icon.ui:
