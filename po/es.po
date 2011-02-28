@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2011-01-03 23:10+0000\n"
-"Last-Translator: Fitoschido <Unknown>\n"
+"PO-Revision-Date: 2011-02-27 05:37+0000\n"
+"Last-Translator: Fitoschido <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-01-04 14:11+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-02-28 04:36+0000\n"
+"X-Generator: Launchpad (build 12351)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -53,9 +53,9 @@ msgstr ""
 " Controla la visualización de los iconos de ventana en el icono Tareas. 0) "
 "Mostrar siempre la aplicación prevista en la ventana de iconos cuando la "
 "ventana está activa (a excepción de muy pocos casos especiales). 1) Tratar "
-"de mostrar sólo los iconos de solicitud previsto cuando es probable que "
+"de mostrar solo los iconos de solicitud previsto cuando es probable que "
 "proporcionan información útil / información de contexto. 2) Ignorar todos "
-"los iconos provenientes de aplicaciones y mostrar sólo el icono de inicio."
+"los iconos provenientes de aplicaciones y mostrar solo el icono de inicio."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
@@ -190,7 +190,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr "Sólo mostrar y administrar ventanas del lanzador"
+msgstr "Solo mostrar y gestionar ventanas del lanzador"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
@@ -345,7 +345,7 @@ msgstr "Siempre en el área de trabajo visible"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
-msgstr "Sólo en esta área de trabajo"
+msgstr "Solo en este espacio de trabajo"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
@@ -445,7 +445,7 @@ msgstr "<b>Gestores de tareas</b>"
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
 msgstr ""
 "<b>Estos valores de configuración requieren que esté activada la "
-"miniaplicación «Gestor de tareas»."
+"miniaplicación «Gestor de tareas».</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
@@ -534,11 +534,11 @@ msgstr "Personalizar..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr "Deshabilitar miniaplicación"
+msgstr "Desactivar miniaplicación"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr "Mostrar sólo los lanzadores"
+msgstr "Mostrar solo los lanzadores"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
@@ -552,7 +552,7 @@ msgstr "Arrastre miniaplicaciones disponibles aquí para activarlas"
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr "Arrastrar abajo o pusar dos veces para habilitar la miniaplicación"
+msgstr "Arrastrar abajo o pusar dos veces para activar la miniaplicación"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
@@ -776,8 +776,8 @@ msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
 msgstr ""
-"Para emplear los modos «Intellihide» o «Esquivar ventana», debe tener "
-"habilitada la miniaplicación «Gestor de tareas»."
+"Para emplear los modos Ocultar inteligentemente y Esquivar ventanas, debe "
+"tener activada la miniaplicación «Gestor de tareas»."
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
@@ -966,7 +966,7 @@ msgstr "La miniaplicación se añadió correctamente"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
-msgstr "No se puede eliminar una miniaplición activa"
+msgstr "No se puede eliminar una miniaplicación activa"
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
@@ -1318,7 +1318,7 @@ msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
-"Número del monitor donde Awn está ubicado (sólo toma efecto cuando "
+"Número del monitor donde Awn está ubicado (solo toma efecto cuando "
 "monitor_force es Falso, use -1 para escoger automáticamente un monitor)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
@@ -1397,13 +1397,13 @@ msgstr "La curvatura del panel en modo Curvas."
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
-"La altura forzada del monitor. Sólo empleado si force_monitor está "
-"establecido como verdadero."
+"La altura forzada del monitor. Solo se usa si force_monitor está establecido "
+"como verdadero."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
-"La anchura forzada del monitor. Sólo empleado si force_monitor está "
+"La anchura forzada del monitor. Solo se usa si force_monitor está "
 "establecido como verdadero."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
@@ -1419,7 +1419,7 @@ msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
-"La lista de miniaplicaciones para éste panel, ordenados de izquierda a "
+"La lista de miniaplicaciones para este panel, ordenados de izquierda a "
 "derecha o de arriba a abajo."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
@@ -1500,7 +1500,7 @@ msgid ""
 "icon on the panel of this type."
 msgstr ""
 "<b>Tema del panel de iconos</b>\n"
-"Ha elegido reemplazar un ícono del panel. Seleccione si este cambio afectará "
+"Ha elegido reemplazar un icono del panel. Seleccione si este cambio afectará "
 "solo a esta miniaplicación, a todas las miniaplicaciones de este tipo, o a "
 "todos los iconos en el panel de este tipo."
 
