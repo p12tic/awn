@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2011-02-15 21:48+0000\n"
-"Last-Translator: Péter Trombitás <Unknown>\n"
+"PO-Revision-Date: 2011-03-07 19:28+0000\n"
+"Last-Translator: Papp Bence <papp.bence89@gmail.com>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-02-16 05:04+0000\n"
+"X-Launchpad-Export-Date: 2011-03-08 04:48+0000\n"
 "X-Generator: Launchpad (build 12351)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -120,7 +120,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr "Párbeszédablak megnyitásának engedélyezése hosszú gombnyomásra"
+msgstr "Párbeszédablak megnyitásának engedélyezése hosszú gombnyomásra."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
@@ -153,6 +153,9 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
+"Intellihide, amikor a panel elrejtése engedélyezve van. Ez le fogja tiltani "
+"az automatikus elrejtést, ha nincs keresztező ablak a releváns ablak "
+"listában (lásd intellihide_módot)."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
@@ -1186,6 +1189,9 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
+"Automatikusan elrejti a dokkot, ha nincs rajta az egér (nem ajánlott együtt "
+"használni a panel_mode-dal). (semmi: 0, alul tartás: 1, elhalványítás: 2, "
+"átlátszó: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
@@ -1231,7 +1237,7 @@ msgstr "Elválasztók rajzolása"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Mintázat engedélyezése."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
@@ -1482,7 +1488,7 @@ msgstr "Hoppá! A kisalkalmazás összeomlott. Klikk az újraindításhoz."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
-msgstr ""
+msgstr "Dokk bezárása"
 
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "Az AWN sikeresen frissítve"
