@@ -1,3 +1,8 @@
+2011-03-12  Michal Hruby  <michal.mhr@gmail.com>
+
+	* applets/simple-launcher/simple-launcher.vala:
+	Fix double separator in the menu.
+
 2011-02-14  Julien Lavergne <gilir@ubuntu.com>
 
 	reviewed by: Julien Lavergne <gilir@ubuntu.com>

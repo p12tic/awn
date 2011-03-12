@@ -80,7 +80,6 @@ class SimpleLauncher : Applet
 
     // launcher menu
     menu = this.create_default_menu () as Gtk.Menu;
-    menu.append (new Gtk.SeparatorMenuItem ());
     var add_launcher_item1 = new Gtk.MenuItem.with_label ("Add Launcher...");
     add_launcher_item1.activate.connect (this.create_new_launcher);
     menu.append (add_launcher_item1);
@@ -97,7 +96,6 @@ class SimpleLauncher : Applet
 
     // add icon menu
     add_icon_menu = this.create_default_menu () as Gtk.Menu;
-    add_icon_menu.append (new Gtk.SeparatorMenuItem ());
     var add_launcher_item2 = new Gtk.MenuItem.with_label ("Add Launcher...");
     add_launcher_item2.activate.connect (this.create_new_launcher);
     add_icon_menu.append (add_launcher_item2);
