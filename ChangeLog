@@ -1,3 +1,15 @@
+2011-03-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/util.c:
+	Remove a debug.
+
+2011-03-12  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/taskmanager.c:
+	Applied patch courtesy of Bellegarde Cedric to fix issue
+	with windows appearing briefly on close that should be 
+	skip taskbar.
+	
 2011-03-12  Michal Hruby  <michal.mhr@gmail.com>
 
 	* applets/simple-launcher/simple-launcher.vala:

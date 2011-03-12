@@ -431,11 +431,10 @@ get_special_id_from_window_data (gchar * cmd, gchar *res_name, gchar * class_nam
       if (!match)
         continue;
     } 
-#define DEBUG 1    
 #ifdef DEBUG    
     g_debug ("%s:  Special cased Window ID: '%s'",__func__,(gchar *)iter->id);
 #endif
-#undef DEBUG
+
     if ( iter->id && (iter->id != generate_id_from_cmd) )
     {
       return g_strdup (iter->id);
