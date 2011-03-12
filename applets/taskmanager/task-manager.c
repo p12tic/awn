@@ -1611,11 +1611,6 @@ process_window_opened (WnckWindow    *window,
   g_debug ("%s: Window opened: %s",__func__,wnck_window_get_name (window));  
   g_debug ("xid = %lu, pid = %d",wnck_window_get_xid (window),wnck_window_get_pid (window));
 #endif  
-  /* 
-    for some reason the skip tasklist property for the taskmanager toggles briefly
-   off and on in certain circumstances.  Nip this in the bud.
-   TODO:  Investigate wth this is happening...  it bothers me.
-   */
   
   if ( g_strcmp0 (wnck_window_get_name (window),"awn-applet")==0 )
   {
@@ -1626,16 +1621,10 @@ process_window_opened (WnckWindow    *window,
    */
   g_signal_connect (window, "state-changed", G_CALLBACK (on_window_state_changed), manager);
 
-  if (wnck_window_is_skip_tasklist (window))
-  {
-    return;
-  }
-
   if (wnck_window_is_skip_pager (window))
   {
     return;
   }
-
   g_signal_connect (window, "state-changed", 
                     G_CALLBACK (check_attention_requested), manager);    
   
@@ -1797,6 +1786,11 @@ on_window_opened (WnckScreen    *screen,
 
   g_return_if_fail (TASK_IS_MANAGER (manager));
   g_return_if_fail (WNCK_IS_WINDOW (window));
+
+  if (wnck_window_is_skip_tasklist(window))
+  {
+    return;
+  }
 
   _wnck_get_wmclass (wnck_window_get_xid (window),
                      &res_name, &class_name);
