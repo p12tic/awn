@@ -1,3 +1,11 @@
+2011-03-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
+  	* applets/taskmanager/task-manager.c:
+  	* applets/taskmanager/task-manager.h:
+	Fixes incorrect icon display when switching workspaces with
+	show_all_windows false. 
+
 2011-03-12  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/util.c:

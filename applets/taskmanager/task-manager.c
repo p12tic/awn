@@ -1818,6 +1818,17 @@ on_window_opened (WnckScreen    *screen,
 /*
  * PROPERTIES
  */
+
+gboolean
+task_manager_get_show_all_windows (TaskManager * manager)
+{
+  TaskManagerPrivate *priv;
+  g_return_val_if_fail (TASK_IS_MANAGER (manager),TRUE);
+
+  priv = manager->priv;
+
+  return priv->show_all_windows;
+}
 static void
 task_manager_set_show_all_windows (TaskManager *manager,
                                    gboolean     show_all)

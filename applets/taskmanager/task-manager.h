@@ -101,6 +101,8 @@ const GSList * task_manager_get_icons       (TaskManager * manager);
 GSList * task_manager_get_icons_by_wmclass  (TaskManager * manager, const gchar * name);
 GSList * task_manager_get_icons_by_desktop  (TaskManager * manager,const gchar * desktop);
 GSList * task_manager_get_icons_by_pid      (TaskManager * manager, int pid);
+
+gboolean task_manager_get_show_all_windows    (TaskManager *manager);
 const TaskIcon * task_manager_get_icon_by_xid (TaskManager * manager, gint64 xid);
 
 void task_manager_add_icon_show ( TaskManager * taskman);

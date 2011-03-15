@@ -181,6 +181,10 @@ static void     task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
 static void     task_icon_active_window_changed (WnckScreen *screen,
                                  WnckWindow *previously_active_window,
                                  TaskIcon *icon);
+static void     task_icon_active_workspace_changed (WnckScreen *screen,
+                                    WnckScreen * prev_workspace,
+                                    TaskIcon * icon);
+static void     task_icon_viewport_changed (WnckScreen *screen,TaskIcon * icon);
 
 static void     size_changed_cb(AwnApplet *app, guint size, TaskIcon *icon);
 static gint     task_icon_count_require_attention (TaskIcon *icon);
@@ -436,6 +440,10 @@ task_icon_finalize (GObject *object)
   
   g_signal_handlers_disconnect_by_func (wnck_screen_get_default (),
                           G_CALLBACK (task_icon_active_window_changed), object);
+  g_signal_handlers_disconnect_by_func (wnck_screen_get_default (),
+                          G_CALLBACK (task_icon_active_workspace_changed), object);
+  g_signal_handlers_disconnect_by_func (wnck_screen_get_default (),
+                          G_CALLBACK (task_icon_viewport_changed), object);  
   g_signal_handlers_disconnect_by_func (awn_themed_icon_get_awn_theme (AWN_THEMED_ICON(object)),
                           G_CALLBACK (theme_changed_cb),object);
   g_signal_handlers_disconnect_by_func (G_OBJECT(gtk_icon_theme_get_default()),
@@ -490,6 +498,14 @@ task_icon_constructed (GObject *object)
   g_signal_connect  (wnck_screen_get_default (), 
                      "active-window-changed",
                      G_CALLBACK (task_icon_active_window_changed), 
+                     object);
+  g_signal_connect_after  (wnck_screen_get_default (), 
+                     "active-workspace-changed",
+                     G_CALLBACK (task_icon_active_workspace_changed), 
+                     object);
+  g_signal_connect_after  (wnck_screen_get_default (), 
+                     "viewports-changed",
+                     G_CALLBACK (task_icon_viewport_changed), 
                      object);
 
   g_signal_connect (G_OBJECT (widget), "size-allocate",
@@ -1036,6 +1052,7 @@ on_main_item_icon_changed (TaskItem   *item,
   if ( (priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_get_use_win_icon(TASK_WINDOW(item))!=USE_NEVER) || 
       (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && (priv->icon || task_window_get_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS)))
   {
+  g_debug ("%s",__func__);
     task_icon_set_icon_pixbuf (TASK_ICON(icon),priv->main_item);    
   }
 }
@@ -1089,6 +1106,39 @@ on_main_item_visible_changed (TaskItem  *item,
     awn_icon_set_tooltip_text (AWN_ICON (icon),task_item_get_name (priv->main_item));
   }
 }
+
+static void
+task_icon_viewport_changed (WnckScreen *screen, TaskIcon * icon)
+{
+  TaskIconPrivate *priv = icon->priv;
+  if ( task_manager_get_show_all_windows (TASK_MANAGER(priv->applet)) )
+  {
+    return;
+  }
+
+  if (TASK_IS_LAUNCHER (priv->main_item))
+  {
+    task_icon_search_main_item (icon,NULL);
+  }
+
+}
+static void
+task_icon_active_workspace_changed (WnckScreen *screen,
+                                    WnckScreen * prev_workspace,
+                                    TaskIcon * icon)
+{
+  TaskIconPrivate *priv = icon->priv;
+  if ( task_manager_get_show_all_windows (TASK_MANAGER(priv->applet)) )
+  {
+    return;
+  }
+
+  if (TASK_IS_LAUNCHER (priv->main_item))
+  {
+    task_icon_search_main_item (icon,NULL);
+  }
+}
+
 
 static void
 task_icon_active_window_changed (WnckScreen *screen,
@@ -1305,7 +1355,10 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
         g_debug ("%s: Match #4",__func__);
 #endif                    
       main_item = item;
-      break;
+      if (!TASK_IS_LAUNCHER(main_item))
+      {
+        break;
+      }
     }
   }
   //remove signals of old main_item
@@ -1346,6 +1399,7 @@ task_icon_search_main_item (TaskIcon *icon, TaskItem *main_item)
                       G_CALLBACK (on_main_item_icon_changed), icon);
     g_signal_connect (priv->main_item, "visible-changed",
                       G_CALLBACK (on_main_item_visible_changed), icon);
+
   }
 }
 
@@ -1791,7 +1845,7 @@ task_icon_set_icon_pixbuf (TaskIcon * icon,const TaskItem *item)
     if ( TASK_IS_WINDOW(item))
     {
       if (launcher)
-      {
+      {  
         item = launcher;
       }
     }
@@ -2028,7 +2082,7 @@ task_icon_append_item (TaskIcon      *icon,
   gtk_widget_show_all (GTK_WIDGET (item));
 
 //  gtk_container_add (GTK_CONTAINER (priv->dialog), GTK_WIDGET (item));
-  task_manager_dialog_add (priv->dialog,GTK_WIDGET (item));
+  task_manager_dialog_add (TASK_MANAGER_DIALOG(priv->dialog),TASK_ITEM (item));
   /*if we have a launcher move it to the top of the list*/
 /*  if (TASK_IS_LAUNCHER(item))
   {
@@ -2738,7 +2792,7 @@ grouping_changed_cb (TaskManager * applet,gboolean grouping,TaskIcon *icon)
           priv->items = g_slist_remove (priv->items,item);
           g_object_ref (item);
 
-          task_manager_dialog_remove(priv->dialog,item);
+          task_manager_dialog_remove(TASK_MANAGER_DIALOG(priv->dialog),TASK_ITEM(item));
           if (TASK_ICON_GET_PRIVATE(icon)->main_item == TASK_ITEM(item))
           {
             g_signal_handlers_disconnect_by_func(item, 
