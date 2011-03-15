@@ -1,6 +1,14 @@
 2011-03-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Fix issue with compiz and incorrect window being selected 
+	when none of the grouped windows are in the current viewport.
+	If none of the grouped windows are in the current viewport then
+	make sure we continue using the last previously selected window.
+
+2011-03-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
   	* applets/taskmanager/task-manager.c:
   	* applets/taskmanager/task-manager.h:
 	Fixes incorrect icon display when switching workspaces with

@@ -1120,7 +1120,6 @@ task_icon_viewport_changed (WnckScreen *screen, TaskIcon * icon)
   {
     task_icon_search_main_item (icon,NULL);
   }
-
 }
 static void
 task_icon_active_workspace_changed (WnckScreen *screen,
@@ -2495,7 +2494,7 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
   {
     space = wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)));
   }
-    
+
   /*
    use of dbus visible may have left the main_item as a Launcher when there are
    valid Windows available.  Look for a window before we continue*/
@@ -2510,11 +2509,18 @@ task_icon_clicked (TaskIcon * icon,GdkEventButton *event)
     if ( ! wnck_window_is_in_viewport (task_window_get_window (TASK_WINDOW(priv->main_item)),
                                        wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)))))
     {
+      TaskItem * save_item = priv->main_item;
       priv->main_item = NULL;
       task_icon_search_main_item (icon,NULL);
+      /*if our new main item isn't in the current viewport then revert back*/
+      if (!wnck_window_is_in_viewport (task_window_get_window (TASK_WINDOW(priv->main_item)),
+                                       wnck_window_get_workspace (task_window_get_window (TASK_WINDOW(priv->main_item)))))
+      {
+        task_icon_search_main_item (icon,save_item);
+      }
     }
-        
   }
+
   /*If long press is enabled then we try to be smart about what we do on short clicks*/
   if (priv->enable_long_press)
   {
