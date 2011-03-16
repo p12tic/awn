@@ -1052,7 +1052,6 @@ on_main_item_icon_changed (TaskItem   *item,
   if ( (priv->icon_change_behavior==0 && TASK_IS_WINDOW(item) && task_window_get_use_win_icon(TASK_WINDOW(item))!=USE_NEVER) || 
       (priv->icon_change_behavior==1 && TASK_IS_WINDOW(item) && (priv->icon || task_window_get_use_win_icon(TASK_WINDOW(item))==USE_ALWAYS)))
   {
-  g_debug ("%s",__func__);
     task_icon_set_icon_pixbuf (TASK_ICON(icon),priv->main_item);    
   }
 }

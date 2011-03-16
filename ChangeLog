@@ -1,6 +1,11 @@
 2011-03-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
+	Remove a debug.
+
+2011-03-15  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon.c:
 	Fix issue with compiz and incorrect window being selected 
 	when none of the grouped windows are in the current viewport.
 	If none of the grouped windows are in the current viewport then
