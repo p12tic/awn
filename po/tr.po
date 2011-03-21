@@ -1,21 +1,22 @@
 # Turkish translation for awn
-# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
+# Copyright (c) 2007-2011 Rosetta Contributors and Canonical Ltd
 # This file is distributed under the same license as the awn package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+# Muhammet Kara <muhammet.k@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2011-03-14 21:32+0000\n"
-"Last-Translator: EnziM <Unknown>\n"
+"PO-Revision-Date: 2011-03-20 13:06+0000\n"
+"Last-Translator: Muhammet Kara <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2011-03-15 04:56+0000\n"
+"X-Launchpad-Export-Date: 2011-03-21 04:48+0000\n"
 "X-Generator: Launchpad (build 12559)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -185,7 +186,7 @@ msgstr "Çalıştır/Görevyönetici"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Başlatıcı/Görev Yöneticisi uygulamacığı"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
@@ -222,7 +223,7 @@ msgstr "Tercihler uygulamacığı"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Uygulamacıklar arasına bir ayıraç ekler"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -249,7 +250,7 @@ msgstr "Çalıştırıcı olarak ekle"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr ""
+msgstr "Başlatıcıyı Kaldır"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -261,7 +262,7 @@ msgstr "_Tümünü Kapat"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
-msgstr ""
+msgstr "Tümünü küçült"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
 msgid "Unminimize all"
@@ -269,7 +270,7 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
 msgid "Maximize all"
-msgstr ""
+msgstr "Tümünü büyüt"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
 msgid "Unmaximize all"
@@ -358,7 +359,7 @@ msgstr "<b>Seçenek Gruplarını Dışarı Aktar</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>Ekstralar</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
@@ -404,7 +405,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>İpuçları</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
@@ -468,7 +469,7 @@ msgstr "Eğri Simetrisi"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
-msgstr ""
+msgstr "Dalgalılık"
 
 #: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:153
@@ -528,11 +529,11 @@ msgstr "Dolgu Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
-msgstr ""
+msgstr "İlk Gradyan Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "First Highlight Color"
-msgstr ""
+msgstr "İlk Vurgu Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
@@ -548,11 +549,11 @@ msgstr "Yazı Tipi Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "Yazı Tipi Kipi"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Yazı Tipi Anahat Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
@@ -576,7 +577,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
-msgstr ""
+msgstr "Simge_efektleri:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
@@ -592,7 +593,7 @@ msgstr "Simgeler:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
-msgstr ""
+msgstr "İç Hat Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
@@ -608,23 +609,23 @@ msgstr "Çalıştırma animasyonu:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "Eşleştirme gücü"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Monitör X-dengesi"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Monitör Y-dengesi"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr ""
+msgstr "Monitör yüksekliği"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "Monitör genişliği"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
@@ -632,7 +633,7 @@ msgstr "Ad:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
-msgstr ""
+msgstr "Denge"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
@@ -640,11 +641,11 @@ msgstr "Açma animasyonu:"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
-msgstr ""
+msgstr "Dış Hat Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
-msgstr ""
+msgstr "Anahat Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Panel Background Colors"
@@ -672,7 +673,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "Yansıma dengesi"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
@@ -680,15 +681,15 @@ msgstr "Depolar"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "İkinci Gradyan Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "İkinci Vurgu Rengi"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Özel Ok Seç"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
@@ -721,11 +722,11 @@ msgstr "_Awn'yi otomatik başlat"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "Tema Dışa Aktar"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Kalınlık"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -751,7 +752,7 @@ msgstr "Sürüm:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr ""
+msgstr "_Davranış:"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
@@ -759,7 +760,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:108
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_Ekrandaki konumu:"
 
 #: ../awn-settings/awn-settings.ui.h:109
 msgid "_Size of icons:"
@@ -903,11 +904,11 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Uygulamacık kurulumu Başarısız"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Uygulamacık Başarıyla Güncellendi"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
@@ -1014,15 +1015,15 @@ msgstr "Şeffaflık"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "Altta tut"
 
 #: ../awn-settings/awnSettings.py.in:629
 msgid "PNG Image"
-msgstr ""
+msgstr "PNG Resmi"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Resimler"
 
 #: ../awn-settings/awnSettings.py.in:759
 msgid "Save Theme..."
@@ -1046,11 +1047,11 @@ msgstr "Anahat, Ters çevrilmiş"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "İpucu Yazı Tipini Seç"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Awn Tema Dosyası"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1074,7 +1075,7 @@ msgstr "Tercihler"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"
-msgstr ""
+msgstr "Görev Yöneticisi"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
@@ -1082,11 +1083,11 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
-msgstr ""
+msgstr "Temalar"
 
 #: ../awn-settings/awnSettings.py.in:1171
 msgid "Advanced"
-msgstr ""
+msgstr "Gelişmiş"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
@@ -1161,7 +1162,7 @@ msgstr "Etkin diktörtgen rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Parlayan noktanın rengi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
@@ -1331,7 +1332,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
-msgstr ""
+msgstr "Panel örnekleri listesi."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
@@ -1458,6 +1459,7 @@ msgstr "Yuvayı kapat"
 #~ "  EnziM https://launchpad.net/~chromelite\n"
 #~ "  Erkin Batu Altunbaş https://launchpad.net/~erkin\n"
 #~ "  Fatih Dayioglu https://launchpad.net/~fatihdy\n"
+#~ "  Muhammet Kara https://launchpad.net/~muhammet-k\n"
 #~ "  Murat Cimen https://launchpad.net/~muratcimentr\n"
 #~ "  Volkan Esgel https://launchpad.net/~vesgel\n"
 #~ "  Yiğit Ateş https://launchpad.net/~yigitates52\n"
