@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-12-12 09:51+0000\n"
+"PO-Revision-Date: 2011-03-23 09:04+0000\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-12-13 05:00+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-03-24 04:51+0000\n"
+"X-Generator: Launchpad (build 12559)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -222,7 +222,7 @@ msgstr "Tamaño da icona:"
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:703
 msgid "Dock Preferences"
-msgstr "Preferencias do entallado"
+msgstr "Preferencias da doca"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
@@ -233,7 +233,7 @@ msgstr "Non se puideron abrir as configuracións de Awn: %s"
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
-"Miniaplicativo utilizado para administrar o entallado e iniciar o control de "
+"Miniaplicativo utilizado para administrar a doca e iniciar o control de "
 "preferencias de Awn."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
@@ -890,7 +890,7 @@ msgstr "Avant Window Navigator"
 #: ../awn-settings/awnClass.py:1084
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
-"Un navegador de xanelas entallable para GNOME totalmente personalizábel."
+"Un navegador de xanelas entallábel para GNOME totalmente persoalizábel."
 
 #: ../awn-settings/awnClass.py:1086
 msgid ""
@@ -1149,7 +1149,7 @@ msgstr "Wiki de Awn"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr "AWN fornece unha barra de aplicativos entallable no escritorio"
+msgstr "AWN fornece unha barra de aplicativos entallábel no escritorio"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0: solid, 1: outline, 2: outline, reversed."
@@ -1181,6 +1181,9 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
+"Agocha automaticamente a doca cando o cursor non está na doca (non debería "
+"usarse en conxunción co modo Panel). (nada:0, manter debaixo:1, esvaecer:2, "
+"ver a través:3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
@@ -1219,6 +1222,8 @@ msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Determina se o editor da configuración xenérica está autorizado para "
+"miniaplicativos que non teñen un cadro de preferencias personalizado."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
@@ -1429,11 +1434,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
-msgstr ""
+msgstr "Cando pechar os diálogos ao perder o foco."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgstr "Cando usar as cores do decorado Gtk actual."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
@@ -1484,10 +1489,33 @@ msgstr "Uups! O miniaplicativo estragouse. Prema para reiniciarlo."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
-msgstr "Pechar o entallamento"
+msgstr "Pechar a doca"
+
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "Launchpad Contributions:\n"
+#~ "  Dario https://launchpad.net/~dario-villar-v\n"
+#~ "  Manuel Xosé Lemos https://launchpad.net/~mxlemos\n"
+#~ "  Miguel Anxo Bouzada https://launchpad.net/~mbouzada\n"
+#~ "  Xose M Lamas https://launchpad.net/~xmgz"
+
+#~ msgid "PNG Files"
+#~ msgstr "Ficheiros PNG"
 
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN renovouse satisfactoriamente"
+
+#, python-format
+#~ msgid ""
+#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+#~ "installed. It usually comes with librsvg, or a package similarly named."
+#~ msgstr ""
+#~ "Non foi posíbel cargar a icona «%s». Asegúrese de que o cargador SVG para "
+#~ "Gtk+ estea instalado. Normalmente ven con librsvg, ou un paquete de nome "
+#~ "similar."
+
+#~ msgid "Always"
+#~ msgstr "Sempre"
 
 #~ msgid "Standard"
 #~ msgstr "Estándar"
