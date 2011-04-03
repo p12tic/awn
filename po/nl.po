@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-11-11 16:34+0000\n"
-"Last-Translator: megabyte <Unknown>\n"
+"PO-Revision-Date: 2011-04-02 15:17+0000\n"
+"Last-Translator: Redmar <redmar@ubuntu-nl.org>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-11-12 04:49+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-04-03 04:41+0000\n"
+"X-Generator: Launchpad (build 12559)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -49,6 +49,13 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" De wijze van het weergeven van de venster-pictogrammen in de taakbalk. 0) "
+"Altijd de pictogrammen gebruiken de met het programma worden meegeleverd als "
+"het venster actief is (behalve in een aantal specifieke gevallen). 1) "
+"Probeer alleen programma-eigen pictogrammen weer te geven als de "
+"pictogrammen nuttig zijn of belangrijke informatie bevatten. 2) Negeer alle "
+"iconen die de toepassingen opgeven en geef enkel de het starters-pictogram "
+"weer."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
@@ -70,6 +77,8 @@ msgid ""
 " If overlay_application_icons is true, this key will reverse the "
 "overlay/overlayee if set to true."
 msgstr ""
+" Als overlay_application_icons aan staat zal deze waarde die van "
+"overlay/overlayee omkeren als deze geactiveerd is."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -77,6 +86,9 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" Als dit geactiveerd is zal het programma-venster pictogram over het "
+"starters-pictogram heen getoond worden, in plaats van deze te vervangen "
+"zoals gedefinieerd in icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
@@ -555,11 +567,11 @@ msgstr "Vulkleur"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
-msgstr ""
+msgstr "Eerste kleur voor gradiënt"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "First Highlight Color"
-msgstr ""
+msgstr "Eerste markeringskleur"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
@@ -579,11 +591,11 @@ msgstr "Lettertype Vorm"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr "Lettertype Omleining Kleur"
+msgstr "Omlijningskleur letters"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Monitor-modus forceren?"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
@@ -607,7 +619,7 @@ msgstr "Icoon _effecten:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
-msgstr "icoon doorzichtigheid"
+msgstr "Scherpte pictogram"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
@@ -695,7 +707,7 @@ msgstr "Patroon Afbeelding"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "Vermenigvuldiging van scherpte voor reflectie"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
@@ -707,11 +719,11 @@ msgstr "Pakketbronnen"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Tweede kleur voor gradiënt"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Tweede markeringskleur"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
@@ -724,7 +736,7 @@ msgstr "Selecteer item om te filteren door categorie"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
-msgstr ""
+msgstr "Kleur voor scheidingsteken"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
@@ -849,7 +861,7 @@ msgstr "3D draaien"
 
 #: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
 msgid "3D Spotlight Turn"
-msgstr "3D Sptlicht Draai"
+msgstr "Spotlicht met 3D-rotatie"
 
 #: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
 msgid "Glow"
@@ -1074,7 +1086,7 @@ msgstr "Rand"
 
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "Rand, omgekeerd"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
@@ -1094,7 +1106,7 @@ msgstr "Gebruik iconen met de beste kwaliteit"
 
 #: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Gebruik hogere kwaliteits icoon als embleem"
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
@@ -1160,25 +1172,28 @@ msgstr "Dock-achtige vensternavigatie"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0: solid, 1: outline, 2: outline, reversed."
-msgstr ""
+msgstr "0: vast, 1: rand, 2: rand, omgekeerd."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgstr "Een bitmask dat het type effect voor iedere gebeurtenis registreert."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
 msgstr ""
+"Uitlijning van een niet-uitgespreide paneel op de rand van de monitor."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
+msgstr "Een optionele verschuiving wanneer u meer dan één monitor heeft."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"Alles hoger dan 0 maakt een paneel met hoeken. Hoe hoger de radius, hoe "
+"groter de hoeken."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid ""
@@ -1186,6 +1201,9 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
+"Verberg de dock automatisch als de muisaanwijzer niet boven de dock is (dit "
+"moet niet tegelijkertijd met paneel_modus worden gebruikt). (geen: 0, op "
+"achtergrond: 1, fade uit: 2, transparant: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
@@ -1214,16 +1232,20 @@ msgstr "Randkleur van de actieve rechthoek."
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Delay between mouse leaving the panel and it hiding."
 msgstr ""
+"Vertraging tussen het verlaten van de muis van het paneel en het verbergen "
+"ervan."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Vertraging voor het opvragen van de positie van de muis."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Bepaalt of de algemene configuratiebewerker gebruikt kan worden voor applets "
+"die niet over een aangepast voorkeuren-venster beschikken."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
@@ -1485,6 +1507,32 @@ msgstr "Sluit docklet"
 
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN werd succesvol herladen"
+
+#, python-format
+#~ msgid ""
+#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+#~ "installed. It usually comes with librsvg, or a package similarly named."
+#~ msgstr ""
+#~ "Het \"%s\"-icoon kan niet geladen worden. Zorg ervoor dat de SVG-lader voor "
+#~ "Gtk+ geïnstalleerd is. Dit komt met het pakket librsvg, of een ander "
+#~ "gelijknamig pakket."
+
+#~ msgid "PNG Files"
+#~ msgstr "PNG bestanden"
+
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "Launchpad Contributions:\n"
+#~ "  Chris Druif https://launchpad.net/~chrisdruif\n"
+#~ "  Ivo https://launchpad.net/~van-hoi\n"
+#~ "  Ivo-2 https://launchpad.net/~vanhoide2de\n"
+#~ "  KP Stolk https://launchpad.net/~kp-stolk\n"
+#~ "  Redmar https://launchpad.net/~redmar\n"
+#~ "  Steven Janssen https://launchpad.net/~janssen-steven0\n"
+#~ "  commodoor https://launchpad.net/~commodoor\n"
+#~ "  megabyte https://launchpad.net/~maartenberg1\n"
+#~ "  onox https://launchpad.net/~onox\n"
+#~ "  ubby https://launchpad.net/~kostas-sytske"
 
 #~ msgid "Standard"
 #~ msgstr "Standaard"
