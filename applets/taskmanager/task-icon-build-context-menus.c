@@ -1247,6 +1247,7 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
       {
         name = get_workspace_name_with_accel (win, i);
         label = g_strdup_printf ("%s", name);
+        g_free (name);
       }
       else
       {
@@ -1261,7 +1262,6 @@ task_icon_inline_menu_move_to_workspace (TaskIcon * icon,GtkMenu * menu,WnckWind
                       win);
       gtk_widget_show (item);
       gtk_menu_shell_append (GTK_MENU_SHELL (submenu), item);
-      g_free (name);
       g_free (label);	
     }
 }

@@ -1,3 +1,8 @@
+2011-04-03  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* applets/taskmanager/task-icon-build-context-menus.c:
+	Only free memory if it's been allocated.
+
 2011-03-15  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon.c:
