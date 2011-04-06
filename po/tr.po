@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2011-03-20 13:06+0000\n"
-"Last-Translator: Muhammet Kara <Unknown>\n"
+"PO-Revision-Date: 2011-04-05 15:59+0000\n"
+"Last-Translator: susema <ayferkaya@ymail.com>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2011-03-21 04:48+0000\n"
+"X-Launchpad-Export-Date: 2011-04-06 04:40+0000\n"
 "X-Generator: Launchpad (build 12559)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -900,7 +900,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Awn Uygulamacık Paketi"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
@@ -912,11 +912,11 @@ msgstr "Uygulamacık Başarıyla Güncellendi"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Uygulamacık Başarıyla Eklendi"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
-msgstr ""
+msgstr "Aktif uygulamacık silinemez"
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
@@ -939,11 +939,11 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Tema zaten kurulu,  tekrar üzerine kursun istiyorsunuz musunuz?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Bu uyumsuz bir tema dosyasıdır."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -987,7 +987,7 @@ msgstr "Kayan"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
-msgstr ""
+msgstr "Lucido"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
@@ -1465,6 +1465,7 @@ msgstr "Yuvayı kapat"
 #~ "  Yiğit Ateş https://launchpad.net/~yigitates52\n"
 #~ "  aries https://launchpad.net/~sonagirbas\n"
 #~ "  coldchris https://launchpad.net/~vsolmaz\n"
+#~ "  susema https://launchpad.net/~susema\n"
 #~ "  ubuntuki https://launchpad.net/~aleverzurumlu"
 
 #~ msgid "Standard"
