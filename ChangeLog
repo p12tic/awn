@@ -1,3 +1,8 @@
+2011-04-19  Rodney Cryderman  <rcryderman@gmail.com>
+
+	* configure.in:
+	We'll accept deprecated functions for a bit methinks.
+
 2011-04-03  Rodney Cryderman  <rcryderman@gmail.com>
 
 	* applets/taskmanager/task-icon-build-context-menus.c:
