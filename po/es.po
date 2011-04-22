@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2011-02-27 05:37+0000\n"
+"PO-Revision-Date: 2011-04-21 08:35+0000\n"
 "Last-Translator: Fitoschido <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-02-28 04:36+0000\n"
-"X-Generator: Launchpad (build 12351)\n"
+"X-Launchpad-Export-Date: 2011-04-22 04:40+0000\n"
+"X-Generator: Launchpad (build 12758)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -70,7 +70,7 @@ msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
 " Agrupar iconos con el mismo lanzador, si el agrupado de ventanas está "
-"deshabilitado."
+"desactivado."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
@@ -246,7 +246,7 @@ msgstr "Tamaño de los iconos:"
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:703
 msgid "Dock Preferences"
-msgstr "Preferencias del lanzador"
+msgstr "Preferencias del dock"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
@@ -257,8 +257,8 @@ msgstr "No se pudieron abrir las opciones de Awn: %s"
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
-"Miniaplicación utilizada para controlar el lanzador e iniciar las "
-"preferencias de Awn."
+"Miniaplicación utilizada para controlar el dock e iniciar las preferencias "
+"de Awn."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
@@ -911,7 +911,7 @@ msgstr "Navegador de ventanas Avant"
 #: ../awn-settings/awnClass.py:1084
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
-"Navegador de ventanas similar a un muelle de aplicaciones enteramente "
+"Navegador de ventanas similar a un dock de aplicaciones enteramente "
 "personalizable para GNOME."
 
 #: ../awn-settings/awnClass.py:1086
@@ -1178,7 +1178,7 @@ msgstr "Wiki de Awn"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr "Un navegador de ventanas tipo empotrado."
+msgstr "Un navegador de ventanas tipo dock."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0: solid, 1: outline, 2: outline, reversed."
@@ -1210,8 +1210,8 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
-"Oculta automáticamente el lanzador cuando el cursor no está sobre él (no "
-"debería utilizarse junto con panel_mode). (ninguno: 0, mantener debajo: 1, "
+"Oculta automáticamente el dock cuando el cursor no está sobre él (no debería "
+"utilizarse junto con panel_mode). (ninguno: 0, mantener debajo: 1, "
 "desvanecer: 2, ver a través: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
