@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2011-07-13 13:14+0000\n"
+"PO-Revision-Date: 2011-07-18 13:18+0000\n"
 "Last-Translator: Irmak Bıçakçıgil <Unknown>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2011-07-14 04:32+0000\n"
+"X-Launchpad-Export-Date: 2011-07-19 04:34+0000\n"
 "X-Generator: Launchpad (build 13405)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -237,7 +237,7 @@ msgstr "Çalışma alanı %d"
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Çalışma Alanı 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
@@ -306,7 +306,7 @@ msgstr "Sadece bu Çalışma Alanında."
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "_Soldaki Çalışma Alanına Taşı"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1156
 msgid "Move to Workspace _Right"
@@ -935,7 +935,7 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s zaten var, tema içe aktarılamıyor."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
@@ -1079,7 +1079,7 @@ msgstr "Görev Yöneticisi"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr ""
+msgstr "Programcıklar"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
@@ -1366,7 +1366,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The thickness in 3D mode."
-msgstr ""
+msgstr "3B modunda kalınlık."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
