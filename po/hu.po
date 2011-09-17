@@ -8,15 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2011-03-07 19:28+0000\n"
-"Last-Translator: Papp Bence <papp.bence89@gmail.com>\n"
+"PO-Revision-Date: 2011-09-16 16:33+0000\n"
+"Last-Translator: Péter Trombitás <Unknown>\n"
 "Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2011-03-08 04:48+0000\n"
-"X-Generator: Launchpad (build 12351)\n"
+"X-Launchpad-Export-Date: 2011-09-17 05:05+0000\n"
+"X-Generator: Launchpad (build 13955)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -723,7 +722,7 @@ msgstr "Egyedi nyíl kiválasztása"
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Select item to filter by category"
-msgstr ""
+msgstr "Jelöljön ki egy elemet a kategória szerinti szűréshez"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
@@ -1257,7 +1256,7 @@ msgstr "Eszköztipp betűtípusának neve"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
-msgstr ""
+msgstr "Monitor geometriájának erőltetése"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
@@ -1280,11 +1279,11 @@ msgstr "Ha igaz, a panel kiterjed a teljes monitor szélességére/magasságára
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
-msgstr ""
+msgstr "Belső határoló szín."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
-msgstr ""
+msgstr "Fő határoló szín"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
@@ -1296,11 +1295,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "Az ikonok és párbeszédablakuk közti különbség."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Az ikonok távolsága az ablak szélétől."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
@@ -1308,19 +1307,19 @@ msgstr "Az Awn orientációja. (bal: 0, jobb: 1 felül: 2 és lent: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
-msgstr ""
+msgstr "Párbeszédablak körvonalának színe."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Jelenlegi asztali témafájl elérési útja."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Az aktív ikonháttér png fájljának elérési útja."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "A nyíl png ikonjának elérési útja."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
@@ -1328,6 +1327,9 @@ msgid ""
 "through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
+"Lehetőséget ad a panel mögötti ablakokra kattintásra (0: soha ne lehessen a "
+"panel mögé kattintani, 1: csak a CTRL lenyomásakor lehessen mögé kattintani, "
+"2: csak a CTRL lenyomásakor lehessen a panelra kattintani)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
@@ -1364,10 +1366,14 @@ msgstr "A panel íveltsége ívelt módban."
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
+"Az erőltetett monitormagasság. Csak akkor van használatban, ha a "
+"monitor_force engedélyezve van."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
+"Az erőltetett monitorszélesség. Csak akkor van használatban, ha a "
+"monitor_force engedélyezve van."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
@@ -1380,10 +1386,12 @@ msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
+"Ezen panel kisalkalmazásainak listája balról jobbra vagy fentről lefele "
+"listázva."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
-msgstr ""
+msgstr "Panelpéldányok listája."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
@@ -1391,7 +1399,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Az ikon és tükröződése közti távolság"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
@@ -1413,7 +1421,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
-msgstr ""
+msgstr "Az ívek szimmetriája Ívelt módban"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The thickness in 3D mode."
@@ -1421,7 +1429,7 @@ msgstr "A vastagság 3D módban."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
-msgstr ""
+msgstr "Az Awn felhasználó által látható mérete."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
@@ -1433,17 +1441,19 @@ msgstr "Az AwnDialógus használja-e a Gtk téma színeit."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
-msgstr ""
+msgstr "Becsukódjanak-e a párbeszédablakokat, amikor elmegy róluk a fókusz."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgstr "Használja-e az Awn a jelenlegi Gtk téma színeit."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
+"Az ikon szövegének körvonala, ha a körvonal mód engedélyezve van. Javasolt "
+"értékek: 1.0-5.0"
 
 #: ../data/awn-themed-icon.ui.h:1
 msgid ""
@@ -1504,9 +1514,3 @@ msgstr "Dokk bezárása"
 #~ "A(z) \"%s\" ikon nem tölthető be. Bizonyosodjon meg róla, hogy a Gtk+ SVG "
 #~ "betöltője telepítve van. Általában a librsvg vagy egy hasonló nevű csomagban "
 #~ "található meg."
-
-#~ msgid "3)"
-#~ msgstr "3)"
-
-#~ msgid "5)"
-#~ msgstr "5)"
