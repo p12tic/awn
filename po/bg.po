@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2011-09-20 16:13+0000\n"
+"PO-Revision-Date: 2011-09-25 19:29+0000\n"
 "Last-Translator: Svetoslav Stefanov <svetlisashkov@yahoo.com>\n"
 "Language-Team: Bulgarian <bg@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-09-21 04:53+0000\n"
-"X-Generator: Launchpad (build 13996)\n"
+"X-Launchpad-Export-Date: 2011-09-26 04:46+0000\n"
+"X-Generator: Launchpad (build 14012)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -962,71 +962,71 @@ msgstr "Отдолу"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Плосък"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3d"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Заоблен"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Ръбест"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Плаващ"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
-msgstr ""
+msgstr "Lucido"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
-msgstr ""
+msgstr "Режим - панел"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
-msgstr ""
+msgstr "Винаги видим"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Intellihide"
-msgstr ""
+msgstr "Интелигентно скриване"
 
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Window dodge"
-msgstr ""
+msgstr "Отдръпване от прозореца"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Fade out"
-msgstr ""
+msgstr "Избледняване"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Transparency"
-msgstr ""
+msgstr "Прозрачност"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "Поддържане отдолу"
 
 #: ../awn-settings/awnSettings.py.in:629
 msgid "PNG Image"
-msgstr ""
+msgstr "Изображение - PNG"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Изображения"
 
 #: ../awn-settings/awnSettings.py.in:759
 msgid "Save Theme..."
-msgstr ""
+msgstr "Запазване на темата..."
 
 #: ../awn-settings/awnSettings.py.in:768
 msgid "Awn Theme"
-msgstr ""
+msgstr "Тема на Awn"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1034,7 +1034,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Outline"
-msgstr ""
+msgstr "Контури"
 
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
@@ -1042,11 +1042,11 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Изберете шрифт за подсказките"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Файл с тема на Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1070,19 +1070,19 @@ msgstr "Настройки"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"
-msgstr ""
+msgstr "Мениджър на задачи"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr ""
+msgstr "Аплети"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
-msgstr ""
+msgstr "Теми"
 
 #: ../awn-settings/awnSettings.py.in:1171
 msgid "Advanced"
-msgstr ""
+msgstr "Разширени"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
@@ -1104,7 +1104,7 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Уики на Awn"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -1149,7 +1149,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "Фонов цвят на подсказките"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
@@ -1157,7 +1157,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Цвят на светещата точка."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
@@ -1179,7 +1179,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
-msgstr ""
+msgstr "Показване на разделители."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
@@ -1195,11 +1195,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Цвят на шрифта за подсказките"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Име на шрифта за подсказките"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
@@ -1208,6 +1208,8 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
+"Цвят за текста на иконите. Оставете празно, за да се използа цвета от gtk "
+"темата."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
@@ -1215,11 +1217,12 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "Ако е истина, максимизираните прозорци няма да покриват панела."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Ако е истина, панелът ще се разширява до пълната ширина/височина на монитора."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
@@ -1241,11 +1244,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Отместване на иконите от границата на прозореца."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr ""
+msgstr "Ориентация на Awn. (ляво: 0, дясно: 1, горе: 2 и долу: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1396,40 +1399,40 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "Настройване на аплета"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
 msgid "About %s"
-msgstr ""
+msgstr "Относно %s"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "Икони"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Избиране на потребителска икона"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Настройване на икона"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Премахване на потребителска икона"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "Зареждане на аплета..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Опа! Аплета се срина. Натиснете, за да го рестартирате."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
-msgstr ""
+msgstr "Затваряне на доклета"
 
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN беше успешно обновен"
