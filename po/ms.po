@@ -8,15 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-10-23 06:33+0000\n"
+"PO-Revision-Date: 2011-11-25 23:29+0000\n"
 "Last-Translator: abuyop <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-10-24 04:57+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-11-26 05:50+0000\n"
+"X-Generator: Launchpad (build 14381)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -491,7 +490,7 @@ msgstr "Kelengkukan"
 #: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:153
 msgid "Custom"
-msgstr "Personalisasi Tersendiri"
+msgstr "Suai"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
@@ -1480,11 +1479,17 @@ msgstr "Ops! Aplet rosak. Klik untuk mula semulakannya."
 msgid "Close docklet"
 msgstr "Tutup docklet"
 
+#~ msgid "PNG Files"
+#~ msgstr "Fail PNG"
+
+#, python-format
+#~ msgid ""
+#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
+#~ "installed. It usually comes with librsvg, or a package similarly named."
+#~ msgstr ""
+#~ "Tidak dapat memuat ikon \"%s\".  Pastikan pemuat SVG untuk Gtk+ telah "
+#~ "dipasang. Ia biasanya didapati bersama librsvg, atau bungkusan yang namanya "
+#~ "serupa."
+
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN telah berjaya dijernihkan"
-
-#~ msgid "Stripe Width"
-#~ msgstr "Lebar Jalur"
-
-#~ msgid "The width of the stripe in Lucido mode."
-#~ msgstr "Lebar jalur didalam mod Lucido."
