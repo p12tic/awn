@@ -8,16 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2011-03-31 06:14+0000\n"
-"Last-Translator: Michał Kasprzak <Unknown>\n"
+"PO-Revision-Date: 2013-03-04 13:04+0000\n"
+"Last-Translator: Isamu715 <isamu715@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2;\n"
-"X-Launchpad-Export-Date: 2011-04-01 04:48+0000\n"
-"X-Generator: Launchpad (build 12559)\n"
+"X-Launchpad-Export-Date: 2013-03-05 05:09+0000\n"
+"X-Generator: Launchpad (build 16514)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -1028,7 +1026,7 @@ msgstr "Zawsze widoczny"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Intellihide"
-msgstr "Ukrywanie inteligentne"
+msgstr "Inteligentne ukrywanie"
 
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Window dodge"
@@ -1509,61 +1507,3 @@ msgstr "Zamknij docklet"
 #~ msgstr ""
 #~ "Nie udało się wczytać ikony %s. Upewnij się, że posiadasz obsługę SVG w "
 #~ "GTK+. Zwykle jest ona w bibliotece librsvg, bądź o podobnej nazwie."
-
-#~ msgid "Disables changing of panel icon when app indicates icon change."
-#~ msgstr "Wyłącz zmiany ikony panelu gdy aplikacja sygnalizuje jej zmianę."
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Launchpad Contributions:\n"
-#~ "  Adam Czabara https://launchpad.net/~adam-czabara\n"
-#~ "  Adam Maćkowiak https://launchpad.net/~adammac18\n"
-#~ "  Emil Magnuski https://launchpad.net/~emagnuski\n"
-#~ "  EuGene https://launchpad.net/~eugenewolfe\n"
-#~ "  Grzegorz Śliwiński https://launchpad.net/~fizyk\n"
-#~ "  Michał Kasprzak https://launchpad.net/~mkasprzak448\n"
-#~ "  Piotr Strębski https://launchpad.net/~strebski\n"
-#~ "  Tomasz Trębski https://launchpad.net/~kornicameister\n"
-#~ "  emol007 https://launchpad.net/~emol007\n"
-#~ "  mtfk https://launchpad.net/~mitfik\n"
-#~ "  skrzat https://launchpad.net/~radek-floraland"
-
-#~ msgid "3)"
-#~ msgstr "3)"
-
-#~ msgid "5)"
-#~ msgstr "5)"
-
-#~ msgid "Standard"
-#~ msgstr "Standardowe"
-
-#~ msgid "Autohide Keep below"
-#~ msgstr "Autoukrywanie - pod spód"
-
-#~ msgid "Autohide Fade out"
-#~ msgstr "Autoukrywanie - zanikanie"
-
-#~ msgid "Always"
-#~ msgstr "Zawsze"
-
-#~ msgid "Stripe Width"
-#~ msgstr "Szerokość pasa"
-
-#~ msgid "0 - solid, 1 - outline, 2 - outline, reversed."
-#~ msgstr "0 - pełne, 1 - obramowanie, 2 - obramowanie, odwrócone."
-
-#~ msgid "6)"
-#~ msgstr "6)"
-
-#~ msgid ""
-#~ "Provides possibility to click on windows behind the panel. (0 - never click "
-#~ "through, 1 - click through when holding CTRL, 2 - always click through and "
-#~ "interact with panel only when holding CTRL)"
-#~ msgstr ""
-#~ "Umożliwia klikanie okien znajdujących się za panelem. (0 - nigdy nie klikaj "
-#~ "przez panel, 1 - klikaj przez panel przy trzymanym klawiszu CTRL, 2 - zawsze "
-#~ "klikaj i umożliwiaj klikanie przez panel i pozwalaj na operacje na panelu "
-#~ "tylko z trzymanym klawiszem CTRL)"
-
-#~ msgid "The width of the stripe in Lucido mode."
-#~ msgstr "Szerokość pasa w trybie Lucido."
