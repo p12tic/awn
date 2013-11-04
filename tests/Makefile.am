@@ -8,9 +8,8 @@ noinst_PROGRAMS = \
 	test-taskmanager \
 	test-themed-icon
 
-AM_CPPFLAGS = $(STANDARD_CPPFLAGS) $(DISABLE_DEPRECATED_FLAGS)
+AM_CPPFLAGS = $(STANDARD_CPPFLAGS) $(DISABLE_DEPRECATED_FLAGS) $(AWN_CFLAGS) -I$(top_srcdir)
 AM_CFLAGS = $(WARNING_FLAGS)
-INCLUDES = $(AWN_CFLAGS) -I$(top_srcdir)
 
 test_applet_simple_SOURCES = test-applet-simple.c
 test_applet_simple_LDADD = 	\

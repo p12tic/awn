@@ -1,5 +1,5 @@
 NULL =
-INCLUDES =		\
+AM_CPPFLAGS =		\
 	-I$(top_srcdir) \
 	$(AWN_CFLAGS)	\
 	$(NULL)

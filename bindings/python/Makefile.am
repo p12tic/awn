@@ -3,13 +3,13 @@ V         = @
 Q         = $(V:1=)
 QUIET_GEN = $(Q:@=@echo '  GEN   '$@;)
 
-NULL = 
+NULL =
 
 # awn python scripts
 pyawndir = $(pyexecdir)/awn
 pyawn_PYTHON = __init__.py
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	$(PYTHON_CPPFLAGS) \
 	$(PYGTK_CFLAGS) \
 	$(AWN_CFLAGS) \

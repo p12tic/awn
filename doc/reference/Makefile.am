@@ -5,7 +5,7 @@ include $(top_srcdir)/Makefile.shave
 # We require automake 1.6 at least.
 AUTOMAKE_OPTIONS = 1.6
 
-NULL = 
+NULL =
 
 # This is a blank Makefile.am for using gtk-doc.
 # Copy this to your project's API docs directory and modify the variables to
@@ -28,7 +28,7 @@ DOC_SOURCE_DIR=$(top_srcdir)/libawn
 SCANGOBJ_OPTIONS=
 
 # Extra options to supply to gtkdoc-scan.
-# e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED" 
+# e.g. SCAN_OPTIONS=--deprecated-guards="GTK_DISABLE_DEPRECATED"
 SCAN_OPTIONS=
 
 # Extra options to supply to gtkdoc-mkdb.
@@ -89,9 +89,9 @@ expand_content_files=
 # CFLAGS and LDFLAGS for compiling gtkdoc-scangobj with your library.
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget
 # signals and properties.
-# e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
+# e.g. AM_CPPFLAGS=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
-INCLUDES = \
+AM_CPPFLAGS = \
 	$(AWN_CFLAGS)			\
 	-I$(top_srcdir)			\
 	-I$(top_builddir)/libawn	\
@@ -113,4 +113,4 @@ endif
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
-EXTRA_DIST += 
+EXTRA_DIST +=
