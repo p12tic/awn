@@ -191,7 +191,7 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     return null;
   }
 
-  public void 
+  public void
   awn_set_visibility (string win_name, bool visible) throws DBus.Error
   {
     HashTable<string, Value?> hints;

@@ -69,11 +69,11 @@ fi
 dnl ==============================================
 dnl Check for Python modules
 dnl ==============================================
-AC_ARG_ENABLE(pymod_checks, 
+AC_ARG_ENABLE(pymod_checks,
               AC_HELP_STRING([--disable-pymod-checks], [Disable checks for Python modules]),
               enable_pymod_checks=$enableval,
               enable_pymod_checks=yes)
-              
+
 if test x${enable_pymod_checks} = xyes; then
   AM_CHECK_PYMOD(xdg,,,AC_MSG_ERROR([The xdg python module is required (pyxdg or python-xdg)]))
 fi

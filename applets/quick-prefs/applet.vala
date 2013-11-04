@@ -87,7 +87,7 @@ public class PrefsApplet : AppletSimple
     icon.drag_begin.connect (this.on_drag_begin);
     icon.drag_end.connect (this.on_drag_end);
     icon.drag_failed.connect (this.on_drag_failed);
-    
+
     Gtk.drag_source_set (icon, Gdk.ModifierType.BUTTON1_MASK,
                          targets, Gdk.DragAction.LINK);
 
@@ -119,14 +119,14 @@ public class PrefsApplet : AppletSimple
     this.ctx_menu = this.create_default_menu () as Gtk.Menu;
 
     // quit menu item
-    Gtk.ImageMenuItem quit_item = 
+    Gtk.ImageMenuItem quit_item =
       new ImageMenuItem.from_stock (Gtk.STOCK_QUIT, null);
     quit_item.activate.connect (this.on_quit_click);
     quit_item.show ();
     this.ctx_menu.append (quit_item);
-    
+
     // about menu item
-    Gtk.ImageMenuItem about_item = 
+    Gtk.ImageMenuItem about_item =
       new ImageMenuItem.with_label (Gettext._ ("About Awn"));
     about_item.set_image (new Gtk.Image.from_stock (Gtk.STOCK_ABOUT,
       Gtk.IconSize.MENU));
@@ -150,7 +150,7 @@ public class PrefsApplet : AppletSimple
     {
       DBus.Connection con = DBus.Bus.get (DBus.BusType.SESSION);
 
-      var taskman = (DockManager) 
+      var taskman = (DockManager)
         con.get_object ("net.launchpad.DockManager",
                         "/net/launchpad/DockManager",
                         "net.launchpad.DockManager");
@@ -366,7 +366,7 @@ public class PrefsApplet : AppletSimple
   setup_label_for_docklet (Awn.Label label, Awn.Applet docklet)
   {
     Gtk.PositionType pos_type = docklet.get_pos_type ();
-    if (pos_type == Gtk.PositionType.TOP || 
+    if (pos_type == Gtk.PositionType.TOP ||
         pos_type == Gtk.PositionType.BOTTOM)
     {
       label.set_size_request (-1, docklet.get_size ());
@@ -592,7 +592,8 @@ public class PrefsApplet : AppletSimple
                             "/org/awnproject/Awn",
                             "org.awnproject.Awn.App");
 
-      awn.RemovePanel (this.panel_id);
+      GLib.Error err;
+      awn.call("RemovePanel", out err, this.panel_id);
     }
     catch (DBus.Error err)
     {
