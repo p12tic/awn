@@ -1,6 +1,9 @@
-NULL = 
+NULL =
 
 VALA_BINDINGS = bindings/vala
+
+# override vala: newer versions break awn
+VALAC=valac-0.12
 
 SUBDIRS = \
 	libawn \

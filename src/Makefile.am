@@ -13,6 +13,9 @@ AM_CPPFLAGS =				\
 	-I$(builddir)			\
 	$(NULL)
 
+# override vala: newer versions break awn
+VALAC=valac-0.12
+
 VALA_FILES = \
 	awn-panel-dispatcher.vala \
 	awn-app.vala \

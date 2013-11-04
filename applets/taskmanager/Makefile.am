@@ -31,6 +31,8 @@ VALA_FLAGS = \
 	$(srcdir)/task-manager.vapi \
 	$(NULL)
 
+VALAC = valac-0.12
+
 task-manager.vala.stamp: $(VALA_FILES)
 	$(foreach vala_file,$(VALA_FILES),\
 	$(VALAC) -C -H $(vala_file:.vala=.h) $(vala_file) $(VALA_FLAGS) || exit 1;)
