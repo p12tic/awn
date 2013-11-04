@@ -104,7 +104,9 @@ GTKDOC_LIBS = \
 	$(NULL)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.
+if ENABLE_GTK_DOC
 include $(top_srcdir)/gtk-doc.make
+endif
 
 if MAINTAINER_MODE
 $(DOC_MODULE).types: $(HFILE_GLOB)
@@ -113,4 +115,3 @@ endif
 
 # Other files to distribute
 # e.g. EXTRA_DIST += version.xml.in
-EXTRA_DIST +=
