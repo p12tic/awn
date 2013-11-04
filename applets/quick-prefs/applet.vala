@@ -116,7 +116,7 @@ public class PrefsApplet : AppletSimple
   private void
   initialize_menu ()
   {
-    this.ctx_menu = this.create_default_menu () as Menu;
+    this.ctx_menu = this.create_default_menu () as Gtk.Menu;
 
     // quit menu item
     Gtk.ImageMenuItem quit_item = 

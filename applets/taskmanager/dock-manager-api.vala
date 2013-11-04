@@ -24,18 +24,18 @@ using DBus;
 public interface DockManagerDBusInterface: GLib.Object
 {
   public abstract string[] get_capabilities () throws DBus.Error;
-  public abstract ObjectPath[] get_items () throws DBus.Error;
-  public abstract ObjectPath[] get_items_by_name (string name) throws DBus.Error;
-  public abstract ObjectPath[] get_items_by_desktop_file (string desktop_file) throws DBus.Error;
-  public abstract ObjectPath[] get_items_by_pid (int pid) throws DBus.Error;
-  public abstract ObjectPath get_item_by_xid (int64 xid) throws DBus.Error;
+  public abstract DBus.ObjectPath[] get_items () throws DBus.Error;
+  public abstract DBus.ObjectPath[] get_items_by_name (string name) throws DBus.Error;
+  public abstract DBus.ObjectPath[] get_items_by_desktop_file (string desktop_file) throws DBus.Error;
+  public abstract DBus.ObjectPath[] get_items_by_pid (int pid) throws DBus.Error;
+  public abstract DBus.ObjectPath get_item_by_xid (int64 xid) throws DBus.Error;
 
   // Awn-specific methods
   public abstract void awn_set_visibility (string win_name, bool visible) throws DBus.Error;
-  public abstract ObjectPath awn_register_proxy_item (string desktop_file, string uri) throws DBus.Error;
+  public abstract DBus.ObjectPath awn_register_proxy_item (string desktop_file, string uri) throws DBus.Error;
 
-  public signal void item_added (ObjectPath path);
-  public signal void item_removed (ObjectPath path);
+  public signal void item_added (DBus.ObjectPath path);
+  public signal void item_removed (DBus.ObjectPath path);
 }
 
 [DBus (name="net.launchpad.DockItem")]
@@ -71,15 +71,15 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     conn.register_object (obj_path, this);
   }
 
-  private static ObjectPath[] list_to_object_path_array (SList<Task.Icon> list)
+  private static DBus.ObjectPath[] list_to_object_path_array (SList<Task.Icon> list)
   {
-    ObjectPath[] result = new ObjectPath[list.length ()];
+    DBus.ObjectPath[] result = new DBus.ObjectPath[list.length ()];
     int i = 0;
     foreach (unowned Task.Icon icon in list)
     {
       unowned TaskIconDispatcher dispatcher;
       dispatcher = icon.get_dbus_dispatcher () as TaskIconDispatcher;
-      result[i++] = new ObjectPath (dispatcher.object_path);
+      result[i++] = new DBus.ObjectPath (dispatcher.object_path);
     }
 
     return result;
@@ -103,12 +103,12 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     return capabilities;
   }
 
-  public ObjectPath[] get_items () throws DBus.Error
+  public DBus.ObjectPath[] get_items () throws DBus.Error
   {
     return list_to_object_path_array (this.manager.get_icons ());
   }
 
-  public ObjectPath[] get_items_by_name (string name) throws DBus.Error
+  public DBus.ObjectPath[] get_items_by_name (string name) throws DBus.Error
   {
     unowned SList<unowned Task.Icon> icons = this.manager.get_icons ();
     SList<unowned Task.Icon> matches = new SList<unowned Task.Icon> ();
@@ -132,7 +132,7 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     return list_to_object_path_array (matches);
   }
 
-  public ObjectPath[] get_items_by_desktop_file (string desktop_file) throws DBus.Error
+  public DBus.ObjectPath[] get_items_by_desktop_file (string desktop_file) throws DBus.Error
   {
     unowned SList<unowned Task.Icon> icons = this.manager.get_icons ();
     SList<unowned Task.Icon> matches = new SList<unowned Task.Icon> ();
@@ -152,7 +152,7 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     return list_to_object_path_array (matches);
   }
 
-  public ObjectPath[] get_items_by_pid (int pid) throws DBus.Error
+  public DBus.ObjectPath[] get_items_by_pid (int pid) throws DBus.Error
   {
     unowned SList<unowned Task.Icon> icons = this.manager.get_icons ();
     SList<unowned Task.Icon> matches = new SList<unowned Task.Icon> ();
@@ -176,7 +176,7 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     return list_to_object_path_array (matches);
   }
 
-  public ObjectPath get_item_by_xid (int64 xid) throws DBus.Error
+  public DBus.ObjectPath get_item_by_xid (int64 xid) throws DBus.Error
   {
     unowned Task.Icon? icon = this.manager.get_icon_by_xid (xid);
 
@@ -185,7 +185,7 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
       unowned TaskIconDispatcher dispatcher;
       dispatcher = icon.get_dbus_dispatcher () as TaskIconDispatcher;
 
-      return new ObjectPath (dispatcher.object_path);
+      return new DBus.ObjectPath (dispatcher.object_path);
     }
 
     return null;
@@ -201,11 +201,11 @@ public class TaskManagerDispatcher: GLib.Object, DockManagerDBusInterface
     this.manager.update (win_name, hints);
   }
 
-  public ObjectPath 
+  public DBus.ObjectPath
   awn_register_proxy_item (string desktop_file, string uri) throws DBus.Error
   {
     // TODO: implement
-    return new ObjectPath ("/not/yet/implemented");
+    return new DBus.ObjectPath ("/not/yet/implemented");
   }
 }
 
@@ -267,7 +267,7 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
 
     if (proxy != null)
     {
-      proxy.item_added (new ObjectPath(this.object_path));
+      proxy.item_added (new DBus.ObjectPath(this.object_path));
     }
   }
 
@@ -277,7 +277,7 @@ public class TaskIconDispatcher: GLib.Object, DockItemDBusInterface
 
     if (proxy != null)
     {
-      proxy.item_removed (new ObjectPath(this.object_path));
+      proxy.item_removed (new DBus.ObjectPath(this.object_path));
     }
   }
 
