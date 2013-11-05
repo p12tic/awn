@@ -107,7 +107,7 @@ install-data-local: install-gconf-schemas
 
 taskmanager_menusdir = $(applet_datadir)/menus
 dist_taskmanager_menus_DATA = \
-	$(wildcard menus/*.xml) \
+	$(wildcard $(srcdir)/menus/*.xml) \
 	$(NULL)
 
 # miscellaneous
