@@ -10,34 +10,35 @@ noinst_PROGRAMS = \
 
 AM_CPPFLAGS = $(STANDARD_CPPFLAGS) $(DISABLE_DEPRECATED_FLAGS) $(AWN_CFLAGS) -I$(top_srcdir)
 AM_CFLAGS = $(WARNING_FLAGS)
+AM_CXXFLAGS = $(WARNING_FLAGS) -fpermissive
 
-test_applet_simple_SOURCES = test-applet-simple.c
+test_applet_simple_SOURCES = test-applet-simple.cc
 test_applet_simple_LDADD = 	\
 						$(top_builddir)/libawn/libawn.la \
 						$(AWN_LIBS)
 
-test_awn_effects_SOURCES = test-awn-effects.c
+test_awn_effects_SOURCES = test-awn-effects.cc
 test_awn_effects_LDADD = \
 						$(top_builddir)/libawn/libawn.la \
 						$(AWN_LIBS)
 
-test_awn_icon_SOURCES = test-awn-icon.c
+test_awn_icon_SOURCES = test-awn-icon.cc
 test_awn_icon_LDADD = \
 					$(top_builddir)/libawn/libawn.la \
 					$(AWN_LIBS)
 
-test_awn_icon_box_SOURCES = test-awn-icon-box.c
+test_awn_icon_box_SOURCES = test-awn-icon-box.cc
 test_awn_icon_box_LDADD = \
 						$(top_builddir)/libawn/libawn.la \
 						$(AWN_LIBS)
 
-test_taskmanager_SOURCES = test-taskmanager.c
+test_taskmanager_SOURCES = test-taskmanager.cc
 test_taskmanager_LDADD = \
 	$(AWN_LIBS) \
 	$(top_builddir)/libawn/libawn.la \
 	$(NULL)
 
-test_themed_icon_SOURCES = test-themed-icon.c
+test_themed_icon_SOURCES = test-themed-icon.cc
 test_themed_icon_LDADD = \
 						$(top_builddir)/libawn/libawn.la \
 						$(AWN_LIBS)

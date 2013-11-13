@@ -3,7 +3,7 @@ include $(top_srcdir)/Makefile.c-applet
 
 applet_LTLIBRARIES = expander.la
 expander_la_SOURCES = \
-	applet.c \
+	applet.cc \
 	$(NULL)
 expander_la_LIBADD = \
 	$(top_builddir)/libawn/libawn.la \

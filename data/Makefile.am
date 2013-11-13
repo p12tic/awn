@@ -36,7 +36,7 @@ update-icon-cache:
 
 dist_pkg_DATA = \
 	awn-themed-icon.ui \
-	index.theme 
+	index.theme
 
 pkgdir = $(pkgdatadir)
 
@@ -57,7 +57,7 @@ EXTRA_DIST += \
 	$(text_DATA) \
 	$(desktop_DATA:.desktop=.desktop.in) \
 	$(schema_in_files:.schema-ini.in=.schema-ini.in.in) \
-	active/spotlight_png_inline.c \
+	active/spotlight_png_inline.cc \
 	awn-window-fallback.svg \
 	$(NULL)
 

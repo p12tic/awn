@@ -3,6 +3,7 @@ AM_CPPFLAGS =		\
 	-I$(top_srcdir) \
 	$(AWN_CFLAGS)	\
 	$(NULL)
+AM_CXXFLAGS = -fpermissive
 
 bin_PROGRAMS = awn-applet
 
@@ -12,6 +13,6 @@ awn_applet_LDADD =			\
 	$(NULL)
 
 awn_applet_SOURCES =	\
-	main.c			\
+	main.cc			\
 	$(NULL)
 # vim: set ts=8 sts=8 sw=8 :

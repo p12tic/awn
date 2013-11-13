@@ -13,6 +13,8 @@ AM_CFLAGS = \
 	$(APPLET_CFLAGS) \
 	$(NULL)
 
+AM_CXXFLAGS = $(AM_CFLAGS) -fpermissive
+
 APPLET_LINKER_FLAGS = -module -avoid-version
 
 appletdir = $(LIBAPPLETDIR)/$(APPLET_NAME)

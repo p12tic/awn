@@ -3,6 +3,7 @@ MARSHAL_PREFIX = awn
 include $(top_srcdir)/Makefile.marshal
 
 AM_CFLAGS = $(WARNING_FLAGS)
+AM_CXXFLAGS = $(WARNING_FLAGS) -fpermissive
 AM_CPPFLAGS =				\
 	$(STANDARD_CPPFLAGS)		\
 	$(DISABLE_DEPRECATED_FLAGS)	\
@@ -50,45 +51,45 @@ avant_window_navigator_LDADD =			\
 	$(NULL)
 
 avant_window_navigator_SOURCES =	\
-	awn-main.c \
-	awn-applet-manager.c \
+	awn-main.cc \
+	awn-applet-manager.cc \
 	awn-applet-manager.h \
-	awn-applet-proxy.c \
+	awn-applet-proxy.cc \
 	awn-applet-proxy.h \
-	awn-background.c \
+	awn-background.cc \
 	awn-background.h \
-	awn-background-null.c \
+	awn-background-null.cc \
 	awn-background-null.h \
-	awn-background-flat.c \
+	awn-background-flat.cc \
 	awn-background-flat.h \
-	awn-background-3d.c \
+	awn-background-3d.cc \
 	awn-background-3d.h \
-	awn-background-curves.c \
+	awn-background-curves.cc \
 	awn-background-curves.h \
-	awn-background-edgy.c \
+	awn-background-edgy.cc \
 	awn-background-edgy.h \
-	awn-background-floaty.c \
+	awn-background-floaty.cc \
 	awn-background-floaty.h \
-	awn-background-lucido.c \
+	awn-background-lucido.cc \
 	awn-background-lucido.h \
 	awn-defines.h \
 	$(builddir)/awn-marshal.c \
 	$(builddir)/awn-marshal.h \
-	awn-monitor.c \
+	awn-monitor.cc \
 	awn-monitor.h \
-	awn-panel.c \
+	awn-panel.cc \
 	awn-panel.h \
-	awn-separator.c \
+	awn-separator.cc \
 	awn-separator.h \
-	awn-throbber.c \
+	awn-throbber.cc \
 	awn-throbber.h \
-	awn-ua-alignment.c \
+	awn-ua-alignment.cc \
 	awn-ua-alignment.h \
 	awn-x.h \
-	awn-x.c \
+	awn-x.cc \
 	inlinepixbufs.h \
 	xutils.h \
-	xutils.c \
+	xutils.cc \
 	$(VALA_GENERATED_FILES) \
 	$(NULL)
 

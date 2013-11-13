@@ -219,7 +219,7 @@ awn_effects_set_custom_icon(AwnEffects *fx, const gchar *path)
 
     if (g_strcmp0(path, AWN_INTERNAL_SPOTLIGHT) == 0)
     {
-      #include "../data/active/spotlight_png_inline.c"
+      #include "../data/active/spotlight_png_inline.cc"
 
       mem_reader_t mem_reader;
       mem_reader.data = spotlight_bin_data;

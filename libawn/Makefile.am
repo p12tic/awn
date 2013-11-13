@@ -2,7 +2,7 @@ include $(top_srcdir)/Makefile.shave
 MARSHAL_PREFIX = libawn
 include $(top_srcdir)/Makefile.marshal
 
-ENUMFILES = awn-enum-types.c awn-enum-types.h
+ENUMFILES = awn-enum-types.cc awn-enum-types.h
 STAMPFILES = stamp-awn-enum-types.h
 
 GLIB_MKENUMS=`pkg-config --variable=glib_mkenums glib-2.0`
@@ -21,7 +21,7 @@ AM_CPPFLAGS = $(STANDARD_CPPFLAGS) \
 	-I$(top_builddir) \
 	-DDATADIR=\""$(datadir)"\" \
 	-DPKGDATADIR=\""$(pkgdatadir)"\"\
-	$(NULL)	
+	$(NULL)
 
 libawnincdir = $(includedir)/libawn
 
@@ -72,17 +72,17 @@ anims_headers = \
 	$(NULL)
 
 anims_source = \
-	anims/awn-effects-shared.c \
-	anims/awn-effect-bounce.c \
-	anims/awn-effect-desaturate.c \
-	anims/awn-effect-fade.c \
-	anims/awn-effect-glow.c \
-	anims/awn-effect-simple.c \
-	anims/awn-effect-spotlight.c \
-	anims/awn-effect-spotlight3d.c \
-	anims/awn-effect-squish.c \
-	anims/awn-effect-turn.c \
-	anims/awn-effect-zoom.c \
+	anims/awn-effects-shared.cc \
+	anims/awn-effect-bounce.cc \
+	anims/awn-effect-desaturate.cc \
+	anims/awn-effect-fade.cc \
+	anims/awn-effect-glow.cc \
+	anims/awn-effect-simple.cc \
+	anims/awn-effect-spotlight.cc \
+	anims/awn-effect-spotlight3d.cc \
+	anims/awn-effect-squish.cc \
+	anims/awn-effect-turn.cc \
+	anims/awn-effect-zoom.cc \
 	$(NULL)
 
 private_headers = \
@@ -96,35 +96,35 @@ source_h = $(public_headers) $(private_headers)
 
 source_c = \
 	$(anims_source) \
-	awn-alignment.c \
-	awn-applet.c \
-	awn-applet-simple.c \
-	awn-box.c \
-	awn-cairo-utils.c \
-	awn-config.c \
-	awn-dbus-watcher.c \
-	awn-desktop-lookup-client.c \
-	awn-dialog.c \
-	awn-effects.c \
-	awn-effects-ops-new.c \
-	awn-effects-ops-helpers.c \
-	awn-icon.c \
-	awn-icon-box.c \
-	awn-image.c \
-	awn-label.c \
-	awn-overlay.c \
-	awn-overlayable.c \
-	awn-overlay-pixbuf.c \
-	awn-overlay-pixbuf-file.c \
-	awn-overlay-progress.c \
-	awn-overlay-progress-circle.c \
-	awn-overlay-themed-icon.c \
-	awn-overlay-text.c \
-	awn-overlay-throbber.c \
-	awn-pixbuf-cache.c \
-	awn-themed-icon.c \
-	awn-tooltip.c \
-	awn-utils.c \
+	awn-alignment.cc \
+	awn-applet.cc \
+	awn-applet-simple.cc \
+	awn-box.cc \
+	awn-cairo-utils.cc \
+	awn-config.cc \
+	awn-dbus-watcher.cc \
+	awn-desktop-lookup-client.cc \
+	awn-dialog.cc \
+	awn-effects.cc \
+	awn-effects-ops-new.cc \
+	awn-effects-ops-helpers.cc \
+	awn-icon.cc \
+	awn-icon-box.cc \
+	awn-image.cc \
+	awn-label.cc \
+	awn-overlay.cc \
+	awn-overlayable.cc \
+	awn-overlay-pixbuf.cc \
+	awn-overlay-pixbuf-file.cc \
+	awn-overlay-progress.cc \
+	awn-overlay-progress-circle.cc \
+	awn-overlay-themed-icon.cc \
+	awn-overlay-text.cc \
+	awn-overlay-throbber.cc \
+	awn-pixbuf-cache.cc \
+	awn-themed-icon.cc \
+	awn-tooltip.cc \
+	awn-utils.cc \
 	$(NULL)
 
 libawninc_HEADERS = \
@@ -136,6 +136,7 @@ libawn_la_SOURCES = \
 	$(source_c) \
 	$(NULL)
 libawn_la_CFLAGS = $(WARNING_FLAGS)
+libawn_la_CXXFLAGS = $(WARNING_FLAGS) -fpermissive
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 1:1:0
 
@@ -150,16 +151,16 @@ stamp-awn-enum-types.h: $(source_h) Makefile
 	rm -f xgen-ceth && \
 	echo timestamp > $(@F)
 
-awn-enum-types.c: awn-enum-types.h
+awn-enum-types.cc: awn-enum-types.h
 	$(QUIET_GEN)( cd $(srcdir) && \
 	  $(GLIB_MKENUMS) \
-	  	--template $(srcdir)/awn-enum-types.c.in \
+	  	--template $(srcdir)/awn-enum-types.cc.in \
 	  $(source_h) ) >> xgen-cetc && \
-	cp xgen-cetc awn-enum-types.c && \
+	cp xgen-cetc awn-enum-types.cc && \
 	rm -f xgen-cetc
 
 EXTRA_DIST =				\
-	awn-enum-types.c.in		\
+	awn-enum-types.cc.in		\
 	awn-enum-types.h.in		\
 	libawn-marshal.list		\
 	$(NULL)
