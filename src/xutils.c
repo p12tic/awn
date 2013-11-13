@@ -33,6 +33,10 @@
 
 #include "xutils.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
 	STRUT_LEFT = 0,
 	STRUT_RIGHT = 1,
@@ -214,3 +218,6 @@ xutils_is_window_minimized (GdkWindow *window)
   return result;
 }
 
+#ifdef __cplusplus
+} // extern "C"
+#endif

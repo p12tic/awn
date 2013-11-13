@@ -27,7 +27,9 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void xutils_set_strut (GdkWindow        *gdk_window,
                        GtkPositionType   position,
@@ -41,6 +43,9 @@ GdkWindow* xutils_get_window_at_pointer (GdkDisplay *gdk_display);
 
 gboolean   xutils_is_window_minimized (GdkWindow *window);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* WNCK_XUTILS_H */

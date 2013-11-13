@@ -1,5 +1,6 @@
 Makefile
 Makefile.in
+*.creator.user*
 *-glue.h
 *-marshal.*
 *.cdbs-orig
