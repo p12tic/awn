@@ -58,6 +58,12 @@ struct _TaskIcon
   TaskIconPrivate *priv;
 };
 
+enum DesktopCopy {
+  DESKTOP_COPY_ALL=0,
+  DESKTOP_COPY_OWNER,
+  DESKTOP_COPY_NONE
+};
+
 struct _TaskIconClass
 {
   AwnThemedIconClass   parent_class;

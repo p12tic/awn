@@ -163,12 +163,6 @@ enum
   INTELLIHIDE_GROUP  
 };
 
-enum{
-  DESKTOP_COPY_ALL=0,
-  DESKTOP_COPY_OWNER,
-  DESKTOP_COPY_NONE
-}DesktopCopy;
-
 enum
 {
   PROP_0,
