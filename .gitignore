@@ -76,7 +76,6 @@ doc/reference/libawn.interfaces
 doc/reference/libawn.prerequisites
 doc/reference/libawn.signals
 doc/reference/scan-build.stamp
-libawn/*awn-enum-types.*
 m4/gtk-doc.m4
 m4/intltool.m4
 m4/libtool.m4
