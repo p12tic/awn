@@ -6,3 +6,6 @@
 /usr/include/libwnck-1.0
 /usr/include/gdk-pixbuf-2.0
 /usr/include/libdesktop-agnostic-1.0
+/usr/include/glibmm-2.4
+/usr/include/gtkmm-2.4
+/usr/include/giomm-2.4

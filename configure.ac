@@ -113,13 +113,15 @@ dnl Check that we meet the dependencies
 dnl ==============================================
 
 MIN_GLIB_VERSION=2.16.0
+MIN_GLIBMM_VERSION=2.16.0
 MIN_GTK_VERSION=2.12.0
+MIN_GTKMM_VERSION=2.12.0
 MIN_WNCK_VERSION=2.22
 MIN_LDA_VERSION=0.3.91
 
 AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, glib-genmarshal)
 
-LIBRARY_MODULES="glib-2.0 >= $MIN_GLIB_VERSION gthread-2.0 gobject-2.0 desktop-agnostic >= $MIN_LDA_VERSION gtk+-2.0 >= $MIN_GTK_VERSION gdk-2.0 >= $MIN_GTK_VERSION dbus-glib-1"
+LIBRARY_MODULES="glib-2.0 >= $MIN_GLIB_VERSION glibmm-2.4 >= $MIN_GLIBMM_VERSION gthread-2.0 gobject-2.0 desktop-agnostic >= $MIN_LDA_VERSION gtk+-2.0 >= $MIN_GTK_VERSION gtkmm-2.4 >= $MIN_GTKMM_VERSION gdk-2.0 >= $MIN_GTK_VERSION dbus-glib-1"
 DOCK_MODULES="x11 xproto xcomposite xrender xext"
 TASKMANAGER_MODULES="libwnck-1.0 >= $MIN_WNCK_VERSION x11 libgtop-2.0 xext"
 AC_SUBST(LIBRARY_MODULES)
