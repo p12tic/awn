@@ -106,7 +106,7 @@ on_click (GtkWidget *widget, GdkEventButton *event, AwnIconBox *box)
       break;
     /* right click > change position */
     case 3:
-      position++;
+      position = (GtkPositionType)((int)position + 1);
       if (position > GTK_POS_BOTTOM) position = GTK_POS_LEFT;
       awn_icon_box_set_pos_type (box, position);
       break;
