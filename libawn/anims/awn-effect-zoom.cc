@@ -57,7 +57,7 @@ zoom_effect(AwnEffectsAnimation * anim)
   switch (priv->direction)
   {
 
-    case AWN_EFFECT_DIR_UP:
+    case AWN_EFFECT_DIR_UP: {
 
       if (priv->width_mod + INCREMENT < max)
       {
@@ -79,8 +79,8 @@ zoom_effect(AwnEffectsAnimation * anim)
         priv->direction = AWN_EFFECT_DIR_DOWN;
 
       break;
-
-    case AWN_EFFECT_DIR_DOWN:
+    }
+    case AWN_EFFECT_DIR_DOWN: {
       priv->width_mod -= INCREMENT;
       priv->height_mod -= INCREMENT;
 
@@ -92,7 +92,7 @@ zoom_effect(AwnEffectsAnimation * anim)
       }
 
       break;
-
+    }
     default:
       priv->direction = AWN_EFFECT_DIR_UP;
   }

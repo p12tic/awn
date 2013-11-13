@@ -756,10 +756,8 @@ draw_top_bottom_background (AwnBackground*   bg,
   width += 1.;
 
   gboolean composited = awn_panel_get_composited (bg->panel);
-  if (composited == FALSE)
+  if (composited != FALSE)
   {
-    goto paint_lines;
-  }
 
   gfloat x = x_start_limit,
          y = 0.;
@@ -829,9 +827,8 @@ draw_top_bottom_background (AwnBackground*   bg,
   cairo_stroke (cr);
 
   return;
+  }
   /* if not composited */
-paint_lines:
-
   if (expand)
   {
     /* Internal border */
