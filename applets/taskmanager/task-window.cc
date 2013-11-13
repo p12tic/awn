@@ -799,8 +799,7 @@ task_window_get_client_name (TaskWindow *window)
 /*
  return the total number of icon changes 
  */
-guint
-task_window_get_icon_changes (TaskWindow * window)
+WinIconUse task_window_get_icon_changes (TaskWindow * window)
 {
   g_return_val_if_fail (TASK_IS_WINDOW (window), 0);
 

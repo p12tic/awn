@@ -49,7 +49,7 @@ launch_applet_with(const gchar *program,
                    gint panel_id);
 
 static gint
-do_dbus_call ();
+do_dbus_call (gint panel_id, gchar *desktop_file_path);
 
 static gboolean
 execute_wrapper (const gchar* cmd_line,
