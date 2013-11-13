@@ -25,7 +25,9 @@
 #include <glib-object.h>
 #include "awn-overlay-progress.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_OVERLAY_PROGRESS_CIRCLE awn_overlay_progress_circle_get_type()
 
@@ -56,6 +58,9 @@ GType awn_overlay_progress_circle_get_type (void);
 
 AwnOverlayProgressCircle* awn_overlay_progress_circle_new (void);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_OVERLAY_PROGRESS_CIRCLE */

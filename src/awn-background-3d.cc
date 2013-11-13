@@ -56,7 +56,9 @@
 #define OBTAIN_THICKNESS(rad,thick) (floor(sin(TRANSFORM_RADIUS(rad)*\
                                                M_PI/180.)*MAX_THICKNESS*thick))
 
+extern "C" {
 G_DEFINE_TYPE (AwnBackground3d, awn_background_3d, AWN_TYPE_BACKGROUND)
+}
 
 struct _Point3
 {
@@ -805,4 +807,3 @@ awn_background_3d_input_shape_mask (AwnBackground  *bg,
   cairo_restore (cr);
 }
 
-/* vim: set et ts=2 sts=2 sw=2 : */

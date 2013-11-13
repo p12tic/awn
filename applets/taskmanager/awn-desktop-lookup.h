@@ -24,8 +24,6 @@
 
 #include <glib-object.h>
 
-G_BEGIN_DECLS
-
 #define AWN_TYPE_DESKTOP_LOOKUP awn_desktop_lookup_get_type()
 
 #define AWN_DESKTOP_LOOKUP(obj) \
@@ -67,8 +65,5 @@ gchar *awn_desktop_lookup_special_case (gchar * cmd,
                                  gchar * wm_name,
                                  gchar * window_role);
 
-
-
-G_END_DECLS
 
 #endif /* _AWN_DESKTOP_LOOKUP */

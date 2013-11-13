@@ -28,7 +28,9 @@
 
 #include "awn-overlay.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_OVERLAY_PIXBUF awn_overlay_pixbuf_get_type()
 
@@ -61,6 +63,9 @@ AwnOverlayPixbuf* awn_overlay_pixbuf_new (void);
 
 AwnOverlayPixbuf* awn_overlay_pixbuf_new_with_pixbuf (GdkPixbuf * pixbuf);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_OVERLAY_PIXBUF */

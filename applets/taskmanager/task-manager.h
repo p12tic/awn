@@ -27,6 +27,10 @@
 #include <libawn/libawn.h>
 #include "task-icon.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Fixes build failure from the generated vala code
  * TODO: drop when we require glib >= 2.18 
  */
@@ -109,6 +113,10 @@ void task_manager_add_icon_show ( TaskManager * taskman);
 
 gboolean
 task_manager_add_icon_hide ( TaskManager * taskman);
+
+#ifdef __cplusplus
+} // extern C
+#endif
 
 #endif /* _TASK_MANAGER_H_ */
 

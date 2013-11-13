@@ -49,7 +49,9 @@
 
 #include "awn-overlay-pixbuf-file.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnOverlayPixbufFile, awn_overlay_pixbuf_file, AWN_TYPE_OVERLAY_PIXBUF)
+}
 
 #define AWN_OVERLAY_PIXBUF_FILE_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_PIXBUF_FILE, AwnOverlayPixbufFilePrivate))
@@ -327,3 +329,4 @@ awn_overlay_pixbuf_file_load (AwnOverlayPixbufFile *overlay,
   }
   return TRUE;
 }
+

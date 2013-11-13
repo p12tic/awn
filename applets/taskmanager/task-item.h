@@ -27,9 +27,11 @@
 
 #include <libawn/libawn.h>
 
-G_BEGIN_DECLS
-
 #define MAX_TASK_ITEM_CHARS 50
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define TASK_TYPE_ITEM (task_item_get_type ())
 
@@ -84,8 +86,16 @@ struct _TaskItemClass
   void (*visible_changed)   (TaskItem *item, gboolean     visible);
 };
 
+#ifdef __cplusplus
+} // extern C
+#endif
+
 // circular dependency :/
 #include "task-icon.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 GType           task_item_get_type        (void) G_GNUC_CONST;
 
@@ -119,6 +129,8 @@ void task_item_emit_name_changed    (TaskItem *item, const gchar *name);
 void task_item_emit_icon_changed    (TaskItem *item, GdkPixbuf   *icon);
 void task_item_emit_visible_changed (TaskItem *item, gboolean     visible);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern C
+#endif
 
 #endif /* _TASK_ITEM_H_ */

@@ -24,7 +24,9 @@
 
 #include "awn-defines.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_APPLET (awn_applet_get_type ())
 
@@ -176,6 +178,9 @@ void               awn_applet_popup_gtk_menu  (AwnApplet *applet,
                                                guint      button,
                                                guint32    activate_time);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif

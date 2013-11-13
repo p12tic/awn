@@ -21,7 +21,9 @@
 
 #include <gtk/gtk.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_BOX (awn_box_get_type ())
 
@@ -66,7 +68,10 @@ void           awn_box_set_orientation  (AwnBox         *box,
 void           awn_box_set_orientation_from_pos_type (AwnBox *box,
                                                       GtkPositionType pos_type);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_BOX_H_ */
 

@@ -27,7 +27,9 @@
 
 #include "awn-icon.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_THEMED_ICON (awn_themed_icon_get_type ())
 
@@ -131,6 +133,9 @@ void awn_themed_icon_drag_data_received (GtkWidget        *widget,
                                     guint             evt_time);
 
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_THEMED_ICON_H_ */

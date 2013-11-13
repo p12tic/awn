@@ -34,7 +34,9 @@
 
 #include "gseal-transition.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnTooltip, awn_tooltip, GTK_TYPE_WINDOW)
+}
 
 #define AWN_TOOLTIP_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
                                       AWN_TYPE_TOOLTIP, AwnTooltipPrivate))
@@ -1054,4 +1056,3 @@ awn_tooltip_set_position_hint(AwnTooltip *tooltip,
     awn_tooltip_update_position (tooltip);
   }
 }
-

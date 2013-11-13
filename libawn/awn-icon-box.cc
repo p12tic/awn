@@ -25,7 +25,9 @@
 #include "awn-utils.h"
 #include "gseal-transition.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnIconBox, awn_icon_box, AWN_TYPE_BOX)
+}
 
 #define AWN_ICON_BOX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_ICON_BOX, \

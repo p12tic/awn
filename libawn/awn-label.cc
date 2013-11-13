@@ -31,7 +31,9 @@
 #include "awn-cairo-utils.h"
 #include "awn-config.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnLabel, awn_label, GTK_TYPE_LABEL)
+}
 
 #define AWN_LABEL_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_LABEL, AwnLabelPrivate))

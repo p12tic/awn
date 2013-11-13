@@ -2029,3 +2029,4 @@ task_icon_build_context_menu(TaskIcon * icon)
   }  
   return menu;
 }
+

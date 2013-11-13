@@ -40,7 +40,9 @@
 #include "awn-cairo-utils.h"
 #include "awn-overlay-progress-circle.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnOverlayProgressCircle, awn_overlay_progress_circle, AWN_TYPE_OVERLAY_PROGRESS)
+}
 
 #define AWN_OVERLAY_PROGRESS_CIRCLE_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_PROGRESS_CIRCLE, AwnOverlayProgressCirclePrivate))

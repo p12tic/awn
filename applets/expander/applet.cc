@@ -18,10 +18,8 @@
 #include <libawn/libawn.h>
 #include <dbus/dbus-glib.h>
 
-AwnApplet* awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id);
-
-AwnApplet*
-awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
+extern "C"
+AwnApplet* awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
 {
   DBusGProxy *proxy;
   GError *error = NULL;
@@ -41,4 +39,3 @@ awn_applet_factory_initp (gchar* name, gchar* uid, gint panel_id)
 
   return NULL;
 }
-

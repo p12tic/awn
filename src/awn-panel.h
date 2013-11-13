@@ -30,7 +30,9 @@
 #include <libdesktop-agnostic/config.h>
 #include <libawn/libawn.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_PANEL (awn_panel_get_type())
 
@@ -142,7 +144,10 @@ gboolean    awn_panel_ua_add_applet       (AwnPanel *panel,
                                            gchar *size_type,
                                            GError **error);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 
 #endif /* _AWN_PANEL_H */

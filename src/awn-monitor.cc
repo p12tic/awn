@@ -31,7 +31,9 @@
 
 #include "awn-defines.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnMonitor, awn_monitor, G_TYPE_OBJECT) 
+}
 
 #define AWN_MONITOR_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_MONITOR, AwnMonitorPrivate))
@@ -483,6 +485,5 @@ awn_monitor_set_force_monitor (AwnMonitor *monitor,
     g_signal_emit (monitor, _monitor_signals[GEOMETRY_CHANGED], 0);
   }
 }
-
 
 /* vim: set et ts=2 sts=2 sw=2 : */

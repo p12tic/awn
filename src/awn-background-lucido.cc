@@ -31,7 +31,9 @@
 #include "awn-background-lucido.h"
 #include "awn-separator.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnBackgroundLucido, awn_background_lucido, AWN_TYPE_BACKGROUND)
+}
 
 #define AWN_BACKGROUND_LUCIDO_GET_PRIVATE(obj) ( \
     G_TYPE_INSTANCE_GET_PRIVATE (obj, AWN_TYPE_BACKGROUND_LUCIDO, \
@@ -1157,4 +1159,5 @@ awn_background_lucido_get_needs_redraw (AwnBackground *bg,
   }
   return FALSE;
 }
+
 /* vim: set et ts=2 sts=2 sw=2 : */

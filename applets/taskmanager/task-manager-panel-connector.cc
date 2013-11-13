@@ -19,7 +19,6 @@
 #include <config.h>
 #endif
 
-
 G_DEFINE_TYPE (TaskManagerPanelConnector, task_manager_panel_connector, G_TYPE_OBJECT)
 
 #define GET_PRIVATE(o) \
@@ -358,5 +357,3 @@ task_manager_panel_connector_uninhibit_autohide (TaskManagerPanelConnector *conn
     g_error_free (error);
   }
 }
-
-

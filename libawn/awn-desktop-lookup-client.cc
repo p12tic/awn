@@ -20,7 +20,9 @@
 
 #include "awn-desktop-lookup-client.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnDesktopLookupClient, awn_desktop_lookup_client, G_TYPE_OBJECT)
+}
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_DESKTOP_LOOKUP_CLIENT, AwnDesktopLookupClientPrivate))
@@ -86,4 +88,3 @@ awn_desktop_lookup_client_new (void)
 {
   return g_object_new (AWN_TYPE_DESKTOP_LOOKUP_CLIENT, NULL);
 }
-

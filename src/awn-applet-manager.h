@@ -27,7 +27,9 @@
 #include <libdesktop-agnostic/desktop-agnostic.h>
 #include <libawn/libawn.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_APPLET_MANAGER (awn_applet_manager_get_type())
 
@@ -114,7 +116,10 @@ gboolean    awn_ua_add_applet                    (AwnAppletManager *manager,
                                                   gchar *size_type,
                                                   GError **error);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_APPLET_MANAGER_H */
 

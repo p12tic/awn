@@ -50,3 +50,4 @@ main (gint argc, gchar **argv)
   gtk_main ();
   return 0;
 }
+

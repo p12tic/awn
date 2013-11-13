@@ -18,7 +18,9 @@
 
 #include "awn-box.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnBox, awn_box, GTK_TYPE_BOX)
+}
 
 #define AWN_BOX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_BOX, \
@@ -223,4 +225,3 @@ awn_box_set_orientation_from_pos_type (AwnBox *box,
 {
   awn_box_set_orientation (box, awn_box_orientation_from_pos_type (pos_type));
 }
-

@@ -29,7 +29,9 @@
 #include "awn-background-edgy.h"
 #include "awn-applet-manager.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnBackgroundEdgy, awn_background_edgy, AWN_TYPE_BACKGROUND_FLAT)
+}
 
 #define AWN_BACKGROUND_EDGY_GET_PRIVATE(obj) ( \
   G_TYPE_INSTANCE_GET_PRIVATE (obj, AWN_TYPE_BACKGROUND_EDGY, \

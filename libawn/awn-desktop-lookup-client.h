@@ -24,7 +24,9 @@
 
 #include <glib-object.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_DESKTOP_LOOKUP_CLIENT awn_desktop_lookup_client_get_type()
 
@@ -55,7 +57,10 @@ GType awn_desktop_lookup_client_get_type (void);
 
 AwnDesktopLookupClient* awn_desktop_lookup_client_new (void);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_DESKTOP_LOOKUP_CLIENT */
 

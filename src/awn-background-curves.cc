@@ -28,7 +28,9 @@
 
 #include <math.h>
 
+extern "C" {
 G_DEFINE_TYPE (AwnBackgroundCurves, awn_background_curves, AWN_TYPE_BACKGROUND)
+}
 
 /* FORWARDS */
 static void awn_background_curves_padding_request (AwnBackground *bg,

@@ -25,7 +25,9 @@
 
 #include "awn-defines.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_TOOLTIP		(awn_tooltip_get_type ())
 
@@ -104,6 +106,9 @@ void          awn_tooltip_set_position_hint    (AwnTooltip *tooltip,
                                                 GtkPositionType position,
                                                 gint size);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif

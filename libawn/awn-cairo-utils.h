@@ -30,6 +30,10 @@
 #include <cairo.h>
 #include <libdesktop-agnostic/desktop-agnostic.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum
 {
 	ROUND_NONE		= 0,
@@ -81,6 +85,10 @@ awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier (cairo_pattern_t   
                                                               double                offset,
                                                               DesktopAgnosticColor *color,
                                                               gdouble               multiplier);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif
 

@@ -26,7 +26,9 @@
 
 #include "awn-background-floaty.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnBackgroundFloaty, awn_background_floaty, AWN_TYPE_BACKGROUND)
+}
 
 static void awn_background_floaty_draw (AwnBackground  *bg,
                                         cairo_t        *cr,

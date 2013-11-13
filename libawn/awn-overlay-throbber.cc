@@ -41,7 +41,9 @@
  * Throbber overlay used with #AwnOverlaidIcon.
  */
 
+extern "C" {
 G_DEFINE_TYPE (AwnOverlayThrobber, awn_overlay_throbber, AWN_TYPE_OVERLAY)
+}
 
 #define AWN_OVERLAY_THROBBER_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_THROBBER, AwnOverlayThrobberPrivate))

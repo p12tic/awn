@@ -87,4 +87,3 @@ awn_desktop_lookup_gnome3_new (void)
 {
   return g_object_new (AWN_TYPE_DESKTOP_LOOKUP_GNOME3, NULL);
 }
-

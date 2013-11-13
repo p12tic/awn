@@ -383,4 +383,3 @@ awn_cairo_pattern_add_color_stop_color_with_alpha_multiplier (cairo_pattern_t   
                                      alpha * multiplier);
 }
 
-/* vim: set et ts=2 sts=2 sw=2 ai cindent : */

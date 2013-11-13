@@ -39,7 +39,9 @@
 
 #include "awn-overlay-progress.h"
 
+extern "C" {
 G_DEFINE_ABSTRACT_TYPE (AwnOverlayProgress, awn_overlay_progress, AWN_TYPE_OVERLAY)
+}
 
 #define AWN_OVERLAY_PROGRESS_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_PROGRESS, AwnOverlayProgressPrivate))
@@ -143,4 +145,3 @@ awn_overlay_progress_new (void)
 {
   return g_object_new (AWN_TYPE_OVERLAY_PROGRESS, NULL);
 }
-

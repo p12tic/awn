@@ -27,7 +27,9 @@
 #include <glib-object.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_PIXBUF_CACHE awn_pixbuf_cache_get_type()
 
@@ -93,6 +95,9 @@ AwnPixbufCache* awn_pixbuf_cache_new (void);
 
 AwnPixbufCache* awn_pixbuf_cache_get_default (void);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_PIXBUF_CACHE */

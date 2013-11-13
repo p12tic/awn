@@ -4,7 +4,9 @@
 
 #include <glib-object.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*** END file-header ***/
 
@@ -13,7 +15,10 @@ G_BEGIN_DECLS
 /*** END file-production ***/
 
 /*** BEGIN file-tail ***/
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* !__AWN_ENUM_TYPES_H__ */
 /*** END file-tail ***/
@@ -23,4 +28,3 @@ GType @enum_name@_get_type (void) G_GNUC_CONST;
 #define AWN_TYPE_@ENUMSHORT@ (@enum_name@_get_type())
 
 /*** END value-header ***/
-

@@ -27,6 +27,10 @@
 #include "task-item.h"
 #include "util.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define TASK_TYPE_WINDOW (task_window_get_type ())
 
 #define TASK_WINDOW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
@@ -150,6 +154,10 @@ void            task_window_set_highlighted   (TaskWindow *window, gboolean high
 const gchar *   task_window_get_client_name     (TaskWindow *window);
 
 gboolean        task_window_get_icon_is_fallback  (TaskWindow * window);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif /* _TASK_WINDOW_H_ */
 

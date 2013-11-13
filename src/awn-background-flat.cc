@@ -26,7 +26,9 @@
 
 #include "awn-background-flat.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnBackgroundFlat, awn_background_flat, AWN_TYPE_BACKGROUND)
+}
 
 static void awn_background_flat_draw (AwnBackground  *bg,
                                       cairo_t        *cr,

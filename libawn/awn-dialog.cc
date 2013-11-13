@@ -39,7 +39,9 @@
 
 #include "gseal-transition.h"
 
+extern "C" {
 G_DEFINE_TYPE(AwnDialog, awn_dialog, GTK_TYPE_WINDOW)
+}
 
 #define AWN_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
     AWN_TYPE_DIALOG, \

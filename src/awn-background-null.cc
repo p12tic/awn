@@ -23,7 +23,9 @@
 
 #include "awn-background-null.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnBackgroundNull, awn_background_null, AWN_TYPE_BACKGROUND)
+}
 
 static void
 awn_background_null_constructed (GObject *object)

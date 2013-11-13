@@ -51,7 +51,9 @@
 #define GTK_ICON_LOOKUP_FORCE_SIZE 0
 #endif
 
+extern "C" {
 G_DEFINE_TYPE (TaskLauncher, task_launcher, TASK_TYPE_ITEM)
+}
 
 #define TASK_LAUNCHER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_LAUNCHER, \

@@ -45,7 +45,9 @@
 #define GTK_ICON_LOOKUP_FORCE_SIZE 0
 #endif
 
+extern "C" {
 G_DEFINE_TYPE (TaskWindow, task_window, TASK_TYPE_ITEM)
+}
 
 #define TASK_WINDOW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_WINDOW, \
@@ -1536,4 +1538,3 @@ task_window_set_use_win_icon (TaskWindow * item, WinIconUse win_use)
   
   priv->use_win_icon = win_use;
 }
-  

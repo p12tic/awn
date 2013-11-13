@@ -46,8 +46,9 @@
 #include <gdk/gdk.h>
 #include <glib-object.h>
 
-
+extern "C" {
 G_DEFINE_ABSTRACT_TYPE (AwnOverlay, awn_overlay, G_TYPE_INITIALLY_UNOWNED)
+}
 
 #define AWN_OVERLAY_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY, AwnOverlayPrivate))

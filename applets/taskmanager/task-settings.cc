@@ -109,3 +109,4 @@ task_settings_get_default (AwnApplet * applet)
 
   return settings;
 }
+

@@ -43,9 +43,9 @@
 #include "awn-overlay-text.h"
 #include "awn-cairo-utils.h"
 
-
-
+extern "C" {
 G_DEFINE_TYPE (AwnOverlayText, awn_overlay_text, AWN_TYPE_OVERLAY)
+}
 
 #define AWN_OVERLAY_TEXT_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_TEXT, AwnOverlayTextPrivate))

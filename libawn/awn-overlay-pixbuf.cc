@@ -55,7 +55,9 @@ enum
   PROP_ALPHA
 };
 
+extern "C" {
 G_DEFINE_TYPE (AwnOverlayPixbuf, awn_overlay_pixbuf, AWN_TYPE_OVERLAY)
+}
 
 #define AWN_OVERLAY_PIXBUF_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_PIXBUF, AwnOverlayPixbufPrivate))

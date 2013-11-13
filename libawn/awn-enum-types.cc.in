@@ -2,13 +2,19 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
 #include "awn-enum-types.h"
+
 /*** END file-header ***/
 
 /*** BEGIN file-production ***/
 /* enumerations from "@filename@" */
 #include "@filename@"
 /*** END file-production ***/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*** BEGIN value-header ***/
 GType
@@ -31,3 +37,7 @@ GType
   return enum_type_id;
 }
 /*** END value-tail ***/
+
+#ifdef __cplusplus
+} // extern "C"
+#endif

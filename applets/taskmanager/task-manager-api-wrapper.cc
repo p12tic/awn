@@ -534,3 +534,4 @@ task_manager_api_wrapper_set_progress_by_xid (TaskManagerApiWrapper *wrapper,
 
   return TRUE;
 }
+

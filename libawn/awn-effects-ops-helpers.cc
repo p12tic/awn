@@ -21,6 +21,7 @@
 
 #include "awn-effects-ops-helpers.h"
 
+
 void
 paint_arrow_triangle (cairo_t *cr, double size, gint count)
 {

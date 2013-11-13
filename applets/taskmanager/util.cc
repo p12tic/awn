@@ -24,7 +24,6 @@
 
 #include "util.h"
 
-
 //#define DEBUG 1
 
 
@@ -847,4 +846,3 @@ char* _desktop_entry_get_localized_name (DesktopAgnosticFDODesktopEntry *entry)
 
   return result ? result : desktop_agnostic_fdo_desktop_entry_get_name (entry);
 }
-

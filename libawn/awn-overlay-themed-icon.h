@@ -27,7 +27,9 @@
 #include "awn-overlay.h"
 #include "awn-themed-icon.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_OVERLAY_THEMED_ICON awn_overlay_themed_icon_get_type()
 
@@ -58,6 +60,9 @@ GType awn_overlay_themed_icon_get_type (void);
 
 AwnOverlayThemedIcon* awn_overlay_themed_icon_new (const gchar * icon_name);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_OVERLAY_THEMED_ICON */

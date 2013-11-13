@@ -24,7 +24,9 @@
 #include "awn-applet.h"
 #include "awn-defines.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_DIALOG (awn_dialog_get_type ())
 
@@ -77,7 +79,10 @@ void       awn_dialog_set_padding (AwnDialog *dialog, gint padding);
 
 GtkWidget* awn_dialog_get_content_area (AwnDialog *dialog);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif
 

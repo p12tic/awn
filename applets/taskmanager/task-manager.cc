@@ -59,7 +59,9 @@
 
 #include <X11/extensions/shape.h>
 
+extern "C" {
 G_DEFINE_TYPE (TaskManager, task_manager, AWN_TYPE_APPLET)
+}
 
 #define TASK_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   TASK_TYPE_MANAGER, \

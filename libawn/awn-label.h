@@ -24,7 +24,9 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_LABEL awn_label_get_type()
 
@@ -55,7 +57,10 @@ GType awn_label_get_type (void);
 
 AwnLabel* awn_label_new (void);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_LABEL */
 

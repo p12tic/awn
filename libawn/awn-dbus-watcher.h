@@ -22,7 +22,9 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_DBUS_WATCHER (awn_dbus_watcher_get_type ())
 
@@ -72,7 +74,10 @@ GType    awn_dbus_watcher_get_type    (void) G_GNUC_CONST;
 AwnDBusWatcher * awn_dbus_watcher_get_default (void);
 gboolean awn_dbus_watcher_has_name (AwnDBusWatcher* self, const gchar* name);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_DBUS_WATCHER_H */
 

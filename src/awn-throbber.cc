@@ -28,7 +28,9 @@
 
 #include "libawn/gseal-transition.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnThrobber, awn_throbber, AWN_TYPE_ICON)
+}
 
 #define AWN_THROBBER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_THROBBER, \

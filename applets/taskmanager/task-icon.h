@@ -26,6 +26,10 @@
 #include <gtk/gtk.h>
 #include <libawn/libawn.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define TASK_TYPE_ICON (task_icon_get_type ())
 
 #define TASK_ICON(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
@@ -69,10 +73,18 @@ struct _TaskIconClass
   void (*dest_drag_leave) (TaskIcon *icon);
 };
 
+#ifdef __cplusplus
+} // extern C
+#endif
+
 // circular dependency :/ 
 #include "task-item.h"
 #include "task-window.h"
 #include "task-launcher.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 GType           task_icon_get_type          (void) G_GNUC_CONST;
 
@@ -132,6 +144,10 @@ gboolean        task_icon_is_ephemeral (TaskIcon * icon);
 
 
 AwnApplet *task_icon_get_applet (TaskIcon * icon);
+
+#ifdef __cplusplus
+} // extern C
+#endif
 
 #endif /* _TASK_ICON_H_ */
 

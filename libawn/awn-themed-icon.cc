@@ -68,7 +68,9 @@
  * 
  */
 
+extern "C" {
 G_DEFINE_TYPE (AwnThemedIcon, awn_themed_icon, AWN_TYPE_ICON)
+}
 
 #define AWN_THEMED_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_THEMED_ICON, \
@@ -2217,4 +2219,3 @@ awn_themed_icon_create_remove_custom_icon_item (AwnThemedIcon * icon, const gcha
   
   return priv->remove_custom_icon_item;
 }
-

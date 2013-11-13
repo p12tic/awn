@@ -26,7 +26,9 @@
 #include <glib-object.h>
 #include "awn-overlay.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_OVERLAY_THROBBER awn_overlay_throbber_get_type()
 
@@ -57,6 +59,9 @@ GType awn_overlay_throbber_get_type (void);
 
 GtkWidget* awn_overlay_throbber_new (void);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_OVERLAY_THROBBER */

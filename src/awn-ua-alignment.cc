@@ -25,7 +25,9 @@
 #include "awn-ua-alignment.h"
 #include "awn-defines.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnUAAlignment, awn_ua_alignment, GTK_TYPE_ALIGNMENT)
+}
 
 #define AWN_UA_ALIGNMENT_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_UA_ALIGNMENT, AwnUAAlignmentPrivate))

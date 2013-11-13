@@ -33,9 +33,11 @@ static void awn_image_overlayable_init (AwnOverlayableIface *iface);
 
 static AwnEffects* awn_image_get_effects (AwnOverlayable *image);
 
+extern "C" {
 G_DEFINE_TYPE_WITH_CODE (AwnImage, awn_image, GTK_TYPE_IMAGE,
                          G_IMPLEMENT_INTERFACE (AWN_TYPE_OVERLAYABLE,
                                                 awn_image_overlayable_init))
+}
 
 #define AWN_IMAGE_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_IMAGE, AwnImagePrivate))

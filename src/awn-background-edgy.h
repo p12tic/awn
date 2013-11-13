@@ -27,7 +27,9 @@
 
 #include "awn-background-flat.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_BACKGROUND_EDGY (awn_background_edgy_get_type())
 
@@ -68,7 +70,10 @@ GType           awn_background_edgy_get_type (void) G_GNUC_CONST;
 AwnBackground * awn_background_edgy_new      (DesktopAgnosticConfigClient *client,
                                               AwnPanel        *panel);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_BACKGROUND_EDGY_H */
 

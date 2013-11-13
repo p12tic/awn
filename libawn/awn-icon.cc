@@ -33,9 +33,11 @@ static void awn_icon_overlayable_init (AwnOverlayableIface *iface);
 
 static AwnEffects* awn_icon_get_effects (AwnOverlayable *icon);
 
+extern "C" {
 G_DEFINE_TYPE_WITH_CODE (AwnIcon, awn_icon, GTK_TYPE_DRAWING_AREA,
                          G_IMPLEMENT_INTERFACE (AWN_TYPE_OVERLAYABLE,
                                                 awn_icon_overlayable_init))
+}
 
 #define AWN_ICON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
   AWN_TYPE_ICON, \
@@ -1250,4 +1252,3 @@ awn_icon_middle_clicked (AwnIcon *icon)
 
   g_signal_emit (icon, _icon_signals[MIDDLE_CLICKED], 0);
 }
-

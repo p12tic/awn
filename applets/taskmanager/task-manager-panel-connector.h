@@ -5,8 +5,6 @@
 
 #include <glib-object.h>
 
-G_BEGIN_DECLS
-
 #define TASK_MANAGER_TYPE_PANEL_CONNECTOR task_manager_panel_connector_get_type()
 
 #define TASK_MANAGER_PANEL_CONNECTOR(obj) \
@@ -38,7 +36,5 @@ guint task_manager_panel_connector_inhibit_autohide (TaskManagerPanelConnector *
 void task_manager_panel_connector_uninhibit_autohide (TaskManagerPanelConnector *conn, guint cookie);
 
 TaskManagerPanelConnector* task_manager_panel_connector_new (gint id);
-
-G_END_DECLS
 
 #endif /* _TASK_MANAGER_PANEL_CONNECTOR */

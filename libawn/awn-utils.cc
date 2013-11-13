@@ -29,7 +29,6 @@
 #include "awn-applet.h"
 #include "gseal-transition.h"
 
-
 /*yes this is evil.  so sue me */
 struct _GtkIconThemePrivate
 {
@@ -316,3 +315,4 @@ void awn_utils_menu_set_position_widget_relative (GtkMenu *menu,
     if (*py < 0) *py = 0;
   }
 }
+

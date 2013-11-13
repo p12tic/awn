@@ -26,7 +26,9 @@
 #include <gtk/gtk.h>
 #include "awn-applet-manager.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_UA_ALIGNMENT awn_ua_alignment_get_type()
 
@@ -63,6 +65,9 @@ GdkWindow * awn_ua_alignment_add_id (AwnUAAlignment *self, GdkNativeWindow nativ
 
 gint awn_ua_alignment_list_cmp (gconstpointer a, gconstpointer b);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_UA_ALIGNMENT */

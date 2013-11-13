@@ -27,7 +27,9 @@
 
 #include "awn-background.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_BACKGROUND_LUCIDO (awn_background_lucido_get_type())
 
@@ -65,7 +67,10 @@ GType           awn_background_lucido_get_type (void) G_GNUC_CONST;
 AwnBackground * awn_background_lucido_new (DesktopAgnosticConfigClient *client,
                                            AwnPanel        *panel);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_BACKGROUND_LUCIDO_H */
 

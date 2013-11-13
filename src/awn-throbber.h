@@ -25,7 +25,9 @@
 
 #include <libawn/libawn.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_THROBBER (awn_throbber_get_type ())
 
@@ -79,7 +81,10 @@ void          awn_throbber_set_type         (AwnThrobber *throbber,
 
 void          awn_throbber_set_size         (AwnThrobber *throbber, gint size);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_THROBBER_H_ */
 

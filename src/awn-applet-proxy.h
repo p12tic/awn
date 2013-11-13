@@ -26,7 +26,9 @@
 
 #include "awn-panel.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_APPLET_PROXY (awn_applet_proxy_get_type())
 
@@ -77,7 +79,10 @@ void        awn_applet_proxy_schedule_execute  (AwnAppletProxy *proxy);
 
 GtkWidget* awn_applet_proxy_get_throbber       (AwnAppletProxy *proxy);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 
 #endif /* _AWN_APPLET_PROXY_H */

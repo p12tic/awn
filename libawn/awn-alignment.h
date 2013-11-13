@@ -25,7 +25,9 @@
 #include "awn-defines.h"
 #include "awn-applet.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_ALIGNMENT		(awn_alignment_get_type ())
 
@@ -78,6 +80,9 @@ gint          awn_alignment_get_offset_modifier  (AwnAlignment *alignment);
 void          awn_alignment_set_offset_modifier  (AwnAlignment *alignment, 
                                                   gint modifier);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif

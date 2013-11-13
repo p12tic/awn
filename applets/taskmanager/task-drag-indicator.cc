@@ -264,3 +264,4 @@ task_drag_indicator_dest_drag_data_received (GtkWidget      *widget,
 {
   gtk_drag_finish (context, TRUE, TRUE, time_);
 }
+

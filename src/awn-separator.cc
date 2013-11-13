@@ -22,7 +22,9 @@
 #include "awn-defines.h"
 #include "awn-separator.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnSeparator, awn_separator, GTK_TYPE_IMAGE)
+}
 
 #define AWN_SEPARATOR_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_SEPARATOR, AwnSeparatorPrivate))
@@ -479,4 +481,3 @@ awn_separator_get_separator_size (AwnSeparator *sep, gint size)
 {
   return sep->priv->separator_size;
 }
-

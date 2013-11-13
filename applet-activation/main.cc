@@ -629,4 +629,3 @@ g_execute (const gchar *file,
   /* Return the error from the last attempt (probably ENOENT).  */
   return -1;
 }
-

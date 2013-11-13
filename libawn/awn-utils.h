@@ -23,6 +23,10 @@
 #include <gtk/gtk.h>
 #include "awn-defines.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * awn_utils_ensure_transparent_bg:
  * @widget: Widget which should have transparent background.
@@ -110,5 +114,10 @@ void awn_utils_menu_set_position_widget_relative (GtkMenu *menu,
                                                   gint *py,
                                                   gboolean *push_in,
                                                   gpointer data);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 #endif
 

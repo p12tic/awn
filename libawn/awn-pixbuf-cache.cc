@@ -37,7 +37,9 @@
 
 #include "awn-pixbuf-cache.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnPixbufCache, awn_pixbuf_cache, G_TYPE_OBJECT)
+}
 
 #define GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_PIXBUF_CACHE, AwnPixbufCachePrivate))

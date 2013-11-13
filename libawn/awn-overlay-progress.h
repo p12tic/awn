@@ -26,7 +26,9 @@
 #include <glib-object.h>
 #include "awn-overlay.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_OVERLAY_PROGRESS awn_overlay_progress_get_type()
 
@@ -57,6 +59,9 @@ GType awn_overlay_progress_get_type (void);
 
 AwnOverlayProgress* awn_overlay_progress_new (void);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_OVERLAY_PROGRESS */

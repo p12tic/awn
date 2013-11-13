@@ -30,7 +30,9 @@
 #include "libawn/gseal-transition.h"
 #include "libawn/awn-effects-ops-helpers.h"
 
+extern "C" {
 G_DEFINE_ABSTRACT_TYPE (AwnBackground, awn_background, G_TYPE_OBJECT)
+}
 
 enum 
 {

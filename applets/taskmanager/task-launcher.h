@@ -29,6 +29,10 @@
 
 #include "task-item.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define TASK_TYPE_LAUNCHER (task_launcher_get_type ())
 
 #define TASK_LAUNCHER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
@@ -77,5 +81,10 @@ void            task_launcher_launch_with_data     (TaskLauncher   *launcher,
 const gchar *   task_launcher_get_icon_name       (TaskItem *item);
 
 const gchar *   task_launcher_get_exec            (const TaskItem *item);
+
+#ifdef __cplusplus
+} // extern C
+#endif
+
 #endif /* _TASK_LAUNCHER_H_ */
 

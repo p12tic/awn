@@ -29,7 +29,9 @@
 #include "awn-throbber.h"
 #include "libawn/gseal-transition.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnAppletProxy, awn_applet_proxy, GTK_TYPE_SOCKET) 
+}
 
 #define AWN_APPLET_PROXY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_APPLET_PROXY, AwnAppletProxyPrivate))
@@ -567,4 +569,3 @@ awn_applet_proxy_schedule_execute (AwnAppletProxy *proxy)
     priv->idle_id = g_idle_add (awn_applet_proxy_idle_cb, proxy);
   }
 }
-

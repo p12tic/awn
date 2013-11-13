@@ -63,7 +63,9 @@ enum{
   DESKTOP_COPY_NONE
 }DesktopCopy;
 
+extern "C" {
 G_DEFINE_TYPE (TaskIcon, task_icon, AWN_TYPE_THEMED_ICON)
+}
 
 #if !GTK_CHECK_VERSION(2,14,0)
 #define GTK_ICON_LOOKUP_FORCE_SIZE 0

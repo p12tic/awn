@@ -23,7 +23,9 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_SEPARATOR awn_separator_get_type()
 
@@ -77,7 +79,10 @@ awn_separator_set_separator_size (AwnSeparator *sep, gint size);
 gint 
 awn_separator_get_separator_size (AwnSeparator *sep, gint size);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_SEPARATOR_H_ */
 

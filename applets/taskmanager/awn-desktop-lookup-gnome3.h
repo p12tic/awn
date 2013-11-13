@@ -25,8 +25,6 @@
 #include "awn-desktop-lookup.h"
 #include <glib-object.h>
 
-G_BEGIN_DECLS
-
 #define AWN_TYPE_DESKTOP_LOOKUP_GNOME3 awn_desktop_lookup_gnome3_get_type()
 
 #define AWN_DESKTOP_LOOKUP_GNOME3(obj) \
@@ -55,7 +53,5 @@ typedef struct {
 GType awn_desktop_lookup_gnome3_get_type (void);
 
 AwnDesktopLookupGnome3* awn_desktop_lookup_gnome3_new (void);
-
-G_END_DECLS
 
 #endif /* _AWN_DESKTOP_LOOKUP_GNOME3 */

@@ -29,7 +29,9 @@
 #include "awn-effects.h"
 #include "awn-overlay.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_OVERLAYABLE awn_overlayable_get_type()
 
@@ -66,6 +68,9 @@ void   awn_overlayable_remove_overlay     (AwnOverlayable *self,
 GList* awn_overlayable_get_overlays       (AwnOverlayable *self);
 
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_OVERLAYABLE */

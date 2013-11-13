@@ -27,7 +27,9 @@
 #include "awn-effects.h"
 #include "awn-tooltip.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_ICON (awn_icon_get_type ())
 
@@ -127,7 +129,10 @@ void            awn_icon_popup_gtk_menu      (AwnIcon   *icon,
                                               guint      button,
                                               guint32    activate_time);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_ICON_H_ */
 

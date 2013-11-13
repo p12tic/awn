@@ -23,7 +23,9 @@
 
 static AwnDBusWatcher *singleton_instance = NULL;
 
+extern "C" {
 G_DEFINE_TYPE (AwnDBusWatcher, awn_dbus_watcher, G_TYPE_OBJECT)
+}
 
 #define AWN_DBUS_WATCHER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE(obj, \
         AWN_TYPE_DBUS_WATCHER, AwnDBusWatcherPrivate))
@@ -188,7 +190,3 @@ awn_dbus_watcher_has_name (AwnDBusWatcher* self, const gchar* name)
   
   return has_owner;  
 }
-
-
-
-

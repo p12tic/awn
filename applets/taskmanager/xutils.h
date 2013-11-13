@@ -30,8 +30,6 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <libwnck/libwnck.h>
 
-G_BEGIN_DECLS
-
 void
 _wnck_get_wmclass (Window xwindow,
                    char **res_class,
@@ -50,7 +48,5 @@ GdkPixbuf *
 xutils_get_named_icon (const gchar *icon_name, 
                        gint         width,
                        gint         height);
-
-G_END_DECLS
 
 #endif /* WNCK_XUTILS_H */

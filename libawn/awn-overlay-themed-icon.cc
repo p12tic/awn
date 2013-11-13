@@ -47,12 +47,13 @@
 #include "libawn/libawn.h"
 #include "awn-overlay-themed-icon.h"
 
-
 #if !GTK_CHECK_VERSION(2,14,0)
 #define GTK_ICON_LOOKUP_FORCE_SIZE 0
 #endif
 
+extern "C" {
 G_DEFINE_TYPE (AwnOverlayThemedIcon, awn_overlay_themed_icon, AWN_TYPE_OVERLAY)
+}
 
  #define AWN_OVERLAY_THEMED_ICON_GET_PRIVATE(o) \
   (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_OVERLAY_THEMED_ICON, AwnOverlayThemedIconPrivate))
@@ -355,4 +356,3 @@ _awn_overlay_themed_icon_render (AwnOverlay* _overlay,
   gdk_cairo_set_source_pixbuf (cr,pixbuf,coord.x,coord.y);  
   cairo_paint_with_alpha (cr,priv->alpha);
 }
-

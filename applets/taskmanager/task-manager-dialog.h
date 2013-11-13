@@ -26,8 +26,6 @@
 #include "task-item.h"
 #include <glib-object.h>
 
-G_BEGIN_DECLS
-
 #define TASK_TYPE_MANAGER_DIALOG task_manager_dialog_get_type()
 
 #define TASK_MANAGER_DIALOG(obj) \
@@ -60,8 +58,6 @@ GtkWidget* task_manager_dialog_new (GtkWidget * widget, AwnApplet * applet);
 void task_manager_dialog_add (TaskManagerDialog * dialog,TaskItem * item);
 
 void task_manager_dialog_remove (TaskManagerDialog * dialog,TaskItem * item);
-
-G_END_DECLS
 
 #endif /* _TASK_MANAGER_DIALOG */
 

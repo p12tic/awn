@@ -26,7 +26,9 @@
 
 #include <libdesktop-agnostic/config.h>
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_MONITOR (awn_monitor_get_type())
 
@@ -74,7 +76,10 @@ GType awn_monitor_get_type(void) G_GNUC_CONST;
 AwnMonitor * awn_monitor_new_for_screen (GdkScreen *screen,
                                          DesktopAgnosticConfigClient *client);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 
 #endif /* _AWN_MONITOR_H */

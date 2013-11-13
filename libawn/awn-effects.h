@@ -27,7 +27,9 @@
 #include "awn-defines.h"
 #include "awn-overlay.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef enum
 {
@@ -159,6 +161,9 @@ void awn_effects_main_effect_loop(AwnEffects * fx);
 void awn_effects_emit_anim_start(AwnEffects *fx, AwnEffect effect);
 void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif

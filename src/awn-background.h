@@ -31,7 +31,9 @@
 
 #include "awn-panel.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_BACKGROUND (awn_background_get_type())
 
@@ -195,7 +197,10 @@ void awn_background_emit_changed (AwnBackground *bg);
 gfloat awn_background_get_panel_alignment (AwnBackground *bg);
 gboolean awn_background_do_rtl_swap (AwnBackground *bg);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_BACKGROUND_H */
 

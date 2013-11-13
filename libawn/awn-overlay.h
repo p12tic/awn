@@ -29,7 +29,9 @@
 
 #include "awn-defines.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_OVERLAY awn_overlay_get_type()
 
@@ -132,6 +134,9 @@ gboolean awn_overlay_get_use_source_op (AwnOverlay *overlay);
 
 void awn_overlay_set_use_source_op (AwnOverlay *overlay, gboolean value);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_OVERLAY */

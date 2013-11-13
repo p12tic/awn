@@ -23,7 +23,9 @@
 #include "awn-applet.h"
 #include "awn-icon.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_APPLET_SIMPLE (awn_applet_simple_get_type ())
 
@@ -114,7 +116,10 @@ AwnIcon *     awn_applet_simple_get_icon         (AwnAppletSimple  *applet);
 void          awn_applet_simple_set_effect       (AwnAppletSimple  *applet,
                                                   AwnEffect         effect);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif
 

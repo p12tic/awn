@@ -26,7 +26,9 @@
 
 #include "awn-overlay-text.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_IMAGE awn_image_get_type()
 
@@ -61,7 +63,10 @@ GType           awn_image_get_type              (void);
 
 AwnImage*       awn_image_new                   (void);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_IMAGE_H_ */
 

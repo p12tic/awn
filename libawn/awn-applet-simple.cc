@@ -32,9 +32,11 @@
 
 static void awn_applet_simple_overlayable_init (AwnOverlayableIface *iface);
 
+extern "C" {
 G_DEFINE_TYPE_WITH_CODE (AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET,
                          G_IMPLEMENT_INTERFACE (AWN_TYPE_OVERLAYABLE,
                                           awn_applet_simple_overlayable_init))
+}
 
 #define AWN_APPLET_SIMPLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
     AWN_TYPE_APPLET_SIMPLE, \

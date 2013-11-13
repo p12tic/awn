@@ -27,7 +27,9 @@
 #include "awn-applet.h"
 #include "awn-box.h"
 
-G_BEGIN_DECLS
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_ICON_BOX (awn_icon_box_get_type ())
 
@@ -74,7 +76,10 @@ void          awn_icon_box_set_pos_type  (AwnIconBox     *icon_box,
 void          awn_icon_box_set_offset       (AwnIconBox *icon_box,
                                              gint        offset);
 
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 
 #endif /* _AWN_ICON_BOX_H_ */
 

@@ -56,7 +56,9 @@
 #include "libawn/gseal-transition.h"
 #include "xutils.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnPanel, awn_panel, GTK_TYPE_WINDOW)
+}
 
 #define AWN_PANEL_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE (obj, \
   AWN_TYPE_PANEL, AwnPanelPrivate))
@@ -4278,4 +4280,3 @@ awn_panel_ua_add_applet (AwnPanel *panel, gchar *name, glong xid,
   return awn_ua_add_applet (AWN_APPLET_MANAGER (priv->manager), name, xid,
                             width, height, size_type, error);
 }
-

@@ -20,6 +20,10 @@
 #ifndef __AWN_DEFINES_H__
 #define __AWN_DEFINES_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * AWN_MAX_HEIGHT: 
  *
@@ -142,4 +146,9 @@ typedef enum
 #define AWN_FONT_SIZE_MEDIUM      12.0
 #define AWN_FONT_SIZE_LARGE       15.0
 #define AWN_FONT_SIZE_EXTRA_LARGE 18.0
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
 #endif

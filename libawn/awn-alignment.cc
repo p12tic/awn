@@ -29,7 +29,9 @@
 #include "awn-alignment.h"
 #include "gseal-transition.h"
 
+extern "C" {
 G_DEFINE_TYPE (AwnAlignment, awn_alignment, GTK_TYPE_ALIGNMENT)
+}
 
 #define AWN_ALIGNMENT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
                                       AWN_TYPE_ALIGNMENT, AwnAlignmentPrivate))
@@ -369,3 +371,4 @@ ensure_alignment (AwnAlignment *alignment)
       break;
   }
 }
+
