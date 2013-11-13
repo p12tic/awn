@@ -3,7 +3,7 @@ AM_CPPFLAGS =		\
 	-I$(top_srcdir) \
 	$(AWN_CFLAGS)	\
 	$(NULL)
-AM_CXXFLAGS = -fpermissive
+AM_CXXFLAGS = -fpermissive -std=c++11
 
 bin_PROGRAMS = awn-applet
 

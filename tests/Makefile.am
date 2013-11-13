@@ -10,7 +10,7 @@ noinst_PROGRAMS = \
 
 AM_CPPFLAGS = $(STANDARD_CPPFLAGS) $(DISABLE_DEPRECATED_FLAGS) $(AWN_CFLAGS) -I$(top_srcdir)
 AM_CFLAGS = $(WARNING_FLAGS)
-AM_CXXFLAGS = $(WARNING_FLAGS) -fpermissive
+AM_CXXFLAGS = $(WARNING_FLAGS) -fpermissive -std=c++11
 
 test_applet_simple_SOURCES = test-applet-simple.cc
 test_applet_simple_LDADD = 	\

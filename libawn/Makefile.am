@@ -136,7 +136,7 @@ libawn_la_SOURCES = \
 	$(source_c) \
 	$(NULL)
 libawn_la_CFLAGS = $(WARNING_FLAGS)
-libawn_la_CXXFLAGS = $(WARNING_FLAGS) -fpermissive
+libawn_la_CXXFLAGS = $(WARNING_FLAGS) -fpermissive -std=c++11
 libawn_la_LIBADD = $(DEPS_LIBS) $(AWN_LIBS)
 libawn_la_LDFLAGS = -version-info 1:1:0
 

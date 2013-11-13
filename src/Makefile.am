@@ -3,7 +3,7 @@ MARSHAL_PREFIX = awn
 include $(top_srcdir)/Makefile.marshal
 
 AM_CFLAGS = $(WARNING_FLAGS)
-AM_CXXFLAGS = $(WARNING_FLAGS) -fpermissive
+AM_CXXFLAGS = $(WARNING_FLAGS) -fpermissive -std=c++11
 AM_CPPFLAGS =				\
 	$(STANDARD_CPPFLAGS)		\
 	$(DISABLE_DEPRECATED_FLAGS)	\

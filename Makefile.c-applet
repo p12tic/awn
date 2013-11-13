@@ -13,7 +13,7 @@ AM_CFLAGS = \
 	$(APPLET_CFLAGS) \
 	$(NULL)
 
-AM_CXXFLAGS = $(AM_CFLAGS) -fpermissive
+AM_CXXFLAGS = $(AM_CFLAGS) -fpermissive -std=c++11
 
 APPLET_LINKER_FLAGS = -module -avoid-version
 
