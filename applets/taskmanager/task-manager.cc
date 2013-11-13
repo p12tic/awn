@@ -28,7 +28,10 @@
 #include <gdk/gdkx.h>
 #include <glib/gstdio.h>
 
+// libwnck/util.h is not wrapped
+extern "C" {
 #include <libwnck/libwnck.h>
+}
 
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-bindings.h>
