@@ -2659,6 +2659,7 @@ on_geometry_changed(AwnMonitor* monitor,
     awn_panel_reset_autohide(panel);
 
     position_window(panel);
+    awn_panel_set_size(panel, priv->size);
 }
 
 /*
