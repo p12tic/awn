@@ -2,7 +2,7 @@
  * Copyright (C) 2009 Michal Hruby <michal.mhr@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License version 
+ * it under the terms of the GNU Library General Public License version
  * 2 or later as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
@@ -47,37 +47,37 @@ extern "C" {
 typedef struct _AwnSeparatorPrivate AwnSeparatorPrivate;
 
 typedef struct {
-  GtkImage parent;
+    GtkImage parent;
 
-  AwnSeparatorPrivate *priv;
+    AwnSeparatorPrivate* priv;
 } AwnSeparator;
 
 typedef struct {
-  GtkImageClass parent_class;
+    GtkImageClass parent_class;
 } AwnSeparatorClass;
 
 GType
-awn_separator_get_type        (void);
+awn_separator_get_type(void);
 
 GtkWidget*
-awn_separator_new_from_config (DesktopAgnosticConfigClient *client);
+awn_separator_new_from_config(DesktopAgnosticConfigClient* client);
 
 GtkWidget*
-awn_separator_new_from_config_with_values (DesktopAgnosticConfigClient *client,
-                                           GtkPositionType pos,
-                                           gint size, gint offset);
+awn_separator_new_from_config_with_values(DesktopAgnosticConfigClient* client,
+        GtkPositionType pos,
+        gint size, gint offset);
 
-void 
-awn_separator_set_transparent (AwnSeparator *sep, gboolean transp);
+void
+awn_separator_set_transparent(AwnSeparator* sep, gboolean transp);
 
-gboolean 
-awn_separator_get_transparent (AwnSeparator *sep, gboolean transp);
+gboolean
+awn_separator_get_transparent(AwnSeparator* sep, gboolean transp);
 
-void 
-awn_separator_set_separator_size (AwnSeparator *sep, gint size);
+void
+awn_separator_set_separator_size(AwnSeparator* sep, gint size);
 
-gint 
-awn_separator_get_separator_size (AwnSeparator *sep, gint size);
+gint
+awn_separator_get_separator_size(AwnSeparator* sep, gint size);
 
 #ifdef __cplusplus
 } // extern "C"

@@ -31,17 +31,17 @@
 extern "C" {
 #endif
 
-void xutils_set_strut (GdkWindow        *gdk_window,
-                       GtkPositionType   position,
-                       guint32           strut,
-                       guint32           strut_start,
-                       guint32           strut_end);
+void xutils_set_strut(GdkWindow*        gdk_window,
+                      GtkPositionType   position,
+                      guint32           strut,
+                      guint32           strut_start,
+                      guint32           strut_end);
 
-GdkRegion* xutils_get_input_shape (GdkWindow *window);
+GdkRegion* xutils_get_input_shape(GdkWindow* window);
 
-GdkWindow* xutils_get_window_at_pointer (GdkDisplay *gdk_display);
+GdkWindow* xutils_get_window_at_pointer(GdkDisplay* gdk_display);
 
-gboolean   xutils_is_window_minimized (GdkWindow *window);
+gboolean   xutils_is_window_minimized(GdkWindow* window);
 
 #ifdef __cplusplus
 } // extern "C"

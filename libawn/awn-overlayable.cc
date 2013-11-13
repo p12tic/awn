@@ -18,34 +18,32 @@
 
 #include "awn-overlayable.h"
 
-static void awn_overlayable_base_init (AwnOverlayableIface *iface);
+static void awn_overlayable_base_init(AwnOverlayableIface* iface);
 
 GType
-awn_overlayable_get_type (void)
+awn_overlayable_get_type(void)
 {
-  static GType overlayable_type = 0;
+    static GType overlayable_type = 0;
 
-  if (G_UNLIKELY (overlayable_type == 0))
-  {
-    const GTypeInfo overlayable_info =
-    {
-      sizeof (AwnOverlayableIface),
-      (GBaseInitFunc)     awn_overlayable_base_init,
-      (GBaseFinalizeFunc) NULL,
-    };
+    if (G_UNLIKELY(overlayable_type == 0)) {
+        const GTypeInfo overlayable_info = {
+            sizeof(AwnOverlayableIface),
+            (GBaseInitFunc)     awn_overlayable_base_init,
+            (GBaseFinalizeFunc) NULL,
+        };
 
-    overlayable_type = g_type_register_static (G_TYPE_INTERFACE,
-                                               "AwnOverlayable",
-                                               &overlayable_info, 0);
-  }
+        overlayable_type = g_type_register_static(G_TYPE_INTERFACE,
+                           "AwnOverlayable",
+                           &overlayable_info, 0);
+    }
 
-  return overlayable_type;
+    return overlayable_type;
 }
 
 static void
-awn_overlayable_base_init (AwnOverlayableIface *iface)
+awn_overlayable_base_init(AwnOverlayableIface* iface)
 {
-  iface->get_effects = NULL; // perhaps show a warning?
+    iface->get_effects = NULL; // perhaps show a warning?
 }
 
 /**
@@ -55,11 +53,11 @@ awn_overlayable_base_init (AwnOverlayableIface *iface)
  * Returns: #AwnEffects instance managing animations for this instance.
  */
 AwnEffects*
-awn_overlayable_get_effects (AwnOverlayable* self)
+awn_overlayable_get_effects(AwnOverlayable* self)
 {
-  g_return_val_if_fail (AWN_IS_OVERLAYABLE (self), NULL);
+    g_return_val_if_fail(AWN_IS_OVERLAYABLE(self), NULL);
 
-  return AWN_OVERLAYABLE_GET_INTERFACE (self)->get_effects (self);
+    return AWN_OVERLAYABLE_GET_INTERFACE(self)->get_effects(self);
 }
 
 /**
@@ -70,9 +68,9 @@ awn_overlayable_get_effects (AwnOverlayable* self)
  * Adds an overlay to the list of rendered overlays.
  */
 void
-awn_overlayable_add_overlay (AwnOverlayable* self, AwnOverlay *overlay)
+awn_overlayable_add_overlay(AwnOverlayable* self, AwnOverlay* overlay)
 {
-  awn_effects_add_overlay (awn_overlayable_get_effects (self), overlay);
+    awn_effects_add_overlay(awn_overlayable_get_effects(self), overlay);
 }
 
 /**
@@ -84,9 +82,9 @@ awn_overlayable_add_overlay (AwnOverlayable* self, AwnOverlay *overlay)
  * Removes overlay from the list of rendered overlays.
  */
 void
-awn_overlayable_remove_overlay (AwnOverlayable *self, AwnOverlay *overlay)
+awn_overlayable_remove_overlay(AwnOverlayable* self, AwnOverlay* overlay)
 {
-  awn_effects_remove_overlay (awn_overlayable_get_effects (self), overlay);
+    awn_effects_remove_overlay(awn_overlayable_get_effects(self), overlay);
 }
 
 /**
@@ -96,8 +94,8 @@ awn_overlayable_remove_overlay (AwnOverlayable *self, AwnOverlay *overlay)
  * Returns: a newly-allocated list of the overlays added for this instance.
  */
 GList*
-awn_overlayable_get_overlays (AwnOverlayable *self)
+awn_overlayable_get_overlays(AwnOverlayable* self)
 {
-  return awn_effects_get_overlays (awn_overlayable_get_effects (self));
+    return awn_effects_get_overlays(awn_overlayable_get_effects(self));
 }
 

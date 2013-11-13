@@ -47,22 +47,22 @@ extern "C" {
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_OVERLAY_TEXT, AwnOverlayTextClass))
 
 typedef struct {
-  AwnOverlay parent;
+    AwnOverlay parent;
 } AwnOverlayText;
 
 typedef struct {
-  AwnOverlayClass parent_class;
+    AwnOverlayClass parent_class;
 } AwnOverlayTextClass;
 
-GType awn_overlay_text_get_type (void);
+GType awn_overlay_text_get_type(void);
 
-AwnOverlayText* awn_overlay_text_new (void);
+AwnOverlayText* awn_overlay_text_new(void);
 
-void awn_overlay_text_get_size (AwnOverlayText* overlay,
-                                GtkWidget * widget,
-                                gchar *text,
-                                gint size,
-                                gint *width, gint *height);
+void awn_overlay_text_get_size(AwnOverlayText* overlay,
+                               GtkWidget* widget,
+                               gchar* text,
+                               gint size,
+                               gint* width, gint* height);
 
 #ifdef __cplusplus
 } // extern "C"

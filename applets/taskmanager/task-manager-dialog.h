@@ -1,16 +1,16 @@
-/* 
- * Copyright (C) 2010 Rodney Cryderman <rcryderman@gmail.com> 
- *  
+/*
+ * Copyright (C) 2010 Rodney Cryderman <rcryderman@gmail.com>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Library General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
@@ -44,20 +44,20 @@
   (G_TYPE_INSTANCE_GET_CLASS ((obj), TASK_TYPE_MANAGER_DIALOG, TaskManagerDialogClass))
 
 typedef struct {
-  AwnDialog parent;
+    AwnDialog parent;
 } TaskManagerDialog;
 
 typedef struct {
-  AwnDialogClass parent_class;
+    AwnDialogClass parent_class;
 } TaskManagerDialogClass;
 
-GType task_manager_dialog_get_type (void);
+GType task_manager_dialog_get_type(void);
 
-GtkWidget* task_manager_dialog_new (GtkWidget * widget, AwnApplet * applet);
+GtkWidget* task_manager_dialog_new(GtkWidget* widget, AwnApplet* applet);
 
-void task_manager_dialog_add (TaskManagerDialog * dialog,TaskItem * item);
+void task_manager_dialog_add(TaskManagerDialog* dialog, TaskItem* item);
 
-void task_manager_dialog_remove (TaskManagerDialog * dialog,TaskItem * item);
+void task_manager_dialog_remove(TaskManagerDialog* dialog, TaskItem* item);
 
 #endif /* _TASK_MANAGER_DIALOG */
 

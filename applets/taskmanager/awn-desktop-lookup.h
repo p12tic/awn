@@ -5,12 +5,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Library General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
@@ -42,28 +42,28 @@
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_DESKTOP_LOOKUP, AwnDesktopLookupClass))
 
 typedef struct {
-  GObject parent;
+    GObject parent;
 } AwnDesktopLookup;
 
 typedef struct {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 } AwnDesktopLookupClass;
 
-GType awn_desktop_lookup_get_type (void);
+GType awn_desktop_lookup_get_type(void);
 
-AwnDesktopLookup* awn_desktop_lookup_new (void);
-gchar *awn_desktop_lookup_search_for_desktop (gulong xid);
-gchar *awn_desktop_lookup_search_cache (AwnDesktopLookup* * self,
-                                 gchar * class_name,
-                                 gchar * res_name,
-                                 gchar * cmd, 
-                                 gchar *id);
-gchar *awn_desktop_lookup_special_case (gchar * cmd,
-                                 gchar *res_name, 
-                                 gchar * class_name,
-                                 gchar * wm_icon_name,
-                                 gchar * wm_name,
-                                 gchar * window_role);
+AwnDesktopLookup* awn_desktop_lookup_new(void);
+gchar* awn_desktop_lookup_search_for_desktop(gulong xid);
+gchar* awn_desktop_lookup_search_cache(AwnDesktopLookup** self,
+                                       gchar* class_name,
+                                       gchar* res_name,
+                                       gchar* cmd,
+                                       gchar* id);
+gchar* awn_desktop_lookup_special_case(gchar* cmd,
+                                       gchar* res_name,
+                                       gchar* class_name,
+                                       gchar* wm_icon_name,
+                                       gchar* wm_name,
+                                       gchar* window_role);
 
 
 #endif /* _AWN_DESKTOP_LOOKUP */

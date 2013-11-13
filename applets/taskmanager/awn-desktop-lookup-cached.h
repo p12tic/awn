@@ -5,12 +5,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Library General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
@@ -46,18 +46,18 @@
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_DESKTOP_LOOKUP_CACHED, AwnDesktopLookupCachedClass))
 
 typedef struct {
-  AwnDesktopLookup parent;
+    AwnDesktopLookup parent;
 } AwnDesktopLookupCached;
 
 typedef struct {
-  AwnDesktopLookupClass parent_class;
+    AwnDesktopLookupClass parent_class;
 } AwnDesktopLookupCachedClass;
 
-GType awn_desktop_lookup_cached_get_type (void);
+GType awn_desktop_lookup_cached_get_type(void);
 
-AwnDesktopLookupCached* awn_desktop_lookup_cached_new (void);
+AwnDesktopLookupCached* awn_desktop_lookup_cached_new(void);
 
-const gchar *awn_desktop_lookup_search_by_wnck_window (AwnDesktopLookupCached * lookup, WnckWindow * win);
+const gchar* awn_desktop_lookup_search_by_wnck_window(AwnDesktopLookupCached* lookup, WnckWindow* win);
 
 #endif /* _AWN_DESKTOP_LOOKUP_CACHED */
 

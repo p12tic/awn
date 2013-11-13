@@ -29,17 +29,17 @@
 extern "C" {
 #endif
 
-#define AWN_TYPE_ALIGNMENT		(awn_alignment_get_type ())
+#define AWN_TYPE_ALIGNMENT      (awn_alignment_get_type ())
 
-#define AWN_ALIGNMENT(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj),\
+#define AWN_ALIGNMENT(obj)      (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
         AWN_TYPE_ALIGNMENT,\
         AwnAlignment))
 
-#define AWN_ALIGNMENT_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), \
+#define AWN_ALIGNMENT_CLASS(obj)    (G_TYPE_CHECK_CLASS_CAST ((obj), \
         AWN_TYPE_ALIGNMENT, \
         AwnAlignmentClass))
-                                
-#define AWN_IS_ALIGNMENT(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
+
+#define AWN_IS_ALIGNMENT(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
         AWN_TYPE_ALIGNMENT))
 
 #define AWN_IS_ALIGNMENT_CLASS(obj) (G_TYPE_CHECK_CLASS_TYPE ((obj), \
@@ -53,32 +53,30 @@ typedef struct _AwnAlignment AwnAlignment;
 typedef struct _AwnAlignmentClass AwnAlignmentClass;
 typedef struct _AwnAlignmentPrivate AwnAlignmentPrivate;
 
-struct _AwnAlignment
-{
-  GtkAlignment parent;
+struct _AwnAlignment {
+    GtkAlignment parent;
 
-  AwnAlignmentPrivate *priv;
+    AwnAlignmentPrivate* priv;
 };
 
-struct _AwnAlignmentClass
-{
-  GtkAlignmentClass parent_class;
+struct _AwnAlignmentClass {
+    GtkAlignmentClass parent_class;
 
-  /* Future padding */
-  void (*_alignment0) (void);
-  void (*_alignment1) (void);
-  void (*_alignment2) (void);
-  void (*_alignment3) (void);
+    /* Future padding */
+    void (*_alignment0)(void);
+    void (*_alignment1)(void);
+    void (*_alignment2)(void);
+    void (*_alignment3)(void);
 };
 
-GType         awn_alignment_get_type             (void);
+GType         awn_alignment_get_type(void);
 
-GtkWidget *   awn_alignment_new_for_applet       (AwnApplet *applet);
+GtkWidget*    awn_alignment_new_for_applet(AwnApplet* applet);
 
-gint          awn_alignment_get_offset_modifier  (AwnAlignment *alignment);
+gint          awn_alignment_get_offset_modifier(AwnAlignment* alignment);
 
-void          awn_alignment_set_offset_modifier  (AwnAlignment *alignment, 
-                                                  gint modifier);
+void          awn_alignment_set_offset_modifier(AwnAlignment* alignment,
+        gint modifier);
 
 #ifdef __cplusplus
 } // extern "C"

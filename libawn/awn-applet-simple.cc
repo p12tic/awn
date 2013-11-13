@@ -30,40 +30,37 @@
 #include "awn-utils.h"
 #include "gseal-transition.h"
 
-static void awn_applet_simple_overlayable_init (AwnOverlayableIface *iface);
+static void awn_applet_simple_overlayable_init(AwnOverlayableIface* iface);
 
 extern "C" {
-G_DEFINE_TYPE_WITH_CODE (AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET,
-                         G_IMPLEMENT_INTERFACE (AWN_TYPE_OVERLAYABLE,
-                                          awn_applet_simple_overlayable_init))
+    G_DEFINE_TYPE_WITH_CODE(AwnAppletSimple, awn_applet_simple, AWN_TYPE_APPLET,
+                            G_IMPLEMENT_INTERFACE(AWN_TYPE_OVERLAYABLE,
+                                    awn_applet_simple_overlayable_init))
 }
 
 #define AWN_APPLET_SIMPLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj),\
     AWN_TYPE_APPLET_SIMPLE, \
     AwnAppletSimplePrivate))
 
-struct _AwnAppletSimplePrivate
-{
-  GtkWidget *icon;
-  gint       last_set_icon;
+struct _AwnAppletSimplePrivate {
+    GtkWidget* icon;
+    gint       last_set_icon;
 };
 
-enum
-{
-  ICON_NONE=0,
-  ICON_PIXBUF,
-  ICON_CAIRO,
-  ICON_THEMED_SIMPLE,
-  ICON_THEMED_MANY
+enum {
+    ICON_NONE = 0,
+    ICON_PIXBUF,
+    ICON_CAIRO,
+    ICON_THEMED_SIMPLE,
+    ICON_THEMED_MANY
 };
 
-enum
-{
-  CLICKED,
-  MIDDLE_CLICKED,
-  MENU_POPUP,
+enum {
+    CLICKED,
+    MIDDLE_CLICKED,
+    MENU_POPUP,
 
-  LAST_SIGNAL
+    LAST_SIGNAL
 };
 static guint32 _simple_signals[LAST_SIGNAL] = { 0 };
 
@@ -73,207 +70,207 @@ static guint32 _simple_signals[LAST_SIGNAL] = { 0 };
  * When the position changes, we need to update the size of the applet
  */
 static void
-awn_applet_simple_position_changed (AwnApplet *applet, GtkPositionType position)
+awn_applet_simple_position_changed(AwnApplet* applet, GtkPositionType position)
 {
-  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
+    AwnAppletSimplePrivate* priv = AWN_APPLET_SIMPLE(applet)->priv;
 
-  if (AWN_IS_ICON (priv->icon))
-  {
-    awn_icon_set_pos_type (AWN_ICON (priv->icon), position);
-  }
+    if (AWN_IS_ICON(priv->icon)) {
+        awn_icon_set_pos_type(AWN_ICON(priv->icon), position);
+    }
 }
 
 static void
-awn_applet_simple_offset_changed (AwnApplet *applet, gint offset)
+awn_applet_simple_offset_changed(AwnApplet* applet, gint offset)
 {
-  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
+    AwnAppletSimplePrivate* priv = AWN_APPLET_SIMPLE(applet)->priv;
 
-  if (AWN_IS_ICON (priv->icon))
-  {
-    GtkAllocation alloc;
-    gtk_widget_get_allocation (GTK_WIDGET (priv->icon), &alloc);
-    gint x = alloc.x + alloc.width / 2;
-    gint y = alloc.y + alloc.height / 2;
-    offset = awn_applet_get_offset_at (applet, x, y);
-    awn_icon_set_offset (AWN_ICON (priv->icon), offset);
-  }
+    if (AWN_IS_ICON(priv->icon)) {
+        GtkAllocation alloc;
+        gtk_widget_get_allocation(GTK_WIDGET(priv->icon), &alloc);
+        gint x = alloc.x + alloc.width / 2;
+        gint y = alloc.y + alloc.height / 2;
+        offset = awn_applet_get_offset_at(applet, x, y);
+        awn_icon_set_offset(AWN_ICON(priv->icon), offset);
+    }
 }
 
 static void
-awn_applet_simple_size_changed (AwnApplet *applet, gint size)
+awn_applet_simple_size_changed(AwnApplet* applet, gint size)
 {
-  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE (applet)->priv;
-  
-  if (!AWN_IS_ICON (priv->icon))
-    return;
+    AwnAppletSimplePrivate* priv = AWN_APPLET_SIMPLE(applet)->priv;
 
-  if (priv->last_set_icon == ICON_THEMED_SIMPLE
-      || priv->last_set_icon == ICON_THEMED_MANY)
-    awn_themed_icon_set_size (AWN_THEMED_ICON (priv->icon), size);
+    if (!AWN_IS_ICON(priv->icon)) {
+        return;
+    }
 
-  awn_applet_simple_position_changed (applet, 
-                                      awn_applet_get_pos_type (applet));
+    if (priv->last_set_icon == ICON_THEMED_SIMPLE
+            || priv->last_set_icon == ICON_THEMED_MANY) {
+        awn_themed_icon_set_size(AWN_THEMED_ICON(priv->icon), size);
+    }
+
+    awn_applet_simple_position_changed(applet,
+                                       awn_applet_get_pos_type(applet));
 }
 
 static void
-on_icon_clicked (AwnAppletSimple *simple, AwnIcon *icon)
+on_icon_clicked(AwnAppletSimple* simple, AwnIcon* icon)
 {
-  g_signal_emit (simple, _simple_signals[CLICKED], 0);
+    g_signal_emit(simple, _simple_signals[CLICKED], 0);
 }
 
 static void
-on_icon_middle_clicked (AwnAppletSimple *simple, AwnIcon *icon)
+on_icon_middle_clicked(AwnAppletSimple* simple, AwnIcon* icon)
 {
-  g_signal_emit (simple, _simple_signals[MIDDLE_CLICKED], 0);
+    g_signal_emit(simple, _simple_signals[MIDDLE_CLICKED], 0);
 }
 
 static void
-on_icon_menu_popup (AwnAppletSimple *simple, GdkEventButton *event, 
-                    AwnIcon *icon)
+on_icon_menu_popup(AwnAppletSimple* simple, GdkEventButton* event,
+                   AwnIcon* icon)
 {
-  g_signal_emit (simple, _simple_signals[MENU_POPUP], 0, event);
+    g_signal_emit(simple, _simple_signals[MENU_POPUP], 0, event);
 }
 
 static void
-awn_applet_simple_size_allocate (GtkWidget *widget, GtkAllocation *alloc)
+awn_applet_simple_size_allocate(GtkWidget* widget, GtkAllocation* alloc)
 {
-  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE_GET_PRIVATE (widget);
+    AwnAppletSimplePrivate* priv = AWN_APPLET_SIMPLE_GET_PRIVATE(widget);
 
-  if (AWN_IS_ICON (priv->icon))
-  {
-    gint x = alloc->x + alloc->width / 2;
-    gint y = alloc->y + alloc->height / 2;
-    gint offset = awn_applet_get_offset_at (AWN_APPLET (widget), x, y);
-    awn_icon_set_offset (AWN_ICON (priv->icon), offset);
-  }
+    if (AWN_IS_ICON(priv->icon)) {
+        gint x = alloc->x + alloc->width / 2;
+        gint y = alloc->y + alloc->height / 2;
+        gint offset = awn_applet_get_offset_at(AWN_APPLET(widget), x, y);
+        awn_icon_set_offset(AWN_ICON(priv->icon), offset);
+    }
 }
 
 static AwnEffects*
-awn_applet_simple_get_effects (AwnOverlayable *simple)
+awn_applet_simple_get_effects(AwnOverlayable* simple)
 {
-  AwnAppletSimplePrivate *priv = AWN_APPLET_SIMPLE_GET_PRIVATE (simple);
+    AwnAppletSimplePrivate* priv = AWN_APPLET_SIMPLE_GET_PRIVATE(simple);
 
-  if (AWN_IS_ICON (priv->icon))
-    return awn_overlayable_get_effects (AWN_OVERLAYABLE (priv->icon));
+    if (AWN_IS_ICON(priv->icon)) {
+        return awn_overlayable_get_effects(AWN_OVERLAYABLE(priv->icon));
+    }
 
-  return NULL;
+    return NULL;
 }
 
 static void
-awn_applet_simple_menu_creation (AwnApplet *applet, GtkMenu *menu)
+awn_applet_simple_menu_creation(AwnApplet* applet, GtkMenu* menu)
 {
-  /* FIXME: If last_icon_type == ICON_THEMED_*, add "Clear custom icons" */
+    /* FIXME: If last_icon_type == ICON_THEMED_*, add "Clear custom icons" */
 }
 
 static void
-awn_applet_simple_constructed (GObject *object)
+awn_applet_simple_constructed(GObject* object)
 {
-  G_OBJECT_CLASS (awn_applet_simple_parent_class)->constructed (object);
+    G_OBJECT_CLASS(awn_applet_simple_parent_class)->constructed(object);
 
-  AwnAppletSimple        *applet = AWN_APPLET_SIMPLE (object);
-  AwnAppletSimplePrivate *priv = applet->priv;
-  gchar                  *applet_name;
-  
-  g_object_get (object,
-                "canonical-name",&applet_name,
-                NULL);
+    AwnAppletSimple*        applet = AWN_APPLET_SIMPLE(object);
+    AwnAppletSimplePrivate* priv = applet->priv;
+    gchar*                  applet_name;
 
-  priv->icon = awn_themed_icon_new ();
-  
-  g_object_set (priv->icon,
-                "applet-name",applet_name,
-                NULL);
-  awn_icon_set_pos_type (AWN_ICON (priv->icon), 
-                         awn_applet_get_pos_type (AWN_APPLET (object)));
-  awn_icon_set_offset (AWN_ICON (priv->icon),
-                       awn_applet_get_offset (AWN_APPLET (object)));
-  g_signal_connect_swapped (priv->icon, "clicked", 
-                            G_CALLBACK (on_icon_clicked), object);
-  g_signal_connect_swapped (priv->icon, "middle-clicked", 
-                            G_CALLBACK (on_icon_middle_clicked), object);
-  g_signal_connect_swapped (priv->icon, "context-menu-popup", 
-                            G_CALLBACK (on_icon_menu_popup), object);
-  gtk_container_add (GTK_CONTAINER (applet), priv->icon);
-  gtk_widget_show (priv->icon);
-  g_free (applet_name);
+    g_object_get(object,
+                 "canonical-name", &applet_name,
+                 NULL);
+
+    priv->icon = awn_themed_icon_new();
+
+    g_object_set(priv->icon,
+                 "applet-name", applet_name,
+                 NULL);
+    awn_icon_set_pos_type(AWN_ICON(priv->icon),
+                          awn_applet_get_pos_type(AWN_APPLET(object)));
+    awn_icon_set_offset(AWN_ICON(priv->icon),
+                        awn_applet_get_offset(AWN_APPLET(object)));
+    g_signal_connect_swapped(priv->icon, "clicked",
+                             G_CALLBACK(on_icon_clicked), object);
+    g_signal_connect_swapped(priv->icon, "middle-clicked",
+                             G_CALLBACK(on_icon_middle_clicked), object);
+    g_signal_connect_swapped(priv->icon, "context-menu-popup",
+                             G_CALLBACK(on_icon_menu_popup), object);
+    gtk_container_add(GTK_CONTAINER(applet), priv->icon);
+    gtk_widget_show(priv->icon);
+    g_free(applet_name);
 }
 
 static void
-awn_applet_simple_dispose (GObject *object)
+awn_applet_simple_dispose(GObject* object)
 {
-  G_OBJECT_CLASS (awn_applet_simple_parent_class)->dispose (object);
+    G_OBJECT_CLASS(awn_applet_simple_parent_class)->dispose(object);
 }
 
 static void
-awn_applet_simple_overlayable_init (AwnOverlayableIface *iface)
+awn_applet_simple_overlayable_init(AwnOverlayableIface* iface)
 {
-  iface->get_effects = awn_applet_simple_get_effects;
+    iface->get_effects = awn_applet_simple_get_effects;
 }
 
 static void
-awn_applet_simple_class_init (AwnAppletSimpleClass *klass)
+awn_applet_simple_class_init(AwnAppletSimpleClass* klass)
 {
-  GObjectClass   *obj_class = G_OBJECT_CLASS (klass);
-  AwnAppletClass *app_class = AWN_APPLET_CLASS (klass);
-      
-  obj_class->dispose     = awn_applet_simple_dispose;
-  obj_class->constructed = awn_applet_simple_constructed;
+    GObjectClass*   obj_class = G_OBJECT_CLASS(klass);
+    AwnAppletClass* app_class = AWN_APPLET_CLASS(klass);
 
-  app_class->position_changed = awn_applet_simple_position_changed;
-  app_class->offset_changed = awn_applet_simple_offset_changed;
-  app_class->size_changed   = awn_applet_simple_size_changed;
-  app_class->menu_creation  = awn_applet_simple_menu_creation;
+    obj_class->dispose     = awn_applet_simple_dispose;
+    obj_class->constructed = awn_applet_simple_constructed;
 
-  _simple_signals[CLICKED] =
-    g_signal_new ("clicked",
-      G_OBJECT_CLASS_TYPE (obj_class),
-      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-      G_STRUCT_OFFSET (AwnAppletSimpleClass, clicked),
-      NULL, NULL,
-      g_cclosure_marshal_VOID__VOID,
-      G_TYPE_NONE, 0);
+    app_class->position_changed = awn_applet_simple_position_changed;
+    app_class->offset_changed = awn_applet_simple_offset_changed;
+    app_class->size_changed   = awn_applet_simple_size_changed;
+    app_class->menu_creation  = awn_applet_simple_menu_creation;
 
-  _simple_signals[MIDDLE_CLICKED] =
-    g_signal_new ("middle-clicked",
-      G_OBJECT_CLASS_TYPE (obj_class),
-      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-      G_STRUCT_OFFSET (AwnAppletSimpleClass, middle_clicked),
-      NULL, NULL,
-      g_cclosure_marshal_VOID__VOID,
-      G_TYPE_NONE, 0);
+    _simple_signals[CLICKED] =
+        g_signal_new("clicked",
+                     G_OBJECT_CLASS_TYPE(obj_class),
+                     G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+                     G_STRUCT_OFFSET(AwnAppletSimpleClass, clicked),
+                     NULL, NULL,
+                     g_cclosure_marshal_VOID__VOID,
+                     G_TYPE_NONE, 0);
 
-  /**
-   * AwnAppletSimple::context-menu-popup:
-   * @applet: the object which received the signal.
-   * @event: the #GdkEventButton which triggered this signal.
-   *
-   * The ::context-menu-popup signal will be emitted when right mouse button
-   * is pressed on the icon.
-   */
-  _simple_signals[MENU_POPUP] =
-    g_signal_new ("context-menu-popup",
-      G_OBJECT_CLASS_TYPE (obj_class),
-      G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
-      G_STRUCT_OFFSET (AwnAppletSimpleClass, context_menu_popup),
-      NULL, NULL,
-      g_cclosure_marshal_VOID__BOXED,
-      G_TYPE_NONE, 1,
-      GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+    _simple_signals[MIDDLE_CLICKED] =
+        g_signal_new("middle-clicked",
+                     G_OBJECT_CLASS_TYPE(obj_class),
+                     G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+                     G_STRUCT_OFFSET(AwnAppletSimpleClass, middle_clicked),
+                     NULL, NULL,
+                     g_cclosure_marshal_VOID__VOID,
+                     G_TYPE_NONE, 0);
 
-  g_type_class_add_private (obj_class, sizeof (AwnAppletSimplePrivate));
+    /**
+     * AwnAppletSimple::context-menu-popup:
+     * @applet: the object which received the signal.
+     * @event: the #GdkEventButton which triggered this signal.
+     *
+     * The ::context-menu-popup signal will be emitted when right mouse button
+     * is pressed on the icon.
+     */
+    _simple_signals[MENU_POPUP] =
+        g_signal_new("context-menu-popup",
+                     G_OBJECT_CLASS_TYPE(obj_class),
+                     G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
+                     G_STRUCT_OFFSET(AwnAppletSimpleClass, context_menu_popup),
+                     NULL, NULL,
+                     g_cclosure_marshal_VOID__BOXED,
+                     G_TYPE_NONE, 1,
+                     GDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+    g_type_class_add_private(obj_class, sizeof(AwnAppletSimplePrivate));
 }
 
 static void
-awn_applet_simple_init (AwnAppletSimple *simple)
+awn_applet_simple_init(AwnAppletSimple* simple)
 {
-  AwnAppletSimplePrivate *priv;
-  
-  priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE(simple);
+    AwnAppletSimplePrivate* priv;
 
-  priv->last_set_icon = ICON_NONE;
+    priv = simple->priv = AWN_APPLET_SIMPLE_GET_PRIVATE(simple);
 
-  g_signal_connect (simple, "size-allocate",
-                    G_CALLBACK (awn_applet_simple_size_allocate), NULL);
+    priv->last_set_icon = ICON_NONE;
+
+    g_signal_connect(simple, "size-allocate",
+                     G_CALLBACK(awn_applet_simple_size_allocate), NULL);
 }
 
 /**
@@ -290,210 +287,214 @@ awn_applet_simple_init (AwnAppletSimple *simple)
  * Returns: a new instance of an applet.
  */
 GtkWidget*
-awn_applet_simple_new (const gchar* canonical_name,
-                       const gchar *uid,
-                       gint panel_id)
+awn_applet_simple_new(const gchar* canonical_name,
+                      const gchar* uid,
+                      gint panel_id)
 {
-  AwnAppletSimple *simple;
+    AwnAppletSimple* simple;
 
-  simple = g_object_new (AWN_TYPE_APPLET_SIMPLE,
-                         "canonical-name", canonical_name,
-                         "uid", uid,
-                         "panel-id", panel_id,
-                         NULL);
+    simple = g_object_new(AWN_TYPE_APPLET_SIMPLE,
+                          "canonical-name", canonical_name,
+                          "uid", uid,
+                          "panel-id", panel_id,
+                          NULL);
 
-  return GTK_WIDGET (simple);
+    return GTK_WIDGET(simple);
 }
 
 /*
  * PUBLIC FUNCTIONS
  */
-void    
-awn_applet_simple_set_icon_pixbuf (AwnAppletSimple  *applet,
-                                   GdkPixbuf        *pixbuf)
+void
+awn_applet_simple_set_icon_pixbuf(AwnAppletSimple*  applet,
+                                  GdkPixbuf*        pixbuf)
 {
-  AwnAppletSimplePrivate *priv;
+    AwnAppletSimplePrivate* priv;
 
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
-  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
-  priv = applet->priv;
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
+    g_return_if_fail(GDK_IS_PIXBUF(pixbuf));
+    priv = applet->priv;
 
-  /* Make sure AwnThemedIcon doesn't update the icon of it's own accord */
-  if (priv->last_set_icon == ICON_THEMED_SIMPLE 
-      || priv->last_set_icon == ICON_THEMED_MANY)
-    awn_themed_icon_clear_info (AWN_THEMED_ICON (priv->icon));
+    /* Make sure AwnThemedIcon doesn't update the icon of it's own accord */
+    if (priv->last_set_icon == ICON_THEMED_SIMPLE
+            || priv->last_set_icon == ICON_THEMED_MANY) {
+        awn_themed_icon_clear_info(AWN_THEMED_ICON(priv->icon));
+    }
 
-  priv->last_set_icon = ICON_PIXBUF;
-  awn_icon_set_from_pixbuf (AWN_ICON (priv->icon), pixbuf);
-}
-
-void 
-awn_applet_simple_set_icon_context (AwnAppletSimple  *applet, 
-                                    cairo_t          *cr)
-{
-  AwnAppletSimplePrivate *priv;
-
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
-  g_return_if_fail (cr);
-  priv = applet->priv;
-
-  /* Make sure AwnThemedIcon doesn't update the icon of it's own accord */
-  if (priv->last_set_icon == ICON_THEMED_SIMPLE 
-      || priv->last_set_icon == ICON_THEMED_MANY)
-    awn_themed_icon_clear_info (AWN_THEMED_ICON (priv->icon));
-
-  priv->last_set_icon = ICON_CAIRO;
-  awn_icon_set_from_context (AWN_ICON (priv->icon), cr);
-}
-
-void 
-awn_applet_simple_set_icon_surface (AwnAppletSimple  *applet,
-                                    cairo_surface_t  *surface)
-{
-  AwnAppletSimplePrivate *priv;
-
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
-  g_return_if_fail (surface);
-  priv = applet->priv;
-
-  /* Make sure AwnThemedIcon doesn't update the icon of it's own accord */
-  if (priv->last_set_icon == ICON_THEMED_SIMPLE
-      || priv->last_set_icon == ICON_THEMED_MANY)
-    awn_themed_icon_clear_info (AWN_THEMED_ICON (priv->icon));
-
-  priv->last_set_icon = ICON_CAIRO;
-  awn_icon_set_from_surface (AWN_ICON (priv->icon), surface);
+    priv->last_set_icon = ICON_PIXBUF;
+    awn_icon_set_from_pixbuf(AWN_ICON(priv->icon), pixbuf);
 }
 
 void
-awn_applet_simple_set_icon_name (AwnAppletSimple  *applet,
-                                 const gchar      *icon_name)
+awn_applet_simple_set_icon_context(AwnAppletSimple*  applet,
+                                   cairo_t*          cr)
 {
-  gchar *applet_name;  
-  
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
-  g_return_if_fail (icon_name);
+    AwnAppletSimplePrivate* priv;
 
-  g_object_get (applet,
-                "canonical-name",&applet_name,
-                NULL);
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
+    g_return_if_fail(cr);
+    priv = applet->priv;
 
-  g_return_if_fail (applet_name);
+    /* Make sure AwnThemedIcon doesn't update the icon of it's own accord */
+    if (priv->last_set_icon == ICON_THEMED_SIMPLE
+            || priv->last_set_icon == ICON_THEMED_MANY) {
+        awn_themed_icon_clear_info(AWN_THEMED_ICON(priv->icon));
+    }
 
-  applet->priv->last_set_icon = ICON_THEMED_SIMPLE;
-  awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet)));  
-  awn_themed_icon_set_info_simple (AWN_THEMED_ICON (applet->priv->icon),
-                                   applet_name,
-                                   awn_applet_get_uid (AWN_APPLET (applet)),
-                                   icon_name);
-  g_free (applet_name);
-}
-                                    
-void   
-awn_applet_simple_set_icon_info (AwnAppletSimple  *applet,
-                                 GStrv            states,
-                                 GStrv            icon_names)
-{
-  gchar *applet_name=NULL;
-  
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
-  g_return_if_fail (states);
-  g_return_if_fail (icon_names);
-
-  g_object_get (applet,
-                "canonical-name",&applet_name,
-                NULL);  
-  g_return_if_fail (applet_name);
-  applet->priv->last_set_icon = ICON_THEMED_MANY;
-  awn_themed_icon_set_size (AWN_THEMED_ICON (applet->priv->icon),
-                            awn_applet_get_size (AWN_APPLET (applet)));
-  awn_themed_icon_set_info (AWN_THEMED_ICON (applet->priv->icon),
-                            applet_name,
-                            awn_applet_get_uid (AWN_APPLET (applet)),
-                            states,
-                            icon_names);
-  g_free (applet_name);
-}
-                                    
-void 
-awn_applet_simple_set_icon_state   (AwnAppletSimple  *applet,  
-                                    const gchar      *state)
-{
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
-  g_return_if_fail (state);
-
-  if (applet->priv->last_set_icon == ICON_THEMED_MANY)
-    awn_themed_icon_set_state (AWN_THEMED_ICON (applet->priv->icon), state);
+    priv->last_set_icon = ICON_CAIRO;
+    awn_icon_set_from_context(AWN_ICON(priv->icon), cr);
 }
 
-void 
-awn_applet_simple_set_tooltip_text (AwnAppletSimple  *applet,
-                                    const gchar      *title)
+void
+awn_applet_simple_set_icon_surface(AwnAppletSimple*  applet,
+                                   cairo_surface_t*  surface)
 {
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
-  
-  awn_icon_set_tooltip_text (AWN_ICON (applet->priv->icon), title);
+    AwnAppletSimplePrivate* priv;
+
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
+    g_return_if_fail(surface);
+    priv = applet->priv;
+
+    /* Make sure AwnThemedIcon doesn't update the icon of it's own accord */
+    if (priv->last_set_icon == ICON_THEMED_SIMPLE
+            || priv->last_set_icon == ICON_THEMED_MANY) {
+        awn_themed_icon_clear_info(AWN_THEMED_ICON(priv->icon));
+    }
+
+    priv->last_set_icon = ICON_CAIRO;
+    awn_icon_set_from_surface(AWN_ICON(priv->icon), surface);
 }
 
-gchar *
-awn_applet_simple_get_tooltip_text (AwnAppletSimple  *applet)
+void
+awn_applet_simple_set_icon_name(AwnAppletSimple*  applet,
+                                const gchar*      icon_name)
 {
-  g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
+    gchar* applet_name;
 
-  return awn_icon_get_tooltip_text (AWN_ICON (applet->priv->icon));
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
+    g_return_if_fail(icon_name);
+
+    g_object_get(applet,
+                 "canonical-name", &applet_name,
+                 NULL);
+
+    g_return_if_fail(applet_name);
+
+    applet->priv->last_set_icon = ICON_THEMED_SIMPLE;
+    awn_themed_icon_set_size(AWN_THEMED_ICON(applet->priv->icon),
+                             awn_applet_get_size(AWN_APPLET(applet)));
+    awn_themed_icon_set_info_simple(AWN_THEMED_ICON(applet->priv->icon),
+                                    applet_name,
+                                    awn_applet_get_uid(AWN_APPLET(applet)),
+                                    icon_name);
+    g_free(applet_name);
 }
 
-void 
-awn_applet_simple_set_message (AwnAppletSimple  *applet,
-                               const gchar      *message)
+void
+awn_applet_simple_set_icon_info(AwnAppletSimple*  applet,
+                                GStrv            states,
+                                GStrv            icon_names)
 {
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
+    gchar* applet_name = NULL;
 
-  // FIXME: OverlayText
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
+    g_return_if_fail(states);
+    g_return_if_fail(icon_names);
+
+    g_object_get(applet,
+                 "canonical-name", &applet_name,
+                 NULL);
+    g_return_if_fail(applet_name);
+    applet->priv->last_set_icon = ICON_THEMED_MANY;
+    awn_themed_icon_set_size(AWN_THEMED_ICON(applet->priv->icon),
+                             awn_applet_get_size(AWN_APPLET(applet)));
+    awn_themed_icon_set_info(AWN_THEMED_ICON(applet->priv->icon),
+                             applet_name,
+                             awn_applet_get_uid(AWN_APPLET(applet)),
+                             states,
+                             icon_names);
+    g_free(applet_name);
 }
 
-gchar *
-awn_applet_simple_get_message (AwnAppletSimple  *applet)
+void
+awn_applet_simple_set_icon_state(AwnAppletSimple*  applet,
+                                 const gchar*      state)
 {
-  g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
+    g_return_if_fail(state);
 
-  // FIXME: OverlayText
-  return NULL;
+    if (applet->priv->last_set_icon == ICON_THEMED_MANY) {
+        awn_themed_icon_set_state(AWN_THEMED_ICON(applet->priv->icon), state);
+    }
 }
 
-void 
-awn_applet_simple_set_progress (AwnAppletSimple  *applet,
-                                gfloat            progress)
+void
+awn_applet_simple_set_tooltip_text(AwnAppletSimple*  applet,
+                                   const gchar*      title)
 {
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
 
-  // FIXME: OverlayProgress
+    awn_icon_set_tooltip_text(AWN_ICON(applet->priv->icon), title);
 }
 
-gfloat  
-awn_applet_simple_get_progress (AwnAppletSimple  *applet)
+gchar*
+awn_applet_simple_get_tooltip_text(AwnAppletSimple*  applet)
 {
-  g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), 0.0);
+    g_return_val_if_fail(AWN_IS_APPLET_SIMPLE(applet), NULL);
 
-  // FIXME: OverlayProgress
-  return 0.0f;
+    return awn_icon_get_tooltip_text(AWN_ICON(applet->priv->icon));
 }
 
-AwnIcon *  
-awn_applet_simple_get_icon (AwnAppletSimple  *applet)
+void
+awn_applet_simple_set_message(AwnAppletSimple*  applet,
+                              const gchar*      message)
 {
-  g_return_val_if_fail (AWN_IS_APPLET_SIMPLE (applet), NULL);
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
 
-  return AWN_ICON (applet->priv->icon);
+    // FIXME: OverlayText
 }
 
-void  
-awn_applet_simple_set_effect (AwnAppletSimple  *applet,
-                              AwnEffect         effect)
+gchar*
+awn_applet_simple_get_message(AwnAppletSimple*  applet)
 {
-  g_return_if_fail (AWN_IS_APPLET_SIMPLE (applet));
+    g_return_val_if_fail(AWN_IS_APPLET_SIMPLE(applet), NULL);
 
-  awn_icon_set_effect (AWN_ICON (applet->priv->icon), effect);
+    // FIXME: OverlayText
+    return NULL;
+}
+
+void
+awn_applet_simple_set_progress(AwnAppletSimple*  applet,
+                               gfloat            progress)
+{
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
+
+    // FIXME: OverlayProgress
+}
+
+gfloat
+awn_applet_simple_get_progress(AwnAppletSimple*  applet)
+{
+    g_return_val_if_fail(AWN_IS_APPLET_SIMPLE(applet), 0.0);
+
+    // FIXME: OverlayProgress
+    return 0.0f;
+}
+
+AwnIcon*
+awn_applet_simple_get_icon(AwnAppletSimple*  applet)
+{
+    g_return_val_if_fail(AWN_IS_APPLET_SIMPLE(applet), NULL);
+
+    return AWN_ICON(applet->priv->icon);
+}
+
+void
+awn_applet_simple_set_effect(AwnAppletSimple*  applet,
+                             AwnEffect         effect)
+{
+    g_return_if_fail(AWN_IS_APPLET_SIMPLE(applet));
+
+    awn_icon_set_effect(AWN_ICON(applet->priv->icon), effect);
 }
 

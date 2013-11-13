@@ -24,6 +24,6 @@
 #ifndef _TASK_ICON_BUILD_CONTEXT_MENUS_H_
 #define _TASK_ICON_BUILD_CONTEXT_MENUS_H_
 
-GtkWidget * task_icon_build_context_menu(TaskIcon * icon);
+GtkWidget* task_icon_build_context_menu(TaskIcon* icon);
 
 #endif

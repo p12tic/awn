@@ -21,10 +21,10 @@
 
 #include "awn-effects-shared.h"
 
-gboolean zoom_effect(AwnEffectsAnimation * anim);
-gboolean zoom_attention_effect(AwnEffectsAnimation * anim);
-gboolean zoom_opening_effect(AwnEffectsAnimation * anim);
-gboolean zoom_closing_effect(AwnEffectsAnimation * anim);
-gboolean zoom_effect_finalize(AwnEffectsAnimation * anim);
+gboolean zoom_effect(AwnEffectsAnimation* anim);
+gboolean zoom_attention_effect(AwnEffectsAnimation* anim);
+gboolean zoom_opening_effect(AwnEffectsAnimation* anim);
+gboolean zoom_closing_effect(AwnEffectsAnimation* anim);
+gboolean zoom_effect_finalize(AwnEffectsAnimation* anim);
 
 #endif

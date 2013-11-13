@@ -2,7 +2,7 @@
  * Copyright (C) 2009 Michal Hruby
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License version 
+ * it under the terms of the GNU Library General Public License version
  * 2 or later as published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
@@ -32,54 +32,52 @@ extern "C" {
 #define AWN_TYPE_THROBBER (awn_throbber_get_type ())
 
 #define AWN_THROBBER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
-	AWN_TYPE_THROBBER, AwnThrobber))
+    AWN_TYPE_THROBBER, AwnThrobber))
 
 #define AWN_THROBBER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass),\
-	AWN_TYPE_THROBBER, AwnThrobberClass))
+    AWN_TYPE_THROBBER, AwnThrobberClass))
 
 #define AWN_IS_THROBBER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
-	AWN_TYPE_THROBBER))
+    AWN_TYPE_THROBBER))
 
 #define AWN_IS_THROBBER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),\
-	AWN_TYPE_THROBBER))
+    AWN_TYPE_THROBBER))
 
 #define AWN_THROBBER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj),\
-	AWN_TYPE_THROBBER, AwnThrobberClass))
+    AWN_TYPE_THROBBER, AwnThrobberClass))
 
 typedef struct _AwnThrobber        AwnThrobber;
 typedef struct _AwnThrobberClass   AwnThrobberClass;
 typedef struct _AwnThrobberPrivate AwnThrobberPrivate;
- 
-struct _AwnThrobber
-{
-  AwnIcon parent;
 
-  AwnThrobberPrivate *priv;
+struct _AwnThrobber {
+    AwnIcon parent;
+
+    AwnThrobberPrivate* priv;
 };
 
-struct _AwnThrobberClass
-{
-  AwnIconClass parent_class;
+struct _AwnThrobberClass {
+    AwnIconClass parent_class;
 };
 
 typedef enum {
-  AWN_THROBBER_TYPE_NORMAL,
-  AWN_THROBBER_TYPE_SAD_FACE,
-  AWN_THROBBER_TYPE_ARROW_1,
-  AWN_THROBBER_TYPE_ARROW_2,
-  AWN_THROBBER_TYPE_CLOSE_BUTTON
+    AWN_THROBBER_TYPE_NORMAL,
+    AWN_THROBBER_TYPE_SAD_FACE,
+    AWN_THROBBER_TYPE_ARROW_1,
+    AWN_THROBBER_TYPE_ARROW_2,
+    AWN_THROBBER_TYPE_CLOSE_BUTTON
 } AwnThrobberType;
 
-GType         awn_throbber_get_type         (void) G_GNUC_CONST;
+GType         awn_throbber_get_type(void) G_GNUC_CONST;
 
-GtkWidget *   awn_throbber_new              (void);
+GtkWidget*    awn_throbber_new(void);
 
-GtkWidget*    awn_throbber_new_with_config  (DesktopAgnosticConfigClient *client);
+GtkWidget*    awn_throbber_new_with_config(DesktopAgnosticConfigClient* client);
 
-void          awn_throbber_set_type         (AwnThrobber *throbber,
-                                             AwnThrobberType type);
+void          awn_throbber_set_type(AwnThrobber* throbber,
+                                    AwnThrobberType type);
 
-void          awn_throbber_set_size         (AwnThrobber *throbber, gint size);
+void          awn_throbber_set_size(AwnThrobber* throbber, gint size);
 
 #ifdef __cplusplus
 } // extern "C"

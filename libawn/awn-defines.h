@@ -25,7 +25,7 @@ extern "C" {
 #endif
 
 /**
- * AWN_MAX_HEIGHT: 
+ * AWN_MAX_HEIGHT:
  *
  *The maximum size of the panel
  */
@@ -33,7 +33,7 @@ extern "C" {
 #define AWN_MAX_HEIGHT 100
 
 /**
- * AWN_MIN_HEIGHT: 
+ * AWN_MIN_HEIGHT:
  *
  *The minimum size of the panel
  */
@@ -41,16 +41,17 @@ extern "C" {
 
 typedef enum
 {
-  AWN_APPLET_FLAGS_NONE     = 0,
-  AWN_APPLET_EXPAND_MINOR   = 1 << 0,
-  AWN_APPLET_EXPAND_MAJOR   = 1 << 1,
-  AWN_APPLET_IS_EXPANDER    = 1 << 2,
-  AWN_APPLET_IS_SEPARATOR   = 1 << 3,
-  AWN_APPLET_HAS_SHAPE_MASK = 1 << 4,
+    AWN_APPLET_FLAGS_NONE     = 0,
+    AWN_APPLET_EXPAND_MINOR   = 1 << 0,
+    AWN_APPLET_EXPAND_MAJOR   = 1 << 1,
+    AWN_APPLET_IS_EXPANDER    = 1 << 2,
+    AWN_APPLET_IS_SEPARATOR   = 1 << 3,
+    AWN_APPLET_HAS_SHAPE_MASK = 1 << 4,
 
-  AWN_APPLET_DOCKLET_HANDLES_POSITION_CHANGE = 1 << 10,
-  AWN_APPLET_DOCKLET_CLOSE_ON_MOUSE_OUT = 1 << 11
-} AwnAppletFlags;
+    AWN_APPLET_DOCKLET_HANDLES_POSITION_CHANGE = 1 << 10,
+    AWN_APPLET_DOCKLET_CLOSE_ON_MOUSE_OUT = 1 << 11
+}
+AwnAppletFlags;
 
 /**
  * AwnAppletLicense:
@@ -63,12 +64,11 @@ typedef enum
  * Starting the acceptable values at 10 makes it rather unlikely
  * that someone can specify a license type by accident.
  */
-typedef enum
-{
-  AWN_APPLET_LICENSE_GPLV2 = 10,
-  AWN_APPLET_LICENSE_GPLV3 = 11,
-  AWN_APPLET_LICENSE_LGPLV2_1 = 12,
-  AWN_APPLET_LICENSE_LGPLV3 = 13
+typedef enum {
+    AWN_APPLET_LICENSE_GPLV2 = 10,
+    AWN_APPLET_LICENSE_GPLV3 = 11,
+    AWN_APPLET_LICENSE_LGPLV2_1 = 12,
+    AWN_APPLET_LICENSE_LGPLV3 = 13
 } AwnAppletLicense;
 
 /**
@@ -80,12 +80,11 @@ typedef enum
  * Describes the layout of icons on the panel.
  */
 
-typedef enum
-{
-	AWN_PATH_LINEAR=0,
-	AWN_PATH_ELLIPSE,
+typedef enum {
+    AWN_PATH_LINEAR = 0,
+    AWN_PATH_ELLIPSE,
 
-	AWN_PATH_LAST
+    AWN_PATH_LAST
 
 } AwnPathType;
 
@@ -97,46 +96,46 @@ typedef enum
 #define AWN_PANEL_ID_DEFAULT 1
 
 /**
- * AWN_FONT_SIZE_EXTRA_SMALL: 
+ * AWN_FONT_SIZE_EXTRA_SMALL:
  *
  * Extra small font size. For use with #AwnOverlayText.
- * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to
  * standard Pango font size units for standard %PANGO_SCALE when the awn icon
  * size is 48.0 pixels.
  */
 
 /**
- * AWN_FONT_SIZE_SMALL: 
+ * AWN_FONT_SIZE_SMALL:
  *
  * Small font size. For use with #AwnOverlayText.
- * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to
  * standard Pango font size units for standard %PANGO_SCALE when the awn icon
  * size is 48.0 pixels.
  */
 
 /**
- * AWN_FONT_SIZE_MEDIUM: 
+ * AWN_FONT_SIZE_MEDIUM:
  *
  * Medium font size. For use with #AwnOverlayText.
- * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to
  * standard Pango font size units for standard %PANGO_SCALE when the awn icon
  * size is 48.0 pixels.
  */
 
 /**
- * AWN_FONT_SIZE_LARGE: 
+ * AWN_FONT_SIZE_LARGE:
  *
  * Large font size. For use with #AwnOverlayText.
- * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to
  * standard Pango font size units for standard %PANGO_SCALE when the awn icon
  * size is 48.0 pixels.
  */
 
 /**
- * AWN_FONT_SIZE_EXTRA_LARGE: 
+ * AWN_FONT_SIZE_EXTRA_LARGE:
  *
  * Extra large font size. For use with #AwnOverlayText.
- * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to 
+ * Standardized font sizes to be used with #AwnOverlayText.  Corresponds to
  * standard Pango font size units for standard %PANGO_SCALE when the awn icon
  * size is 48.0 pixels.
  */

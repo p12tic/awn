@@ -34,7 +34,7 @@ extern "C" {
  * Ensures that the widget has transparent background all the time
  * by connecting to the GtkWidget::realize and GtkWidget::style-set signals.
  */
-void awn_utils_ensure_transparent_bg (GtkWidget *widget);
+void awn_utils_ensure_transparent_bg(GtkWidget* widget);
 
 /**
  * awn_utils_make_transparent_bg:
@@ -43,7 +43,7 @@ void awn_utils_ensure_transparent_bg (GtkWidget *widget);
  * Modifies the background pixmap on the widget to be transparent if composited
  * environment is used.
  */
-void awn_utils_make_transparent_bg  (GtkWidget *widget);
+void awn_utils_make_transparent_bg(GtkWidget* widget);
 
 /**
  * awn_utils_get_offset_modifier_by_path_type:
@@ -62,12 +62,12 @@ void awn_utils_make_transparent_bg  (GtkWidget *widget);
  * Returns: Offset modifier, offset value should be multiplied by this
  * modifier.
  */
-gfloat awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
-                                                   GtkPositionType position,
-                                                   gint offset,
-                                                   gfloat offset_modifier,
-                                                   gint pos_x, gint pos_y,
-                                                   gint width, gint height);
+gfloat awn_utils_get_offset_modifier_by_path_type(AwnPathType path_type,
+        GtkPositionType position,
+        gint offset,
+        gfloat offset_modifier,
+        gint pos_x, gint pos_y,
+        gint width, gint height);
 
 /**
  * awn_utils_gslist_to_gvaluearray:
@@ -79,41 +79,41 @@ gfloat awn_utils_get_offset_modifier_by_path_type (AwnPathType path_type,
  * Returns: A newly allocated #GValueArray (the #GValue elements and their
  *          contents are also newly allocated).
  */
-GValueArray* awn_utils_gslist_to_gvaluearray (GSList *list);
+GValueArray* awn_utils_gslist_to_gvaluearray(GSList* list);
 
 /**
  * awn_utils_show_menu_images:
  * @menu: A GtkMenu.
  *
- * Set all instances #GtkImageMenuItem in the #GtkMenu are set to visible. A 
+ * Set all instances #GtkImageMenuItem in the #GtkMenu are set to visible. A
  * null op for GTK+ < 2.16.0
  *
  */
-void awn_utils_show_menu_images (GtkMenu * menu);
+void awn_utils_show_menu_images(GtkMenu* menu);
 
-const gchar *awn_utils_get_gtk_icon_theme_name (GtkIconTheme * theme);
+const gchar* awn_utils_get_gtk_icon_theme_name(GtkIconTheme* theme);
 
 /**
  * awn_utils_menu_set_position_widget_relative:
  * @menu: a GtkMenu
- * @px: address of the gint representing the horizontal position 
+ * @px: address of the gint representing the horizontal position
         where the menu shall be drawn. This is an output parameter.
- * @py: address of the gint representing the vertical position 
+ * @py: address of the gint representing the vertical position
  *       where the menu shall be drawn. This is an output parameter.
- * @push_in: This parameter controls how menus placed outside the monitor are 
+ * @push_in: This parameter controls how menus placed outside the monitor are
  *           handled. This doesn't work well.
  * @data: the data supplied by the user in the gtk_menu_popup() data parameter.
  *
- * This function (*GtkMenuPositionFunc) is used when calling gtk_menu_popup() 
+ * This function (*GtkMenuPositionFunc) is used when calling gtk_menu_popup()
  * which controls the positioning of the menu when it is displayed.
  * We use this custom positioning to popup menu relative to an icon/applet.
  * See for example "awn_icon_popup_gtk_menu" into awn-icon.c
  */
-void awn_utils_menu_set_position_widget_relative (GtkMenu *menu,
-                                                  gint *px,
-                                                  gint *py,
-                                                  gboolean *push_in,
-                                                  gpointer data);
+void awn_utils_menu_set_position_widget_relative(GtkMenu* menu,
+        gint* px,
+        gint* py,
+        gboolean* push_in,
+        gpointer data);
 
 #ifdef __cplusplus
 } // extern "C"

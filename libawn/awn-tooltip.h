@@ -29,17 +29,17 @@
 extern "C" {
 #endif
 
-#define AWN_TYPE_TOOLTIP		(awn_tooltip_get_type ())
+#define AWN_TYPE_TOOLTIP        (awn_tooltip_get_type ())
 
-#define AWN_TOOLTIP(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj),\
+#define AWN_TOOLTIP(obj)        (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
         AWN_TYPE_TOOLTIP,\
         AwnTooltip))
 
-#define AWN_TOOLTIP_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), \
+#define AWN_TOOLTIP_CLASS(obj)  (G_TYPE_CHECK_CLASS_CAST ((obj), \
         AWN_TYPE_TOOLTIP, \
         AwnTooltipClass))
-                                
-#define AWN_IS_TOOLTIP(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
+
+#define AWN_IS_TOOLTIP(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
         AWN_TYPE_TOOLTIP))
 
 #define AWN_IS_TOOLTIP_CLASS(obj) (G_TYPE_CHECK_CLASS_TYPE ((obj), \
@@ -50,61 +50,59 @@ extern "C" {
         AwnTooltipClass))
 
 typedef struct _AwnTooltip AwnTooltip;
-typedef struct _AwnTooltipClass	AwnTooltipClass;
+typedef struct _AwnTooltipClass AwnTooltipClass;
 typedef struct _AwnTooltipPrivate AwnTooltipPrivate;
 
-struct _AwnTooltip
-{
-  GtkWindow parent;
+struct _AwnTooltip {
+    GtkWindow parent;
 
-  AwnTooltipPrivate *priv;
+    AwnTooltipPrivate* priv;
 };
 
-struct _AwnTooltipClass
-{
-  GtkWindowClass parent_class;
+struct _AwnTooltipClass {
+    GtkWindowClass parent_class;
 
-  /* Future padding */
-  void (*_tooltip0) (void);
-  void (*_tooltip1) (void);
-  void (*_tooltip2) (void);
-  void (*_tooltip3) (void);
+    /* Future padding */
+    void (*_tooltip0)(void);
+    void (*_tooltip1)(void);
+    void (*_tooltip2)(void);
+    void (*_tooltip3)(void);
 };
 
-GType         awn_tooltip_get_type             (void);
+GType         awn_tooltip_get_type(void);
 
-GtkWidget *   awn_tooltip_new_for_widget       (GtkWidget   *widget);
+GtkWidget*    awn_tooltip_new_for_widget(GtkWidget*   widget);
 
-void          awn_tooltip_set_text             (AwnTooltip  *tooltip,
-                                                const gchar *text);
+void          awn_tooltip_set_text(AwnTooltip*  tooltip,
+                                   const gchar* text);
 
-gchar *       awn_tooltip_get_text             (AwnTooltip  *tooltip);
+gchar*        awn_tooltip_get_text(AwnTooltip*  tooltip);
 
-void          awn_tooltip_set_focus_widget     (AwnTooltip *tooltip,
-                                                GtkWidget  *widget);
+void          awn_tooltip_set_focus_widget(AwnTooltip* tooltip,
+        GtkWidget*  widget);
 
-void          awn_tooltip_set_font_name        (AwnTooltip *tooltip,
-                                                const gchar *font_name);
+void          awn_tooltip_set_font_name(AwnTooltip* tooltip,
+                                        const gchar* font_name);
 
-void          awn_tooltip_set_font_color       (AwnTooltip           *tooltip,
-                                                DesktopAgnosticColor *font_color);
+void          awn_tooltip_set_font_color(AwnTooltip*           tooltip,
+        DesktopAgnosticColor* font_color);
 
-void          awn_tooltip_set_outline_color    (AwnTooltip           *tooltip,
-                                                DesktopAgnosticColor *outline);
+void          awn_tooltip_set_outline_color(AwnTooltip*           tooltip,
+        DesktopAgnosticColor* outline);
 
-void          awn_tooltip_set_background_color (AwnTooltip           *tooltip,
-                                                DesktopAgnosticColor *bg_color);
+void          awn_tooltip_set_background_color(AwnTooltip*           tooltip,
+        DesktopAgnosticColor* bg_color);
 
-void          awn_tooltip_set_delay            (AwnTooltip  *tooltip,
-                                                gint         msecs);
+void          awn_tooltip_set_delay(AwnTooltip*  tooltip,
+                                    gint         msecs);
 
-gint          awn_tooltip_get_delay            (AwnTooltip  *tooltip);
+gint          awn_tooltip_get_delay(AwnTooltip*  tooltip);
 
-void          awn_tooltip_update_position      (AwnTooltip *tooltip);
+void          awn_tooltip_update_position(AwnTooltip* tooltip);
 
-void          awn_tooltip_set_position_hint    (AwnTooltip *tooltip,
-                                                GtkPositionType position,
-                                                gint size);
+void          awn_tooltip_set_position_hint(AwnTooltip* tooltip,
+        GtkPositionType position,
+        gint size);
 
 #ifdef __cplusplus
 } // extern "C"

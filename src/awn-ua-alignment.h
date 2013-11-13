@@ -48,22 +48,22 @@ extern "C" {
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_UA_ALIGNMENT, AwnUAAlignmentClass))
 
 typedef struct {
-  GtkAlignment parent;
+    GtkAlignment parent;
 } AwnUAAlignment;
 
 typedef struct {
-  GtkAlignmentClass parent_class;
+    GtkAlignmentClass parent_class;
 } AwnUAAlignmentClass;
 
-GType awn_ua_alignment_get_type (void);
+GType awn_ua_alignment_get_type(void);
 
-GtkWidget* awn_ua_alignment_new (AwnAppletManager *manager,gchar * ua_list_entry,double ua_ratio);
+GtkWidget* awn_ua_alignment_new(AwnAppletManager* manager, gchar* ua_list_entry, double ua_ratio);
 
-GtkWidget* awn_ua_alignment_get_socket (AwnUAAlignment *self);
+GtkWidget* awn_ua_alignment_get_socket(AwnUAAlignment* self);
 
-GdkWindow * awn_ua_alignment_add_id (AwnUAAlignment *self, GdkNativeWindow native_window);
+GdkWindow* awn_ua_alignment_add_id(AwnUAAlignment* self, GdkNativeWindow native_window);
 
-gint awn_ua_alignment_list_cmp (gconstpointer a, gconstpointer b);
+gint awn_ua_alignment_list_cmp(gconstpointer a, gconstpointer b);
 
 #ifdef __cplusplus
 } // extern "C"

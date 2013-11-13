@@ -28,45 +28,43 @@ extern "C" {
 #define AWN_TYPE_BOX (awn_box_get_type ())
 
 #define AWN_BOX(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
-	AWN_TYPE_BOX, AwnBox))
+    AWN_TYPE_BOX, AwnBox))
 
 #define AWN_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass),\
-	AWN_TYPE_BOX, AwnBoxClass))
+    AWN_TYPE_BOX, AwnBoxClass))
 
 #define AWN_IS_BOX(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
-	AWN_TYPE_BOX))
+    AWN_TYPE_BOX))
 
 #define AWN_IS_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),\
-	AWN_TYPE_BOX))
+    AWN_TYPE_BOX))
 
 #define AWN_BOX_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj),\
-	AWN_TYPE_BOX, AwnBoxClass))
+    AWN_TYPE_BOX, AwnBoxClass))
 
 typedef struct _AwnBox        AwnBox;
 typedef struct _AwnBoxClass   AwnBoxClass;
 typedef struct _AwnBoxPrivate AwnBoxPrivate;
- 
-struct _AwnBox
-{
-  GtkBox  parent;	
 
-  AwnBoxPrivate *priv;
+struct _AwnBox {
+    GtkBox  parent;
+
+    AwnBoxPrivate* priv;
 };
 
-struct _AwnBoxClass
-{
-  GtkBoxClass parent_class;
+struct _AwnBoxClass {
+    GtkBoxClass parent_class;
 };
 
-GType          awn_box_get_type         (void) G_GNUC_CONST;
+GType          awn_box_get_type(void) G_GNUC_CONST;
 
-GtkWidget *    awn_box_new              (GtkOrientation orient);
+GtkWidget*     awn_box_new(GtkOrientation orient);
 
-void           awn_box_set_orientation  (AwnBox         *box,
-                                         GtkOrientation  orient);
+void           awn_box_set_orientation(AwnBox*         box,
+                                       GtkOrientation  orient);
 
-void           awn_box_set_orientation_from_pos_type (AwnBox *box,
-                                                      GtkPositionType pos_type);
+void           awn_box_set_orientation_from_pos_type(AwnBox* box,
+        GtkPositionType pos_type);
 
 #ifdef __cplusplus
 } // extern "C"

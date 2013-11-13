@@ -16,8 +16,8 @@
  *
  *
  */
- 
- 
+
+
 /* awn-overlay-progress.h */
 
 #ifndef _AWN_OVERLAY_PROGRESS
@@ -48,16 +48,16 @@ extern "C" {
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_OVERLAY_PROGRESS, AwnOverlayProgressClass))
 
 typedef struct {
-  AwnOverlay parent;
+    AwnOverlay parent;
 } AwnOverlayProgress;
 
 typedef struct {
-  AwnOverlayClass parent_class;
+    AwnOverlayClass parent_class;
 } AwnOverlayProgressClass;
 
-GType awn_overlay_progress_get_type (void);
+GType awn_overlay_progress_get_type(void);
 
-AwnOverlayProgress* awn_overlay_progress_new (void);
+AwnOverlayProgress* awn_overlay_progress_new(void);
 
 #ifdef __cplusplus
 } // extern "C"

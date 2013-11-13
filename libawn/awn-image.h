@@ -50,18 +50,18 @@ extern "C" {
 typedef struct _AwnImagePrivate AwnImagePrivate;
 
 typedef struct {
-  GtkImage parent;
+    GtkImage parent;
 
-  AwnImagePrivate *priv;
+    AwnImagePrivate* priv;
 } AwnImage;
 
 typedef struct {
-  GtkImageClass parent_class;
+    GtkImageClass parent_class;
 } AwnImageClass;
 
-GType           awn_image_get_type              (void);
+GType           awn_image_get_type(void);
 
-AwnImage*       awn_image_new                   (void);
+AwnImage*       awn_image_new(void);
 
 #ifdef __cplusplus
 } // extern "C"

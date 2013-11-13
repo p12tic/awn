@@ -28,36 +28,36 @@
 #include <string.h>
 
 void
-paint_arrow_triangle (cairo_t *cr, double size, gint count);
+paint_arrow_triangle(cairo_t* cr, double size, gint count);
 
 void
-paint_arrow_dot (cairo_t *cr, double size, gint count,
-                 double r, double g, double b);
+paint_arrow_dot(cairo_t* cr, double size, gint count,
+                double r, double g, double b);
 
 guchar
-lighten_component (const guchar cur_value, const gfloat amount,
-                   gboolean absolute);
+lighten_component(const guchar cur_value, const gfloat amount,
+                  gboolean absolute);
 
 void
-lighten_surface (cairo_surface_t *src, 
-                 gint surface_width, gint surface_height,
-                 const gfloat amount);
+lighten_surface(cairo_surface_t* src,
+                gint surface_width, gint surface_height,
+                const gfloat amount);
 
 void
-darken_surface (cairo_t *cr, gint surface_width, gint surface_height);
+darken_surface(cairo_t* cr, gint surface_width, gint surface_height);
 
 void
-blur_surface_shadow (cairo_surface_t *src,
-                     gint surface_width, gint surface_height,
-                     const int radius);
+blur_surface_shadow(cairo_surface_t* src,
+                    gint surface_width, gint surface_height,
+                    const int radius);
 
 void
-blur_surface_shadow_rgba (cairo_surface_t *src,
-                          gint surface_width, gint surface_height, const int radius,
-                          guchar r, guchar g, guchar b, gfloat alpha_intensity);
+blur_surface_shadow_rgba(cairo_surface_t* src,
+                         gint surface_width, gint surface_height, const int radius,
+                         guchar r, guchar g, guchar b, gfloat alpha_intensity);
 
 void
-surface_saturate(cairo_surface_t * icon_srfc, const gfloat saturation);
+surface_saturate(cairo_surface_t* icon_srfc, const gfloat saturation);
 
 #endif
 

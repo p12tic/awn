@@ -5,12 +5,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Library General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor Boston, MA 02110-1301,  USA
@@ -43,15 +43,15 @@
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_DESKTOP_LOOKUP_GNOME3, AwnDesktopLookupGnome3Class))
 
 typedef struct {
-  AwnDesktopLookup parent;
+    AwnDesktopLookup parent;
 } AwnDesktopLookupGnome3;
 
 typedef struct {
-  AwnDesktopLookupClass parent_class;
+    AwnDesktopLookupClass parent_class;
 } AwnDesktopLookupGnome3Class;
 
-GType awn_desktop_lookup_gnome3_get_type (void);
+GType awn_desktop_lookup_gnome3_get_type(void);
 
-AwnDesktopLookupGnome3* awn_desktop_lookup_gnome3_new (void);
+AwnDesktopLookupGnome3* awn_desktop_lookup_gnome3_new(void);
 
 #endif /* _AWN_DESKTOP_LOOKUP_GNOME3 */

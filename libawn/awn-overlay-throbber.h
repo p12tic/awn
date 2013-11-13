@@ -48,16 +48,16 @@ extern "C" {
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_OVERLAY_THROBBER, AwnOverlayThrobberClass))
 
 typedef struct {
-  AwnOverlay parent;
+    AwnOverlay parent;
 } AwnOverlayThrobber;
 
 typedef struct {
-  AwnOverlayClass parent_class;
+    AwnOverlayClass parent_class;
 } AwnOverlayThrobberClass;
 
-GType awn_overlay_throbber_get_type (void);
+GType awn_overlay_throbber_get_type(void);
 
-GtkWidget* awn_overlay_throbber_new (void);
+GtkWidget* awn_overlay_throbber_new(void);
 
 #ifdef __cplusplus
 } // extern "C"

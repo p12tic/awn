@@ -18,8 +18,8 @@
  *  Author : Michal Hruby <michal.mhr@gmail.com>
 */
 
-#ifndef	_AWN_BACKGROUND_FLOATY_H
-#define	_AWN_BACKGROUND_FLOATY_H
+#ifndef _AWN_BACKGROUND_FLOATY_H
+#define _AWN_BACKGROUND_FLOATY_H
 
 #include <glib.h>
 #include <glib-object.h>
@@ -36,7 +36,7 @@ extern "C" {
 #define AWN_BACKGROUND_FLOATY(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_BACKGROUND_FLOATY, \
   AwnBackgroundFloaty))
 
-#define AWN_BACKGROUND_FLOATY_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), AWN_BACKGROUND_FLOATY, \
+#define AWN_BACKGROUND_FLOATY_CLASS(obj)    (G_TYPE_CHECK_CLASS_CAST ((obj), AWN_BACKGROUND_FLOATY, \
   AwnBackgroundFloatyClass))
 
 #define AWN_IS_BACKGROUND_FLOATY(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_BACKGROUND_FLOATY))
@@ -44,26 +44,24 @@ extern "C" {
 #define AWN_IS_BACKGROUND_FLOATY_CLASS(obj) (G_TYPE_CHECK_CLASS_TYPE ((obj), \
   AWN_TYPE_BACKGROUND_FLOATY))
 
-#define AWN_BACKGROUND_FLOATY_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), \
+#define AWN_BACKGROUND_FLOATY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   AWN_TYPE_BACKGROUND_FLOATY, AwnBackgroundFloatyClass))
 
 typedef struct _AwnBackgroundFloaty AwnBackgroundFloaty;
 typedef struct _AwnBackgroundFloatyClass AwnBackgroundFloatyClass;
 
-struct _AwnBackgroundFloaty 
-{
-  AwnBackground  parent;
+struct _AwnBackgroundFloaty {
+    AwnBackground  parent;
 };
 
-struct _AwnBackgroundFloatyClass 
-{
-  AwnBackgroundClass parent_class;
+struct _AwnBackgroundFloatyClass {
+    AwnBackgroundClass parent_class;
 };
 
-GType           awn_background_floaty_get_type (void) G_GNUC_CONST;
+GType           awn_background_floaty_get_type(void) G_GNUC_CONST;
 
-AwnBackground * awn_background_floaty_new      (DesktopAgnosticConfigClient *client,
-                                                AwnPanel        *panel);
+AwnBackground* awn_background_floaty_new(DesktopAgnosticConfigClient* client,
+        AwnPanel*        panel);
 
 #ifdef __cplusplus
 } // extern "C"

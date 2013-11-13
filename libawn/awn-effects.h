@@ -33,14 +33,15 @@ extern "C" {
 
 typedef enum
 {
-  AWN_EFFECT_NONE = 0,
-  AWN_EFFECT_OPENING = 1,
-  AWN_EFFECT_CLOSING = 2,
-  AWN_EFFECT_HOVER = 3,
-  AWN_EFFECT_LAUNCHING = 4,
-  AWN_EFFECT_ATTENTION = 5,
-  AWN_EFFECT_DESATURATE
-} AwnEffect;
+    AWN_EFFECT_NONE = 0,
+    AWN_EFFECT_OPENING = 1,
+    AWN_EFFECT_CLOSING = 2,
+    AWN_EFFECT_HOVER = 3,
+    AWN_EFFECT_LAUNCHING = 4,
+    AWN_EFFECT_ATTENTION = 5,
+    AWN_EFFECT_DESATURATE
+}
+AwnEffect;
 
 /* GObject stuff */
 #define AWN_TYPE_EFFECTS awn_effects_get_type()
@@ -69,97 +70,95 @@ typedef struct _AwnEffects AwnEffects;
 typedef struct _AwnEffectsClass AwnEffectsClass;
 typedef struct _AwnEffectsPrivate AwnEffectsPrivate;
 
-typedef gboolean(* AwnEffectsOpfn )(AwnEffects * fx,
-                                     GtkAllocation * alloc,
-                                     gpointer user_data);
+typedef gboolean(* AwnEffectsOpfn)(AwnEffects* fx,
+                                   GtkAllocation* alloc,
+                                   gpointer user_data);
 
 // padding for active_rect, yea it really isn't nice but so far
 // it seems to be the only feasible solution
 #define AWN_EFFECTS_ACTIVE_RECT_PADDING 3
 
-typedef struct
-{
-  AwnEffectsOpfn      fn;
-  gpointer            data;
+typedef struct {
+    AwnEffectsOpfn      fn;
+    gpointer            data;
 } AwnEffectsOp;
 
-struct _AwnEffects
-{
-  GObject parent;
+struct _AwnEffects {
+    GObject parent;
 
-  /* Properties */
-  GtkWidget *widget;
-  gboolean no_clear;
-  gboolean indirect_paint;
-  gint position;
-  guint set_effects;
-  gint icon_offset;
-  gint refl_offset;
-  gfloat icon_alpha;
-  gfloat refl_alpha;
-  gboolean do_reflection;
-  gboolean make_shadow;
-  gboolean is_active;
-  gboolean depressed;
-  gint arrows_count;
-  gchar *label;
-  gfloat progress;
-  gint border_clip;
-  GQuark spotlight_icon;
-  GQuark arrow_icon;
-  GQuark custom_active_icon;
-  /* properties end */
+    /* Properties */
+    GtkWidget* widget;
+    gboolean no_clear;
+    gboolean indirect_paint;
+    gint position;
+    guint set_effects;
+    gint icon_offset;
+    gint refl_offset;
+    gfloat icon_alpha;
+    gfloat refl_alpha;
+    gboolean do_reflection;
+    gboolean make_shadow;
+    gboolean is_active;
+    gboolean depressed;
+    gint arrows_count;
+    gchar* label;
+    gfloat progress;
+    gint border_clip;
+    GQuark spotlight_icon;
+    GQuark arrow_icon;
+    GQuark custom_active_icon;
+    /* properties end */
 
-  cairo_t * window_ctx;
-  cairo_t * virtual_ctx;
+    cairo_t* window_ctx;
+    cairo_t* virtual_ctx;
 
-  AwnEffectsPrivate *priv;
+    AwnEffectsPrivate* priv;
 };
 
 struct _AwnEffectsClass {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 
-  void (*animation_start) (AwnEffects *fx, AwnEffect effect);
-  void (*animation_end) (AwnEffects *fx, AwnEffect effect);
+    void (*animation_start)(AwnEffects* fx, AwnEffect effect);
+    void (*animation_end)(AwnEffects* fx, AwnEffect effect);
 
-  GPtrArray *animations;
-  GData     *custom_icons;
+    GPtrArray* animations;
+    GData*     custom_icons;
 };
 
 GType awn_effects_get_type(void);
 
-AwnEffects* awn_effects_new_for_widget(GtkWidget * widget);
+AwnEffects* awn_effects_new_for_widget(GtkWidget* widget);
 
-void awn_effects_start(AwnEffects * fx, const AwnEffect effect);
+void awn_effects_start(AwnEffects* fx, const AwnEffect effect);
 
-void awn_effects_stop(AwnEffects * fx, const AwnEffect effect);
+void awn_effects_stop(AwnEffects* fx, const AwnEffect effect);
 
 void
-awn_effects_start_ex(AwnEffects * fx, const AwnEffect effect, gint max_loops,
+awn_effects_start_ex(AwnEffects* fx, const AwnEffect effect, gint max_loops,
                      gboolean signal_start, gboolean signal_end);
 
-void awn_effects_set_icon_size(AwnEffects *fx, gint width, gint height,
+void awn_effects_set_icon_size(AwnEffects* fx, gint width, gint height,
                                gboolean requestSize);
 
-cairo_t *awn_effects_cairo_create(AwnEffects *fx);
+cairo_t* awn_effects_cairo_create(AwnEffects* fx);
 
-cairo_t *awn_effects_cairo_create_clipped(AwnEffects *fx,
-                                          GdkEventExpose *event);
+cairo_t* awn_effects_cairo_create_clipped(AwnEffects* fx,
+        GdkEventExpose* event);
 
-void awn_effects_cairo_destroy(AwnEffects *fx);
+void awn_effects_cairo_destroy(AwnEffects* fx);
 
-void awn_effects_add_overlay    (AwnEffects *fx, AwnOverlay *overlay);
+void awn_effects_add_overlay(AwnEffects* fx, AwnOverlay* overlay);
 
-void awn_effects_remove_overlay (AwnEffects *fx, AwnOverlay *overlay);
+void awn_effects_remove_overlay(AwnEffects* fx, AwnOverlay* overlay);
 
-GList* awn_effects_get_overlays (AwnEffects *fx);
+GList* awn_effects_get_overlays(AwnEffects* fx);
 
-void awn_effects_redraw (AwnEffects *fx);
+void awn_effects_redraw(AwnEffects* fx);
 
 /* Move this somewhere else eventually, these are used only internally */
-void awn_effects_main_effect_loop(AwnEffects * fx);
-void awn_effects_emit_anim_start(AwnEffects *fx, AwnEffect effect);
-void awn_effects_emit_anim_end(AwnEffects *fx, AwnEffect effect);
+void awn_effects_main_effect_loop(AwnEffects* fx);
+void awn_effects_emit_anim_start(AwnEffects* fx, AwnEffect effect);
+void awn_effects_emit_anim_end(AwnEffects* fx, AwnEffect effect);
 
 #ifdef __cplusplus
 } // extern "C"

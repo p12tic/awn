@@ -46,16 +46,16 @@ extern "C" {
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_DESKTOP_LOOKUP_CLIENT, AwnDesktopLookupClientClass))
 
 typedef struct {
-  GObject parent;
+    GObject parent;
 } AwnDesktopLookupClient;
 
 typedef struct {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 } AwnDesktopLookupClientClass;
 
-GType awn_desktop_lookup_client_get_type (void);
+GType awn_desktop_lookup_client_get_type(void);
 
-AwnDesktopLookupClient* awn_desktop_lookup_client_new (void);
+AwnDesktopLookupClient* awn_desktop_lookup_client_new(void);
 
 #ifdef __cplusplus
 } // extern "C"

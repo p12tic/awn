@@ -46,16 +46,16 @@ extern "C" {
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_LABEL, AwnLabelClass))
 
 typedef struct {
-  GtkLabel parent;
+    GtkLabel parent;
 } AwnLabel;
 
 typedef struct {
-  GtkLabelClass parent_class;
+    GtkLabelClass parent_class;
 } AwnLabelClass;
 
-GType awn_label_get_type (void);
+GType awn_label_get_type(void);
 
-AwnLabel* awn_label_new (void);
+AwnLabel* awn_label_new(void);
 
 #ifdef __cplusplus
 } // extern "C"

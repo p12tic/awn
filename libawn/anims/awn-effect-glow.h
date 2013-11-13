@@ -21,10 +21,10 @@
 
 #include "awn-effects-shared.h"
 
-gboolean glow_effect(AwnEffectsAnimation * anim);
-gboolean glow_opening_effect(AwnEffectsAnimation * anim);
-gboolean glow_closing_effect(AwnEffectsAnimation * anim);
-gboolean glow_attention_effect(AwnEffectsAnimation * anim);
-gboolean glow_effect_finalize(AwnEffectsAnimation * anim);
+gboolean glow_effect(AwnEffectsAnimation* anim);
+gboolean glow_opening_effect(AwnEffectsAnimation* anim);
+gboolean glow_closing_effect(AwnEffectsAnimation* anim);
+gboolean glow_attention_effect(AwnEffectsAnimation* anim);
+gboolean glow_effect_finalize(AwnEffectsAnimation* anim);
 
 #endif

@@ -19,7 +19,7 @@
  *
  *  Notes : Contains functions allowing Awn to get a icon from XOrg using the
  *          xid. Please note that all icon reading code  has been lifted from
- *	    libwnck (XUtils.c), so track bugfixes in libwnck.
+ *      libwnck (XUtils.c), so track bugfixes in libwnck.
 */
 
 #include "config.h"

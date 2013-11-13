@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef	_AWN_BACKGROUND_NULL_H
-#define	_AWN_BACKGROUND_NULL_H
+#ifndef _AWN_BACKGROUND_NULL_H
+#define _AWN_BACKGROUND_NULL_H
 
 #include <glib.h>
 #include <glib-object.h>
@@ -37,7 +37,7 @@ extern "C" {
 #define AWN_BACKGROUND_NULL(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_BACKGROUND_NULL, \
   AwnBackgroundNull))
 
-#define AWN_BACKGROUND_NULL_CLASS(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), AWN_BACKGROUND_NULL, \
+#define AWN_BACKGROUND_NULL_CLASS(obj)  (G_TYPE_CHECK_CLASS_CAST ((obj), AWN_BACKGROUND_NULL, \
   AwnBackgroundNullClass))
 
 #define AWN_IS_BACKGROUND_NULL(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_BACKGROUND_NULL))
@@ -45,26 +45,24 @@ extern "C" {
 #define AWN_IS_BACKGROUND_NULL_CLASS(obj) (G_TYPE_CHECK_CLASS_TYPE ((obj), \
   AWN_TYPE_BACKGROUND_NULL))
 
-#define AWN_BACKGROUND_NULL_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), \
+#define AWN_BACKGROUND_NULL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   AWN_TYPE_BACKGROUND_NULL, AwnBackgroundNullClass))
 
 typedef struct _AwnBackgroundNull AwnBackgroundNull;
 typedef struct _AwnBackgroundNullClass AwnBackgroundNullClass;
 
-struct _AwnBackgroundNull 
-{
-  AwnBackground  parent;
+struct _AwnBackgroundNull {
+    AwnBackground  parent;
 };
 
-struct _AwnBackgroundNullClass 
-{
-  AwnBackgroundClass parent_class;
+struct _AwnBackgroundNullClass {
+    AwnBackgroundClass parent_class;
 };
 
-GType           awn_background_null_get_type (void) G_GNUC_CONST;
+GType           awn_background_null_get_type(void) G_GNUC_CONST;
 
-AwnBackground * awn_background_null_new      (DesktopAgnosticConfigClient *client,
-                                              AwnPanel        *panel);
+AwnBackground* awn_background_null_new(DesktopAgnosticConfigClient* client,
+                                       AwnPanel*        panel);
 
 #ifdef __cplusplus
 } // extern "C"

@@ -23,83 +23,83 @@
 
 #define PICTURE_FILE "../data/avant-window-navigator.png"
 
-static void 
-destroy( GtkWidget *widget )
+static void
+destroy(GtkWidget* widget)
 {
-    gtk_main_quit ();
+    gtk_main_quit();
 }
 
 static void
-needs_attention (GtkToggleButton *button, GtkWindow *window)
+needs_attention(GtkToggleButton* button, GtkWindow* window)
 {
-  gtk_window_set_urgency_hint (window, gtk_toggle_button_get_active (button));
+    gtk_window_set_urgency_hint(window, gtk_toggle_button_get_active(button));
 }
 
 static void
-skip_tasklist (GtkToggleButton *button, GtkWindow *window)
+skip_tasklist(GtkToggleButton* button, GtkWindow* window)
 {
-  gtk_window_set_skip_taskbar_hint (window, 
-                                    gtk_toggle_button_get_active (button));
+    gtk_window_set_skip_taskbar_hint(window,
+                                     gtk_toggle_button_get_active(button));
 }
 
 static void
-change_icon (GtkToggleButton *button, GtkWindow *window)
+change_icon(GtkToggleButton* button, GtkWindow* window)
 {
-  gboolean res;
+    gboolean res;
 
-  res = gtk_toggle_button_get_active (button);
-  
-  gtk_window_set_icon_name (window, res ? "gtk-cancel" : "gtk-apply");
+    res = gtk_toggle_button_get_active(button);
+
+    gtk_window_set_icon_name(window, res ? "gtk-cancel" : "gtk-apply");
 
 }
 
 static void
-change_title (GtkToggleButton *button, GtkWindow *window)
+change_title(GtkToggleButton* button, GtkWindow* window)
 {
-  static gint i = 1;
-  gchar *title;
+    static gint i = 1;
+    gchar* title;
 
-  title = g_strdup_printf ("Window Title - Changed %d times", i);
-  gtk_window_set_title (window, title);
-  g_free (title);
-  i++;
+    title = g_strdup_printf("Window Title - Changed %d times", i);
+    gtk_window_set_title(window, title);
+    g_free(title);
+    i++;
 }
 
 gint
-main (gint argc, gchar **argv)
+main(gint argc, gchar** argv)
 {
-  GtkWidget   *window, *hbox, *button;
-  
-  gtk_init (&argc, &argv);
+    GtkWidget*   window, *hbox, *button;
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  g_signal_connect (G_OBJECT (window), "destroy", G_CALLBACK (destroy), NULL);
-  gtk_window_set_title (GTK_WINDOW (window), "Window Title - Changed 0 times");
-  gtk_window_set_icon_name (GTK_WINDOW (window), "gtk-apply");
-  gtk_container_set_border_width (GTK_CONTAINER (window), 12);
-  gtk_widget_show (window);
-  
-  hbox = gtk_vbox_new (FALSE, 8);
-  gtk_container_add (GTK_CONTAINER (window), hbox);
-  gtk_widget_show (hbox);
+    gtk_init(&argc, &argv);
 
-  button = gtk_toggle_button_new_with_label ("Needs-attention");
-  gtk_container_add (GTK_CONTAINER (hbox), button);
-  g_signal_connect (button, "toggled", G_CALLBACK (needs_attention), window);
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(destroy), NULL);
+    gtk_window_set_title(GTK_WINDOW(window), "Window Title - Changed 0 times");
+    gtk_window_set_icon_name(GTK_WINDOW(window), "gtk-apply");
+    gtk_container_set_border_width(GTK_CONTAINER(window), 12);
+    gtk_widget_show(window);
 
-  button = gtk_toggle_button_new_with_label ("Skip-tasklist");
-  gtk_container_add (GTK_CONTAINER (hbox), button);
-  g_signal_connect (button, "toggled", G_CALLBACK (skip_tasklist), window);
+    hbox = gtk_vbox_new(FALSE, 8);
+    gtk_container_add(GTK_CONTAINER(window), hbox);
+    gtk_widget_show(hbox);
 
-  button = gtk_toggle_button_new_with_label ("Change-icon");
-  gtk_container_add (GTK_CONTAINER (hbox), button);
-  g_signal_connect (button, "toggled", G_CALLBACK (change_icon), window);
+    button = gtk_toggle_button_new_with_label("Needs-attention");
+    gtk_container_add(GTK_CONTAINER(hbox), button);
+    g_signal_connect(button, "toggled", G_CALLBACK(needs_attention), window);
 
-  button = gtk_button_new_with_label ("Change-title");
-  gtk_container_add (GTK_CONTAINER (hbox), button);
-  g_signal_connect (button, "clicked", G_CALLBACK (change_title), window);
-  gtk_widget_show_all (window);
+    button = gtk_toggle_button_new_with_label("Skip-tasklist");
+    gtk_container_add(GTK_CONTAINER(hbox), button);
+    g_signal_connect(button, "toggled", G_CALLBACK(skip_tasklist), window);
 
-  gtk_main ();
-  return 0;
+    button = gtk_toggle_button_new_with_label("Change-icon");
+    gtk_container_add(GTK_CONTAINER(hbox), button);
+    g_signal_connect(button, "toggled", G_CALLBACK(change_icon), window);
+
+    button = gtk_button_new_with_label("Change-title");
+    gtk_container_add(GTK_CONTAINER(hbox), button);
+    g_signal_connect(button, "clicked", G_CALLBACK(change_title), window);
+    gtk_widget_show_all(window);
+
+    gtk_main();
+    return 0;
 }

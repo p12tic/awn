@@ -16,7 +16,7 @@
  *
  *
  */
- 
+
 
 /**
  * SECTION: awn-overlay-progress
@@ -35,12 +35,12 @@
  * Progress overlay used with #AwnIcon.  This is an abstract type.
  */
 
- /* awn-overlay-progress.c */
+/* awn-overlay-progress.c */
 
 #include "awn-overlay-progress.h"
 
 extern "C" {
-G_DEFINE_ABSTRACT_TYPE (AwnOverlayProgress, awn_overlay_progress, AWN_TYPE_OVERLAY)
+    G_DEFINE_ABSTRACT_TYPE(AwnOverlayProgress, awn_overlay_progress, AWN_TYPE_OVERLAY)
 }
 
 #define AWN_OVERLAY_PROGRESS_GET_PRIVATE(o) \
@@ -52,84 +52,81 @@ struct _AwnOverlayProgressPrivate {
     gdouble percent_complete;
 };
 
-enum
-{
-  PROP_0,
-  PROP_PERCENT_COMPLETE
+enum {
+    PROP_0,
+    PROP_PERCENT_COMPLETE
 };
 
 static void
-awn_overlay_progress_get_property (GObject *object, guint property_id,
-                              GValue *value, GParamSpec *pspec)
+awn_overlay_progress_get_property(GObject* object, guint property_id,
+                                  GValue* value, GParamSpec* pspec)
 {
-  AwnOverlayProgressPrivate * priv = AWN_OVERLAY_PROGRESS_GET_PRIVATE (object);
-  switch (property_id) 
-  {
+    AwnOverlayProgressPrivate* priv = AWN_OVERLAY_PROGRESS_GET_PRIVATE(object);
+    switch (property_id) {
     case PROP_PERCENT_COMPLETE:
-      g_value_set_double (value,priv->percent_complete);
-      break;    
+        g_value_set_double(value, priv->percent_complete);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    }
 }
 
 static void
-awn_overlay_progress_set_property (GObject *object, guint property_id,
-                              const GValue *value, GParamSpec *pspec)
+awn_overlay_progress_set_property(GObject* object, guint property_id,
+                                  const GValue* value, GParamSpec* pspec)
 {
-  AwnOverlayProgressPrivate * priv = AWN_OVERLAY_PROGRESS_GET_PRIVATE (object);
-  switch (property_id) 
-  {
+    AwnOverlayProgressPrivate* priv = AWN_OVERLAY_PROGRESS_GET_PRIVATE(object);
+    switch (property_id) {
     case PROP_PERCENT_COMPLETE:
-      priv->percent_complete = g_value_get_double (value);
-      break;    
+        priv->percent_complete = g_value_get_double(value);
+        break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-  }
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+    }
 }
 
 static void
-awn_overlay_progress_dispose (GObject *object)
+awn_overlay_progress_dispose(GObject* object)
 {
-  G_OBJECT_CLASS (awn_overlay_progress_parent_class)->dispose (object);
+    G_OBJECT_CLASS(awn_overlay_progress_parent_class)->dispose(object);
 }
 
 static void
-awn_overlay_progress_finalize (GObject *object)
+awn_overlay_progress_finalize(GObject* object)
 {
-  G_OBJECT_CLASS (awn_overlay_progress_parent_class)->finalize (object);
+    G_OBJECT_CLASS(awn_overlay_progress_parent_class)->finalize(object);
 }
 
 static void
-awn_overlay_progress_class_init (AwnOverlayProgressClass *klass)
+awn_overlay_progress_class_init(AwnOverlayProgressClass* klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass* object_class = G_OBJECT_CLASS(klass);
 
-  object_class->get_property = awn_overlay_progress_get_property;
-  object_class->set_property = awn_overlay_progress_set_property;
-  object_class->dispose = awn_overlay_progress_dispose;
-  object_class->finalize = awn_overlay_progress_finalize;
+    object_class->get_property = awn_overlay_progress_get_property;
+    object_class->set_property = awn_overlay_progress_set_property;
+    object_class->dispose = awn_overlay_progress_dispose;
+    object_class->finalize = awn_overlay_progress_finalize;
 
-/**
- * AwnOverlayProgress:percent-complete:
- *
- * A property of type double.  Set to the completion percentage for the overlay.
- */    
-  
-  g_object_class_install_property (object_class,
-    PROP_PERCENT_COMPLETE,
-    g_param_spec_double ("percent-complete",
-                         "Percent Complete",
-                         "Percent Complete",
-                         0.0, 100.0, 0.0,
-                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
-                         G_PARAM_STATIC_STRINGS));
-  
-  g_type_class_add_private (klass, sizeof (AwnOverlayProgressPrivate));  
+    /**
+     * AwnOverlayProgress:percent-complete:
+     *
+     * A property of type double.  Set to the completion percentage for the overlay.
+     */
+
+    g_object_class_install_property(object_class,
+                                    PROP_PERCENT_COMPLETE,
+                                    g_param_spec_double("percent-complete",
+                                            "Percent Complete",
+                                            "Percent Complete",
+                                            0.0, 100.0, 0.0,
+                                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
+                                            G_PARAM_STATIC_STRINGS));
+
+    g_type_class_add_private(klass, sizeof(AwnOverlayProgressPrivate));
 }
 
 static void
-awn_overlay_progress_init (AwnOverlayProgress *self)
+awn_overlay_progress_init(AwnOverlayProgress* self)
 {
 }
 
@@ -141,7 +138,7 @@ awn_overlay_progress_init (AwnOverlayProgress *self)
  */
 
 AwnOverlayProgress*
-awn_overlay_progress_new (void)
+awn_overlay_progress_new(void)
 {
-  return g_object_new (AWN_TYPE_OVERLAY_PROGRESS, NULL);
+    return g_object_new(AWN_TYPE_OVERLAY_PROGRESS, NULL);
 }

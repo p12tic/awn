@@ -52,7 +52,7 @@ extern "C" {
 
 
 typedef struct {
-  GInitiallyUnowned parent;
+    GInitiallyUnowned parent;
 } AwnOverlay;
 
 
@@ -67,15 +67,14 @@ typedef struct {
  *
  * Of interest to implementors of #AwnOverlay subclasses.
  */
-typedef struct
-{
-  GInitiallyUnownedClass parent_class;
+typedef struct {
+    GInitiallyUnownedClass parent_class;
 
-  void          (*render)                (AwnOverlay* overlay,
-                                          GtkWidget *widget,
-                                          cairo_t * cr,
-                                          gint width,
-                                          gint height);
+    void (*render)(AwnOverlay* overlay,
+                   GtkWidget* widget,
+                   cairo_t* cr,
+                   gint width,
+                   gint height);
 } AwnOverlayClass;
 
 /**
@@ -85,10 +84,9 @@ typedef struct
  *
  * Structure contains x,y coordinates.
  */
-typedef struct
-{
-  gdouble x;
-  gdouble y;
+typedef struct {
+    gdouble x;
+    gdouble y;
 } AwnOverlayCoord;
 
 /**
@@ -101,38 +99,37 @@ typedef struct
  * an #AwnOverlay.  Possible values are %AWN_OVERLAY_ALIGN_CENTRE,
  * %AWN_OVERLAY_ALIGN_LEFT and %AWN_OVERLAY_ALIGN_RIGHT
  */
-typedef enum
-{
-  AWN_OVERLAY_ALIGN_CENTRE,
-  AWN_OVERLAY_ALIGN_LEFT,
-  AWN_OVERLAY_ALIGN_RIGHT
-}AwnOverlayAlign;
+typedef enum {
+    AWN_OVERLAY_ALIGN_CENTRE,
+    AWN_OVERLAY_ALIGN_LEFT,
+    AWN_OVERLAY_ALIGN_RIGHT
+} AwnOverlayAlign;
 
-GType awn_overlay_get_type (void);
+GType awn_overlay_get_type(void);
 
-AwnOverlay* awn_overlay_new (void);
+AwnOverlay* awn_overlay_new(void);
 
-void awn_overlay_render  (AwnOverlay* overlay,
-                          GtkWidget *widget,
-                          cairo_t * cr,
-                          gint width,
-                          gint height);
+void awn_overlay_render(AwnOverlay* overlay,
+                        GtkWidget* widget,
+                        cairo_t* cr,
+                        gint width,
+                        gint height);
 
-void awn_overlay_move_to (AwnOverlay* overlay,
-                          cairo_t * cr,
-                          gint   icon_width,
-                          gint   icon_height,
-                          gint   overlay_width,
-                          gint   overlay_height,
-                          AwnOverlayCoord * coord_req);
+void awn_overlay_move_to(AwnOverlay* overlay,
+                         cairo_t* cr,
+                         gint   icon_width,
+                         gint   icon_height,
+                         gint   overlay_width,
+                         gint   overlay_height,
+                         AwnOverlayCoord* coord_req);
 
-gboolean awn_overlay_get_apply_effects (AwnOverlay *overlay);
+gboolean awn_overlay_get_apply_effects(AwnOverlay* overlay);
 
-void awn_overlay_set_apply_effects (AwnOverlay *overlay, gboolean value);
+void awn_overlay_set_apply_effects(AwnOverlay* overlay, gboolean value);
 
-gboolean awn_overlay_get_use_source_op (AwnOverlay *overlay);
+gboolean awn_overlay_get_use_source_op(AwnOverlay* overlay);
 
-void awn_overlay_set_use_source_op (AwnOverlay *overlay, gboolean value);
+void awn_overlay_set_use_source_op(AwnOverlay* overlay, gboolean value);
 
 #ifdef __cplusplus
 } // extern "C"

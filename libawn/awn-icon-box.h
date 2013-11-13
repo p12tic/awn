@@ -34,47 +34,45 @@ extern "C" {
 #define AWN_TYPE_ICON_BOX (awn_icon_box_get_type ())
 
 #define AWN_ICON_BOX(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj),\
-	AWN_TYPE_ICON_BOX, AwnIconBox))
+    AWN_TYPE_ICON_BOX, AwnIconBox))
 
 #define AWN_ICON_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass),\
-	AWN_TYPE_ICON_BOX, AwnIconBoxClass))
+    AWN_TYPE_ICON_BOX, AwnIconBoxClass))
 
 #define AWN_IS_ICON_BOX(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj),\
-	AWN_TYPE_ICON_BOX))
+    AWN_TYPE_ICON_BOX))
 
 #define AWN_IS_ICON_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass),\
-	AWN_TYPE_ICON_BOX))
+    AWN_TYPE_ICON_BOX))
 
 #define AWN_ICON_BOX_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj),\
-	AWN_TYPE_ICON_BOX, AwnIconBoxClass))
+    AWN_TYPE_ICON_BOX, AwnIconBoxClass))
 
 typedef struct _AwnIconBox        AwnIconBox;
 typedef struct _AwnIconBoxClass   AwnIconBoxClass;
 typedef struct _AwnIconBoxPrivate AwnIconBoxPrivate;
- 
-struct _AwnIconBox
-{
-  AwnBox  parent;	
 
-  AwnIconBoxPrivate *priv;
+struct _AwnIconBox {
+    AwnBox  parent;
+
+    AwnIconBoxPrivate* priv;
 };
 
-struct _AwnIconBoxClass
-{
-  AwnBoxClass parent_class;
+struct _AwnIconBoxClass {
+    AwnBoxClass parent_class;
 };
 
-GType         awn_icon_box_get_type         (void) G_GNUC_CONST;
+GType         awn_icon_box_get_type(void) G_GNUC_CONST;
 
-GtkWidget *   awn_icon_box_new              (void);
+GtkWidget*    awn_icon_box_new(void);
 
-GtkWidget *   awn_icon_box_new_for_applet   (AwnApplet *applet);
+GtkWidget*    awn_icon_box_new_for_applet(AwnApplet* applet);
 
-void          awn_icon_box_set_pos_type  (AwnIconBox     *icon_box,
-                                             GtkPositionType  position);
+void          awn_icon_box_set_pos_type(AwnIconBox*     icon_box,
+                                        GtkPositionType  position);
 
-void          awn_icon_box_set_offset       (AwnIconBox *icon_box,
-                                             gint        offset);
+void          awn_icon_box_set_offset(AwnIconBox* icon_box,
+                                      gint        offset);
 
 #ifdef __cplusplus
 } // extern "C"

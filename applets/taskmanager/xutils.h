@@ -31,22 +31,22 @@
 #include <libwnck/libwnck.h>
 
 void
-_wnck_get_wmclass (Window xwindow,
-                   char **res_class,
-                   char **res_name);
+_wnck_get_wmclass(Window xwindow,
+                  char** res_class,
+                  char** res_name);
 
 void
-_wnck_get_client_name (Window xwindow, 
-                    char **client_name);
+_wnck_get_client_name(Window xwindow,
+                      char** client_name);
 
-GdkPixbuf *
-_wnck_get_icon_at_size (WnckWindow *window,
-                        gint        width,
-                        gint        height);
+GdkPixbuf*
+_wnck_get_icon_at_size(WnckWindow* window,
+                       gint        width,
+                       gint        height);
 
-GdkPixbuf *
-xutils_get_named_icon (const gchar *icon_name, 
-                       gint         width,
-                       gint         height);
+GdkPixbuf*
+xutils_get_named_icon(const gchar* icon_name,
+                      gint         width,
+                      gint         height);
 
 #endif /* WNCK_XUTILS_H */

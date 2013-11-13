@@ -16,7 +16,7 @@
  *
  *
  */
- 
+
 
 /* awn-overlay-pixbuf.h */
 
@@ -50,18 +50,18 @@ extern "C" {
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_OVERLAY_PIXBUF, AwnOverlayPixbufClass))
 
 typedef struct {
-  AwnOverlay parent;
+    AwnOverlay parent;
 } AwnOverlayPixbuf;
 
 typedef struct {
-  AwnOverlayClass parent_class;
+    AwnOverlayClass parent_class;
 } AwnOverlayPixbufClass;
 
-GType awn_overlay_pixbuf_get_type (void);
+GType awn_overlay_pixbuf_get_type(void);
 
-AwnOverlayPixbuf* awn_overlay_pixbuf_new (void);
+AwnOverlayPixbuf* awn_overlay_pixbuf_new(void);
 
-AwnOverlayPixbuf* awn_overlay_pixbuf_new_with_pixbuf (GdkPixbuf * pixbuf);
+AwnOverlayPixbuf* awn_overlay_pixbuf_new_with_pixbuf(GdkPixbuf* pixbuf);
 
 #ifdef __cplusplus
 } // extern "C"

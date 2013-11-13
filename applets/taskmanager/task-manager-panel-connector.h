@@ -23,18 +23,18 @@
   (G_TYPE_INSTANCE_GET_CLASS ((obj), TASK_MANAGER_TYPE_PANEL_CONNECTOR, TaskManagerPanelConnectorClass))
 
 typedef struct {
-  GObject parent;
+    GObject parent;
 } TaskManagerPanelConnector;
 
 typedef struct {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 } TaskManagerPanelConnectorClass;
 
-GType task_manager_panel_connector_get_type (void);
+GType task_manager_panel_connector_get_type(void);
 
-guint task_manager_panel_connector_inhibit_autohide (TaskManagerPanelConnector *conn, const gchar *reason);
-void task_manager_panel_connector_uninhibit_autohide (TaskManagerPanelConnector *conn, guint cookie);
+guint task_manager_panel_connector_inhibit_autohide(TaskManagerPanelConnector* conn, const gchar* reason);
+void task_manager_panel_connector_uninhibit_autohide(TaskManagerPanelConnector* conn, guint cookie);
 
-TaskManagerPanelConnector* task_manager_panel_connector_new (gint id);
+TaskManagerPanelConnector* task_manager_panel_connector_new(gint id);
 
 #endif /* _TASK_MANAGER_PANEL_CONNECTOR */

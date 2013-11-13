@@ -54,30 +54,28 @@ typedef struct _AwnDialogClass AwnDialogClass;
 
 typedef struct _AwnDialogPrivate AwnDialogPrivate;
 
-struct _AwnDialog
-{
-  GtkWindow   window;
+struct _AwnDialog {
+    GtkWindow   window;
 
-  AwnDialogPrivate  *priv;
+    AwnDialogPrivate*  priv;
 };
 
-struct _AwnDialogClass
-{
-  GtkWindowClass parent_class;
+struct _AwnDialogClass {
+    GtkWindowClass parent_class;
 };
 
-GType      awn_dialog_get_type (void);
+GType      awn_dialog_get_type(void);
 
-GtkWidget* awn_dialog_new (void);
+GtkWidget* awn_dialog_new(void);
 
-GtkWidget* awn_dialog_new_for_widget (GtkWidget *widget);
+GtkWidget* awn_dialog_new_for_widget(GtkWidget* widget);
 
-GtkWidget* awn_dialog_new_for_widget_with_applet (GtkWidget *widget,
-                                                  AwnApplet *applet);
+GtkWidget* awn_dialog_new_for_widget_with_applet(GtkWidget* widget,
+        AwnApplet* applet);
 
-void       awn_dialog_set_padding (AwnDialog *dialog, gint padding);
+void       awn_dialog_set_padding(AwnDialog* dialog, gint padding);
 
-GtkWidget* awn_dialog_get_content_area (AwnDialog *dialog);
+GtkWidget* awn_dialog_get_content_area(AwnDialog* dialog);
 
 #ifdef __cplusplus
 } // extern "C"

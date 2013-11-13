@@ -22,44 +22,45 @@
 #include <libawn/awn-themed-icon.h>
 
 gint
-main (gint argc, gchar **argv)
+main(gint argc, gchar** argv)
 {
-  GtkWidget   *window, *hbox, *icon;
-  GdkScreen   *screen;
-  GdkColormap *map;
-  
-  gtk_init (&argc, &argv);
+    GtkWidget*   window, *hbox, *icon;
+    GdkScreen*   screen;
+    GdkColormap* map;
 
-  screen = gdk_screen_get_default ();
-  map = gdk_screen_get_rgba_colormap (screen);
+    gtk_init(&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  g_signal_connect (G_OBJECT (window), "destroy",
-                    G_CALLBACK (gtk_main_quit), NULL);
+    screen = gdk_screen_get_default();
+    map = gdk_screen_get_rgba_colormap(screen);
 
-  if (map)
-    gtk_widget_set_colormap (window, map);
-  gtk_window_resize (GTK_WINDOW (window), 50, 100);
-  gtk_widget_show (window);
-  
-  hbox = gtk_hbox_new (TRUE, 0);
-  gtk_container_add (GTK_CONTAINER (window), hbox);
-  gtk_widget_show (hbox);
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    g_signal_connect(G_OBJECT(window), "destroy",
+                     G_CALLBACK(gtk_main_quit), NULL);
 
-  icon = awn_themed_icon_new ();
-  awn_themed_icon_set_info_simple (AWN_THEMED_ICON (icon),
-                                   "test-applet", "test-uid", 
-                                   GTK_STOCK_DIALOG_INFO);
-  gtk_box_pack_start (GTK_BOX (hbox), icon, TRUE, TRUE, 0);
-  gtk_widget_show (icon);
+    if (map) {
+        gtk_widget_set_colormap(window, map);
+    }
+    gtk_window_resize(GTK_WINDOW(window), 50, 100);
+    gtk_widget_show(window);
 
-  icon = awn_themed_icon_new ();
-  awn_themed_icon_set_info_simple (AWN_THEMED_ICON (icon),
-                                   "test-applet", "test-uid",
-                                   "../data/avant-window-navigator.svg");
-  gtk_box_pack_start (GTK_BOX (hbox), icon, TRUE, TRUE, 0);
-  gtk_widget_show (icon);
+    hbox = gtk_hbox_new(TRUE, 0);
+    gtk_container_add(GTK_CONTAINER(window), hbox);
+    gtk_widget_show(hbox);
 
-  gtk_main ();
-  return 0;
+    icon = awn_themed_icon_new();
+    awn_themed_icon_set_info_simple(AWN_THEMED_ICON(icon),
+                                    "test-applet", "test-uid",
+                                    GTK_STOCK_DIALOG_INFO);
+    gtk_box_pack_start(GTK_BOX(hbox), icon, TRUE, TRUE, 0);
+    gtk_widget_show(icon);
+
+    icon = awn_themed_icon_new();
+    awn_themed_icon_set_info_simple(AWN_THEMED_ICON(icon),
+                                    "test-applet", "test-uid",
+                                    "../data/avant-window-navigator.svg");
+    gtk_box_pack_start(GTK_BOX(hbox), icon, TRUE, TRUE, 0);
+    gtk_widget_show(icon);
+
+    gtk_main();
+    return 0;
 }

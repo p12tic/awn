@@ -49,51 +49,51 @@ extern "C" {
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_PIXBUF_CACHE, AwnPixbufCacheClass))
 
 typedef struct {
-  GObject parent;
+    GObject parent;
 } AwnPixbufCache;
 
 typedef struct {
-  GObjectClass parent_class;
+    GObjectClass parent_class;
 } AwnPixbufCacheClass;
 
-void awn_pixbuf_cache_insert_pixbuf (AwnPixbufCache * pixbuf_cache,
-                              GdkPixbuf * pbuf,
-                              const gchar *scope, 
-                              const gchar * theme_name, 
-                              const gchar * icon_name);
+void awn_pixbuf_cache_insert_pixbuf(AwnPixbufCache* pixbuf_cache,
+                                    GdkPixbuf* pbuf,
+                                    const gchar* scope,
+                                    const gchar* theme_name,
+                                    const gchar* icon_name);
 
-void awn_pixbuf_cache_insert_null_result (AwnPixbufCache * pixbuf_cache,
-                              const gchar *scope, 
-                              const gchar * theme_name, 
-                              const gchar * icon_name,
-                              gint width,
-                              gint height);
+void awn_pixbuf_cache_insert_null_result(AwnPixbufCache* pixbuf_cache,
+        const gchar* scope,
+        const gchar* theme_name,
+        const gchar* icon_name,
+        gint width,
+        gint height);
 
-GdkPixbuf * awn_pixbuf_cache_lookup (AwnPixbufCache * pixbuf_cache,
-                              const gchar *scope, 
-                              const gchar * theme_name, 
-                              const gchar * icon_name,
-                       				gint width,
-		                          gint height,
-                              gboolean * null_result);
+GdkPixbuf* awn_pixbuf_cache_lookup(AwnPixbufCache* pixbuf_cache,
+                                   const gchar* scope,
+                                   const gchar* theme_name,
+                                   const gchar* icon_name,
+                                   gint width,
+                                   gint height,
+                                   gboolean* null_result);
 
-GdkPixbuf * awn_pixbuf_cache_lookup_simple_key (AwnPixbufCache * pixbuf_cache,
-                              const gchar * simple_key,
-                       				gint width,
-                       				gint height);
+GdkPixbuf* awn_pixbuf_cache_lookup_simple_key(AwnPixbufCache* pixbuf_cache,
+        const gchar* simple_key,
+        gint width,
+        gint height);
 
-void awn_pixbuf_cache_insert_pixbuf_simple_key (AwnPixbufCache * pixbuf_cache,
-                              GdkPixbuf * pbuf,
-                              const gchar * simple_key);
+void awn_pixbuf_cache_insert_pixbuf_simple_key(AwnPixbufCache* pixbuf_cache,
+        GdkPixbuf* pbuf,
+        const gchar* simple_key);
 
 
-GType awn_pixbuf_cache_get_type (void);
+GType awn_pixbuf_cache_get_type(void);
 
-void awn_pixbuf_cache_invalidate (AwnPixbufCache* pixbuf_cache);
+void awn_pixbuf_cache_invalidate(AwnPixbufCache* pixbuf_cache);
 
-AwnPixbufCache* awn_pixbuf_cache_new (void);
+AwnPixbufCache* awn_pixbuf_cache_new(void);
 
-AwnPixbufCache* awn_pixbuf_cache_get_default (void);
+AwnPixbufCache* awn_pixbuf_cache_get_default(void);
 
 #ifdef __cplusplus
 } // extern "C"

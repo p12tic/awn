@@ -21,9 +21,9 @@
 
 #include "awn-effects-shared.h"
 
-gboolean fade_out_effect(AwnEffectsAnimation * anim);
-gboolean fading_effect(AwnEffectsAnimation * anim);
-gboolean fading_hover_effect(AwnEffectsAnimation * anim);
-gboolean fading_effect_finalize(AwnEffectsAnimation * anim);
+gboolean fade_out_effect(AwnEffectsAnimation* anim);
+gboolean fading_effect(AwnEffectsAnimation* anim);
+gboolean fading_hover_effect(AwnEffectsAnimation* anim);
+gboolean fading_effect_finalize(AwnEffectsAnimation* anim);
 
 #endif

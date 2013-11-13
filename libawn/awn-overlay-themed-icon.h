@@ -49,16 +49,16 @@ extern "C" {
   (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_OVERLAY_THEMED_ICON, AwnOverlayThemedIconClass))
 
 typedef struct {
-  AwnOverlay parent;
+    AwnOverlay parent;
 } AwnOverlayThemedIcon;
 
 typedef struct {
-  AwnOverlayClass parent_class;
+    AwnOverlayClass parent_class;
 } AwnOverlayThemedIconClass;
 
-GType awn_overlay_themed_icon_get_type (void);
+GType awn_overlay_themed_icon_get_type(void);
 
-AwnOverlayThemedIcon* awn_overlay_themed_icon_new (const gchar * icon_name);
+AwnOverlayThemedIcon* awn_overlay_themed_icon_new(const gchar* icon_name);
 
 #ifdef __cplusplus
 } // extern "C"

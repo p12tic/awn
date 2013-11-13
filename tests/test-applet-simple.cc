@@ -22,32 +22,33 @@
 #include <libawn/awn-applet-simple.h>
 
 gint
-main (gint argc, gchar **argv)
+main(gint argc, gchar** argv)
 {
-  GtkWidget   *window, *socket, *icon;
-  GdkScreen   *screen;
-  GdkColormap *map;
-  
-  gtk_init (&argc, &argv);
+    GtkWidget*   window, *socket, *icon;
+    GdkScreen*   screen;
+    GdkColormap* map;
 
-  screen = gdk_screen_get_default ();
-  map = gdk_screen_get_rgba_colormap (screen);
+    gtk_init(&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  if (map)
-    gtk_widget_set_colormap (window, map);
-  gtk_window_resize (GTK_WINDOW (window), 50, 100);
-  gtk_widget_show (window);
-  
-  socket = gtk_socket_new ();
-  gtk_container_add (GTK_CONTAINER (window), socket);
-  gtk_widget_show (socket);
+    screen = gdk_screen_get_default();
+    map = gdk_screen_get_rgba_colormap(screen);
 
-  icon = awn_applet_simple_new ("test-applet", "1234567890", 0);
-  awn_applet_simple_set_icon_name (AWN_APPLET_SIMPLE (icon), GTK_STOCK_APPLY);
-  gtk_plug_construct (GTK_PLUG (icon), gtk_socket_get_id (GTK_SOCKET (socket)));
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    if (map) {
+        gtk_widget_set_colormap(window, map);
+    }
+    gtk_window_resize(GTK_WINDOW(window), 50, 100);
+    gtk_widget_show(window);
 
-  gtk_main ();
-  return 0;
+    socket = gtk_socket_new();
+    gtk_container_add(GTK_CONTAINER(window), socket);
+    gtk_widget_show(socket);
+
+    icon = awn_applet_simple_new("test-applet", "1234567890", 0);
+    awn_applet_simple_set_icon_name(AWN_APPLET_SIMPLE(icon), GTK_STOCK_APPLY);
+    gtk_plug_construct(GTK_PLUG(icon), gtk_socket_get_id(GTK_SOCKET(socket)));
+
+    gtk_main();
+    return 0;
 }
 

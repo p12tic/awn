@@ -21,9 +21,9 @@
 
 #include "awn-effects-shared.h"
 
-gboolean simple_hover_effect (AwnEffectsAnimation * anim);
-gboolean simple_attention_effect (AwnEffectsAnimation * anim);
-gboolean simple_opening_effect (AwnEffectsAnimation *anim);
-gboolean simple_closing_effect (AwnEffectsAnimation *anim);
+gboolean simple_hover_effect(AwnEffectsAnimation* anim);
+gboolean simple_attention_effect(AwnEffectsAnimation* anim);
+gboolean simple_opening_effect(AwnEffectsAnimation* anim);
+gboolean simple_closing_effect(AwnEffectsAnimation* anim);
 
 #endif

@@ -51,21 +51,19 @@ typedef struct _AwnBackgroundLucido AwnBackgroundLucido;
 typedef struct _AwnBackgroundLucidoClass AwnBackgroundLucidoClass;
 typedef struct _AwnBackgroundLucidoPrivate AwnBackgroundLucidoPrivate;
 
-struct _AwnBackgroundLucido
-{
-  AwnBackground parent;
-  AwnBackgroundLucidoPrivate *priv;
+struct _AwnBackgroundLucido {
+    AwnBackground parent;
+    AwnBackgroundLucidoPrivate* priv;
 };
 
-struct _AwnBackgroundLucidoClass
-{
-  AwnBackgroundClass parent_class;
+struct _AwnBackgroundLucidoClass {
+    AwnBackgroundClass parent_class;
 };
 
-GType           awn_background_lucido_get_type (void) G_GNUC_CONST;
+GType           awn_background_lucido_get_type(void) G_GNUC_CONST;
 
-AwnBackground * awn_background_lucido_new (DesktopAgnosticConfigClient *client,
-                                           AwnPanel        *panel);
+AwnBackground* awn_background_lucido_new(DesktopAgnosticConfigClient* client,
+        AwnPanel*        panel);
 
 #ifdef __cplusplus
 } // extern "C"
