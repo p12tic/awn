@@ -1283,7 +1283,7 @@ class awnApplet(awnBzr):
         if do_apply:
             model = self.model
         else:
-            model = self.appmodel
+            model = self.applet_model
 
         if applet_exists:
             message = _("Applet Successfully Updated")
