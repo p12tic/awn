@@ -624,7 +624,7 @@ class awnBzr(gobject.GObject):
             except:
                 icon = None
         elif type_icon is "pixmap":
-            
+
             for i in path:
                 if os.path.exists(os.path.join(i,name+extension)):
                     try:
@@ -654,13 +654,13 @@ class awnBzr(gobject.GObject):
             itr = model.get_iter(src)
             model.remove(itr)
             self.apply_applet_list_changes()
-            
+
             infobar = self.wTree.get_object("tm_infobar")
             if self.check_for_task_manager():
                 infobar.get_parent().hide_all()
             else:
                 infobar.get_parent().show_all()
-                
+
 
         self.applet_model.connect("foreign-drop", deactivate_applet)
 
@@ -794,7 +794,7 @@ class awnBzr(gobject.GObject):
 			if tokens[0].find('taskmanager.desktop') > 0:
 				return True
 		return False
-        
+
 class awnPreferences(awnBzr):
     def setup_font(self, group, key, font_btn):
         """sets up font chooser"""
@@ -844,7 +844,7 @@ class awnPreferences(awnBzr):
 
         self.load_effect_custom(group,key)
         self.client.notify_add(group, key, self.reload_effect_custom)
-        
+
         for drop in ['open', 'close', 'hover', 'launch', 'attention']:
             d = self.wTree.get_object('effect_'+drop)
             d.connect("changed", self.effect_custom_changed, (group, key))
@@ -1121,18 +1121,18 @@ _("You should have received a copy of the GNU General Public License along with 
         gtk.main()
 
 class awnLauncher(awnBzr):
-    
+
     def callback_launcher_selection(self, selection, data=None):
         (model, iter) = selection.get_selected()
         if iter is not None:
             self.launcher_remove.set_sensitive(True)
             self.launcher_edit.set_sensitive(True)
         else:
-            if hasattr(self, 'launcher_remove'): 
+            if hasattr(self, 'launcher_remove'):
                 self.launcher_remove.set_sensitive(False)
-            if hasattr(self, 'launcher_edit'): 
+            if hasattr(self, 'launcher_edit'):
                 self.launcher_edit.set_sensitive(False)
-        
+
     def launchers_reordered(self, model, path, iterator, data=None):
         data = []
         it = model.get_iter_first ()
@@ -1155,7 +1155,7 @@ class awnLauncher(awnBzr):
     #   Alacarte Menu Editor - Simple fd.o Compliant Menu Editor
     #   Copyright (C) 2006  Travis Watkins
     #   Edited by Ryan Rushton
-    
+
     def create_unique_launcher_file(self):
         path = os.path.join(defs.HOME_LAUNCHERS_DIR,
                             self.getUniqueFileId('awn_launcher', '.desktop'))
@@ -1331,10 +1331,10 @@ class awnApplet(awnBzr):
         hs = self.scrollwindow1.get_hscrollbar()
         ha = self.scrollwindow1.get_hadjustment()
         hs.set_value(ha.upper - ha.page_size)
-    
+
     def activate_applet_btn(self, widget, data=None):
         self.activate_applet(self.treeview_available, None, None)
-        
+
     def row_active (self, q, w, e):
         self.activate_applet (None)
 
@@ -1342,7 +1342,7 @@ class awnApplet(awnBzr):
         if model.get_value (iterator, 2) == sel_path:
             self.active_found = True
             return True
-    
+
     def delete_applet(self,widget):
         self.active_found = False
         select = self.treeview_available.get_selection()
@@ -1385,7 +1385,7 @@ class awnApplet(awnBzr):
                 self.popup_msg(_("Unable to Delete Applet"))
         else:
             dialog.destroy()
-            
+
     def deactivate_applet(self, button):
         cursor = self.icon_view.get_cursor()
         if not cursor:
@@ -1441,13 +1441,13 @@ class awnApplet(awnBzr):
             uid = "%d" % int(time.time())
             active_model.insert(dst_row, [icon, path, uid, text])
             self.apply_applet_list_changes()
-            
+
             infobar = self.wTree.get_object("tm_infobar")
             if self.check_for_task_manager():
                 infobar.get_parent().hide_all()
             else:
                 infobar.get_parent().show_all()
-            
+
         self.active_model.connect("foreign-drop", activate_applet)
 
         self.icon_view = gtk.IconView(self.active_model)
@@ -1459,12 +1459,12 @@ class awnApplet(awnBzr):
         self.icon_view.set_item_width(-1)
         self.icon_view.set_size_request(48, -1)
         self.icon_view.set_columns(100)
- 
+
         self.scrollwindow1.add(self.icon_view)
         self.scrollwindow1.show_all()
-        
+
         self.icon_view.connect('selection-changed', self.callback_active_applet_selection)
-        
+
         applets = self.client.get_list(defs.PANEL, defs.APPLET_LIST)
 
         ua_applets = self.client.get_list(defs.PANEL, defs.UA_LIST)
@@ -1474,7 +1474,7 @@ class awnApplet(awnBzr):
             applets.insert(int(tokens[1]), ua)
 
         self.refresh_icon_list (applets, self.active_model)
-        
+
     def refresh_icon_list (self, applets, model):
         for a in applets:
             tokens = a.split("::")
@@ -1501,7 +1501,7 @@ class awnApplet(awnBzr):
         model.set_sort_column_id(1, gtk.SORT_ASCENDING)
         self.treeview_available.set_search_column (3)
 
-        
+
     def update_applets(self, list_applets):
         if list_applets == "All":
             list_applets = ''
@@ -1552,7 +1552,7 @@ class awnApplet(awnBzr):
         (model, iter) = selection.get_selected()
         if iter is not None:
             self.update_applets(model.get_value(iter, 0))
-    
+
     def callback_applet_selection(self, selection, data=None):
         (model, iter) = selection.get_selected()
         if iter is not None:
@@ -1575,7 +1575,7 @@ class awnApplet(awnBzr):
                 self.appletDeactivate.set_sensitive(False)
         else:
             self.appletDeactivate.set_sensitive(False)
-                
+
 class awnThemeCustomize(awnBzr):
 
     def export_theme(self, config, filename, newfilename, panel_id, save_pattern):
@@ -1619,7 +1619,7 @@ class awnThemeCustomize(awnBzr):
         tFile.add(themedir, os.path.basename(themedir))
         tFile.add(themefile, os.path.basename(themefile))
         tFile.close()
-	
+
         shutil.move(tarpath, newfilename)
         shutil.rmtree(themedir)
         os.remove(themefile)
@@ -1641,7 +1641,7 @@ class awnThemeCustomize(awnBzr):
         cr.set_source_surface(surface)
         cr.paint()
         newsurface.write_to_png(themedir+'/thumb.png')
-            
+
     def install_theme(self, file):
         goodTheme = False
         customArrow = False
@@ -1658,12 +1658,12 @@ class awnThemeCustomize(awnBzr):
                     customActiveIcon = member.name
                 elif member.name.find("pattern.") >= 0:
                     pattern = member.name
-            
+
             if goodTheme:
                 themefile = os.path.join(defs.HOME_THEME_DIR, goodTheme)
                 (filename, fileext) = os.path.splitext(goodTheme)
                 themedir = os.path.join(defs.HOME_THEME_DIR, filename)
-                
+
                 if os.path.exists(themefile):
                     msg = _("Theme already installed, do you wish to overwrite it?")
                     message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_YES_NO, message_format=msg)
@@ -1675,14 +1675,14 @@ class awnThemeCustomize(awnBzr):
                         model = self.treeview_themes.get_model()
                         model.foreach(self.search_treeview, themefile)
                         message.destroy()
-                
+
                 tar.extractall(defs.HOME_THEME_DIR)
                 tar.close()
-                 
+
                 config = ConfigParser()
                 config.read(themefile)
                 self.check_version(config.get('theme-info', 'Awn-Theme-Version'))
-                
+
                 config.set('theme-info', 'Icon', themedir+'/thumb.png')
                 if customArrow:
                     config.set("config/effects", 'arrow_icon',
@@ -1701,7 +1701,7 @@ class awnThemeCustomize(awnBzr):
             else:
                 msg = _("This is an incompatible theme file.")
                 self.theme_message(msg)
-                
+
     def delete_theme(self):
         model = self.treeview_themes.get_model()
         selection = self.treeview_themes.get_selection()
@@ -1715,8 +1715,8 @@ class awnThemeCustomize(awnBzr):
                 os.remove(themefile)
             model.remove(iter)
             self.deleteTheme.set_sensitive(False)
-    
-    def check_version(self, version):   
+
+    def check_version(self, version):
         req_version = defs.THEME_VERSION.split('.')
         version = version.split('.')
         if version[0] < req_version[0]:
@@ -1727,26 +1727,26 @@ class awnThemeCustomize(awnBzr):
             else:
                 if version[2] < req_version[2]:
                     print "Micro version is low"
-        
+
     def theme_message(self, msg):
         message = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE, message_format=msg)
         resp = message.run()
         if resp == gtk.RESPONSE_CLOSE:
             message.destroy()
-    
+
     def search_treeview(self, model, path, iter, filename=None):
         if model.get_value(iter, 2) == filename:
             model.remove(iter)
             return True
-        
-                                   
+
+
 class awnTaskManager(awnBzr):
-    
+
     def runDockmanagerSettings(self, xid):
         bus = dbus.SessionBus()
         daemon = bus.get_object('net.launchpad.DockManager.Daemon',
                                 '/net/launchpad/DockManager/Daemon')
-        daemon_interface = dbus.Interface(daemon, 
+        daemon_interface = dbus.Interface(daemon,
                                           'net.launchpad.DockManager.Daemon')
         daemon_interface.EmbedPreferences(xid, {'no-install': True})
 
