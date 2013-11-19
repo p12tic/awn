@@ -32,68 +32,13 @@
 #include <math.h>
 #include <dbus/dbus.h>
 #include "awn-panel.h"
+#include "awn-panel-dispatcher.h"
 
-
-#define AWN_TYPE_IMAGE_STRUCT (awn_image_struct_get_type ())
-typedef struct _AwnImageStruct AwnImageStruct;
-
-#define AWN_TYPE_PANEL_DBUS_INTERFACE (awn_panel_dbus_interface_get_type ())
-#define AWN_PANEL_DBUS_INTERFACE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_PANEL_DBUS_INTERFACE, AwnPanelDBusInterface))
-#define AWN_IS_PANEL_DBUS_INTERFACE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_PANEL_DBUS_INTERFACE))
-#define AWN_PANEL_DBUS_INTERFACE_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), AWN_TYPE_PANEL_DBUS_INTERFACE, AwnPanelDBusInterfaceIface))
-
-typedef struct _AwnPanelDBusInterface AwnPanelDBusInterface;
-typedef struct _AwnPanelDBusInterfaceIface AwnPanelDBusInterfaceIface;
 typedef struct _DBusObjectVTable _DBusObjectVTable;
 #define _g_free0(var) (var = (g_free (var), NULL))
 typedef struct _AwnPanelDBusInterfaceDBusProxy AwnPanelDBusInterfaceDBusProxy;
 typedef DBusGProxyClass AwnPanelDBusInterfaceDBusProxyClass;
-
-#define AWN_TYPE_PANEL_DISPATCHER (awn_panel_dispatcher_get_type ())
-#define AWN_PANEL_DISPATCHER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_PANEL_DISPATCHER, AwnPanelDispatcher))
-#define AWN_PANEL_DISPATCHER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), AWN_TYPE_PANEL_DISPATCHER, AwnPanelDispatcherClass))
-#define AWN_IS_PANEL_DISPATCHER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), AWN_TYPE_PANEL_DISPATCHER))
-#define AWN_IS_PANEL_DISPATCHER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), AWN_TYPE_PANEL_DISPATCHER))
-#define AWN_PANEL_DISPATCHER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_PANEL_DISPATCHER, AwnPanelDispatcherClass))
-
-typedef struct _AwnPanelDispatcher AwnPanelDispatcher;
-typedef struct _AwnPanelDispatcherClass AwnPanelDispatcherClass;
-typedef struct _AwnPanelDispatcherPrivate AwnPanelDispatcherPrivate;
 #define _dbus_g_connection_unref0(var) ((var == NULL) ? NULL : (var = (dbus_g_connection_unref (var), NULL)))
-
-struct _AwnImageStruct {
-	gint width;
-	gint height;
-	gint rowstride;
-	gboolean has_alpha;
-	gint bits_per_sample;
-	gint num_channels;
-	gchar* pixel_data;
-	gint pixel_data_length1;
-};
-
-struct _AwnPanelDBusInterfaceIface {
-	GTypeInterface parent_iface;
-	void (*add_applet) (AwnPanelDBusInterface* self, const gchar* desktop_file, GError** error);
-	void (*delete_applet) (AwnPanelDBusInterface* self, const gchar* uid, GError** error);
-	gint64 (*docklet_request) (AwnPanelDBusInterface* self, gint min_size, gboolean shrink, gboolean expand, GError** error);
-	gchar** (*get_inhibitors) (AwnPanelDBusInterface* self, int* result_length1, GError** error);
-	void (*get_snapshot) (AwnPanelDBusInterface* self, AwnImageStruct* result, GError** error);
-	guint (*inhibit_autohide) (AwnPanelDBusInterface* self, const char* sender, const gchar* app_name, const gchar* reason, GError** error);
-	void (*uninhibit_autohide) (AwnPanelDBusInterface* self, guint cookie, GError** error);
-	void (*set_applet_flags) (AwnPanelDBusInterface* self, const gchar* uid, gint flags, GError** error);
-	void (*set_glow) (AwnPanelDBusInterface* self, const char* sender, gboolean activate, GError** error);
-	gdouble (*get_offset_modifier) (AwnPanelDBusInterface* self);
-	gint (*get_max_size) (AwnPanelDBusInterface* self);
-	gint (*get_offset) (AwnPanelDBusInterface* self);
-	void (*set_offset) (AwnPanelDBusInterface* self, gint value);
-	gint (*get_path_type) (AwnPanelDBusInterface* self);
-	gint (*get_position) (AwnPanelDBusInterface* self);
-	void (*set_position) (AwnPanelDBusInterface* self, gint value);
-	gint (*get_size) (AwnPanelDBusInterface* self);
-	void (*set_size) (AwnPanelDBusInterface* self, gint value);
-	gint64 (*get_panel_xid) (AwnPanelDBusInterface* self);
-};
 
 struct _DBusObjectVTable {
 	void (*register_object) (DBusConnection*, const char*, void*);
@@ -104,15 +49,6 @@ struct _AwnPanelDBusInterfaceDBusProxy {
 	gboolean disposed;
 };
 
-struct _AwnPanelDispatcher {
-	GObject parent_instance;
-	AwnPanelDispatcherPrivate * priv;
-};
-
-struct _AwnPanelDispatcherClass {
-	GObjectClass parent_class;
-};
-
 struct _AwnPanelDispatcherPrivate {
 	AwnPanel* _panel;
 };
@@ -121,33 +57,7 @@ struct _AwnPanelDispatcherPrivate {
 static gpointer awn_panel_dispatcher_parent_class = NULL;
 static AwnPanelDBusInterfaceIface* awn_panel_dispatcher_awn_panel_dbus_interface_parent_iface = NULL;
 
-GType awn_image_struct_get_type (void) G_GNUC_CONST;
-AwnImageStruct* awn_image_struct_dup (const AwnImageStruct* self);
-void awn_image_struct_free (AwnImageStruct* self);
-void awn_image_struct_copy (const AwnImageStruct* self, AwnImageStruct* dest);
-void awn_image_struct_destroy (AwnImageStruct* self);
 static gchar* _vala_array_dup1 (gchar* self, int length);
-AwnPanelDBusInterface* awn_panel_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
-GType awn_panel_dbus_interface_get_type (void) G_GNUC_CONST;
-void awn_panel_dbus_interface_add_applet (AwnPanelDBusInterface* self, const gchar* desktop_file, GError** error);
-void awn_panel_dbus_interface_delete_applet (AwnPanelDBusInterface* self, const gchar* uid, GError** error);
-gint64 awn_panel_dbus_interface_docklet_request (AwnPanelDBusInterface* self, gint min_size, gboolean shrink, gboolean expand, GError** error);
-gchar** awn_panel_dbus_interface_get_inhibitors (AwnPanelDBusInterface* self, int* result_length1, GError** error);
-void awn_panel_dbus_interface_get_snapshot (AwnPanelDBusInterface* self, AwnImageStruct* result, GError** error);
-guint awn_panel_dbus_interface_inhibit_autohide (AwnPanelDBusInterface* self, const char* sender, const gchar* app_name, const gchar* reason, GError** error);
-void awn_panel_dbus_interface_uninhibit_autohide (AwnPanelDBusInterface* self, guint cookie, GError** error);
-void awn_panel_dbus_interface_set_applet_flags (AwnPanelDBusInterface* self, const gchar* uid, gint flags, GError** error);
-void awn_panel_dbus_interface_set_glow (AwnPanelDBusInterface* self, const char* sender, gboolean activate, GError** error);
-gdouble awn_panel_dbus_interface_get_offset_modifier (AwnPanelDBusInterface* self);
-gint awn_panel_dbus_interface_get_max_size (AwnPanelDBusInterface* self);
-gint awn_panel_dbus_interface_get_offset (AwnPanelDBusInterface* self);
-void awn_panel_dbus_interface_set_offset (AwnPanelDBusInterface* self, gint value);
-gint awn_panel_dbus_interface_get_path_type (AwnPanelDBusInterface* self);
-gint awn_panel_dbus_interface_get_position (AwnPanelDBusInterface* self);
-void awn_panel_dbus_interface_set_position (AwnPanelDBusInterface* self, gint value);
-gint awn_panel_dbus_interface_get_size (AwnPanelDBusInterface* self);
-void awn_panel_dbus_interface_set_size (AwnPanelDBusInterface* self, gint value);
-gint64 awn_panel_dbus_interface_get_panel_xid (AwnPanelDBusInterface* self);
 static void g_cclosure_user_marshal_VOID__STRING_BOXED (GClosure * closure, GValue * return_value, guint n_param_values, const GValue * param_values, gpointer invocation_hint, gpointer marshal_data);
 static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
 static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
@@ -170,7 +80,7 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_set_glow (AwnPanelDBusIn
 static void _dbus_awn_panel_dbus_interface_destroy_applet (GObject* _sender, const gchar* uid, DBusConnection* _connection);
 static void _dbus_awn_panel_dbus_interface_destroy_notify (GObject* _sender, DBusConnection* _connection);
 static void _dbus_awn_panel_dbus_interface_property_changed (GObject* _sender, const gchar* prop_name, GValue* value, DBusConnection* _connection);
-GType awn_panel_dbus_interface_dbus_proxy_get_type (void) G_GNUC_CONST;
+extern "C" GType awn_panel_dbus_interface_dbus_proxy_get_type (void) G_GNUC_CONST;
 static void _dbus_handle_awn_panel_dbus_interface_destroy_applet (AwnPanelDBusInterface* self, DBusConnection* connection, DBusMessage* message);
 static void _dbus_handle_awn_panel_dbus_interface_destroy_notify (AwnPanelDBusInterface* self, DBusConnection* connection, DBusMessage* message);
 static void _dbus_handle_awn_panel_dbus_interface_property_changed (AwnPanelDBusInterface* self, DBusConnection* connection, DBusMessage* message);
@@ -200,14 +110,11 @@ static gint64 awn_panel_dbus_interface_dbus_proxy_get_panel_xid (AwnPanelDBusInt
 static void awn_panel_dbus_interface_dbus_proxy_awn_panel_dbus_interface__interface_init (AwnPanelDBusInterfaceIface* iface);
 static void _vala_awn_panel_dbus_interface_dbus_proxy_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
 static void _vala_awn_panel_dbus_interface_dbus_proxy_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
-GType awn_panel_dispatcher_get_type (void) G_GNUC_CONST;
 #define AWN_PANEL_DISPATCHER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), AWN_TYPE_PANEL_DISPATCHER, AwnPanelDispatcherPrivate))
 enum  {
 	AWN_PANEL_DISPATCHER_DUMMY_PROPERTY,
 	AWN_PANEL_DISPATCHER_PANEL
 };
-AwnPanelDispatcher* awn_panel_dispatcher_new (AwnPanel* panel);
-AwnPanelDispatcher* awn_panel_dispatcher_construct (GType object_type, AwnPanel* panel);
 static void _lambda0_ (AwnPanel* p, gint s, AwnPanelDispatcher* self);
 static void __lambda0__awn_panel_size_changed (AwnPanel* _sender, gint size, gpointer self);
 static void _lambda1_ (AwnPanel* p, gint pos, AwnPanelDispatcher* self);
@@ -2200,8 +2107,9 @@ GType awn_panel_dbus_interface_get_type (void) {
 	return awn_panel_dbus_interface_type_id__volatile;
 }
 
-
+extern "C" {
 G_DEFINE_TYPE_EXTENDED (AwnPanelDBusInterfaceDBusProxy, awn_panel_dbus_interface_dbus_proxy, DBUS_TYPE_G_PROXY, 0, G_IMPLEMENT_INTERFACE (AWN_TYPE_PANEL_DBUS_INTERFACE, awn_panel_dbus_interface_dbus_proxy_awn_panel_dbus_interface__interface_init) );
+}
 AwnPanelDBusInterface* awn_panel_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path) {
 	AwnPanelDBusInterface* self;
 	self = g_object_new (awn_panel_dbus_interface_dbus_proxy_get_type (), "connection", connection, "name", name, "path", path, "interface", "org.awnproject.Awn.Panel", NULL);

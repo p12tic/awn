@@ -75,7 +75,7 @@ avant_window_navigator_SOURCES =	\
 	$(builddir)/awn-marshal.h \
 	awn-monitor.cc \
 	awn-monitor.h \
-	awn-panel-dispatcher.c \
+	awn-panel-dispatcher.cc \
 	awn-panel-dispatcher.h \
 	awn-panel.cc \
 	awn-panel.h \

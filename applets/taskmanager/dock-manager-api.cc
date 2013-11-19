@@ -35,70 +35,23 @@
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
 #include <task-item.h>
+#include "dock-manager-api.h"
 
-
-#define TYPE_DOCK_MANAGER_DBUS_INTERFACE (dock_manager_dbus_interface_get_type ())
-#define DOCK_MANAGER_DBUS_INTERFACE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_DOCK_MANAGER_DBUS_INTERFACE, DockManagerDBusInterface))
-#define IS_DOCK_MANAGER_DBUS_INTERFACE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_DOCK_MANAGER_DBUS_INTERFACE))
-#define DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TYPE_DOCK_MANAGER_DBUS_INTERFACE, DockManagerDBusInterfaceIface))
-
-typedef struct _DockManagerDBusInterface DockManagerDBusInterface;
-typedef struct _DockManagerDBusInterfaceIface DockManagerDBusInterfaceIface;
 typedef struct _DBusObjectVTable _DBusObjectVTable;
 #define _g_free0(var) (var = (g_free (var), NULL))
 typedef struct _DockManagerDBusInterfaceDBusProxy DockManagerDBusInterfaceDBusProxy;
 typedef DBusGProxyClass DockManagerDBusInterfaceDBusProxyClass;
-
-#define TYPE_DOCK_ITEM_DBUS_INTERFACE (dock_item_dbus_interface_get_type ())
-#define DOCK_ITEM_DBUS_INTERFACE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_DOCK_ITEM_DBUS_INTERFACE, DockItemDBusInterface))
-#define IS_DOCK_ITEM_DBUS_INTERFACE(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_DOCK_ITEM_DBUS_INTERFACE))
-#define DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), TYPE_DOCK_ITEM_DBUS_INTERFACE, DockItemDBusInterfaceIface))
-
-typedef struct _DockItemDBusInterface DockItemDBusInterface;
-typedef struct _DockItemDBusInterfaceIface DockItemDBusInterfaceIface;
 #define _g_hash_table_unref0(var) ((var == NULL) ? NULL : (var = (g_hash_table_unref (var), NULL)))
 typedef struct _DockItemDBusInterfaceDBusProxy DockItemDBusInterfaceDBusProxy;
 typedef DBusGProxyClass DockItemDBusInterfaceDBusProxyClass;
 
-#define TYPE_TASK_MANAGER_DISPATCHER (task_manager_dispatcher_get_type ())
-#define TASK_MANAGER_DISPATCHER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_TASK_MANAGER_DISPATCHER, TaskManagerDispatcher))
-#define TASK_MANAGER_DISPATCHER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_TASK_MANAGER_DISPATCHER, TaskManagerDispatcherClass))
-#define IS_TASK_MANAGER_DISPATCHER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_TASK_MANAGER_DISPATCHER))
-#define IS_TASK_MANAGER_DISPATCHER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_TASK_MANAGER_DISPATCHER))
-#define TASK_MANAGER_DISPATCHER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_TASK_MANAGER_DISPATCHER, TaskManagerDispatcherClass))
-
-typedef struct _TaskManagerDispatcher TaskManagerDispatcher;
-typedef struct _TaskManagerDispatcherClass TaskManagerDispatcherClass;
-typedef struct _TaskManagerDispatcherPrivate TaskManagerDispatcherPrivate;
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 #define _dbus_g_connection_unref0(var) ((var == NULL) ? NULL : (var = (dbus_g_connection_unref (var), NULL)))
 
-#define TYPE_TASK_ICON_DISPATCHER (task_icon_dispatcher_get_type ())
-#define TASK_ICON_DISPATCHER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_TASK_ICON_DISPATCHER, TaskIconDispatcher))
-#define TASK_ICON_DISPATCHER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_TASK_ICON_DISPATCHER, TaskIconDispatcherClass))
-#define IS_TASK_ICON_DISPATCHER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_TASK_ICON_DISPATCHER))
-#define IS_TASK_ICON_DISPATCHER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_TASK_ICON_DISPATCHER))
-#define TASK_ICON_DISPATCHER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_TASK_ICON_DISPATCHER, TaskIconDispatcherClass))
-
-typedef struct _TaskIconDispatcher TaskIconDispatcher;
-typedef struct _TaskIconDispatcherClass TaskIconDispatcherClass;
 #define _g_slist_free0(var) ((var == NULL) ? NULL : (var = (g_slist_free (var), NULL)))
-typedef struct _TaskIconDispatcherPrivate TaskIconDispatcherPrivate;
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 typedef struct _Block1Data Block1Data;
 #define _g_regex_unref0(var) ((var == NULL) ? NULL : (var = (g_regex_unref (var), NULL)))
-
-struct _DockManagerDBusInterfaceIface {
-	GTypeInterface parent_iface;
-	gchar** (*get_capabilities) (DockManagerDBusInterface* self, int* result_length1, GError** error);
-	char** (*get_items) (DockManagerDBusInterface* self, int* result_length1, GError** error);
-	char** (*get_items_by_name) (DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error);
-	char** (*get_items_by_desktop_file) (DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error);
-	char** (*get_items_by_pid) (DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error);
-	char* (*get_item_by_xid) (DockManagerDBusInterface* self, gint64 xid, GError** error);
-	void (*awn_set_visibility) (DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error);
-	char* (*awn_register_proxy_item) (DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error);
-};
 
 struct _DBusObjectVTable {
 	void (*register_object) (DBusConnection*, const char*, void*);
@@ -109,41 +62,15 @@ struct _DockManagerDBusInterfaceDBusProxy {
 	gboolean disposed;
 };
 
-struct _DockItemDBusInterfaceIface {
-	GTypeInterface parent_iface;
-	gint (*add_menu_item) (DockItemDBusInterface* self, GHashTable* menu_hints, GError** error);
-	void (*remove_menu_item) (DockItemDBusInterface* self, gint id, GError** error);
-	void (*update_dock_item) (DockItemDBusInterface* self, GHashTable* hints, GError** error);
-	gchar* (*get_desktop_file) (DockItemDBusInterface* self);
-	gchar* (*get_uri) (DockItemDBusInterface* self);
-};
-
 struct _DockItemDBusInterfaceDBusProxy {
 	DBusGProxy parent_instance;
 	gboolean disposed;
-};
-
-struct _TaskManagerDispatcher {
-	GObject parent_instance;
-	TaskManagerDispatcherPrivate * priv;
-};
-
-struct _TaskManagerDispatcherClass {
-	GObjectClass parent_class;
 };
 
 struct _TaskManagerDispatcherPrivate {
 	TaskManager* _manager;
 };
 
-struct _TaskIconDispatcher {
-	GObject parent_instance;
-	TaskIconDispatcherPrivate * priv;
-};
-
-struct _TaskIconDispatcherClass {
-	GObjectClass parent_class;
-};
 
 struct _TaskIconDispatcherPrivate {
 	TaskIcon* icon;
@@ -160,20 +87,9 @@ struct _Block1Data {
 static gpointer task_manager_dispatcher_parent_class = NULL;
 static DockManagerDBusInterfaceIface* task_manager_dispatcher_dock_manager_dbus_interface_parent_iface = NULL;
 static gpointer task_icon_dispatcher_parent_class = NULL;
-static gint task_icon_dispatcher_counter;
 static gint task_icon_dispatcher_counter = 1;
 static DockItemDBusInterfaceIface* task_icon_dispatcher_dock_item_dbus_interface_parent_iface = NULL;
 
-DockManagerDBusInterface* dock_manager_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
-GType dock_manager_dbus_interface_get_type (void) G_GNUC_CONST;
-gchar** dock_manager_dbus_interface_get_capabilities (DockManagerDBusInterface* self, int* result_length1, GError** error);
-char** dock_manager_dbus_interface_get_items (DockManagerDBusInterface* self, int* result_length1, GError** error);
-char** dock_manager_dbus_interface_get_items_by_name (DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error);
-char** dock_manager_dbus_interface_get_items_by_desktop_file (DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error);
-char** dock_manager_dbus_interface_get_items_by_pid (DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error);
-char* dock_manager_dbus_interface_get_item_by_xid (DockManagerDBusInterface* self, gint64 xid, GError** error);
-void dock_manager_dbus_interface_awn_set_visibility (DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error);
-char* dock_manager_dbus_interface_awn_register_proxy_item (DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error);
 static void g_cclosure_user_marshal_VOID__BOXED (GClosure * closure, GValue * return_value, guint n_param_values, const GValue * param_values, gpointer invocation_hint, gpointer marshal_data);
 static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
 static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
@@ -192,7 +108,7 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_set_visibility (D
 static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_register_proxy_item (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
 static void _dbus_dock_manager_dbus_interface_item_added (GObject* _sender, const char* path, DBusConnection* _connection);
 static void _dbus_dock_manager_dbus_interface_item_removed (GObject* _sender, const char* path, DBusConnection* _connection);
-GType dock_manager_dbus_interface_dbus_proxy_get_type (void) G_GNUC_CONST;
+extern "C" GType dock_manager_dbus_interface_dbus_proxy_get_type (void) G_GNUC_CONST;
 static void _dbus_handle_dock_manager_dbus_interface_item_added (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
 static void _dbus_handle_dock_manager_dbus_interface_item_removed (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
 DBusHandlerResult dock_manager_dbus_interface_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data);
@@ -212,11 +128,6 @@ static void _vala_dock_manager_dbus_interface_dbus_proxy_get_property (GObject *
 static void _vala_dock_manager_dbus_interface_dbus_proxy_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
 DockItemDBusInterface* dock_item_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
 GType dock_item_dbus_interface_get_type (void) G_GNUC_CONST;
-gint dock_item_dbus_interface_add_menu_item (DockItemDBusInterface* self, GHashTable* menu_hints, GError** error);
-void dock_item_dbus_interface_remove_menu_item (DockItemDBusInterface* self, gint id, GError** error);
-void dock_item_dbus_interface_update_dock_item (DockItemDBusInterface* self, GHashTable* hints, GError** error);
-gchar* dock_item_dbus_interface_get_desktop_file (DockItemDBusInterface* self);
-gchar* dock_item_dbus_interface_get_uri (DockItemDBusInterface* self);
 void dock_item_dbus_interface_dbus_register_object (DBusConnection* connection, const char* path, void* object);
 void _dock_item_dbus_interface_dbus_unregister (DBusConnection* connection, void* _user_data_);
 DBusHandlerResult dock_item_dbus_interface_dbus_message (DBusConnection* connection, DBusMessage* message, void* object);
@@ -227,7 +138,7 @@ static DBusHandlerResult _dbus_dock_item_dbus_interface_add_menu_item (DockItemD
 static DBusHandlerResult _dbus_dock_item_dbus_interface_remove_menu_item (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
 static DBusHandlerResult _dbus_dock_item_dbus_interface_update_dock_item (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
 static void _dbus_dock_item_dbus_interface_menu_item_activated (GObject* _sender, gint id, DBusConnection* _connection);
-GType dock_item_dbus_interface_dbus_proxy_get_type (void) G_GNUC_CONST;
+extern "C" GType dock_item_dbus_interface_dbus_proxy_get_type (void) G_GNUC_CONST;
 static void _dbus_handle_dock_item_dbus_interface_menu_item_activated (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
 DBusHandlerResult dock_item_dbus_interface_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data);
 enum  {
@@ -247,10 +158,7 @@ enum  {
 	TASK_MANAGER_DISPATCHER_DUMMY_PROPERTY,
 	TASK_MANAGER_DISPATCHER_MANAGER
 };
-TaskManagerDispatcher* task_manager_dispatcher_new (TaskManager* manager);
-TaskManagerDispatcher* task_manager_dispatcher_construct (GType object_type, TaskManager* manager);
 static char** task_manager_dispatcher_list_to_object_path_array (GSList* list, int* result_length1);
-GType task_icon_dispatcher_get_type (void) G_GNUC_CONST;
 const gchar* task_icon_dispatcher_get_object_path (TaskIconDispatcher* self);
 static gchar** task_manager_dispatcher_real_get_capabilities (DockManagerDBusInterface* base, int* result_length1, GError** error);
 static char** task_manager_dispatcher_real_get_items (DockManagerDBusInterface* base, int* result_length1, GError** error);
@@ -278,9 +186,6 @@ enum  {
 	TASK_ICON_DISPATCHER_OBJECT_PATH
 };
 static TaskManagerDispatcher* task_icon_dispatcher_get_manager_proxy (TaskIconDispatcher* self);
-TaskIconDispatcher* task_icon_dispatcher_new (TaskIcon* icon);
-TaskIconDispatcher* task_icon_dispatcher_construct (GType object_type, TaskIcon* icon);
-void task_icon_dispatcher_set_object_path (TaskIconDispatcher* self, const gchar* value);
 static void task_icon_dispatcher_emit_item_added (TaskIconDispatcher* self);
 static gint task_icon_dispatcher_real_add_menu_item (DockItemDBusInterface* base, GHashTable* menu_hints, GError** error);
 static Block1Data* block1_data_ref (Block1Data* _data1_);
@@ -1722,8 +1627,10 @@ GType dock_manager_dbus_interface_get_type (void) {
 	return dock_manager_dbus_interface_type_id__volatile;
 }
 
-
+extern "C" {
 G_DEFINE_TYPE_EXTENDED (DockManagerDBusInterfaceDBusProxy, dock_manager_dbus_interface_dbus_proxy, DBUS_TYPE_G_PROXY, 0, G_IMPLEMENT_INTERFACE (TYPE_DOCK_MANAGER_DBUS_INTERFACE, dock_manager_dbus_interface_dbus_proxy_dock_manager_dbus_interface__interface_init) );
+}
+
 DockManagerDBusInterface* dock_manager_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path) {
 	DockManagerDBusInterface* self;
 	self = g_object_new (dock_manager_dbus_interface_dbus_proxy_get_type (), "connection", connection, "name", name, "path", path, "interface", "net.launchpad.DockManager", NULL);
@@ -3722,8 +3629,10 @@ GType dock_item_dbus_interface_get_type (void) {
 	return dock_item_dbus_interface_type_id__volatile;
 }
 
-
+extern "C" {
 G_DEFINE_TYPE_EXTENDED (DockItemDBusInterfaceDBusProxy, dock_item_dbus_interface_dbus_proxy, DBUS_TYPE_G_PROXY, 0, G_IMPLEMENT_INTERFACE (TYPE_DOCK_ITEM_DBUS_INTERFACE, dock_item_dbus_interface_dbus_proxy_dock_item_dbus_interface__interface_init) );
+}
+
 DockItemDBusInterface* dock_item_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path) {
 	DockItemDBusInterface* self;
 	self = g_object_new (dock_item_dbus_interface_dbus_proxy_get_type (), "connection", connection, "name", name, "path", path, "interface", "net.launchpad.DockItem", NULL);

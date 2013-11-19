@@ -14,8 +14,9 @@
 #include <math.h>
 #include "awn-panel.h"
 
-G_BEGIN_DECLS
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define AWN_TYPE_IMAGE_STRUCT (awn_image_struct_get_type ())
 typedef struct _AwnImageStruct AwnImageStruct;
@@ -114,7 +115,8 @@ AwnPanelDispatcher* awn_panel_dispatcher_new (AwnPanel* panel);
 AwnPanelDispatcher* awn_panel_dispatcher_construct (GType object_type, AwnPanel* panel);
 AwnPanel* awn_panel_dispatcher_get_panel (AwnPanelDispatcher* self);
 
-
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

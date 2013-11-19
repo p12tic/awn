@@ -49,7 +49,7 @@ taskmanager_la_SOURCES = \
 	awn-desktop-lookup.cc \
 	awn-desktop-lookup-cached.cc \
 	awn-desktop-lookup-gnome3.cc \
-	dock-manager-api.c	\
+	dock-manager-api.cc	\
 	dock-manager-api.h	\
 	task-defines.h \
 	task-drag-indicator.cc \

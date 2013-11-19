@@ -13,8 +13,9 @@
 #include <task-manager.h>
 #include <task-icon.h>
 
-G_BEGIN_DECLS
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define TYPE_DOCK_MANAGER_DBUS_INTERFACE (dock_manager_dbus_interface_get_type ())
 #define DOCK_MANAGER_DBUS_INTERFACE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_DOCK_MANAGER_DBUS_INTERFACE, DockManagerDBusInterface))
@@ -121,7 +122,8 @@ TaskIconDispatcher* task_icon_dispatcher_construct (GType object_type, TaskIcon*
 const gchar* task_icon_dispatcher_get_object_path (TaskIconDispatcher* self);
 void task_icon_dispatcher_set_object_path (TaskIconDispatcher* self, const gchar* value);
 
-
-G_END_DECLS
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif
