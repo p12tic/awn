@@ -4,21 +4,21 @@
 # This file is distributed under the same license as the awn package.
 #
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
-# OsamaKhalid <osamak.wfm@gmail.com>, 2009.
+# OsamaKhalid <osamak.wfm@gmail.com>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: _avant-window-navigator-ar\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-09-14 05:59+0000\n"
-"Last-Translator: ahmad <Unknown>\n"
-"Language-Team: Arabic\n"
+"PO-Revision-Date: 2010-11-02 22:23+0000\n"
+"Last-Translator: someone <Unknown>\n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n % 100 >= "
 "3 && n % 100 <= 10 ? 3 : n % 100 >= 11 && n % 100 <= 99 ? 4 : 5;\n"
-"X-Launchpad-Export-Date: 2010-09-15 05:06+0000\n"
+"X-Launchpad-Export-Date: 2010-11-03 05:02+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -64,6 +64,7 @@ msgstr ""
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" مجموعة من الأيقونات من نفس المشغل (التطبيق) ، إذا تم تعطيل تجميع الإطارات."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
@@ -83,6 +84,9 @@ msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"السلوك المناسب عند تنشيط نافذة على مساحة عمل مختلفة (سطح مكتب اخر).  \"٠\" "
+"للإعدادات الافتراضية،  \"١\" تغيير مساحة العمل النشطة (سطح المكتب النشط "
+"الاخر)  \"٢\" الانتقال إلى مساحة العمل الحالية (سطح المكتب الحالي)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
@@ -250,7 +254,7 @@ msgstr "إضافة كمطلق"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr ""
+msgstr "حذف مشغل"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -262,19 +266,19 @@ msgstr "أ_غلق الكل"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
-msgstr ""
+msgstr "تصغير الكل"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
 msgid "Unminimize all"
-msgstr ""
+msgstr "عدم تصغير الكل"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
 msgid "Maximize all"
-msgstr ""
+msgstr "تكبير الكل"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
 msgid "Unmaximize all"
-msgstr ""
+msgstr "عدم تكبير الكل"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -387,7 +391,7 @@ msgstr "<b>شريط</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>المستودعات</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
@@ -441,7 +445,7 @@ msgstr "الخلفية:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Choose a theme..."
-msgstr ""
+msgstr "اختيار سمة....."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
@@ -465,7 +469,7 @@ msgstr "تناظر الانحناءات"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
-msgstr ""
+msgstr "التقوس (الإنحناء)"
 
 #: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:153
@@ -474,11 +478,11 @@ msgstr "مخصص"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "تخصيص صورة السهم"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
-msgstr ""
+msgstr "تخصيص التأثيرات"
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Customize..."
@@ -486,11 +490,11 @@ msgstr "تخصيص..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr ""
+msgstr "إلغاء تنشيط التطبيق (البريمج)"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr ""
+msgstr "إظهار المشغلات فقط"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
@@ -499,28 +503,28 @@ msgstr ""
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr ""
+msgstr "اسحب التطبيقات (البريمجات) المتاحة هنا لتنشيطها"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr ""
+msgstr "اسحب أدناه أو انقر نقراً مزدوجاً فوق التطبيق (البريمج) لتنشيطه"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "توسيع الشريط (تمديد الشريط)"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Export Theme..."
-msgstr ""
+msgstr "تصدير السمة"
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Extra Options"
-msgstr ""
+msgstr "خيارات إضافية"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Fill Color"
-msgstr ""
+msgstr "لون التعبئة"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
@@ -532,23 +536,23 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "إزاحة العوم"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
-msgstr ""
+msgstr "الخط"
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Font Color"
-msgstr ""
+msgstr "لون الخط"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "وضعية الخط"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "مخطط لون الخط"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
@@ -556,23 +560,24 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
-msgstr ""
+msgstr "نقطة متوهجة"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Glowing dot color"
-msgstr ""
+msgstr "لون النقطة المتوهجة"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
-msgstr ""
+msgstr "تجميع النوافذ المتشابهة"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
 msgstr ""
+"حركة المرور (الرسم المتحرك عند مرور مؤشر الفأرة على الإيقونات في الشريط) :"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
-msgstr ""
+msgstr "تأثيرات _الايقونات:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
@@ -584,23 +589,23 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Icons:"
-msgstr ""
+msgstr "الإيقونات"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
-msgstr ""
+msgstr "لون الحدود الداخلية"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr ""
+msgstr "تثبيت التطبيق (البريمج)..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
-msgstr ""
+msgstr "تثبيت..."
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "حركة التشغيل (الرسم المتحرك لعملية التشغيل):"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
@@ -616,35 +621,35 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr ""
+msgstr "ارتفاع الشاشة"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "عرض الشاشة"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
-msgstr ""
+msgstr "الإسم :"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
-msgstr ""
+msgstr "الإزاحة"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr ""
+msgstr "حركة الفتح (الرسم المتحرك لعملية الفتح) :"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
-msgstr ""
+msgstr "لون الحدود الخارجية"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
-msgstr ""
+msgstr "لون الخط الخارجي"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "ألوان خلفية الشريط"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Panel Look Refinements"
@@ -652,7 +657,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "حجم ونمط وشكل الشريط"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
@@ -660,7 +665,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Pattern Image"
-msgstr ""
+msgstr "نمط الصورة"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
@@ -668,11 +673,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "إزاحة الانعكاس"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
-msgstr ""
+msgstr "المستودعات"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
@@ -693,11 +698,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
-msgstr ""
+msgstr "لون فاصل"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
-msgstr ""
+msgstr "إظهار كافة النوافذ"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
@@ -705,11 +710,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
-msgstr ""
+msgstr "اظهار ظلال"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
-msgstr ""
+msgstr "_النمط:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
@@ -717,11 +722,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "تصدير السمة"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "السّمُك"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -731,7 +736,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
-msgstr ""
+msgstr "مثلث"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
@@ -743,27 +748,27 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:105
 msgid "Version:"
-msgstr ""
+msgstr "الإصدار:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr ""
+msgstr "_السلوك:"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
-msgstr ""
+msgstr "الإ_تجاه:"
 
 #: ../awn-settings/awn-settings.ui.h:108
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_الموضع على الشاشة:"
 
 #: ../awn-settings/awn-settings.ui.h:109
 msgid "_Size of icons:"
-msgstr ""
+msgstr "_حجم الرموز:"
 
 #: ../awn-settings/awn-settings.ui.h:110
 msgid "pixels"
-msgstr ""
+msgstr "بكسلات"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
@@ -771,7 +776,7 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "خطأ، المسار فارغاً أو موجود بالفعل"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
@@ -844,12 +849,12 @@ msgstr ""
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "لم يتمكن من تحديد موقع أي من هذه الرموز: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "لم يتمكن من تحديد موقع الرمز التالي: %s\n"
 
 #: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -898,46 +903,46 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "فشل في تثبيت التطبيق (البريمج)"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "تم تحديث التطبيق (البريمج) بنجاح!"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "تم إضافة التطبيق (البريمج) بنجاح!"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
-msgstr ""
+msgstr "لا يمكن حذف تطبيق (بريمج) نشط"
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
-msgstr ""
+msgstr "حذف تطبيق (بريمج)"
 
 #: ../awn-settings/awnClass.py:1350
 #, python-format
 msgid "<b>Delete %s?</b>"
-msgstr ""
+msgstr "<b>  هل تريد حذف %s ؟ </b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "غير قادر على حذف البرنامج (البريمج)"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "% s موجودة بالفعل، غير قادر على تصدير السمة."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "السمة مثبتة بالفعل، هل تريد الكتابة عليها ؟"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "هذا ملف الخاص للسمة غير متوافق."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
@@ -969,27 +974,27 @@ msgstr "ثلاثي أبعاد"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "مقوّس"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "مٌنفعل (يشبه المسطح)"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "عائم (يطفو)"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
-msgstr ""
+msgstr "يشبه الملف العلاقي (أو المجلد)"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
-msgstr ""
+msgstr "شريط ثابت"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
-msgstr ""
+msgstr "مرئي دائماً"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Intellihide"
@@ -1001,7 +1006,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Fade out"
-msgstr ""
+msgstr "تلاشي"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Transparency"
@@ -1009,19 +1014,19 @@ msgstr "الشفافية"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "دائماً في الأسفل"
 
 #: ../awn-settings/awnSettings.py.in:629
 msgid "PNG Image"
-msgstr ""
+msgstr "صورة PNG"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "صور"
 
 #: ../awn-settings/awnSettings.py.in:759
 msgid "Save Theme..."
-msgstr ""
+msgstr "حفظ السمة..."
 
 #: ../awn-settings/awnSettings.py.in:768
 msgid "Awn Theme"
@@ -1029,15 +1034,15 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
-msgstr ""
+msgstr "صلب"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Outline"
-msgstr ""
+msgstr "مخطط"
 
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "المخطط التفصيلي، معكوس"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
@@ -1049,7 +1054,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "استخدام أيقونات المحددة بالتطبيقاتها."
 
 #: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
@@ -1069,19 +1074,19 @@ msgstr "التفضيلات"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"
-msgstr ""
+msgstr "إدارة المهام"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr ""
+msgstr "تطبيقات (البريمجات)"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
-msgstr ""
+msgstr "السِمات"
 
 #: ../awn-settings/awnSettings.py.in:1171
 msgid "Advanced"
-msgstr ""
+msgstr "متقدم"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
@@ -1130,6 +1135,8 @@ msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"إذا كان الرقم أكبر من صفر سوف يحتوي الشريط على زوايا، كلما زاد حجم نصف القطر "
+"زاد حجم الزوايا."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid ""
@@ -1152,19 +1159,19 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "لون المستطيل النشط."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "لون النقطة المتوهجة."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "لون المخطط الخاص بالمستطيل النشط."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Delay between mouse leaving the panel and it hiding."
-msgstr ""
+msgstr "التأخير بين وقت إبتعاد الفأرة عن الشريط و بين إخفاء الشريط"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
@@ -1178,11 +1185,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
-msgstr ""
+msgstr "وضع فواصل."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "تمكين وضعية النمط."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
@@ -1222,11 +1229,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
-msgstr ""
+msgstr "لون الحدود الداخلية."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
-msgstr ""
+msgstr "لون الحدود الرئيسية."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
@@ -1252,7 +1259,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "المسار إلى ملف السمة الخاصة بسطح المكتب."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
@@ -1283,11 +1290,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "لون فاصل."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "إظهار ظلال الرموز."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
@@ -1295,11 +1302,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "زاوية الشريط في وضعية ثلاثية الأبعاد."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
-msgstr ""
+msgstr "مدى الإنحناء في الشريط في وضعية التقوس (وضعية الشريط المقوس)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
@@ -1339,25 +1346,28 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "شفافية الأيقونات من ٠,٠ إلى ١,٠"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "شفافية النمط."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid ""
 "The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
 "4, floaty: 5, lucido: 6)"
 msgstr ""
+"نمط الشريط:  \"٠\" لا شيء.  \"١\" شريط مسطح.  \"٢\" شريط ثلاثي الأبعاد.  "
+"\"٣\" شريط مقوس.  \"٤\" شريط منفعل (يشبة المسطح).  \"٥\" شريط مطفي (يعوم).  "
+"\"٦\" شريط مثل الملف العلاقي."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
-msgstr ""
+msgstr "تماثل المنحنى في وضعية الأقواس."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The thickness in 3D mode."
-msgstr ""
+msgstr "السمك في وضعية ثلاثية الأبعاد."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
@@ -1395,12 +1405,12 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "تخصيص البريمج"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
 msgid "About %s"
-msgstr ""
+msgstr "حول %s"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
@@ -1420,7 +1430,7 @@ msgstr "حذف الأيقونة المخصصة"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "يتم الان تحميل البريمج..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."

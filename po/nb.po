@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-05 09:47+0000\n"
-"Last-Translator: Olav Andreas Lindekleiv <Unknown>\n"
+"PO-Revision-Date: 2011-04-30 14:49+0000\n"
+"Last-Translator: Bosse Klykken <Unknown>\n"
 "Language-Team: Norwegian Bokmal <nb@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-08-06 03:45+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-05-01 04:54+0000\n"
+"X-Generator: Launchpad (build 12758)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -171,7 +171,7 @@ msgstr ""
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1020
 msgid "Launch"
-msgstr ""
+msgstr "Start"
 
 #: ../applets/taskmanager/task-launcher.c:1192
 #, c-format
@@ -203,7 +203,7 @@ msgstr ""
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:703
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Dock-innstillinger"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
@@ -244,19 +244,19 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:683
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Legg til som programstarter"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr ""
+msgstr "Fjern programstarter"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
-msgstr ""
+msgstr "_Lukk"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:768
 msgid "_Close All"
-msgstr ""
+msgstr "_Lukk alle"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
@@ -276,27 +276,27 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ma_ksimer"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:942
 msgid "Unma_ximize"
-msgstr ""
+msgstr "G_jenopprett"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:970
 msgid "Always on _Top"
-msgstr ""
+msgstr "All_tid øverst"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:994
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Min_imer"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:999
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "Gje_nopprett"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1053
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Alltid på synlig arbeidsflate"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
@@ -304,23 +304,23 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Flytt til _venstre arbeidsflate"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1156
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Flytt til _høyre arbeidsflate"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1166
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Flytt til arbeidsflaten _over"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1176
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Flytt til arbeidsoflaten un_der"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1185
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Flytt til en annen _arbeidsflate"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
@@ -974,7 +974,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
-msgstr ""
+msgstr "Alltid synlig"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Intellihide"
@@ -1397,7 +1397,7 @@ msgstr ""
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Tilpasse ikon"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"

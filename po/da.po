@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:56+0200\n"
-"PO-Revision-Date: 2010-04-10 22:14+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"PO-Revision-Date: 2010-11-08 20:21+0000\n"
+"Last-Translator: Kim Hansen <Unknown>\n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-04-12 03:54+0000\n"
+"X-Launchpad-Export-Date: 2010-11-09 04:50+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -31,6 +31,7 @@ msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Tillad gruppering af vinduer som har forskellige WM_CLIENT_NAME værdier."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
@@ -1057,9 +1058,8 @@ msgid "Overlay application icon with best quality icon"
 msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:1139
-#, fuzzy
 msgid "Preferences"
-msgstr "Dock-indstillinger"
+msgstr "Indstillinger"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"
@@ -1427,11 +1427,11 @@ msgstr ""
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN er blevet opdateret"
 
+#~ msgid "Standard"
+#~ msgstr "Standard"
+
 #~ msgid "3)"
 #~ msgstr "3)"
 
 #~ msgid "5)"
 #~ msgstr "5)"
-
-#~ msgid "Standard"
-#~ msgstr "Standard"

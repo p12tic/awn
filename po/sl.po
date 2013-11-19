@@ -8,36 +8,39 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-02-02 09:20+0000\n"
-"Last-Translator: Mark Lee <Unknown>\n"
+"PO-Revision-Date: 2010-11-07 15:05+0000\n"
+"Last-Translator: Dražen Matešić <Unknown>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
-"X-Launchpad-Export-Date: 2010-02-03 04:48+0000\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
+"n%100==4 ? 3 : 0);\n"
+"X-Launchpad-Export-Date: 2010-11-08 05:13+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
-msgstr ""
+msgstr "Razširjevalnik"
 
 #: ../applets/expander/expander.desktop.in.in.h:2
 msgid "Fills space on the panel in expand mode"
-msgstr ""
+msgstr "Zapolni prostor v razširjenem načinu"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Dovoli združevanje oken, ki imajo različne vrednosti WM_CLIENT_NAME."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Nadzira alfo preliva, če možnost overlay_application_icons to omogoči. "
+"Veljaven razpon od 0.0 do 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -47,23 +50,33 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" Nadzoruje prikaz ikon v programu Task Icon. 0) Vedno prikaži programsko "
+"zagotovljene ikone okna, ko je okno aktivno( razen ob redkih primerih). 1) "
+"Poskus, da se prikažejo samo programsko zagotovljene ikone, ko obstaja "
+"verjetnost, da zagotovijo koristne informacije. 2) Prezri vse programe, ki "
+"zagotovijo ikone in prikaži samo ikono Zaganjalnika"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
 msgstr ""
+" Nadzira velikost prekrivanja, če možnost overlay_application_icons to "
+"omogoči . V območju od 0.2 do 0.7."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
+" Skupina ikone z istim zagonjalnikom, če je združevanje oken onemogočeno."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
 " If overlay_application_icons is true, this key will reverse the overlay/"
 "overlayee if set to true."
 msgstr ""
+" V primeru, da je možnost overlay_application_icon omogočena, bo ta vrednost "
+"obrnila prekrivanje, če je možnost omogočena."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -71,40 +84,49 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" Če je možnost omogočena, se bodo ikone oken programov prekrivale na "
+"Zaganjalniku ikon, namesto, da bi se zamenjale, v skladu z obnašanjem "
+"definiranem v icon_change_behavior."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
+"Obnašanje, ko je okno na drugi delovni površini dejavno. (0 za privzeto, 1 - "
+"spremeni aktivno delovno površino, 2 - prehod na trenutno delovno površino)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
 msgstr ""
+"Definicija vsebinskega menija. Pogledati v awn namestitveni imenik razen, če "
+"je ponujena absolutna pot."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
+msgstr "Zamik, preden se okno aktivira ob vlečenju čez ikono."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"Obnašanje namizja ob kopiranju, ko se vleče ter spušča namizne datoteke. 0.. "
+"Kopiraj vse, 1.. Kopiraj če je lastnik uporabnik, 2.. Ne kopirat."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
-msgstr ""
+msgstr "Omogoči dolg pritisk za odprtje Pogovornega okna."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
 msgid "Enable reordering of windows by drag and drop "
-msgstr ""
+msgstr "Omogoči prerazporeditev oken z vlečenjem in spuščanjem "
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
 msgid "Enabling group of tasks."
-msgstr ""
+msgstr "Omogočanje skupine opravil."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -112,6 +134,9 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
+"Kako temeljito ujemanje je uveljavljeno za predmete združevanja. Ta vrednost "
+"mora bit med 0 in 99. 0 je kot da ne bi bilo združevanja. 99 bo skoraj vse "
+"združilo."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -119,6 +144,9 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
+"Kako ustvariti seznam oken, preizkušenih za presečišča ,ko je Intellihide "
+"dejaven. 0.. uporabi okna na dejavni delovni površini, 1.. uporabi okna "
+"trenutnega programa v žarišču"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -126,692 +154,710 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
+"Intellihide, če je skrivanje omogočeno za pult. To bo preprečilo samodejno "
+"skrivanje pulta, če ni sekajočih oken v seznamu pomembnih oken (glej "
+"intellihide_mode):"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
+"Največje število kazalcev opravil, katere se bo prikazalo pod ikonami. "
+"Veljaven obseg je od 0..3."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid ""
 "Number of seconds to inhibit autohide when a application requests attention. "
 "A value of 0 disables."
 msgstr ""
+"Število sekund zadržanja samodejnega skritja, ko program zahteva pozornost. "
+"Vrednost 0 onemogoči zadržanje."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
 "Number of seconds to wait before nagging again, by inhibiting autohide, if "
 "attention is required by any windows. A value of 0 disables."
 msgstr ""
+"Število sekund pred ponovnim nadlegovanjem, s preprečevanjem samodejnega "
+"skrivanja, če je potrebna pozornost kateregakoli okna. Vrednost 0 onemogoči "
+"to obnašanje."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "Prikaži le zaganjalnik upravljalnika oken"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Prikaži okna iz vseh delovnih površin"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
-msgstr ""
+msgstr "Prag pri katerem se začne štetje besedila. Veljaven obseg 1 .."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"seznam poti do datotek .desktop iz katerih naj upravljalnik nalog ustvari "
+"svoje zaganjalnike"
 
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1020
 msgid "Launch"
-msgstr ""
+msgstr "Zaženi"
 
 #: ../applets/taskmanager/task-launcher.c:1192
 #, c-format
 msgid "Launch %s"
-msgstr ""
+msgstr "Zaženi %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Zaganjalnik/Upravljalnik nalog"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "aplet Zaganjalnik/Upravljalnik nalog"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
 msgid "About Awn"
-msgstr ""
+msgstr "O Awn"
 
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Povlecite za spremembo usmeritve pulta"
 
 #: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
-msgstr ""
+msgstr "Velikost ikone:"
 
 #: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
 #: ../src/awn-panel.c:703
 msgid "Dock Preferences"
-msgstr ""
+msgstr "Možnosti sidrišča"
 
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Ni mogoče odpreti nastavitev Awn: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
+msgstr "Aplet za nadziranje sidrišča in zagon Awn možnosti."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Aplet možnosti"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Dodaj ločnico med apletoma"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
-msgstr ""
+msgstr "Ločnica"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr ""
+msgstr "Delavna površina %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
 msgid "Workspace 1_0"
-msgstr ""
+msgstr "Delavna površina 1_0"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Delavna površina %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:683
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Dodaj kot zaganjalnik"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr ""
+msgstr "Odstrani zaganjalnik"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
-msgstr ""
+msgstr "_Zapri"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:768
 msgid "_Close All"
-msgstr ""
+msgstr "_Zapri vse"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
-msgstr ""
+msgstr "Skrči vse"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
 msgid "Unminimize all"
-msgstr ""
+msgstr "Povečaj"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
 msgid "Maximize all"
-msgstr ""
+msgstr "Razpni vse"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
 msgid "Unmaximize all"
-msgstr ""
+msgstr "Pomanjšaj vse"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
-msgstr ""
+msgstr "Ra_zpni"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:942
 msgid "Unma_ximize"
-msgstr ""
+msgstr "Po_manjšaj"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:970
 msgid "Always on _Top"
-msgstr ""
+msgstr "Vedno na _vrhu"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:994
 msgid "Mi_nimize"
-msgstr ""
+msgstr "Sk_rči"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:999
 msgid "Unmi_nimize"
-msgstr ""
+msgstr "_Povečaj"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1053
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Vedno na vidni delovni površini"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Samo na tej delovni površini"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Premakni na _levo delovno površino"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1156
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Premakni na _desno delovno površino"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1166
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Premakni na _zgornjo delovno površino"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1176
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Premakni na _spodnjo delovno površino"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1185
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Premakni na drugo d_elovno površino"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr ""
+msgstr "Awn Nastavitve"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
-msgstr ""
+msgstr "Upravljanje Awn možnosti,zaganjalnika, vstavkov in teme"
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr ""
+msgstr "3D kot"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Dejavni vstavki</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Razpoložljivi vstavki</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>Kategorije</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>Učinki</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
-msgstr ""
+msgstr "<b>Izvozite izbirne skupine</b>"
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>Dodatki</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Splošno</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>Ikone</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr ""
+msgstr "<b>Zaganjalnik</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
-msgstr ""
+msgstr "<b>Številčne nastavitve</b>"
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Barve pulta</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>Pult</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Skladišča</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>Nastavitve</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
-msgstr ""
+msgstr "<b>Upravljalniki nalog</b>"
 
 #: ../awn-settings/awn-settings.ui.h:17
 msgid "<b>These settings require the Task Manager applet to be active. </b>"
-msgstr ""
+msgstr "<b>Te nastavitve zahtevajo dejaven aplet Upravljalnika opravil.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Namigi</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
+"<b>Za uveljavljanje in prilagajanje tem morate omogočiti namizne učinke "
+"(sestavljalnik).</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Dejaven aplet"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
-msgstr ""
+msgstr "Dejaven pravokotnik:"
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Vrsta puščice"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Animacija pozornosti:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Avtor:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Način samodejnega skrivanja:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Ozadje:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Choose a theme..."
-msgstr ""
+msgstr "Izberite temo ..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
-msgstr ""
+msgstr "Preklikajte skozi"
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
-msgstr ""
+msgstr "Animacija zaprtja:"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Configured Effects"
-msgstr ""
+msgstr "Nastavljeni učinki"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr ""
+msgstr "Polmer ogljišča"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Simetrija krivulj"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
-msgstr ""
+msgstr "Zaobljenost"
 
 #: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:153
 msgid "Custom"
-msgstr ""
+msgstr "Po meri"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "Slika puščice po meri"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
-msgstr ""
+msgstr "Učinki po meri"
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Customize..."
-msgstr ""
+msgstr "Prilagodi ..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Onemogoči aplet"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr ""
+msgstr "Prikaži le zaganjalnike"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "Preurejanje povleci in spusti"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr ""
+msgstr "Za omogočitev povlecite razpoložljive vstavke sem"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr ""
+msgstr "Povlecite spodaj ali dvokliknite za omogočenje apleta"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "R_azširi pult"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Export Theme..."
-msgstr ""
+msgstr "Izvozi temo ..."
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Extra Options"
-msgstr ""
+msgstr "Dodatne možnosti"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Fill Color"
-msgstr ""
+msgstr "Barva polnila"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
-msgstr ""
+msgstr "Prva barva preliva"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "First Highlight Color"
-msgstr ""
+msgstr "Prva barva poudarka"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "Plavajoči odmik"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
-msgstr ""
+msgstr "Pisava"
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Font Color"
-msgstr ""
+msgstr "Barva pisave"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "Način pisave"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Barva obrisa pisave"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
-msgstr ""
+msgstr "Ali želite prsiliti način zaslona?"
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
-msgstr ""
+msgstr "Žareča pika"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Glowing dot color"
-msgstr ""
+msgstr "Barva žareče pike"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
-msgstr ""
+msgstr "Združi skupna okna"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
-msgstr ""
+msgstr "Animacija lebdenja:"
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
-msgstr ""
+msgstr "_Učinki ikone:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
-msgstr ""
+msgstr "Alfa ikona"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "Ikone in namigi"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Icons:"
-msgstr ""
+msgstr "Ikone:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
-msgstr ""
+msgstr "Barva notranjega robu"
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr ""
+msgstr "Namesti aplet ..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
-msgstr ""
+msgstr "Namesti ..."
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "Animacija zagona:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
-msgstr ""
+msgstr "Ujemanje moči"
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Zaslonski X-odmik"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Zaslonski Y-odmik"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr ""
+msgstr "Višina zaslona"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "Širina zaslona"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
-msgstr ""
+msgstr "Ime:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
-msgstr ""
+msgstr "Odmik"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr ""
+msgstr "Odpri animacijo:"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
-msgstr ""
+msgstr "Zunanja barva obrob"
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
-msgstr ""
+msgstr "Orisna barva"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "Barve ozadja pulta"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Panel Look Refinements"
-msgstr ""
+msgstr "Izpopolnitve izgleda pulta"
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Slog in velikost pulta"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
-msgstr ""
+msgstr "Vzorec alfa"
 
 #: ../awn-settings/awn-settings.ui.h:84
 msgid "Pattern Image"
-msgstr ""
+msgstr "Vzorec slike"
 
 #: ../awn-settings/awn-settings.ui.h:85
 msgid "Reflection alpha multiplier"
-msgstr ""
+msgstr "Odboj alfa pomnoževalnik"
 
 #: ../awn-settings/awn-settings.ui.h:86
 msgid "Reflection offset"
-msgstr ""
+msgstr "Odmik odseva"
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
-msgstr ""
+msgstr "Skladišča"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Druga prelivna barva"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Druga poudarna barva"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Izberite puščico po meri"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Select item to filter by category"
-msgstr ""
+msgstr "Izberite predmet za filtriranje po kategorijah"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
-msgstr ""
+msgstr "Barva ločila"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
-msgstr ""
+msgstr "Prikaži vsa okna"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Prikaži pogovorno okno po dolgem pritisku"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
-msgstr ""
+msgstr "Prikaži sence"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
-msgstr ""
+msgstr "Sl_og:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "Zaženi _Awn samodejno"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "Izvoz teme"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Debelina"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
 msgstr ""
+"Za uporabo Intellihide ali Window Dodge načine, morate imeti aktiven aplet "
+"Upravljalnika opravil."
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
-msgstr ""
+msgstr "Trikotnik"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Uporabi barve Gtk tem"
 
 #: ../awn-settings/awn-settings.ui.h:104
 msgid "Use Pattern as Background"
-msgstr ""
+msgstr "Uporabi vzorec kot ozadje"
 
 #: ../awn-settings/awn-settings.ui.h:105
 msgid "Version:"
-msgstr ""
+msgstr "Različica:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr ""
+msgstr "_Obnašanje:"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
-msgstr ""
+msgstr "_Usmerjenost:"
 
 #: ../awn-settings/awn-settings.ui.h:108
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_Položaj na zaslonu:"
 
 #: ../awn-settings/awn-settings.ui.h:109
 msgid "_Size of icons:"
-msgstr ""
+msgstr "_Velikost ikon:"
 
 #: ../awn-settings/awn-settings.ui.h:110
 msgid "pixels"
-msgstr ""
+msgstr "točk"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Napaka, sources.list že obstaja"
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Napaka, pot je prazna ali že obstaja"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
+"Napaka, %s manjka na vašem sistemu, prosimo odstranite ga iz sources.list "
+"datoteke"
 
 #: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
 #: ../awn-settings/awnSettings.py.in:143
 msgid "None"
-msgstr ""
+msgstr "Brez"
 
 #: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:877
 msgid "Simple"
-msgstr ""
+msgstr "Preprosto"
 
 #: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:878
 msgid "Classic"
-msgstr ""
+msgstr "Klasično"
 
 #: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:879
 msgid "Fade"
-msgstr ""
+msgstr "Pojemanje"
 
 #: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:880
 msgid "Spotlight"
-msgstr ""
+msgstr "Žaromet"
 
 #: ../awn-settings/awnClass.py:820 ../awn-settings/awnClass.py:881
 msgid "Zoom"
-msgstr ""
+msgstr "Približaj"
 
 #: ../awn-settings/awnClass.py:821 ../awn-settings/awnClass.py:882
 msgid "Squish"
-msgstr ""
+msgstr "Poskakujoče"
 
 #: ../awn-settings/awnClass.py:822 ../awn-settings/awnClass.py:883
 msgid "3D Turn"
-msgstr ""
+msgstr "3D obrat"
 
 #: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
 msgid "3D Spotlight Turn"
-msgstr ""
+msgstr "3D obrat pod žarometom"
 
 #: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
 msgid "Glow"
-msgstr ""
+msgstr "Žarenje"
 
 #: ../awn-settings/awnClass.py:966
 #, python-format
@@ -819,35 +865,39 @@ msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
 "%s"
 msgstr ""
+"Samodejno ustvarjanje ni uspelo. Prosimo, ročno ustvarite imenik:\n"
+"%s"
 
 #: ../awn-settings/awnClass.py:976
 msgid "Confirm directory creation"
-msgstr ""
+msgstr "Potrdite ustvarjanje imenika"
 
 #: ../awn-settings/awnClass.py:977
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Imenik za samodejni zagon še ne obstaja za vaš uporabniški račun.\n"
+"Želite, da ga samodejno ustvarim za vas?"
 
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Ni bilo mogoče najti nobeno od teh ikon: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Ni mogoče najti sledečih ikone:%s\n"
 
 #: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
 msgid "Avant Window Navigator"
-msgstr ""
+msgstr "Avant Window Navigator"
 
 #: ../awn-settings/awnClass.py:1084
 msgid "Fully customisable dock-like window navigator for GNOME."
-msgstr ""
+msgstr "Popolnoma prilagodljiv, sidrišču podoben, krmar oken za GNOME."
 
 #: ../awn-settings/awnClass.py:1086
 msgid ""
@@ -856,6 +906,10 @@ msgid ""
 "Software Foundation; either version 2 of the License, or (at your option) "
 "any later version."
 msgstr ""
+"Ta program spada med prosto programsko opremo; lahko ga razširjate in/ali "
+"spreminjate pod pogoji Splošnega dovoljenja GNU (GNU General Public "
+"License), kot ga je objavila ustanova Free Software Foundation; bodisi "
+"različice 2 ali (po vaši izbiri) katerekoli poznejše različice."
 
 #: ../awn-settings/awnClass.py:1088
 msgid ""
@@ -864,6 +918,9 @@ msgid ""
 "FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
 "more details."
 msgstr ""
+"Ta program se razširja v upanju, da bo uporaben, vendar BREZ KAKRŠNEKOLI "
+"GARANCIJE, tudi brez posrednega jamstva CENOVNE VREDNOSTI ali PRIMERNOSTI ZA "
+"DOLOČEN NAMEN. Oglejte si GNU General Public License za več podrobnosti."
 
 #: ../awn-settings/awnClass.py:1090
 msgid ""
@@ -871,197 +928,200 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
+"Skupaj s tem programom bi morali prejeti izvod Splošnega dovoljenja GNU (GNU "
+"General Public License); če ga niste, pišite na Free Software Foundation, "
+"Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA."
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Awn aplet paket"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Namestitev apleta ni uspela"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Aplet uspešno posodobljen"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Aplet uspešno dodan"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
-msgstr ""
+msgstr "Ni mogoče izbrisati dejaven aplet."
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
-msgstr ""
+msgstr "Izbriši aplet"
 
 #: ../awn-settings/awnClass.py:1350
 #, python-format
 msgid "<b>Delete %s?</b>"
-msgstr ""
+msgstr "<b>Izbriši %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Ni mogoče odstraniti apleta"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s že obstaja, ni mogoče izvoziti teme."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Tema je že nameščena, ali jo želite prepisati?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "To je nezdružljiva datoteka teme."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "Awn nastavitve ni mogoče zagnati kot skrbnik."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Levo"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Desno"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "Gor"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "Dol"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Plosko"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3d"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Zaobljeno"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Ostro"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Plavajoče"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
-msgstr ""
+msgstr "Jasno"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
-msgstr ""
+msgstr "Način pulta"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
-msgstr ""
+msgstr "Vedno viden"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Intellihide"
-msgstr ""
+msgstr "Pametno skrivanje"
 
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Window dodge"
-msgstr ""
+msgstr "Posvetlitev okna"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Fade out"
-msgstr ""
+msgstr "Pojemanje"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Transparency"
-msgstr ""
+msgstr "Prosojnost"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "Obdrži spodaj"
 
 #: ../awn-settings/awnSettings.py.in:629
 msgid "PNG Image"
-msgstr ""
+msgstr "PNG slika"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Slike"
 
 #: ../awn-settings/awnSettings.py.in:759
 msgid "Save Theme..."
-msgstr ""
+msgstr "Shrani temo ..."
 
 #: ../awn-settings/awnSettings.py.in:768
 msgid "Awn Theme"
-msgstr ""
+msgstr "Awn teme"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
-msgstr ""
+msgstr "Enobarvno"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Outline"
-msgstr ""
+msgstr "Oris"
 
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
-msgstr ""
+msgstr "Oris, obratno"
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Izberite pisavo za zaslonske namige"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Datoteka teme Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
-msgstr ""
+msgstr "Uporabi le programsko-določene ikone"
 
 #: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
-msgstr ""
+msgstr "Uporabi ikone najboljše kakovosti"
 
 #: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
-msgstr ""
+msgstr "Prekrij ikone najboljše kakovosti z ikono programa"
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
-msgstr ""
+msgstr "Prekrij ikono programa z ikono najboljše kakovosti"
 
 #: ../awn-settings/awnSettings.py.in:1139
 msgid "Preferences"
-msgstr ""
+msgstr "Možnosti"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"
-msgstr ""
+msgstr "Nadzornik sistema"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr ""
+msgstr "Apleti"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
-msgstr ""
+msgstr "Teme"
 
 #: ../awn-settings/awnSettings.py.in:1171
 msgid "Advanced"
-msgstr ""
+msgstr "Napredno"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
@@ -1080,36 +1140,49 @@ msgid ""
 "package manager.  This situation is explained in the FAQ section of the "
 "wiki.\n"
 msgstr ""
+"Sledeče Python module ni mogoče najti: %s. Tukaj je nekaj možnih\n"
+"razlag za to:\n"
+"\n"
+"1. Nimate nameščenega Python modula. V tem primeru, morate\n"
+"obiskati AWN wiki oddelek applets, da ugotovite natančno ime \n"
+"paketa za vašo distribucijo, ki jo ponuja ta modul.\n"
+"\n"
+"2. Modul je nameščen na nestandardni lokaciji. To je običajno \n"
+"v primeru, če ročno namestite paket, t.j. brez uporabe upravljalnik\n"
+"paketa, ki je znotraj vaše distribucije. To stanje je razloženo v oddelku "
+"FAQ na wiki-ju.\n"
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Awn wiki"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
-msgstr ""
+msgstr "Sidrišču podoben krmar oken."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
 msgid "0: solid, 1: outline, 2: outline, reversed."
-msgstr ""
+msgstr "0: enobarvno, 1:oris, 2:oris, obratno."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:2
 msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
+msgstr "Bitna maska, ki hrani vrsto učinka za vsak dogodek"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:3
 msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr ""
+msgstr "Poravnava nerazširjenega pulta na rob zaslona."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "An optional offset when you have more than 1 monitors."
-msgstr ""
+msgstr "Neobvezen odmik, ko imate več kot eden zaslon."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:5
 msgid ""
 "Anything greater than 0 will draw a panel with corners. The greater the "
 "radius, the larger the corners."
 msgstr ""
+"Karkoli večje od 0 bo narisalo pult s koti. Večji kot je radij, večji bodo "
+"koti."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:6
 msgid ""
@@ -1117,130 +1190,137 @@ msgid ""
 "together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
 "through: 3)"
 msgstr ""
+"Samodejno skrij sidrišče, ko kazalec ni na sidrišču (ne sme se uporabljati "
+"skupaj z panel_mode).(Brez: 0, obdrži spodaj:1, pojemanje: 2, prosojno:3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:7
 msgid "Background color for AwnDialog's title."
-msgstr ""
+msgstr "Barva ozadja za naslov pogovornih oken AWN."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:8
 msgid "Background color for AwnDialog."
-msgstr ""
+msgstr "Barva ozadja za pogovorna okna AWN."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "Barva ozadja za namig"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
-msgstr ""
+msgstr "Barva dejavnega pravokotnika."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Barva svetleče pike."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
-msgstr ""
+msgstr "Barva orisa dejavnega pravokotnika."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:13
 msgid "Delay between mouse leaving the panel and it hiding."
-msgstr ""
+msgstr "Zakasnitev med miškino zapustitvijo pulta in njegovim skritjem."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Delay for mouse position polling."
-msgstr ""
+msgstr "Zakasnitev za preverjanje miškinega položaja."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
+"Ugotavlja ali je generični konfiguracijski urejevalnik dovoljen za aplete, "
+"kateri nimajo prilagodljivega pogovornega okna za možnosti."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
-msgstr ""
+msgstr "Nariši ločila."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
-msgstr ""
+msgstr "Omogoči risanje vzorca."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "First gradient step color."
-msgstr ""
+msgstr "Prvi korak prelivne barve."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "First highlight gradient step color."
-msgstr ""
+msgstr "Prvi korak poudarjanja prelivne barve."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Barva pisave namiga"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Ime pisave namiga"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
-msgstr ""
+msgstr "Prisili geometrijo zaslona."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "Barva besedila ikon. Pustite prazeno za uporabo barve gtk teme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
-msgstr ""
+msgstr "Barva orisa besedila ikon. Pustite prazno za uporabo gtk barvo teme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "Če je omogočeno, povečana okna ne bodo prekrila pulta."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Če je omogočeno, se bo pult razširil po celotni širini/višini zaslona."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
-msgstr ""
+msgstr "Barva notranje obrobe."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid "Main border color."
-msgstr ""
+msgstr "Barva glavne obrobe."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
 "Monitor number where Awn is located (only takes effect when monitor_force is "
 "False, use -1 to automatically pick monitor)."
 msgstr ""
+"Številka zaslona, kjer se Awn nahaja (velja samo, če je monitor_force "
+"onemogočen, uporabite -1 za samodejno izbiro zaslona)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Offset between the icons and their dialog."
-msgstr ""
+msgstr "Odmik med ikonami in pogovornim oknom."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Odmik ikon od okna obrobe"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr ""
+msgstr "Usmerjenost Awn-ja. (levo: 0, desno: 1, gor: 2 in dol: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
-msgstr ""
+msgstr "Barva orisa namiga"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:34
 msgid "Path to the current desktop file theme."
-msgstr ""
+msgstr "Pot do trenutne teme namizja."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
-msgstr ""
+msgstr "Pot do png, ki vsebuje aktivno ikono v ozadju."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:36
 msgid "Path to the png containing the arrow icon."
-msgstr ""
+msgstr "Pot do png, ki vsebuje ikono puščice."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:37
 msgid ""
@@ -1248,122 +1328,135 @@ msgid ""
 "through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
 msgstr ""
+"Ponuja možnost klikanja na okna za pultom. (0: nikoli ne klikaj skozi, 1: "
+"klikaj skozi med držanjem CTRL, 2: vedno klikni skozi in se sporazumevaj s "
+"pultom samo med držanjem CTRL)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:38
 msgid "Reflection alpha as a multiple of the current alpha of the icon."
-msgstr ""
+msgstr "Alfa odseva kot večkratnik trenutne alfe ikone."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:39
 msgid "Second gradient step color."
-msgstr ""
+msgstr "Drugi korak prelivne barve."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:40
 msgid "Second highlight gradient step color."
-msgstr ""
+msgstr "Drug korak poudarjene prelivne barve."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "Barva ločila."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Prikaži sence za ikone."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
-msgstr ""
+msgstr "Dejaven seznam UA Screenlets za ta pult."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "Kot pulta v 3D načinu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
-msgstr ""
+msgstr "Zaobljenost pulta v Zaobljenem načinu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
+"Prisiljena višina zaslona. Uporabljeno le, če je monitor_force omogočen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:47
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
+"Prisiljena širina zaslona. Uporabljeno le, če je monitor_force omogočen."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:48
 msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
+"Seznam gradnikov Universal Applets, ki so bili predhodno dodani v obliki "
+"ScreeneletInstance::Position."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:49
 msgid ""
 "The list of applets for this panel ordered from left-to-right or top-to-"
 "bottom."
 msgstr ""
+"Seznam apletov za ta pult razvrščeni od leve proti desni ali od zgoraj "
+"navzdol."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "The list of panel instances."
-msgstr ""
+msgstr "Seznam zagnanih pultov."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:51
 msgid "The location of the pattern to draw."
-msgstr ""
+msgstr "Mesto vzorca za risanje."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Odmik med ikono in njenim odsevom"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
-msgstr ""
+msgstr "Odmik plavajočega ozadja."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "Prekrivnost ikon, od 0.0 do 1.0"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The opacity of the pattern."
-msgstr ""
+msgstr "Prekrivnost vzorca."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:56
 msgid ""
 "The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
 "4, floaty: 5, lucido: 6)"
 msgstr ""
+"Slog letve. (Brez:0 , ploščata letev: 1, 3d letev: 2, zaobljena letev:3, "
+"ostra letev: 4, plavajoče: 5, jasno: 6)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:57
 msgid "The symmetry of the curve in Curves mode."
-msgstr ""
+msgstr "Simetrija krivulje v Zaobljenem načinu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The thickness in 3D mode."
-msgstr ""
+msgstr "Debelina v 3D načinu."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
-msgstr ""
+msgstr "Uporabniku vidna velikost Awn-ja."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:60
 msgid "Time in ms after which AwnIcon will emit long-press signal."
-msgstr ""
+msgstr "Čas v ms, po katerem bo AwnIcon poslal signal dolgega pritiska."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
+msgstr "Ali bi AwnDialog moral uporabljati barve Gtk teme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
-msgstr ""
+msgstr "Ali zapremo pogovorna okna ob izgubi pozornosti."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:63
 msgid "Whether to use colors from the current Gtk theme."
-msgstr ""
+msgstr "Ali uporabimo barve trenutne Gtk teme."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
+"širina orisa besedila ikon, če je outline način omogočen. Priporočene "
+"vrednosti so 1.0 - 5.0."
 
 #: ../data/awn-themed-icon.ui.h:1
 msgid ""
@@ -1372,40 +1465,44 @@ msgid ""
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
+"<b>Tema ikone pulta</b>\n"
+"Odločili ste se zamenjati ikono na pultu. Prosimo izberite ali naj se ta "
+"sprememba uveljavi samo na tem apletu, na vseh apletih tega tipa ali na vseh "
+"ikonah tega tipa."
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "Nastavi aplet"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
 msgid "About %s"
-msgstr ""
+msgstr "O %s"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "Ikone"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Izberite ikono po meri"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Prilagodi ikono"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Izbriši prilagojeno ikono."
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "Nalaganje apleta ..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "UPS! Aplet se je sesul. Kliknite, da ga znova zaženete."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
-msgstr ""
+msgstr "Zapri vstavek"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-26 10:05+0000\n"
+"PO-Revision-Date: 2010-10-14 04:30+0000\n"
 "Last-Translator: kawaji <jiro.kawada@gmail.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-08-27 03:42+0000\n"
+"X-Launchpad-Export-Date: 2010-10-15 04:43+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -250,7 +250,7 @@ msgstr "閉じる(_C)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:768
 msgid "_Close All"
-msgstr "すべて閉じる(_C)"
+msgstr "全て閉じる(_C)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
@@ -449,7 +449,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr "角の丸み"
+msgstr "角の丸さ"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
@@ -491,12 +491,12 @@ msgstr "ドラッグ＆ドロップによる並べ替え"
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr "ここへ利用可能なアプレットをドラッグすると起動します"
+msgstr "利用可能なアプレットをこちらへドラッグすると起動します"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr "アプレットを下へドラッグまたはダブルクリックすると起動します"
+msgstr "アプレットを起動させるには下へドラッグまたはダブルクリックします"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
@@ -709,11 +709,11 @@ msgstr "Awn を自動的にスタートさせる(_A)"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr "テーマのエキスポート"
+msgstr "テーマのエクスポート"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "厚さ"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -1044,15 +1044,15 @@ msgstr "アプリケーション固有のアイコンを使用する"
 
 #: ../awn-settings/awnSettings.py.in:991
 msgid "Use best quality icons"
-msgstr "最高画質のアイコンを使用する"
+msgstr "最高質のアイコンを使用する"
 
 #: ../awn-settings/awnSettings.py.in:992
 msgid "Overlay best quality icon with application icon"
-msgstr "最高画質アイコンにアプリケーション固有アイコンを重ねる"
+msgstr "最高質アイコンにアプリケーション固有アイコンを重ねる"
 
 #: ../awn-settings/awnSettings.py.in:993
 msgid "Overlay application icon with best quality icon"
-msgstr "アプリケーション固有アイコンに最高画質アイコンを重ねる"
+msgstr "アプリケーション固有アイコンに最高質アイコンを重ねる"
 
 #: ../awn-settings/awnSettings.py.in:1139
 msgid "Preferences"

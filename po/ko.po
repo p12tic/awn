@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-06 21:22+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2010-11-20 13:57+0000\n"
+"Last-Translator: Ksccwotc <Unknown>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Launchpad-Export-Date: 2010-08-07 03:43+0000\n"
+"X-Launchpad-Export-Date: 2010-11-21 04:51+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
@@ -46,6 +46,9 @@ msgid ""
 "when they are likely to provide useful/context info. 2) Ignore all "
 "application provide icons and only display the Lauuncher icon"
 msgstr ""
+" 컨트롤 작업 아이콘 윈도우 아이콘의 표시. 창 (아주 몇 가지 특별한 경우를 제외) 활성화되어 있으면 0) 항상 디스플레이 응용 "
+"프로그램이 윈도우 아이콘을 제공했습니다. 1) 시도는 그들이 유용 / 컨텍스트 정보를 제공하기 위해 예상되는 응용 프로그램 아이콘을 "
+"제공하는 표시합니다. 2) 모든 응용 프로그램 아이콘을 제공 무시만을 런처 아이콘을 표시"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
 msgid ""
@@ -56,13 +59,14 @@ msgstr " overlay_application_icons 를 사용시에 오버레이의 크기 조�
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
-msgstr ""
+msgstr " 그룹 창과 아이콘이 비활성 되어 있습니다."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
 " If overlay_application_icons is true, this key will reverse the "
 "overlay/overlayee if set to true."
 msgstr ""
+" overlay_application_icons 사실이있다면 true로 설정하면,이 열쇠는 오버레이 / overlayee 리버스 것입니다."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
 msgid ""
@@ -70,6 +74,8 @@ msgid ""
 "icon instead of replacing according to the behaviour defined by "
 "icon_change_behavior."
 msgstr ""
+" 진정한 다음 응용 프로그램 창을 아이콘 icon_change_behavior에 의해 정의된 동작에 따라 대신 교체의 발사대 아이콘을 "
+"overlayed되는 경우."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
 msgid ""
@@ -82,17 +88,19 @@ msgstr ""
 msgid ""
 "Context menu definition.  Will look in the awn menu installation directory "
 "unless a absolutely path is provided."
-msgstr ""
+msgstr "컨텍스트 메뉴 정의. AWN 메뉴와 설치 디렉토리에 제공되지 않습니다."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
+msgstr "창을 활성화하기 전에 아이콘 위로 드래그."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
 msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
 msgstr ""
+"드래그 앤 드롭 바탕 화면의 파일에 데스크톱 복사 동작. 0 .. 모든 복사, 1 .. 사본은 .. 사용자가 소유하는 경우 복사하지 "
+"마십시오."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid "Enable long press to open Dialog."
@@ -112,6 +120,7 @@ msgid ""
 "between 0 and 99. 0 is as good as no grouping. 99 will match almost "
 "everything."
 msgstr ""
+"급진적인 검색은 그룹화에 적용됩니다. 값은 0과 99 사이여야 합니다. 0은 아니 그룹화로 좋습니다. 99 거의 다 일치합니다."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
@@ -119,6 +128,8 @@ msgid ""
 "is active.  0.. use windows on active workspace, 1.. use windows of "
 "currently focused app."
 msgstr ""
+"숨기기가 활성화되었을 때 교차 검사 윈도우의 목록을 생성합니다. 0 .. 활성 작업 공간, 1을 사용 창 .. 사용 창은 현재 응용 "
+"프로그램을 집중."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
@@ -126,6 +137,8 @@ msgid ""
 "the panel if there are no intersecting windows in the relevant window list "
 "(see intellihide_mode)."
 msgstr ""
+"숨기기의 경우 패널에 사용할 수 있습니다. 교차 창이 해당 창 목록 (intellihide_mode 참조)에 해당하는 경우 이것은 패널의 "
+"자동 숨기기를 억제합니다."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid ""
@@ -136,7 +149,7 @@ msgstr "아이콘 아래에 표시할 작업표시기의 최대 개수 (0 부터
 msgid ""
 "Number of seconds to inhibit autohide when a application requests attention. "
 "A value of 0 disables."
-msgstr ""
+msgstr "개수나 초인 경우 응용 프로그램 요청의 자동 숨기기를 억제합니다. 0 비활성화의 값."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
@@ -146,7 +159,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid "Only show and manager launcher windows"
-msgstr ""
+msgstr "관리자 런처 창 표시"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
@@ -155,7 +168,7 @@ msgstr "모든 작업 공간의 창 표시"
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
-msgstr ""
+msgstr "문자 개수 표시. 유효 범위 1 .."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
@@ -225,7 +238,7 @@ msgstr "구분선"
 #: ../applets/taskmanager/task-icon-build-context-menus.c:91
 #, c-format
 msgid "Workspace %d"
-msgstr "작업공간 %d"
+msgstr "작업 공간 %d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:100
 #, c-format
@@ -243,7 +256,7 @@ msgstr "실행아이콘으로 추가"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr ""
+msgstr "실행기 제거"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -255,7 +268,7 @@ msgstr "모두 닫기(_C)"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
-msgstr ""
+msgstr "모두 최소화"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
 msgid "Unminimize all"
@@ -263,7 +276,7 @@ msgstr ""
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
 msgid "Maximize all"
-msgstr ""
+msgstr "모두 최대화"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
 msgid "Unmaximize all"

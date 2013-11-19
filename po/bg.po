@@ -8,15 +8,14 @@ msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-08-05 16:57+0200\n"
-"PO-Revision-Date: 2010-08-07 03:27+0000\n"
-"Last-Translator: Michal Hruby <michal.mhr@gmail.com>\n"
+"PO-Revision-Date: 2011-10-04 19:51+0000\n"
+"Last-Translator: Svetoslav Stefanov <svetlisashkov@yahoo.com>\n"
 "Language-Team: Bulgarian <bg@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2010-08-08 03:49+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2011-10-05 04:45+0000\n"
+"X-Generator: Launchpad (build 14085)\n"
 
 #: ../applets/expander/expander.desktop.in.in.h:1
 msgid "Expander"
@@ -31,12 +30,17 @@ msgid ""
 " Allow grouping of windows together that have different WM_CLIENT_NAME "
 "values."
 msgstr ""
+" Разрешава групирането на прозорци,които имат различни WM_CLIENT_NAME "
+"стойностти."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
 msgstr ""
+" Контролира прозрачността на насложените върху иконите изображения ако "
+"\"Покриването на иконките на приложенията\" е разрешено. Приема стойности от "
+"0.0 до 1.0."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
 msgid ""
@@ -149,7 +153,7 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid "Show windows from all workspaces"
-msgstr ""
+msgstr "Показване на прозорците от всички работни плотове"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
@@ -161,6 +165,8 @@ msgid ""
 "a list of paths to .desktop files from which the taskmanager should create "
 "it's launchers"
 msgstr ""
+"списък с пътища към .desktop файлове, от които мениджъра на задачи трябва да "
+"създаде стартерите си"
 
 #: ../applets/taskmanager/task-launcher.c:1109
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1020
@@ -174,21 +180,21 @@ msgstr "Стартиране на %s"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
-msgstr ""
+msgstr "Стартер/списък с прозорци"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:2
 msgid "Launcher/Taskmanager applet"
-msgstr ""
+msgstr "Аплет - стартер/списък с  прозорци"
 
 #: ../applets/quick-prefs/applet.vala:130
 #: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
 msgid "About Awn"
-msgstr ""
+msgstr "Относно Awn"
 
 #: ../applets/quick-prefs/applet.vala:283
 #: ../applets/quick-prefs/applet.vala:460
 msgid "Drag to change panel orientation"
-msgstr ""
+msgstr "Влачете, за да промените ориентацията на панела"
 
 #: ../applets/quick-prefs/applet.vala:476
 msgid "Icon size:"
@@ -202,20 +208,22 @@ msgstr "Настройки на дока"
 #: ../applets/quick-prefs/applet.vala:576
 #, c-format
 msgid "Could not open Awn settings: %s"
-msgstr ""
+msgstr "Настройките на Awn не могат да бъдат отворени: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
+"Аплет, който се използва за контролиране на дока и пускане настройките на "
+"Awn."
 
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
-msgstr ""
+msgstr "Аплет - настройки"
 
 #: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Adds a separator between applets"
-msgstr ""
+msgstr "Добавя разделител между аплетите"
 
 #: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
@@ -234,15 +242,15 @@ msgstr "Работен плот 1_0"
 #: ../applets/taskmanager/task-icon-build-context-menus.c:102
 #, c-format
 msgid "Workspace %s%d"
-msgstr ""
+msgstr "Работен плот %s%d"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:683
 msgid "Add as Launcher"
-msgstr ""
+msgstr "Добавяне като стартер"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:722
 msgid "Remove Launcher"
-msgstr ""
+msgstr "Премахване на стартера"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:740
 msgid "_Close"
@@ -254,19 +262,19 @@ msgstr "За_тваряне на всички"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:815
 msgid "Minimize all"
-msgstr ""
+msgstr "Минимизиране на всички"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:851
 msgid "Unminimize all"
-msgstr ""
+msgstr "Деминимизиране на всички"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:887
 msgid "Maximize all"
-msgstr ""
+msgstr "Максимизиране на всички"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:923
 msgid "Unmaximize all"
-msgstr ""
+msgstr "Демаксимизиране на всички"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:937
 msgid "Ma_ximize"
@@ -278,7 +286,7 @@ msgstr "Дема_ксимизиране"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:970
 msgid "Always on _Top"
-msgstr ""
+msgstr "Винаги _отгоре"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:994
 msgid "Mi_nimize"
@@ -290,36 +298,36 @@ msgstr "_Деминимизиране"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1053
 msgid "Always on Visible Workspace"
-msgstr ""
+msgstr "Винаги на видимия работен плот"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1057
 msgid "Only on This Workspace"
-msgstr ""
+msgstr "Само на този работен плот"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1146
 msgid "Move to Workspace _Left"
-msgstr ""
+msgstr "Преместване на _левия работен плот"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1156
 msgid "Move to Workspace _Right"
-msgstr ""
+msgstr "Преместване на _десния работен плот"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1166
 msgid "Move to Workspace _Up"
-msgstr ""
+msgstr "Преместване на _горния работен плот"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1176
 msgid "Move to Workspace _Down"
-msgstr ""
+msgstr "Преместване в до_лния работен плот"
 
 #: ../applets/taskmanager/task-icon-build-context-menus.c:1185
 msgid "Move to Another _Workspace"
-msgstr ""
+msgstr "Преместване на др_уг работен плот"
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
 #: ../awn-settings/awn-settings.ui.h:26
 msgid "Awn Settings"
-msgstr ""
+msgstr "Настройки на Awn"
 
 #: ../awn-settings/awn-settings.desktop.in.h:2
 msgid "Manage Awn preferences, launchers, applets and themes"
@@ -327,23 +335,23 @@ msgstr "Управлява настройките, препратките, ап�
 
 #: ../awn-settings/awn-settings.ui.h:1
 msgid "3D Angle"
-msgstr ""
+msgstr "3D ъгъл"
 
 #: ../awn-settings/awn-settings.ui.h:2
 msgid "<b>Active Applets</b>"
-msgstr ""
+msgstr "<b>Активни аплети</b>"
 
 #: ../awn-settings/awn-settings.ui.h:3
 msgid "<b>Available Applets</b>"
-msgstr ""
+msgstr "<b>Налични аплети</b>"
 
 #: ../awn-settings/awn-settings.ui.h:4
 msgid "<b>Categories</b>"
-msgstr ""
+msgstr "<b>Категории</b>"
 
 #: ../awn-settings/awn-settings.ui.h:5
 msgid "<b>Effects</b>"
-msgstr ""
+msgstr "<b>Ефекти</b>"
 
 #: ../awn-settings/awn-settings.ui.h:6
 msgid "<b>Export Option Groups</b>"
@@ -351,19 +359,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:7
 msgid "<b>Extras</b>"
-msgstr ""
+msgstr "<b>Екстри</b>"
 
 #: ../awn-settings/awn-settings.ui.h:8
 msgid "<b>General</b>"
-msgstr ""
+msgstr "<b>Основни</b>"
 
 #: ../awn-settings/awn-settings.ui.h:9
 msgid "<b>Icons</b>"
-msgstr ""
+msgstr "<b>Икони</b>"
 
 #: ../awn-settings/awn-settings.ui.h:10
 msgid "<b>Launchers</b>"
-msgstr ""
+msgstr "<b>Стартери</b>"
 
 #: ../awn-settings/awn-settings.ui.h:11
 msgid "<b>Numeric Settings</b>"
@@ -371,19 +379,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:12
 msgid "<b>Panel Colors</b>"
-msgstr ""
+msgstr "<b>Цветове на панела</b>"
 
 #: ../awn-settings/awn-settings.ui.h:13
 msgid "<b>Panel</b>"
-msgstr ""
+msgstr "<b>Панел</b>"
 
 #: ../awn-settings/awn-settings.ui.h:14
 msgid "<b>Repositories</b>"
-msgstr ""
+msgstr "<b>Хранилища</b>"
 
 #: ../awn-settings/awn-settings.ui.h:15
 msgid "<b>Settings</b>"
-msgstr ""
+msgstr "<b>Настройки</b>"
 
 #: ../awn-settings/awn-settings.ui.h:16
 msgid "<b>Taskmanagers</b>"
@@ -395,17 +403,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:18
 msgid "<b>Tooltips</b>"
-msgstr ""
+msgstr "<b>Подсказки</b>"
 
 #: ../awn-settings/awn-settings.ui.h:19
 msgid ""
 "<b>You need to enable desktop effects (compositor) to apply and customize "
 "themes.</b>"
 msgstr ""
+"<b>Трябва да включите ефектите на работния плот (композитор), за да "
+"прилагате и променяте теми.</b>"
 
 #: ../awn-settings/awn-settings.ui.h:20
 msgid "Activate applet"
-msgstr ""
+msgstr "Активиране на палет"
 
 #: ../awn-settings/awn-settings.ui.h:21
 msgid "Active rectangle:"
@@ -413,27 +423,27 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:22
 msgid "Arrow type"
-msgstr ""
+msgstr "Вид на стрелката"
 
 #: ../awn-settings/awn-settings.ui.h:23
 msgid "Attention animation:"
-msgstr ""
+msgstr "Анимация за внимание:"
 
 #: ../awn-settings/awn-settings.ui.h:24
 msgid "Author:"
-msgstr ""
+msgstr "Автор:"
 
 #: ../awn-settings/awn-settings.ui.h:25
 msgid "Autohide mode:"
-msgstr ""
+msgstr "Режим на автоматично скриване:"
 
 #: ../awn-settings/awn-settings.ui.h:27
 msgid "Background:"
-msgstr ""
+msgstr "Цвят на фона:"
 
 #: ../awn-settings/awn-settings.ui.h:28
 msgid "Choose a theme..."
-msgstr ""
+msgstr "Изберете тема..."
 
 #: ../awn-settings/awn-settings.ui.h:29
 msgid "Clickthrough"
@@ -441,23 +451,23 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:30
 msgid "Close animation:"
-msgstr ""
+msgstr "Анимация на затваряне:"
 
 #: ../awn-settings/awn-settings.ui.h:31
 msgid "Configured Effects"
-msgstr ""
+msgstr "Настроени ефекти"
 
 #: ../awn-settings/awn-settings.ui.h:32
 msgid "Corner Radius"
-msgstr ""
+msgstr "Ъглов радиус"
 
 #: ../awn-settings/awn-settings.ui.h:33
 msgid "Curves Symmetry"
-msgstr ""
+msgstr "Симетрия на кривите"
 
 #: ../awn-settings/awn-settings.ui.h:34
 msgid "Curviness"
-msgstr ""
+msgstr "Заболеност"
 
 #: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
 #: ../awn-settings/awnSettings.py.in:153
@@ -466,81 +476,81 @@ msgstr "Потребителски"
 
 #: ../awn-settings/awn-settings.ui.h:36
 msgid "Custom Arrow Image"
-msgstr ""
+msgstr "Потребителско изображение за стрелка"
 
 #: ../awn-settings/awn-settings.ui.h:37
 msgid "Customize effects"
-msgstr ""
+msgstr "Настройване на ефектите"
 
 #: ../awn-settings/awn-settings.ui.h:38
 msgid "Customize..."
-msgstr ""
+msgstr "Настройване..."
 
 #: ../awn-settings/awn-settings.ui.h:39
 msgid "Deactivate applet"
-msgstr ""
+msgstr "Деактивиране на аплета"
 
 #: ../awn-settings/awn-settings.ui.h:40
 msgid "Display launchers only"
-msgstr ""
+msgstr "Показване само на стартери"
 
 #: ../awn-settings/awn-settings.ui.h:41
 msgid "Drag and drop reordering"
-msgstr ""
+msgstr "Пренареждане чрез влачене и пускане"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:43
 msgid "Drag available applets here to activate"
-msgstr ""
+msgstr "Завлечете наличните аплети тук, за да ги активирате"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:45
 msgid "Drag below or double click to activate applet"
-msgstr ""
+msgstr "Завлечете по-долу и цъкнете два пъти, за да активирате аплет"
 
 #: ../awn-settings/awn-settings.ui.h:46
 msgid "E_xpand the panel"
-msgstr ""
+msgstr "Раз_ширяване на панела"
 
 #: ../awn-settings/awn-settings.ui.h:47
 msgid "Export Theme..."
-msgstr ""
+msgstr "Изнасяне на тема..."
 
 #: ../awn-settings/awn-settings.ui.h:48
 msgid "Extra Options"
-msgstr ""
+msgstr "Допълнителни настройки"
 
 #: ../awn-settings/awn-settings.ui.h:49
 msgid "Fill Color"
-msgstr ""
+msgstr "Цвят на запълване"
 
 #: ../awn-settings/awn-settings.ui.h:50
 msgid "First Gradient Color"
-msgstr ""
+msgstr "Първи цвят на преливката"
 
 #: ../awn-settings/awn-settings.ui.h:51
 msgid "First Highlight Color"
-msgstr ""
+msgstr "Първи цвят на осветяването"
 
 #: ../awn-settings/awn-settings.ui.h:52
 msgid "Floaty Offset"
-msgstr ""
+msgstr "Плаващо отместване"
 
 #: ../awn-settings/awn-settings.ui.h:53
 msgid "Font"
-msgstr ""
+msgstr "Шрифт"
 
 #: ../awn-settings/awn-settings.ui.h:54
 msgid "Font Color"
-msgstr ""
+msgstr "Цвят на шрифта"
 
 #: ../awn-settings/awn-settings.ui.h:55
 msgid "Font Mode"
-msgstr ""
+msgstr "Режим на шрифта"
 
 #: ../awn-settings/awn-settings.ui.h:56
 msgid "Font Outline Color"
-msgstr ""
+msgstr "Цвят на контура на шрифта"
 
 #: ../awn-settings/awn-settings.ui.h:57
 msgid "Force monitor mode ?"
@@ -548,15 +558,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:58
 msgid "Glowing dot"
-msgstr ""
+msgstr "Блестяща точка"
 
 #: ../awn-settings/awn-settings.ui.h:59
 msgid "Glowing dot color"
-msgstr ""
+msgstr "Цвят на блестящата точка"
 
 #: ../awn-settings/awn-settings.ui.h:60
 msgid "Group common windows"
-msgstr ""
+msgstr "Групиране на подобните прозорци"
 
 #: ../awn-settings/awn-settings.ui.h:61
 msgid "Hover animation:"
@@ -564,19 +574,19 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:62
 msgid "Icon _effects:"
-msgstr ""
+msgstr "_Ефекти на иконите:"
 
 #: ../awn-settings/awn-settings.ui.h:63
 msgid "Icon alpha"
-msgstr ""
+msgstr "Прозрачност на иконите"
 
 #: ../awn-settings/awn-settings.ui.h:64
 msgid "Icons and Tooltips"
-msgstr ""
+msgstr "Икони и подсказки"
 
 #: ../awn-settings/awn-settings.ui.h:65
 msgid "Icons:"
-msgstr ""
+msgstr "Икони:"
 
 #: ../awn-settings/awn-settings.ui.h:66
 msgid "Inner Border Color"
@@ -584,15 +594,15 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:67
 msgid "Install applet..."
-msgstr ""
+msgstr "Инсталиране на аплет..."
 
 #: ../awn-settings/awn-settings.ui.h:68
 msgid "Install..."
-msgstr ""
+msgstr "Инсталиране..."
 
 #: ../awn-settings/awn-settings.ui.h:69
 msgid "Launch animation:"
-msgstr ""
+msgstr "Анимация на пускане:"
 
 #: ../awn-settings/awn-settings.ui.h:70
 msgid "Matching strength"
@@ -600,31 +610,31 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:71
 msgid "Monitor X-offset"
-msgstr ""
+msgstr "Хоризонтално отместване на монитора"
 
 #: ../awn-settings/awn-settings.ui.h:72
 msgid "Monitor Y-offset"
-msgstr ""
+msgstr "Вертикално отместване на монитора"
 
 #: ../awn-settings/awn-settings.ui.h:73
 msgid "Monitor height"
-msgstr ""
+msgstr "Височина на монитора"
 
 #: ../awn-settings/awn-settings.ui.h:74
 msgid "Monitor width"
-msgstr ""
+msgstr "Широчина на монитора"
 
 #: ../awn-settings/awn-settings.ui.h:75
 msgid "Name:"
-msgstr ""
+msgstr "Име:"
 
 #: ../awn-settings/awn-settings.ui.h:76
 msgid "Offset"
-msgstr ""
+msgstr "Отместване"
 
 #: ../awn-settings/awn-settings.ui.h:77
 msgid "Open animation:"
-msgstr ""
+msgstr "Анимация на отваряне:"
 
 #: ../awn-settings/awn-settings.ui.h:78
 msgid "Outer Border Color"
@@ -632,11 +642,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:79
 msgid "Outline Color"
-msgstr ""
+msgstr "Цвят на граница"
 
 #: ../awn-settings/awn-settings.ui.h:80
 msgid "Panel Background Colors"
-msgstr ""
+msgstr "Фонови цветове на панела"
 
 #: ../awn-settings/awn-settings.ui.h:81
 msgid "Panel Look Refinements"
@@ -644,7 +654,7 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:82
 msgid "Panel Style & Size"
-msgstr ""
+msgstr "Стил и размер на панела"
 
 #: ../awn-settings/awn-settings.ui.h:83
 msgid "Pattern Alpha"
@@ -664,56 +674,56 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:87
 msgid "Repositories"
-msgstr ""
+msgstr "Хранилища"
 
 #: ../awn-settings/awn-settings.ui.h:88
 msgid "Second Gradient Color"
-msgstr ""
+msgstr "Втори цвят на преливката"
 
 #: ../awn-settings/awn-settings.ui.h:89
 msgid "Second Highlight Color"
-msgstr ""
+msgstr "Втори цвят на осветяването"
 
 #: ../awn-settings/awn-settings.ui.h:90
 msgid "Select Custom Arrow"
-msgstr ""
+msgstr "Избиране на потребителска стрелка"
 
 #. Tooltip
 #: ../awn-settings/awn-settings.ui.h:92
 msgid "Select item to filter by category"
-msgstr ""
+msgstr "Изберете елемент за филтриране по категория"
 
 #: ../awn-settings/awn-settings.ui.h:93
 msgid "Separator Color"
-msgstr ""
+msgstr "Цвят на разделителя"
 
 #: ../awn-settings/awn-settings.ui.h:94
 msgid "Show all windows"
-msgstr ""
+msgstr "Показване на всички прозорци"
 
 #: ../awn-settings/awn-settings.ui.h:95
 msgid "Show dialog after long press"
-msgstr ""
+msgstr "Показване на диалогов прозорец след продължително натискане"
 
 #: ../awn-settings/awn-settings.ui.h:96
 msgid "Show shadows"
-msgstr ""
+msgstr "Показване на сенки"
 
 #: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
-msgstr ""
+msgstr "Ст_ил:"
 
 #: ../awn-settings/awn-settings.ui.h:98
 msgid "Start _Awn automatically"
-msgstr ""
+msgstr "Автоматично стартиране на _Awn"
 
 #: ../awn-settings/awn-settings.ui.h:99
 msgid "Theme Export"
-msgstr ""
+msgstr "Изнасяне на тема"
 
 #: ../awn-settings/awn-settings.ui.h:100
 msgid "Thickness"
-msgstr ""
+msgstr "Дебелина"
 
 #: ../awn-settings/awn-settings.ui.h:101
 msgid ""
@@ -723,11 +733,11 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:102
 msgid "Triangle"
-msgstr ""
+msgstr "Триъгълник"
 
 #: ../awn-settings/awn-settings.ui.h:103
 msgid "Use Gtk theme colors"
-msgstr ""
+msgstr "Използване на цветовете от Gtk темата"
 
 #: ../awn-settings/awn-settings.ui.h:104
 msgid "Use Pattern as Background"
@@ -735,35 +745,35 @@ msgstr ""
 
 #: ../awn-settings/awn-settings.ui.h:105
 msgid "Version:"
-msgstr ""
+msgstr "Версия:"
 
 #: ../awn-settings/awn-settings.ui.h:106
 msgid "_Behavior:"
-msgstr ""
+msgstr "_Поведение:"
 
 #: ../awn-settings/awn-settings.ui.h:107
 msgid "_Orientation:"
-msgstr ""
+msgstr "_Ориентация:"
 
 #: ../awn-settings/awn-settings.ui.h:108
 msgid "_Position on the screen:"
-msgstr ""
+msgstr "_Разположение на екрана:"
 
 #: ../awn-settings/awn-settings.ui.h:109
 msgid "_Size of icons:"
-msgstr ""
+msgstr "Раз_мер на иконите:"
 
 #: ../awn-settings/awn-settings.ui.h:110
 msgid "pixels"
-msgstr ""
+msgstr "пиксела"
 
 #: ../awn-settings/awnClass.py:233
 msgid "Error, a sources.list already exist"
-msgstr ""
+msgstr "Грешка, файлът sources.list вече съществува"
 
 #: ../awn-settings/awnClass.py:301
 msgid "Error, the path is empty or already exist"
-msgstr ""
+msgstr "Грешка, пътят е празен или вече същестува"
 
 #: ../awn-settings/awnClass.py:421
 #, python-format
@@ -830,16 +840,19 @@ msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
 msgstr ""
+"Все още няма създадена папка с автоматично стартиращи се програми за вашия "
+"профил.\n"
+"Да се създаде ли автоматично за вас?"
 
 #: ../awn-settings/awnClass.py:1038
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
-msgstr ""
+msgstr "Нито една от следните икони не може да бъде намерена: %s\n"
 
 #: ../awn-settings/awnClass.py:1045
 #, python-format
 msgid "Could not locate the following icon: %s\n"
-msgstr ""
+msgstr "Следната икона не може да бъде намерена: %s\n"
 
 #: ../awn-settings/awnClass.py:1066
 #: ../data/avant-window-navigator.desktop.in.h:2
@@ -882,138 +895,138 @@ msgstr ""
 
 #: ../awn-settings/awnClass.py:1217
 msgid "Awn Applet Package"
-msgstr ""
+msgstr "Пакет с аплет за Awn"
 
 #: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
 msgid "Applet Installation Failed"
-msgstr ""
+msgstr "Инсталирането на аплета се провали"
 
 #: ../awn-settings/awnClass.py:1274
 msgid "Applet Successfully Updated"
-msgstr ""
+msgstr "Аплетът е обновен успешно"
 
 #: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Added"
-msgstr ""
+msgstr "Аплетът е добаване успешно"
 
 #: ../awn-settings/awnClass.py:1342
 msgid "Can not delete active applet"
-msgstr ""
+msgstr "Не може да бъде изтрит активен аплет"
 
 #: ../awn-settings/awnClass.py:1345
 msgid "Delete Applet"
-msgstr ""
+msgstr "Изтриване на аплет"
 
 #: ../awn-settings/awnClass.py:1350
 #, python-format
 msgid "<b>Delete %s?</b>"
-msgstr ""
+msgstr "<b>Изтриване на %s?</b>"
 
 #: ../awn-settings/awnClass.py:1370
 msgid "Unable to Delete Applet"
-msgstr ""
+msgstr "Аплетът не може да бъде изтрит"
 
 #. Translators: This string is preceded by a filename
 #: ../awn-settings/awnClass.py:1577
 #, python-format
 msgid "%s already exists, unable to export theme."
-msgstr ""
+msgstr "%s вече съществува, темата не може да бъде изнесена."
 
 #: ../awn-settings/awnClass.py:1653
 msgid "Theme already installed, do you wish to overwrite it?"
-msgstr ""
+msgstr "Темата вече е инсталирана, желаете ли да я презапишете?"
 
 #: ../awn-settings/awnClass.py:1687
 msgid "This is an incompatible theme file."
-msgstr ""
+msgstr "Това е несъвместим файл с тема."
 
 #: ../awn-settings/awnSettings.py.in:71
 msgid "Awn Settings can't be run as root."
-msgstr ""
+msgstr "Настройките на Awn не могат да бъдат изпълнявани като root."
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Left"
-msgstr ""
+msgstr "Отляво"
 
 #: ../awn-settings/awnSettings.py.in:138
 msgid "Right"
-msgstr ""
+msgstr "Отдясно"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Top"
-msgstr ""
+msgstr "Отгоре"
 
 #: ../awn-settings/awnSettings.py.in:139
 msgid "Bottom"
-msgstr ""
+msgstr "Отдолу"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "Flat"
-msgstr ""
+msgstr "Плосък"
 
 #: ../awn-settings/awnSettings.py.in:143
 msgid "3d"
-msgstr ""
+msgstr "3d"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Curved"
-msgstr ""
+msgstr "Заоблен"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Edgy"
-msgstr ""
+msgstr "Ръбест"
 
 #: ../awn-settings/awnSettings.py.in:144
 msgid "Floaty"
-msgstr ""
+msgstr "Плаващ"
 
 #: ../awn-settings/awnSettings.py.in:145
 msgid "Lucido"
-msgstr ""
+msgstr "Lucido"
 
 #: ../awn-settings/awnSettings.py.in:149
 msgid "Panel mode"
-msgstr ""
+msgstr "Режим - панел"
 
 #: ../awn-settings/awnSettings.py.in:150
 msgid "Always visible"
-msgstr ""
+msgstr "Винаги видим"
 
 #: ../awn-settings/awnSettings.py.in:151
 msgid "Intellihide"
-msgstr ""
+msgstr "Интелигентно скриване"
 
 #: ../awn-settings/awnSettings.py.in:152
 msgid "Window dodge"
-msgstr ""
+msgstr "Отдръпване от прозореца"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Fade out"
-msgstr ""
+msgstr "Избледняване"
 
 #: ../awn-settings/awnSettings.py.in:157
 msgid "Transparency"
-msgstr ""
+msgstr "Прозрачност"
 
 #: ../awn-settings/awnSettings.py.in:158
 msgid "Keep below"
-msgstr ""
+msgstr "Поддържане отдолу"
 
 #: ../awn-settings/awnSettings.py.in:629
 msgid "PNG Image"
-msgstr ""
+msgstr "Изображение - PNG"
 
 #: ../awn-settings/awnSettings.py.in:641
 msgid "Images"
-msgstr ""
+msgstr "Изображения"
 
 #: ../awn-settings/awnSettings.py.in:759
 msgid "Save Theme..."
-msgstr ""
+msgstr "Запазване на темата..."
 
 #: ../awn-settings/awnSettings.py.in:768
 msgid "Awn Theme"
-msgstr ""
+msgstr "Тема на Awn"
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Solid"
@@ -1021,7 +1034,7 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:797
 msgid "Outline"
-msgstr ""
+msgstr "Контури"
 
 #: ../awn-settings/awnSettings.py.in:798
 msgid "Outline, Reversed"
@@ -1029,11 +1042,11 @@ msgstr ""
 
 #: ../awn-settings/awnSettings.py.in:883
 msgid "Select Tooltip Font"
-msgstr ""
+msgstr "Изберете шрифт за подсказките"
 
 #: ../awn-settings/awnSettings.py.in:923
 msgid "Awn Theme File"
-msgstr ""
+msgstr "Файл с тема на Awn"
 
 #: ../awn-settings/awnSettings.py.in:990
 msgid "Use application-specified icons"
@@ -1057,19 +1070,19 @@ msgstr "Настройки"
 
 #: ../awn-settings/awnSettings.py.in:1145
 msgid "Task Manager"
-msgstr ""
+msgstr "Мениджър на задачи"
 
 #: ../awn-settings/awnSettings.py.in:1151
 msgid "Applets"
-msgstr ""
+msgstr "Аплети"
 
 #: ../awn-settings/awnSettings.py.in:1165
 msgid "Themes"
-msgstr ""
+msgstr "Теми"
 
 #: ../awn-settings/awnSettings.py.in:1171
 msgid "Advanced"
-msgstr ""
+msgstr "Разширени"
 
 #: ../bindings/python/__init__.py:126
 #, python-format
@@ -1091,7 +1104,7 @@ msgstr ""
 
 #: ../bindings/python/__init__.py:141
 msgid "Awn Wiki"
-msgstr ""
+msgstr "Уики на Awn"
 
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "A dock-like window navigator."
@@ -1136,7 +1149,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:9
 msgid "Background color of the tooltip"
-msgstr ""
+msgstr "Фонов цвят на подсказките"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:10
 msgid "Color of the active rectangle."
@@ -1144,7 +1157,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:11
 msgid "Color of the glowing dot."
-msgstr ""
+msgstr "Цвят на светещата точка."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid "Color of the outline of active rectangle."
@@ -1166,7 +1179,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:16
 msgid "Draw separators."
-msgstr ""
+msgstr "Показване на разделители."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Enable drawing of a pattern."
@@ -1182,11 +1195,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "Font color of the tooltip"
-msgstr ""
+msgstr "Цвят на шрифта за подсказките"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "Font name of the tooltip"
-msgstr ""
+msgstr "Име на шрифта за подсказките"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "Force monitor geometry."
@@ -1195,6 +1208,8 @@ msgstr ""
 #: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Icon text color.  Leave empty to use gtk theme color."
 msgstr ""
+"Цвят за текста на иконите. Оставете празно, за да се използа цвета от gtk "
+"темата."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Icon text outline color.  Leave empty to use gtk theme color."
@@ -1202,11 +1217,12 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
-msgstr ""
+msgstr "Ако е истина, максимизираните прозорци няма да покриват панела."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
+"Ако е истина, панелът ще се разширява до пълната ширина/височина на монитора."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid "Internal border color."
@@ -1228,11 +1244,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Offset of the icons from window border."
-msgstr ""
+msgstr "Отместване на иконите от границата на прозореца."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:32
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr ""
+msgstr "Ориентация на Awn. (ляво: 0, дясно: 1, горе: 2 и долу: 3)"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Outline color of the tooltip"
@@ -1271,11 +1287,11 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
 msgid "Separator color."
-msgstr ""
+msgstr "Цвят на разделителя."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:42
 msgid "Show shadows for icons."
-msgstr ""
+msgstr "Показване на сенки на иконите."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "The active list UA Screenlets for this panel."
@@ -1283,7 +1299,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "The angle of the panel in 3D mode."
-msgstr ""
+msgstr "Ъгълът на панел в 3D режим."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:45
 msgid "The curviness of the panel in Curves mode."
@@ -1319,7 +1335,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:52
 msgid "The offset between the icon and it's reflection"
-msgstr ""
+msgstr "Отместването между иконата и нейната сянка."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:53
 msgid "The offset of the Floaty background."
@@ -1327,7 +1343,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:54
 msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr ""
+msgstr "Непрозрачността на иконите от 0.0 до 1.0"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid "The opacity of the pattern."
@@ -1345,7 +1361,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:58
 msgid "The thickness in 3D mode."
-msgstr ""
+msgstr "Дебелината в 3D режим."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:59
 msgid "The user-visible size of Awn."
@@ -1357,7 +1373,7 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
 msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
+msgstr "Дали AwnDialog да използва цветовете от Gtk темата."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Whether to close dialogs on loss of focus."
@@ -1383,40 +1399,43 @@ msgstr ""
 
 #: ../data/awn-themed-icon.ui.h:3
 msgid "Customise Applet"
-msgstr ""
+msgstr "Настройване на аплета"
 
 #: ../libawn/awn-applet.c:1234
 #, c-format
 msgid "About %s"
-msgstr ""
+msgstr "Относно %s"
 
 #: ../libawn/awn-themed-icon.c:1980
 msgid "Icons"
-msgstr ""
+msgstr "Икони"
 
 #: ../libawn/awn-themed-icon.c:1983
 msgid "Choose Custom Icon"
-msgstr ""
+msgstr "Избиране на потребителска икона"
 
 #: ../libawn/awn-themed-icon.c:2071
 msgid "Customize Icon"
-msgstr ""
+msgstr "Настройване на икона"
 
 #: ../libawn/awn-themed-icon.c:2158
 msgid "Remove Customized Icon"
-msgstr ""
+msgstr "Премахване на потребителска икона"
 
 #: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
 msgid "Loading applet..."
-msgstr ""
+msgstr "Зареждане на аплета..."
 
 #: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
 msgid "Whoops! The applet crashed. Click to restart it."
-msgstr ""
+msgstr "Опа! Аплета се срина. Натиснете, за да го рестартирате."
 
 #: ../src/awn-panel.c:4015
 msgid "Close docklet"
-msgstr ""
+msgstr "Затваряне на доклета"
 
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN беше успешно обновен"
+
+#~ msgid "PNG Files"
+#~ msgstr "PNG Файлове"
