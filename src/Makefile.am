@@ -15,10 +15,8 @@ AM_CPPFLAGS =				\
 	$(NULL)
 
 # override vala: newer versions break awn
-VALAC=valac-0.12
 
 VALA_FILES = \
-	awn-panel-dispatcher.vala \
 	awn-app.vala \
 	$(NULL)
 
@@ -77,6 +75,8 @@ avant_window_navigator_SOURCES =	\
 	$(builddir)/awn-marshal.h \
 	awn-monitor.cc \
 	awn-monitor.h \
+	awn-panel-dispatcher.c \
+	awn-panel-dispatcher.h \
 	awn-panel.cc \
 	awn-panel.h \
 	awn-separator.cc \
@@ -106,7 +106,6 @@ CLEANFILES = \
 EXTRA_DIST = \
 	awn-marshal.list \
 	awn-app.vala \
-	awn-panel-dispatcher.vala \
 	awn-panel.vapi  \
 	$(VALA_GENERATED_FILES) \
 	$(NULL)

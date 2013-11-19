@@ -44,7 +44,8 @@ applets/taskmanager/awn-desktop-lookup-gnome3.cc
 applets/taskmanager/awn-desktop-lookup-gnome3.h
 applets/taskmanager/awn-desktop-lookup.cc
 applets/taskmanager/awn-desktop-lookup.h
-applets/taskmanager/dock-manager-api.vala
+applets/taskmanager/dock-manager-api.c
+applets/taskmanager/dock-manager-api.h
 applets/taskmanager/generate_vapi.sh
 applets/taskmanager/labelled-separator.vala
 applets/taskmanager/menus/advanced.xml
@@ -262,7 +263,6 @@ po/POTFILES.skip
 po/af.po
 po/ar.po
 po/ast.po
-po/avant-window-navigator.pot
 po/az.po
 po/be.po
 po/bg.po
@@ -302,6 +302,8 @@ po/ja.po
 po/jv.po
 po/ka.po
 po/kab.po
+po/kk.po
+po/km.po
 po/ko.po
 po/ku.po
 po/lt.po
@@ -367,7 +369,8 @@ src/awn-main.cc
 src/awn-marshal.list
 src/awn-monitor.cc
 src/awn-monitor.h
-src/awn-panel-dispatcher.vala
+src/awn-panel-dispatcher.c
+src/awn-panel-dispatcher.h
 src/awn-panel.cc
 src/awn-panel.h
 src/awn-panel.vapi

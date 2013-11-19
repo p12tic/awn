@@ -9,7 +9,6 @@ include $(top_srcdir)/Makefile.marshal
 include $(top_srcdir)/Makefile.schemas
 
 VALA_FILES = \
-	dock-manager-api.vala \
 	labelled-separator.vala \
 	$(NULL)
 
@@ -31,8 +30,6 @@ VALA_FLAGS = \
 	$(srcdir)/task-manager.vapi \
 	$(NULL)
 
-VALAC = valac-0.12
-
 task-manager.vala.stamp: $(VALA_FILES)
 	$(foreach vala_file,$(VALA_FILES),\
 	$(VALAC) -C -H $(vala_file:.vala=.h) $(srcdir)/$(vala_file) $(VALA_FLAGS) || exit 1;)
@@ -52,6 +49,8 @@ taskmanager_la_SOURCES = \
 	awn-desktop-lookup.cc \
 	awn-desktop-lookup-cached.cc \
 	awn-desktop-lookup-gnome3.cc \
+	dock-manager-api.c	\
+	dock-manager-api.h	\
 	task-defines.h \
 	task-drag-indicator.cc \
 	task-drag-indicator.h \
@@ -125,7 +124,6 @@ EXTRA_DIST += \
 	$(VALA_GENERATED_FILES) \
 	taskmanager-marshal.list \
 	task-manager.vapi \
-	dock-manager-api.vala \
 	labelled-separator.vala \
 	$(NULL)
 
