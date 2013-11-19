@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"POT-Creation-Date: 2013-11-19 02:04+0200\n"
 "PO-Revision-Date: 2011-03-23 09:04+0000\n"
 "Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician <gl@li.org>\n"
+"Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,75 +29,36 @@ msgstr "Enche o espazo no panel no modo extendido."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
-" Allow grouping of windows together that have different WM_CLIENT_NAME "
-"values."
-msgstr ""
-" Permitir o agrupamento de xanelas que teñen diferente valor de  "
-"WM_CLIENT_NAME."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
-msgid ""
-" Controls the alpha of the overlay if overlay_application_icons is true. "
-"Valid range 0.0 to 1.0."
-msgstr ""
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
-msgid ""
-" Controls the display of window icons in the Task Icon. 0) Alway display "
-"application provided window icons when window is active (except for a very "
-"few special cases). 1) Attempt to only display application provided icons "
-"when they are likely to provide useful/context info. 2) Ignore all "
-"application provide icons and only display the Lauuncher icon"
-msgstr ""
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
-msgid ""
-" Controls the size of the overlay if overlay_application_icons is true. "
-"Valid range 0.2 to 0.7."
-msgstr ""
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
-msgid ""
-" Group icons with the same launcher, if the grouping of windows is disabled."
-msgstr ""
-" Agrupa iconos do mesmo iniciador, se o agrupamento de ventanas no está "
-"activado."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
-msgid ""
-" If overlay_application_icons is true, this key will reverse the overlay/"
-"overlayee if set to true."
-msgstr ""
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
-msgid ""
-" If true then application window icons will be overlayed on the Launcher "
-"icon instead of replacing according to the behaviour defined by "
-"icon_change_behavior."
-msgstr ""
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
-msgid ""
 "Behavior when window on a different workspace is activated. (0 for default, "
 "1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
 "Comportamento cando unha ventá doutro escritorio se activa. (0 por defecto, "
 "1 - trocar de escritorio, 2 - mover ó escritorio actual)"
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
-"Context menu definition.  Will look in the awn menu installation directory "
-"unless a absolutely path is provided."
+"Number of seconds to inhibit autohide when a application requests attention. "
+"A value of 0 disables."
 msgstr ""
-"Definición de menú contextual. Mirará no directorio de instalación de awn a "
-"non ser que se indique unha ruta absoluta."
+"Número de segundos para inhibir o autoagochamento cando unha aplicazón "
+"precisa atención. O valor 0 deshabilitao."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
+msgid ""
+"Number of seconds to wait before nagging again, by inhibiting autohide, if "
+"attention is required by any windows. A value of 0 disables."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
+msgid "Enable reordering of windows by drag and drop "
+msgstr "Habilitar reordear ventás premendo e arrastrando "
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid "Delay before activating a window when dragging over an icon."
 msgstr ""
 "Esperar antes de activar unha ventá cando se arrastra enriba de un icono"
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
@@ -104,17 +66,53 @@ msgstr ""
 "Comportamento de copiado do escritorio cando arrastras ficheiros do "
 "escritorio. 0.. Copia todo, 1.. Copia se o usuario é o dono, 2.. Non copiar."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
+msgid " kde/compiz previews."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
+msgid "Default dialog scale. Previews will be scaled down further as needed."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid "Enable long press to open Dialog."
 msgstr "Habilitar o pulsado largo para abrir un diálogo"
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
-msgid "Enable reordering of windows by drag and drop "
-msgstr "Habilitar reordear ventás premendo e arrastrando "
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
 msgid "Enabling group of tasks."
 msgstr "Habilitar o agrupamento de procesos."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
+msgid ""
+" Controls the display of window icons in the Task Icon. 0) Alway display "
+"application provided window icons when window is active (except for a very "
+"few special cases). 1) Attempt to only display application provided icons "
+"when they are likely to provide useful/context info. 2) Ignore all "
+"application provide icons and only display the Launcher icon"
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
+msgid ""
+" Group icons with the same launcher, if the grouping of windows is disabled."
+msgstr ""
+" Agrupa iconos do mesmo iniciador, se o agrupamento de ventanas no está "
+"activado."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
+msgid ""
+" Allow grouping of windows together that have different WM_CLIENT_NAME "
+"values."
+msgstr ""
+" Permitir o agrupamento de xanelas que teñen diferente valor de  "
+"WM_CLIENT_NAME."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
+msgid ""
+"a list of paths to .desktop files from which the taskmanager should create "
+"it's launchers"
+msgstr ""
+"unha lista de directorios a arquivos .desktop os cales o xestor de tarefas "
+"debería crear os seus lanzadores"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -127,75 +125,167 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
-"How to generate the list of windows tested for intersection when Intellihide "
-"is active.  0.. use windows on active workspace, 1.. use windows of "
-"currently focused app."
-msgstr ""
-"Cómo xerar a lista de ventás analizadas que intersectan cando Agochado "
-"Intelixente está activo. 0.. usar ventás no escritorio activo, 1.. usar "
-"ventás da aplicación actualmente en primeiro plano."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
-msgid ""
-"Intellihide if hide is enabled for the panel.  This will inhibit autohide of "
-"the panel if there are no intersecting windows in the relevant window list "
-"(see intellihide_mode)."
-msgstr ""
-"Agochado intelixente se está habilitado para o panel. Esto inibirá o "
-"autoagochamento do panel se non hay ventás intersecando na lista de ventás "
-"relevantes(ver modo_agochado intelixente)"
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
-msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
 "Número máximo de indicadores de tarefas para amosar debaixo dos iconos. "
 "Rango válido é 0..3."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
-"Number of seconds to inhibit autohide when a application requests attention. "
-"A value of 0 disables."
-msgstr ""
-"Número de segundos para inhibir o autoagochamento cando unha aplicazón "
-"precisa atención. O valor 0 deshabilitao."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
-msgid ""
-"Number of seconds to wait before nagging again, by inhibiting autohide, if "
-"attention is required by any windows. A value of 0 disables."
+" Monitor desktop files. If set to false then changes to desktop files will "
+"not be reflected immediately."
 msgstr ""
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid "Only show and manager launcher windows"
 msgstr "Só mostrar e xestionar fiestras lanzador"
 
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
+msgid ""
+" If true then application window icons will be overlayed on the Launcher "
+"icon instead of replacing according to the behaviour defined by "
+"icon_change_behavior."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
+msgid ""
+" Controls the alpha of the overlay if overlay_application_icons is true. "
+"Valid range 0.0 to 1.0."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
+msgid ""
+" Controls the size of the overlay if overlay_application_icons is true. "
+"Valid range 0.2 to 0.7."
+msgstr ""
+
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
+msgid ""
+" If overlay_application_icons is true, this key will reverse the overlay/"
+"overlayee if set to true."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid "Show windows from all workspaces"
 msgstr "Mostrar as ventás de todos os espazos de traballo"
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
 msgstr ""
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:25
 msgid ""
-"a list of paths to .desktop files from which the taskmanager should create "
-"it's launchers"
+"Context menu definition.  Will look in the awn menu installation directory "
+"unless a absolutely path is provided."
 msgstr ""
-"unha lista de directorios a arquivos .desktop os cales o xestor de tarefas "
-"debería crear os seus lanzadores"
+"Definición de menú contextual. Mirará no directorio de instalación de awn a "
+"non ser que se indique unha ruta absoluta."
 
-#: ../applets/taskmanager/task-launcher.c:1109
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1020
+#: ../applets/taskmanager/task-launcher.cc:1068
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:957
 msgid "Launch"
 msgstr "Iniciar"
 
-#: ../applets/taskmanager/task-launcher.c:1192
+#: ../applets/taskmanager/task-launcher.cc:1148
 #, c-format
 msgid "Launch %s"
 msgstr "Iniciar %s"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:97
+#, c-format
+msgid "Workspace %d"
+msgstr "Espazo de traballo %d"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:105
+#, c-format
+msgid "Workspace 1_0"
+msgstr "Espazo de traballo 1_0"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:107
+#, c-format
+msgid "Workspace %s%d"
+msgstr "Espazo de traballo %s%d"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:664
+msgid "Add as Launcher"
+msgstr "Engadir como iniciador"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:699
+msgid "Remove Launcher"
+msgstr "Eliminar o lanzador"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:716
+msgid "_Close"
+msgstr "_Pechar"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:741
+msgid "_Close All"
+msgstr "_Pechar todas"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:781
+msgid "Minimize all"
+msgstr "Minimizar todo"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:812
+msgid "Unminimize all"
+msgstr "Restaurar todo"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:843
+msgid "Maximize all"
+msgstr "Maximizar todo"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:874
+msgid "Unmaximize all"
+msgstr "Restaurar todo"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:887
+msgid "Ma_ximize"
+msgstr "Ma_ximizar"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:890
+msgid "Unma_ximize"
+msgstr "Res_taurar"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:914
+msgid "Always on _Top"
+msgstr "Sempre _enriba das demais xanelas"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:934
+msgid "Mi_nimize"
+msgstr "Mi_nimizar"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:937
+msgid "Unmi_nimize"
+msgstr "Res_taurar"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:987
+msgid "Always on Visible Workspace"
+msgstr "Sempre visible na área de traballo"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:990
+msgid "Only on This Workspace"
+msgstr "Só nesta área de traballo"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1069
+msgid "Move to Workspace _Left"
+msgstr "Mover ao espazo de traballo da _esquerda"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1079
+msgid "Move to Workspace _Right"
+msgstr "Mover ao espazo de traballo da _dereita"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1088
+msgid "Move to Workspace _Up"
+msgstr "Mover ao espazo de traballo de e_nriba"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1097
+msgid "Move to Workspace _Down"
+msgstr "Mover ao espazo de traballo de em_baixo"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1106
+msgid "Move to Another _Workspace"
+msgstr "Mover a outro espa_zo de traballo"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -206,7 +296,7 @@ msgid "Launcher/Taskmanager applet"
 msgstr "Applet Lanzador/Xestor de procesos"
 
 #: ../applets/quick-prefs/applet.vala:130
-#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.cc:703
 msgid "About Awn"
 msgstr "Acerca de AWN"
 
@@ -219,132 +309,46 @@ msgstr "Arrastrar para cambiar a orientación do panel"
 msgid "Icon size:"
 msgstr "Tamaño da icona:"
 
-#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
-#: ../src/awn-panel.c:703
+#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.cc:1077
+#: ../src/awn-panel.cc:687
 msgid "Dock Preferences"
 msgstr "Preferencias da doca"
 
-#: ../applets/quick-prefs/applet.vala:576
+#: ../applets/quick-prefs/applet.vala:577
 #, c-format
 msgid "Could not open Awn settings: %s"
 msgstr "Non se puideron abrir as configuracións de Awn: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
+msgid "Preferences applet"
+msgstr "Applet de preferencias:"
+
+#: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Applet used to control the dock and launch Awn preferences."
 msgstr ""
 "Miniaplicativo utilizado para administrar a doca e iniciar o control de "
 "preferencias de Awn."
 
-#: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
-msgid "Preferences applet"
-msgstr "Applet de preferencias:"
-
 #: ../applets/separator/separator.desktop.in.in.h:1
-msgid "Adds a separator between applets"
-msgstr "Engade un separador entre applets"
-
-#: ../applets/separator/separator.desktop.in.in.h:2
 msgid "Separator"
 msgstr "Separador"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:91
-#, c-format
-msgid "Workspace %d"
-msgstr "Espazo de traballo %d"
+#: ../applets/separator/separator.desktop.in.in.h:2
+msgid "Adds a separator between applets"
+msgstr "Engade un separador entre applets"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:100
-#, c-format
-msgid "Workspace 1_0"
-msgstr "Espazo de traballo 1_0"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:102
-#, c-format
-msgid "Workspace %s%d"
-msgstr "Espazo de traballo %s%d"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:683
-msgid "Add as Launcher"
-msgstr "Engadir como iniciador"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:722
-msgid "Remove Launcher"
+#: ../applets/simple-launcher/simple-launcher.desktop.in.in.h:1
+#, fuzzy
+msgid "Simple Launcher"
 msgstr "Eliminar o lanzador"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:740
-msgid "_Close"
-msgstr "_Pechar"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:768
-msgid "_Close All"
-msgstr "_Pechar todas"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:815
-msgid "Minimize all"
-msgstr "Minimizar todo"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:851
-msgid "Unminimize all"
-msgstr "Restaurar todo"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:887
-msgid "Maximize all"
-msgstr "Maximizar todo"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:923
-msgid "Unmaximize all"
-msgstr "Restaurar todo"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:937
-msgid "Ma_ximize"
-msgstr "Ma_ximizar"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:942
-msgid "Unma_ximize"
-msgstr "Res_taurar"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:970
-msgid "Always on _Top"
-msgstr "Sempre _enriba das demais xanelas"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:994
-msgid "Mi_nimize"
-msgstr "Mi_nimizar"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:999
-msgid "Unmi_nimize"
-msgstr "Res_taurar"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1053
-msgid "Always on Visible Workspace"
-msgstr "Sempre visible na área de traballo"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1057
-msgid "Only on This Workspace"
-msgstr "Só nesta área de traballo"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1146
-msgid "Move to Workspace _Left"
-msgstr "Mover ao espazo de traballo da _esquerda"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1156
-msgid "Move to Workspace _Right"
-msgstr "Mover ao espazo de traballo da _dereita"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1166
-msgid "Move to Workspace _Up"
-msgstr "Mover ao espazo de traballo de e_nriba"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1176
-msgid "Move to Workspace _Down"
-msgstr "Mover ao espazo de traballo de em_baixo"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1185
-msgid "Move to Another _Workspace"
-msgstr "Mover a outro espa_zo de traballo"
+#: ../applets/simple-launcher/simple-launcher.desktop.in.in.h:2
+msgid "Applet used to launch stuff"
+msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
-#: ../awn-settings/awn-settings.ui.h:26
+#: ../awn-settings/awn-settings.ui.h:1
 msgid "Awn Settings"
 msgstr "Configuración de Awn"
 
@@ -352,401 +356,27 @@ msgstr "Configuración de Awn"
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Xestiona as preferencias de AWN, iniciadores, miniaplicativos e temas"
 
-#: ../awn-settings/awn-settings.ui.h:1
-msgid "3D Angle"
-msgstr "Ángulo 3D"
-
 #: ../awn-settings/awn-settings.ui.h:2
-msgid "<b>Active Applets</b>"
-msgstr "<b>Miniaplicativos Activos</b>"
+msgid "_Size of icons:"
+msgstr "_Tamaño dos iconos:"
 
 #: ../awn-settings/awn-settings.ui.h:3
-msgid "<b>Available Applets</b>"
-msgstr "<b>Miniaplicativos dispoñibles</b>"
+msgid "pixels"
+msgstr "píxeles"
 
 #: ../awn-settings/awn-settings.ui.h:4
-msgid "<b>Categories</b>"
-msgstr "<b>Categorías</b>"
+msgid "_Orientation:"
+msgstr "_Orientación:"
 
 #: ../awn-settings/awn-settings.ui.h:5
-msgid "<b>Effects</b>"
-msgstr "<b>Efectos</b>"
-
-#: ../awn-settings/awn-settings.ui.h:6
-msgid "<b>Export Option Groups</b>"
-msgstr "<b>Exportar Opcóns de Grupo</b>"
-
-#: ../awn-settings/awn-settings.ui.h:7
-msgid "<b>Extras</b>"
-msgstr "<b>Extras</b>"
-
-#: ../awn-settings/awn-settings.ui.h:8
-msgid "<b>General</b>"
-msgstr "<b>Xeral</b>"
-
-#: ../awn-settings/awn-settings.ui.h:9
-msgid "<b>Icons</b>"
-msgstr "<b>Iconos</b>"
-
-#: ../awn-settings/awn-settings.ui.h:10
-msgid "<b>Launchers</b>"
-msgstr "<b>Lanzadores</b>"
-
-#: ../awn-settings/awn-settings.ui.h:11
-msgid "<b>Numeric Settings</b>"
-msgstr "<b>Configuración de numeración</b>"
-
-#: ../awn-settings/awn-settings.ui.h:12
-msgid "<b>Panel Colors</b>"
-msgstr "<b>Panel de Cores</b>"
-
-#: ../awn-settings/awn-settings.ui.h:13
-msgid "<b>Panel</b>"
-msgstr "<b>Panel</b>"
-
-#: ../awn-settings/awn-settings.ui.h:14
-msgid "<b>Repositories</b>"
-msgstr "<b>Repositorios</b>"
-
-#: ../awn-settings/awn-settings.ui.h:15
-msgid "<b>Settings</b>"
-msgstr "<b>Configuracións</b>"
-
-#: ../awn-settings/awn-settings.ui.h:16
-msgid "<b>Taskmanagers</b>"
-msgstr "<b>Administrador de tarefas</b>"
-
-#: ../awn-settings/awn-settings.ui.h:17
-msgid "<b>These settings require the Task Manager applet to be active. </b>"
-msgstr ""
-"<b>Estas preferencias requiren que o Aministrador de Tarefas esté activo. </"
-"b>"
-
-#: ../awn-settings/awn-settings.ui.h:18
-msgid "<b>Tooltips</b>"
-msgstr "<b>Indicadores de axuda</b>"
-
-#: ../awn-settings/awn-settings.ui.h:19
-msgid ""
-"<b>You need to enable desktop effects (compositor) to apply and customize "
-"themes.</b>"
-msgstr ""
-"<b>É necesario que actives os efectos de escritorio (compositor) para "
-"aplicar os temas personalizados.</b>"
-
-#: ../awn-settings/awn-settings.ui.h:20
-msgid "Activate applet"
-msgstr "Activar miniaplicativo"
-
-#: ../awn-settings/awn-settings.ui.h:21
-msgid "Active rectangle:"
-msgstr "Rectángulo activo:"
-
-#: ../awn-settings/awn-settings.ui.h:22
-msgid "Arrow type"
-msgstr "Tipo de frecha"
-
-#: ../awn-settings/awn-settings.ui.h:23
-msgid "Attention animation:"
-msgstr "Animación de atención:"
-
-#: ../awn-settings/awn-settings.ui.h:24
-msgid "Author:"
-msgstr "Autor:"
-
-#: ../awn-settings/awn-settings.ui.h:25
-msgid "Autohide mode:"
-msgstr "Modo de autoagochado:"
-
-#: ../awn-settings/awn-settings.ui.h:27
-msgid "Background:"
-msgstr "Fondo:"
-
-#: ../awn-settings/awn-settings.ui.h:28
-msgid "Choose a theme..."
-msgstr "Escolle un decorado"
-
-#: ../awn-settings/awn-settings.ui.h:29
-msgid "Clickthrough"
-msgstr ""
-
-#: ../awn-settings/awn-settings.ui.h:30
-msgid "Close animation:"
-msgstr "Pechar animación:"
-
-#: ../awn-settings/awn-settings.ui.h:31
-msgid "Configured Effects"
-msgstr "Configurar Efectos"
-
-#: ../awn-settings/awn-settings.ui.h:32
-msgid "Corner Radius"
-msgstr "Radio das esquinas"
-
-#: ../awn-settings/awn-settings.ui.h:33
-msgid "Curves Symmetry"
-msgstr "Simetría das curvas"
-
-#: ../awn-settings/awn-settings.ui.h:34
-msgid "Curviness"
-msgstr "Sen curvas"
-
-#: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
-#: ../awn-settings/awnSettings.py.in:153
-msgid "Custom"
-msgstr "Personalizado"
-
-#: ../awn-settings/awn-settings.ui.h:36
-msgid "Custom Arrow Image"
-msgstr "Personalizar a imaxe das frechas"
-
-#: ../awn-settings/awn-settings.ui.h:37
-msgid "Customize effects"
-msgstr "Personalizar efectos"
-
-#: ../awn-settings/awn-settings.ui.h:38
-msgid "Customize..."
-msgstr "Personalizar..."
-
-#: ../awn-settings/awn-settings.ui.h:39
-msgid "Deactivate applet"
-msgstr "Desactivar applet"
-
-#: ../awn-settings/awn-settings.ui.h:40
-msgid "Display launchers only"
-msgstr "Só amosar lanzadores"
-
-#: ../awn-settings/awn-settings.ui.h:41
-msgid "Drag and drop reordering"
-msgstr "Reordenar arrastrando"
-
-#. Tooltip
-#: ../awn-settings/awn-settings.ui.h:43
-msgid "Drag available applets here to activate"
-msgstr "Arrastra aqui os miniaplicativos dispoñibles para activalos"
-
-#. Tooltip
-#: ../awn-settings/awn-settings.ui.h:45
-msgid "Drag below or double click to activate applet"
-msgstr "Arrastra para abaixo ou fai doble click para activar o miniaplicativo"
-
-#: ../awn-settings/awn-settings.ui.h:46
-msgid "E_xpand the panel"
-msgstr "E_xpandir o panel"
-
-#: ../awn-settings/awn-settings.ui.h:47
-msgid "Export Theme..."
-msgstr "Exportar tema..."
-
-#: ../awn-settings/awn-settings.ui.h:48
-msgid "Extra Options"
-msgstr "Opcións extra"
-
-#: ../awn-settings/awn-settings.ui.h:49
-msgid "Fill Color"
-msgstr "Cor de recheo"
-
-#: ../awn-settings/awn-settings.ui.h:50
-msgid "First Gradient Color"
-msgstr "Gradiente da cor de recheo"
-
-#: ../awn-settings/awn-settings.ui.h:51
-msgid "First Highlight Color"
-msgstr "Primeira cor de resaltado"
-
-#: ../awn-settings/awn-settings.ui.h:52
-msgid "Floaty Offset"
-msgstr "Separación en modo Flotante"
-
-#: ../awn-settings/awn-settings.ui.h:53
-msgid "Font"
-msgstr "Fonte"
-
-#: ../awn-settings/awn-settings.ui.h:54
-msgid "Font Color"
-msgstr "Cor do texto"
-
-#: ../awn-settings/awn-settings.ui.h:55
-msgid "Font Mode"
-msgstr "Modo da fonte"
-
-#: ../awn-settings/awn-settings.ui.h:56
-msgid "Font Outline Color"
-msgstr "Cor do borde da letra."
-
-#: ../awn-settings/awn-settings.ui.h:57
-msgid "Force monitor mode ?"
-msgstr "Forzar o modo do monitor?"
-
-#: ../awn-settings/awn-settings.ui.h:58
-msgid "Glowing dot"
-msgstr "Punto brillante"
-
-#: ../awn-settings/awn-settings.ui.h:59
-msgid "Glowing dot color"
-msgstr "Cor do punto brillante"
-
-#: ../awn-settings/awn-settings.ui.h:60
-msgid "Group common windows"
-msgstr "Agrupar ventás comúns"
-
-#: ../awn-settings/awn-settings.ui.h:61
-msgid "Hover animation:"
-msgstr "Animación ó pórse enriba"
-
-#: ../awn-settings/awn-settings.ui.h:62
-msgid "Icon _effects:"
-msgstr "Efectos de iconas:"
-
-#: ../awn-settings/awn-settings.ui.h:63
-msgid "Icon alpha"
-msgstr "Icona alfa"
-
-#: ../awn-settings/awn-settings.ui.h:64
-msgid "Icons and Tooltips"
-msgstr "Iconas e consellos"
-
-#: ../awn-settings/awn-settings.ui.h:65
-msgid "Icons:"
-msgstr "Iconas:"
-
-#: ../awn-settings/awn-settings.ui.h:66
-msgid "Inner Border Color"
-msgstr "Cor do bordo inferior"
-
-#: ../awn-settings/awn-settings.ui.h:67
-msgid "Install applet..."
-msgstr "Instalar miniaplicativo..."
-
-#: ../awn-settings/awn-settings.ui.h:68
-msgid "Install..."
-msgstr "Instalar..."
-
-#: ../awn-settings/awn-settings.ui.h:69
-msgid "Launch animation:"
-msgstr "Lanzar animacións:"
-
-#: ../awn-settings/awn-settings.ui.h:70
-msgid "Matching strength"
-msgstr "Forza da coincidencia"
-
-#: ../awn-settings/awn-settings.ui.h:71
-msgid "Monitor X-offset"
-msgstr "Desprazamento X no monitor"
-
-#: ../awn-settings/awn-settings.ui.h:72
-msgid "Monitor Y-offset"
-msgstr "Desprazamento Y no monitor"
-
-#: ../awn-settings/awn-settings.ui.h:73
-msgid "Monitor height"
-msgstr "Alto do monitor"
-
-#: ../awn-settings/awn-settings.ui.h:74
-msgid "Monitor width"
-msgstr "Largo do monitor"
-
-#: ../awn-settings/awn-settings.ui.h:75
-msgid "Name:"
-msgstr "Nome:"
-
-#: ../awn-settings/awn-settings.ui.h:76
-msgid "Offset"
-msgstr "Desprazamento"
-
-#: ../awn-settings/awn-settings.ui.h:77
-msgid "Open animation:"
-msgstr "Abrir animación"
-
-#: ../awn-settings/awn-settings.ui.h:78
-msgid "Outer Border Color"
-msgstr "Cor do bordo exterior"
-
-#: ../awn-settings/awn-settings.ui.h:79
-msgid "Outline Color"
-msgstr "Cor de Delineación"
-
-#: ../awn-settings/awn-settings.ui.h:80
-msgid "Panel Background Colors"
-msgstr "Cores do fondo do panel"
-
-#: ../awn-settings/awn-settings.ui.h:81
-msgid "Panel Look Refinements"
-msgstr "Refinamento da apariencia do Panel"
-
-#: ../awn-settings/awn-settings.ui.h:82
-msgid "Panel Style & Size"
-msgstr "Estilo e tamaño do Panel"
-
-#: ../awn-settings/awn-settings.ui.h:83
-msgid "Pattern Alpha"
-msgstr "Patrón Alpha"
-
-#: ../awn-settings/awn-settings.ui.h:84
-msgid "Pattern Image"
-msgstr "Imaxe patrón"
-
-#: ../awn-settings/awn-settings.ui.h:85
-msgid "Reflection alpha multiplier"
-msgstr "Multiplicador alfa de reflexión"
-
-#: ../awn-settings/awn-settings.ui.h:86
-msgid "Reflection offset"
-msgstr "Desprazamento do reflexo"
-
-#: ../awn-settings/awn-settings.ui.h:87
-msgid "Repositories"
-msgstr "Repositorios"
-
-#: ../awn-settings/awn-settings.ui.h:88
-msgid "Second Gradient Color"
-msgstr "Cor do gradiente secundario"
-
-#: ../awn-settings/awn-settings.ui.h:89
-msgid "Second Highlight Color"
-msgstr "Segunda cor de Resaltado"
-
-#: ../awn-settings/awn-settings.ui.h:90
-msgid "Select Custom Arrow"
-msgstr "Establecer Frecha Personalizada"
-
-#. Tooltip
-#: ../awn-settings/awn-settings.ui.h:92
-msgid "Select item to filter by category"
-msgstr "Selecciona elemento para filtrar por categoría"
-
-#: ../awn-settings/awn-settings.ui.h:93
-msgid "Separator Color"
-msgstr "Cor do Separador"
-
-#: ../awn-settings/awn-settings.ui.h:94
-msgid "Show all windows"
-msgstr "Amosar todas as ventás"
-
-#: ../awn-settings/awn-settings.ui.h:95
-msgid "Show dialog after long press"
-msgstr "Amosar diálogo despois de un pulsado longo"
-
-#: ../awn-settings/awn-settings.ui.h:96
-msgid "Show shadows"
-msgstr "Amosar sombras"
-
-#: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
 msgstr "Est_ilo:"
 
-#: ../awn-settings/awn-settings.ui.h:98
-msgid "Start _Awn automatically"
-msgstr "Iniciar _Awn automáticamente"
+#: ../awn-settings/awn-settings.ui.h:6
+msgid "_Behavior:"
+msgstr "_Comportamento:"
 
-#: ../awn-settings/awn-settings.ui.h:99
-msgid "Theme Export"
-msgstr "Exportar decorado"
-
-#: ../awn-settings/awn-settings.ui.h:100
-msgid "Thickness"
-msgstr "Grosor"
-
-#: ../awn-settings/awn-settings.ui.h:101
+#: ../awn-settings/awn-settings.ui.h:7
 msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
@@ -754,51 +384,473 @@ msgstr ""
 "Para usar os modos Agochar de xeito Intelixente e Evitar Xanelas, tes que "
 "ter activo o miniaplicativo Xestor de Tarefas"
 
-#: ../awn-settings/awn-settings.ui.h:102
-msgid "Triangle"
-msgstr ""
+#: ../awn-settings/awn-settings.ui.h:8
+msgid "Autohide mode:"
+msgstr "Modo de autoagochado:"
 
-#: ../awn-settings/awn-settings.ui.h:103
-msgid "Use Gtk theme colors"
-msgstr "Usar cores do decorado Gtk"
+#: ../awn-settings/awn-settings.ui.h:9
+msgid "Icon _effects:"
+msgstr "Efectos de iconas:"
 
-#: ../awn-settings/awn-settings.ui.h:104
-msgid "Use Pattern as Background"
-msgstr "Usar o Patrón coma Fondo"
+#: ../awn-settings/awn-settings.ui.h:10
+msgid "E_xpand the panel"
+msgstr "E_xpandir o panel"
 
-#: ../awn-settings/awn-settings.ui.h:105
-msgid "Version:"
-msgstr "Versión:"
-
-#: ../awn-settings/awn-settings.ui.h:106
-msgid "_Behavior:"
-msgstr "_Comportamento:"
-
-#: ../awn-settings/awn-settings.ui.h:107
-msgid "_Orientation:"
-msgstr "_Orientación:"
-
-#: ../awn-settings/awn-settings.ui.h:108
+#: ../awn-settings/awn-settings.ui.h:11
 msgid "_Position on the screen:"
 msgstr "_Posición na pantaia:"
 
+#: ../awn-settings/awn-settings.ui.h:12
+msgid "<b>Panel</b>"
+msgstr "<b>Panel</b>"
+
+#: ../awn-settings/awn-settings.ui.h:13
+msgid "Start _Awn automatically"
+msgstr "Iniciar _Awn automáticamente"
+
+#: ../awn-settings/awn-settings.ui.h:14
+msgid "<b>General</b>"
+msgstr "<b>Xeral</b>"
+
+#: ../awn-settings/awn-settings.ui.h:15
+msgid "Add dock"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:16
+#, fuzzy
+msgid "Remove dock"
+msgstr "Eliminar o lanzador"
+
+#: ../awn-settings/awn-settings.ui.h:17
+msgid ""
+"<b>You need to enable desktop effects (compositor) to apply and customize "
+"themes.</b>"
+msgstr ""
+"<b>É necesario que actives os efectos de escritorio (compositor) para "
+"aplicar os temas personalizados.</b>"
+
+#: ../awn-settings/awn-settings.ui.h:18
+msgid "Customize..."
+msgstr "Personalizar..."
+
+#: ../awn-settings/awn-settings.ui.h:19
+msgid "Install..."
+msgstr "Instalar..."
+
+#: ../awn-settings/awn-settings.ui.h:20
+msgid "<b>Panel Colors</b>"
+msgstr "<b>Panel de Cores</b>"
+
+#: ../awn-settings/awn-settings.ui.h:21
+msgid "First Gradient Color"
+msgstr "Gradiente da cor de recheo"
+
+#: ../awn-settings/awn-settings.ui.h:22
+msgid "First Highlight Color"
+msgstr "Primeira cor de resaltado"
+
+#: ../awn-settings/awn-settings.ui.h:23
+msgid "Second Gradient Color"
+msgstr "Cor do gradiente secundario"
+
+#: ../awn-settings/awn-settings.ui.h:24
+msgid "Second Highlight Color"
+msgstr "Segunda cor de Resaltado"
+
+#: ../awn-settings/awn-settings.ui.h:25
+msgid "Outer Border Color"
+msgstr "Cor do bordo exterior"
+
+#: ../awn-settings/awn-settings.ui.h:26
+msgid "Inner Border Color"
+msgstr "Cor do bordo inferior"
+
+#: ../awn-settings/awn-settings.ui.h:27
+msgid "Corner Radius"
+msgstr "Radio das esquinas"
+
+#: ../awn-settings/awn-settings.ui.h:28
+msgid "Curves Symmetry"
+msgstr "Simetría das curvas"
+
+#: ../awn-settings/awn-settings.ui.h:29
+msgid "3D Angle"
+msgstr "Ángulo 3D"
+
+#: ../awn-settings/awn-settings.ui.h:30
+msgid "Curviness"
+msgstr "Sen curvas"
+
+#: ../awn-settings/awn-settings.ui.h:31
+msgid "<b>Numeric Settings</b>"
+msgstr "<b>Configuración de numeración</b>"
+
+#: ../awn-settings/awn-settings.ui.h:32
+msgid "<b>Icons</b>"
+msgstr "<b>Iconos</b>"
+
+#: ../awn-settings/awn-settings.ui.h:33
+msgid "Font Mode"
+msgstr "Modo da fonte"
+
+#: ../awn-settings/awn-settings.ui.h:34
+msgid "Font Color"
+msgstr "Cor do texto"
+
+#: ../awn-settings/awn-settings.ui.h:35
+msgid "Font Outline Color"
+msgstr "Cor do borde da letra."
+
+#: ../awn-settings/awn-settings.ui.h:36
+msgid "<b>Tooltips</b>"
+msgstr "<b>Indicadores de axuda</b>"
+
+#: ../awn-settings/awn-settings.ui.h:37
+msgid "Font"
+msgstr "Fonte"
+
+#: ../awn-settings/awn-settings.ui.h:38
+msgid "Fill Color"
+msgstr "Cor de recheo"
+
+#: ../awn-settings/awn-settings.ui.h:39
+msgid "<b>Extras</b>"
+msgstr "<b>Extras</b>"
+
+#: ../awn-settings/awn-settings.ui.h:40
+msgid "Use Gtk theme colors"
+msgstr "Usar cores do decorado Gtk"
+
+#: ../awn-settings/awn-settings.ui.h:41
+msgid "Custom Arrow Image"
+msgstr "Personalizar a imaxe das frechas"
+
+#: ../awn-settings/awn-settings.ui.h:42
+msgid "Select Custom Arrow"
+msgstr "Establecer Frecha Personalizada"
+
+#: ../awn-settings/awn-settings.ui.h:43
+msgid "Triangle"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:44
+msgid "Glowing dot"
+msgstr "Punto brillante"
+
+#: ../awn-settings/awn-settings.ui.h:45 ../awn-settings/awnClass.py:901
+#: ../awn-settings/awnSettings.py.in:152
+msgid "Custom"
+msgstr "Personalizado"
+
+#: ../awn-settings/awn-settings.ui.h:46
+msgid "Arrow type"
+msgstr "Tipo de frecha"
+
+#: ../awn-settings/awn-settings.ui.h:47
+msgid "Show shadows"
+msgstr "Amosar sombras"
+
+#: ../awn-settings/awn-settings.ui.h:48
+msgid "Separator Color"
+msgstr "Cor do Separador"
+
+#: ../awn-settings/awn-settings.ui.h:49
+msgid "Glowing dot color"
+msgstr "Cor do punto brillante"
+
+#: ../awn-settings/awn-settings.ui.h:50
+msgid "Outline Color"
+msgstr "Cor de Delineación"
+
+#: ../awn-settings/awn-settings.ui.h:51
+msgid "Active rectangle:"
+msgstr "Rectángulo activo:"
+
+#: ../awn-settings/awn-settings.ui.h:52
+msgid "Use Pattern as Background"
+msgstr "Usar o Patrón coma Fondo"
+
+#: ../awn-settings/awn-settings.ui.h:53
+msgid "Pattern Image"
+msgstr "Imaxe patrón"
+
+#: ../awn-settings/awn-settings.ui.h:54
+msgid "Pattern Alpha"
+msgstr "Patrón Alpha"
+
+#: ../awn-settings/awn-settings.ui.h:55
+msgid "Background:"
+msgstr "Fondo:"
+
+#: ../awn-settings/awn-settings.ui.h:56
+msgid "Floaty Offset"
+msgstr "Separación en modo Flotante"
+
+#: ../awn-settings/awn-settings.ui.h:57
+msgid "Thickness"
+msgstr "Grosor"
+
+#: ../awn-settings/awn-settings.ui.h:58
+msgid "Choose a theme..."
+msgstr "Escolle un decorado"
+
+#: ../awn-settings/awn-settings.ui.h:59
+msgid "Export Theme..."
+msgstr "Exportar tema..."
+
+#. Tooltip
+#: ../awn-settings/awn-settings.ui.h:61
+msgid "Select item to filter by category"
+msgstr "Selecciona elemento para filtrar por categoría"
+
+#: ../awn-settings/awn-settings.ui.h:62
+msgid "<b>Categories</b>"
+msgstr "<b>Categorías</b>"
+
+#. Tooltip
+#: ../awn-settings/awn-settings.ui.h:64
+msgid "Drag below or double click to activate applet"
+msgstr "Arrastra para abaixo ou fai doble click para activar o miniaplicativo"
+
+#: ../awn-settings/awn-settings.ui.h:65
+msgid "<b>Available Applets</b>"
+msgstr "<b>Miniaplicativos dispoñibles</b>"
+
+#: ../awn-settings/awn-settings.ui.h:66
+msgid "Activate applet"
+msgstr "Activar miniaplicativo"
+
+#: ../awn-settings/awn-settings.ui.h:67
+msgid "Deactivate applet"
+msgstr "Desactivar applet"
+
+#: ../awn-settings/awn-settings.ui.h:68
+msgid "Install applet..."
+msgstr "Instalar miniaplicativo..."
+
+#. Tooltip
+#: ../awn-settings/awn-settings.ui.h:70
+msgid "Drag available applets here to activate"
+msgstr "Arrastra aqui os miniaplicativos dispoñibles para activalos"
+
+#: ../awn-settings/awn-settings.ui.h:71
+msgid "<b>Active Applets</b>"
+msgstr "<b>Miniaplicativos Activos</b>"
+
+#: ../awn-settings/awn-settings.ui.h:72
+msgid "Offset"
+msgstr "Desprazamento"
+
+#: ../awn-settings/awn-settings.ui.h:73
+msgid "Clickthrough"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:74
+msgid "Force monitor mode ?"
+msgstr "Forzar o modo do monitor?"
+
+#: ../awn-settings/awn-settings.ui.h:75
+msgid "Monitor width"
+msgstr "Largo do monitor"
+
+#: ../awn-settings/awn-settings.ui.h:76
+msgid "Monitor height"
+msgstr "Alto do monitor"
+
+#: ../awn-settings/awn-settings.ui.h:77
+msgid "Monitor X-offset"
+msgstr "Desprazamento X no monitor"
+
+#: ../awn-settings/awn-settings.ui.h:78
+msgid "Monitor Y-offset"
+msgstr "Desprazamento Y no monitor"
+
+#: ../awn-settings/awn-settings.ui.h:79
+msgid "Matching strength"
+msgstr "Forza da coincidencia"
+
+#: ../awn-settings/awn-settings.ui.h:80
+msgid "<b>Taskmanagers</b>"
+msgstr "<b>Administrador de tarefas</b>"
+
+#: ../awn-settings/awn-settings.ui.h:81
+msgid "Reflection offset"
+msgstr "Desprazamento do reflexo"
+
+#: ../awn-settings/awn-settings.ui.h:82
+msgid "Icon alpha"
+msgstr "Icona alfa"
+
+#: ../awn-settings/awn-settings.ui.h:83
+msgid "Reflection alpha multiplier"
+msgstr "Multiplicador alfa de reflexión"
+
+#: ../awn-settings/awn-settings.ui.h:84
+msgid "<b>Effects</b>"
+msgstr "<b>Efectos</b>"
+
+#: ../awn-settings/awn-settings.ui.h:85
+msgid "Repositories"
+msgstr "Repositorios"
+
+#: ../awn-settings/awn-settings.ui.h:86
+msgid "<b>Repositories</b>"
+msgstr "<b>Repositorios</b>"
+
+#: ../awn-settings/awn-settings.ui.h:87
+msgid "<b>These settings require the Task Manager applet to be active. </b>"
+msgstr ""
+"<b>Estas preferencias requiren que o Aministrador de Tarefas esté activo. </"
+"b>"
+
+#: ../awn-settings/awn-settings.ui.h:88
+msgid "Icons:"
+msgstr "Iconas:"
+
+#: ../awn-settings/awn-settings.ui.h:89
+msgid "Show all windows"
+msgstr "Amosar todas as ventás"
+
+#: ../awn-settings/awn-settings.ui.h:90
+msgid "Group common windows"
+msgstr "Agrupar ventás comúns"
+
+#: ../awn-settings/awn-settings.ui.h:91
+msgid "Display launchers only"
+msgstr "Só amosar lanzadores"
+
+#: ../awn-settings/awn-settings.ui.h:92
+msgid "Drag and drop reordering"
+msgstr "Reordenar arrastrando"
+
+#: ../awn-settings/awn-settings.ui.h:93
+msgid "Show dialog after long press"
+msgstr "Amosar diálogo despois de un pulsado longo"
+
+#: ../awn-settings/awn-settings.ui.h:94
+msgid "<b>Settings</b>"
+msgstr "<b>Configuracións</b>"
+
+#: ../awn-settings/awn-settings.ui.h:95
+msgid "<b>Launchers</b>"
+msgstr "<b>Lanzadores</b>"
+
+#: ../awn-settings/awn-settings.ui.h:96
+msgid "Helpers..."
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:97
+msgid ""
+"Helpers are not available...\n"
+"Please make sure you have dockmanager package installed."
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:99
+#, fuzzy
+msgid "<b>Helpers</b>"
+msgstr "<b>Xeral</b>"
+
+#: ../awn-settings/awn-settings.ui.h:100
+#, fuzzy
+msgid "Launchers..."
+msgstr "Iniciar"
+
+#: ../awn-settings/awn-settings.ui.h:101
+#, fuzzy
+msgid "Install helper..."
+msgstr "Instalar miniaplicativo..."
+
+#: ../awn-settings/awn-settings.ui.h:102
+msgid "Customize effects"
+msgstr "Personalizar efectos"
+
+#: ../awn-settings/awn-settings.ui.h:103
+msgid "Open animation:"
+msgstr "Abrir animación"
+
+#: ../awn-settings/awn-settings.ui.h:104
+msgid "Close animation:"
+msgstr "Pechar animación:"
+
+#: ../awn-settings/awn-settings.ui.h:105
+msgid "Hover animation:"
+msgstr "Animación ó pórse enriba"
+
+#: ../awn-settings/awn-settings.ui.h:106
+msgid "Launch animation:"
+msgstr "Lanzar animacións:"
+
+#: ../awn-settings/awn-settings.ui.h:107
+msgid "Attention animation:"
+msgstr "Animación de atención:"
+
+#: ../awn-settings/awn-settings.ui.h:108
+msgid "Theme Export"
+msgstr "Exportar decorado"
+
 #: ../awn-settings/awn-settings.ui.h:109
-msgid "_Size of icons:"
-msgstr "_Tamaño dos iconos:"
+msgid "Name:"
+msgstr "Nome:"
 
 #: ../awn-settings/awn-settings.ui.h:110
-msgid "pixels"
-msgstr "píxeles"
+msgid "Author:"
+msgstr "Autor:"
 
-#: ../awn-settings/awnClass.py:233
+#: ../awn-settings/awn-settings.ui.h:111
+msgid "Version:"
+msgstr "Versión:"
+
+#: ../awn-settings/awn-settings.ui.h:112
+msgid "Panel Style & Size"
+msgstr "Estilo e tamaño do Panel"
+
+#: ../awn-settings/awn-settings.ui.h:113
+msgid "Icons and Tooltips"
+msgstr "Iconas e consellos"
+
+#: ../awn-settings/awn-settings.ui.h:114
+msgid "Panel Background Colors"
+msgstr "Cores do fondo do panel"
+
+#: ../awn-settings/awn-settings.ui.h:115
+msgid "Extra Options"
+msgstr "Opcións extra"
+
+#: ../awn-settings/awn-settings.ui.h:116
+msgid "Panel Look Refinements"
+msgstr "Refinamento da apariencia do Panel"
+
+#: ../awn-settings/awn-settings.ui.h:117
+msgid "Configured Effects"
+msgstr "Configurar Efectos"
+
+#: ../awn-settings/awn-settings.ui.h:118
+msgid "<b>Export Option Groups</b>"
+msgstr "<b>Exportar Opcóns de Grupo</b>"
+
+#: ../awn-settings/awnClass.py:159 ../awn-settings/awnClass.py:178
+#: ../awn-settings/awnClass.py:190
+msgid "Bzr support is not enable, try to install bzr"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:162
+#, fuzzy
+msgid "Error, the path already exist"
+msgstr "Erro, a ruta está baldeira ou non existe"
+
+#: ../awn-settings/awnClass.py:170
+msgid "Socket error, could not create branch."
+msgstr ""
+
+#: ../awn-settings/awnClass.py:248
 msgid "Error, a sources.list already exist"
 msgstr "Erro, xa existe un sources.list"
 
-#: ../awn-settings/awnClass.py:301
+#: ../awn-settings/awnClass.py:316
 msgid "Error, the path is empty or already exist"
 msgstr "Erro, a ruta está baldeira ou non existe"
 
-#: ../awn-settings/awnClass.py:421
+#: ../awn-settings/awnClass.py:436
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
@@ -806,48 +858,48 @@ msgstr ""
 "Erro %s non se atopa na tua computadora, por favor quitaa do arquivo sources."
 "list"
 
-#: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
+#: ../awn-settings/awnSettings.py.in:142
 msgid "None"
 msgstr "Ningún"
 
-#: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:877
+#: ../awn-settings/awnClass.py:831 ../awn-settings/awnClass.py:892
 msgid "Simple"
 msgstr "Simple"
 
-#: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:878
+#: ../awn-settings/awnClass.py:832 ../awn-settings/awnClass.py:893
 msgid "Classic"
 msgstr "Clásico"
 
-#: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:879
+#: ../awn-settings/awnClass.py:833 ../awn-settings/awnClass.py:894
 msgid "Fade"
 msgstr "Esvaecemento"
 
-#: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:880
+#: ../awn-settings/awnClass.py:834 ../awn-settings/awnClass.py:895
 msgid "Spotlight"
 msgstr "Foco luminoso"
 
-#: ../awn-settings/awnClass.py:820 ../awn-settings/awnClass.py:881
+#: ../awn-settings/awnClass.py:835 ../awn-settings/awnClass.py:896
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../awn-settings/awnClass.py:821 ../awn-settings/awnClass.py:882
+#: ../awn-settings/awnClass.py:836 ../awn-settings/awnClass.py:897
 msgid "Squish"
 msgstr "Aplastar"
 
-#: ../awn-settings/awnClass.py:822 ../awn-settings/awnClass.py:883
+#: ../awn-settings/awnClass.py:837 ../awn-settings/awnClass.py:898
 msgid "3D Turn"
 msgstr "Xiro en 3D"
 
-#: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
+#: ../awn-settings/awnClass.py:838 ../awn-settings/awnClass.py:899
 msgid "3D Spotlight Turn"
 msgstr "Xiro 3D con foco de luz"
 
-#: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
+#: ../awn-settings/awnClass.py:839 ../awn-settings/awnClass.py:900
 msgid "Glow"
 msgstr "Resplandor"
 
-#: ../awn-settings/awnClass.py:966
+#: ../awn-settings/awnClass.py:981
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -857,11 +909,11 @@ msgstr ""
 "directorio manualmente:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:976
+#: ../awn-settings/awnClass.py:991
 msgid "Confirm directory creation"
 msgstr "Confirme a creación do directorio"
 
-#: ../awn-settings/awnClass.py:977
+#: ../awn-settings/awnClass.py:992
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -870,27 +922,27 @@ msgstr ""
 "usuario.\n"
 "Quere que se cree un automaticamente para vostede?"
 
-#: ../awn-settings/awnClass.py:1038
+#: ../awn-settings/awnClass.py:1053
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
 msgstr "Non se atopou ningún deses iconos: %s\n"
 
-#: ../awn-settings/awnClass.py:1045
+#: ../awn-settings/awnClass.py:1060
 #, python-format
 msgid "Could not locate the following icon: %s\n"
 msgstr "Non se atopou o seguinte icono: %s\n"
 
-#: ../awn-settings/awnClass.py:1066
-#: ../data/avant-window-navigator.desktop.in.h:2
+#: ../awn-settings/awnClass.py:1081
+#: ../data/avant-window-navigator.desktop.in.h:1
 msgid "Avant Window Navigator"
 msgstr "Avant Window Navigator"
 
-#: ../awn-settings/awnClass.py:1084
+#: ../awn-settings/awnClass.py:1099
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
 "Un navegador de xanelas entallábel para GNOME totalmente persoalizábel."
 
-#: ../awn-settings/awnClass.py:1086
+#: ../awn-settings/awnClass.py:1101
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -902,7 +954,7 @@ msgstr ""
 "Foundation; tanto na versión 2 da Licenza como (segundo o seu criterio) en "
 "calquera versión posterior."
 
-#: ../awn-settings/awnClass.py:1088
+#: ../awn-settings/awnClass.py:1103
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -914,7 +966,7 @@ msgstr ""
 "A UN FIN ESPECÍFICO. Consulte a Licenza pública xeral de GNU para máis "
 "información."
 
-#: ../awn-settings/awnClass.py:1090
+#: ../awn-settings/awnClass.py:1105
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -924,50 +976,50 @@ msgstr ""
 "este programa; se non foi así, escriba á Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
-#: ../awn-settings/awnClass.py:1217
+#: ../awn-settings/awnClass.py:1232
 msgid "Awn Applet Package"
 msgstr "Paquete de MIniaplicativos de AWN"
 
-#: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
+#: ../awn-settings/awnClass.py:1277 ../awn-settings/awnClass.py:1307
 msgid "Applet Installation Failed"
 msgstr "Fallou a intalación do miniaplicativo"
 
-#: ../awn-settings/awnClass.py:1274
+#: ../awn-settings/awnClass.py:1289
 msgid "Applet Successfully Updated"
 msgstr "Miniaplicativo correctamente actualizado"
 
-#: ../awn-settings/awnClass.py:1290
+#: ../awn-settings/awnClass.py:1305
 msgid "Applet Successfully Added"
 msgstr "Miniaplicativo engadido con éxito"
 
-#: ../awn-settings/awnClass.py:1342
+#: ../awn-settings/awnClass.py:1357
 msgid "Can not delete active applet"
 msgstr "No pode eliminar o miniaplicativo activo"
 
-#: ../awn-settings/awnClass.py:1345
+#: ../awn-settings/awnClass.py:1360
 msgid "Delete Applet"
 msgstr "Eliminar miniaplicativo"
 
-#: ../awn-settings/awnClass.py:1350
+#: ../awn-settings/awnClass.py:1365
 #, python-format
 msgid "<b>Delete %s?</b>"
 msgstr "<b>Eliminar %s</b>"
 
-#: ../awn-settings/awnClass.py:1370
+#: ../awn-settings/awnClass.py:1385
 msgid "Unable to Delete Applet"
 msgstr "Incapaz de Eliminar o miniaplicativo"
 
 #. Translators: This string is preceded by a filename
-#: ../awn-settings/awnClass.py:1577
+#: ../awn-settings/awnClass.py:1592
 #, python-format
 msgid "%s already exists, unable to export theme."
 msgstr "%s xa existe, incapaz de exportar o decorado."
 
-#: ../awn-settings/awnClass.py:1653
+#: ../awn-settings/awnClass.py:1668
 msgid "Theme already installed, do you wish to overwrite it?"
 msgstr "Decorado xa instalado, desexa sobreescribilo?"
 
-#: ../awn-settings/awnClass.py:1687
+#: ../awn-settings/awnClass.py:1702
 msgid "This is an incompatible theme file."
 msgstr "Este ficheiro de decorado e incompatible"
 
@@ -975,147 +1027,147 @@ msgstr "Este ficheiro de decorado e incompatible"
 msgid "Awn Settings can't be run as root."
 msgstr "As preferencias de Awn non se establecen coma root."
 
-#: ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awnSettings.py.in:137
 msgid "Left"
 msgstr "Esquerda"
 
-#: ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awnSettings.py.in:137
 msgid "Right"
 msgstr "Dereita"
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:138
 msgid "Top"
 msgstr "Arriba"
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:138
 msgid "Bottom"
 msgstr "Abaixo"
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:142
 msgid "Flat"
 msgstr "Plano"
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:142
 msgid "3d"
 msgstr "3D"
 
-#: ../awn-settings/awnSettings.py.in:144
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Curved"
 msgstr "Curvado"
 
-#: ../awn-settings/awnSettings.py.in:144
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Edgy"
 msgstr "Bordeante"
 
-#: ../awn-settings/awnSettings.py.in:144
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Floaty"
 msgstr "Flotante"
 
-#: ../awn-settings/awnSettings.py.in:145
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Lucido"
 msgstr "Lucido"
 
-#: ../awn-settings/awnSettings.py.in:149
+#: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
 msgstr "Tipo de panel"
 
-#: ../awn-settings/awnSettings.py.in:150
+#: ../awn-settings/awnSettings.py.in:149
 msgid "Always visible"
 msgstr "Sempre visible"
 
-#: ../awn-settings/awnSettings.py.in:151
+#: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
 msgstr "Agochar de xeito intelixente"
 
-#: ../awn-settings/awnSettings.py.in:152
+#: ../awn-settings/awnSettings.py.in:151
 msgid "Window dodge"
 msgstr "Evitar Xanelas"
 
-#: ../awn-settings/awnSettings.py.in:157
+#: ../awn-settings/awnSettings.py.in:156
 msgid "Fade out"
 msgstr "Esvaecemento"
 
-#: ../awn-settings/awnSettings.py.in:157
+#: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
 msgstr "Transparencia"
 
-#: ../awn-settings/awnSettings.py.in:158
+#: ../awn-settings/awnSettings.py.in:157
 msgid "Keep below"
 msgstr "Manter debaixo"
 
-#: ../awn-settings/awnSettings.py.in:629
+#: ../awn-settings/awnSettings.py.in:625
 msgid "PNG Image"
 msgstr "Imaxe PNG"
 
-#: ../awn-settings/awnSettings.py.in:641
+#: ../awn-settings/awnSettings.py.in:637
 msgid "Images"
 msgstr "Imaxes"
 
-#: ../awn-settings/awnSettings.py.in:759
+#: ../awn-settings/awnSettings.py.in:755
 msgid "Save Theme..."
 msgstr "Gardar Decorado..."
 
-#: ../awn-settings/awnSettings.py.in:768
+#: ../awn-settings/awnSettings.py.in:764
 msgid "Awn Theme"
 msgstr "Decorado de AWN"
 
-#: ../awn-settings/awnSettings.py.in:797
+#: ../awn-settings/awnSettings.py.in:793
 msgid "Solid"
 msgstr "Sólido"
 
-#: ../awn-settings/awnSettings.py.in:797
+#: ../awn-settings/awnSettings.py.in:793
 msgid "Outline"
 msgstr "Contorno"
 
-#: ../awn-settings/awnSettings.py.in:798
+#: ../awn-settings/awnSettings.py.in:794
 msgid "Outline, Reversed"
 msgstr "Contorno, invertido"
 
-#: ../awn-settings/awnSettings.py.in:883
+#: ../awn-settings/awnSettings.py.in:879
 msgid "Select Tooltip Font"
 msgstr "Seleccione tipografía da Axuda"
 
-#: ../awn-settings/awnSettings.py.in:923
+#: ../awn-settings/awnSettings.py.in:919
 msgid "Awn Theme File"
 msgstr "Ficheiro de Decorado AWN"
 
-#: ../awn-settings/awnSettings.py.in:990
+#: ../awn-settings/awnSettings.py.in:1006
 msgid "Use application-specified icons"
 msgstr "Empregar as iconas específicas do aplicativo"
 
-#: ../awn-settings/awnSettings.py.in:991
+#: ../awn-settings/awnSettings.py.in:1007
 msgid "Use best quality icons"
 msgstr "Empregar iconas da mellor calidade"
 
-#: ../awn-settings/awnSettings.py.in:992
+#: ../awn-settings/awnSettings.py.in:1008
 msgid "Overlay best quality icon with application icon"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:993
+#: ../awn-settings/awnSettings.py.in:1009
 msgid "Overlay application icon with best quality icon"
 msgstr ""
 
-#: ../awn-settings/awnSettings.py.in:1139
+#: ../awn-settings/awnSettings.py.in:1258
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: ../awn-settings/awnSettings.py.in:1145
+#: ../awn-settings/awnSettings.py.in:1264
 msgid "Task Manager"
 msgstr "Xestor de tarefas"
 
-#: ../awn-settings/awnSettings.py.in:1151
+#: ../awn-settings/awnSettings.py.in:1270
 msgid "Applets"
 msgstr "Miniaplicativos"
 
-#: ../awn-settings/awnSettings.py.in:1165
+#: ../awn-settings/awnSettings.py.in:1284
 msgid "Themes"
 msgstr "Decorados"
 
-#: ../awn-settings/awnSettings.py.in:1171
+#: ../awn-settings/awnSettings.py.in:1290
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: ../bindings/python/__init__.py:126
+#: ../bindings/python/__init__.py.in:126
 #, python-format
 msgid ""
 "The following Python modules could not be found: %s.  There are a few "
@@ -1141,178 +1193,63 @@ msgstr ""
 "instalas manualmente o paquete, isto é, non vía o xestor de paquetes da túa "
 "distribución. Esta situación explícase na sección FAQ da wiki.\n"
 
-#: ../bindings/python/__init__.py:141
+#: ../bindings/python/__init__.py.in:141
 msgid "Awn Wiki"
 msgstr "Wiki de Awn"
 
-#: ../data/avant-window-navigator.desktop.in.h:1
+#: ../data/avant-window-navigator.desktop.in.h:2
 msgid "A dock-like window navigator."
 msgstr "AWN fornece unha barra de aplicativos entallábel no escritorio"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
-msgid "0: solid, 1: outline, 2: outline, reversed."
-msgstr "0:cheo, 1:perfilado, 2:perfilado invertido."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:2
-msgid "A bitmask which stores the type of effect for each event"
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:3
-msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr "Aliñamento dun panel non expandido no borde do monitor."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:4
-msgid "An optional offset when you have more than 1 monitors."
-msgstr "Unha separación opcional cando tes máis dun monitor."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:5
-msgid ""
-"Anything greater than 0 will draw a panel with corners. The greater the "
-"radius, the larger the corners."
-msgstr ""
-"Calquer valor meirande ca 0 debuxará o panel con esquinas. A maior radio, "
-"máis grandes as esquinas"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:6
-msgid ""
-"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
-"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
-"through: 3)"
-msgstr ""
-"Agocha automaticamente a doca cando o cursor non está na doca (non debería "
-"usarse en conxunción co modo Panel). (nada:0, manter debaixo:1, esvaecer:2, "
-"ver a través:3)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:7
-msgid "Background color for AwnDialog's title."
-msgstr "Cor de fondo para o título dos Indicativos de AWN"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:8
-msgid "Background color for AwnDialog."
-msgstr "Cor de fondo dos indicativos de AWN"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:9
-msgid "Background color of the tooltip"
-msgstr "Cor de fondo para a indicación de axuda"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:10
-msgid "Color of the active rectangle."
-msgstr "Cor do rectángulo activo"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:11
-msgid "Color of the glowing dot."
-msgstr "Cor do punto brilante."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:12
-msgid "Color of the outline of active rectangle."
-msgstr "Cor para o borde do rectángulo activo."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:13
-msgid "Delay between mouse leaving the panel and it hiding."
-msgstr "Retraso entre que o rato deixa o panel e este se agocha."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:14
-msgid "Delay for mouse position polling."
-msgstr "Retraso para estimar a posición do rato."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:15
-msgid ""
-"Determines if generic configuration editor is allowed for applets that do "
-"not have a customized preferences dialog."
-msgstr ""
-"Determina se o editor da configuración xenérica está autorizado para "
-"miniaplicativos que non teñen un cadro de preferencias personalizado."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:16
-msgid "Draw separators."
-msgstr "Debuxa separadores."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:17
-msgid "Enable drawing of a pattern."
-msgstr "Activa o debuxado dun patrón."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:18
-msgid "First gradient step color."
-msgstr "Cor do primerio paso da gradación."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:19
-msgid "First highlight gradient step color."
-msgstr "Cor do primeiro paso da gradación do resaltado"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:20
-msgid "Font color of the tooltip"
-msgstr "Cor da letra do indicativo."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:21
-msgid "Font name of the tooltip"
-msgstr "Nome da letra do indicativo"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:22
-msgid "Force monitor geometry."
-msgstr "Forzar o tamaño do monitor"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:23
-msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr "Cor do texto do icono. Deixar baldeiro se usas a cor do decorado gtk"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:24
-msgid "Icon text outline color.  Leave empty to use gtk theme color."
-msgstr ""
-"Cor do borde do texto do icono. Deixar baldeiro se usas a cor do decorado gtk"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:25
-msgid "If true, maximised windows will not cover the panel."
-msgstr "Se seleccionas, as ventás maximizadas non taparán o panel."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:26
-msgid "If true, the panel will expand to full monitor width/height."
-msgstr "Se seleccionas, o panel expandirase todo o ancho/alto do monitor."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:27
-msgid "Internal border color."
-msgstr "Cor do interior do borde."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:28
-msgid "Main border color."
-msgstr "Cor do bordo principal"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:29
-msgid ""
-"Monitor number where Awn is located (only takes effect when monitor_force is "
-"False, use -1 to automatically pick monitor)."
-msgstr ""
-"Número de monitor onde está Awn (so afecta cando monitor_force se establece "
-"False, usar -1 para pillar un monitor automáticamente)."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:30
-msgid "Offset between the icons and their dialog."
-msgstr "Separación entre os iconos e os seus indicativos."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:31
-msgid "Offset of the icons from window border."
-msgstr "Separación dos iconos dende o borde da ventá."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:32
-msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr "Posición de AWN.(esquerda:0, dereita:1, arriba,2 e abaixo:3)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:33
-msgid "Outline color of the tooltip"
-msgstr "Cor exterior do indicativo"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:34
-msgid "Path to the current desktop file theme."
-msgstr "Camiño ó arquivo do decorado actual do escritorio."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
 msgstr "Camiño ó png que contén o fondo do icono activo."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:36
+#: ../data/avant-window-navigator.schema-ini.in.in.h:2
+msgid "Color of the active rectangle."
+msgstr "Cor do rectángulo activo"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:3
+msgid "Color of the outline of active rectangle."
+msgstr "Cor para o borde do rectángulo activo."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "Path to the png containing the arrow icon."
 msgstr "Camiño ó png que contén o icono da flecha."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:37
+#: ../data/avant-window-navigator.schema-ini.in.in.h:5
+msgid "Color of the glowing dot."
+msgstr "Cor do punto brilante."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+msgid "The opacity of the icons, from 0.0 to 1.0"
+msgstr "A opacidade das iconas, de 0.0 a 1.0"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:7
+msgid "A bitmask which stores the type of effect for each event"
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:8
+msgid "Reflection alpha as a multiple of the current alpha of the icon."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:9
+msgid "The offset between the icon and it's reflection"
+msgstr "A separación entre a icona e o seu reflexo"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:10
+msgid "Show shadows for icons."
+msgstr "Mostrar sombras para as iconas."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:11
+msgid ""
+"The list of applets for this panel ordered from left-to-right or top-to-"
+"bottom."
+msgstr ""
+"A lista de miniaplicativos para este panel ordenados de esquerda a dereita "
+"ou de arriba a abaixo."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid ""
 "Provides possibility to click on windows behind the panel. (0: never click "
 "through, 1: click through when holding CTRL, 2: always click through and "
@@ -1322,171 +1259,307 @@ msgstr ""
 "permitir, 1:clicar a través cando tes pulsado CTRL, 2:permitir sempre clicar "
 "e interactua co panel só se premes CTRL)"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:38
-msgid "Reflection alpha as a multiple of the current alpha of the icon."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:13
+msgid "Offset between the icons and their dialog."
+msgstr "Separación entre os iconos e os seus indicativos."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
+msgid "If true, the panel will expand to full monitor width/height."
+msgstr "Se seleccionas, o panel expandirase todo o ancho/alto do monitor."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:15
+#, fuzzy
+msgid ""
+" Intellihide mode.  0.. Disabled,  1.. use windows on active workspace, 2.. "
+"use windows of currently focused app."
 msgstr ""
+"Cómo xerar a lista de ventás analizadas que intersectan cando Agochado "
+"Intelixente está activo. 0.. usar ventás no escritorio activo, 1.. usar "
+"ventás da aplicación actualmente en primeiro plano."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:39
-msgid "Second gradient step color."
-msgstr "Cor do segundo paso da gradación."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
+msgid "Alignment of a non-expanded panel on the monitor edge."
+msgstr "Aliñamento dun panel non expandido no borde do monitor."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:40
-msgid "Second highlight gradient step color."
-msgstr "Cor do segundo paso da gradación do resaltado."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:41
-msgid "Separator color."
-msgstr "Cor do separador."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:42
-msgid "Show shadows for icons."
-msgstr "Mostrar sombras para as iconas."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:43
-msgid "The active list UA Screenlets for this panel."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:17
+msgid ""
+"Monitor number where Awn is located (only takes effect when monitor_force is "
+"False, use -1 to automatically pick monitor)."
 msgstr ""
+"Número de monitor onde está Awn (so afecta cando monitor_force se establece "
+"False, usar -1 para pillar un monitor automáticamente)."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:44
-msgid "The angle of the panel in 3D mode."
-msgstr "Ángulo do panel no modo 3D."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:18
+msgid "Force monitor geometry."
+msgstr "Forzar o tamaño do monitor"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:45
-msgid "The curviness of the panel in Curves mode."
-msgstr "Curvatura do panel no modo Curvado."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:46
+#: ../data/avant-window-navigator.schema-ini.in.in.h:19
 msgid "The forced monitor height. Only used if monitor_force is true."
 msgstr ""
 "A Altura fozada do monitor. So se usa se monitor_force está seleccionado."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:47
+#: ../data/avant-window-navigator.schema-ini.in.in.h:20
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
 "O ancho forzado do monitor. So se usa se monitor_force está seleccionado."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:48
+#: ../data/avant-window-navigator.schema-ini.in.in.h:21
+msgid "An optional offset when you have more than 1 monitors."
+msgstr "Unha separación opcional cando tes máis dun monitor."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:22
+msgid "Offset of the icons from window border."
+msgstr "Separación dos iconos dende o borde da ventá."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:23
+msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
+msgstr "Posición de AWN.(esquerda:0, dereita:1, arriba,2 e abaixo:3)"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
+msgid "If true, maximised windows will not cover the panel."
+msgstr "Se seleccionas, as ventás maximizadas non taparán o panel."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+msgid "The user-visible size of Awn."
+msgstr "O tamaño de Awn visible polo usuario."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:26
+msgid "The active list UA Screenlets for this panel."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
 msgstr ""
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:49
+#: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid ""
-"The list of applets for this panel ordered from left-to-right or top-to-"
-"bottom."
+"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
+"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
+"through: 3)"
 msgstr ""
-"A lista de miniaplicativos para este panel ordenados de esquerda a dereita "
-"ou de arriba a abaixo."
+"Agocha automaticamente a doca cando o cursor non está na doca (non debería "
+"usarse en conxunción co modo Panel). (nada:0, manter debaixo:1, esvaecer:2, "
+"ver a través:3)"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:50
-msgid "The list of panel instances."
-msgstr "A lista de paneis"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:51
-msgid "The location of the pattern to draw."
-msgstr "A localización do patrón a debuxar."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:52
-msgid "The offset between the icon and it's reflection"
-msgstr "A separación entre a icona e o seu reflexo"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:53
-msgid "The offset of the Floaty background."
-msgstr "A separación do fondo no modo Flotante."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:54
-msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr "A opacidade das iconas, de 0.0 a 1.0"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:55
-msgid "The opacity of the pattern."
-msgstr "A opacidade do patrón."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:56
+#: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
 "The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
 "4, floaty: 5, lucido: 6)"
 msgstr ""
 "O estilo da barra.(ningún: 0, plana:1, en 3d:2, curva:3, borde:4, lucido:6)"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:57
-msgid "The symmetry of the curve in Curves mode."
-msgstr "Simetría da curva en Modo Curvo"
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
+msgid "The list of panel instances."
+msgstr "A lista de paneis"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:58
-msgid "The thickness in 3D mode."
-msgstr "O grosor no modo 3D"
+#: ../data/avant-window-navigator.schema-ini.in.in.h:31
+msgid "Delay between mouse leaving the panel and it hiding."
+msgstr "Retraso entre que o rato deixa o panel e este se agocha."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:59
-msgid "The user-visible size of Awn."
-msgstr "O tamaño de Awn visible polo usuario."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+msgid "Delay for mouse position polling."
+msgstr "Retraso para estimar a posición do rato."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:60
-msgid "Time in ms after which AwnIcon will emit long-press signal."
-msgstr "Tempo en ms tralo que AwnIcon emitirá o sinal de pulsación prolongada."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:61
-msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr ""
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:62
+#: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Whether to close dialogs on loss of focus."
 msgstr "Cando pechar os diálogos ao perder o foco."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:63
+#: ../data/avant-window-navigator.schema-ini.in.in.h:34
+msgid ""
+"Determines if generic configuration editor is allowed for applets that do "
+"not have a customized preferences dialog."
+msgstr ""
+"Determina se o editor da configuración xenérica está autorizado para "
+"miniaplicativos que non teñen un cadro de preferencias personalizado."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:35
+msgid "Time in ms after which AwnIcon will emit long-press signal."
+msgstr "Tempo en ms tralo que AwnIcon emitirá o sinal de pulsación prolongada."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:36
+msgid "Main border color."
+msgstr "Cor do bordo principal"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:37
+msgid ""
+"Anything greater than 0 will draw a panel with corners. The greater the "
+"radius, the larger the corners."
+msgstr ""
+"Calquer valor meirande ca 0 debuxará o panel con esquinas. A maior radio, "
+"máis grandes as esquinas"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:38
+msgid "Path to the current desktop file theme."
+msgstr "Camiño ó arquivo do decorado actual do escritorio."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:39
+msgid "The symmetry of the curve in Curves mode."
+msgstr "Simetría da curva en Modo Curvo"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:40
+msgid "The curviness of the panel in Curves mode."
+msgstr "Curvatura do panel no modo Curvado."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:41
+msgid "The offset of the Floaty background."
+msgstr "A separación do fondo no modo Flotante."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:42
+msgid "The thickness in 3D mode."
+msgstr "O grosor no modo 3D"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:43
+msgid "Whether AwnDialog should use Gtk theme colors."
+msgstr ""
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:44
+msgid "Background color for AwnDialog."
+msgstr "Cor de fondo dos indicativos de AWN"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:45
+msgid "Background color for AwnDialog's title."
+msgstr "Cor de fondo para o título dos Indicativos de AWN"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:46
+msgid "First highlight gradient step color."
+msgstr "Cor do primeiro paso da gradación do resaltado"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:47
+msgid "Second highlight gradient step color."
+msgstr "Cor do segundo paso da gradación do resaltado."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:48
+msgid "First gradient step color."
+msgstr "Cor do primerio paso da gradación."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:49
+msgid "Second gradient step color."
+msgstr "Cor do segundo paso da gradación."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "Whether to use colors from the current Gtk theme."
 msgstr "Cando usar as cores do decorado Gtk actual."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:64
+#: ../data/avant-window-navigator.schema-ini.in.in.h:51
+msgid "Internal border color."
+msgstr "Cor do interior do borde."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:52
+msgid "0: solid, 1: outline, 2: outline, reversed."
+msgstr "0:cheo, 1:perfilado, 2:perfilado invertido."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:53
+msgid "Icon text color.  Leave empty to use gtk theme color."
+msgstr "Cor do texto do icono. Deixar baldeiro se usas a cor do decorado gtk"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:54
+msgid "Icon text outline color.  Leave empty to use gtk theme color."
+msgstr ""
+"Cor do borde do texto do icono. Deixar baldeiro se usas a cor do decorado gtk"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
 msgstr ""
 
+#: ../data/avant-window-navigator.schema-ini.in.in.h:56
+msgid "The angle of the panel in 3D mode."
+msgstr "Ángulo do panel no modo 3D."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:57
+msgid "The opacity of the pattern."
+msgstr "A opacidade do patrón."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:58
+msgid "The location of the pattern to draw."
+msgstr "A localización do patrón a debuxar."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:59
+msgid "Separator color."
+msgstr "Cor do separador."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:60
+msgid "Draw separators."
+msgstr "Debuxa separadores."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:61
+msgid "Enable drawing of a pattern."
+msgstr "Activa o debuxado dun patrón."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:62
+msgid "Background color of the tooltip"
+msgstr "Cor de fondo para a indicación de axuda"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:63
+msgid "Outline color of the tooltip"
+msgstr "Cor exterior do indicativo"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:64
+msgid "Font color of the tooltip"
+msgstr "Cor da letra do indicativo."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:65
+msgid "Font name of the tooltip"
+msgstr "Nome da letra do indicativo"
+
 #: ../data/awn-themed-icon.ui.h:1
+#, fuzzy
+msgid "Customize Applet Icon"
+msgstr "Personaliza o Miniaplicativo"
+
+#: ../data/awn-themed-icon.ui.h:2
 msgid ""
-"<b>Theme Panel Icon</b>\n"
+"<b><big>Theme Panel Icon</big></b>\n"
+"\n"
 "You have chosen to replace an icon on the panel. Please select whether this "
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
 msgstr ""
 
-#: ../data/awn-themed-icon.ui.h:3
-msgid "Customise Applet"
-msgstr "Personaliza o Miniaplicativo"
-
-#: ../libawn/awn-applet.c:1234
+#: ../libawn/awn-applet.cc:1216
 #, c-format
 msgid "About %s"
 msgstr "Acerca de %s"
 
-#: ../libawn/awn-themed-icon.c:1980
+#: ../libawn/awn-themed-icon.cc:1900
 msgid "Icons"
 msgstr "Iconas"
 
-#: ../libawn/awn-themed-icon.c:1983
+#: ../libawn/awn-themed-icon.cc:1903
 msgid "Choose Custom Icon"
 msgstr "Elixir icona personalizada"
 
-#: ../libawn/awn-themed-icon.c:2071
+#: ../libawn/awn-themed-icon.cc:1986
 msgid "Customize Icon"
 msgstr "Personalizar a icona"
 
-#: ../libawn/awn-themed-icon.c:2158
+#: ../libawn/awn-themed-icon.cc:2070
 msgid "Remove Customized Icon"
 msgstr "Eliminar a icona personalizada"
 
-#: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
+#: ../src/awn-applet-proxy.cc:279 ../src/awn-applet-proxy.cc:308
 msgid "Loading applet..."
 msgstr "Cargando o miniaplicativo..."
 
-#: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
+#: ../src/awn-applet-proxy.cc:362 ../src/awn-applet-proxy.cc:463
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr "Uups! O miniaplicativo estragouse. Prema para reiniciarlo."
 
-#: ../src/awn-panel.c:4015
+#: ../src/awn-panel.cc:3995
 msgid "Close docklet"
 msgstr "Pechar a doca"
+
+#~ msgid ""
+#~ "Intellihide if hide is enabled for the panel.  This will inhibit autohide "
+#~ "of the panel if there are no intersecting windows in the relevant window "
+#~ "list (see intellihide_mode)."
+#~ msgstr ""
+#~ "Agochado intelixente se está habilitado para o panel. Esto inibirá o "
+#~ "autoagochamento do panel se non hay ventás intersecando na lista de "
+#~ "ventás relevantes(ver modo_agochado intelixente)"
 
 #~ msgid "translator-credits"
 #~ msgstr ""
@@ -1502,10 +1575,9 @@ msgstr "Pechar a doca"
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN renovouse satisfactoriamente"
 
-#, python-format
 #~ msgid ""
-#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
-#~ "installed. It usually comes with librsvg, or a package similarly named."
+#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ "
+#~ "is installed. It usually comes with librsvg, or a package similarly named."
 #~ msgstr ""
 #~ "Non foi posíbel cargar a icona «%s». Asegúrese de que o cargador SVG para "
 #~ "Gtk+ estea instalado. Normalmente ven con librsvg, ou un paquete de nome "

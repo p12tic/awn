@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 16:57+0200\n"
+"POT-Creation-Date: 2013-11-19 02:04+0200\n"
 "PO-Revision-Date: 2013-11-06 00:29+0000\n"
 "Last-Translator: abuyop <Unknown>\n"
 "Language-Team: Malay <ms@li.org>\n"
+"Language: ms\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -27,27 +28,70 @@ msgstr "Mengisi ruang pada panel dalam mod mengembang"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:1
 msgid ""
-" Allow grouping of windows together that have different WM_CLIENT_NAME "
-"values."
+"Behavior when window on a different workspace is activated. (0 for default, "
+"1 - change active workspace, 2 - move to current workspace)"
 msgstr ""
-" Benarkan perkumpulan sama tetingkap yang mempunyai nilai WM_CLIENT_NAME "
-"yang berbeza."
+"Kelakuan apabila tetingkap pada tempat-kerja yang lain diaktifkan. (0 untuk "
+"asas, 1 - tukar tempat-kerja aktif, 2 - gerakkan ke tempat-kerja semasa)"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:2
 msgid ""
-" Controls the alpha of the overlay if overlay_application_icons is true. "
-"Valid range 0.0 to 1.0."
+"Number of seconds to inhibit autohide when a application requests attention. "
+"A value of 0 disables."
 msgstr ""
-" Mengawal alfa kepunyaan lapisan jika overlay_application_icons adalah "
-"benar. Lingkungan sah dari 0.0 kepada 1.0."
+"Bilangan saat untuk menyekat sembunyi-senditi bila aplikasi meminta "
+"perhatian. Nilai 0 dilumpuhkan."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:3
+msgid ""
+"Number of seconds to wait before nagging again, by inhibiting autohide, if "
+"attention is required by any windows. A value of 0 disables."
+msgstr ""
+"Bilangan saat untuk menunggu sebelum diganggu lagi, dengan menyekat sembunyi-"
+"senditi, jika perhatian diperlukan oleh sebarang tetingkap. Nilai 0 "
+"dilumpuhkan."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
+msgid "Enable reordering of windows by drag and drop "
+msgstr "Bolehkan penyusunan semula tetingkap secara seret dan jatuh. "
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
+msgid "Delay before activating a window when dragging over an icon."
+msgstr ""
+"Tangguhkan sebelum mengaktifkan tetingkap apabila menyeret ikon ke atasnya."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
+msgid ""
+"Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
+"Copy if owned by user, 2.. Do not copy."
+msgstr ""
+"Kelakuan salin desktop bila seret dan lepas fail desktop. 0.. Salin semua, "
+"1.. Salin jika dimiliki oleh pengguna, 2.. Jangan salin."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
+msgid " kde/compiz previews."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
+msgid "Default dialog scale. Previews will be scaled down further as needed."
+msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
+msgid "Enable long press to open Dialog."
+msgstr "Bolehkan tekan lama untuk membuka Dialog."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
+msgid "Enabling group of tasks."
+msgstr "Membolehkan kumpulan tugas-tugasan."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
+#, fuzzy
 msgid ""
 " Controls the display of window icons in the Task Icon. 0) Alway display "
 "application provided window icons when window is active (except for a very "
 "few special cases). 1) Attempt to only display application provided icons "
 "when they are likely to provide useful/context info. 2) Ignore all "
-"application provide icons and only display the Lauuncher icon"
+"application provide icons and only display the Launcher icon"
 msgstr ""
 " Mengawal paparan ikon-ikon tetingkap didalam Ikon Tugas. 0) Selalu "
 "memaparkan ikon-ikon tetingkap yang dibekalkan oleh aplikasi apabila "
@@ -56,79 +100,28 @@ msgstr ""
 "membawa informasi berguna/konteks. 2) Abaikan semua ikon yang dibekalkan "
 "oleh aplikasi dan hanya memaparkan icon Pelancar"
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
-msgid ""
-" Controls the size of the overlay if overlay_application_icons is true. "
-"Valid range 0.2 to 0.7."
-msgstr ""
-" Mengawal ukuran lapisan jika overlay_application_icons adalah benar. "
-"Lingkungan sah dari 0.2 kepada 0.7."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
 msgid ""
 " Group icons with the same launcher, if the grouping of windows is disabled."
 msgstr ""
 " Kumpulkan ikon-ikon yang mempunyai pelancar sama, jika pengumpulan "
 "tetingkap tidak dibolehkan."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
-msgid ""
-" If overlay_application_icons is true, this key will reverse the "
-"overlay/overlayee if set to true."
-msgstr ""
-" Jika overlay_application_icons adalah benar, kekunci ini akan "
-"menterbalikkan lapisan/pelapis jika ditetapkan benar."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
-msgid ""
-" If true then application window icons will be overlayed on the Launcher "
-"icon instead of replacing according to the behaviour defined by "
-"icon_change_behavior."
-msgstr ""
-" Jika benar maka ikon-ikon tetingkap aplikasi akan dilapis pada ikon "
-"Pelancar disebalik menukar mengikut kelakuan yang ditentukan oleh "
-"icon_change_behavior."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
-msgid ""
-"Behavior when window on a different workspace is activated. (0 for default, "
-"1 - change active workspace, 2 - move to current workspace)"
-msgstr ""
-"Kelakuan apabila tetingkap pada tempat-kerja yang lain diaktifkan. (0 untuk "
-"asas, 1 - tukar tempat-kerja aktif, 2 - gerakkan ke tempat-kerja semasa)"
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
-msgid ""
-"Context menu definition.  Will look in the awn menu installation directory "
-"unless a absolutely path is provided."
-msgstr ""
-"Definisi menu konteks. Akan lihat didalam direktori pemasangan menu awn "
-"kecuali jalan diberikan secara mutlak."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:10
-msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
-"Tangguhkan sebelum mengaktifkan tetingkap apabila menyeret ikon ke atasnya."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:11
-msgid ""
-"Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
-"Copy if owned by user, 2.. Do not copy."
-msgstr ""
-"Kelakuan salin desktop bila seret dan lepas fail desktop. 0.. Salin semua, "
-"1.. Salin jika dimiliki oleh pengguna, 2.. Jangan salin."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:12
-msgid "Enable long press to open Dialog."
-msgstr "Bolehkan tekan lama untuk membuka Dialog."
-
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:13
-msgid "Enable reordering of windows by drag and drop "
-msgstr "Bolehkan penyusunan semula tetingkap secara seret dan jatuh. "
+msgid ""
+" Allow grouping of windows together that have different WM_CLIENT_NAME "
+"values."
+msgstr ""
+" Benarkan perkumpulan sama tetingkap yang mempunyai nilai WM_CLIENT_NAME "
+"yang berbeza."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:14
-msgid "Enabling group of tasks."
-msgstr "Membolehkan kumpulan tugas-tugasan."
+msgid ""
+"a list of paths to .desktop files from which the taskmanager should create "
+"it's launchers"
+msgstr ""
+"senarai laluan ke fail desktop yang mana pengurus tugas seharusnya cipta "
+"pelancarnya"
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:15
 msgid ""
@@ -142,78 +135,176 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:16
 msgid ""
-"How to generate the list of windows tested for intersection when Intellihide "
-"is active.  0.. use windows on active workspace, 1.. use windows of "
-"currently focused app."
-msgstr ""
-"Bagaimana hendak janakan senarai tetingkap yang diuji untuk persilangan bila "
-"sembunyi-pintar adalah aktif. 0.. guna tetingkap pada ruang kerja aktif, 1.. "
-"guna tetingkap pada apl terfokus semasa."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
-msgid ""
-"Intellihide if hide is enabled for the panel.  This will inhibit autohide of "
-"the panel if there are no intersecting windows in the relevant window list "
-"(see intellihide_mode)."
-msgstr ""
-"Sembunyi-pintar jika sembunyi dibenarkan pada panel. Ia akah menyekat "
-"sembunyi-sendiri panel jika tiada tetingkap yang bersilang dalam senarai "
-"tetingkap berkaitan (rujuk intelihide_mode)."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
-msgid ""
 "Maximum number of task indicators to show under icons. Valid range is 0..3."
 msgstr ""
 "Nombor maksimum penunjuk tugas untuk ditunjukkan dibawah ikon. Lingkungan "
 "sah daripada 0..3."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
-"Number of seconds to inhibit autohide when a application requests attention. "
-"A value of 0 disables."
+" Monitor desktop files. If set to false then changes to desktop files will "
+"not be reflected immediately."
 msgstr ""
-"Bilangan saat untuk menyekat sembunyi-senditi bila aplikasi meminta "
-"perhatian. Nilai 0 dilumpuhkan."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
-msgid ""
-"Number of seconds to wait before nagging again, by inhibiting autohide, if "
-"attention is required by any windows. A value of 0 disables."
-msgstr ""
-"Bilangan saat untuk menunggu sebelum diganggu lagi, dengan menyekat sembunyi-"
-"senditi, jika perhatian diperlukan oleh sebarang tetingkap. Nilai 0 "
-"dilumpuhkan."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
 msgid "Only show and manager launcher windows"
 msgstr "Hanya tunjuk dan mengurus pelancar tetingkap"
 
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
+msgid ""
+" If true then application window icons will be overlayed on the Launcher "
+"icon instead of replacing according to the behaviour defined by "
+"icon_change_behavior."
+msgstr ""
+" Jika benar maka ikon-ikon tetingkap aplikasi akan dilapis pada ikon "
+"Pelancar disebalik menukar mengikut kelakuan yang ditentukan oleh "
+"icon_change_behavior."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
+msgid ""
+" Controls the alpha of the overlay if overlay_application_icons is true. "
+"Valid range 0.0 to 1.0."
+msgstr ""
+" Mengawal alfa kepunyaan lapisan jika overlay_application_icons adalah "
+"benar. Lingkungan sah dari 0.0 kepada 1.0."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
+msgid ""
+" Controls the size of the overlay if overlay_application_icons is true. "
+"Valid range 0.2 to 0.7."
+msgstr ""
+" Mengawal ukuran lapisan jika overlay_application_icons adalah benar. "
+"Lingkungan sah dari 0.2 kepada 0.7."
+
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
+msgid ""
+" If overlay_application_icons is true, this key will reverse the overlay/"
+"overlayee if set to true."
+msgstr ""
+" Jika overlay_application_icons adalah benar, kekunci ini akan "
+"menterbalikkan lapisan/pelapis jika ditetapkan benar."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid "Show windows from all workspaces"
 msgstr "Papar tetingkap dari semua ruangkerja"
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
 msgstr "Ambang yang mana kiraan teks mula dipaparkan. Julat sah 1.."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:25
 msgid ""
-"a list of paths to .desktop files from which the taskmanager should create "
-"it's launchers"
+"Context menu definition.  Will look in the awn menu installation directory "
+"unless a absolutely path is provided."
 msgstr ""
-"senarai laluan ke fail desktop yang mana pengurus tugas seharusnya cipta "
-"pelancarnya"
+"Definisi menu konteks. Akan lihat didalam direktori pemasangan menu awn "
+"kecuali jalan diberikan secara mutlak."
 
-#: ../applets/taskmanager/task-launcher.c:1109
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1020
+#: ../applets/taskmanager/task-launcher.cc:1068
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:957
 msgid "Launch"
 msgstr "Lancarkan"
 
-#: ../applets/taskmanager/task-launcher.c:1192
+#: ../applets/taskmanager/task-launcher.cc:1148
 #, c-format
 msgid "Launch %s"
 msgstr "Lancarkan %s"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:97
+#, c-format
+msgid "Workspace %d"
+msgstr "Ruangkerja %d"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:105
+#, c-format
+msgid "Workspace 1_0"
+msgstr "Ruangkerja 1_0"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:107
+#, c-format
+msgid "Workspace %s%d"
+msgstr "Ruangkerja %s%d"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:664
+msgid "Add as Launcher"
+msgstr "Tambah sebagai Pelancar"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:699
+msgid "Remove Launcher"
+msgstr "Buang Pelancar"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:716
+msgid "_Close"
+msgstr "_Tutup"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:741
+msgid "_Close All"
+msgstr "_Tutup Semua"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:781
+msgid "Minimize all"
+msgstr "Minimakan semua"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:812
+msgid "Unminimize all"
+msgstr "Nyahminimum semua"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:843
+msgid "Maximize all"
+msgstr "Maksimakan semua"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:874
+msgid "Unmaximize all"
+msgstr "Nyahmaksimakan semua"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:887
+msgid "Ma_ximize"
+msgstr "Ma_ksimakan"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:890
+msgid "Unma_ximize"
+msgstr "Nyahma_ksimum"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:914
+msgid "Always on _Top"
+msgstr "Sentiasa di _Atas"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:934
+msgid "Mi_nimize"
+msgstr "Mi_nima"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:937
+msgid "Unmi_nimize"
+msgstr "Nyahmi_nima"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:987
+msgid "Always on Visible Workspace"
+msgstr "Selalu berada pada Ruangkerja Kelihatan"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:990
+msgid "Only on This Workspace"
+msgstr "Hanya pada RuangKerja Ini"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1069
+msgid "Move to Workspace _Left"
+msgstr "Pindah ke Ruangkerja Ki_ri"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1079
+msgid "Move to Workspace _Right"
+msgstr "Pindah ke RuangkerjaK_anan"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1088
+msgid "Move to Workspace _Up"
+msgstr "Pindah ke Ruangkerja _Atas"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1097
+msgid "Move to Workspace _Down"
+msgstr "Pindah ke Ruangkerja _Bawah"
+
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1106
+msgid "Move to Another _Workspace"
+msgstr "Pindah ke R_uangkerja lain"
 
 #: ../applets/taskmanager/taskmanager.desktop.in.in.h:1
 msgid "Launcher/Taskmanager"
@@ -224,7 +315,7 @@ msgid "Launcher/Taskmanager applet"
 msgstr "Applet Pelancar/PengurusTugas"
 
 #: ../applets/quick-prefs/applet.vala:130
-#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.c:719
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.cc:703
 msgid "About Awn"
 msgstr "Mengenai Awn"
 
@@ -237,131 +328,44 @@ msgstr "Seret untuk menukarkan orientasi panel"
 msgid "Icon size:"
 msgstr "Saiz ikon:"
 
-#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.c:1081
-#: ../src/awn-panel.c:703
+#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.cc:1077
+#: ../src/awn-panel.cc:687
 msgid "Dock Preferences"
 msgstr "Tetapan Dock"
 
-#: ../applets/quick-prefs/applet.vala:576
+#: ../applets/quick-prefs/applet.vala:577
 #, c-format
 msgid "Could not open Awn settings: %s"
 msgstr "Tidak dapat membuka tetapan Awn: %s"
 
 #. vim: set ft=vala et ts=2 sts=2 sw=2 ai :
 #: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:1
-msgid "Applet used to control the dock and launch Awn preferences."
-msgstr ""
-"Applet yang digunakan untuk mengawal dock dan melancarkan tetapan Awn."
-
-#: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
 msgid "Preferences applet"
 msgstr "Applet tetapan"
 
-#: ../applets/separator/separator.desktop.in.in.h:1
-msgid "Adds a separator between applets"
-msgstr "Menambahkan pemisah diantara applet"
+#: ../applets/quick-prefs/quick-prefs.desktop.in.in.h:2
+msgid "Applet used to control the dock and launch Awn preferences."
+msgstr "Applet yang digunakan untuk mengawal dock dan melancarkan tetapan Awn."
 
-#: ../applets/separator/separator.desktop.in.in.h:2
+#: ../applets/separator/separator.desktop.in.in.h:1
 msgid "Separator"
 msgstr "Pemisah"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:91
-#, c-format
-msgid "Workspace %d"
-msgstr "Ruangkerja %d"
+#: ../applets/separator/separator.desktop.in.in.h:2
+msgid "Adds a separator between applets"
+msgstr "Menambahkan pemisah diantara applet"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:100
-#, c-format
-msgid "Workspace 1_0"
-msgstr "Ruangkerja 1_0"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:102
-#, c-format
-msgid "Workspace %s%d"
-msgstr "Ruangkerja %s%d"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:683
-msgid "Add as Launcher"
-msgstr "Tambah sebagai Pelancar"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:722
-msgid "Remove Launcher"
+#: ../applets/simple-launcher/simple-launcher.desktop.in.in.h:1
+#, fuzzy
+msgid "Simple Launcher"
 msgstr "Buang Pelancar"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.c:740
-msgid "_Close"
-msgstr "_Tutup"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:768
-msgid "_Close All"
-msgstr "_Tutup Semua"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:815
-msgid "Minimize all"
-msgstr "Minimakan semua"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:851
-msgid "Unminimize all"
-msgstr "Nyahminimum semua"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:887
-msgid "Maximize all"
-msgstr "Maksimakan semua"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:923
-msgid "Unmaximize all"
-msgstr "Nyahmaksimakan semua"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:937
-msgid "Ma_ximize"
-msgstr "Ma_ksimakan"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:942
-msgid "Unma_ximize"
-msgstr "Nyahma_ksimum"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:970
-msgid "Always on _Top"
-msgstr "Sentiasa di _Atas"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:994
-msgid "Mi_nimize"
-msgstr "Mi_nima"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:999
-msgid "Unmi_nimize"
-msgstr "Nyahmi_nima"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1053
-msgid "Always on Visible Workspace"
-msgstr "Selalu berada pada Ruangkerja Kelihatan"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1057
-msgid "Only on This Workspace"
-msgstr "Hanya pada RuangKerja Ini"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1146
-msgid "Move to Workspace _Left"
-msgstr "Pindah ke Ruangkerja Ki_ri"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1156
-msgid "Move to Workspace _Right"
-msgstr "Pindah ke RuangkerjaK_anan"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1166
-msgid "Move to Workspace _Up"
-msgstr "Pindah ke Ruangkerja _Atas"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1176
-msgid "Move to Workspace _Down"
-msgstr "Pindah ke Ruangkerja _Bawah"
-
-#: ../applets/taskmanager/task-icon-build-context-menus.c:1185
-msgid "Move to Another _Workspace"
-msgstr "Pindah ke R_uangkerja lain"
+#: ../applets/simple-launcher/simple-launcher.desktop.in.in.h:2
+msgid "Applet used to launch stuff"
+msgstr ""
 
 #: ../awn-settings/awn-settings.desktop.in.h:1
-#: ../awn-settings/awn-settings.ui.h:26
+#: ../awn-settings/awn-settings.ui.h:1
 msgid "Awn Settings"
 msgstr "Tetapan Awn"
 
@@ -369,399 +373,27 @@ msgstr "Tetapan Awn"
 msgid "Manage Awn preferences, launchers, applets and themes"
 msgstr "Uruskan tetapan Awn, pelancar Awn, applet Awn, dan tema Awn"
 
-#: ../awn-settings/awn-settings.ui.h:1
-msgid "3D Angle"
-msgstr "Sudut 3D"
-
 #: ../awn-settings/awn-settings.ui.h:2
-msgid "<b>Active Applets</b>"
-msgstr "<b>Applet Aktif</b>"
+msgid "_Size of icons:"
+msgstr "_Saiz ikon:"
 
 #: ../awn-settings/awn-settings.ui.h:3
-msgid "<b>Available Applets</b>"
-msgstr "<b>Applet yang Sedia Ada</b>"
+msgid "pixels"
+msgstr "piksel"
 
 #: ../awn-settings/awn-settings.ui.h:4
-msgid "<b>Categories</b>"
-msgstr "<b>Kategori</b>"
+msgid "_Orientation:"
+msgstr "_Orientasi:"
 
 #: ../awn-settings/awn-settings.ui.h:5
-msgid "<b>Effects</b>"
-msgstr "<b>Kesan</b>"
-
-#: ../awn-settings/awn-settings.ui.h:6
-msgid "<b>Export Option Groups</b>"
-msgstr "<b>Eksport Kumpulan Opsyen</b>"
-
-#: ../awn-settings/awn-settings.ui.h:7
-msgid "<b>Extras</b>"
-msgstr "<b>Tambahan</b>"
-
-#: ../awn-settings/awn-settings.ui.h:8
-msgid "<b>General</b>"
-msgstr "<b>Umum</b>"
-
-#: ../awn-settings/awn-settings.ui.h:9
-msgid "<b>Icons</b>"
-msgstr "<b>Ikon</b>"
-
-#: ../awn-settings/awn-settings.ui.h:10
-msgid "<b>Launchers</b>"
-msgstr "<b>Pelancar</b>"
-
-#: ../awn-settings/awn-settings.ui.h:11
-msgid "<b>Numeric Settings</b>"
-msgstr "<b>Tetapan Bernombor</b>"
-
-#: ../awn-settings/awn-settings.ui.h:12
-msgid "<b>Panel Colors</b>"
-msgstr "<b>Warna-warna panel</b>"
-
-#: ../awn-settings/awn-settings.ui.h:13
-msgid "<b>Panel</b>"
-msgstr "<b>Panel</b>"
-
-#: ../awn-settings/awn-settings.ui.h:14
-msgid "<b>Repositories</b>"
-msgstr "<b>Repositori</b>"
-
-#: ../awn-settings/awn-settings.ui.h:15
-msgid "<b>Settings</b>"
-msgstr "<b>Tetapan</b>"
-
-#: ../awn-settings/awn-settings.ui.h:16
-msgid "<b>Taskmanagers</b>"
-msgstr "<b>PengurusTugas</b>"
-
-#: ../awn-settings/awn-settings.ui.h:17
-msgid "<b>These settings require the Task Manager applet to be active. </b>"
-msgstr "<b>Tetapan ini memerlukan applet Pengurus Tugas aktif. </b>"
-
-#: ../awn-settings/awn-settings.ui.h:18
-msgid "<b>Tooltips</b>"
-msgstr "<b>Tip Alatan</b>"
-
-#: ../awn-settings/awn-settings.ui.h:19
-msgid ""
-"<b>You need to enable desktop effects (compositor) to apply and customize "
-"themes.</b>"
-msgstr ""
-"<b>Anda perlu membolehkan kesan-kesan desktop (compositor) untuk mengguna "
-"dan menukar tema mengikut kebiasaan anda.</b>"
-
-#: ../awn-settings/awn-settings.ui.h:20
-msgid "Activate applet"
-msgstr "Aktifkan applet"
-
-#: ../awn-settings/awn-settings.ui.h:21
-msgid "Active rectangle:"
-msgstr "Aktifkan segi empat tepat:"
-
-#: ../awn-settings/awn-settings.ui.h:22
-msgid "Arrow type"
-msgstr "Jenis panah"
-
-#: ../awn-settings/awn-settings.ui.h:23
-msgid "Attention animation:"
-msgstr "Animasi perhatian:"
-
-#: ../awn-settings/awn-settings.ui.h:24
-msgid "Author:"
-msgstr "Pengarang:"
-
-#: ../awn-settings/awn-settings.ui.h:25
-msgid "Autohide mode:"
-msgstr "Mod sembunyi secara automatik:"
-
-#: ../awn-settings/awn-settings.ui.h:27
-msgid "Background:"
-msgstr "Latar belakang:"
-
-#: ../awn-settings/awn-settings.ui.h:28
-msgid "Choose a theme..."
-msgstr "Pilih tema..."
-
-#: ../awn-settings/awn-settings.ui.h:29
-msgid "Clickthrough"
-msgstr "Telus Klik"
-
-#: ../awn-settings/awn-settings.ui.h:30
-msgid "Close animation:"
-msgstr "Tutup animasi:"
-
-#: ../awn-settings/awn-settings.ui.h:31
-msgid "Configured Effects"
-msgstr "Kesan terkonfigur"
-
-#: ../awn-settings/awn-settings.ui.h:32
-msgid "Corner Radius"
-msgstr "Radius Bucu"
-
-#: ../awn-settings/awn-settings.ui.h:33
-msgid "Curves Symmetry"
-msgstr "Simetri Lengkung"
-
-#: ../awn-settings/awn-settings.ui.h:34
-msgid "Curviness"
-msgstr "Kelengkukan"
-
-#: ../awn-settings/awn-settings.ui.h:35 ../awn-settings/awnClass.py:886
-#: ../awn-settings/awnSettings.py.in:153
-msgid "Custom"
-msgstr "Suai"
-
-#: ../awn-settings/awn-settings.ui.h:36
-msgid "Custom Arrow Image"
-msgstr "Imej Anak Panah Suai"
-
-#: ../awn-settings/awn-settings.ui.h:37
-msgid "Customize effects"
-msgstr "Kesan suai"
-
-#: ../awn-settings/awn-settings.ui.h:38
-msgid "Customize..."
-msgstr "Personalisasi..."
-
-#: ../awn-settings/awn-settings.ui.h:39
-msgid "Deactivate applet"
-msgstr "Applet dinyahaktif"
-
-#: ../awn-settings/awn-settings.ui.h:40
-msgid "Display launchers only"
-msgstr "Hanya paparkan pelancar"
-
-#: ../awn-settings/awn-settings.ui.h:41
-msgid "Drag and drop reordering"
-msgstr "Penyusunan semula seret dan lepas"
-
-#. Tooltip
-#: ../awn-settings/awn-settings.ui.h:43
-msgid "Drag available applets here to activate"
-msgstr "Seret aplet yang ada disini untuk diaktifkan"
-
-#. Tooltip
-#: ../awn-settings/awn-settings.ui.h:45
-msgid "Drag below or double click to activate applet"
-msgstr "Seret kebawah atau dwiklik untuk aktifkan aplet"
-
-#: ../awn-settings/awn-settings.ui.h:46
-msgid "E_xpand the panel"
-msgstr "_Kembangkan panel"
-
-#: ../awn-settings/awn-settings.ui.h:47
-msgid "Export Theme..."
-msgstr "Eksport Tema..."
-
-#: ../awn-settings/awn-settings.ui.h:48
-msgid "Extra Options"
-msgstr "Pilihan Tambahan"
-
-#: ../awn-settings/awn-settings.ui.h:49
-msgid "Fill Color"
-msgstr "Warna Isian"
-
-#: ../awn-settings/awn-settings.ui.h:50
-msgid "First Gradient Color"
-msgstr "Warna Gradient Pertama"
-
-#: ../awn-settings/awn-settings.ui.h:51
-msgid "First Highlight Color"
-msgstr "Warna Sorotan Pertama"
-
-#: ../awn-settings/awn-settings.ui.h:52
-msgid "Floaty Offset"
-msgstr "Ofset Apungan"
-
-#: ../awn-settings/awn-settings.ui.h:53
-msgid "Font"
-msgstr "Fon"
-
-#: ../awn-settings/awn-settings.ui.h:54
-msgid "Font Color"
-msgstr "Warna Fon"
-
-#: ../awn-settings/awn-settings.ui.h:55
-msgid "Font Mode"
-msgstr "Mod Fon"
-
-#: ../awn-settings/awn-settings.ui.h:56
-msgid "Font Outline Color"
-msgstr "Warna  Fon Sorotan"
-
-#: ../awn-settings/awn-settings.ui.h:57
-msgid "Force monitor mode ?"
-msgstr "Mod paksa pantau ?"
-
-#: ../awn-settings/awn-settings.ui.h:58
-msgid "Glowing dot"
-msgstr "Titik pijar"
-
-#: ../awn-settings/awn-settings.ui.h:59
-msgid "Glowing dot color"
-msgstr "Warna titik pijar"
-
-#: ../awn-settings/awn-settings.ui.h:60
-msgid "Group common windows"
-msgstr "Kumpulkan tetingkap umum"
-
-#: ../awn-settings/awn-settings.ui.h:61
-msgid "Hover animation:"
-msgstr "Animasi apung:"
-
-#: ../awn-settings/awn-settings.ui.h:62
-msgid "Icon _effects:"
-msgstr "K_esan ikon:"
-
-#: ../awn-settings/awn-settings.ui.h:63
-msgid "Icon alpha"
-msgstr "Ikon alfa"
-
-#: ../awn-settings/awn-settings.ui.h:64
-msgid "Icons and Tooltips"
-msgstr "Ikon dan Tooltip"
-
-#: ../awn-settings/awn-settings.ui.h:65
-msgid "Icons:"
-msgstr "Ikon:"
-
-#: ../awn-settings/awn-settings.ui.h:66
-msgid "Inner Border Color"
-msgstr "Warna Sempadan Dalaman"
-
-#: ../awn-settings/awn-settings.ui.h:67
-msgid "Install applet..."
-msgstr "Pasang aplet..."
-
-#: ../awn-settings/awn-settings.ui.h:68
-msgid "Install..."
-msgstr "Pasang..."
-
-#: ../awn-settings/awn-settings.ui.h:69
-msgid "Launch animation:"
-msgstr "Lancar animasi:"
-
-#: ../awn-settings/awn-settings.ui.h:70
-msgid "Matching strength"
-msgstr "Kekuatan pemadanan"
-
-#: ../awn-settings/awn-settings.ui.h:71
-msgid "Monitor X-offset"
-msgstr "Ofset-X Monitor"
-
-#: ../awn-settings/awn-settings.ui.h:72
-msgid "Monitor Y-offset"
-msgstr "Ofset-Y Monitor"
-
-#: ../awn-settings/awn-settings.ui.h:73
-msgid "Monitor height"
-msgstr "Tinggi monitor"
-
-#: ../awn-settings/awn-settings.ui.h:74
-msgid "Monitor width"
-msgstr "Lebar monitor"
-
-#: ../awn-settings/awn-settings.ui.h:75
-msgid "Name:"
-msgstr "Nama:"
-
-#: ../awn-settings/awn-settings.ui.h:76
-msgid "Offset"
-msgstr "Ofset"
-
-#: ../awn-settings/awn-settings.ui.h:77
-msgid "Open animation:"
-msgstr "Buka animasi:"
-
-#: ../awn-settings/awn-settings.ui.h:78
-msgid "Outer Border Color"
-msgstr "Warna Sempadan Luaran"
-
-#: ../awn-settings/awn-settings.ui.h:79
-msgid "Outline Color"
-msgstr "Warna Garis Bentuk"
-
-#: ../awn-settings/awn-settings.ui.h:80
-msgid "Panel Background Colors"
-msgstr "Warna Latar Belakang Panel"
-
-#: ../awn-settings/awn-settings.ui.h:81
-msgid "Panel Look Refinements"
-msgstr "Penyempurnaan Penampilan Panel"
-
-#: ../awn-settings/awn-settings.ui.h:82
-msgid "Panel Style & Size"
-msgstr "Saiz & Gaya Panel"
-
-#: ../awn-settings/awn-settings.ui.h:83
-msgid "Pattern Alpha"
-msgstr "Pola Alfa"
-
-#: ../awn-settings/awn-settings.ui.h:84
-msgid "Pattern Image"
-msgstr "Pola Imej"
-
-#: ../awn-settings/awn-settings.ui.h:85
-msgid "Reflection alpha multiplier"
-msgstr "Pendarab pantulan alfa"
-
-#: ../awn-settings/awn-settings.ui.h:86
-msgid "Reflection offset"
-msgstr "ofset pantulan"
-
-#: ../awn-settings/awn-settings.ui.h:87
-msgid "Repositories"
-msgstr "Repositori"
-
-#: ../awn-settings/awn-settings.ui.h:88
-msgid "Second Gradient Color"
-msgstr "Warna Gradient Kedua"
-
-#: ../awn-settings/awn-settings.ui.h:89
-msgid "Second Highlight Color"
-msgstr "Warna Sorotan Kedua"
-
-#: ../awn-settings/awn-settings.ui.h:90
-msgid "Select Custom Arrow"
-msgstr "Pilih Anak Panah Suai"
-
-#. Tooltip
-#: ../awn-settings/awn-settings.ui.h:92
-msgid "Select item to filter by category"
-msgstr "Pilih item yang ditapis mengikut kategori"
-
-#: ../awn-settings/awn-settings.ui.h:93
-msgid "Separator Color"
-msgstr "Warna Pemisah"
-
-#: ../awn-settings/awn-settings.ui.h:94
-msgid "Show all windows"
-msgstr "Papar semua tetingkap"
-
-#: ../awn-settings/awn-settings.ui.h:95
-msgid "Show dialog after long press"
-msgstr "Papar dialog selepas tekan lama"
-
-#: ../awn-settings/awn-settings.ui.h:96
-msgid "Show shadows"
-msgstr "Papar bayang"
-
-#: ../awn-settings/awn-settings.ui.h:97
 msgid "St_yle:"
 msgstr "_Gaya:"
 
-#: ../awn-settings/awn-settings.ui.h:98
-msgid "Start _Awn automatically"
-msgstr "Mula _Awn secara automatik"
+#: ../awn-settings/awn-settings.ui.h:6
+msgid "_Behavior:"
+msgstr "_Kelakuan:"
 
-#: ../awn-settings/awn-settings.ui.h:99
-msgid "Theme Export"
-msgstr "Eksport Tema"
-
-#: ../awn-settings/awn-settings.ui.h:100
-msgid "Thickness"
-msgstr "Ketebalan"
-
-#: ../awn-settings/awn-settings.ui.h:101
+#: ../awn-settings/awn-settings.ui.h:7
 msgid ""
 "To use Intellihide or Window Dodge modes, you need to have Taskmanager "
 "applet active."
@@ -769,98 +401,518 @@ msgstr ""
 "Untuk guna mod Sembunyi-Pintar atau Elak Tetingkap, anda perlu pastikan "
 "aplet Pengurus Tugas aktif."
 
-#: ../awn-settings/awn-settings.ui.h:102
-msgid "Triangle"
-msgstr "Segi Tiga"
+#: ../awn-settings/awn-settings.ui.h:8
+msgid "Autohide mode:"
+msgstr "Mod sembunyi secara automatik:"
 
-#: ../awn-settings/awn-settings.ui.h:103
-msgid "Use Gtk theme colors"
-msgstr "Guna warna tema Gtk"
+#: ../awn-settings/awn-settings.ui.h:9
+msgid "Icon _effects:"
+msgstr "K_esan ikon:"
 
-#: ../awn-settings/awn-settings.ui.h:104
-msgid "Use Pattern as Background"
-msgstr "Guna Pola sebagai Latar Belakang"
+#: ../awn-settings/awn-settings.ui.h:10
+msgid "E_xpand the panel"
+msgstr "_Kembangkan panel"
 
-#: ../awn-settings/awn-settings.ui.h:105
-msgid "Version:"
-msgstr "Versi:"
-
-#: ../awn-settings/awn-settings.ui.h:106
-msgid "_Behavior:"
-msgstr "_Kelakuan:"
-
-#: ../awn-settings/awn-settings.ui.h:107
-msgid "_Orientation:"
-msgstr "_Orientasi:"
-
-#: ../awn-settings/awn-settings.ui.h:108
+#: ../awn-settings/awn-settings.ui.h:11
 msgid "_Position on the screen:"
 msgstr "_Kedudukan diatas skrin"
 
+#: ../awn-settings/awn-settings.ui.h:12
+msgid "<b>Panel</b>"
+msgstr "<b>Panel</b>"
+
+#: ../awn-settings/awn-settings.ui.h:13
+msgid "Start _Awn automatically"
+msgstr "Mula _Awn secara automatik"
+
+#: ../awn-settings/awn-settings.ui.h:14
+msgid "<b>General</b>"
+msgstr "<b>Umum</b>"
+
+#: ../awn-settings/awn-settings.ui.h:15
+msgid "Add dock"
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:16
+#, fuzzy
+msgid "Remove dock"
+msgstr "Buang Pelancar"
+
+#: ../awn-settings/awn-settings.ui.h:17
+msgid ""
+"<b>You need to enable desktop effects (compositor) to apply and customize "
+"themes.</b>"
+msgstr ""
+"<b>Anda perlu membolehkan kesan-kesan desktop (compositor) untuk mengguna "
+"dan menukar tema mengikut kebiasaan anda.</b>"
+
+#: ../awn-settings/awn-settings.ui.h:18
+msgid "Customize..."
+msgstr "Personalisasi..."
+
+#: ../awn-settings/awn-settings.ui.h:19
+msgid "Install..."
+msgstr "Pasang..."
+
+#: ../awn-settings/awn-settings.ui.h:20
+msgid "<b>Panel Colors</b>"
+msgstr "<b>Warna-warna panel</b>"
+
+#: ../awn-settings/awn-settings.ui.h:21
+msgid "First Gradient Color"
+msgstr "Warna Gradient Pertama"
+
+#: ../awn-settings/awn-settings.ui.h:22
+msgid "First Highlight Color"
+msgstr "Warna Sorotan Pertama"
+
+#: ../awn-settings/awn-settings.ui.h:23
+msgid "Second Gradient Color"
+msgstr "Warna Gradient Kedua"
+
+#: ../awn-settings/awn-settings.ui.h:24
+msgid "Second Highlight Color"
+msgstr "Warna Sorotan Kedua"
+
+#: ../awn-settings/awn-settings.ui.h:25
+msgid "Outer Border Color"
+msgstr "Warna Sempadan Luaran"
+
+#: ../awn-settings/awn-settings.ui.h:26
+msgid "Inner Border Color"
+msgstr "Warna Sempadan Dalaman"
+
+#: ../awn-settings/awn-settings.ui.h:27
+msgid "Corner Radius"
+msgstr "Radius Bucu"
+
+#: ../awn-settings/awn-settings.ui.h:28
+msgid "Curves Symmetry"
+msgstr "Simetri Lengkung"
+
+#: ../awn-settings/awn-settings.ui.h:29
+msgid "3D Angle"
+msgstr "Sudut 3D"
+
+#: ../awn-settings/awn-settings.ui.h:30
+msgid "Curviness"
+msgstr "Kelengkukan"
+
+#: ../awn-settings/awn-settings.ui.h:31
+msgid "<b>Numeric Settings</b>"
+msgstr "<b>Tetapan Bernombor</b>"
+
+#: ../awn-settings/awn-settings.ui.h:32
+msgid "<b>Icons</b>"
+msgstr "<b>Ikon</b>"
+
+#: ../awn-settings/awn-settings.ui.h:33
+msgid "Font Mode"
+msgstr "Mod Fon"
+
+#: ../awn-settings/awn-settings.ui.h:34
+msgid "Font Color"
+msgstr "Warna Fon"
+
+#: ../awn-settings/awn-settings.ui.h:35
+msgid "Font Outline Color"
+msgstr "Warna  Fon Sorotan"
+
+#: ../awn-settings/awn-settings.ui.h:36
+msgid "<b>Tooltips</b>"
+msgstr "<b>Tip Alatan</b>"
+
+#: ../awn-settings/awn-settings.ui.h:37
+msgid "Font"
+msgstr "Fon"
+
+#: ../awn-settings/awn-settings.ui.h:38
+msgid "Fill Color"
+msgstr "Warna Isian"
+
+#: ../awn-settings/awn-settings.ui.h:39
+msgid "<b>Extras</b>"
+msgstr "<b>Tambahan</b>"
+
+#: ../awn-settings/awn-settings.ui.h:40
+msgid "Use Gtk theme colors"
+msgstr "Guna warna tema Gtk"
+
+#: ../awn-settings/awn-settings.ui.h:41
+msgid "Custom Arrow Image"
+msgstr "Imej Anak Panah Suai"
+
+#: ../awn-settings/awn-settings.ui.h:42
+msgid "Select Custom Arrow"
+msgstr "Pilih Anak Panah Suai"
+
+#: ../awn-settings/awn-settings.ui.h:43
+msgid "Triangle"
+msgstr "Segi Tiga"
+
+#: ../awn-settings/awn-settings.ui.h:44
+msgid "Glowing dot"
+msgstr "Titik pijar"
+
+#: ../awn-settings/awn-settings.ui.h:45 ../awn-settings/awnClass.py:901
+#: ../awn-settings/awnSettings.py.in:152
+msgid "Custom"
+msgstr "Suai"
+
+#: ../awn-settings/awn-settings.ui.h:46
+msgid "Arrow type"
+msgstr "Jenis panah"
+
+#: ../awn-settings/awn-settings.ui.h:47
+msgid "Show shadows"
+msgstr "Papar bayang"
+
+#: ../awn-settings/awn-settings.ui.h:48
+msgid "Separator Color"
+msgstr "Warna Pemisah"
+
+#: ../awn-settings/awn-settings.ui.h:49
+msgid "Glowing dot color"
+msgstr "Warna titik pijar"
+
+#: ../awn-settings/awn-settings.ui.h:50
+msgid "Outline Color"
+msgstr "Warna Garis Bentuk"
+
+#: ../awn-settings/awn-settings.ui.h:51
+msgid "Active rectangle:"
+msgstr "Aktifkan segi empat tepat:"
+
+#: ../awn-settings/awn-settings.ui.h:52
+msgid "Use Pattern as Background"
+msgstr "Guna Pola sebagai Latar Belakang"
+
+#: ../awn-settings/awn-settings.ui.h:53
+msgid "Pattern Image"
+msgstr "Pola Imej"
+
+#: ../awn-settings/awn-settings.ui.h:54
+msgid "Pattern Alpha"
+msgstr "Pola Alfa"
+
+#: ../awn-settings/awn-settings.ui.h:55
+msgid "Background:"
+msgstr "Latar belakang:"
+
+#: ../awn-settings/awn-settings.ui.h:56
+msgid "Floaty Offset"
+msgstr "Ofset Apungan"
+
+#: ../awn-settings/awn-settings.ui.h:57
+msgid "Thickness"
+msgstr "Ketebalan"
+
+#: ../awn-settings/awn-settings.ui.h:58
+msgid "Choose a theme..."
+msgstr "Pilih tema..."
+
+#: ../awn-settings/awn-settings.ui.h:59
+msgid "Export Theme..."
+msgstr "Eksport Tema..."
+
+#. Tooltip
+#: ../awn-settings/awn-settings.ui.h:61
+msgid "Select item to filter by category"
+msgstr "Pilih item yang ditapis mengikut kategori"
+
+#: ../awn-settings/awn-settings.ui.h:62
+msgid "<b>Categories</b>"
+msgstr "<b>Kategori</b>"
+
+#. Tooltip
+#: ../awn-settings/awn-settings.ui.h:64
+msgid "Drag below or double click to activate applet"
+msgstr "Seret kebawah atau dwiklik untuk aktifkan aplet"
+
+#: ../awn-settings/awn-settings.ui.h:65
+msgid "<b>Available Applets</b>"
+msgstr "<b>Applet yang Sedia Ada</b>"
+
+#: ../awn-settings/awn-settings.ui.h:66
+msgid "Activate applet"
+msgstr "Aktifkan applet"
+
+#: ../awn-settings/awn-settings.ui.h:67
+msgid "Deactivate applet"
+msgstr "Applet dinyahaktif"
+
+#: ../awn-settings/awn-settings.ui.h:68
+msgid "Install applet..."
+msgstr "Pasang aplet..."
+
+#. Tooltip
+#: ../awn-settings/awn-settings.ui.h:70
+msgid "Drag available applets here to activate"
+msgstr "Seret aplet yang ada disini untuk diaktifkan"
+
+#: ../awn-settings/awn-settings.ui.h:71
+msgid "<b>Active Applets</b>"
+msgstr "<b>Applet Aktif</b>"
+
+#: ../awn-settings/awn-settings.ui.h:72
+msgid "Offset"
+msgstr "Ofset"
+
+#: ../awn-settings/awn-settings.ui.h:73
+msgid "Clickthrough"
+msgstr "Telus Klik"
+
+#: ../awn-settings/awn-settings.ui.h:74
+msgid "Force monitor mode ?"
+msgstr "Mod paksa pantau ?"
+
+#: ../awn-settings/awn-settings.ui.h:75
+msgid "Monitor width"
+msgstr "Lebar monitor"
+
+#: ../awn-settings/awn-settings.ui.h:76
+msgid "Monitor height"
+msgstr "Tinggi monitor"
+
+#: ../awn-settings/awn-settings.ui.h:77
+msgid "Monitor X-offset"
+msgstr "Ofset-X Monitor"
+
+#: ../awn-settings/awn-settings.ui.h:78
+msgid "Monitor Y-offset"
+msgstr "Ofset-Y Monitor"
+
+#: ../awn-settings/awn-settings.ui.h:79
+msgid "Matching strength"
+msgstr "Kekuatan pemadanan"
+
+#: ../awn-settings/awn-settings.ui.h:80
+msgid "<b>Taskmanagers</b>"
+msgstr "<b>PengurusTugas</b>"
+
+#: ../awn-settings/awn-settings.ui.h:81
+msgid "Reflection offset"
+msgstr "ofset pantulan"
+
+#: ../awn-settings/awn-settings.ui.h:82
+msgid "Icon alpha"
+msgstr "Ikon alfa"
+
+#: ../awn-settings/awn-settings.ui.h:83
+msgid "Reflection alpha multiplier"
+msgstr "Pendarab pantulan alfa"
+
+#: ../awn-settings/awn-settings.ui.h:84
+msgid "<b>Effects</b>"
+msgstr "<b>Kesan</b>"
+
+#: ../awn-settings/awn-settings.ui.h:85
+msgid "Repositories"
+msgstr "Repositori"
+
+#: ../awn-settings/awn-settings.ui.h:86
+msgid "<b>Repositories</b>"
+msgstr "<b>Repositori</b>"
+
+#: ../awn-settings/awn-settings.ui.h:87
+msgid "<b>These settings require the Task Manager applet to be active. </b>"
+msgstr "<b>Tetapan ini memerlukan applet Pengurus Tugas aktif. </b>"
+
+#: ../awn-settings/awn-settings.ui.h:88
+msgid "Icons:"
+msgstr "Ikon:"
+
+#: ../awn-settings/awn-settings.ui.h:89
+msgid "Show all windows"
+msgstr "Papar semua tetingkap"
+
+#: ../awn-settings/awn-settings.ui.h:90
+msgid "Group common windows"
+msgstr "Kumpulkan tetingkap umum"
+
+#: ../awn-settings/awn-settings.ui.h:91
+msgid "Display launchers only"
+msgstr "Hanya paparkan pelancar"
+
+#: ../awn-settings/awn-settings.ui.h:92
+msgid "Drag and drop reordering"
+msgstr "Penyusunan semula seret dan lepas"
+
+#: ../awn-settings/awn-settings.ui.h:93
+msgid "Show dialog after long press"
+msgstr "Papar dialog selepas tekan lama"
+
+#: ../awn-settings/awn-settings.ui.h:94
+msgid "<b>Settings</b>"
+msgstr "<b>Tetapan</b>"
+
+#: ../awn-settings/awn-settings.ui.h:95
+msgid "<b>Launchers</b>"
+msgstr "<b>Pelancar</b>"
+
+#: ../awn-settings/awn-settings.ui.h:96
+msgid "Helpers..."
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:97
+msgid ""
+"Helpers are not available...\n"
+"Please make sure you have dockmanager package installed."
+msgstr ""
+
+#: ../awn-settings/awn-settings.ui.h:99
+#, fuzzy
+msgid "<b>Helpers</b>"
+msgstr "<b>Umum</b>"
+
+#: ../awn-settings/awn-settings.ui.h:100
+#, fuzzy
+msgid "Launchers..."
+msgstr "Lancarkan"
+
+#: ../awn-settings/awn-settings.ui.h:101
+#, fuzzy
+msgid "Install helper..."
+msgstr "Pasang aplet..."
+
+#: ../awn-settings/awn-settings.ui.h:102
+msgid "Customize effects"
+msgstr "Kesan suai"
+
+#: ../awn-settings/awn-settings.ui.h:103
+msgid "Open animation:"
+msgstr "Buka animasi:"
+
+#: ../awn-settings/awn-settings.ui.h:104
+msgid "Close animation:"
+msgstr "Tutup animasi:"
+
+#: ../awn-settings/awn-settings.ui.h:105
+msgid "Hover animation:"
+msgstr "Animasi apung:"
+
+#: ../awn-settings/awn-settings.ui.h:106
+msgid "Launch animation:"
+msgstr "Lancar animasi:"
+
+#: ../awn-settings/awn-settings.ui.h:107
+msgid "Attention animation:"
+msgstr "Animasi perhatian:"
+
+#: ../awn-settings/awn-settings.ui.h:108
+msgid "Theme Export"
+msgstr "Eksport Tema"
+
 #: ../awn-settings/awn-settings.ui.h:109
-msgid "_Size of icons:"
-msgstr "_Saiz ikon:"
+msgid "Name:"
+msgstr "Nama:"
 
 #: ../awn-settings/awn-settings.ui.h:110
-msgid "pixels"
-msgstr "piksel"
+msgid "Author:"
+msgstr "Pengarang:"
 
-#: ../awn-settings/awnClass.py:233
+#: ../awn-settings/awn-settings.ui.h:111
+msgid "Version:"
+msgstr "Versi:"
+
+#: ../awn-settings/awn-settings.ui.h:112
+msgid "Panel Style & Size"
+msgstr "Saiz & Gaya Panel"
+
+#: ../awn-settings/awn-settings.ui.h:113
+msgid "Icons and Tooltips"
+msgstr "Ikon dan Tooltip"
+
+#: ../awn-settings/awn-settings.ui.h:114
+msgid "Panel Background Colors"
+msgstr "Warna Latar Belakang Panel"
+
+#: ../awn-settings/awn-settings.ui.h:115
+msgid "Extra Options"
+msgstr "Pilihan Tambahan"
+
+#: ../awn-settings/awn-settings.ui.h:116
+msgid "Panel Look Refinements"
+msgstr "Penyempurnaan Penampilan Panel"
+
+#: ../awn-settings/awn-settings.ui.h:117
+msgid "Configured Effects"
+msgstr "Kesan terkonfigur"
+
+#: ../awn-settings/awn-settings.ui.h:118
+msgid "<b>Export Option Groups</b>"
+msgstr "<b>Eksport Kumpulan Opsyen</b>"
+
+#: ../awn-settings/awnClass.py:159 ../awn-settings/awnClass.py:178
+#: ../awn-settings/awnClass.py:190
+msgid "Bzr support is not enable, try to install bzr"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:162
+#, fuzzy
+msgid "Error, the path already exist"
+msgstr "Ralat, laluan kosong atau sudah wujud"
+
+#: ../awn-settings/awnClass.py:170
+msgid "Socket error, could not create branch."
+msgstr ""
+
+#: ../awn-settings/awnClass.py:248
 msgid "Error, a sources.list already exist"
 msgstr "Ralat, sources.list sudah wujud"
 
-#: ../awn-settings/awnClass.py:301
+#: ../awn-settings/awnClass.py:316
 msgid "Error, the path is empty or already exist"
 msgstr "Ralat, laluan kosong atau sudah wujud"
 
-#: ../awn-settings/awnClass.py:421
+#: ../awn-settings/awnClass.py:436
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr "Ralat %s tiada dalam sistem anda, sila buangkannya dari sources.list"
 
-#: ../awn-settings/awnClass.py:815 ../awn-settings/awnClass.py:876
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
+#: ../awn-settings/awnSettings.py.in:142
 msgid "None"
 msgstr "Tiada"
 
-#: ../awn-settings/awnClass.py:816 ../awn-settings/awnClass.py:877
+#: ../awn-settings/awnClass.py:831 ../awn-settings/awnClass.py:892
 msgid "Simple"
 msgstr "Ringkas"
 
-#: ../awn-settings/awnClass.py:817 ../awn-settings/awnClass.py:878
+#: ../awn-settings/awnClass.py:832 ../awn-settings/awnClass.py:893
 msgid "Classic"
 msgstr "Klasik"
 
-#: ../awn-settings/awnClass.py:818 ../awn-settings/awnClass.py:879
+#: ../awn-settings/awnClass.py:833 ../awn-settings/awnClass.py:894
 msgid "Fade"
 msgstr "Pudar"
 
-#: ../awn-settings/awnClass.py:819 ../awn-settings/awnClass.py:880
+#: ../awn-settings/awnClass.py:834 ../awn-settings/awnClass.py:895
 msgid "Spotlight"
 msgstr "Lampu Sorot"
 
-#: ../awn-settings/awnClass.py:820 ../awn-settings/awnClass.py:881
+#: ../awn-settings/awnClass.py:835 ../awn-settings/awnClass.py:896
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../awn-settings/awnClass.py:821 ../awn-settings/awnClass.py:882
+#: ../awn-settings/awnClass.py:836 ../awn-settings/awnClass.py:897
 msgid "Squish"
 msgstr "Merembes"
 
-#: ../awn-settings/awnClass.py:822 ../awn-settings/awnClass.py:883
+#: ../awn-settings/awnClass.py:837 ../awn-settings/awnClass.py:898
 msgid "3D Turn"
 msgstr "Putar 3D"
 
-#: ../awn-settings/awnClass.py:823 ../awn-settings/awnClass.py:884
+#: ../awn-settings/awnClass.py:838 ../awn-settings/awnClass.py:899
 msgid "3D Spotlight Turn"
 msgstr "Putaran Lampu Sorot 3D"
 
-#: ../awn-settings/awnClass.py:824 ../awn-settings/awnClass.py:885
+#: ../awn-settings/awnClass.py:839 ../awn-settings/awnClass.py:900
 msgid "Glow"
 msgstr "Seri"
 
-#: ../awn-settings/awnClass.py:966
+#: ../awn-settings/awnClass.py:981
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -869,11 +921,11 @@ msgstr ""
 "Penciptaan secara automatik gagal. Sila cipta direktori secara manual:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:976
+#: ../awn-settings/awnClass.py:991
 msgid "Confirm directory creation"
 msgstr "Sahkan penciptaan direktori"
 
-#: ../awn-settings/awnClass.py:977
+#: ../awn-settings/awnClass.py:992
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -882,28 +934,28 @@ msgstr ""
 "pengguna anda.\n"
 "Adakah anda ingin saya meciptakan satu untuk anda secara automatik?"
 
-#: ../awn-settings/awnClass.py:1038
+#: ../awn-settings/awnClass.py:1053
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
 msgstr "Tidak dapat mengesan ikon ini: %s\n"
 
-#: ../awn-settings/awnClass.py:1045
+#: ../awn-settings/awnClass.py:1060
 #, python-format
 msgid "Could not locate the following icon: %s\n"
 msgstr "Tidak dapat mengesan ikon berikut: %s\n"
 
-#: ../awn-settings/awnClass.py:1066
-#: ../data/avant-window-navigator.desktop.in.h:2
+#: ../awn-settings/awnClass.py:1081
+#: ../data/avant-window-navigator.desktop.in.h:1
 msgid "Avant Window Navigator"
 msgstr "Pengemudi Tetingkap Avant"
 
-#: ../awn-settings/awnClass.py:1084
+#: ../awn-settings/awnClass.py:1099
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
 "Pengemudi tetingkap yang seperti dock yang dapat diubahsuai mengikut "
 "citarasa anda untuk GNOME."
 
-#: ../awn-settings/awnClass.py:1086
+#: ../awn-settings/awnClass.py:1101
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -915,7 +967,7 @@ msgstr ""
 "dikeluarkan oleh Free Software Foundation; samada versi ke-2 lesen, atau "
 "(mengikut pilihan anda) sebarang versi terkemudian."
 
-#: ../awn-settings/awnClass.py:1088
+#: ../awn-settings/awnClass.py:1103
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -927,7 +979,7 @@ msgstr ""
 "UNTUK SESUATU TUJUAN. Sila rujuk GNU General Public LIcense untuk keterangan "
 "lanjut."
 
-#: ../awn-settings/awnClass.py:1090
+#: ../awn-settings/awnClass.py:1105
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -937,50 +989,50 @@ msgstr ""
 "bersama-sama dengan program ini. Jika tidak, sila tulis kepada Free Software "
 "Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
-#: ../awn-settings/awnClass.py:1217
+#: ../awn-settings/awnClass.py:1232
 msgid "Awn Applet Package"
 msgstr "Pakej Aplet Awn"
 
-#: ../awn-settings/awnClass.py:1262 ../awn-settings/awnClass.py:1292
+#: ../awn-settings/awnClass.py:1277 ../awn-settings/awnClass.py:1307
 msgid "Applet Installation Failed"
 msgstr "Pemasangan Applet Gagal"
 
-#: ../awn-settings/awnClass.py:1274
+#: ../awn-settings/awnClass.py:1289
 msgid "Applet Successfully Updated"
 msgstr "Aplet Berjaya Dikemaskini"
 
-#: ../awn-settings/awnClass.py:1290
+#: ../awn-settings/awnClass.py:1305
 msgid "Applet Successfully Added"
 msgstr "Aplet Berjaya Ditambah"
 
-#: ../awn-settings/awnClass.py:1342
+#: ../awn-settings/awnClass.py:1357
 msgid "Can not delete active applet"
 msgstr "Tidak dapat mengesan aplet aktif"
 
-#: ../awn-settings/awnClass.py:1345
+#: ../awn-settings/awnClass.py:1360
 msgid "Delete Applet"
 msgstr "Padam Aplet"
 
-#: ../awn-settings/awnClass.py:1350
+#: ../awn-settings/awnClass.py:1365
 #, python-format
 msgid "<b>Delete %s?</b>"
 msgstr "<b>Padam %s?</b>"
 
-#: ../awn-settings/awnClass.py:1370
+#: ../awn-settings/awnClass.py:1385
 msgid "Unable to Delete Applet"
 msgstr "Tidak boleh Memadam Aplet"
 
 #. Translators: This string is preceded by a filename
-#: ../awn-settings/awnClass.py:1577
+#: ../awn-settings/awnClass.py:1592
 #, python-format
 msgid "%s already exists, unable to export theme."
 msgstr "%s sudah wujud, tidak boleh mengeksport tema."
 
-#: ../awn-settings/awnClass.py:1653
+#: ../awn-settings/awnClass.py:1668
 msgid "Theme already installed, do you wish to overwrite it?"
 msgstr "Tema sudah dipasang, adakah anda ingin menulis gantikannya?"
 
-#: ../awn-settings/awnClass.py:1687
+#: ../awn-settings/awnClass.py:1702
 msgid "This is an incompatible theme file."
 msgstr "Ini adalah fail tema yang tidak serasi."
 
@@ -988,147 +1040,147 @@ msgstr "Ini adalah fail tema yang tidak serasi."
 msgid "Awn Settings can't be run as root."
 msgstr "Tetapan Awn tidak boleh dijalankan sebagai root."
 
-#: ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awnSettings.py.in:137
 msgid "Left"
 msgstr "Kiri"
 
-#: ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awnSettings.py.in:137
 msgid "Right"
 msgstr "Kanan"
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:138
 msgid "Top"
 msgstr "Atas"
 
-#: ../awn-settings/awnSettings.py.in:139
+#: ../awn-settings/awnSettings.py.in:138
 msgid "Bottom"
 msgstr "Bawah"
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:142
 msgid "Flat"
 msgstr "Rata"
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awnSettings.py.in:142
 msgid "3d"
 msgstr "3d"
 
-#: ../awn-settings/awnSettings.py.in:144
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Curved"
 msgstr "Melengkung"
 
-#: ../awn-settings/awnSettings.py.in:144
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Edgy"
 msgstr "Dipinggir"
 
-#: ../awn-settings/awnSettings.py.in:144
+#: ../awn-settings/awnSettings.py.in:143
 msgid "Floaty"
 msgstr "Terapung"
 
-#: ../awn-settings/awnSettings.py.in:145
+#: ../awn-settings/awnSettings.py.in:144
 msgid "Lucido"
 msgstr "Lucido"
 
-#: ../awn-settings/awnSettings.py.in:149
+#: ../awn-settings/awnSettings.py.in:148
 msgid "Panel mode"
 msgstr "Mod Panel"
 
-#: ../awn-settings/awnSettings.py.in:150
+#: ../awn-settings/awnSettings.py.in:149
 msgid "Always visible"
 msgstr "Sentiasa kelihatan"
 
-#: ../awn-settings/awnSettings.py.in:151
+#: ../awn-settings/awnSettings.py.in:150
 msgid "Intellihide"
 msgstr "Intellihide"
 
-#: ../awn-settings/awnSettings.py.in:152
+#: ../awn-settings/awnSettings.py.in:151
 msgid "Window dodge"
 msgstr "Elak Tetingkap"
 
-#: ../awn-settings/awnSettings.py.in:157
+#: ../awn-settings/awnSettings.py.in:156
 msgid "Fade out"
 msgstr "Resap lenyap"
 
-#: ../awn-settings/awnSettings.py.in:157
+#: ../awn-settings/awnSettings.py.in:156
 msgid "Transparency"
 msgstr "Kelutsinaran"
 
-#: ../awn-settings/awnSettings.py.in:158
+#: ../awn-settings/awnSettings.py.in:157
 msgid "Keep below"
 msgstr "Letak dibawah"
 
-#: ../awn-settings/awnSettings.py.in:629
+#: ../awn-settings/awnSettings.py.in:625
 msgid "PNG Image"
 msgstr "Imej PNG"
 
-#: ../awn-settings/awnSettings.py.in:641
+#: ../awn-settings/awnSettings.py.in:637
 msgid "Images"
 msgstr "Imej"
 
-#: ../awn-settings/awnSettings.py.in:759
+#: ../awn-settings/awnSettings.py.in:755
 msgid "Save Theme..."
 msgstr "Simpan Tema..."
 
-#: ../awn-settings/awnSettings.py.in:768
+#: ../awn-settings/awnSettings.py.in:764
 msgid "Awn Theme"
 msgstr "Tema Awn"
 
-#: ../awn-settings/awnSettings.py.in:797
+#: ../awn-settings/awnSettings.py.in:793
 msgid "Solid"
 msgstr "Penuh"
 
-#: ../awn-settings/awnSettings.py.in:797
+#: ../awn-settings/awnSettings.py.in:793
 msgid "Outline"
 msgstr "Garis Luar"
 
-#: ../awn-settings/awnSettings.py.in:798
+#: ../awn-settings/awnSettings.py.in:794
 msgid "Outline, Reversed"
 msgstr "Outline, Terbalik"
 
-#: ../awn-settings/awnSettings.py.in:883
+#: ../awn-settings/awnSettings.py.in:879
 msgid "Select Tooltip Font"
 msgstr "Pilih Fon Tip Alat"
 
-#: ../awn-settings/awnSettings.py.in:923
+#: ../awn-settings/awnSettings.py.in:919
 msgid "Awn Theme File"
 msgstr "Fail Tema Awn"
 
-#: ../awn-settings/awnSettings.py.in:990
+#: ../awn-settings/awnSettings.py.in:1006
 msgid "Use application-specified icons"
 msgstr "Guna ikon aplikasi tertentu"
 
-#: ../awn-settings/awnSettings.py.in:991
+#: ../awn-settings/awnSettings.py.in:1007
 msgid "Use best quality icons"
 msgstr "Guna ikon berkualiti terbaik"
 
-#: ../awn-settings/awnSettings.py.in:992
+#: ../awn-settings/awnSettings.py.in:1008
 msgid "Overlay best quality icon with application icon"
 msgstr "Tindihan atas ikon yang berkualiti terbaik dengan ikon aplikasi"
 
-#: ../awn-settings/awnSettings.py.in:993
+#: ../awn-settings/awnSettings.py.in:1009
 msgid "Overlay application icon with best quality icon"
 msgstr "Tindihan atas ikon aplikasi dengan ikon berkualiti terbaik"
 
-#: ../awn-settings/awnSettings.py.in:1139
+#: ../awn-settings/awnSettings.py.in:1258
 msgid "Preferences"
 msgstr "Tetapan"
 
-#: ../awn-settings/awnSettings.py.in:1145
+#: ../awn-settings/awnSettings.py.in:1264
 msgid "Task Manager"
 msgstr "Pengurus Tugas"
 
-#: ../awn-settings/awnSettings.py.in:1151
+#: ../awn-settings/awnSettings.py.in:1270
 msgid "Applets"
 msgstr "Aplet"
 
-#: ../awn-settings/awnSettings.py.in:1165
+#: ../awn-settings/awnSettings.py.in:1284
 msgid "Themes"
 msgstr "Tema"
 
-#: ../awn-settings/awnSettings.py.in:1171
+#: ../awn-settings/awnSettings.py.in:1290
 msgid "Advanced"
 msgstr "Lanjutan"
 
-#: ../bindings/python/__init__.py:126
+#: ../bindings/python/__init__.py.in:126
 #, python-format
 msgid ""
 "The following Python modules could not be found: %s.  There are a few "
@@ -1157,178 +1209,62 @@ msgstr ""
 "didalam\n"
 "bahagian FAQ wiki AWN.\n"
 
-#: ../bindings/python/__init__.py:141
+#: ../bindings/python/__init__.py.in:141
 msgid "Awn Wiki"
 msgstr "Wiki Awn"
 
-#: ../data/avant-window-navigator.desktop.in.h:1
+#: ../data/avant-window-navigator.desktop.in.h:2
 msgid "A dock-like window navigator."
 msgstr "Pengemudi tetingkap macam dock."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:1
-msgid "0: solid, 1: outline, 2: outline, reversed."
-msgstr "0: penuh, 1: outlined, 2: outline, terbalik"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:2
-msgid "A bitmask which stores the type of effect for each event"
-msgstr "topeng bit yang menyimpan jenis kesan untuk setiap peristiwa"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:3
-msgid "Alignment of a non-expanded panel on the monitor edge."
-msgstr "Penjajaran panel tidak kembang pada pinggir monitor"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:4
-msgid "An optional offset when you have more than 1 monitors."
-msgstr "Ofset pilihan jika anda mempunyai lebih dari satu monitor."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:5
-msgid ""
-"Anything greater than 0 will draw a panel with corners. The greater the "
-"radius, the larger the corners."
-msgstr ""
-"Apa-apa nilai yang melebihi 0 akan menghasilkan panel yang berbucu. Semakin "
-"besar radius, semakin besar bucu."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:6
-msgid ""
-"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
-"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
-"through: 3)"
-msgstr ""
-"Sembunyi sendiri labuh bila kursir tidak berada diatas labuh (seharusnya "
-"digunakan bersama-sama dengan mod_panel). (tiada: 0, kekal dibawah: 1, resap "
-"lenyap: 2, lutsinar: 3)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:7
-msgid "Background color for AwnDialog's title."
-msgstr "Warna latar belakang untuk tajuk AwnDialog."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:8
-msgid "Background color for AwnDialog."
-msgstr "Warna latar belakang AwnDialog"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:9
-msgid "Background color of the tooltip"
-msgstr "Warna latar belakang tooltip"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:10
-msgid "Color of the active rectangle."
-msgstr "Warna  segitiga aktif"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:11
-msgid "Color of the glowing dot."
-msgstr "Warna titik pijar."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:12
-msgid "Color of the outline of active rectangle."
-msgstr "Warna garis luar segiempat aktif."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:13
-msgid "Delay between mouse leaving the panel and it hiding."
-msgstr "Lengahan semasa tetikus meninggalkan panel & menyembunyikannya."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:14
-msgid "Delay for mouse position polling."
-msgstr "Lengahan untuk peninjauan kedudukan tetikus."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:15
-msgid ""
-"Determines if generic configuration editor is allowed for applets that do "
-"not have a customized preferences dialog."
-msgstr ""
-"Pastikan jika editor konfigurasi generik dibenarkan untuk aplet yang tidak "
-"mempunyai dialog keutamaan tersuai."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:16
-msgid "Draw separators."
-msgstr "Lukis pemisah."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:17
-msgid "Enable drawing of a pattern."
-msgstr "Benarkan melukis pola."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:18
-msgid "First gradient step color."
-msgstr "Warna langkah gradien pertama."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:19
-msgid "First highlight gradient step color."
-msgstr "Warna langkah gradien sorot pertama"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:20
-msgid "Font color of the tooltip"
-msgstr "Warna fon tooltip"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:21
-msgid "Font name of the tooltip"
-msgstr "Nama fon tooltip"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:22
-msgid "Force monitor geometry."
-msgstr "Paksa geometri monitor."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:23
-msgid "Icon text color.  Leave empty to use gtk theme color."
-msgstr "Warna teks ikon. Biarkan kosong jika gunakan warna tema gtk."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:24
-msgid "Icon text outline color.  Leave empty to use gtk theme color."
-msgstr ""
-"Warna garis luar teks ikon. Biarkan kosong untuk gunakan warna tema gtk."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:25
-msgid "If true, maximised windows will not cover the panel."
-msgstr "Jika benar, tetingkap yang dimaksimakan tidak akan menutupi panel."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:26
-msgid "If true, the panel will expand to full monitor width/height."
-msgstr "Jika benar, panel akan mengembang mengikut lebar/tinggi monitor."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:27
-msgid "Internal border color."
-msgstr "Warna sempadan dalam"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:28
-msgid "Main border color."
-msgstr "Warna sempadan utama"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:29
-msgid ""
-"Monitor number where Awn is located (only takes effect when monitor_force is "
-"False, use -1 to automatically pick monitor)."
-msgstr ""
-"Bilangan monitor yang mana Awn berada (hanya berkesan bila monitor_force "
-"adalah Palsu, guna -1 untuk ambil monitor secara automatik)."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:30
-msgid "Offset between the icons and their dialog."
-msgstr "Ofset diantara ikon dan dialognya."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:31
-msgid "Offset of the icons from window border."
-msgstr "Ofset ikon dari sempadan tetingkap."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:32
-msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
-msgstr "Orientasi Awn. (Kiri:0, kanan: 1, atas: 2 dan bawah: 3)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:33
-msgid "Outline color of the tooltip"
-msgstr "Warna garis luar tip alat"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:34
-msgid "Path to the current desktop file theme."
-msgstr "Laluan ke fail tema desktop semasa."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Path to the png containing the active icon background."
 msgstr "Laluan ke png yang mengandungi latar belakang ikon aktif."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:36
+#: ../data/avant-window-navigator.schema-ini.in.in.h:2
+msgid "Color of the active rectangle."
+msgstr "Warna  segitiga aktif"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:3
+msgid "Color of the outline of active rectangle."
+msgstr "Warna garis luar segiempat aktif."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:4
 msgid "Path to the png containing the arrow icon."
 msgstr "Laluan ke png yang mengandungi ikon anak panah."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:37
+#: ../data/avant-window-navigator.schema-ini.in.in.h:5
+msgid "Color of the glowing dot."
+msgstr "Warna titik pijar."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:6
+msgid "The opacity of the icons, from 0.0 to 1.0"
+msgstr "Kelegapan ikon, dari 0.0 ke 1.0"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:7
+msgid "A bitmask which stores the type of effect for each event"
+msgstr "topeng bit yang menyimpan jenis kesan untuk setiap peristiwa"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:8
+msgid "Reflection alpha as a multiple of the current alpha of the icon."
+msgstr "Alfa pantulan sebagai berbilang alfa semasa ikon."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:9
+msgid "The offset between the icon and it's reflection"
+msgstr "Ofset diantara ikon dan pantulannya"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:10
+msgid "Show shadows for icons."
+msgstr "Papar bayang ikon."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:11
+msgid ""
+"The list of applets for this panel ordered from left-to-right or top-to-"
+"bottom."
+msgstr ""
+"Senarai aplet untuk panel ini disusun dari kiri-ke-kanan atau atas-ke-bawah."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid ""
 "Provides possibility to click on windows behind the panel. (0: never click "
 "through, 1: click through when holding CTRL, 2: always click through and "
@@ -1338,49 +1274,73 @@ msgstr ""
 "tidak sesekali klik tembus, 1: klik tembuh bila menahan CTRL, 2: sentiasa "
 "klik tembus dan berinteraksi dengan panel hanya bila menahan CTRL)"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:38
-msgid "Reflection alpha as a multiple of the current alpha of the icon."
-msgstr "Alfa pantulan sebagai berbilang alfa semasa ikon."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:13
+msgid "Offset between the icons and their dialog."
+msgstr "Ofset diantara ikon dan dialognya."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:39
-msgid "Second gradient step color."
-msgstr "Warna langkah gradien kedua."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
+msgid "If true, the panel will expand to full monitor width/height."
+msgstr "Jika benar, panel akan mengembang mengikut lebar/tinggi monitor."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:40
-msgid "Second highlight gradient step color."
-msgstr "Warna langkah gradien sorot kedua."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:15
+#, fuzzy
+msgid ""
+" Intellihide mode.  0.. Disabled,  1.. use windows on active workspace, 2.. "
+"use windows of currently focused app."
+msgstr ""
+"Bagaimana hendak janakan senarai tetingkap yang diuji untuk persilangan bila "
+"sembunyi-pintar adalah aktif. 0.. guna tetingkap pada ruang kerja aktif, 1.. "
+"guna tetingkap pada apl terfokus semasa."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:41
-msgid "Separator color."
-msgstr "Warna pemisah."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
+msgid "Alignment of a non-expanded panel on the monitor edge."
+msgstr "Penjajaran panel tidak kembang pada pinggir monitor"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:42
-msgid "Show shadows for icons."
-msgstr "Papar bayang ikon."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:17
+msgid ""
+"Monitor number where Awn is located (only takes effect when monitor_force is "
+"False, use -1 to automatically pick monitor)."
+msgstr ""
+"Bilangan monitor yang mana Awn berada (hanya berkesan bila monitor_force "
+"adalah Palsu, guna -1 untuk ambil monitor secara automatik)."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:43
+#: ../data/avant-window-navigator.schema-ini.in.in.h:18
+msgid "Force monitor geometry."
+msgstr "Paksa geometri monitor."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:19
+msgid "The forced monitor height. Only used if monitor_force is true."
+msgstr "Tinggi monitor paksa. Hanya digunakan jika monitor_force adalah benar."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:20
+msgid "The forced monitor width. Only used if monitor_force is true."
+msgstr "Lebar monitor paksa. Hanya digunakan jika monitor_force adalah benar."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:21
+msgid "An optional offset when you have more than 1 monitors."
+msgstr "Ofset pilihan jika anda mempunyai lebih dari satu monitor."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:22
+msgid "Offset of the icons from window border."
+msgstr "Ofset ikon dari sempadan tetingkap."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:23
+msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
+msgstr "Orientasi Awn. (Kiri:0, kanan: 1, atas: 2 dan bawah: 3)"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
+msgid "If true, maximised windows will not cover the panel."
+msgstr "Jika benar, tetingkap yang dimaksimakan tidak akan menutupi panel."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+msgid "The user-visible size of Awn."
+msgstr "Saiz kelihatan-pengguna Awn."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "The active list UA Screenlets for this panel."
 msgstr "Senarai aktif Screenlet UA bagi panel ini."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:44
-msgid "The angle of the panel in 3D mode."
-msgstr "Sudut panel dalam mod 3D"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:45
-msgid "The curviness of the panel in Curves mode."
-msgstr "Kelengkungan panel dalam mod Melengkung"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:46
-msgid "The forced monitor height. Only used if monitor_force is true."
-msgstr ""
-"Tinggi monitor paksa. Hanya digunakan jika monitor_force adalah benar."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:47
-msgid "The forced monitor width. Only used if monitor_force is true."
-msgstr ""
-"Lebar monitor paksa. Hanya digunakan jika monitor_force adalah benar."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:48
+#: ../data/avant-window-navigator.schema-ini.in.in.h:27
 msgid ""
 "The list of UA Screenlets that have been previous added in the form "
 "ScreeneletInstance::Position."
@@ -1388,38 +1348,17 @@ msgstr ""
 "Senarai aktif Screenlet UA yang ditambah sebelum ini dalam bentuk "
 "ScreeneletInstance::Position."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:49
+#: ../data/avant-window-navigator.schema-ini.in.in.h:28
 msgid ""
-"The list of applets for this panel ordered from left-to-right or top-to-"
-"bottom."
+"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
+"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
+"through: 3)"
 msgstr ""
-"Senarai aplet untuk panel ini disusun dari kiri-ke-kanan atau atas-ke-bawah."
+"Sembunyi sendiri labuh bila kursir tidak berada diatas labuh (seharusnya "
+"digunakan bersama-sama dengan mod_panel). (tiada: 0, kekal dibawah: 1, resap "
+"lenyap: 2, lutsinar: 3)"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:50
-msgid "The list of panel instances."
-msgstr "Senarai kejadian panel."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:51
-msgid "The location of the pattern to draw."
-msgstr "Lokasi corak untuk dilukis."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:52
-msgid "The offset between the icon and it's reflection"
-msgstr "Ofset diantara ikon dan pantulannya"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:53
-msgid "The offset of the Floaty background."
-msgstr "Ofset untuk latar belakang Terapung."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:54
-msgid "The opacity of the icons, from 0.0 to 1.0"
-msgstr "Kelegapan ikon, dari 0.0 ke 1.0"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:55
-msgid "The opacity of the pattern."
-msgstr "Kelegapan pola."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:56
+#: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
 "The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
 "4, floaty: 5, lucido: 6)"
@@ -1427,35 +1366,116 @@ msgstr ""
 "Gaya palang. (tiada:0, palang rata: 1, palang 3d: 2, palang melengkung: 3, "
 "dipinggir: 4, terapung: 5, lucido: 6)"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:57
-msgid "The symmetry of the curve in Curves mode."
-msgstr "Simetri lengkung didalam mod Melengkung"
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
+msgid "The list of panel instances."
+msgstr "Senarai kejadian panel."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:58
-msgid "The thickness in 3D mode."
-msgstr "Ketebalan dalam mod 3D"
+#: ../data/avant-window-navigator.schema-ini.in.in.h:31
+msgid "Delay between mouse leaving the panel and it hiding."
+msgstr "Lengahan semasa tetikus meninggalkan panel & menyembunyikannya."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:59
-msgid "The user-visible size of Awn."
-msgstr "Saiz kelihatan-pengguna Awn."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+msgid "Delay for mouse position polling."
+msgstr "Lengahan untuk peninjauan kedudukan tetikus."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:60
-msgid "Time in ms after which AwnIcon will emit long-press signal."
-msgstr "Masa dalam ms selepas Ikon Awn memancar isyarat tekan-lama."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:61
-msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr "Sama ada Dialog Awn seharusnya guna warna tema Gtk."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:62
+#: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid "Whether to close dialogs on loss of focus."
 msgstr "Sama ada hendak tutup dialog bila kehilangan fokus."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:63
+#: ../data/avant-window-navigator.schema-ini.in.in.h:34
+msgid ""
+"Determines if generic configuration editor is allowed for applets that do "
+"not have a customized preferences dialog."
+msgstr ""
+"Pastikan jika editor konfigurasi generik dibenarkan untuk aplet yang tidak "
+"mempunyai dialog keutamaan tersuai."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:35
+msgid "Time in ms after which AwnIcon will emit long-press signal."
+msgstr "Masa dalam ms selepas Ikon Awn memancar isyarat tekan-lama."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:36
+msgid "Main border color."
+msgstr "Warna sempadan utama"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:37
+msgid ""
+"Anything greater than 0 will draw a panel with corners. The greater the "
+"radius, the larger the corners."
+msgstr ""
+"Apa-apa nilai yang melebihi 0 akan menghasilkan panel yang berbucu. Semakin "
+"besar radius, semakin besar bucu."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:38
+msgid "Path to the current desktop file theme."
+msgstr "Laluan ke fail tema desktop semasa."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:39
+msgid "The symmetry of the curve in Curves mode."
+msgstr "Simetri lengkung didalam mod Melengkung"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:40
+msgid "The curviness of the panel in Curves mode."
+msgstr "Kelengkungan panel dalam mod Melengkung"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:41
+msgid "The offset of the Floaty background."
+msgstr "Ofset untuk latar belakang Terapung."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:42
+msgid "The thickness in 3D mode."
+msgstr "Ketebalan dalam mod 3D"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:43
+msgid "Whether AwnDialog should use Gtk theme colors."
+msgstr "Sama ada Dialog Awn seharusnya guna warna tema Gtk."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:44
+msgid "Background color for AwnDialog."
+msgstr "Warna latar belakang AwnDialog"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:45
+msgid "Background color for AwnDialog's title."
+msgstr "Warna latar belakang untuk tajuk AwnDialog."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:46
+msgid "First highlight gradient step color."
+msgstr "Warna langkah gradien sorot pertama"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:47
+msgid "Second highlight gradient step color."
+msgstr "Warna langkah gradien sorot kedua."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:48
+msgid "First gradient step color."
+msgstr "Warna langkah gradien pertama."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:49
+msgid "Second gradient step color."
+msgstr "Warna langkah gradien kedua."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:50
 msgid "Whether to use colors from the current Gtk theme."
 msgstr "Sama ada hendak guna warna dari tema Gtk semasa."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:64
+#: ../data/avant-window-navigator.schema-ini.in.in.h:51
+msgid "Internal border color."
+msgstr "Warna sempadan dalam"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:52
+msgid "0: solid, 1: outline, 2: outline, reversed."
+msgstr "0: penuh, 1: outlined, 2: outline, terbalik"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:53
+msgid "Icon text color.  Leave empty to use gtk theme color."
+msgstr "Warna teks ikon. Biarkan kosong jika gunakan warna tema gtk."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:54
+msgid "Icon text outline color.  Leave empty to use gtk theme color."
+msgstr ""
+"Warna garis luar teks ikon. Biarkan kosong untuk gunakan warna tema gtk."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:55
 msgid ""
 "width of icon text outline if outline mode is enabled.  Suggested values 1.0 "
 "- 5.0."
@@ -1463,9 +1483,56 @@ msgstr ""
 "Lebar ikon garis luar teks jika mod garis luar dibenarkan. Nilai dicadang "
 "1.0 - 5.0."
 
+#: ../data/avant-window-navigator.schema-ini.in.in.h:56
+msgid "The angle of the panel in 3D mode."
+msgstr "Sudut panel dalam mod 3D"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:57
+msgid "The opacity of the pattern."
+msgstr "Kelegapan pola."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:58
+msgid "The location of the pattern to draw."
+msgstr "Lokasi corak untuk dilukis."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:59
+msgid "Separator color."
+msgstr "Warna pemisah."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:60
+msgid "Draw separators."
+msgstr "Lukis pemisah."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:61
+msgid "Enable drawing of a pattern."
+msgstr "Benarkan melukis pola."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:62
+msgid "Background color of the tooltip"
+msgstr "Warna latar belakang tooltip"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:63
+msgid "Outline color of the tooltip"
+msgstr "Warna garis luar tip alat"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:64
+msgid "Font color of the tooltip"
+msgstr "Warna fon tooltip"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:65
+msgid "Font name of the tooltip"
+msgstr "Nama fon tooltip"
+
 #: ../data/awn-themed-icon.ui.h:1
+#, fuzzy
+msgid "Customize Applet Icon"
+msgstr "Suai Aplet"
+
+#: ../data/awn-themed-icon.ui.h:2
+#, fuzzy
 msgid ""
-"<b>Theme Panel Icon</b>\n"
+"<b><big>Theme Panel Icon</big></b>\n"
+"\n"
 "You have chosen to replace an icon on the panel. Please select whether this "
 "change should effect only this applet, all applets of this type, or every "
 "icon on the panel of this type."
@@ -1475,54 +1542,58 @@ msgstr ""
 "perubahan ini hanya memberi kesan kepada aplet ini, keseluruhan aplet jenis "
 "ini, atau setiap ikon pada panel jenis ini."
 
-#: ../data/awn-themed-icon.ui.h:3
-msgid "Customise Applet"
-msgstr "Suai Aplet"
-
-#: ../libawn/awn-applet.c:1234
+#: ../libawn/awn-applet.cc:1216
 #, c-format
 msgid "About %s"
 msgstr "Perihal %s"
 
-#: ../libawn/awn-themed-icon.c:1980
+#: ../libawn/awn-themed-icon.cc:1900
 msgid "Icons"
 msgstr "Ikon"
 
-#: ../libawn/awn-themed-icon.c:1983
+#: ../libawn/awn-themed-icon.cc:1903
 msgid "Choose Custom Icon"
 msgstr "Pilih Ikon Suai"
 
-#: ../libawn/awn-themed-icon.c:2071
+#: ../libawn/awn-themed-icon.cc:1986
 msgid "Customize Icon"
 msgstr "Ikon Suai"
 
-#: ../libawn/awn-themed-icon.c:2158
+#: ../libawn/awn-themed-icon.cc:2070
 msgid "Remove Customized Icon"
 msgstr "Buang Ikon Suai"
 
-#: ../src/awn-applet-proxy.c:289 ../src/awn-applet-proxy.c:318
+#: ../src/awn-applet-proxy.cc:279 ../src/awn-applet-proxy.cc:308
 msgid "Loading applet..."
 msgstr "Memuatkan aplet..."
 
-#: ../src/awn-applet-proxy.c:372 ../src/awn-applet-proxy.c:473
+#: ../src/awn-applet-proxy.cc:362 ../src/awn-applet-proxy.cc:463
 msgid "Whoops! The applet crashed. Click to restart it."
 msgstr "Ops! Aplet rosak. Klik untuk mula semulakannya."
 
-#: ../src/awn-panel.c:4015
+#: ../src/awn-panel.cc:3995
 msgid "Close docklet"
 msgstr "Tutup docklet"
+
+#~ msgid ""
+#~ "Intellihide if hide is enabled for the panel.  This will inhibit autohide "
+#~ "of the panel if there are no intersecting windows in the relevant window "
+#~ "list (see intellihide_mode)."
+#~ msgstr ""
+#~ "Sembunyi-pintar jika sembunyi dibenarkan pada panel. Ia akah menyekat "
+#~ "sembunyi-sendiri panel jika tiada tetingkap yang bersilang dalam senarai "
+#~ "tetingkap berkaitan (rujuk intelihide_mode)."
 
 #~ msgid "PNG Files"
 #~ msgstr "Fail PNG"
 
-#, python-format
 #~ msgid ""
-#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ is "
-#~ "installed. It usually comes with librsvg, or a package similarly named."
+#~ "Could not load the \"%s\" icon.  Make sure that the SVG loader for Gtk+ "
+#~ "is installed. It usually comes with librsvg, or a package similarly named."
 #~ msgstr ""
 #~ "Tidak dapat memuat ikon \"%s\".  Pastikan pemuat SVG untuk Gtk+ telah "
-#~ "dipasang. Ia biasanya didapati bersama librsvg, atau bungkusan yang namanya "
-#~ "serupa."
+#~ "dipasang. Ia biasanya didapati bersama librsvg, atau bungkusan yang "
+#~ "namanya serupa."
 
 #~ msgid "AWN has been successfully refreshed"
 #~ msgstr "AWN telah berjaya dijernihkan"
