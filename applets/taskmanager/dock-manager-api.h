@@ -56,71 +56,71 @@ typedef struct _TaskIconDispatcherClass TaskIconDispatcherClass;
 typedef struct _TaskIconDispatcherPrivate TaskIconDispatcherPrivate;
 
 struct _DockManagerDBusInterfaceIface {
-	GTypeInterface parent_iface;
-	gchar** (*get_capabilities) (DockManagerDBusInterface* self, int* result_length1, GError** error);
-	char** (*get_items) (DockManagerDBusInterface* self, int* result_length1, GError** error);
-	char** (*get_items_by_name) (DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error);
-	char** (*get_items_by_desktop_file) (DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error);
-	char** (*get_items_by_pid) (DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error);
-	char* (*get_item_by_xid) (DockManagerDBusInterface* self, gint64 xid, GError** error);
-	void (*awn_set_visibility) (DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error);
-	char* (*awn_register_proxy_item) (DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error);
+    GTypeInterface parent_iface;
+    gchar** (*get_capabilities)(DockManagerDBusInterface* self, int* result_length1, GError** error);
+    char** (*get_items)(DockManagerDBusInterface* self, int* result_length1, GError** error);
+    char** (*get_items_by_name)(DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error);
+    char** (*get_items_by_desktop_file)(DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error);
+    char** (*get_items_by_pid)(DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error);
+    char* (*get_item_by_xid)(DockManagerDBusInterface* self, gint64 xid, GError** error);
+    void (*awn_set_visibility)(DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error);
+    char* (*awn_register_proxy_item)(DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error);
 };
 
 struct _DockItemDBusInterfaceIface {
-	GTypeInterface parent_iface;
-	gint (*add_menu_item) (DockItemDBusInterface* self, GHashTable* menu_hints, GError** error);
-	void (*remove_menu_item) (DockItemDBusInterface* self, gint id, GError** error);
-	void (*update_dock_item) (DockItemDBusInterface* self, GHashTable* hints, GError** error);
-	gchar* (*get_desktop_file) (DockItemDBusInterface* self);
-	gchar* (*get_uri) (DockItemDBusInterface* self);
+    GTypeInterface parent_iface;
+    gint(*add_menu_item)(DockItemDBusInterface* self, GHashTable* menu_hints, GError** error);
+    void (*remove_menu_item)(DockItemDBusInterface* self, gint id, GError** error);
+    void (*update_dock_item)(DockItemDBusInterface* self, GHashTable* hints, GError** error);
+    gchar* (*get_desktop_file)(DockItemDBusInterface* self);
+    gchar* (*get_uri)(DockItemDBusInterface* self);
 };
 
 struct _TaskManagerDispatcher {
-	GObject parent_instance;
-	TaskManagerDispatcherPrivate * priv;
+    GObject parent_instance;
+    TaskManagerDispatcherPrivate* priv;
 };
 
 struct _TaskManagerDispatcherClass {
-	GObjectClass parent_class;
+    GObjectClass parent_class;
 };
 
 struct _TaskIconDispatcher {
-	GObject parent_instance;
-	TaskIconDispatcherPrivate * priv;
+    GObject parent_instance;
+    TaskIconDispatcherPrivate* priv;
 };
 
 struct _TaskIconDispatcherClass {
-	GObjectClass parent_class;
+    GObjectClass parent_class;
 };
 
 
-DockManagerDBusInterface* dock_manager_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
-GType dock_manager_dbus_interface_get_type (void) G_GNUC_CONST;
-gchar** dock_manager_dbus_interface_get_capabilities (DockManagerDBusInterface* self, int* result_length1, GError** error);
-char** dock_manager_dbus_interface_get_items (DockManagerDBusInterface* self, int* result_length1, GError** error);
-char** dock_manager_dbus_interface_get_items_by_name (DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error);
-char** dock_manager_dbus_interface_get_items_by_desktop_file (DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error);
-char** dock_manager_dbus_interface_get_items_by_pid (DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error);
-char* dock_manager_dbus_interface_get_item_by_xid (DockManagerDBusInterface* self, gint64 xid, GError** error);
-void dock_manager_dbus_interface_awn_set_visibility (DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error);
-char* dock_manager_dbus_interface_awn_register_proxy_item (DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error);
-DockItemDBusInterface* dock_item_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
-GType dock_item_dbus_interface_get_type (void) G_GNUC_CONST;
-gint dock_item_dbus_interface_add_menu_item (DockItemDBusInterface* self, GHashTable* menu_hints, GError** error);
-void dock_item_dbus_interface_remove_menu_item (DockItemDBusInterface* self, gint id, GError** error);
-void dock_item_dbus_interface_update_dock_item (DockItemDBusInterface* self, GHashTable* hints, GError** error);
-gchar* dock_item_dbus_interface_get_desktop_file (DockItemDBusInterface* self);
-gchar* dock_item_dbus_interface_get_uri (DockItemDBusInterface* self);
-GType task_manager_dispatcher_get_type (void) G_GNUC_CONST;
-TaskManagerDispatcher* task_manager_dispatcher_new (TaskManager* manager);
-TaskManagerDispatcher* task_manager_dispatcher_construct (GType object_type, TaskManager* manager);
-TaskManager* task_manager_dispatcher_get_manager (TaskManagerDispatcher* self);
-GType task_icon_dispatcher_get_type (void) G_GNUC_CONST;
-TaskIconDispatcher* task_icon_dispatcher_new (TaskIcon* icon);
-TaskIconDispatcher* task_icon_dispatcher_construct (GType object_type, TaskIcon* icon);
-const gchar* task_icon_dispatcher_get_object_path (TaskIconDispatcher* self);
-void task_icon_dispatcher_set_object_path (TaskIconDispatcher* self, const gchar* value);
+DockManagerDBusInterface* dock_manager_dbus_interface_dbus_proxy_new(DBusGConnection* connection, const char* name, const char* path);
+GType dock_manager_dbus_interface_get_type(void) G_GNUC_CONST;
+gchar** dock_manager_dbus_interface_get_capabilities(DockManagerDBusInterface* self, int* result_length1, GError** error);
+char** dock_manager_dbus_interface_get_items(DockManagerDBusInterface* self, int* result_length1, GError** error);
+char** dock_manager_dbus_interface_get_items_by_name(DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error);
+char** dock_manager_dbus_interface_get_items_by_desktop_file(DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error);
+char** dock_manager_dbus_interface_get_items_by_pid(DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error);
+char* dock_manager_dbus_interface_get_item_by_xid(DockManagerDBusInterface* self, gint64 xid, GError** error);
+void dock_manager_dbus_interface_awn_set_visibility(DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error);
+char* dock_manager_dbus_interface_awn_register_proxy_item(DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error);
+DockItemDBusInterface* dock_item_dbus_interface_dbus_proxy_new(DBusGConnection* connection, const char* name, const char* path);
+GType dock_item_dbus_interface_get_type(void) G_GNUC_CONST;
+gint dock_item_dbus_interface_add_menu_item(DockItemDBusInterface* self, GHashTable* menu_hints, GError** error);
+void dock_item_dbus_interface_remove_menu_item(DockItemDBusInterface* self, gint id, GError** error);
+void dock_item_dbus_interface_update_dock_item(DockItemDBusInterface* self, GHashTable* hints, GError** error);
+gchar* dock_item_dbus_interface_get_desktop_file(DockItemDBusInterface* self);
+gchar* dock_item_dbus_interface_get_uri(DockItemDBusInterface* self);
+GType task_manager_dispatcher_get_type(void) G_GNUC_CONST;
+TaskManagerDispatcher* task_manager_dispatcher_new(TaskManager* manager);
+TaskManagerDispatcher* task_manager_dispatcher_construct(GType object_type, TaskManager* manager);
+TaskManager* task_manager_dispatcher_get_manager(TaskManagerDispatcher* self);
+GType task_icon_dispatcher_get_type(void) G_GNUC_CONST;
+TaskIconDispatcher* task_icon_dispatcher_new(TaskIcon* icon);
+TaskIconDispatcher* task_icon_dispatcher_construct(GType object_type, TaskIcon* icon);
+const gchar* task_icon_dispatcher_get_object_path(TaskIconDispatcher* self);
+void task_icon_dispatcher_set_object_path(TaskIconDispatcher* self, const gchar* value);
 
 #ifdef __cplusplus
 } // extern "C"

@@ -54,33 +54,33 @@ typedef struct _Block1Data Block1Data;
 #define _g_regex_unref0(var) ((var == NULL) ? NULL : (var = (g_regex_unref (var), NULL)))
 
 struct _DBusObjectVTable {
-	void (*register_object) (DBusConnection*, const char*, void*);
+    void (*register_object)(DBusConnection*, const char*, void*);
 };
 
 struct _DockManagerDBusInterfaceDBusProxy {
-	DBusGProxy parent_instance;
-	gboolean disposed;
+    DBusGProxy parent_instance;
+    gboolean disposed;
 };
 
 struct _DockItemDBusInterfaceDBusProxy {
-	DBusGProxy parent_instance;
-	gboolean disposed;
+    DBusGProxy parent_instance;
+    gboolean disposed;
 };
 
 struct _TaskManagerDispatcherPrivate {
-	TaskManager* _manager;
+    TaskManager* _manager;
 };
 
 
 struct _TaskIconDispatcherPrivate {
-	TaskIcon* icon;
-	gchar* _object_path;
+    TaskIcon* icon;
+    gchar* _object_path;
 };
 
 struct _Block1Data {
-	int _ref_count_;
-	TaskIconDispatcher * self;
-	gint id;
+    int _ref_count_;
+    TaskIconDispatcher* self;
+    gint id;
 };
 
 
@@ -90,119 +90,119 @@ static gpointer task_icon_dispatcher_parent_class = NULL;
 static gint task_icon_dispatcher_counter = 1;
 static DockItemDBusInterfaceIface* task_icon_dispatcher_dock_item_dbus_interface_parent_iface = NULL;
 
-static void g_cclosure_user_marshal_VOID__BOXED (GClosure * closure, GValue * return_value, guint n_param_values, const GValue * param_values, gpointer invocation_hint, gpointer marshal_data);
-static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object);
-static void _vala_dbus_unregister_object (gpointer connection, GObject* object);
-void dock_manager_dbus_interface_dbus_register_object (DBusConnection* connection, const char* path, void* object);
-void _dock_manager_dbus_interface_dbus_unregister (DBusConnection* connection, void* _user_data_);
-DBusHandlerResult dock_manager_dbus_interface_dbus_message (DBusConnection* connection, DBusMessage* message, void* object);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_introspect (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_property_get_all (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_capabilities (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_name (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_desktop_file (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_pid (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_item_by_xid (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_set_visibility (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_register_proxy_item (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static void _dbus_dock_manager_dbus_interface_item_added (GObject* _sender, const char* path, DBusConnection* _connection);
-static void _dbus_dock_manager_dbus_interface_item_removed (GObject* _sender, const char* path, DBusConnection* _connection);
-extern "C" GType dock_manager_dbus_interface_dbus_proxy_get_type (void) G_GNUC_CONST;
-static void _dbus_handle_dock_manager_dbus_interface_item_added (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static void _dbus_handle_dock_manager_dbus_interface_item_removed (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-DBusHandlerResult dock_manager_dbus_interface_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data);
+static void g_cclosure_user_marshal_VOID__BOXED(GClosure* closure, GValue* return_value, guint n_param_values, const GValue* param_values, gpointer invocation_hint, gpointer marshal_data);
+static void _vala_dbus_register_object(DBusConnection* connection, const char* path, void* object);
+static void _vala_dbus_unregister_object(gpointer connection, GObject* object);
+void dock_manager_dbus_interface_dbus_register_object(DBusConnection* connection, const char* path, void* object);
+void _dock_manager_dbus_interface_dbus_unregister(DBusConnection* connection, void* _user_data_);
+DBusHandlerResult dock_manager_dbus_interface_dbus_message(DBusConnection* connection, DBusMessage* message, void* object);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_introspect(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_property_get_all(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_capabilities(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_name(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_desktop_file(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_pid(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_item_by_xid(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_set_visibility(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_register_proxy_item(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static void _dbus_dock_manager_dbus_interface_item_added(GObject* _sender, const char* path, DBusConnection* _connection);
+static void _dbus_dock_manager_dbus_interface_item_removed(GObject* _sender, const char* path, DBusConnection* _connection);
+extern "C" GType dock_manager_dbus_interface_dbus_proxy_get_type(void) G_GNUC_CONST;
+static void _dbus_handle_dock_manager_dbus_interface_item_added(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static void _dbus_handle_dock_manager_dbus_interface_item_removed(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+DBusHandlerResult dock_manager_dbus_interface_dbus_proxy_filter(DBusConnection* connection, DBusMessage* message, void* user_data);
 enum  {
-	DOCK_MANAGER_DBUS_INTERFACE_DBUS_PROXY_DUMMY_PROPERTY
+    DOCK_MANAGER_DBUS_INTERFACE_DBUS_PROXY_DUMMY_PROPERTY
 };
-static gchar** dock_manager_dbus_interface_dbus_proxy_get_capabilities (DockManagerDBusInterface* self, int* result_length1, GError** error);
-static char** dock_manager_dbus_interface_dbus_proxy_get_items (DockManagerDBusInterface* self, int* result_length1, GError** error);
-static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_name (DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error);
-static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_desktop_file (DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error);
-static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_pid (DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error);
-static char* dock_manager_dbus_interface_dbus_proxy_get_item_by_xid (DockManagerDBusInterface* self, gint64 xid, GError** error);
-static void dock_manager_dbus_interface_dbus_proxy_awn_set_visibility (DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error);
-static char* dock_manager_dbus_interface_dbus_proxy_awn_register_proxy_item (DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error);
-static void dock_manager_dbus_interface_dbus_proxy_dock_manager_dbus_interface__interface_init (DockManagerDBusInterfaceIface* iface);
-static void _vala_dock_manager_dbus_interface_dbus_proxy_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
-static void _vala_dock_manager_dbus_interface_dbus_proxy_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
-DockItemDBusInterface* dock_item_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path);
-GType dock_item_dbus_interface_get_type (void) G_GNUC_CONST;
-void dock_item_dbus_interface_dbus_register_object (DBusConnection* connection, const char* path, void* object);
-void _dock_item_dbus_interface_dbus_unregister (DBusConnection* connection, void* _user_data_);
-DBusHandlerResult dock_item_dbus_interface_dbus_message (DBusConnection* connection, DBusMessage* message, void* object);
-static DBusHandlerResult _dbus_dock_item_dbus_interface_introspect (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get_all (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_item_dbus_interface_add_menu_item (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_item_dbus_interface_remove_menu_item (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static DBusHandlerResult _dbus_dock_item_dbus_interface_update_dock_item (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-static void _dbus_dock_item_dbus_interface_menu_item_activated (GObject* _sender, gint id, DBusConnection* _connection);
-extern "C" GType dock_item_dbus_interface_dbus_proxy_get_type (void) G_GNUC_CONST;
-static void _dbus_handle_dock_item_dbus_interface_menu_item_activated (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
-DBusHandlerResult dock_item_dbus_interface_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data);
+static gchar** dock_manager_dbus_interface_dbus_proxy_get_capabilities(DockManagerDBusInterface* self, int* result_length1, GError** error);
+static char** dock_manager_dbus_interface_dbus_proxy_get_items(DockManagerDBusInterface* self, int* result_length1, GError** error);
+static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_name(DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error);
+static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_desktop_file(DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error);
+static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_pid(DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error);
+static char* dock_manager_dbus_interface_dbus_proxy_get_item_by_xid(DockManagerDBusInterface* self, gint64 xid, GError** error);
+static void dock_manager_dbus_interface_dbus_proxy_awn_set_visibility(DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error);
+static char* dock_manager_dbus_interface_dbus_proxy_awn_register_proxy_item(DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error);
+static void dock_manager_dbus_interface_dbus_proxy_dock_manager_dbus_interface__interface_init(DockManagerDBusInterfaceIface* iface);
+static void _vala_dock_manager_dbus_interface_dbus_proxy_get_property(GObject* object, guint property_id, GValue* value, GParamSpec* pspec);
+static void _vala_dock_manager_dbus_interface_dbus_proxy_set_property(GObject* object, guint property_id, const GValue* value, GParamSpec* pspec);
+DockItemDBusInterface* dock_item_dbus_interface_dbus_proxy_new(DBusGConnection* connection, const char* name, const char* path);
+GType dock_item_dbus_interface_get_type(void) G_GNUC_CONST;
+void dock_item_dbus_interface_dbus_register_object(DBusConnection* connection, const char* path, void* object);
+void _dock_item_dbus_interface_dbus_unregister(DBusConnection* connection, void* _user_data_);
+DBusHandlerResult dock_item_dbus_interface_dbus_message(DBusConnection* connection, DBusMessage* message, void* object);
+static DBusHandlerResult _dbus_dock_item_dbus_interface_introspect(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get_all(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_item_dbus_interface_add_menu_item(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_item_dbus_interface_remove_menu_item(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static DBusHandlerResult _dbus_dock_item_dbus_interface_update_dock_item(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+static void _dbus_dock_item_dbus_interface_menu_item_activated(GObject* _sender, gint id, DBusConnection* _connection);
+extern "C" GType dock_item_dbus_interface_dbus_proxy_get_type(void) G_GNUC_CONST;
+static void _dbus_handle_dock_item_dbus_interface_menu_item_activated(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message);
+DBusHandlerResult dock_item_dbus_interface_dbus_proxy_filter(DBusConnection* connection, DBusMessage* message, void* user_data);
 enum  {
-	DOCK_ITEM_DBUS_INTERFACE_DBUS_PROXY_DUMMY_PROPERTY
+    DOCK_ITEM_DBUS_INTERFACE_DBUS_PROXY_DUMMY_PROPERTY
 };
-static gint dock_item_dbus_interface_dbus_proxy_add_menu_item (DockItemDBusInterface* self, GHashTable* menu_hints, GError** error);
-static void dock_item_dbus_interface_dbus_proxy_remove_menu_item (DockItemDBusInterface* self, gint id, GError** error);
-static void dock_item_dbus_interface_dbus_proxy_update_dock_item (DockItemDBusInterface* self, GHashTable* hints, GError** error);
-static gchar* dock_item_dbus_interface_dbus_proxy_get_desktop_file (DockItemDBusInterface* self);
-static gchar* dock_item_dbus_interface_dbus_proxy_get_uri (DockItemDBusInterface* self);
-static void dock_item_dbus_interface_dbus_proxy_dock_item_dbus_interface__interface_init (DockItemDBusInterfaceIface* iface);
-static void _vala_dock_item_dbus_interface_dbus_proxy_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
-static void _vala_dock_item_dbus_interface_dbus_proxy_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
-GType task_manager_dispatcher_get_type (void) G_GNUC_CONST;
+static gint dock_item_dbus_interface_dbus_proxy_add_menu_item(DockItemDBusInterface* self, GHashTable* menu_hints, GError** error);
+static void dock_item_dbus_interface_dbus_proxy_remove_menu_item(DockItemDBusInterface* self, gint id, GError** error);
+static void dock_item_dbus_interface_dbus_proxy_update_dock_item(DockItemDBusInterface* self, GHashTable* hints, GError** error);
+static gchar* dock_item_dbus_interface_dbus_proxy_get_desktop_file(DockItemDBusInterface* self);
+static gchar* dock_item_dbus_interface_dbus_proxy_get_uri(DockItemDBusInterface* self);
+static void dock_item_dbus_interface_dbus_proxy_dock_item_dbus_interface__interface_init(DockItemDBusInterfaceIface* iface);
+static void _vala_dock_item_dbus_interface_dbus_proxy_get_property(GObject* object, guint property_id, GValue* value, GParamSpec* pspec);
+static void _vala_dock_item_dbus_interface_dbus_proxy_set_property(GObject* object, guint property_id, const GValue* value, GParamSpec* pspec);
+GType task_manager_dispatcher_get_type(void) G_GNUC_CONST;
 #define TASK_MANAGER_DISPATCHER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_TASK_MANAGER_DISPATCHER, TaskManagerDispatcherPrivate))
 enum  {
-	TASK_MANAGER_DISPATCHER_DUMMY_PROPERTY,
-	TASK_MANAGER_DISPATCHER_MANAGER
+    TASK_MANAGER_DISPATCHER_DUMMY_PROPERTY,
+    TASK_MANAGER_DISPATCHER_MANAGER
 };
-static char** task_manager_dispatcher_list_to_object_path_array (GSList* list, int* result_length1);
-const gchar* task_icon_dispatcher_get_object_path (TaskIconDispatcher* self);
-static gchar** task_manager_dispatcher_real_get_capabilities (DockManagerDBusInterface* base, int* result_length1, GError** error);
-static char** task_manager_dispatcher_real_get_items (DockManagerDBusInterface* base, int* result_length1, GError** error);
-TaskManager* task_manager_dispatcher_get_manager (TaskManagerDispatcher* self);
-static char** task_manager_dispatcher_real_get_items_by_name (DockManagerDBusInterface* base, const gchar* name, int* result_length1, GError** error);
-static char** task_manager_dispatcher_real_get_items_by_desktop_file (DockManagerDBusInterface* base, const gchar* desktop_file, int* result_length1, GError** error);
-static char** task_manager_dispatcher_real_get_items_by_pid (DockManagerDBusInterface* base, gint pid, int* result_length1, GError** error);
-static char* task_manager_dispatcher_real_get_item_by_xid (DockManagerDBusInterface* base, gint64 xid, GError** error);
-static void task_manager_dispatcher_real_awn_set_visibility (DockManagerDBusInterface* base, const gchar* win_name, gboolean visible, GError** error);
-static void _g_free0_ (gpointer var);
-static void _vala_GValue_free (GValue* self);
-static void __vala_GValue_free0_ (gpointer var);
-static char* task_manager_dispatcher_real_awn_register_proxy_item (DockManagerDBusInterface* base, const gchar* desktop_file, const gchar* uri, GError** error);
-static void task_manager_dispatcher_set_manager (TaskManagerDispatcher* self, TaskManager* value);
-static void task_manager_dispatcher_finalize (GObject* obj);
-void task_manager_dispatcher_dbus_register_object (DBusConnection* connection, const char* path, void* object);
-void _task_manager_dispatcher_dbus_unregister (DBusConnection* connection, void* _user_data_);
-DBusHandlerResult task_manager_dispatcher_dbus_message (DBusConnection* connection, DBusMessage* message, void* object);
-static DBusHandlerResult _dbus_task_manager_dispatcher_introspect (TaskManagerDispatcher* self, DBusConnection* connection, DBusMessage* message);
-static void _vala_task_manager_dispatcher_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
-static void _vala_task_manager_dispatcher_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
+static char** task_manager_dispatcher_list_to_object_path_array(GSList* list, int* result_length1);
+const gchar* task_icon_dispatcher_get_object_path(TaskIconDispatcher* self);
+static gchar** task_manager_dispatcher_real_get_capabilities(DockManagerDBusInterface* base, int* result_length1, GError** error);
+static char** task_manager_dispatcher_real_get_items(DockManagerDBusInterface* base, int* result_length1, GError** error);
+TaskManager* task_manager_dispatcher_get_manager(TaskManagerDispatcher* self);
+static char** task_manager_dispatcher_real_get_items_by_name(DockManagerDBusInterface* base, const gchar* name, int* result_length1, GError** error);
+static char** task_manager_dispatcher_real_get_items_by_desktop_file(DockManagerDBusInterface* base, const gchar* desktop_file, int* result_length1, GError** error);
+static char** task_manager_dispatcher_real_get_items_by_pid(DockManagerDBusInterface* base, gint pid, int* result_length1, GError** error);
+static char* task_manager_dispatcher_real_get_item_by_xid(DockManagerDBusInterface* base, gint64 xid, GError** error);
+static void task_manager_dispatcher_real_awn_set_visibility(DockManagerDBusInterface* base, const gchar* win_name, gboolean visible, GError** error);
+static void _g_free0_(gpointer var);
+static void _vala_GValue_free(GValue* self);
+static void __vala_GValue_free0_(gpointer var);
+static char* task_manager_dispatcher_real_awn_register_proxy_item(DockManagerDBusInterface* base, const gchar* desktop_file, const gchar* uri, GError** error);
+static void task_manager_dispatcher_set_manager(TaskManagerDispatcher* self, TaskManager* value);
+static void task_manager_dispatcher_finalize(GObject* obj);
+void task_manager_dispatcher_dbus_register_object(DBusConnection* connection, const char* path, void* object);
+void _task_manager_dispatcher_dbus_unregister(DBusConnection* connection, void* _user_data_);
+DBusHandlerResult task_manager_dispatcher_dbus_message(DBusConnection* connection, DBusMessage* message, void* object);
+static DBusHandlerResult _dbus_task_manager_dispatcher_introspect(TaskManagerDispatcher* self, DBusConnection* connection, DBusMessage* message);
+static void _vala_task_manager_dispatcher_get_property(GObject* object, guint property_id, GValue* value, GParamSpec* pspec);
+static void _vala_task_manager_dispatcher_set_property(GObject* object, guint property_id, const GValue* value, GParamSpec* pspec);
 #define TASK_ICON_DISPATCHER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), TYPE_TASK_ICON_DISPATCHER, TaskIconDispatcherPrivate))
 enum  {
-	TASK_ICON_DISPATCHER_DUMMY_PROPERTY,
-	TASK_ICON_DISPATCHER_OBJECT_PATH
+    TASK_ICON_DISPATCHER_DUMMY_PROPERTY,
+    TASK_ICON_DISPATCHER_OBJECT_PATH
 };
-static TaskManagerDispatcher* task_icon_dispatcher_get_manager_proxy (TaskIconDispatcher* self);
-static void task_icon_dispatcher_emit_item_added (TaskIconDispatcher* self);
-static gint task_icon_dispatcher_real_add_menu_item (DockItemDBusInterface* base, GHashTable* menu_hints, GError** error);
-static Block1Data* block1_data_ref (Block1Data* _data1_);
-static void block1_data_unref (Block1Data* _data1_);
-static void _lambda0_ (GtkMenuItem* w, Block1Data* _data1_);
-static void __lambda0__gtk_menu_item_activate (GtkMenuItem* _sender, gpointer self);
-static void task_icon_dispatcher_real_remove_menu_item (DockItemDBusInterface* base, gint id, GError** error);
-static void task_icon_dispatcher_real_update_dock_item (DockItemDBusInterface* base, GHashTable* hints, GError** error);
-static void task_icon_dispatcher_finalize (GObject* obj);
-void task_icon_dispatcher_dbus_register_object (DBusConnection* connection, const char* path, void* object);
-void _task_icon_dispatcher_dbus_unregister (DBusConnection* connection, void* _user_data_);
-DBusHandlerResult task_icon_dispatcher_dbus_message (DBusConnection* connection, DBusMessage* message, void* object);
-static DBusHandlerResult _dbus_task_icon_dispatcher_introspect (TaskIconDispatcher* self, DBusConnection* connection, DBusMessage* message);
-static void _vala_task_icon_dispatcher_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
-static void _vala_task_icon_dispatcher_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
-static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func);
-static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
+static TaskManagerDispatcher* task_icon_dispatcher_get_manager_proxy(TaskIconDispatcher* self);
+static void task_icon_dispatcher_emit_item_added(TaskIconDispatcher* self);
+static gint task_icon_dispatcher_real_add_menu_item(DockItemDBusInterface* base, GHashTable* menu_hints, GError** error);
+static Block1Data* block1_data_ref(Block1Data* _data1_);
+static void block1_data_unref(Block1Data* _data1_);
+static void _lambda0_(GtkMenuItem* w, Block1Data* _data1_);
+static void __lambda0__gtk_menu_item_activate(GtkMenuItem* _sender, gpointer self);
+static void task_icon_dispatcher_real_remove_menu_item(DockItemDBusInterface* base, gint id, GError** error);
+static void task_icon_dispatcher_real_update_dock_item(DockItemDBusInterface* base, GHashTable* hints, GError** error);
+static void task_icon_dispatcher_finalize(GObject* obj);
+void task_icon_dispatcher_dbus_register_object(DBusConnection* connection, const char* path, void* object);
+void _task_icon_dispatcher_dbus_unregister(DBusConnection* connection, void* _user_data_);
+DBusHandlerResult task_icon_dispatcher_dbus_message(DBusConnection* connection, DBusMessage* message, void* object);
+static DBusHandlerResult _dbus_task_icon_dispatcher_introspect(TaskIconDispatcher* self, DBusConnection* connection, DBusMessage* message);
+static void _vala_task_icon_dispatcher_get_property(GObject* object, guint property_id, GValue* value, GParamSpec* pspec);
+static void _vala_task_icon_dispatcher_set_property(GObject* object, guint property_id, const GValue* value, GParamSpec* pspec);
+static void _vala_array_destroy(gpointer array, gint array_length, GDestroyNotify destroy_func);
+static void _vala_array_free(gpointer array, gint array_length, GDestroyNotify destroy_func);
 
 static const DBusObjectPathVTable _dock_manager_dbus_interface_dbus_path_vtable = {_dock_manager_dbus_interface_dbus_unregister, dock_manager_dbus_interface_dbus_message};
 static const _DBusObjectVTable _dock_manager_dbus_interface_dbus_vtable = {dock_manager_dbus_interface_dbus_register_object};
@@ -213,5248 +213,5382 @@ static const _DBusObjectVTable _task_manager_dispatcher_dbus_vtable = {task_mana
 static const DBusObjectPathVTable _task_icon_dispatcher_dbus_path_vtable = {_task_icon_dispatcher_dbus_unregister, task_icon_dispatcher_dbus_message};
 static const _DBusObjectVTable _task_icon_dispatcher_dbus_vtable = {task_icon_dispatcher_dbus_register_object};
 
-gchar** dock_manager_dbus_interface_get_capabilities (DockManagerDBusInterface* self, int* result_length1, GError** error) {
-	return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE (self)->get_capabilities (self, result_length1, error);
+gchar** dock_manager_dbus_interface_get_capabilities(DockManagerDBusInterface* self, int* result_length1, GError** error)
+{
+    return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE(self)->get_capabilities(self, result_length1, error);
 }
 
 
-char** dock_manager_dbus_interface_get_items (DockManagerDBusInterface* self, int* result_length1, GError** error) {
-	return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE (self)->get_items (self, result_length1, error);
+char** dock_manager_dbus_interface_get_items(DockManagerDBusInterface* self, int* result_length1, GError** error)
+{
+    return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE(self)->get_items(self, result_length1, error);
 }
 
 
-char** dock_manager_dbus_interface_get_items_by_name (DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error) {
-	return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE (self)->get_items_by_name (self, name, result_length1, error);
+char** dock_manager_dbus_interface_get_items_by_name(DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error)
+{
+    return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE(self)->get_items_by_name(self, name, result_length1, error);
 }
 
 
-char** dock_manager_dbus_interface_get_items_by_desktop_file (DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error) {
-	return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE (self)->get_items_by_desktop_file (self, desktop_file, result_length1, error);
+char** dock_manager_dbus_interface_get_items_by_desktop_file(DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error)
+{
+    return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE(self)->get_items_by_desktop_file(self, desktop_file, result_length1, error);
 }
 
 
-char** dock_manager_dbus_interface_get_items_by_pid (DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error) {
-	return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE (self)->get_items_by_pid (self, pid, result_length1, error);
+char** dock_manager_dbus_interface_get_items_by_pid(DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error)
+{
+    return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE(self)->get_items_by_pid(self, pid, result_length1, error);
 }
 
 
-char* dock_manager_dbus_interface_get_item_by_xid (DockManagerDBusInterface* self, gint64 xid, GError** error) {
-	return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE (self)->get_item_by_xid (self, xid, error);
+char* dock_manager_dbus_interface_get_item_by_xid(DockManagerDBusInterface* self, gint64 xid, GError** error)
+{
+    return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE(self)->get_item_by_xid(self, xid, error);
 }
 
 
-void dock_manager_dbus_interface_awn_set_visibility (DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error) {
-	DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE (self)->awn_set_visibility (self, win_name, visible, error);
+void dock_manager_dbus_interface_awn_set_visibility(DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error)
+{
+    DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE(self)->awn_set_visibility(self, win_name, visible, error);
 }
 
 
-char* dock_manager_dbus_interface_awn_register_proxy_item (DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error) {
-	return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE (self)->awn_register_proxy_item (self, desktop_file, uri, error);
+char* dock_manager_dbus_interface_awn_register_proxy_item(DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error)
+{
+    return DOCK_MANAGER_DBUS_INTERFACE_GET_INTERFACE(self)->awn_register_proxy_item(self, desktop_file, uri, error);
 }
 
 
-static void g_cclosure_user_marshal_VOID__BOXED (GClosure * closure, GValue * return_value, guint n_param_values, const GValue * param_values, gpointer invocation_hint, gpointer marshal_data) {
-	typedef void (*GMarshalFunc_VOID__BOXED) (gpointer data1, gpointer arg_1, gpointer data2);
-	register GMarshalFunc_VOID__BOXED callback;
-	register GCClosure * cc;
-	register gpointer data1, data2;
-	cc = (GCClosure *) closure;
-	g_return_if_fail (n_param_values == 2);
-	if (G_CCLOSURE_SWAP_DATA (closure)) {
-		data1 = closure->data;
-		data2 = param_values->data[0].v_pointer;
-	} else {
-		data1 = param_values->data[0].v_pointer;
-		data2 = closure->data;
-	}
-	callback = (GMarshalFunc_VOID__BOXED) (marshal_data ? marshal_data : cc->callback);
-	callback (data1, g_value_get_boxed (param_values + 1), data2);
+static void g_cclosure_user_marshal_VOID__BOXED(GClosure* closure, GValue* return_value, guint n_param_values, const GValue* param_values, gpointer invocation_hint, gpointer marshal_data)
+{
+    typedef void (*GMarshalFunc_VOID__BOXED)(gpointer data1, gpointer arg_1, gpointer data2);
+    register GMarshalFunc_VOID__BOXED callback;
+    register GCClosure* cc;
+    register gpointer data1, data2;
+    cc = (GCClosure*) closure;
+    g_return_if_fail(n_param_values == 2);
+    if (G_CCLOSURE_SWAP_DATA(closure)) {
+        data1 = closure->data;
+        data2 = param_values->data[0].v_pointer;
+    } else {
+        data1 = param_values->data[0].v_pointer;
+        data2 = closure->data;
+    }
+    callback = (GMarshalFunc_VOID__BOXED)(marshal_data ? marshal_data : cc->callback);
+    callback(data1, g_value_get_boxed(param_values + 1), data2);
 }
 
 
-static void dock_manager_dbus_interface_base_init (DockManagerDBusInterfaceIface * iface) {
-	static gboolean initialized = FALSE;
-	if (!initialized) {
-		initialized = TRUE;
-		g_signal_new ("item_added", TYPE_DOCK_MANAGER_DBUS_INTERFACE, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_user_marshal_VOID__BOXED, G_TYPE_NONE, 1, DBUS_TYPE_G_OBJECT_PATH);
-		g_signal_new ("item_removed", TYPE_DOCK_MANAGER_DBUS_INTERFACE, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_user_marshal_VOID__BOXED, G_TYPE_NONE, 1, DBUS_TYPE_G_OBJECT_PATH);
-	}
+static void dock_manager_dbus_interface_base_init(DockManagerDBusInterfaceIface* iface)
+{
+    static gboolean initialized = FALSE;
+    if (!initialized) {
+        initialized = TRUE;
+        g_signal_new("item_added", TYPE_DOCK_MANAGER_DBUS_INTERFACE, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_user_marshal_VOID__BOXED, G_TYPE_NONE, 1, DBUS_TYPE_G_OBJECT_PATH);
+        g_signal_new("item_removed", TYPE_DOCK_MANAGER_DBUS_INTERFACE, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_user_marshal_VOID__BOXED, G_TYPE_NONE, 1, DBUS_TYPE_G_OBJECT_PATH);
+    }
 }
 
 
-static void _vala_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
-	const _DBusObjectVTable * vtable;
-	vtable = g_type_get_qdata (G_TYPE_FROM_INSTANCE (object), g_quark_from_static_string ("DBusObjectVTable"));
-	if (vtable) {
-		vtable->register_object (connection, path, object);
-	} else {
-		g_warning ("Object does not implement any D-Bus interface");
-	}
+static void _vala_dbus_register_object(DBusConnection* connection, const char* path, void* object)
+{
+    const _DBusObjectVTable* vtable;
+    vtable = g_type_get_qdata(G_TYPE_FROM_INSTANCE(object), g_quark_from_static_string("DBusObjectVTable"));
+    if (vtable) {
+        vtable->register_object(connection, path, object);
+    } else {
+        g_warning("Object does not implement any D-Bus interface");
+    }
 }
 
 
-static void _vala_dbus_unregister_object (gpointer connection, GObject* object) {
-	char* path;
-	path = g_object_steal_data ((GObject*) object, "dbus_object_path");
-	dbus_connection_unregister_object_path (connection, path);
-	g_free (path);
+static void _vala_dbus_unregister_object(gpointer connection, GObject* object)
+{
+    char* path;
+    path = g_object_steal_data((GObject*) object, "dbus_object_path");
+    dbus_connection_unregister_object_path(connection, path);
+    g_free(path);
 }
 
 
-void _dock_manager_dbus_interface_dbus_unregister (DBusConnection* connection, void* _user_data_) {
+void _dock_manager_dbus_interface_dbus_unregister(DBusConnection* connection, void* _user_data_)
+{
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_introspect (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessage* reply;
-	DBusMessageIter iter;
-	GString* xml_data;
-	char** children;
-	int i;
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	xml_data = g_string_new ("<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n");
-	g_string_append (xml_data, "<node>\n<interface name=\"org.freedesktop.DBus.Introspectable\">\n  <method name=\"Introspect\">\n    <arg name=\"data\" direction=\"out\" type=\"s\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.DBus.Properties\">\n  <method name=\"Get\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"out\" type=\"v\"/>\n  </method>\n  <method name=\"Set\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"in\" type=\"v\"/>\n  </method>\n  <method name=\"GetAll\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"props\" direction=\"out\" type=\"a{sv}\"/>\n  </method>\n</interface>\n<interface name=\"net.launchpad.DockManager\">\n  <method name=\"GetCapabilities\">\n    <arg name=\"result\" type=\"as\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItems\">\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByName\">\n    <arg name=\"name\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByDesktopFile\">\n    <arg name=\"desktop_file\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByPid\">\n    <arg name=\"pid\" type=\"i\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemByXid\">\n    <arg name=\"xid\" type=\"x\" direction=\"in\"/>\n    <arg name=\"result\" type=\"o\" direction=\"out\"/>\n  </method>\n  <method name=\"AwnSetVisibility\">\n    <arg name=\"win_name\" type=\"s\" direction=\"in\"/>\n    <arg name=\"visible\" type=\"b\" direction=\"in\"/>\n  </method>\n  <method name=\"AwnRegisterProxyItem\">\n    <arg name=\"desktop_file\" type=\"s\" direction=\"in\"/>\n    <arg name=\"uri\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"o\" direction=\"out\"/>\n  </method>\n  <signal name=\"ItemAdded\">\n    <arg name=\"path\" type=\"o\"/>\n  </signal>\n  <signal name=\"ItemRemoved\">\n    <arg name=\"path\" type=\"o\"/>\n  </signal>\n</interface>\n");
-	dbus_connection_list_registered (connection, g_object_get_data ((GObject *) self, "dbus_object_path"), &children);
-	for (i = 0; children[i]; i++) {
-		g_string_append_printf (xml_data, "<node name=\"%s\"/>\n", children[i]);
-	}
-	dbus_free_string_array (children);
-	g_string_append (xml_data, "</node>\n");
-	dbus_message_iter_append_basic (&iter, DBUS_TYPE_STRING, &xml_data->str);
-	g_string_free (xml_data, TRUE);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_introspect(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessage* reply;
+    DBusMessageIter iter;
+    GString* xml_data;
+    char** children;
+    int i;
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    xml_data = g_string_new("<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n");
+    g_string_append(xml_data, "<node>\n<interface name=\"org.freedesktop.DBus.Introspectable\">\n  <method name=\"Introspect\">\n    <arg name=\"data\" direction=\"out\" type=\"s\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.DBus.Properties\">\n  <method name=\"Get\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"out\" type=\"v\"/>\n  </method>\n  <method name=\"Set\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"in\" type=\"v\"/>\n  </method>\n  <method name=\"GetAll\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"props\" direction=\"out\" type=\"a{sv}\"/>\n  </method>\n</interface>\n<interface name=\"net.launchpad.DockManager\">\n  <method name=\"GetCapabilities\">\n    <arg name=\"result\" type=\"as\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItems\">\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByName\">\n    <arg name=\"name\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByDesktopFile\">\n    <arg name=\"desktop_file\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByPid\">\n    <arg name=\"pid\" type=\"i\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemByXid\">\n    <arg name=\"xid\" type=\"x\" direction=\"in\"/>\n    <arg name=\"result\" type=\"o\" direction=\"out\"/>\n  </method>\n  <method name=\"AwnSetVisibility\">\n    <arg name=\"win_name\" type=\"s\" direction=\"in\"/>\n    <arg name=\"visible\" type=\"b\" direction=\"in\"/>\n  </method>\n  <method name=\"AwnRegisterProxyItem\">\n    <arg name=\"desktop_file\" type=\"s\" direction=\"in\"/>\n    <arg name=\"uri\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"o\" direction=\"out\"/>\n  </method>\n  <signal name=\"ItemAdded\">\n    <arg name=\"path\" type=\"o\"/>\n  </signal>\n  <signal name=\"ItemRemoved\">\n    <arg name=\"path\" type=\"o\"/>\n  </signal>\n</interface>\n");
+    dbus_connection_list_registered(connection, g_object_get_data((GObject*) self, "dbus_object_path"), &children);
+    for (i = 0; children[i]; i++) {
+        g_string_append_printf(xml_data, "<node name=\"%s\"/>\n", children[i]);
+    }
+    dbus_free_string_array(children);
+    g_string_append(xml_data, "</node>\n");
+    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &xml_data->str);
+    g_string_free(xml_data, TRUE);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_property_get_all (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessage* reply;
-	DBusMessageIter iter, reply_iter, subiter;
-	char* interface_name;
-	const char* _tmp0_;
-	if (strcmp (dbus_message_get_signature (message), "s")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &reply_iter);
-	dbus_message_iter_get_basic (&iter, &_tmp0_);
-	dbus_message_iter_next (&iter);
-	interface_name = g_strdup (_tmp0_);
-	if (strcmp (interface_name, "net.launchpad.DockManager") == 0) {
-		dbus_message_iter_open_container (&reply_iter, DBUS_TYPE_ARRAY, "{sv}", &subiter);
-		dbus_message_iter_close_container (&reply_iter, &subiter);
-	} else {
-		dbus_message_unref (reply);
-		reply = NULL;
-	}
-	g_free (interface_name);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_property_get_all(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessage* reply;
+    DBusMessageIter iter, reply_iter, subiter;
+    char* interface_name;
+    const char* _tmp0_;
+    if (strcmp(dbus_message_get_signature(message), "s")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &reply_iter);
+    dbus_message_iter_get_basic(&iter, &_tmp0_);
+    dbus_message_iter_next(&iter);
+    interface_name = g_strdup(_tmp0_);
+    if (strcmp(interface_name, "net.launchpad.DockManager") == 0) {
+        dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_ARRAY, "{sv}", &subiter);
+        dbus_message_iter_close_container(&reply_iter, &subiter);
+    } else {
+        dbus_message_unref(reply);
+        reply = NULL;
+    }
+    g_free(interface_name);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_capabilities (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	gchar** result;
-	int result_length1;
-	DBusMessage* reply;
-	gchar** _tmp1_;
-	DBusMessageIter _tmp2_;
-	int _tmp3_;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	result_length1 = 0;
-	result = dock_manager_dbus_interface_get_capabilities (self, &result_length1, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_tmp1_ = result;
-	dbus_message_iter_open_container (&iter, DBUS_TYPE_ARRAY, "s", &_tmp2_);
-	for (_tmp3_ = 0; _tmp3_ < result_length1; _tmp3_++) {
-		const char* _tmp4_;
-		_tmp4_ = *_tmp1_;
-		dbus_message_iter_append_basic (&_tmp2_, DBUS_TYPE_STRING, &_tmp4_);
-		_tmp1_++;
-	}
-	dbus_message_iter_close_container (&iter, &_tmp2_);
-	 result = (_vala_array_free ( result,  result_length1, (GDestroyNotify) g_free), NULL);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_capabilities(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    gchar** result;
+    int result_length1;
+    DBusMessage* reply;
+    gchar** _tmp1_;
+    DBusMessageIter _tmp2_;
+    int _tmp3_;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    result_length1 = 0;
+    result = dock_manager_dbus_interface_get_capabilities(self, &result_length1, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _tmp1_ = result;
+    dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "s", &_tmp2_);
+    for (_tmp3_ = 0; _tmp3_ < result_length1; _tmp3_++) {
+        const char* _tmp4_;
+        _tmp4_ = *_tmp1_;
+        dbus_message_iter_append_basic(&_tmp2_, DBUS_TYPE_STRING, &_tmp4_);
+        _tmp1_++;
+    }
+    dbus_message_iter_close_container(&iter, &_tmp2_);
+    result = (_vala_array_free(result,  result_length1, (GDestroyNotify) g_free), NULL);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	char** result;
-	int result_length1;
-	DBusMessage* reply;
-	char** _tmp5_;
-	DBusMessageIter _tmp6_;
-	int _tmp7_;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	result_length1 = 0;
-	result = dock_manager_dbus_interface_get_items (self, &result_length1, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_tmp5_ = result;
-	dbus_message_iter_open_container (&iter, DBUS_TYPE_ARRAY, "o", &_tmp6_);
-	for (_tmp7_ = 0; _tmp7_ < result_length1; _tmp7_++) {
-		const char* _tmp8_;
-		_tmp8_ = *_tmp5_;
-		dbus_message_iter_append_basic (&_tmp6_, DBUS_TYPE_OBJECT_PATH, &_tmp8_);
-		_tmp5_++;
-	}
-	dbus_message_iter_close_container (&iter, &_tmp6_);
-	 result = (_vala_array_free ( result,  result_length1, (GDestroyNotify) g_free), NULL);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    char** result;
+    int result_length1;
+    DBusMessage* reply;
+    char** _tmp5_;
+    DBusMessageIter _tmp6_;
+    int _tmp7_;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    result_length1 = 0;
+    result = dock_manager_dbus_interface_get_items(self, &result_length1, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _tmp5_ = result;
+    dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "o", &_tmp6_);
+    for (_tmp7_ = 0; _tmp7_ < result_length1; _tmp7_++) {
+        const char* _tmp8_;
+        _tmp8_ = *_tmp5_;
+        dbus_message_iter_append_basic(&_tmp6_, DBUS_TYPE_OBJECT_PATH, &_tmp8_);
+        _tmp5_++;
+    }
+    dbus_message_iter_close_container(&iter, &_tmp6_);
+    result = (_vala_array_free(result,  result_length1, (GDestroyNotify) g_free), NULL);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_name (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	gchar* name = NULL;
-	const char* _tmp9_;
-	char** result;
-	int result_length1;
-	DBusMessage* reply;
-	char** _tmp10_;
-	DBusMessageIter _tmp11_;
-	int _tmp12_;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "s")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp9_);
-	dbus_message_iter_next (&iter);
-	name = g_strdup (_tmp9_);
-	result_length1 = 0;
-	result = dock_manager_dbus_interface_get_items_by_name (self, name, &result_length1, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_g_free0 (name);
-	_tmp10_ = result;
-	dbus_message_iter_open_container (&iter, DBUS_TYPE_ARRAY, "o", &_tmp11_);
-	for (_tmp12_ = 0; _tmp12_ < result_length1; _tmp12_++) {
-		const char* _tmp13_;
-		_tmp13_ = *_tmp10_;
-		dbus_message_iter_append_basic (&_tmp11_, DBUS_TYPE_OBJECT_PATH, &_tmp13_);
-		_tmp10_++;
-	}
-	dbus_message_iter_close_container (&iter, &_tmp11_);
-	 result = (_vala_array_free ( result,  result_length1, (GDestroyNotify) g_free), NULL);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_name(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    gchar* name = NULL;
+    const char* _tmp9_;
+    char** result;
+    int result_length1;
+    DBusMessage* reply;
+    char** _tmp10_;
+    DBusMessageIter _tmp11_;
+    int _tmp12_;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "s")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp9_);
+    dbus_message_iter_next(&iter);
+    name = g_strdup(_tmp9_);
+    result_length1 = 0;
+    result = dock_manager_dbus_interface_get_items_by_name(self, name, &result_length1, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _g_free0(name);
+    _tmp10_ = result;
+    dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "o", &_tmp11_);
+    for (_tmp12_ = 0; _tmp12_ < result_length1; _tmp12_++) {
+        const char* _tmp13_;
+        _tmp13_ = *_tmp10_;
+        dbus_message_iter_append_basic(&_tmp11_, DBUS_TYPE_OBJECT_PATH, &_tmp13_);
+        _tmp10_++;
+    }
+    dbus_message_iter_close_container(&iter, &_tmp11_);
+    result = (_vala_array_free(result,  result_length1, (GDestroyNotify) g_free), NULL);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_desktop_file (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	gchar* desktop_file = NULL;
-	const char* _tmp14_;
-	char** result;
-	int result_length1;
-	DBusMessage* reply;
-	char** _tmp15_;
-	DBusMessageIter _tmp16_;
-	int _tmp17_;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "s")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp14_);
-	dbus_message_iter_next (&iter);
-	desktop_file = g_strdup (_tmp14_);
-	result_length1 = 0;
-	result = dock_manager_dbus_interface_get_items_by_desktop_file (self, desktop_file, &result_length1, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_g_free0 (desktop_file);
-	_tmp15_ = result;
-	dbus_message_iter_open_container (&iter, DBUS_TYPE_ARRAY, "o", &_tmp16_);
-	for (_tmp17_ = 0; _tmp17_ < result_length1; _tmp17_++) {
-		const char* _tmp18_;
-		_tmp18_ = *_tmp15_;
-		dbus_message_iter_append_basic (&_tmp16_, DBUS_TYPE_OBJECT_PATH, &_tmp18_);
-		_tmp15_++;
-	}
-	dbus_message_iter_close_container (&iter, &_tmp16_);
-	 result = (_vala_array_free ( result,  result_length1, (GDestroyNotify) g_free), NULL);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_desktop_file(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    gchar* desktop_file = NULL;
+    const char* _tmp14_;
+    char** result;
+    int result_length1;
+    DBusMessage* reply;
+    char** _tmp15_;
+    DBusMessageIter _tmp16_;
+    int _tmp17_;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "s")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp14_);
+    dbus_message_iter_next(&iter);
+    desktop_file = g_strdup(_tmp14_);
+    result_length1 = 0;
+    result = dock_manager_dbus_interface_get_items_by_desktop_file(self, desktop_file, &result_length1, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _g_free0(desktop_file);
+    _tmp15_ = result;
+    dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "o", &_tmp16_);
+    for (_tmp17_ = 0; _tmp17_ < result_length1; _tmp17_++) {
+        const char* _tmp18_;
+        _tmp18_ = *_tmp15_;
+        dbus_message_iter_append_basic(&_tmp16_, DBUS_TYPE_OBJECT_PATH, &_tmp18_);
+        _tmp15_++;
+    }
+    dbus_message_iter_close_container(&iter, &_tmp16_);
+    result = (_vala_array_free(result,  result_length1, (GDestroyNotify) g_free), NULL);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_pid (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	gint pid = 0;
-	dbus_int32_t _tmp19_;
-	char** result;
-	int result_length1;
-	DBusMessage* reply;
-	char** _tmp20_;
-	DBusMessageIter _tmp21_;
-	int _tmp22_;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "i")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp19_);
-	dbus_message_iter_next (&iter);
-	pid = _tmp19_;
-	result_length1 = 0;
-	result = dock_manager_dbus_interface_get_items_by_pid (self, pid, &result_length1, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_tmp20_ = result;
-	dbus_message_iter_open_container (&iter, DBUS_TYPE_ARRAY, "o", &_tmp21_);
-	for (_tmp22_ = 0; _tmp22_ < result_length1; _tmp22_++) {
-		const char* _tmp23_;
-		_tmp23_ = *_tmp20_;
-		dbus_message_iter_append_basic (&_tmp21_, DBUS_TYPE_OBJECT_PATH, &_tmp23_);
-		_tmp20_++;
-	}
-	dbus_message_iter_close_container (&iter, &_tmp21_);
-	 result = (_vala_array_free ( result,  result_length1, (GDestroyNotify) g_free), NULL);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_pid(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    gint pid = 0;
+    dbus_int32_t _tmp19_;
+    char** result;
+    int result_length1;
+    DBusMessage* reply;
+    char** _tmp20_;
+    DBusMessageIter _tmp21_;
+    int _tmp22_;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "i")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp19_);
+    dbus_message_iter_next(&iter);
+    pid = _tmp19_;
+    result_length1 = 0;
+    result = dock_manager_dbus_interface_get_items_by_pid(self, pid, &result_length1, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _tmp20_ = result;
+    dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "o", &_tmp21_);
+    for (_tmp22_ = 0; _tmp22_ < result_length1; _tmp22_++) {
+        const char* _tmp23_;
+        _tmp23_ = *_tmp20_;
+        dbus_message_iter_append_basic(&_tmp21_, DBUS_TYPE_OBJECT_PATH, &_tmp23_);
+        _tmp20_++;
+    }
+    dbus_message_iter_close_container(&iter, &_tmp21_);
+    result = (_vala_array_free(result,  result_length1, (GDestroyNotify) g_free), NULL);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_item_by_xid (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	gint64 xid = 0LL;
-	dbus_int64_t _tmp24_;
-	char* result;
-	DBusMessage* reply;
-	const char* _tmp25_;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "x")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp24_);
-	dbus_message_iter_next (&iter);
-	xid = _tmp24_;
-	result = dock_manager_dbus_interface_get_item_by_xid (self, xid, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_tmp25_ = result;
-	dbus_message_iter_append_basic (&iter, DBUS_TYPE_OBJECT_PATH, &_tmp25_);
-	_g_free0 ( result);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_item_by_xid(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    gint64 xid = 0LL;
+    dbus_int64_t _tmp24_;
+    char* result;
+    DBusMessage* reply;
+    const char* _tmp25_;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "x")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp24_);
+    dbus_message_iter_next(&iter);
+    xid = _tmp24_;
+    result = dock_manager_dbus_interface_get_item_by_xid(self, xid, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _tmp25_ = result;
+    dbus_message_iter_append_basic(&iter, DBUS_TYPE_OBJECT_PATH, &_tmp25_);
+    _g_free0(result);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_set_visibility (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	gchar* win_name = NULL;
-	const char* _tmp26_;
-	gboolean visible = FALSE;
-	dbus_bool_t _tmp27_;
-	DBusMessage* reply;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "sb")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp26_);
-	dbus_message_iter_next (&iter);
-	win_name = g_strdup (_tmp26_);
-	dbus_message_iter_get_basic (&iter, &_tmp27_);
-	dbus_message_iter_next (&iter);
-	visible = _tmp27_;
-	dock_manager_dbus_interface_awn_set_visibility (self, win_name, visible, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_g_free0 (win_name);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_set_visibility(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    gchar* win_name = NULL;
+    const char* _tmp26_;
+    gboolean visible = FALSE;
+    dbus_bool_t _tmp27_;
+    DBusMessage* reply;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "sb")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp26_);
+    dbus_message_iter_next(&iter);
+    win_name = g_strdup(_tmp26_);
+    dbus_message_iter_get_basic(&iter, &_tmp27_);
+    dbus_message_iter_next(&iter);
+    visible = _tmp27_;
+    dock_manager_dbus_interface_awn_set_visibility(self, win_name, visible, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _g_free0(win_name);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_register_proxy_item (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	gchar* desktop_file = NULL;
-	const char* _tmp28_;
-	gchar* uri = NULL;
-	const char* _tmp29_;
-	char* result;
-	DBusMessage* reply;
-	const char* _tmp30_;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "ss")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp28_);
-	dbus_message_iter_next (&iter);
-	desktop_file = g_strdup (_tmp28_);
-	dbus_message_iter_get_basic (&iter, &_tmp29_);
-	dbus_message_iter_next (&iter);
-	uri = g_strdup (_tmp29_);
-	result = dock_manager_dbus_interface_awn_register_proxy_item (self, desktop_file, uri, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_g_free0 (desktop_file);
-	_g_free0 (uri);
-	_tmp30_ = result;
-	dbus_message_iter_append_basic (&iter, DBUS_TYPE_OBJECT_PATH, &_tmp30_);
-	_g_free0 ( result);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_register_proxy_item(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    gchar* desktop_file = NULL;
+    const char* _tmp28_;
+    gchar* uri = NULL;
+    const char* _tmp29_;
+    char* result;
+    DBusMessage* reply;
+    const char* _tmp30_;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "ss")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp28_);
+    dbus_message_iter_next(&iter);
+    desktop_file = g_strdup(_tmp28_);
+    dbus_message_iter_get_basic(&iter, &_tmp29_);
+    dbus_message_iter_next(&iter);
+    uri = g_strdup(_tmp29_);
+    result = dock_manager_dbus_interface_awn_register_proxy_item(self, desktop_file, uri, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _g_free0(desktop_file);
+    _g_free0(uri);
+    _tmp30_ = result;
+    dbus_message_iter_append_basic(&iter, DBUS_TYPE_OBJECT_PATH, &_tmp30_);
+    _g_free0(result);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-DBusHandlerResult dock_manager_dbus_interface_dbus_message (DBusConnection* connection, DBusMessage* message, void* object) {
-	DBusHandlerResult result;
-	result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	if (dbus_message_is_method_call (message, "org.freedesktop.DBus.Introspectable", "Introspect")) {
-		result = _dbus_dock_manager_dbus_interface_introspect (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "org.freedesktop.DBus.Properties", "GetAll")) {
-		result = _dbus_dock_manager_dbus_interface_property_get_all (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockManager", "GetCapabilities")) {
-		result = _dbus_dock_manager_dbus_interface_get_capabilities (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockManager", "GetItems")) {
-		result = _dbus_dock_manager_dbus_interface_get_items (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockManager", "GetItemsByName")) {
-		result = _dbus_dock_manager_dbus_interface_get_items_by_name (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockManager", "GetItemsByDesktopFile")) {
-		result = _dbus_dock_manager_dbus_interface_get_items_by_desktop_file (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockManager", "GetItemsByPid")) {
-		result = _dbus_dock_manager_dbus_interface_get_items_by_pid (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockManager", "GetItemByXid")) {
-		result = _dbus_dock_manager_dbus_interface_get_item_by_xid (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockManager", "AwnSetVisibility")) {
-		result = _dbus_dock_manager_dbus_interface_awn_set_visibility (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockManager", "AwnRegisterProxyItem")) {
-		result = _dbus_dock_manager_dbus_interface_awn_register_proxy_item (object, connection, message);
-	}
-	if (result == DBUS_HANDLER_RESULT_HANDLED) {
-		return result;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+DBusHandlerResult dock_manager_dbus_interface_dbus_message(DBusConnection* connection, DBusMessage* message, void* object)
+{
+    DBusHandlerResult result;
+    result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    if (dbus_message_is_method_call(message, "org.freedesktop.DBus.Introspectable", "Introspect")) {
+        result = _dbus_dock_manager_dbus_interface_introspect(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "org.freedesktop.DBus.Properties", "GetAll")) {
+        result = _dbus_dock_manager_dbus_interface_property_get_all(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockManager", "GetCapabilities")) {
+        result = _dbus_dock_manager_dbus_interface_get_capabilities(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockManager", "GetItems")) {
+        result = _dbus_dock_manager_dbus_interface_get_items(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockManager", "GetItemsByName")) {
+        result = _dbus_dock_manager_dbus_interface_get_items_by_name(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockManager", "GetItemsByDesktopFile")) {
+        result = _dbus_dock_manager_dbus_interface_get_items_by_desktop_file(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockManager", "GetItemsByPid")) {
+        result = _dbus_dock_manager_dbus_interface_get_items_by_pid(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockManager", "GetItemByXid")) {
+        result = _dbus_dock_manager_dbus_interface_get_item_by_xid(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockManager", "AwnSetVisibility")) {
+        result = _dbus_dock_manager_dbus_interface_awn_set_visibility(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockManager", "AwnRegisterProxyItem")) {
+        result = _dbus_dock_manager_dbus_interface_awn_register_proxy_item(object, connection, message);
+    }
+    if (result == DBUS_HANDLER_RESULT_HANDLED) {
+        return result;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static void _dbus_dock_manager_dbus_interface_item_added (GObject* _sender, const char* path, DBusConnection* _connection) {
-	const char * _path;
-	DBusMessage *_message;
-	DBusMessageIter _iter;
-	const char* _tmp31_;
-	_path = g_object_get_data (_sender, "dbus_object_path");
-	_message = dbus_message_new_signal (_path, "net.launchpad.DockManager", "ItemAdded");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp31_ = path;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_OBJECT_PATH, &_tmp31_);
-	dbus_connection_send (_connection, _message, NULL);
-	dbus_message_unref (_message);
+static void _dbus_dock_manager_dbus_interface_item_added(GObject* _sender, const char* path, DBusConnection* _connection)
+{
+    const char* _path;
+    DBusMessage* _message;
+    DBusMessageIter _iter;
+    const char* _tmp31_;
+    _path = g_object_get_data(_sender, "dbus_object_path");
+    _message = dbus_message_new_signal(_path, "net.launchpad.DockManager", "ItemAdded");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp31_ = path;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_OBJECT_PATH, &_tmp31_);
+    dbus_connection_send(_connection, _message, NULL);
+    dbus_message_unref(_message);
 }
 
 
-static void _dbus_dock_manager_dbus_interface_item_removed (GObject* _sender, const char* path, DBusConnection* _connection) {
-	const char * _path;
-	DBusMessage *_message;
-	DBusMessageIter _iter;
-	const char* _tmp32_;
-	_path = g_object_get_data (_sender, "dbus_object_path");
-	_message = dbus_message_new_signal (_path, "net.launchpad.DockManager", "ItemRemoved");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp32_ = path;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_OBJECT_PATH, &_tmp32_);
-	dbus_connection_send (_connection, _message, NULL);
-	dbus_message_unref (_message);
+static void _dbus_dock_manager_dbus_interface_item_removed(GObject* _sender, const char* path, DBusConnection* _connection)
+{
+    const char* _path;
+    DBusMessage* _message;
+    DBusMessageIter _iter;
+    const char* _tmp32_;
+    _path = g_object_get_data(_sender, "dbus_object_path");
+    _message = dbus_message_new_signal(_path, "net.launchpad.DockManager", "ItemRemoved");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp32_ = path;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_OBJECT_PATH, &_tmp32_);
+    dbus_connection_send(_connection, _message, NULL);
+    dbus_message_unref(_message);
 }
 
 
-void dock_manager_dbus_interface_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
-	if (!g_object_get_data (object, "dbus_object_path")) {
-		g_object_set_data (object, "dbus_object_path", g_strdup (path));
-		dbus_connection_register_object_path (connection, path, &_dock_manager_dbus_interface_dbus_path_vtable, object);
-		g_object_weak_ref (object, _vala_dbus_unregister_object, connection);
-	}
-	g_signal_connect (object, "item-added", (GCallback) _dbus_dock_manager_dbus_interface_item_added, connection);
-	g_signal_connect (object, "item-removed", (GCallback) _dbus_dock_manager_dbus_interface_item_removed, connection);
+void dock_manager_dbus_interface_dbus_register_object(DBusConnection* connection, const char* path, void* object)
+{
+    if (!g_object_get_data(object, "dbus_object_path")) {
+        g_object_set_data(object, "dbus_object_path", g_strdup(path));
+        dbus_connection_register_object_path(connection, path, &_dock_manager_dbus_interface_dbus_path_vtable, object);
+        g_object_weak_ref(object, _vala_dbus_unregister_object, connection);
+    }
+    g_signal_connect(object, "item-added", (GCallback) _dbus_dock_manager_dbus_interface_item_added, connection);
+    g_signal_connect(object, "item-removed", (GCallback) _dbus_dock_manager_dbus_interface_item_removed, connection);
 }
 
 
-GType dock_manager_dbus_interface_get_type (void) {
-	static volatile gsize dock_manager_dbus_interface_type_id__volatile = 0;
-	if (g_once_init_enter (&dock_manager_dbus_interface_type_id__volatile)) {
-		static const GTypeInfo g_define_type_info = { sizeof (DockManagerDBusInterfaceIface), (GBaseInitFunc) dock_manager_dbus_interface_base_init, (GBaseFinalizeFunc) NULL, (GClassInitFunc) NULL, (GClassFinalizeFunc) NULL, NULL, 0, 0, (GInstanceInitFunc) NULL, NULL };
-		GType dock_manager_dbus_interface_type_id;
-		dock_manager_dbus_interface_type_id = g_type_register_static (G_TYPE_INTERFACE, "DockManagerDBusInterface", &g_define_type_info, 0);
-		g_type_interface_add_prerequisite (dock_manager_dbus_interface_type_id, G_TYPE_OBJECT);
-		g_type_set_qdata (dock_manager_dbus_interface_type_id, g_quark_from_string ("ValaDBusInterfaceProxyType"), &dock_manager_dbus_interface_dbus_proxy_get_type);
-		g_type_set_qdata (dock_manager_dbus_interface_type_id, g_quark_from_static_string ("DBusObjectVTable"), (void*) (&_dock_manager_dbus_interface_dbus_vtable));
-		g_once_init_leave (&dock_manager_dbus_interface_type_id__volatile, dock_manager_dbus_interface_type_id);
-	}
-	return dock_manager_dbus_interface_type_id__volatile;
+GType dock_manager_dbus_interface_get_type(void)
+{
+    static volatile gsize dock_manager_dbus_interface_type_id__volatile = 0;
+    if (g_once_init_enter(&dock_manager_dbus_interface_type_id__volatile)) {
+        static const GTypeInfo g_define_type_info = { sizeof(DockManagerDBusInterfaceIface), (GBaseInitFunc) dock_manager_dbus_interface_base_init, (GBaseFinalizeFunc) NULL, (GClassInitFunc) NULL, (GClassFinalizeFunc) NULL, NULL, 0, 0, (GInstanceInitFunc) NULL, NULL };
+        GType dock_manager_dbus_interface_type_id;
+        dock_manager_dbus_interface_type_id = g_type_register_static(G_TYPE_INTERFACE, "DockManagerDBusInterface", &g_define_type_info, 0);
+        g_type_interface_add_prerequisite(dock_manager_dbus_interface_type_id, G_TYPE_OBJECT);
+        g_type_set_qdata(dock_manager_dbus_interface_type_id, g_quark_from_string("ValaDBusInterfaceProxyType"), &dock_manager_dbus_interface_dbus_proxy_get_type);
+        g_type_set_qdata(dock_manager_dbus_interface_type_id, g_quark_from_static_string("DBusObjectVTable"), (void*)(&_dock_manager_dbus_interface_dbus_vtable));
+        g_once_init_leave(&dock_manager_dbus_interface_type_id__volatile, dock_manager_dbus_interface_type_id);
+    }
+    return dock_manager_dbus_interface_type_id__volatile;
 }
 
 extern "C" {
-G_DEFINE_TYPE_EXTENDED (DockManagerDBusInterfaceDBusProxy, dock_manager_dbus_interface_dbus_proxy, DBUS_TYPE_G_PROXY, 0, G_IMPLEMENT_INTERFACE (TYPE_DOCK_MANAGER_DBUS_INTERFACE, dock_manager_dbus_interface_dbus_proxy_dock_manager_dbus_interface__interface_init) );
+    G_DEFINE_TYPE_EXTENDED(DockManagerDBusInterfaceDBusProxy, dock_manager_dbus_interface_dbus_proxy, DBUS_TYPE_G_PROXY, 0, G_IMPLEMENT_INTERFACE(TYPE_DOCK_MANAGER_DBUS_INTERFACE, dock_manager_dbus_interface_dbus_proxy_dock_manager_dbus_interface__interface_init));
 }
 
-DockManagerDBusInterface* dock_manager_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path) {
-	DockManagerDBusInterface* self;
-	self = g_object_new (dock_manager_dbus_interface_dbus_proxy_get_type (), "connection", connection, "name", name, "path", path, "interface", "net.launchpad.DockManager", NULL);
-	return self;
-}
-
-
-static GObject* dock_manager_dbus_interface_dbus_proxy_construct (GType gtype, guint n_properties, GObjectConstructParam* properties) {
-	GObject* self;
-	DBusGConnection *connection;
-	char* path;
-	char* filter;
-	self = G_OBJECT_CLASS (dock_manager_dbus_interface_dbus_proxy_parent_class)->constructor (gtype, n_properties, properties);
-	g_object_get (self, "connection", &connection, NULL);
-	g_object_get (self, "path", &path, NULL);
-	dbus_connection_add_filter (dbus_g_connection_get_connection (connection), dock_manager_dbus_interface_dbus_proxy_filter, self, NULL);
-	filter = g_strdup_printf ("type='signal',path='%s',interface='net.launchpad.DockManager'", path);
-	dbus_bus_add_match (dbus_g_connection_get_connection (connection), filter, NULL);
-	dbus_g_connection_unref (connection);
-	g_free (path);
-	g_free (filter);
-	return self;
+DockManagerDBusInterface* dock_manager_dbus_interface_dbus_proxy_new(DBusGConnection* connection, const char* name, const char* path)
+{
+    DockManagerDBusInterface* self;
+    self = g_object_new(dock_manager_dbus_interface_dbus_proxy_get_type(), "connection", connection, "name", name, "path", path, "interface", "net.launchpad.DockManager", NULL);
+    return self;
 }
 
 
-static void _dbus_handle_dock_manager_dbus_interface_item_added (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	char* path = NULL;
-	const char* _tmp0_;
-	DBusMessage* reply;
-	if (strcmp (dbus_message_get_signature (message), "o")) {
-		return;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp0_);
-	dbus_message_iter_next (&iter);
-	path = g_strdup (_tmp0_);
-	g_signal_emit_by_name (self, "item-added", path);
-	_g_free0 (path);
+static GObject* dock_manager_dbus_interface_dbus_proxy_construct(GType gtype, guint n_properties, GObjectConstructParam* properties)
+{
+    GObject* self;
+    DBusGConnection* connection;
+    char* path;
+    char* filter;
+    self = G_OBJECT_CLASS(dock_manager_dbus_interface_dbus_proxy_parent_class)->constructor(gtype, n_properties, properties);
+    g_object_get(self, "connection", &connection, NULL);
+    g_object_get(self, "path", &path, NULL);
+    dbus_connection_add_filter(dbus_g_connection_get_connection(connection), dock_manager_dbus_interface_dbus_proxy_filter, self, NULL);
+    filter = g_strdup_printf("type='signal',path='%s',interface='net.launchpad.DockManager'", path);
+    dbus_bus_add_match(dbus_g_connection_get_connection(connection), filter, NULL);
+    dbus_g_connection_unref(connection);
+    g_free(path);
+    g_free(filter);
+    return self;
 }
 
 
-static void _dbus_handle_dock_manager_dbus_interface_item_removed (DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	char* path = NULL;
-	const char* _tmp1_;
-	DBusMessage* reply;
-	if (strcmp (dbus_message_get_signature (message), "o")) {
-		return;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp1_);
-	dbus_message_iter_next (&iter);
-	path = g_strdup (_tmp1_);
-	g_signal_emit_by_name (self, "item-removed", path);
-	_g_free0 (path);
+static void _dbus_handle_dock_manager_dbus_interface_item_added(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    char* path = NULL;
+    const char* _tmp0_;
+    DBusMessage* reply;
+    if (strcmp(dbus_message_get_signature(message), "o")) {
+        return;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp0_);
+    dbus_message_iter_next(&iter);
+    path = g_strdup(_tmp0_);
+    g_signal_emit_by_name(self, "item-added", path);
+    _g_free0(path);
 }
 
 
-DBusHandlerResult dock_manager_dbus_interface_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data) {
-	if (dbus_message_has_path (message, dbus_g_proxy_get_path (user_data))) {
-		if (dbus_message_is_signal (message, "net.launchpad.DockManager", "ItemAdded")) {
-			_dbus_handle_dock_manager_dbus_interface_item_added (user_data, connection, message);
-		} else if (dbus_message_is_signal (message, "net.launchpad.DockManager", "ItemRemoved")) {
-			_dbus_handle_dock_manager_dbus_interface_item_removed (user_data, connection, message);
-		}
-	}
-	return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+static void _dbus_handle_dock_manager_dbus_interface_item_removed(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    char* path = NULL;
+    const char* _tmp1_;
+    DBusMessage* reply;
+    if (strcmp(dbus_message_get_signature(message), "o")) {
+        return;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp1_);
+    dbus_message_iter_next(&iter);
+    path = g_strdup(_tmp1_);
+    g_signal_emit_by_name(self, "item-removed", path);
+    _g_free0(path);
 }
 
 
-static void dock_manager_dbus_interface_dbus_proxy_dispose (GObject* self) {
-	DBusGConnection *connection;
-	if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
-		return;
-	}
-	((DockManagerDBusInterfaceDBusProxy*) self)->disposed = TRUE;
-	g_object_get (self, "connection", &connection, NULL);
-	dbus_connection_remove_filter (dbus_g_connection_get_connection (connection), dock_manager_dbus_interface_dbus_proxy_filter, self);
-	G_OBJECT_CLASS (dock_manager_dbus_interface_dbus_proxy_parent_class)->dispose (self);
+DBusHandlerResult dock_manager_dbus_interface_dbus_proxy_filter(DBusConnection* connection, DBusMessage* message, void* user_data)
+{
+    if (dbus_message_has_path(message, dbus_g_proxy_get_path(user_data))) {
+        if (dbus_message_is_signal(message, "net.launchpad.DockManager", "ItemAdded")) {
+            _dbus_handle_dock_manager_dbus_interface_item_added(user_data, connection, message);
+        } else if (dbus_message_is_signal(message, "net.launchpad.DockManager", "ItemRemoved")) {
+            _dbus_handle_dock_manager_dbus_interface_item_removed(user_data, connection, message);
+        }
+    }
+    return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
 
-static void dock_manager_dbus_interface_dbus_proxy_class_init (DockManagerDBusInterfaceDBusProxyClass* klass) {
-	G_OBJECT_CLASS (klass)->constructor = dock_manager_dbus_interface_dbus_proxy_construct;
-	G_OBJECT_CLASS (klass)->dispose = dock_manager_dbus_interface_dbus_proxy_dispose;
-	G_OBJECT_CLASS (klass)->get_property = _vala_dock_manager_dbus_interface_dbus_proxy_get_property;
-	G_OBJECT_CLASS (klass)->set_property = _vala_dock_manager_dbus_interface_dbus_proxy_set_property;
+static void dock_manager_dbus_interface_dbus_proxy_dispose(GObject* self)
+{
+    DBusGConnection* connection;
+    if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
+        return;
+    }
+    ((DockManagerDBusInterfaceDBusProxy*) self)->disposed = TRUE;
+    g_object_get(self, "connection", &connection, NULL);
+    dbus_connection_remove_filter(dbus_g_connection_get_connection(connection), dock_manager_dbus_interface_dbus_proxy_filter, self);
+    G_OBJECT_CLASS(dock_manager_dbus_interface_dbus_proxy_parent_class)->dispose(self);
 }
 
 
-static void dock_manager_dbus_interface_dbus_proxy_init (DockManagerDBusInterfaceDBusProxy* self) {
+static void dock_manager_dbus_interface_dbus_proxy_class_init(DockManagerDBusInterfaceDBusProxyClass* klass)
+{
+    G_OBJECT_CLASS(klass)->constructor = dock_manager_dbus_interface_dbus_proxy_construct;
+    G_OBJECT_CLASS(klass)->dispose = dock_manager_dbus_interface_dbus_proxy_dispose;
+    G_OBJECT_CLASS(klass)->get_property = _vala_dock_manager_dbus_interface_dbus_proxy_get_property;
+    G_OBJECT_CLASS(klass)->set_property = _vala_dock_manager_dbus_interface_dbus_proxy_set_property;
 }
 
 
-static gchar** dock_manager_dbus_interface_dbus_proxy_get_capabilities (DockManagerDBusInterface* self, int* result_length1, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	gchar** _result;
-	int _result_length1;
-	gchar** _tmp2_;
-	int _tmp2__length;
-	int _tmp2__size;
-	int _tmp2__length1;
-	DBusMessageIter _tmp3_;
-	if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return NULL;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockManager", "GetCapabilities");
-	dbus_message_iter_init_append (_message, &_iter);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp5_;
-			_edomain = DBUS_GERROR;
-			_tmp5_ = _dbus_error.name + 27;
-			if (strcmp (_tmp5_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp5_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp5_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp5_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp5_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp5_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp5_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp5_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp5_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp5_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp5_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp5_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp5_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp5_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp5_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp5_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp5_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp5_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp5_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp5_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp5_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp5_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp5_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp5_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp5_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp5_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp5_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp5_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp5_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp5_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp5_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp5_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp5_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return NULL;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "as")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "as", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	_result_length1 = 0;
-	_tmp2_ = g_new (gchar*, 5);
-	_tmp2__length = 0;
-	_tmp2__size = 4;
-	_tmp2__length1 = 0;
-	dbus_message_iter_recurse (&_iter, &_tmp3_);
-	for (; dbus_message_iter_get_arg_type (&_tmp3_); _tmp2__length1++) {
-		const char* _tmp4_;
-		if (_tmp2__size == _tmp2__length) {
-			_tmp2__size = 2 * _tmp2__size;
-			_tmp2_ = g_renew (gchar*, _tmp2_, _tmp2__size + 1);
-		}
-		dbus_message_iter_get_basic (&_tmp3_, &_tmp4_);
-		dbus_message_iter_next (&_tmp3_);
-		_tmp2_[_tmp2__length++] = g_strdup (_tmp4_);
-	}
-	_result_length1 = _tmp2__length1;
-	_tmp2_[_tmp2__length] = NULL;
-	dbus_message_iter_next (&_iter);
-	_result = _tmp2_;
-	*result_length1 = _result_length1;
-	dbus_message_unref (_reply);
-	return _result;
+static void dock_manager_dbus_interface_dbus_proxy_init(DockManagerDBusInterfaceDBusProxy* self)
+{
 }
 
 
-static char** dock_manager_dbus_interface_dbus_proxy_get_items (DockManagerDBusInterface* self, int* result_length1, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	char** _result;
-	int _result_length1;
-	char** _tmp6_;
-	int _tmp6__length;
-	int _tmp6__size;
-	int _tmp6__length1;
-	DBusMessageIter _tmp7_;
-	if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return NULL;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockManager", "GetItems");
-	dbus_message_iter_init_append (_message, &_iter);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp9_;
-			_edomain = DBUS_GERROR;
-			_tmp9_ = _dbus_error.name + 27;
-			if (strcmp (_tmp9_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp9_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp9_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp9_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp9_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp9_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp9_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp9_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp9_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp9_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp9_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp9_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp9_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp9_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp9_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp9_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp9_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp9_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp9_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp9_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp9_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp9_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp9_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp9_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp9_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp9_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp9_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp9_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp9_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp9_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp9_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp9_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp9_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return NULL;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "ao")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "ao", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	_result_length1 = 0;
-	_tmp6_ = g_new (char*, 5);
-	_tmp6__length = 0;
-	_tmp6__size = 4;
-	_tmp6__length1 = 0;
-	dbus_message_iter_recurse (&_iter, &_tmp7_);
-	for (; dbus_message_iter_get_arg_type (&_tmp7_); _tmp6__length1++) {
-		const char* _tmp8_;
-		if (_tmp6__size == _tmp6__length) {
-			_tmp6__size = 2 * _tmp6__size;
-			_tmp6_ = g_renew (char*, _tmp6_, _tmp6__size + 1);
-		}
-		dbus_message_iter_get_basic (&_tmp7_, &_tmp8_);
-		dbus_message_iter_next (&_tmp7_);
-		_tmp6_[_tmp6__length++] = g_strdup (_tmp8_);
-	}
-	_result_length1 = _tmp6__length1;
-	_tmp6_[_tmp6__length] = NULL;
-	dbus_message_iter_next (&_iter);
-	_result = _tmp6_;
-	*result_length1 = _result_length1;
-	dbus_message_unref (_reply);
-	return _result;
+static gchar** dock_manager_dbus_interface_dbus_proxy_get_capabilities(DockManagerDBusInterface* self, int* result_length1, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    gchar** _result;
+    int _result_length1;
+    gchar** _tmp2_;
+    int _tmp2__length;
+    int _tmp2__size;
+    int _tmp2__length1;
+    DBusMessageIter _tmp3_;
+    if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return NULL;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetCapabilities");
+    dbus_message_iter_init_append(_message, &_iter);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp5_;
+            _edomain = DBUS_GERROR;
+            _tmp5_ = _dbus_error.name + 27;
+            if (strcmp(_tmp5_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp5_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp5_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp5_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp5_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp5_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp5_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp5_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp5_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp5_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp5_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp5_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp5_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp5_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp5_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp5_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp5_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp5_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp5_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp5_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp5_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp5_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp5_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp5_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp5_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp5_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp5_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp5_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp5_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp5_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp5_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp5_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp5_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return NULL;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "as")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "as", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    _result_length1 = 0;
+    _tmp2_ = g_new(gchar*, 5);
+    _tmp2__length = 0;
+    _tmp2__size = 4;
+    _tmp2__length1 = 0;
+    dbus_message_iter_recurse(&_iter, &_tmp3_);
+    for (; dbus_message_iter_get_arg_type(&_tmp3_); _tmp2__length1++) {
+        const char* _tmp4_;
+        if (_tmp2__size == _tmp2__length) {
+            _tmp2__size = 2 * _tmp2__size;
+            _tmp2_ = g_renew(gchar*, _tmp2_, _tmp2__size + 1);
+        }
+        dbus_message_iter_get_basic(&_tmp3_, &_tmp4_);
+        dbus_message_iter_next(&_tmp3_);
+        _tmp2_[_tmp2__length++] = g_strdup(_tmp4_);
+    }
+    _result_length1 = _tmp2__length1;
+    _tmp2_[_tmp2__length] = NULL;
+    dbus_message_iter_next(&_iter);
+    _result = _tmp2_;
+    *result_length1 = _result_length1;
+    dbus_message_unref(_reply);
+    return _result;
 }
 
 
-static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_name (DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	const char* _tmp10_;
-	char** _result;
-	int _result_length1;
-	char** _tmp11_;
-	int _tmp11__length;
-	int _tmp11__size;
-	int _tmp11__length1;
-	DBusMessageIter _tmp12_;
-	if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return NULL;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemsByName");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp10_ = name;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp10_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp14_;
-			_edomain = DBUS_GERROR;
-			_tmp14_ = _dbus_error.name + 27;
-			if (strcmp (_tmp14_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp14_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp14_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp14_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp14_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp14_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp14_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp14_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp14_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp14_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp14_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp14_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp14_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp14_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp14_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp14_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp14_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp14_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp14_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp14_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp14_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp14_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp14_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp14_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp14_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp14_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp14_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp14_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp14_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp14_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp14_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp14_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp14_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return NULL;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "ao")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "ao", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	_result_length1 = 0;
-	_tmp11_ = g_new (char*, 5);
-	_tmp11__length = 0;
-	_tmp11__size = 4;
-	_tmp11__length1 = 0;
-	dbus_message_iter_recurse (&_iter, &_tmp12_);
-	for (; dbus_message_iter_get_arg_type (&_tmp12_); _tmp11__length1++) {
-		const char* _tmp13_;
-		if (_tmp11__size == _tmp11__length) {
-			_tmp11__size = 2 * _tmp11__size;
-			_tmp11_ = g_renew (char*, _tmp11_, _tmp11__size + 1);
-		}
-		dbus_message_iter_get_basic (&_tmp12_, &_tmp13_);
-		dbus_message_iter_next (&_tmp12_);
-		_tmp11_[_tmp11__length++] = g_strdup (_tmp13_);
-	}
-	_result_length1 = _tmp11__length1;
-	_tmp11_[_tmp11__length] = NULL;
-	dbus_message_iter_next (&_iter);
-	_result = _tmp11_;
-	*result_length1 = _result_length1;
-	dbus_message_unref (_reply);
-	return _result;
+static char** dock_manager_dbus_interface_dbus_proxy_get_items(DockManagerDBusInterface* self, int* result_length1, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    char** _result;
+    int _result_length1;
+    char** _tmp6_;
+    int _tmp6__length;
+    int _tmp6__size;
+    int _tmp6__length1;
+    DBusMessageIter _tmp7_;
+    if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return NULL;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetItems");
+    dbus_message_iter_init_append(_message, &_iter);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp9_;
+            _edomain = DBUS_GERROR;
+            _tmp9_ = _dbus_error.name + 27;
+            if (strcmp(_tmp9_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp9_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp9_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp9_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp9_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp9_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp9_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp9_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp9_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp9_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp9_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp9_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp9_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp9_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp9_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp9_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp9_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp9_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp9_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp9_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp9_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp9_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp9_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp9_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp9_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp9_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp9_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp9_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp9_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp9_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp9_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp9_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp9_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return NULL;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "ao")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "ao", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    _result_length1 = 0;
+    _tmp6_ = g_new(char*, 5);
+    _tmp6__length = 0;
+    _tmp6__size = 4;
+    _tmp6__length1 = 0;
+    dbus_message_iter_recurse(&_iter, &_tmp7_);
+    for (; dbus_message_iter_get_arg_type(&_tmp7_); _tmp6__length1++) {
+        const char* _tmp8_;
+        if (_tmp6__size == _tmp6__length) {
+            _tmp6__size = 2 * _tmp6__size;
+            _tmp6_ = g_renew(char*, _tmp6_, _tmp6__size + 1);
+        }
+        dbus_message_iter_get_basic(&_tmp7_, &_tmp8_);
+        dbus_message_iter_next(&_tmp7_);
+        _tmp6_[_tmp6__length++] = g_strdup(_tmp8_);
+    }
+    _result_length1 = _tmp6__length1;
+    _tmp6_[_tmp6__length] = NULL;
+    dbus_message_iter_next(&_iter);
+    _result = _tmp6_;
+    *result_length1 = _result_length1;
+    dbus_message_unref(_reply);
+    return _result;
 }
 
 
-static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_desktop_file (DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	const char* _tmp15_;
-	char** _result;
-	int _result_length1;
-	char** _tmp16_;
-	int _tmp16__length;
-	int _tmp16__size;
-	int _tmp16__length1;
-	DBusMessageIter _tmp17_;
-	if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return NULL;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemsByDesktopFile");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp15_ = desktop_file;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp15_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp19_;
-			_edomain = DBUS_GERROR;
-			_tmp19_ = _dbus_error.name + 27;
-			if (strcmp (_tmp19_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp19_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp19_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp19_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp19_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp19_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp19_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp19_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp19_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp19_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp19_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp19_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp19_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp19_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp19_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp19_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp19_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp19_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp19_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp19_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp19_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp19_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp19_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp19_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp19_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp19_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp19_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp19_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp19_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp19_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp19_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp19_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp19_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return NULL;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "ao")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "ao", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	_result_length1 = 0;
-	_tmp16_ = g_new (char*, 5);
-	_tmp16__length = 0;
-	_tmp16__size = 4;
-	_tmp16__length1 = 0;
-	dbus_message_iter_recurse (&_iter, &_tmp17_);
-	for (; dbus_message_iter_get_arg_type (&_tmp17_); _tmp16__length1++) {
-		const char* _tmp18_;
-		if (_tmp16__size == _tmp16__length) {
-			_tmp16__size = 2 * _tmp16__size;
-			_tmp16_ = g_renew (char*, _tmp16_, _tmp16__size + 1);
-		}
-		dbus_message_iter_get_basic (&_tmp17_, &_tmp18_);
-		dbus_message_iter_next (&_tmp17_);
-		_tmp16_[_tmp16__length++] = g_strdup (_tmp18_);
-	}
-	_result_length1 = _tmp16__length1;
-	_tmp16_[_tmp16__length] = NULL;
-	dbus_message_iter_next (&_iter);
-	_result = _tmp16_;
-	*result_length1 = _result_length1;
-	dbus_message_unref (_reply);
-	return _result;
+static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_name(DockManagerDBusInterface* self, const gchar* name, int* result_length1, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    const char* _tmp10_;
+    char** _result;
+    int _result_length1;
+    char** _tmp11_;
+    int _tmp11__length;
+    int _tmp11__size;
+    int _tmp11__length1;
+    DBusMessageIter _tmp12_;
+    if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return NULL;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemsByName");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp10_ = name;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp10_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp14_;
+            _edomain = DBUS_GERROR;
+            _tmp14_ = _dbus_error.name + 27;
+            if (strcmp(_tmp14_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp14_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp14_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp14_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp14_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp14_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp14_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp14_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp14_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp14_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp14_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp14_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp14_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp14_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp14_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp14_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp14_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp14_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp14_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp14_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp14_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp14_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp14_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp14_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp14_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp14_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp14_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp14_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp14_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp14_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp14_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp14_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp14_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return NULL;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "ao")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "ao", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    _result_length1 = 0;
+    _tmp11_ = g_new(char*, 5);
+    _tmp11__length = 0;
+    _tmp11__size = 4;
+    _tmp11__length1 = 0;
+    dbus_message_iter_recurse(&_iter, &_tmp12_);
+    for (; dbus_message_iter_get_arg_type(&_tmp12_); _tmp11__length1++) {
+        const char* _tmp13_;
+        if (_tmp11__size == _tmp11__length) {
+            _tmp11__size = 2 * _tmp11__size;
+            _tmp11_ = g_renew(char*, _tmp11_, _tmp11__size + 1);
+        }
+        dbus_message_iter_get_basic(&_tmp12_, &_tmp13_);
+        dbus_message_iter_next(&_tmp12_);
+        _tmp11_[_tmp11__length++] = g_strdup(_tmp13_);
+    }
+    _result_length1 = _tmp11__length1;
+    _tmp11_[_tmp11__length] = NULL;
+    dbus_message_iter_next(&_iter);
+    _result = _tmp11_;
+    *result_length1 = _result_length1;
+    dbus_message_unref(_reply);
+    return _result;
 }
 
 
-static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_pid (DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	dbus_int32_t _tmp20_;
-	char** _result;
-	int _result_length1;
-	char** _tmp21_;
-	int _tmp21__length;
-	int _tmp21__size;
-	int _tmp21__length1;
-	DBusMessageIter _tmp22_;
-	if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return NULL;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemsByPid");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp20_ = pid;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_INT32, &_tmp20_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp24_;
-			_edomain = DBUS_GERROR;
-			_tmp24_ = _dbus_error.name + 27;
-			if (strcmp (_tmp24_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp24_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp24_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp24_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp24_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp24_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp24_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp24_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp24_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp24_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp24_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp24_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp24_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp24_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp24_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp24_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp24_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp24_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp24_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp24_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp24_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp24_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp24_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp24_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp24_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp24_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp24_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp24_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp24_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp24_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp24_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp24_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp24_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return NULL;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "ao")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "ao", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	_result_length1 = 0;
-	_tmp21_ = g_new (char*, 5);
-	_tmp21__length = 0;
-	_tmp21__size = 4;
-	_tmp21__length1 = 0;
-	dbus_message_iter_recurse (&_iter, &_tmp22_);
-	for (; dbus_message_iter_get_arg_type (&_tmp22_); _tmp21__length1++) {
-		const char* _tmp23_;
-		if (_tmp21__size == _tmp21__length) {
-			_tmp21__size = 2 * _tmp21__size;
-			_tmp21_ = g_renew (char*, _tmp21_, _tmp21__size + 1);
-		}
-		dbus_message_iter_get_basic (&_tmp22_, &_tmp23_);
-		dbus_message_iter_next (&_tmp22_);
-		_tmp21_[_tmp21__length++] = g_strdup (_tmp23_);
-	}
-	_result_length1 = _tmp21__length1;
-	_tmp21_[_tmp21__length] = NULL;
-	dbus_message_iter_next (&_iter);
-	_result = _tmp21_;
-	*result_length1 = _result_length1;
-	dbus_message_unref (_reply);
-	return _result;
+static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_desktop_file(DockManagerDBusInterface* self, const gchar* desktop_file, int* result_length1, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    const char* _tmp15_;
+    char** _result;
+    int _result_length1;
+    char** _tmp16_;
+    int _tmp16__length;
+    int _tmp16__size;
+    int _tmp16__length1;
+    DBusMessageIter _tmp17_;
+    if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return NULL;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemsByDesktopFile");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp15_ = desktop_file;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp15_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp19_;
+            _edomain = DBUS_GERROR;
+            _tmp19_ = _dbus_error.name + 27;
+            if (strcmp(_tmp19_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp19_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp19_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp19_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp19_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp19_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp19_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp19_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp19_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp19_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp19_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp19_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp19_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp19_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp19_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp19_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp19_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp19_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp19_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp19_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp19_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp19_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp19_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp19_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp19_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp19_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp19_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp19_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp19_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp19_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp19_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp19_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp19_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return NULL;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "ao")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "ao", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    _result_length1 = 0;
+    _tmp16_ = g_new(char*, 5);
+    _tmp16__length = 0;
+    _tmp16__size = 4;
+    _tmp16__length1 = 0;
+    dbus_message_iter_recurse(&_iter, &_tmp17_);
+    for (; dbus_message_iter_get_arg_type(&_tmp17_); _tmp16__length1++) {
+        const char* _tmp18_;
+        if (_tmp16__size == _tmp16__length) {
+            _tmp16__size = 2 * _tmp16__size;
+            _tmp16_ = g_renew(char*, _tmp16_, _tmp16__size + 1);
+        }
+        dbus_message_iter_get_basic(&_tmp17_, &_tmp18_);
+        dbus_message_iter_next(&_tmp17_);
+        _tmp16_[_tmp16__length++] = g_strdup(_tmp18_);
+    }
+    _result_length1 = _tmp16__length1;
+    _tmp16_[_tmp16__length] = NULL;
+    dbus_message_iter_next(&_iter);
+    _result = _tmp16_;
+    *result_length1 = _result_length1;
+    dbus_message_unref(_reply);
+    return _result;
 }
 
 
-static char* dock_manager_dbus_interface_dbus_proxy_get_item_by_xid (DockManagerDBusInterface* self, gint64 xid, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	dbus_int64_t _tmp25_;
-	char* _result;
-	const char* _tmp26_;
-	if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return NULL;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemByXid");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp25_ = xid;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_INT64, &_tmp25_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp27_;
-			_edomain = DBUS_GERROR;
-			_tmp27_ = _dbus_error.name + 27;
-			if (strcmp (_tmp27_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp27_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp27_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp27_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp27_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp27_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp27_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp27_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp27_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp27_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp27_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp27_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp27_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp27_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp27_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp27_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp27_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp27_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp27_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp27_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp27_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp27_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp27_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp27_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp27_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp27_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp27_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp27_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp27_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp27_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp27_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp27_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp27_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return NULL;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "o")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "o", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	dbus_message_iter_get_basic (&_iter, &_tmp26_);
-	dbus_message_iter_next (&_iter);
-	_result = g_strdup (_tmp26_);
-	dbus_message_unref (_reply);
-	return _result;
+static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_pid(DockManagerDBusInterface* self, gint pid, int* result_length1, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    dbus_int32_t _tmp20_;
+    char** _result;
+    int _result_length1;
+    char** _tmp21_;
+    int _tmp21__length;
+    int _tmp21__size;
+    int _tmp21__length1;
+    DBusMessageIter _tmp22_;
+    if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return NULL;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemsByPid");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp20_ = pid;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_INT32, &_tmp20_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp24_;
+            _edomain = DBUS_GERROR;
+            _tmp24_ = _dbus_error.name + 27;
+            if (strcmp(_tmp24_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp24_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp24_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp24_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp24_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp24_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp24_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp24_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp24_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp24_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp24_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp24_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp24_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp24_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp24_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp24_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp24_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp24_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp24_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp24_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp24_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp24_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp24_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp24_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp24_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp24_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp24_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp24_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp24_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp24_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp24_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp24_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp24_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return NULL;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "ao")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "ao", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    _result_length1 = 0;
+    _tmp21_ = g_new(char*, 5);
+    _tmp21__length = 0;
+    _tmp21__size = 4;
+    _tmp21__length1 = 0;
+    dbus_message_iter_recurse(&_iter, &_tmp22_);
+    for (; dbus_message_iter_get_arg_type(&_tmp22_); _tmp21__length1++) {
+        const char* _tmp23_;
+        if (_tmp21__size == _tmp21__length) {
+            _tmp21__size = 2 * _tmp21__size;
+            _tmp21_ = g_renew(char*, _tmp21_, _tmp21__size + 1);
+        }
+        dbus_message_iter_get_basic(&_tmp22_, &_tmp23_);
+        dbus_message_iter_next(&_tmp22_);
+        _tmp21_[_tmp21__length++] = g_strdup(_tmp23_);
+    }
+    _result_length1 = _tmp21__length1;
+    _tmp21_[_tmp21__length] = NULL;
+    dbus_message_iter_next(&_iter);
+    _result = _tmp21_;
+    *result_length1 = _result_length1;
+    dbus_message_unref(_reply);
+    return _result;
 }
 
 
-static void dock_manager_dbus_interface_dbus_proxy_awn_set_visibility (DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	const char* _tmp28_;
-	dbus_bool_t _tmp29_;
-	if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockManager", "AwnSetVisibility");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp28_ = win_name;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp28_);
-	_tmp29_ = visible;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_BOOLEAN, &_tmp29_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp30_;
-			_edomain = DBUS_GERROR;
-			_tmp30_ = _dbus_error.name + 27;
-			if (strcmp (_tmp30_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp30_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp30_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp30_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp30_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp30_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp30_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp30_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp30_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp30_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp30_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp30_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp30_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp30_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp30_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp30_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp30_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp30_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp30_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp30_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp30_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp30_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp30_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp30_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp30_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp30_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp30_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp30_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp30_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp30_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp30_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp30_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp30_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	dbus_message_unref (_reply);
+static char* dock_manager_dbus_interface_dbus_proxy_get_item_by_xid(DockManagerDBusInterface* self, gint64 xid, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    dbus_int64_t _tmp25_;
+    char* _result;
+    const char* _tmp26_;
+    if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return NULL;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemByXid");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp25_ = xid;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_INT64, &_tmp25_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp27_;
+            _edomain = DBUS_GERROR;
+            _tmp27_ = _dbus_error.name + 27;
+            if (strcmp(_tmp27_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp27_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp27_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp27_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp27_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp27_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp27_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp27_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp27_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp27_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp27_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp27_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp27_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp27_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp27_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp27_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp27_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp27_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp27_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp27_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp27_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp27_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp27_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp27_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp27_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp27_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp27_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp27_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp27_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp27_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp27_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp27_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp27_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return NULL;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "o")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "o", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    dbus_message_iter_get_basic(&_iter, &_tmp26_);
+    dbus_message_iter_next(&_iter);
+    _result = g_strdup(_tmp26_);
+    dbus_message_unref(_reply);
+    return _result;
 }
 
 
-static char* dock_manager_dbus_interface_dbus_proxy_awn_register_proxy_item (DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	const char* _tmp31_;
-	const char* _tmp32_;
-	char* _result;
-	const char* _tmp33_;
-	if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return NULL;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockManager", "AwnRegisterProxyItem");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp31_ = desktop_file;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp31_);
-	_tmp32_ = uri;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp32_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp34_;
-			_edomain = DBUS_GERROR;
-			_tmp34_ = _dbus_error.name + 27;
-			if (strcmp (_tmp34_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp34_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp34_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp34_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp34_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp34_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp34_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp34_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp34_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp34_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp34_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp34_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp34_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp34_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp34_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp34_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp34_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp34_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp34_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp34_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp34_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp34_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp34_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp34_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp34_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp34_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp34_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp34_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp34_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp34_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp34_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp34_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp34_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return NULL;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "o")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "o", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	dbus_message_iter_get_basic (&_iter, &_tmp33_);
-	dbus_message_iter_next (&_iter);
-	_result = g_strdup (_tmp33_);
-	dbus_message_unref (_reply);
-	return _result;
+static void dock_manager_dbus_interface_dbus_proxy_awn_set_visibility(DockManagerDBusInterface* self, const gchar* win_name, gboolean visible, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    const char* _tmp28_;
+    dbus_bool_t _tmp29_;
+    if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "AwnSetVisibility");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp28_ = win_name;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp28_);
+    _tmp29_ = visible;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_BOOLEAN, &_tmp29_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp30_;
+            _edomain = DBUS_GERROR;
+            _tmp30_ = _dbus_error.name + 27;
+            if (strcmp(_tmp30_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp30_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp30_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp30_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp30_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp30_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp30_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp30_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp30_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp30_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp30_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp30_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp30_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp30_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp30_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp30_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp30_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp30_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp30_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp30_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp30_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp30_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp30_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp30_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp30_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp30_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp30_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp30_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp30_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp30_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp30_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp30_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp30_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    dbus_message_unref(_reply);
 }
 
 
-static void dock_manager_dbus_interface_dbus_proxy_dock_manager_dbus_interface__interface_init (DockManagerDBusInterfaceIface* iface) {
-	iface->get_capabilities = dock_manager_dbus_interface_dbus_proxy_get_capabilities;
-	iface->get_items = dock_manager_dbus_interface_dbus_proxy_get_items;
-	iface->get_items_by_name = dock_manager_dbus_interface_dbus_proxy_get_items_by_name;
-	iface->get_items_by_desktop_file = dock_manager_dbus_interface_dbus_proxy_get_items_by_desktop_file;
-	iface->get_items_by_pid = dock_manager_dbus_interface_dbus_proxy_get_items_by_pid;
-	iface->get_item_by_xid = dock_manager_dbus_interface_dbus_proxy_get_item_by_xid;
-	iface->awn_set_visibility = dock_manager_dbus_interface_dbus_proxy_awn_set_visibility;
-	iface->awn_register_proxy_item = dock_manager_dbus_interface_dbus_proxy_awn_register_proxy_item;
+static char* dock_manager_dbus_interface_dbus_proxy_awn_register_proxy_item(DockManagerDBusInterface* self, const gchar* desktop_file, const gchar* uri, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    const char* _tmp31_;
+    const char* _tmp32_;
+    char* _result;
+    const char* _tmp33_;
+    if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return NULL;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "AwnRegisterProxyItem");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp31_ = desktop_file;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp31_);
+    _tmp32_ = uri;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp32_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp34_;
+            _edomain = DBUS_GERROR;
+            _tmp34_ = _dbus_error.name + 27;
+            if (strcmp(_tmp34_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp34_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp34_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp34_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp34_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp34_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp34_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp34_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp34_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp34_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp34_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp34_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp34_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp34_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp34_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp34_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp34_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp34_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp34_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp34_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp34_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp34_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp34_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp34_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp34_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp34_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp34_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp34_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp34_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp34_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp34_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp34_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp34_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return NULL;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "o")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "o", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    dbus_message_iter_get_basic(&_iter, &_tmp33_);
+    dbus_message_iter_next(&_iter);
+    _result = g_strdup(_tmp33_);
+    dbus_message_unref(_reply);
+    return _result;
 }
 
 
-static void _vala_dock_manager_dbus_interface_dbus_proxy_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
+static void dock_manager_dbus_interface_dbus_proxy_dock_manager_dbus_interface__interface_init(DockManagerDBusInterfaceIface* iface)
+{
+    iface->get_capabilities = dock_manager_dbus_interface_dbus_proxy_get_capabilities;
+    iface->get_items = dock_manager_dbus_interface_dbus_proxy_get_items;
+    iface->get_items_by_name = dock_manager_dbus_interface_dbus_proxy_get_items_by_name;
+    iface->get_items_by_desktop_file = dock_manager_dbus_interface_dbus_proxy_get_items_by_desktop_file;
+    iface->get_items_by_pid = dock_manager_dbus_interface_dbus_proxy_get_items_by_pid;
+    iface->get_item_by_xid = dock_manager_dbus_interface_dbus_proxy_get_item_by_xid;
+    iface->awn_set_visibility = dock_manager_dbus_interface_dbus_proxy_awn_set_visibility;
+    iface->awn_register_proxy_item = dock_manager_dbus_interface_dbus_proxy_awn_register_proxy_item;
 }
 
 
-static void _vala_dock_manager_dbus_interface_dbus_proxy_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
+static void _vala_dock_manager_dbus_interface_dbus_proxy_get_property(GObject* object, guint property_id, GValue* value, GParamSpec* pspec)
+{
 }
 
 
-gint dock_item_dbus_interface_add_menu_item (DockItemDBusInterface* self, GHashTable* menu_hints, GError** error) {
-	return DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE (self)->add_menu_item (self, menu_hints, error);
+static void _vala_dock_manager_dbus_interface_dbus_proxy_set_property(GObject* object, guint property_id, const GValue* value, GParamSpec* pspec)
+{
 }
 
 
-void dock_item_dbus_interface_remove_menu_item (DockItemDBusInterface* self, gint id, GError** error) {
-	DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE (self)->remove_menu_item (self, id, error);
+gint dock_item_dbus_interface_add_menu_item(DockItemDBusInterface* self, GHashTable* menu_hints, GError** error)
+{
+    return DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE(self)->add_menu_item(self, menu_hints, error);
 }
 
 
-void dock_item_dbus_interface_update_dock_item (DockItemDBusInterface* self, GHashTable* hints, GError** error) {
-	DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE (self)->update_dock_item (self, hints, error);
+void dock_item_dbus_interface_remove_menu_item(DockItemDBusInterface* self, gint id, GError** error)
+{
+    DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE(self)->remove_menu_item(self, id, error);
 }
 
 
-gchar* dock_item_dbus_interface_get_desktop_file (DockItemDBusInterface* self) {
-	return DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE (self)->get_desktop_file (self);
+void dock_item_dbus_interface_update_dock_item(DockItemDBusInterface* self, GHashTable* hints, GError** error)
+{
+    DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE(self)->update_dock_item(self, hints, error);
 }
 
 
-gchar* dock_item_dbus_interface_get_uri (DockItemDBusInterface* self) {
-	return DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE (self)->get_uri (self);
+gchar* dock_item_dbus_interface_get_desktop_file(DockItemDBusInterface* self)
+{
+    return DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE(self)->get_desktop_file(self);
 }
 
 
-static void dock_item_dbus_interface_base_init (DockItemDBusInterfaceIface * iface) {
-	static gboolean initialized = FALSE;
-	if (!initialized) {
-		initialized = TRUE;
-		g_signal_new ("menu_item_activated", TYPE_DOCK_ITEM_DBUS_INTERFACE, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
-	}
+gchar* dock_item_dbus_interface_get_uri(DockItemDBusInterface* self)
+{
+    return DOCK_ITEM_DBUS_INTERFACE_GET_INTERFACE(self)->get_uri(self);
 }
 
 
-void _dock_item_dbus_interface_dbus_unregister (DBusConnection* connection, void* _user_data_) {
+static void dock_item_dbus_interface_base_init(DockItemDBusInterfaceIface* iface)
+{
+    static gboolean initialized = FALSE;
+    if (!initialized) {
+        initialized = TRUE;
+        g_signal_new("menu_item_activated", TYPE_DOCK_ITEM_DBUS_INTERFACE, G_SIGNAL_RUN_LAST, 0, NULL, NULL, g_cclosure_marshal_VOID__INT, G_TYPE_NONE, 1, G_TYPE_INT);
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_item_dbus_interface_introspect (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessage* reply;
-	DBusMessageIter iter;
-	GString* xml_data;
-	char** children;
-	int i;
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	xml_data = g_string_new ("<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n");
-	g_string_append (xml_data, "<node>\n<interface name=\"org.freedesktop.DBus.Introspectable\">\n  <method name=\"Introspect\">\n    <arg name=\"data\" direction=\"out\" type=\"s\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.DBus.Properties\">\n  <method name=\"Get\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"out\" type=\"v\"/>\n  </method>\n  <method name=\"Set\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"in\" type=\"v\"/>\n  </method>\n  <method name=\"GetAll\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"props\" direction=\"out\" type=\"a{sv}\"/>\n  </method>\n</interface>\n<interface name=\"net.launchpad.DockItem\">\n  <method name=\"AddMenuItem\">\n    <arg name=\"menu_hints\" type=\"a{sv}\" direction=\"in\"/>\n    <arg name=\"result\" type=\"i\" direction=\"out\"/>\n  </method>\n  <method name=\"RemoveMenuItem\">\n    <arg name=\"id\" type=\"i\" direction=\"in\"/>\n  </method>\n  <method name=\"UpdateDockItem\">\n    <arg name=\"hints\" type=\"a{sv}\" direction=\"in\"/>\n  </method>\n  <property name=\"DesktopFile\" type=\"s\" access=\"read\"/>\n  <property name=\"Uri\" type=\"s\" access=\"read\"/>\n  <signal name=\"MenuItemActivated\">\n    <arg name=\"id\" type=\"i\"/>\n  </signal>\n</interface>\n");
-	dbus_connection_list_registered (connection, g_object_get_data ((GObject *) self, "dbus_object_path"), &children);
-	for (i = 0; children[i]; i++) {
-		g_string_append_printf (xml_data, "<node name=\"%s\"/>\n", children[i]);
-	}
-	dbus_free_string_array (children);
-	g_string_append (xml_data, "</node>\n");
-	dbus_message_iter_append_basic (&iter, DBUS_TYPE_STRING, &xml_data->str);
-	g_string_free (xml_data, TRUE);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+void _dock_item_dbus_interface_dbus_unregister(DBusConnection* connection, void* _user_data_)
+{
 }
 
 
-static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessage* reply;
-	DBusMessageIter iter, reply_iter, subiter;
-	char* interface_name;
-	const char* _tmp0_;
-	char* property_name;
-	const char* _tmp1_;
-	if (strcmp (dbus_message_get_signature (message), "ss")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &reply_iter);
-	dbus_message_iter_get_basic (&iter, &_tmp0_);
-	dbus_message_iter_next (&iter);
-	interface_name = g_strdup (_tmp0_);
-	dbus_message_iter_get_basic (&iter, &_tmp1_);
-	dbus_message_iter_next (&iter);
-	property_name = g_strdup (_tmp1_);
-	if ((strcmp (interface_name, "net.launchpad.DockItem") == 0) && (strcmp (property_name, "DesktopFile") == 0)) {
-		gchar* result;
-		const char* _tmp2_;
-		dbus_message_iter_open_container (&reply_iter, DBUS_TYPE_VARIANT, "s", &subiter);
-		result = dock_item_dbus_interface_get_desktop_file (self);
-		_tmp2_ = result;
-		dbus_message_iter_append_basic (&subiter, DBUS_TYPE_STRING, &_tmp2_);
-		_g_free0 ( result);
-		dbus_message_iter_close_container (&reply_iter, &subiter);
-	} else if ((strcmp (interface_name, "net.launchpad.DockItem") == 0) && (strcmp (property_name, "Uri") == 0)) {
-		gchar* result;
-		const char* _tmp3_;
-		dbus_message_iter_open_container (&reply_iter, DBUS_TYPE_VARIANT, "s", &subiter);
-		result = dock_item_dbus_interface_get_uri (self);
-		_tmp3_ = result;
-		dbus_message_iter_append_basic (&subiter, DBUS_TYPE_STRING, &_tmp3_);
-		_g_free0 ( result);
-		dbus_message_iter_close_container (&reply_iter, &subiter);
-	} else {
-		dbus_message_unref (reply);
-		reply = NULL;
-	}
-	g_free (interface_name);
-	g_free (property_name);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_item_dbus_interface_introspect(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessage* reply;
+    DBusMessageIter iter;
+    GString* xml_data;
+    char** children;
+    int i;
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    xml_data = g_string_new("<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n");
+    g_string_append(xml_data, "<node>\n<interface name=\"org.freedesktop.DBus.Introspectable\">\n  <method name=\"Introspect\">\n    <arg name=\"data\" direction=\"out\" type=\"s\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.DBus.Properties\">\n  <method name=\"Get\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"out\" type=\"v\"/>\n  </method>\n  <method name=\"Set\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"in\" type=\"v\"/>\n  </method>\n  <method name=\"GetAll\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"props\" direction=\"out\" type=\"a{sv}\"/>\n  </method>\n</interface>\n<interface name=\"net.launchpad.DockItem\">\n  <method name=\"AddMenuItem\">\n    <arg name=\"menu_hints\" type=\"a{sv}\" direction=\"in\"/>\n    <arg name=\"result\" type=\"i\" direction=\"out\"/>\n  </method>\n  <method name=\"RemoveMenuItem\">\n    <arg name=\"id\" type=\"i\" direction=\"in\"/>\n  </method>\n  <method name=\"UpdateDockItem\">\n    <arg name=\"hints\" type=\"a{sv}\" direction=\"in\"/>\n  </method>\n  <property name=\"DesktopFile\" type=\"s\" access=\"read\"/>\n  <property name=\"Uri\" type=\"s\" access=\"read\"/>\n  <signal name=\"MenuItemActivated\">\n    <arg name=\"id\" type=\"i\"/>\n  </signal>\n</interface>\n");
+    dbus_connection_list_registered(connection, g_object_get_data((GObject*) self, "dbus_object_path"), &children);
+    for (i = 0; children[i]; i++) {
+        g_string_append_printf(xml_data, "<node name=\"%s\"/>\n", children[i]);
+    }
+    dbus_free_string_array(children);
+    g_string_append(xml_data, "</node>\n");
+    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &xml_data->str);
+    g_string_free(xml_data, TRUE);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get_all (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessage* reply;
-	DBusMessageIter iter, reply_iter, subiter, entry_iter, value_iter;
-	char* interface_name;
-	const char* _tmp4_;
-	const char* property_name;
-	if (strcmp (dbus_message_get_signature (message), "s")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &reply_iter);
-	dbus_message_iter_get_basic (&iter, &_tmp4_);
-	dbus_message_iter_next (&iter);
-	interface_name = g_strdup (_tmp4_);
-	if (strcmp (interface_name, "net.launchpad.DockItem") == 0) {
-		dbus_message_iter_open_container (&reply_iter, DBUS_TYPE_ARRAY, "{sv}", &subiter);
-		{
-			gchar* result;
-			const char* _tmp5_;
-			dbus_message_iter_open_container (&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-			property_name = "DesktopFile";
-			dbus_message_iter_append_basic (&entry_iter, DBUS_TYPE_STRING, &property_name);
-			dbus_message_iter_open_container (&entry_iter, DBUS_TYPE_VARIANT, "s", &value_iter);
-			result = dock_item_dbus_interface_get_desktop_file (self);
-			_tmp5_ = result;
-			dbus_message_iter_append_basic (&value_iter, DBUS_TYPE_STRING, &_tmp5_);
-			_g_free0 ( result);
-			dbus_message_iter_close_container (&entry_iter, &value_iter);
-			dbus_message_iter_close_container (&subiter, &entry_iter);
-		}
-		{
-			gchar* result;
-			const char* _tmp6_;
-			dbus_message_iter_open_container (&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-			property_name = "Uri";
-			dbus_message_iter_append_basic (&entry_iter, DBUS_TYPE_STRING, &property_name);
-			dbus_message_iter_open_container (&entry_iter, DBUS_TYPE_VARIANT, "s", &value_iter);
-			result = dock_item_dbus_interface_get_uri (self);
-			_tmp6_ = result;
-			dbus_message_iter_append_basic (&value_iter, DBUS_TYPE_STRING, &_tmp6_);
-			_g_free0 ( result);
-			dbus_message_iter_close_container (&entry_iter, &value_iter);
-			dbus_message_iter_close_container (&subiter, &entry_iter);
-		}
-		dbus_message_iter_close_container (&reply_iter, &subiter);
-	} else {
-		dbus_message_unref (reply);
-		reply = NULL;
-	}
-	g_free (interface_name);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessage* reply;
+    DBusMessageIter iter, reply_iter, subiter;
+    char* interface_name;
+    const char* _tmp0_;
+    char* property_name;
+    const char* _tmp1_;
+    if (strcmp(dbus_message_get_signature(message), "ss")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &reply_iter);
+    dbus_message_iter_get_basic(&iter, &_tmp0_);
+    dbus_message_iter_next(&iter);
+    interface_name = g_strdup(_tmp0_);
+    dbus_message_iter_get_basic(&iter, &_tmp1_);
+    dbus_message_iter_next(&iter);
+    property_name = g_strdup(_tmp1_);
+    if ((strcmp(interface_name, "net.launchpad.DockItem") == 0) && (strcmp(property_name, "DesktopFile") == 0)) {
+        gchar* result;
+        const char* _tmp2_;
+        dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "s", &subiter);
+        result = dock_item_dbus_interface_get_desktop_file(self);
+        _tmp2_ = result;
+        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_STRING, &_tmp2_);
+        _g_free0(result);
+        dbus_message_iter_close_container(&reply_iter, &subiter);
+    } else if ((strcmp(interface_name, "net.launchpad.DockItem") == 0) && (strcmp(property_name, "Uri") == 0)) {
+        gchar* result;
+        const char* _tmp3_;
+        dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "s", &subiter);
+        result = dock_item_dbus_interface_get_uri(self);
+        _tmp3_ = result;
+        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_STRING, &_tmp3_);
+        _g_free0(result);
+        dbus_message_iter_close_container(&reply_iter, &subiter);
+    } else {
+        dbus_message_unref(reply);
+        reply = NULL;
+    }
+    g_free(interface_name);
+    g_free(property_name);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_item_dbus_interface_add_menu_item (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	GHashTable* menu_hints = NULL;
-	GHashTable* _tmp7_;
-	DBusMessageIter _tmp8_;
-	DBusMessageIter _tmp9_;
-	gint result;
-	DBusMessage* reply;
-	dbus_int32_t _tmp28_;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "a{sv}")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	_tmp7_ = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-	dbus_message_iter_recurse (&iter, &_tmp8_);
-	while (dbus_message_iter_get_arg_type (&_tmp8_)) {
-		gchar* _key;
-		GValue* _value;
-		const char* _tmp10_;
-		GValue _tmp11_ = {0};
-		DBusMessageIter _tmp12_;
-		dbus_message_iter_recurse (&_tmp8_, &_tmp9_);
-		dbus_message_iter_get_basic (&_tmp9_, &_tmp10_);
-		dbus_message_iter_next (&_tmp9_);
-		_key = g_strdup (_tmp10_);
-		dbus_message_iter_recurse (&_tmp9_, &_tmp12_);
-		if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_BYTE) {
-			guint8 _tmp13_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp13_);
-			g_value_init (&_tmp11_, G_TYPE_UCHAR);
-			g_value_set_uchar (&_tmp11_, _tmp13_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_BOOLEAN) {
-			dbus_bool_t _tmp14_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp14_);
-			g_value_init (&_tmp11_, G_TYPE_BOOLEAN);
-			g_value_set_boolean (&_tmp11_, _tmp14_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_INT16) {
-			dbus_int16_t _tmp15_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp15_);
-			g_value_init (&_tmp11_, G_TYPE_INT);
-			g_value_set_int (&_tmp11_, _tmp15_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_UINT16) {
-			dbus_uint16_t _tmp16_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp16_);
-			g_value_init (&_tmp11_, G_TYPE_UINT);
-			g_value_set_uint (&_tmp11_, _tmp16_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_INT32) {
-			dbus_int32_t _tmp17_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp17_);
-			g_value_init (&_tmp11_, G_TYPE_INT);
-			g_value_set_int (&_tmp11_, _tmp17_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_UINT32) {
-			dbus_uint32_t _tmp18_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp18_);
-			g_value_init (&_tmp11_, G_TYPE_UINT);
-			g_value_set_uint (&_tmp11_, _tmp18_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_INT64) {
-			dbus_int64_t _tmp19_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp19_);
-			g_value_init (&_tmp11_, G_TYPE_INT64);
-			g_value_set_int64 (&_tmp11_, _tmp19_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_UINT64) {
-			dbus_uint64_t _tmp20_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp20_);
-			g_value_init (&_tmp11_, G_TYPE_UINT64);
-			g_value_set_uint64 (&_tmp11_, _tmp20_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_DOUBLE) {
-			double _tmp21_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp21_);
-			g_value_init (&_tmp11_, G_TYPE_DOUBLE);
-			g_value_set_double (&_tmp11_, _tmp21_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_STRING) {
-			const char* _tmp22_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp22_);
-			g_value_init (&_tmp11_, G_TYPE_STRING);
-			g_value_take_string (&_tmp11_, g_strdup (_tmp22_));
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_OBJECT_PATH) {
-			const char* _tmp23_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp23_);
-			g_value_init (&_tmp11_, G_TYPE_STRING);
-			g_value_take_string (&_tmp11_, g_strdup (_tmp23_));
-		} else if (dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_SIGNATURE) {
-			const char* _tmp24_;
-			dbus_message_iter_get_basic (&_tmp12_, &_tmp24_);
-			g_value_init (&_tmp11_, G_TYPE_STRING);
-			g_value_take_string (&_tmp11_, g_strdup (_tmp24_));
-		} else if ((dbus_message_iter_get_arg_type (&_tmp12_) == DBUS_TYPE_ARRAY) && (dbus_message_iter_get_element_type (&_tmp12_) == DBUS_TYPE_STRING)) {
-			const gchar** _tmp25_;
-			int _tmp25__length;
-			int _tmp25__size;
-			int _tmp25__length1;
-			DBusMessageIter _tmp26_;
-			_tmp25_ = g_new (const gchar*, 5);
-			_tmp25__length = 0;
-			_tmp25__size = 4;
-			_tmp25__length1 = 0;
-			dbus_message_iter_recurse (&_tmp12_, &_tmp26_);
-			for (; dbus_message_iter_get_arg_type (&_tmp26_); _tmp25__length1++) {
-				const char* _tmp27_;
-				if (_tmp25__size == _tmp25__length) {
-					_tmp25__size = 2 * _tmp25__size;
-					_tmp25_ = g_renew (const gchar*, _tmp25_, _tmp25__size + 1);
-				}
-				dbus_message_iter_get_basic (&_tmp26_, &_tmp27_);
-				dbus_message_iter_next (&_tmp26_);
-				_tmp25_[_tmp25__length++] = g_strdup (_tmp27_);
-			}
-			_tmp25_[_tmp25__length] = NULL;
-			g_value_init (&_tmp11_, G_TYPE_STRV);
-			g_value_take_boxed (&_tmp11_, _tmp25_);
-		}
-		dbus_message_iter_next (&_tmp9_);
-		_value = g_memdup (&_tmp11_, sizeof (GValue));
-		g_hash_table_insert (_tmp7_, _key, _value);
-		dbus_message_iter_next (&_tmp8_);
-	}
-	dbus_message_iter_next (&iter);
-	menu_hints = _tmp7_;
-	result = dock_item_dbus_interface_add_menu_item (self, menu_hints, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_g_hash_table_unref0 (menu_hints);
-	_tmp28_ = result;
-	dbus_message_iter_append_basic (&iter, DBUS_TYPE_INT32, &_tmp28_);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get_all(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessage* reply;
+    DBusMessageIter iter, reply_iter, subiter, entry_iter, value_iter;
+    char* interface_name;
+    const char* _tmp4_;
+    const char* property_name;
+    if (strcmp(dbus_message_get_signature(message), "s")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &reply_iter);
+    dbus_message_iter_get_basic(&iter, &_tmp4_);
+    dbus_message_iter_next(&iter);
+    interface_name = g_strdup(_tmp4_);
+    if (strcmp(interface_name, "net.launchpad.DockItem") == 0) {
+        dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_ARRAY, "{sv}", &subiter);
+        {
+            gchar* result;
+            const char* _tmp5_;
+            dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
+            property_name = "DesktopFile";
+            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "s", &value_iter);
+            result = dock_item_dbus_interface_get_desktop_file(self);
+            _tmp5_ = result;
+            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_STRING, &_tmp5_);
+            _g_free0(result);
+            dbus_message_iter_close_container(&entry_iter, &value_iter);
+            dbus_message_iter_close_container(&subiter, &entry_iter);
+        }
+        {
+            gchar* result;
+            const char* _tmp6_;
+            dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
+            property_name = "Uri";
+            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "s", &value_iter);
+            result = dock_item_dbus_interface_get_uri(self);
+            _tmp6_ = result;
+            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_STRING, &_tmp6_);
+            _g_free0(result);
+            dbus_message_iter_close_container(&entry_iter, &value_iter);
+            dbus_message_iter_close_container(&subiter, &entry_iter);
+        }
+        dbus_message_iter_close_container(&reply_iter, &subiter);
+    } else {
+        dbus_message_unref(reply);
+        reply = NULL;
+    }
+    g_free(interface_name);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_item_dbus_interface_remove_menu_item (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	gint id = 0;
-	dbus_int32_t _tmp29_;
-	DBusMessage* reply;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "i")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp29_);
-	dbus_message_iter_next (&iter);
-	id = _tmp29_;
-	dock_item_dbus_interface_remove_menu_item (self, id, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_item_dbus_interface_add_menu_item(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    GHashTable* menu_hints = NULL;
+    GHashTable* _tmp7_;
+    DBusMessageIter _tmp8_;
+    DBusMessageIter _tmp9_;
+    gint result;
+    DBusMessage* reply;
+    dbus_int32_t _tmp28_;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "a{sv}")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    _tmp7_ = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+    dbus_message_iter_recurse(&iter, &_tmp8_);
+    while (dbus_message_iter_get_arg_type(&_tmp8_)) {
+        gchar* _key;
+        GValue* _value;
+        const char* _tmp10_;
+        GValue _tmp11_ = {0};
+        DBusMessageIter _tmp12_;
+        dbus_message_iter_recurse(&_tmp8_, &_tmp9_);
+        dbus_message_iter_get_basic(&_tmp9_, &_tmp10_);
+        dbus_message_iter_next(&_tmp9_);
+        _key = g_strdup(_tmp10_);
+        dbus_message_iter_recurse(&_tmp9_, &_tmp12_);
+        if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_BYTE) {
+            guint8 _tmp13_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp13_);
+            g_value_init(&_tmp11_, G_TYPE_UCHAR);
+            g_value_set_uchar(&_tmp11_, _tmp13_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_BOOLEAN) {
+            dbus_bool_t _tmp14_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp14_);
+            g_value_init(&_tmp11_, G_TYPE_BOOLEAN);
+            g_value_set_boolean(&_tmp11_, _tmp14_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_INT16) {
+            dbus_int16_t _tmp15_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp15_);
+            g_value_init(&_tmp11_, G_TYPE_INT);
+            g_value_set_int(&_tmp11_, _tmp15_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_UINT16) {
+            dbus_uint16_t _tmp16_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp16_);
+            g_value_init(&_tmp11_, G_TYPE_UINT);
+            g_value_set_uint(&_tmp11_, _tmp16_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_INT32) {
+            dbus_int32_t _tmp17_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp17_);
+            g_value_init(&_tmp11_, G_TYPE_INT);
+            g_value_set_int(&_tmp11_, _tmp17_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_UINT32) {
+            dbus_uint32_t _tmp18_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp18_);
+            g_value_init(&_tmp11_, G_TYPE_UINT);
+            g_value_set_uint(&_tmp11_, _tmp18_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_INT64) {
+            dbus_int64_t _tmp19_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp19_);
+            g_value_init(&_tmp11_, G_TYPE_INT64);
+            g_value_set_int64(&_tmp11_, _tmp19_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_UINT64) {
+            dbus_uint64_t _tmp20_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp20_);
+            g_value_init(&_tmp11_, G_TYPE_UINT64);
+            g_value_set_uint64(&_tmp11_, _tmp20_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_DOUBLE) {
+            double _tmp21_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp21_);
+            g_value_init(&_tmp11_, G_TYPE_DOUBLE);
+            g_value_set_double(&_tmp11_, _tmp21_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_STRING) {
+            const char* _tmp22_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp22_);
+            g_value_init(&_tmp11_, G_TYPE_STRING);
+            g_value_take_string(&_tmp11_, g_strdup(_tmp22_));
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_OBJECT_PATH) {
+            const char* _tmp23_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp23_);
+            g_value_init(&_tmp11_, G_TYPE_STRING);
+            g_value_take_string(&_tmp11_, g_strdup(_tmp23_));
+        } else if (dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_SIGNATURE) {
+            const char* _tmp24_;
+            dbus_message_iter_get_basic(&_tmp12_, &_tmp24_);
+            g_value_init(&_tmp11_, G_TYPE_STRING);
+            g_value_take_string(&_tmp11_, g_strdup(_tmp24_));
+        } else if ((dbus_message_iter_get_arg_type(&_tmp12_) == DBUS_TYPE_ARRAY) && (dbus_message_iter_get_element_type(&_tmp12_) == DBUS_TYPE_STRING)) {
+            const gchar** _tmp25_;
+            int _tmp25__length;
+            int _tmp25__size;
+            int _tmp25__length1;
+            DBusMessageIter _tmp26_;
+            _tmp25_ = g_new(const gchar*, 5);
+            _tmp25__length = 0;
+            _tmp25__size = 4;
+            _tmp25__length1 = 0;
+            dbus_message_iter_recurse(&_tmp12_, &_tmp26_);
+            for (; dbus_message_iter_get_arg_type(&_tmp26_); _tmp25__length1++) {
+                const char* _tmp27_;
+                if (_tmp25__size == _tmp25__length) {
+                    _tmp25__size = 2 * _tmp25__size;
+                    _tmp25_ = g_renew(const gchar*, _tmp25_, _tmp25__size + 1);
+                }
+                dbus_message_iter_get_basic(&_tmp26_, &_tmp27_);
+                dbus_message_iter_next(&_tmp26_);
+                _tmp25_[_tmp25__length++] = g_strdup(_tmp27_);
+            }
+            _tmp25_[_tmp25__length] = NULL;
+            g_value_init(&_tmp11_, G_TYPE_STRV);
+            g_value_take_boxed(&_tmp11_, _tmp25_);
+        }
+        dbus_message_iter_next(&_tmp9_);
+        _value = g_memdup(&_tmp11_, sizeof(GValue));
+        g_hash_table_insert(_tmp7_, _key, _value);
+        dbus_message_iter_next(&_tmp8_);
+    }
+    dbus_message_iter_next(&iter);
+    menu_hints = _tmp7_;
+    result = dock_item_dbus_interface_add_menu_item(self, menu_hints, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _g_hash_table_unref0(menu_hints);
+    _tmp28_ = result;
+    dbus_message_iter_append_basic(&iter, DBUS_TYPE_INT32, &_tmp28_);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static DBusHandlerResult _dbus_dock_item_dbus_interface_update_dock_item (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	GError* error;
-	GHashTable* hints = NULL;
-	GHashTable* _tmp30_;
-	DBusMessageIter _tmp31_;
-	DBusMessageIter _tmp32_;
-	DBusMessage* reply;
-	error = NULL;
-	if (strcmp (dbus_message_get_signature (message), "a{sv}")) {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-	dbus_message_iter_init (message, &iter);
-	_tmp30_ = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-	dbus_message_iter_recurse (&iter, &_tmp31_);
-	while (dbus_message_iter_get_arg_type (&_tmp31_)) {
-		gchar* _key;
-		GValue* _value;
-		const char* _tmp33_;
-		GValue _tmp34_ = {0};
-		DBusMessageIter _tmp35_;
-		dbus_message_iter_recurse (&_tmp31_, &_tmp32_);
-		dbus_message_iter_get_basic (&_tmp32_, &_tmp33_);
-		dbus_message_iter_next (&_tmp32_);
-		_key = g_strdup (_tmp33_);
-		dbus_message_iter_recurse (&_tmp32_, &_tmp35_);
-		if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_BYTE) {
-			guint8 _tmp36_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp36_);
-			g_value_init (&_tmp34_, G_TYPE_UCHAR);
-			g_value_set_uchar (&_tmp34_, _tmp36_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_BOOLEAN) {
-			dbus_bool_t _tmp37_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp37_);
-			g_value_init (&_tmp34_, G_TYPE_BOOLEAN);
-			g_value_set_boolean (&_tmp34_, _tmp37_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_INT16) {
-			dbus_int16_t _tmp38_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp38_);
-			g_value_init (&_tmp34_, G_TYPE_INT);
-			g_value_set_int (&_tmp34_, _tmp38_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_UINT16) {
-			dbus_uint16_t _tmp39_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp39_);
-			g_value_init (&_tmp34_, G_TYPE_UINT);
-			g_value_set_uint (&_tmp34_, _tmp39_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_INT32) {
-			dbus_int32_t _tmp40_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp40_);
-			g_value_init (&_tmp34_, G_TYPE_INT);
-			g_value_set_int (&_tmp34_, _tmp40_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_UINT32) {
-			dbus_uint32_t _tmp41_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp41_);
-			g_value_init (&_tmp34_, G_TYPE_UINT);
-			g_value_set_uint (&_tmp34_, _tmp41_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_INT64) {
-			dbus_int64_t _tmp42_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp42_);
-			g_value_init (&_tmp34_, G_TYPE_INT64);
-			g_value_set_int64 (&_tmp34_, _tmp42_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_UINT64) {
-			dbus_uint64_t _tmp43_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp43_);
-			g_value_init (&_tmp34_, G_TYPE_UINT64);
-			g_value_set_uint64 (&_tmp34_, _tmp43_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_DOUBLE) {
-			double _tmp44_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp44_);
-			g_value_init (&_tmp34_, G_TYPE_DOUBLE);
-			g_value_set_double (&_tmp34_, _tmp44_);
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_STRING) {
-			const char* _tmp45_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp45_);
-			g_value_init (&_tmp34_, G_TYPE_STRING);
-			g_value_take_string (&_tmp34_, g_strdup (_tmp45_));
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_OBJECT_PATH) {
-			const char* _tmp46_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp46_);
-			g_value_init (&_tmp34_, G_TYPE_STRING);
-			g_value_take_string (&_tmp34_, g_strdup (_tmp46_));
-		} else if (dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_SIGNATURE) {
-			const char* _tmp47_;
-			dbus_message_iter_get_basic (&_tmp35_, &_tmp47_);
-			g_value_init (&_tmp34_, G_TYPE_STRING);
-			g_value_take_string (&_tmp34_, g_strdup (_tmp47_));
-		} else if ((dbus_message_iter_get_arg_type (&_tmp35_) == DBUS_TYPE_ARRAY) && (dbus_message_iter_get_element_type (&_tmp35_) == DBUS_TYPE_STRING)) {
-			const gchar** _tmp48_;
-			int _tmp48__length;
-			int _tmp48__size;
-			int _tmp48__length1;
-			DBusMessageIter _tmp49_;
-			_tmp48_ = g_new (const gchar*, 5);
-			_tmp48__length = 0;
-			_tmp48__size = 4;
-			_tmp48__length1 = 0;
-			dbus_message_iter_recurse (&_tmp35_, &_tmp49_);
-			for (; dbus_message_iter_get_arg_type (&_tmp49_); _tmp48__length1++) {
-				const char* _tmp50_;
-				if (_tmp48__size == _tmp48__length) {
-					_tmp48__size = 2 * _tmp48__size;
-					_tmp48_ = g_renew (const gchar*, _tmp48_, _tmp48__size + 1);
-				}
-				dbus_message_iter_get_basic (&_tmp49_, &_tmp50_);
-				dbus_message_iter_next (&_tmp49_);
-				_tmp48_[_tmp48__length++] = g_strdup (_tmp50_);
-			}
-			_tmp48_[_tmp48__length] = NULL;
-			g_value_init (&_tmp34_, G_TYPE_STRV);
-			g_value_take_boxed (&_tmp34_, _tmp48_);
-		}
-		dbus_message_iter_next (&_tmp32_);
-		_value = g_memdup (&_tmp34_, sizeof (GValue));
-		g_hash_table_insert (_tmp30_, _key, _value);
-		dbus_message_iter_next (&_tmp31_);
-	}
-	dbus_message_iter_next (&iter);
-	hints = _tmp30_;
-	dock_item_dbus_interface_update_dock_item (self, hints, &error);
-	if (error) {
-		if (error->domain == DBUS_GERROR) {
-			switch (error->code) {
-				case DBUS_GERROR_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Failed", error->message);
-				break;
-				case DBUS_GERROR_NO_MEMORY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoMemory", error->message);
-				break;
-				case DBUS_GERROR_SERVICE_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
-				break;
-				case DBUS_GERROR_NAME_HAS_NO_OWNER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
-				break;
-				case DBUS_GERROR_NO_REPLY:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoReply", error->message);
-				break;
-				case DBUS_GERROR_IO_ERROR:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.IOError", error->message);
-				break;
-				case DBUS_GERROR_BAD_ADDRESS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.BadAddress", error->message);
-				break;
-				case DBUS_GERROR_NOT_SUPPORTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NotSupported", error->message);
-				break;
-				case DBUS_GERROR_LIMITS_EXCEEDED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
-				break;
-				case DBUS_GERROR_ACCESS_DENIED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
-				break;
-				case DBUS_GERROR_AUTH_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
-				break;
-				case DBUS_GERROR_NO_SERVER:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoServer", error->message);
-				break;
-				case DBUS_GERROR_TIMEOUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Timeout", error->message);
-				break;
-				case DBUS_GERROR_NO_NETWORK:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
-				break;
-				case DBUS_GERROR_ADDRESS_IN_USE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
-				break;
-				case DBUS_GERROR_DISCONNECTED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Disconnected", error->message);
-				break;
-				case DBUS_GERROR_INVALID_ARGS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
-				break;
-				case DBUS_GERROR_FILE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
-				break;
-				case DBUS_GERROR_FILE_EXISTS:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.FileExists", error->message);
-				break;
-				case DBUS_GERROR_UNKNOWN_METHOD:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
-				break;
-				case DBUS_GERROR_TIMED_OUT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.TimedOut", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
-				break;
-				case DBUS_GERROR_MATCH_RULE_INVALID:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_EXEC_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FORK_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_EXITED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
-				break;
-				case DBUS_GERROR_SPAWN_FAILED:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
-				break;
-				case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
-				break;
-				case DBUS_GERROR_INVALID_SIGNATURE:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
-				break;
-				case DBUS_GERROR_INVALID_FILE_CONTENT:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
-				break;
-				case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
-				break;
-				case DBUS_GERROR_REMOTE_EXCEPTION:
-				reply = dbus_message_new_error (message, "org.freedesktop.DBus.Error.RemoteException", error->message);
-				break;
-			}
-		}
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	}
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	_g_hash_table_unref0 (hints);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_item_dbus_interface_remove_menu_item(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    gint id = 0;
+    dbus_int32_t _tmp29_;
+    DBusMessage* reply;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "i")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp29_);
+    dbus_message_iter_next(&iter);
+    id = _tmp29_;
+    dock_item_dbus_interface_remove_menu_item(self, id, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-DBusHandlerResult dock_item_dbus_interface_dbus_message (DBusConnection* connection, DBusMessage* message, void* object) {
-	DBusHandlerResult result;
-	result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	if (dbus_message_is_method_call (message, "org.freedesktop.DBus.Introspectable", "Introspect")) {
-		result = _dbus_dock_item_dbus_interface_introspect (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "org.freedesktop.DBus.Properties", "Get")) {
-		result = _dbus_dock_item_dbus_interface_property_get (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "org.freedesktop.DBus.Properties", "GetAll")) {
-		result = _dbus_dock_item_dbus_interface_property_get_all (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockItem", "AddMenuItem")) {
-		result = _dbus_dock_item_dbus_interface_add_menu_item (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockItem", "RemoveMenuItem")) {
-		result = _dbus_dock_item_dbus_interface_remove_menu_item (object, connection, message);
-	} else if (dbus_message_is_method_call (message, "net.launchpad.DockItem", "UpdateDockItem")) {
-		result = _dbus_dock_item_dbus_interface_update_dock_item (object, connection, message);
-	}
-	if (result == DBUS_HANDLER_RESULT_HANDLED) {
-		return result;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
+static DBusHandlerResult _dbus_dock_item_dbus_interface_update_dock_item(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    GError* error;
+    GHashTable* hints = NULL;
+    GHashTable* _tmp30_;
+    DBusMessageIter _tmp31_;
+    DBusMessageIter _tmp32_;
+    DBusMessage* reply;
+    error = NULL;
+    if (strcmp(dbus_message_get_signature(message), "a{sv}")) {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+    dbus_message_iter_init(message, &iter);
+    _tmp30_ = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+    dbus_message_iter_recurse(&iter, &_tmp31_);
+    while (dbus_message_iter_get_arg_type(&_tmp31_)) {
+        gchar* _key;
+        GValue* _value;
+        const char* _tmp33_;
+        GValue _tmp34_ = {0};
+        DBusMessageIter _tmp35_;
+        dbus_message_iter_recurse(&_tmp31_, &_tmp32_);
+        dbus_message_iter_get_basic(&_tmp32_, &_tmp33_);
+        dbus_message_iter_next(&_tmp32_);
+        _key = g_strdup(_tmp33_);
+        dbus_message_iter_recurse(&_tmp32_, &_tmp35_);
+        if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_BYTE) {
+            guint8 _tmp36_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp36_);
+            g_value_init(&_tmp34_, G_TYPE_UCHAR);
+            g_value_set_uchar(&_tmp34_, _tmp36_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_BOOLEAN) {
+            dbus_bool_t _tmp37_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp37_);
+            g_value_init(&_tmp34_, G_TYPE_BOOLEAN);
+            g_value_set_boolean(&_tmp34_, _tmp37_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_INT16) {
+            dbus_int16_t _tmp38_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp38_);
+            g_value_init(&_tmp34_, G_TYPE_INT);
+            g_value_set_int(&_tmp34_, _tmp38_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_UINT16) {
+            dbus_uint16_t _tmp39_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp39_);
+            g_value_init(&_tmp34_, G_TYPE_UINT);
+            g_value_set_uint(&_tmp34_, _tmp39_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_INT32) {
+            dbus_int32_t _tmp40_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp40_);
+            g_value_init(&_tmp34_, G_TYPE_INT);
+            g_value_set_int(&_tmp34_, _tmp40_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_UINT32) {
+            dbus_uint32_t _tmp41_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp41_);
+            g_value_init(&_tmp34_, G_TYPE_UINT);
+            g_value_set_uint(&_tmp34_, _tmp41_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_INT64) {
+            dbus_int64_t _tmp42_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp42_);
+            g_value_init(&_tmp34_, G_TYPE_INT64);
+            g_value_set_int64(&_tmp34_, _tmp42_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_UINT64) {
+            dbus_uint64_t _tmp43_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp43_);
+            g_value_init(&_tmp34_, G_TYPE_UINT64);
+            g_value_set_uint64(&_tmp34_, _tmp43_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_DOUBLE) {
+            double _tmp44_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp44_);
+            g_value_init(&_tmp34_, G_TYPE_DOUBLE);
+            g_value_set_double(&_tmp34_, _tmp44_);
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_STRING) {
+            const char* _tmp45_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp45_);
+            g_value_init(&_tmp34_, G_TYPE_STRING);
+            g_value_take_string(&_tmp34_, g_strdup(_tmp45_));
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_OBJECT_PATH) {
+            const char* _tmp46_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp46_);
+            g_value_init(&_tmp34_, G_TYPE_STRING);
+            g_value_take_string(&_tmp34_, g_strdup(_tmp46_));
+        } else if (dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_SIGNATURE) {
+            const char* _tmp47_;
+            dbus_message_iter_get_basic(&_tmp35_, &_tmp47_);
+            g_value_init(&_tmp34_, G_TYPE_STRING);
+            g_value_take_string(&_tmp34_, g_strdup(_tmp47_));
+        } else if ((dbus_message_iter_get_arg_type(&_tmp35_) == DBUS_TYPE_ARRAY) && (dbus_message_iter_get_element_type(&_tmp35_) == DBUS_TYPE_STRING)) {
+            const gchar** _tmp48_;
+            int _tmp48__length;
+            int _tmp48__size;
+            int _tmp48__length1;
+            DBusMessageIter _tmp49_;
+            _tmp48_ = g_new(const gchar*, 5);
+            _tmp48__length = 0;
+            _tmp48__size = 4;
+            _tmp48__length1 = 0;
+            dbus_message_iter_recurse(&_tmp35_, &_tmp49_);
+            for (; dbus_message_iter_get_arg_type(&_tmp49_); _tmp48__length1++) {
+                const char* _tmp50_;
+                if (_tmp48__size == _tmp48__length) {
+                    _tmp48__size = 2 * _tmp48__size;
+                    _tmp48_ = g_renew(const gchar*, _tmp48_, _tmp48__size + 1);
+                }
+                dbus_message_iter_get_basic(&_tmp49_, &_tmp50_);
+                dbus_message_iter_next(&_tmp49_);
+                _tmp48_[_tmp48__length++] = g_strdup(_tmp50_);
+            }
+            _tmp48_[_tmp48__length] = NULL;
+            g_value_init(&_tmp34_, G_TYPE_STRV);
+            g_value_take_boxed(&_tmp34_, _tmp48_);
+        }
+        dbus_message_iter_next(&_tmp32_);
+        _value = g_memdup(&_tmp34_, sizeof(GValue));
+        g_hash_table_insert(_tmp30_, _key, _value);
+        dbus_message_iter_next(&_tmp31_);
+    }
+    dbus_message_iter_next(&iter);
+    hints = _tmp30_;
+    dock_item_dbus_interface_update_dock_item(self, hints, &error);
+    if (error) {
+        if (error->domain == DBUS_GERROR) {
+            switch (error->code) {
+            case DBUS_GERROR_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Failed", error->message);
+                break;
+            case DBUS_GERROR_NO_MEMORY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoMemory", error->message);
+                break;
+            case DBUS_GERROR_SERVICE_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.ServiceUnknown", error->message);
+                break;
+            case DBUS_GERROR_NAME_HAS_NO_OWNER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NameHasNoOwner", error->message);
+                break;
+            case DBUS_GERROR_NO_REPLY:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoReply", error->message);
+                break;
+            case DBUS_GERROR_IO_ERROR:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.IOError", error->message);
+                break;
+            case DBUS_GERROR_BAD_ADDRESS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.BadAddress", error->message);
+                break;
+            case DBUS_GERROR_NOT_SUPPORTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NotSupported", error->message);
+                break;
+            case DBUS_GERROR_LIMITS_EXCEEDED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.LimitsExceeded", error->message);
+                break;
+            case DBUS_GERROR_ACCESS_DENIED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AccessDenied", error->message);
+                break;
+            case DBUS_GERROR_AUTH_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AuthFailed", error->message);
+                break;
+            case DBUS_GERROR_NO_SERVER:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoServer", error->message);
+                break;
+            case DBUS_GERROR_TIMEOUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Timeout", error->message);
+                break;
+            case DBUS_GERROR_NO_NETWORK:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.NoNetwork", error->message);
+                break;
+            case DBUS_GERROR_ADDRESS_IN_USE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.AddressInUse", error->message);
+                break;
+            case DBUS_GERROR_DISCONNECTED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Disconnected", error->message);
+                break;
+            case DBUS_GERROR_INVALID_ARGS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidArgs", error->message);
+                break;
+            case DBUS_GERROR_FILE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileNotFound", error->message);
+                break;
+            case DBUS_GERROR_FILE_EXISTS:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.FileExists", error->message);
+                break;
+            case DBUS_GERROR_UNKNOWN_METHOD:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnknownMethod", error->message);
+                break;
+            case DBUS_GERROR_TIMED_OUT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.TimedOut", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_NOT_FOUND:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleNotFound", error->message);
+                break;
+            case DBUS_GERROR_MATCH_RULE_INVALID:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.MatchRuleInvalid", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_EXEC_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ExecFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FORK_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ForkFailed", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_EXITED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildExited", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_CHILD_SIGNALED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.ChildSignaled", error->message);
+                break;
+            case DBUS_GERROR_SPAWN_FAILED:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.Spawn.Failed", error->message);
+                break;
+            case DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.UnixProcessIdUnknown", error->message);
+                break;
+            case DBUS_GERROR_INVALID_SIGNATURE:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidSignature", error->message);
+                break;
+            case DBUS_GERROR_INVALID_FILE_CONTENT:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.InvalidFileContent", error->message);
+                break;
+            case DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown", error->message);
+                break;
+            case DBUS_GERROR_REMOTE_EXCEPTION:
+                reply = dbus_message_new_error(message, "org.freedesktop.DBus.Error.RemoteException", error->message);
+                break;
+            }
+        }
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    _g_hash_table_unref0(hints);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-static void _dbus_dock_item_dbus_interface_menu_item_activated (GObject* _sender, gint id, DBusConnection* _connection) {
-	const char * _path;
-	DBusMessage *_message;
-	DBusMessageIter _iter;
-	dbus_int32_t _tmp51_;
-	_path = g_object_get_data (_sender, "dbus_object_path");
-	_message = dbus_message_new_signal (_path, "net.launchpad.DockItem", "MenuItemActivated");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp51_ = id;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_INT32, &_tmp51_);
-	dbus_connection_send (_connection, _message, NULL);
-	dbus_message_unref (_message);
+DBusHandlerResult dock_item_dbus_interface_dbus_message(DBusConnection* connection, DBusMessage* message, void* object)
+{
+    DBusHandlerResult result;
+    result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    if (dbus_message_is_method_call(message, "org.freedesktop.DBus.Introspectable", "Introspect")) {
+        result = _dbus_dock_item_dbus_interface_introspect(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "org.freedesktop.DBus.Properties", "Get")) {
+        result = _dbus_dock_item_dbus_interface_property_get(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "org.freedesktop.DBus.Properties", "GetAll")) {
+        result = _dbus_dock_item_dbus_interface_property_get_all(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockItem", "AddMenuItem")) {
+        result = _dbus_dock_item_dbus_interface_add_menu_item(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockItem", "RemoveMenuItem")) {
+        result = _dbus_dock_item_dbus_interface_remove_menu_item(object, connection, message);
+    } else if (dbus_message_is_method_call(message, "net.launchpad.DockItem", "UpdateDockItem")) {
+        result = _dbus_dock_item_dbus_interface_update_dock_item(object, connection, message);
+    }
+    if (result == DBUS_HANDLER_RESULT_HANDLED) {
+        return result;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
 }
 
 
-void dock_item_dbus_interface_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
-	if (!g_object_get_data (object, "dbus_object_path")) {
-		g_object_set_data (object, "dbus_object_path", g_strdup (path));
-		dbus_connection_register_object_path (connection, path, &_dock_item_dbus_interface_dbus_path_vtable, object);
-		g_object_weak_ref (object, _vala_dbus_unregister_object, connection);
-	}
-	g_signal_connect (object, "menu-item-activated", (GCallback) _dbus_dock_item_dbus_interface_menu_item_activated, connection);
+static void _dbus_dock_item_dbus_interface_menu_item_activated(GObject* _sender, gint id, DBusConnection* _connection)
+{
+    const char* _path;
+    DBusMessage* _message;
+    DBusMessageIter _iter;
+    dbus_int32_t _tmp51_;
+    _path = g_object_get_data(_sender, "dbus_object_path");
+    _message = dbus_message_new_signal(_path, "net.launchpad.DockItem", "MenuItemActivated");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp51_ = id;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_INT32, &_tmp51_);
+    dbus_connection_send(_connection, _message, NULL);
+    dbus_message_unref(_message);
 }
 
 
-GType dock_item_dbus_interface_get_type (void) {
-	static volatile gsize dock_item_dbus_interface_type_id__volatile = 0;
-	if (g_once_init_enter (&dock_item_dbus_interface_type_id__volatile)) {
-		static const GTypeInfo g_define_type_info = { sizeof (DockItemDBusInterfaceIface), (GBaseInitFunc) dock_item_dbus_interface_base_init, (GBaseFinalizeFunc) NULL, (GClassInitFunc) NULL, (GClassFinalizeFunc) NULL, NULL, 0, 0, (GInstanceInitFunc) NULL, NULL };
-		GType dock_item_dbus_interface_type_id;
-		dock_item_dbus_interface_type_id = g_type_register_static (G_TYPE_INTERFACE, "DockItemDBusInterface", &g_define_type_info, 0);
-		g_type_interface_add_prerequisite (dock_item_dbus_interface_type_id, G_TYPE_OBJECT);
-		g_type_set_qdata (dock_item_dbus_interface_type_id, g_quark_from_string ("ValaDBusInterfaceProxyType"), &dock_item_dbus_interface_dbus_proxy_get_type);
-		g_type_set_qdata (dock_item_dbus_interface_type_id, g_quark_from_static_string ("DBusObjectVTable"), (void*) (&_dock_item_dbus_interface_dbus_vtable));
-		g_once_init_leave (&dock_item_dbus_interface_type_id__volatile, dock_item_dbus_interface_type_id);
-	}
-	return dock_item_dbus_interface_type_id__volatile;
+void dock_item_dbus_interface_dbus_register_object(DBusConnection* connection, const char* path, void* object)
+{
+    if (!g_object_get_data(object, "dbus_object_path")) {
+        g_object_set_data(object, "dbus_object_path", g_strdup(path));
+        dbus_connection_register_object_path(connection, path, &_dock_item_dbus_interface_dbus_path_vtable, object);
+        g_object_weak_ref(object, _vala_dbus_unregister_object, connection);
+    }
+    g_signal_connect(object, "menu-item-activated", (GCallback) _dbus_dock_item_dbus_interface_menu_item_activated, connection);
+}
+
+
+GType dock_item_dbus_interface_get_type(void)
+{
+    static volatile gsize dock_item_dbus_interface_type_id__volatile = 0;
+    if (g_once_init_enter(&dock_item_dbus_interface_type_id__volatile)) {
+        static const GTypeInfo g_define_type_info = { sizeof(DockItemDBusInterfaceIface), (GBaseInitFunc) dock_item_dbus_interface_base_init, (GBaseFinalizeFunc) NULL, (GClassInitFunc) NULL, (GClassFinalizeFunc) NULL, NULL, 0, 0, (GInstanceInitFunc) NULL, NULL };
+        GType dock_item_dbus_interface_type_id;
+        dock_item_dbus_interface_type_id = g_type_register_static(G_TYPE_INTERFACE, "DockItemDBusInterface", &g_define_type_info, 0);
+        g_type_interface_add_prerequisite(dock_item_dbus_interface_type_id, G_TYPE_OBJECT);
+        g_type_set_qdata(dock_item_dbus_interface_type_id, g_quark_from_string("ValaDBusInterfaceProxyType"), &dock_item_dbus_interface_dbus_proxy_get_type);
+        g_type_set_qdata(dock_item_dbus_interface_type_id, g_quark_from_static_string("DBusObjectVTable"), (void*)(&_dock_item_dbus_interface_dbus_vtable));
+        g_once_init_leave(&dock_item_dbus_interface_type_id__volatile, dock_item_dbus_interface_type_id);
+    }
+    return dock_item_dbus_interface_type_id__volatile;
 }
 
 extern "C" {
-G_DEFINE_TYPE_EXTENDED (DockItemDBusInterfaceDBusProxy, dock_item_dbus_interface_dbus_proxy, DBUS_TYPE_G_PROXY, 0, G_IMPLEMENT_INTERFACE (TYPE_DOCK_ITEM_DBUS_INTERFACE, dock_item_dbus_interface_dbus_proxy_dock_item_dbus_interface__interface_init) );
-}
-
-DockItemDBusInterface* dock_item_dbus_interface_dbus_proxy_new (DBusGConnection* connection, const char* name, const char* path) {
-	DockItemDBusInterface* self;
-	self = g_object_new (dock_item_dbus_interface_dbus_proxy_get_type (), "connection", connection, "name", name, "path", path, "interface", "net.launchpad.DockItem", NULL);
-	return self;
-}
-
-
-static GObject* dock_item_dbus_interface_dbus_proxy_construct (GType gtype, guint n_properties, GObjectConstructParam* properties) {
-	GObject* self;
-	DBusGConnection *connection;
-	char* path;
-	char* filter;
-	self = G_OBJECT_CLASS (dock_item_dbus_interface_dbus_proxy_parent_class)->constructor (gtype, n_properties, properties);
-	g_object_get (self, "connection", &connection, NULL);
-	g_object_get (self, "path", &path, NULL);
-	dbus_connection_add_filter (dbus_g_connection_get_connection (connection), dock_item_dbus_interface_dbus_proxy_filter, self, NULL);
-	filter = g_strdup_printf ("type='signal',path='%s',interface='net.launchpad.DockItem'", path);
-	dbus_bus_add_match (dbus_g_connection_get_connection (connection), filter, NULL);
-	dbus_g_connection_unref (connection);
-	g_free (path);
-	g_free (filter);
-	return self;
-}
-
-
-static void _dbus_handle_dock_item_dbus_interface_menu_item_activated (DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessageIter iter;
-	gint id = 0;
-	dbus_int32_t _tmp35_;
-	DBusMessage* reply;
-	if (strcmp (dbus_message_get_signature (message), "i")) {
-		return;
-	}
-	dbus_message_iter_init (message, &iter);
-	dbus_message_iter_get_basic (&iter, &_tmp35_);
-	dbus_message_iter_next (&iter);
-	id = _tmp35_;
-	g_signal_emit_by_name (self, "menu-item-activated", id);
-}
-
-
-DBusHandlerResult dock_item_dbus_interface_dbus_proxy_filter (DBusConnection* connection, DBusMessage* message, void* user_data) {
-	if (dbus_message_has_path (message, dbus_g_proxy_get_path (user_data))) {
-		if (dbus_message_is_signal (message, "net.launchpad.DockItem", "MenuItemActivated")) {
-			_dbus_handle_dock_item_dbus_interface_menu_item_activated (user_data, connection, message);
-		}
-	}
-	return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-}
-
-
-static void dock_item_dbus_interface_dbus_proxy_dispose (GObject* self) {
-	DBusGConnection *connection;
-	if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
-		return;
-	}
-	((DockItemDBusInterfaceDBusProxy*) self)->disposed = TRUE;
-	g_object_get (self, "connection", &connection, NULL);
-	dbus_connection_remove_filter (dbus_g_connection_get_connection (connection), dock_item_dbus_interface_dbus_proxy_filter, self);
-	G_OBJECT_CLASS (dock_item_dbus_interface_dbus_proxy_parent_class)->dispose (self);
-}
-
-
-static void dock_item_dbus_interface_dbus_proxy_class_init (DockItemDBusInterfaceDBusProxyClass* klass) {
-	G_OBJECT_CLASS (klass)->constructor = dock_item_dbus_interface_dbus_proxy_construct;
-	G_OBJECT_CLASS (klass)->dispose = dock_item_dbus_interface_dbus_proxy_dispose;
-	G_OBJECT_CLASS (klass)->get_property = _vala_dock_item_dbus_interface_dbus_proxy_get_property;
-	G_OBJECT_CLASS (klass)->set_property = _vala_dock_item_dbus_interface_dbus_proxy_set_property;
-}
-
-
-static void dock_item_dbus_interface_dbus_proxy_init (DockItemDBusInterfaceDBusProxy* self) {
-}
-
-
-static gint dock_item_dbus_interface_dbus_proxy_add_menu_item (DockItemDBusInterface* self, GHashTable* menu_hints, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	DBusMessageIter _tmp36_, _tmp37_;
-	GHashTableIter _tmp38_;
-	gpointer _tmp39_, _tmp40_;
-	gint _result;
-	dbus_int32_t _tmp55_;
-	if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return 0;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockItem", "AddMenuItem");
-	dbus_message_iter_init_append (_message, &_iter);
-	dbus_message_iter_open_container (&_iter, DBUS_TYPE_ARRAY, "{sv}", &_tmp36_);
-	g_hash_table_iter_init (&_tmp38_, menu_hints);
-	while (g_hash_table_iter_next (&_tmp38_, &_tmp39_, &_tmp40_)) {
-		gchar* _key;
-		GValue* _value;
-		const char* _tmp41_;
-		DBusMessageIter _tmp42_;
-		dbus_message_iter_open_container (&_tmp36_, DBUS_TYPE_DICT_ENTRY, NULL, &_tmp37_);
-		_key = (gchar*) _tmp39_;
-		_value = (GValue*) _tmp40_;
-		_tmp41_ = _key;
-		dbus_message_iter_append_basic (&_tmp37_, DBUS_TYPE_STRING, &_tmp41_);
-		if (G_VALUE_TYPE (_value) == G_TYPE_UCHAR) {
-			guint8 _tmp43_;
-			dbus_message_iter_open_container (&_tmp37_, DBUS_TYPE_VARIANT, "y", &_tmp42_);
-			_tmp43_ = g_value_get_uchar (_value);
-			dbus_message_iter_append_basic (&_tmp42_, DBUS_TYPE_BYTE, &_tmp43_);
-			dbus_message_iter_close_container (&_tmp37_, &_tmp42_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_BOOLEAN) {
-			dbus_bool_t _tmp44_;
-			dbus_message_iter_open_container (&_tmp37_, DBUS_TYPE_VARIANT, "b", &_tmp42_);
-			_tmp44_ = g_value_get_boolean (_value);
-			dbus_message_iter_append_basic (&_tmp42_, DBUS_TYPE_BOOLEAN, &_tmp44_);
-			dbus_message_iter_close_container (&_tmp37_, &_tmp42_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_INT) {
-			dbus_int32_t _tmp45_;
-			dbus_message_iter_open_container (&_tmp37_, DBUS_TYPE_VARIANT, "i", &_tmp42_);
-			_tmp45_ = g_value_get_int (_value);
-			dbus_message_iter_append_basic (&_tmp42_, DBUS_TYPE_INT32, &_tmp45_);
-			dbus_message_iter_close_container (&_tmp37_, &_tmp42_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_UINT) {
-			dbus_uint32_t _tmp46_;
-			dbus_message_iter_open_container (&_tmp37_, DBUS_TYPE_VARIANT, "u", &_tmp42_);
-			_tmp46_ = g_value_get_uint (_value);
-			dbus_message_iter_append_basic (&_tmp42_, DBUS_TYPE_UINT32, &_tmp46_);
-			dbus_message_iter_close_container (&_tmp37_, &_tmp42_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_INT64) {
-			dbus_int64_t _tmp47_;
-			dbus_message_iter_open_container (&_tmp37_, DBUS_TYPE_VARIANT, "x", &_tmp42_);
-			_tmp47_ = g_value_get_int64 (_value);
-			dbus_message_iter_append_basic (&_tmp42_, DBUS_TYPE_INT64, &_tmp47_);
-			dbus_message_iter_close_container (&_tmp37_, &_tmp42_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_UINT64) {
-			dbus_uint64_t _tmp48_;
-			dbus_message_iter_open_container (&_tmp37_, DBUS_TYPE_VARIANT, "t", &_tmp42_);
-			_tmp48_ = g_value_get_uint64 (_value);
-			dbus_message_iter_append_basic (&_tmp42_, DBUS_TYPE_UINT64, &_tmp48_);
-			dbus_message_iter_close_container (&_tmp37_, &_tmp42_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_DOUBLE) {
-			double _tmp49_;
-			dbus_message_iter_open_container (&_tmp37_, DBUS_TYPE_VARIANT, "d", &_tmp42_);
-			_tmp49_ = g_value_get_double (_value);
-			dbus_message_iter_append_basic (&_tmp42_, DBUS_TYPE_DOUBLE, &_tmp49_);
-			dbus_message_iter_close_container (&_tmp37_, &_tmp42_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_STRING) {
-			const char* _tmp50_;
-			dbus_message_iter_open_container (&_tmp37_, DBUS_TYPE_VARIANT, "s", &_tmp42_);
-			_tmp50_ = g_value_get_string (_value);
-			dbus_message_iter_append_basic (&_tmp42_, DBUS_TYPE_STRING, &_tmp50_);
-			dbus_message_iter_close_container (&_tmp37_, &_tmp42_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_STRV) {
-			const gchar** _tmp51_;
-			DBusMessageIter _tmp52_;
-			int _tmp53_;
-			dbus_message_iter_open_container (&_tmp37_, DBUS_TYPE_VARIANT, "as", &_tmp42_);
-			_tmp51_ = g_value_get_boxed (_value);
-			dbus_message_iter_open_container (&_tmp42_, DBUS_TYPE_ARRAY, "s", &_tmp52_);
-			for (_tmp53_ = 0; _tmp53_ < g_strv_length (g_value_get_boxed (_value)); _tmp53_++) {
-				const char* _tmp54_;
-				_tmp54_ = *_tmp51_;
-				dbus_message_iter_append_basic (&_tmp52_, DBUS_TYPE_STRING, &_tmp54_);
-				_tmp51_++;
-			}
-			dbus_message_iter_close_container (&_tmp42_, &_tmp52_);
-			dbus_message_iter_close_container (&_tmp37_, &_tmp42_);
-		}
-		dbus_message_iter_close_container (&_tmp36_, &_tmp37_);
-	}
-	dbus_message_iter_close_container (&_iter, &_tmp36_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp56_;
-			_edomain = DBUS_GERROR;
-			_tmp56_ = _dbus_error.name + 27;
-			if (strcmp (_tmp56_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp56_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp56_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp56_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp56_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp56_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp56_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp56_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp56_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp56_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp56_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp56_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp56_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp56_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp56_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp56_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp56_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp56_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp56_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp56_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp56_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp56_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp56_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp56_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp56_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp56_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp56_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp56_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp56_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp56_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp56_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp56_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp56_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return 0;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "i")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "i", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return 0;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	dbus_message_iter_get_basic (&_iter, &_tmp55_);
-	dbus_message_iter_next (&_iter);
-	_result = _tmp55_;
-	dbus_message_unref (_reply);
-	return _result;
-}
-
-
-static void dock_item_dbus_interface_dbus_proxy_remove_menu_item (DockItemDBusInterface* self, gint id, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	dbus_int32_t _tmp57_;
-	if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockItem", "RemoveMenuItem");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp57_ = id;
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_INT32, &_tmp57_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp58_;
-			_edomain = DBUS_GERROR;
-			_tmp58_ = _dbus_error.name + 27;
-			if (strcmp (_tmp58_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp58_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp58_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp58_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp58_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp58_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp58_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp58_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp58_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp58_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp58_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp58_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp58_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp58_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp58_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp58_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp58_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp58_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp58_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp58_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp58_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp58_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp58_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp58_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp58_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp58_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp58_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp58_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp58_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp58_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp58_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp58_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp58_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	dbus_message_unref (_reply);
-}
-
-
-static void dock_item_dbus_interface_dbus_proxy_update_dock_item (DockItemDBusInterface* self, GHashTable* hints, GError** error) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter;
-	DBusMessageIter _tmp59_, _tmp60_;
-	GHashTableIter _tmp61_;
-	gpointer _tmp62_, _tmp63_;
-	if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
-		return;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "net.launchpad.DockItem", "UpdateDockItem");
-	dbus_message_iter_init_append (_message, &_iter);
-	dbus_message_iter_open_container (&_iter, DBUS_TYPE_ARRAY, "{sv}", &_tmp59_);
-	g_hash_table_iter_init (&_tmp61_, hints);
-	while (g_hash_table_iter_next (&_tmp61_, &_tmp62_, &_tmp63_)) {
-		gchar* _key;
-		GValue* _value;
-		const char* _tmp64_;
-		DBusMessageIter _tmp65_;
-		dbus_message_iter_open_container (&_tmp59_, DBUS_TYPE_DICT_ENTRY, NULL, &_tmp60_);
-		_key = (gchar*) _tmp62_;
-		_value = (GValue*) _tmp63_;
-		_tmp64_ = _key;
-		dbus_message_iter_append_basic (&_tmp60_, DBUS_TYPE_STRING, &_tmp64_);
-		if (G_VALUE_TYPE (_value) == G_TYPE_UCHAR) {
-			guint8 _tmp66_;
-			dbus_message_iter_open_container (&_tmp60_, DBUS_TYPE_VARIANT, "y", &_tmp65_);
-			_tmp66_ = g_value_get_uchar (_value);
-			dbus_message_iter_append_basic (&_tmp65_, DBUS_TYPE_BYTE, &_tmp66_);
-			dbus_message_iter_close_container (&_tmp60_, &_tmp65_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_BOOLEAN) {
-			dbus_bool_t _tmp67_;
-			dbus_message_iter_open_container (&_tmp60_, DBUS_TYPE_VARIANT, "b", &_tmp65_);
-			_tmp67_ = g_value_get_boolean (_value);
-			dbus_message_iter_append_basic (&_tmp65_, DBUS_TYPE_BOOLEAN, &_tmp67_);
-			dbus_message_iter_close_container (&_tmp60_, &_tmp65_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_INT) {
-			dbus_int32_t _tmp68_;
-			dbus_message_iter_open_container (&_tmp60_, DBUS_TYPE_VARIANT, "i", &_tmp65_);
-			_tmp68_ = g_value_get_int (_value);
-			dbus_message_iter_append_basic (&_tmp65_, DBUS_TYPE_INT32, &_tmp68_);
-			dbus_message_iter_close_container (&_tmp60_, &_tmp65_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_UINT) {
-			dbus_uint32_t _tmp69_;
-			dbus_message_iter_open_container (&_tmp60_, DBUS_TYPE_VARIANT, "u", &_tmp65_);
-			_tmp69_ = g_value_get_uint (_value);
-			dbus_message_iter_append_basic (&_tmp65_, DBUS_TYPE_UINT32, &_tmp69_);
-			dbus_message_iter_close_container (&_tmp60_, &_tmp65_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_INT64) {
-			dbus_int64_t _tmp70_;
-			dbus_message_iter_open_container (&_tmp60_, DBUS_TYPE_VARIANT, "x", &_tmp65_);
-			_tmp70_ = g_value_get_int64 (_value);
-			dbus_message_iter_append_basic (&_tmp65_, DBUS_TYPE_INT64, &_tmp70_);
-			dbus_message_iter_close_container (&_tmp60_, &_tmp65_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_UINT64) {
-			dbus_uint64_t _tmp71_;
-			dbus_message_iter_open_container (&_tmp60_, DBUS_TYPE_VARIANT, "t", &_tmp65_);
-			_tmp71_ = g_value_get_uint64 (_value);
-			dbus_message_iter_append_basic (&_tmp65_, DBUS_TYPE_UINT64, &_tmp71_);
-			dbus_message_iter_close_container (&_tmp60_, &_tmp65_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_DOUBLE) {
-			double _tmp72_;
-			dbus_message_iter_open_container (&_tmp60_, DBUS_TYPE_VARIANT, "d", &_tmp65_);
-			_tmp72_ = g_value_get_double (_value);
-			dbus_message_iter_append_basic (&_tmp65_, DBUS_TYPE_DOUBLE, &_tmp72_);
-			dbus_message_iter_close_container (&_tmp60_, &_tmp65_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_STRING) {
-			const char* _tmp73_;
-			dbus_message_iter_open_container (&_tmp60_, DBUS_TYPE_VARIANT, "s", &_tmp65_);
-			_tmp73_ = g_value_get_string (_value);
-			dbus_message_iter_append_basic (&_tmp65_, DBUS_TYPE_STRING, &_tmp73_);
-			dbus_message_iter_close_container (&_tmp60_, &_tmp65_);
-		} else if (G_VALUE_TYPE (_value) == G_TYPE_STRV) {
-			const gchar** _tmp74_;
-			DBusMessageIter _tmp75_;
-			int _tmp76_;
-			dbus_message_iter_open_container (&_tmp60_, DBUS_TYPE_VARIANT, "as", &_tmp65_);
-			_tmp74_ = g_value_get_boxed (_value);
-			dbus_message_iter_open_container (&_tmp65_, DBUS_TYPE_ARRAY, "s", &_tmp75_);
-			for (_tmp76_ = 0; _tmp76_ < g_strv_length (g_value_get_boxed (_value)); _tmp76_++) {
-				const char* _tmp77_;
-				_tmp77_ = *_tmp74_;
-				dbus_message_iter_append_basic (&_tmp75_, DBUS_TYPE_STRING, &_tmp77_);
-				_tmp74_++;
-			}
-			dbus_message_iter_close_container (&_tmp65_, &_tmp75_);
-			dbus_message_iter_close_container (&_tmp60_, &_tmp65_);
-		}
-		dbus_message_iter_close_container (&_tmp59_, &_tmp60_);
-	}
-	dbus_message_iter_close_container (&_iter, &_tmp59_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		GQuark _edomain = 0;
-		gint _ecode = 0;
-		if (strstr (_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
-			const char* _tmp78_;
-			_edomain = DBUS_GERROR;
-			_tmp78_ = _dbus_error.name + 27;
-			if (strcmp (_tmp78_, "Failed") == 0) {
-				_ecode = DBUS_GERROR_FAILED;
-			} else if (strcmp (_tmp78_, "NoMemory") == 0) {
-				_ecode = DBUS_GERROR_NO_MEMORY;
-			} else if (strcmp (_tmp78_, "ServiceUnknown") == 0) {
-				_ecode = DBUS_GERROR_SERVICE_UNKNOWN;
-			} else if (strcmp (_tmp78_, "NameHasNoOwner") == 0) {
-				_ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
-			} else if (strcmp (_tmp78_, "NoReply") == 0) {
-				_ecode = DBUS_GERROR_NO_REPLY;
-			} else if (strcmp (_tmp78_, "IOError") == 0) {
-				_ecode = DBUS_GERROR_IO_ERROR;
-			} else if (strcmp (_tmp78_, "BadAddress") == 0) {
-				_ecode = DBUS_GERROR_BAD_ADDRESS;
-			} else if (strcmp (_tmp78_, "NotSupported") == 0) {
-				_ecode = DBUS_GERROR_NOT_SUPPORTED;
-			} else if (strcmp (_tmp78_, "LimitsExceeded") == 0) {
-				_ecode = DBUS_GERROR_LIMITS_EXCEEDED;
-			} else if (strcmp (_tmp78_, "AccessDenied") == 0) {
-				_ecode = DBUS_GERROR_ACCESS_DENIED;
-			} else if (strcmp (_tmp78_, "AuthFailed") == 0) {
-				_ecode = DBUS_GERROR_AUTH_FAILED;
-			} else if (strcmp (_tmp78_, "NoServer") == 0) {
-				_ecode = DBUS_GERROR_NO_SERVER;
-			} else if (strcmp (_tmp78_, "Timeout") == 0) {
-				_ecode = DBUS_GERROR_TIMEOUT;
-			} else if (strcmp (_tmp78_, "NoNetwork") == 0) {
-				_ecode = DBUS_GERROR_NO_NETWORK;
-			} else if (strcmp (_tmp78_, "AddressInUse") == 0) {
-				_ecode = DBUS_GERROR_ADDRESS_IN_USE;
-			} else if (strcmp (_tmp78_, "Disconnected") == 0) {
-				_ecode = DBUS_GERROR_DISCONNECTED;
-			} else if (strcmp (_tmp78_, "InvalidArgs") == 0) {
-				_ecode = DBUS_GERROR_INVALID_ARGS;
-			} else if (strcmp (_tmp78_, "FileNotFound") == 0) {
-				_ecode = DBUS_GERROR_FILE_NOT_FOUND;
-			} else if (strcmp (_tmp78_, "FileExists") == 0) {
-				_ecode = DBUS_GERROR_FILE_EXISTS;
-			} else if (strcmp (_tmp78_, "UnknownMethod") == 0) {
-				_ecode = DBUS_GERROR_UNKNOWN_METHOD;
-			} else if (strcmp (_tmp78_, "TimedOut") == 0) {
-				_ecode = DBUS_GERROR_TIMED_OUT;
-			} else if (strcmp (_tmp78_, "MatchRuleNotFound") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
-			} else if (strcmp (_tmp78_, "MatchRuleInvalid") == 0) {
-				_ecode = DBUS_GERROR_MATCH_RULE_INVALID;
-			} else if (strcmp (_tmp78_, "Spawn.ExecFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
-			} else if (strcmp (_tmp78_, "Spawn.ForkFailed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
-			} else if (strcmp (_tmp78_, "Spawn.ChildExited") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
-			} else if (strcmp (_tmp78_, "Spawn.ChildSignaled") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
-			} else if (strcmp (_tmp78_, "Spawn.Failed") == 0) {
-				_ecode = DBUS_GERROR_SPAWN_FAILED;
-			} else if (strcmp (_tmp78_, "UnixProcessIdUnknown") == 0) {
-				_ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
-			} else if (strcmp (_tmp78_, "InvalidSignature") == 0) {
-				_ecode = DBUS_GERROR_INVALID_SIGNATURE;
-			} else if (strcmp (_tmp78_, "InvalidFileContent") == 0) {
-				_ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
-			} else if (strcmp (_tmp78_, "SELinuxSecurityContextUnknown") == 0) {
-				_ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
-			} else if (strcmp (_tmp78_, "RemoteException") == 0) {
-				_ecode = DBUS_GERROR_REMOTE_EXCEPTION;
-			}
-		}
-		g_set_error (error, _edomain, _ecode, "%s", _dbus_error.message);
-		dbus_error_free (&_dbus_error);
-		return;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "")) {
-		g_set_error (error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	dbus_message_unref (_reply);
-}
-
-
-static gchar* dock_item_dbus_interface_dbus_proxy_get_desktop_file (DockItemDBusInterface* self) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter, _subiter;
-	const char* _tmp79_;
-	const char* _tmp80_;
-	gchar* _result;
-	const char* _tmp81_;
-	if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
-		return NULL;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp79_ = "net.launchpad.DockItem";
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp79_);
-	_tmp80_ = "DesktopFile";
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp80_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		g_critical ("file %s: line %d: uncaught error: %s (%s)", __FILE__, __LINE__, _dbus_error.message, _dbus_error.name);
-		dbus_error_free (&_dbus_error);
-		return NULL;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "v")) {
-		g_critical ("file %s: line %d: Invalid signature, expected \"%s\", got \"%s\"", __FILE__, __LINE__, "v", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	dbus_message_iter_recurse (&_iter, &_subiter);
-	if (strcmp (dbus_message_iter_get_signature (&_subiter), "s")) {
-		g_critical ("file %s: line %d: Invalid signature, expected \"%s\", got \"%s\"", __FILE__, __LINE__, "s", dbus_message_iter_get_signature (&_subiter));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_get_basic (&_subiter, &_tmp81_);
-	dbus_message_iter_next (&_subiter);
-	_result = g_strdup (_tmp81_);
-	dbus_message_unref (_reply);
-	return _result;
-}
-
-
-static gchar* dock_item_dbus_interface_dbus_proxy_get_uri (DockItemDBusInterface* self) {
-	DBusError _dbus_error;
-	DBusGConnection *_connection;
-	DBusMessage *_message, *_reply;
-	DBusMessageIter _iter, _subiter;
-	const char* _tmp82_;
-	const char* _tmp83_;
-	gchar* _result;
-	const char* _tmp84_;
-	if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
-		return NULL;
-	}
-	_message = dbus_message_new_method_call (dbus_g_proxy_get_bus_name ((DBusGProxy*) self), dbus_g_proxy_get_path ((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
-	dbus_message_iter_init_append (_message, &_iter);
-	_tmp82_ = "net.launchpad.DockItem";
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp82_);
-	_tmp83_ = "Uri";
-	dbus_message_iter_append_basic (&_iter, DBUS_TYPE_STRING, &_tmp83_);
-	g_object_get (self, "connection", &_connection, NULL);
-	dbus_error_init (&_dbus_error);
-	_reply = dbus_connection_send_with_reply_and_block (dbus_g_connection_get_connection (_connection), _message, -1, &_dbus_error);
-	dbus_g_connection_unref (_connection);
-	dbus_message_unref (_message);
-	if (dbus_error_is_set (&_dbus_error)) {
-		g_critical ("file %s: line %d: uncaught error: %s (%s)", __FILE__, __LINE__, _dbus_error.message, _dbus_error.name);
-		dbus_error_free (&_dbus_error);
-		return NULL;
-	}
-	if (strcmp (dbus_message_get_signature (_reply), "v")) {
-		g_critical ("file %s: line %d: Invalid signature, expected \"%s\", got \"%s\"", __FILE__, __LINE__, "v", dbus_message_get_signature (_reply));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_init (_reply, &_iter);
-	dbus_message_iter_recurse (&_iter, &_subiter);
-	if (strcmp (dbus_message_iter_get_signature (&_subiter), "s")) {
-		g_critical ("file %s: line %d: Invalid signature, expected \"%s\", got \"%s\"", __FILE__, __LINE__, "s", dbus_message_iter_get_signature (&_subiter));
-		dbus_message_unref (_reply);
-		return NULL;
-	}
-	dbus_message_iter_get_basic (&_subiter, &_tmp84_);
-	dbus_message_iter_next (&_subiter);
-	_result = g_strdup (_tmp84_);
-	dbus_message_unref (_reply);
-	return _result;
-}
-
-
-static void dock_item_dbus_interface_dbus_proxy_dock_item_dbus_interface__interface_init (DockItemDBusInterfaceIface* iface) {
-	iface->add_menu_item = dock_item_dbus_interface_dbus_proxy_add_menu_item;
-	iface->remove_menu_item = dock_item_dbus_interface_dbus_proxy_remove_menu_item;
-	iface->update_dock_item = dock_item_dbus_interface_dbus_proxy_update_dock_item;
-	iface->get_desktop_file = dock_item_dbus_interface_dbus_proxy_get_desktop_file;
-	iface->get_uri = dock_item_dbus_interface_dbus_proxy_get_uri;
-}
-
-
-static void _vala_dock_item_dbus_interface_dbus_proxy_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
-}
-
-
-static void _vala_dock_item_dbus_interface_dbus_proxy_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
-}
-
-
-TaskManagerDispatcher* task_manager_dispatcher_construct (GType object_type, TaskManager* manager) {
-	TaskManagerDispatcher * self = NULL;
-	DBusGConnection* _tmp0_ = NULL;
-	DBusGConnection* conn;
-	gchar* _tmp1_;
-	gchar* obj_path;
-	GError * _inner_error_ = NULL;
-	g_return_val_if_fail (manager != NULL, NULL);
-	self = (TaskManagerDispatcher*) g_object_new (object_type, "manager", manager, NULL);
-	_tmp0_ = dbus_g_bus_get (DBUS_BUS_SESSION, &_inner_error_);
-	conn = _tmp0_;
-	if (_inner_error_ != NULL) {
-		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return NULL;
-	}
-	_tmp1_ = g_strdup ("/net/launchpad/DockManager");
-	obj_path = _tmp1_;
-	_vala_dbus_register_object (dbus_g_connection_get_connection (conn), obj_path, (GObject*) self);
-	_g_free0 (obj_path);
-	_dbus_g_connection_unref0 (conn);
-	return self;
-}
-
-
-TaskManagerDispatcher* task_manager_dispatcher_new (TaskManager* manager) {
-	return task_manager_dispatcher_construct (TYPE_TASK_MANAGER_DISPATCHER, manager);
-}
-
-
-static char** task_manager_dispatcher_list_to_object_path_array (GSList* list, int* result_length1) {
-	char** result = NULL;
-	guint _tmp0_;
-	char** _tmp1_ = NULL;
-	char** _result_;
-	gint _result__length1;
-	gint __result__size_;
-	gint i;
-	char** _tmp8_;
-	_tmp0_ = g_slist_length (list);
-	_tmp1_ = g_new0 (char*, _tmp0_ + 1);
-	_result_ = _tmp1_;
-	_result__length1 = _tmp0_;
-	__result__size_ = _tmp0_;
-	i = 0;
-	{
-		GSList* icon_collection;
-		GSList* icon_it;
-		icon_collection = list;
-		for (icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
-			TaskIcon* icon;
-			icon = (TaskIcon*) icon_it->data;
-			{
-				TaskIconDispatcher* dispatcher = NULL;
-				GObject* _tmp2_ = NULL;
-				GObject* _tmp3_;
-				gint _tmp4_;
-				const gchar* _tmp5_ = NULL;
-				char* _tmp6_ = NULL;
-				char* _tmp7_;
-				_tmp2_ = task_icon_get_dbus_dispatcher (icon);
-				_tmp3_ = _tmp2_;
-				dispatcher = IS_TASK_ICON_DISPATCHER (_tmp3_) ? ((TaskIconDispatcher*) _tmp3_) : NULL;
-				_tmp4_ = i;
-				i = _tmp4_ + 1;
-				_tmp5_ = task_icon_dispatcher_get_object_path (dispatcher);
-				_tmp6_ = g_strdup (_tmp5_);
-				_tmp7_ = _tmp6_;
-				_g_free0 (_result_[_tmp4_]);
-				_result_[_tmp4_] = _tmp7_;
-			}
-		}
-	}
-	_tmp8_ = _result_;
-	if (result_length1) {
-		*result_length1 = _result__length1;
-	}
-	result = _tmp8_;
-	return result;
-}
-
-
-static gchar** task_manager_dispatcher_real_get_capabilities (DockManagerDBusInterface* base, int* result_length1, GError** error) {
-	TaskManagerDispatcher * self;
-	gchar** result = NULL;
-	gchar* _tmp0_;
-	gchar* _tmp1_;
-	gchar* _tmp2_;
-	gchar* _tmp3_;
-	gchar* _tmp4_;
-	gchar* _tmp5_;
-	gchar* _tmp6_;
-	gchar* _tmp7_;
-	gchar* _tmp8_;
-	gchar** _tmp9_ = NULL;
-	gchar** capabilities;
-	gint capabilities_length1;
-	gint _capabilities_size_;
-	gchar** _tmp10_;
-	self = (TaskManagerDispatcher*) base;
-	_tmp0_ = g_strdup ("dock-item-badge");
-	_tmp1_ = g_strdup ("dock-item-message");
-	_tmp2_ = g_strdup ("dock-item-progress");
-	_tmp3_ = g_strdup ("dock-item-icon-file");
-	_tmp4_ = g_strdup ("menu-item-container-title");
-	_tmp5_ = g_strdup ("menu-item-with-label");
-	_tmp6_ = g_strdup ("menu-item-icon-name");
-	_tmp7_ = g_strdup ("menu-item-icon-file");
-	_tmp8_ = g_strdup ("x-awn-set-visibility");
-	_tmp9_ = g_new0 (gchar*, 9 + 1);
-	_tmp9_[0] = _tmp0_;
-	_tmp9_[1] = _tmp1_;
-	_tmp9_[2] = _tmp2_;
-	_tmp9_[3] = _tmp3_;
-	_tmp9_[4] = _tmp4_;
-	_tmp9_[5] = _tmp5_;
-	_tmp9_[6] = _tmp6_;
-	_tmp9_[7] = _tmp7_;
-	_tmp9_[8] = _tmp8_;
-	capabilities = _tmp9_;
-	capabilities_length1 = 9;
-	_capabilities_size_ = 9;
-	_tmp10_ = capabilities;
-	if (result_length1) {
-		*result_length1 = capabilities_length1;
-	}
-	result = _tmp10_;
-	return result;
-}
-
-
-static char** task_manager_dispatcher_real_get_items (DockManagerDBusInterface* base, int* result_length1, GError** error) {
-	TaskManagerDispatcher * self;
-	char** result = NULL;
-	GSList* _tmp0_ = NULL;
-	gint _tmp1_;
-	char** _tmp2_ = NULL;
-	char** _tmp3_;
-	self = (TaskManagerDispatcher*) base;
-	_tmp0_ = task_manager_get_icons (self->priv->_manager);
-	_tmp2_ = task_manager_dispatcher_list_to_object_path_array (_tmp0_, &_tmp1_);
-	_tmp3_ = _tmp2_;
-	if (result_length1) {
-		*result_length1 = _tmp1_;
-	}
-	result = _tmp3_;
-	return result;
-}
-
-
-static char** task_manager_dispatcher_real_get_items_by_name (DockManagerDBusInterface* base, const gchar* name, int* result_length1, GError** error) {
-	TaskManagerDispatcher * self;
-	char** result = NULL;
-	GSList* _tmp0_ = NULL;
-	GSList* icons;
-	GSList* matches;
-	gint _tmp4_;
-	char** _tmp5_ = NULL;
-	char** _tmp6_;
-	self = (TaskManagerDispatcher*) base;
-	g_return_val_if_fail (name != NULL, NULL);
-	_tmp0_ = task_manager_get_icons (self->priv->_manager);
-	icons = _tmp0_;
-	matches = NULL;
-	{
-		GSList* icon_collection;
-		GSList* icon_it;
-		icon_collection = icons;
-		for (icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
-			TaskIcon* icon;
-			icon = (TaskIcon*) icon_it->data;
-			{
-				GSList* _tmp1_ = NULL;
-				_tmp1_ = task_icon_get_items (icon);
-				{
-					GSList* item_collection;
-					GSList* item_it;
-					item_collection = _tmp1_;
-					for (item_it = item_collection; item_it != NULL; item_it = item_it->next) {
-						TaskItem* item;
-						item = (TaskItem*) item_it->data;
-						{
-							TaskItem* _tmp2_;
-							TaskWindow* window;
-							_tmp2_ = item;
-							window = TASK_IS_WINDOW (_tmp2_) ? ((TaskWindow*) _tmp2_) : NULL;
-							if (window != NULL) {
-								gboolean _tmp3_;
-								_tmp3_ = task_window_matches_wmclass (window, name);
-								if (_tmp3_) {
-									matches = g_slist_append (matches, icon);
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	_tmp5_ = task_manager_dispatcher_list_to_object_path_array (matches, &_tmp4_);
-	_tmp6_ = _tmp5_;
-	if (result_length1) {
-		*result_length1 = _tmp4_;
-	}
-	result = _tmp6_;
-	_g_slist_free0 (matches);
-	return result;
-}
-
-
-static char** task_manager_dispatcher_real_get_items_by_desktop_file (DockManagerDBusInterface* base, const gchar* desktop_file, int* result_length1, GError** error) {
-	TaskManagerDispatcher * self;
-	char** result = NULL;
-	GSList* _tmp0_ = NULL;
-	GSList* icons;
-	GSList* matches;
-	gint _tmp5_;
-	char** _tmp6_ = NULL;
-	char** _tmp7_;
-	self = (TaskManagerDispatcher*) base;
-	g_return_val_if_fail (desktop_file != NULL, NULL);
-	_tmp0_ = task_manager_get_icons (self->priv->_manager);
-	icons = _tmp0_;
-	matches = NULL;
-	{
-		GSList* icon_collection;
-		GSList* icon_it;
-		icon_collection = icons;
-		for (icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
-			TaskIcon* icon;
-			icon = (TaskIcon*) icon_it->data;
-			{
-				TaskItem* _tmp1_ = NULL;
-				TaskItem* _tmp2_;
-				TaskLauncher* launcher;
-				_tmp1_ = task_icon_get_launcher (icon);
-				_tmp2_ = _tmp1_;
-				launcher = TASK_IS_LAUNCHER (_tmp2_) ? ((TaskLauncher*) _tmp2_) : NULL;
-				if (launcher != NULL) {
-					const gchar* _tmp3_ = NULL;
-					gboolean _tmp4_;
-					_tmp3_ = task_launcher_get_desktop_path (launcher);
-					_tmp4_ = g_str_has_suffix (_tmp3_, desktop_file);
-					if (_tmp4_) {
-						matches = g_slist_append (matches, icon);
-					}
-				}
-			}
-		}
-	}
-	_tmp6_ = task_manager_dispatcher_list_to_object_path_array (matches, &_tmp5_);
-	_tmp7_ = _tmp6_;
-	if (result_length1) {
-		*result_length1 = _tmp5_;
-	}
-	result = _tmp7_;
-	_g_slist_free0 (matches);
-	return result;
-}
-
-
-static char** task_manager_dispatcher_real_get_items_by_pid (DockManagerDBusInterface* base, gint pid, int* result_length1, GError** error) {
-	TaskManagerDispatcher * self;
-	char** result = NULL;
-	GSList* _tmp0_ = NULL;
-	GSList* icons;
-	GSList* matches;
-	gint _tmp4_;
-	char** _tmp5_ = NULL;
-	char** _tmp6_;
-	self = (TaskManagerDispatcher*) base;
-	_tmp0_ = task_manager_get_icons (self->priv->_manager);
-	icons = _tmp0_;
-	matches = NULL;
-	{
-		GSList* icon_collection;
-		GSList* icon_it;
-		icon_collection = icons;
-		for (icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
-			TaskIcon* icon;
-			icon = (TaskIcon*) icon_it->data;
-			{
-				GSList* _tmp1_ = NULL;
-				_tmp1_ = task_icon_get_items (icon);
-				{
-					GSList* item_collection;
-					GSList* item_it;
-					item_collection = _tmp1_;
-					for (item_it = item_collection; item_it != NULL; item_it = item_it->next) {
-						TaskItem* item;
-						item = (TaskItem*) item_it->data;
-						{
-							if (TASK_IS_WINDOW (item)) {
-								TaskItem* _tmp2_;
-								TaskWindow* window;
-								gint _tmp3_;
-								_tmp2_ = item;
-								window = TASK_IS_WINDOW (_tmp2_) ? ((TaskWindow*) _tmp2_) : NULL;
-								_tmp3_ = task_window_get_pid (window);
-								if (_tmp3_ == pid) {
-									matches = g_slist_append (matches, icon);
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	_tmp5_ = task_manager_dispatcher_list_to_object_path_array (matches, &_tmp4_);
-	_tmp6_ = _tmp5_;
-	if (result_length1) {
-		*result_length1 = _tmp4_;
-	}
-	result = _tmp6_;
-	_g_slist_free0 (matches);
-	return result;
-}
-
-
-static char* task_manager_dispatcher_real_get_item_by_xid (DockManagerDBusInterface* base, gint64 xid, GError** error) {
-	TaskManagerDispatcher * self;
-	char* result = NULL;
-	TaskIcon* _tmp0_ = NULL;
-	TaskIcon* icon;
-	self = (TaskManagerDispatcher*) base;
-	_tmp0_ = task_manager_get_icon_by_xid (self->priv->_manager, xid);
-	icon = _tmp0_;
-	if (icon != NULL) {
-		TaskIconDispatcher* dispatcher = NULL;
-		GObject* _tmp1_ = NULL;
-		GObject* _tmp2_;
-		const gchar* _tmp3_ = NULL;
-		char* _tmp4_ = NULL;
-		_tmp1_ = task_icon_get_dbus_dispatcher (icon);
-		_tmp2_ = _tmp1_;
-		dispatcher = IS_TASK_ICON_DISPATCHER (_tmp2_) ? ((TaskIconDispatcher*) _tmp2_) : NULL;
-		_tmp3_ = task_icon_dispatcher_get_object_path (dispatcher);
-		_tmp4_ = g_strdup (_tmp3_);
-		result = _tmp4_;
-		return result;
-	}
-	result = NULL;
-	return result;
-}
-
-
-static void _g_free0_ (gpointer var) {
-	var = (g_free (var), NULL);
-}
-
-
-static void _vala_GValue_free (GValue* self) {
-	g_value_unset (self);
-	g_free (self);
-}
-
-
-static void __vala_GValue_free0_ (gpointer var) {
-	(var == NULL) ? NULL : (var = (_vala_GValue_free (var), NULL));
-}
-
-
-static void task_manager_dispatcher_real_awn_set_visibility (DockManagerDBusInterface* base, const gchar* win_name, gboolean visible, GError** error) {
-	TaskManagerDispatcher * self;
-	GHashTable* hints = NULL;
-	GHashTable* _tmp0_ = NULL;
-	gchar* _tmp1_;
-	GValue* _tmp2_ = NULL;
-	GValue _tmp3_ = {0};
-	GError * _inner_error_ = NULL;
-	self = (TaskManagerDispatcher*) base;
-	g_return_if_fail (win_name != NULL);
-	_tmp0_ = g_hash_table_new_full (g_str_hash, g_str_equal, _g_free0_, __vala_GValue_free0_);
-	_g_hash_table_unref0 (hints);
-	hints = _tmp0_;
-	_tmp1_ = g_strdup ("visible");
-	_tmp2_ = g_new0 (GValue, 1);
-	g_value_init (_tmp2_, G_TYPE_BOOLEAN);
-	g_value_set_boolean (_tmp2_, visible);
-	g_hash_table_insert (hints, _tmp1_, _tmp2_);
-	g_value_init (&_tmp3_, G_TYPE_STRING);
-	g_value_set_string (&_tmp3_, win_name);
-	task_manager_update (self->priv->_manager, &_tmp3_, hints, &_inner_error_);
-	G_IS_VALUE (&_tmp3_) ? (g_value_unset (&_tmp3_), NULL) : NULL;
-	if (_inner_error_ != NULL) {
-		if (_inner_error_->domain == DBUS_GERROR) {
-			g_propagate_error (error, _inner_error_);
-			_g_hash_table_unref0 (hints);
-			return;
-		} else {
-			_g_hash_table_unref0 (hints);
-			g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-			g_clear_error (&_inner_error_);
-			return;
-		}
-	}
-	_g_hash_table_unref0 (hints);
-}
-
-
-static char* task_manager_dispatcher_real_awn_register_proxy_item (DockManagerDBusInterface* base, const gchar* desktop_file, const gchar* uri, GError** error) {
-	TaskManagerDispatcher * self;
-	char* result = NULL;
-	char* _tmp0_ = NULL;
-	self = (TaskManagerDispatcher*) base;
-	g_return_val_if_fail (desktop_file != NULL, NULL);
-	g_return_val_if_fail (uri != NULL, NULL);
-	_tmp0_ = g_strdup ("/not/yet/implemented");
-	result = _tmp0_;
-	return result;
-}
-
-
-TaskManager* task_manager_dispatcher_get_manager (TaskManagerDispatcher* self) {
-	TaskManager* result;
-	g_return_val_if_fail (self != NULL, NULL);
-	result = self->priv->_manager;
-	return result;
-}
-
-
-static gpointer _g_object_ref0 (gpointer self) {
-	return self ? g_object_ref (self) : NULL;
-}
-
-
-static void task_manager_dispatcher_set_manager (TaskManagerDispatcher* self, TaskManager* value) {
-	TaskManager* _tmp0_;
-	g_return_if_fail (self != NULL);
-	_tmp0_ = _g_object_ref0 (value);
-	_g_object_unref0 (self->priv->_manager);
-	self->priv->_manager = _tmp0_;
-	g_object_notify ((GObject *) self, "manager");
-}
-
-
-static void task_manager_dispatcher_class_init (TaskManagerDispatcherClass * klass) {
-	task_manager_dispatcher_parent_class = g_type_class_peek_parent (klass);
-	g_type_class_add_private (klass, sizeof (TaskManagerDispatcherPrivate));
-	G_OBJECT_CLASS (klass)->get_property = _vala_task_manager_dispatcher_get_property;
-	G_OBJECT_CLASS (klass)->set_property = _vala_task_manager_dispatcher_set_property;
-	G_OBJECT_CLASS (klass)->finalize = task_manager_dispatcher_finalize;
-	g_object_class_install_property (G_OBJECT_CLASS (klass), TASK_MANAGER_DISPATCHER_MANAGER, g_param_spec_object ("manager", "manager", "manager", TASK_TYPE_MANAGER, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
-}
-
-
-static void task_manager_dispatcher_dock_manager_dbus_interface_interface_init (DockManagerDBusInterfaceIface * iface) {
-	task_manager_dispatcher_dock_manager_dbus_interface_parent_iface = g_type_interface_peek_parent (iface);
-	iface->get_capabilities = (gchar** (*)(DockManagerDBusInterface* ,int* ,GError**)) task_manager_dispatcher_real_get_capabilities;
-	iface->get_items = (char** (*)(DockManagerDBusInterface* ,int* ,GError**)) task_manager_dispatcher_real_get_items;
-	iface->get_items_by_name = (char** (*)(DockManagerDBusInterface* ,const gchar* ,int* ,GError**)) task_manager_dispatcher_real_get_items_by_name;
-	iface->get_items_by_desktop_file = (char** (*)(DockManagerDBusInterface* ,const gchar* ,int* ,GError**)) task_manager_dispatcher_real_get_items_by_desktop_file;
-	iface->get_items_by_pid = (char** (*)(DockManagerDBusInterface* ,gint ,int* ,GError**)) task_manager_dispatcher_real_get_items_by_pid;
-	iface->get_item_by_xid = (char* (*)(DockManagerDBusInterface* ,gint64 ,GError**)) task_manager_dispatcher_real_get_item_by_xid;
-	iface->awn_set_visibility = (void (*)(DockManagerDBusInterface* ,const gchar* ,gboolean ,GError**)) task_manager_dispatcher_real_awn_set_visibility;
-	iface->awn_register_proxy_item = (char* (*)(DockManagerDBusInterface* ,const gchar* ,const gchar* ,GError**)) task_manager_dispatcher_real_awn_register_proxy_item;
-}
-
-
-static void task_manager_dispatcher_instance_init (TaskManagerDispatcher * self) {
-	self->priv = TASK_MANAGER_DISPATCHER_GET_PRIVATE (self);
-}
-
-
-static void task_manager_dispatcher_finalize (GObject* obj) {
-	TaskManagerDispatcher * self;
-	self = TASK_MANAGER_DISPATCHER (obj);
-	_g_object_unref0 (self->priv->_manager);
-	G_OBJECT_CLASS (task_manager_dispatcher_parent_class)->finalize (obj);
-}
-
-
-void _task_manager_dispatcher_dbus_unregister (DBusConnection* connection, void* _user_data_) {
-}
-
-
-static DBusHandlerResult _dbus_task_manager_dispatcher_introspect (TaskManagerDispatcher* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessage* reply;
-	DBusMessageIter iter;
-	GString* xml_data;
-	char** children;
-	int i;
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	xml_data = g_string_new ("<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n");
-	g_string_append (xml_data, "<node>\n<interface name=\"org.freedesktop.DBus.Introspectable\">\n  <method name=\"Introspect\">\n    <arg name=\"data\" direction=\"out\" type=\"s\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.DBus.Properties\">\n  <method name=\"Get\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"out\" type=\"v\"/>\n  </method>\n  <method name=\"Set\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"in\" type=\"v\"/>\n  </method>\n  <method name=\"GetAll\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"props\" direction=\"out\" type=\"a{sv}\"/>\n  </method>\n</interface>\n<interface name=\"net.launchpad.DockManager\">\n  <method name=\"GetCapabilities\">\n    <arg name=\"result\" type=\"as\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItems\">\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByName\">\n    <arg name=\"name\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByDesktopFile\">\n    <arg name=\"desktop_file\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByPid\">\n    <arg name=\"pid\" type=\"i\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemByXid\">\n    <arg name=\"xid\" type=\"x\" direction=\"in\"/>\n    <arg name=\"result\" type=\"o\" direction=\"out\"/>\n  </method>\n  <method name=\"AwnSetVisibility\">\n    <arg name=\"win_name\" type=\"s\" direction=\"in\"/>\n    <arg name=\"visible\" type=\"b\" direction=\"in\"/>\n  </method>\n  <method name=\"AwnRegisterProxyItem\">\n    <arg name=\"desktop_file\" type=\"s\" direction=\"in\"/>\n    <arg name=\"uri\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"o\" direction=\"out\"/>\n  </method>\n  <signal name=\"ItemAdded\">\n    <arg name=\"path\" type=\"o\"/>\n  </signal>\n  <signal name=\"ItemRemoved\">\n    <arg name=\"path\" type=\"o\"/>\n  </signal>\n</interface>\n");
-	dbus_connection_list_registered (connection, g_object_get_data ((GObject *) self, "dbus_object_path"), &children);
-	for (i = 0; children[i]; i++) {
-		g_string_append_printf (xml_data, "<node name=\"%s\"/>\n", children[i]);
-	}
-	dbus_free_string_array (children);
-	g_string_append (xml_data, "</node>\n");
-	dbus_message_iter_append_basic (&iter, DBUS_TYPE_STRING, &xml_data->str);
-	g_string_free (xml_data, TRUE);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-}
-
-
-DBusHandlerResult task_manager_dispatcher_dbus_message (DBusConnection* connection, DBusMessage* message, void* object) {
-	DBusHandlerResult result;
-	result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	if (dbus_message_is_method_call (message, "org.freedesktop.DBus.Introspectable", "Introspect")) {
-		result = _dbus_task_manager_dispatcher_introspect (object, connection, message);
-	}
-	if (result == DBUS_HANDLER_RESULT_HANDLED) {
-		return result;
-	} else if (dock_manager_dbus_interface_dbus_message (connection, message, object) == DBUS_HANDLER_RESULT_HANDLED) {
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-}
-
-
-void task_manager_dispatcher_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
-	if (!g_object_get_data (object, "dbus_object_path")) {
-		g_object_set_data (object, "dbus_object_path", g_strdup (path));
-		dbus_connection_register_object_path (connection, path, &_task_manager_dispatcher_dbus_path_vtable, object);
-		g_object_weak_ref (object, _vala_dbus_unregister_object, connection);
-	}
-	dock_manager_dbus_interface_dbus_register_object (connection, path, object);
-}
-
-
-GType task_manager_dispatcher_get_type (void) {
-	static volatile gsize task_manager_dispatcher_type_id__volatile = 0;
-	if (g_once_init_enter (&task_manager_dispatcher_type_id__volatile)) {
-		static const GTypeInfo g_define_type_info = { sizeof (TaskManagerDispatcherClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) task_manager_dispatcher_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TaskManagerDispatcher), 0, (GInstanceInitFunc) task_manager_dispatcher_instance_init, NULL };
-		static const GInterfaceInfo dock_manager_dbus_interface_info = { (GInterfaceInitFunc) task_manager_dispatcher_dock_manager_dbus_interface_interface_init, (GInterfaceFinalizeFunc) NULL, NULL};
-		GType task_manager_dispatcher_type_id;
-		task_manager_dispatcher_type_id = g_type_register_static (G_TYPE_OBJECT, "TaskManagerDispatcher", &g_define_type_info, 0);
-		g_type_add_interface_static (task_manager_dispatcher_type_id, TYPE_DOCK_MANAGER_DBUS_INTERFACE, &dock_manager_dbus_interface_info);
-		g_type_set_qdata (task_manager_dispatcher_type_id, g_quark_from_static_string ("DBusObjectVTable"), (void*) (&_task_manager_dispatcher_dbus_vtable));
-		g_once_init_leave (&task_manager_dispatcher_type_id__volatile, task_manager_dispatcher_type_id);
-	}
-	return task_manager_dispatcher_type_id__volatile;
-}
-
-
-static void _vala_task_manager_dispatcher_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
-	TaskManagerDispatcher * self;
-	self = TASK_MANAGER_DISPATCHER (object);
-	switch (property_id) {
-		case TASK_MANAGER_DISPATCHER_MANAGER:
-		g_value_set_object (value, task_manager_dispatcher_get_manager (self));
-		break;
-		default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-
-static void _vala_task_manager_dispatcher_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
-	TaskManagerDispatcher * self;
-	self = TASK_MANAGER_DISPATCHER (object);
-	switch (property_id) {
-		case TASK_MANAGER_DISPATCHER_MANAGER:
-		task_manager_dispatcher_set_manager (self, g_value_get_object (value));
-		break;
-		default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-
-TaskIconDispatcher* task_icon_dispatcher_construct (GType object_type, TaskIcon* icon) {
-	TaskIconDispatcher * self = NULL;
-	DBusGConnection* _tmp0_ = NULL;
-	DBusGConnection* conn;
-	gint _tmp1_;
-	gchar* _tmp2_ = NULL;
-	gchar* _tmp3_;
-	GError * _inner_error_ = NULL;
-	g_return_val_if_fail (icon != NULL, NULL);
-	self = (TaskIconDispatcher*) g_object_new (object_type, NULL);
-	self->priv->icon = icon;
-	_tmp0_ = dbus_g_bus_get (DBUS_BUS_SESSION, &_inner_error_);
-	conn = _tmp0_;
-	if (_inner_error_ != NULL) {
-		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return NULL;
-	}
-	_tmp1_ = task_icon_dispatcher_counter;
-	task_icon_dispatcher_counter = _tmp1_ + 1;
-	_tmp2_ = g_strdup_printf ("/net/launchpad/DockManager/Item%d", _tmp1_);
-	_tmp3_ = _tmp2_;
-	task_icon_dispatcher_set_object_path (self, _tmp3_);
-	_g_free0 (_tmp3_);
-	_vala_dbus_register_object (dbus_g_connection_get_connection (conn), self->priv->_object_path, (GObject*) self);
-	task_icon_dispatcher_emit_item_added (self);
-	_dbus_g_connection_unref0 (conn);
-	return self;
-}
-
-
-TaskIconDispatcher* task_icon_dispatcher_new (TaskIcon* icon) {
-	return task_icon_dispatcher_construct (TYPE_TASK_ICON_DISPATCHER, icon);
-}
-
-
-static TaskManagerDispatcher* task_icon_dispatcher_get_manager_proxy (TaskIconDispatcher* self) {
-	TaskManagerDispatcher* result = NULL;
-	TaskManagerDispatcher* proxy = NULL;
-	AwnApplet* _tmp0_ = NULL;
-	AwnApplet* _tmp1_;
-	TaskManager* manager;
-	GObject* _tmp2_ = NULL;
-	GObject* _tmp3_;
-	g_return_val_if_fail (self != NULL, NULL);
-	_tmp0_ = task_icon_get_applet (self->priv->icon);
-	_tmp1_ = _tmp0_;
-	manager = TASK_IS_MANAGER (_tmp1_) ? ((TaskManager*) _tmp1_) : NULL;
-	_tmp2_ = task_manager_get_dbus_dispatcher (manager);
-	_tmp3_ = _tmp2_;
-	proxy = IS_TASK_MANAGER_DISPATCHER (_tmp3_) ? ((TaskManagerDispatcher*) _tmp3_) : NULL;
-	result = proxy;
-	return result;
-}
-
-
-static void task_icon_dispatcher_emit_item_added (TaskIconDispatcher* self) {
-	TaskManagerDispatcher* _tmp0_ = NULL;
-	TaskManagerDispatcher* proxy;
-	g_return_if_fail (self != NULL);
-	_tmp0_ = task_icon_dispatcher_get_manager_proxy (self);
-	proxy = _tmp0_;
-	if (proxy != NULL) {
-		char* _tmp1_ = NULL;
-		char* _tmp2_;
-		_tmp1_ = g_strdup (self->priv->_object_path);
-		_tmp2_ = _tmp1_;
-		g_signal_emit_by_name ((DockManagerDBusInterface*) proxy, "item-added", _tmp2_);
-		_g_free0 (_tmp2_);
-	}
-}
-
-
-static Block1Data* block1_data_ref (Block1Data* _data1_) {
-	g_atomic_int_inc (&_data1_->_ref_count_);
-	return _data1_;
-}
-
-
-static void block1_data_unref (Block1Data* _data1_) {
-	if (g_atomic_int_dec_and_test (&_data1_->_ref_count_)) {
-		_g_object_unref0 (_data1_->self);
-		g_slice_free (Block1Data, _data1_);
-	}
-}
-
-
-static void _lambda0_ (GtkMenuItem* w, Block1Data* _data1_) {
-	TaskIconDispatcher * self;
-	self = _data1_->self;
-	g_return_if_fail (w != NULL);
-	g_signal_emit_by_name ((DockItemDBusInterface*) self, "menu-item-activated", _data1_->id);
-}
-
-
-static void __lambda0__gtk_menu_item_activate (GtkMenuItem* _sender, gpointer self) {
-	_lambda0_ (_sender, self);
-}
-
-
-static gint task_icon_dispatcher_real_add_menu_item (DockItemDBusInterface* base, GHashTable* menu_hints, GError** error) {
-	TaskIconDispatcher * self;
-	gint result = 0;
-	GtkImageMenuItem* item;
-	GtkImage* image;
-	gchar* group;
-	GHashTableIter iter = {0};
-	const gchar* key = NULL;
-	GValue* value = NULL;
-	GError * _inner_error_ = NULL;
-	self = (TaskIconDispatcher*) base;
-	g_return_val_if_fail (menu_hints != NULL, 0);
-	item = NULL;
-	image = NULL;
-	group = NULL;
-	g_hash_table_iter_init (&iter, menu_hints);
-	while (TRUE) {
-		gconstpointer _tmp0_ = NULL;
-		gconstpointer _tmp1_ = NULL;
-		gboolean _tmp2_;
-		_tmp2_ = g_hash_table_iter_next (&iter, &_tmp0_, &_tmp1_);
-		key = _tmp0_;
-		value = _tmp1_;
-		if (!_tmp2_) {
-			break;
-		}
-		if (g_strcmp0 (key, "label") == 0) {
-			const gchar* _tmp3_ = NULL;
-			GtkImageMenuItem* _tmp4_ = NULL;
-			_tmp3_ = g_value_get_string (value);
-			_tmp4_ = (GtkImageMenuItem*) gtk_image_menu_item_new_with_label (_tmp3_);
-			_g_object_unref0 (item);
-			item = g_object_ref_sink (_tmp4_);
-		} else {
-			if (g_strcmp0 (key, "icon-name") == 0) {
-				const gchar* _tmp5_ = NULL;
-				GtkImage* _tmp6_ = NULL;
-				_tmp5_ = g_value_get_string (value);
-				_tmp6_ = (GtkImage*) gtk_image_new_from_icon_name (_tmp5_, GTK_ICON_SIZE_MENU);
-				_g_object_unref0 (image);
-				image = g_object_ref_sink (_tmp6_);
-			} else {
-				if (g_strcmp0 (key, "icon-file") == 0) {
-					GdkPixbuf* pixbuf = NULL;
-					gint w = 0;
-					gint h = 0;
-					gint _tmp7_;
-					gint _tmp8_;
-					const gchar* _tmp9_ = NULL;
-					GdkPixbuf* _tmp10_ = NULL;
-					GdkPixbuf* _tmp11_;
-					GtkImage* _tmp12_ = NULL;
-					gtk_icon_size_lookup (GTK_ICON_SIZE_MENU, &_tmp7_, &_tmp8_);
-					w = _tmp7_;
-					h = _tmp8_;
-					_tmp9_ = g_value_get_string (value);
-					_tmp10_ = gdk_pixbuf_new_from_file_at_size (_tmp9_, w, h, &_inner_error_);
-					_tmp11_ = _tmp10_;
-					if (_inner_error_ != NULL) {
-						goto __catch0_g_error;
-					}
-					_g_object_unref0 (pixbuf);
-					pixbuf = _tmp11_;
-					_tmp12_ = (GtkImage*) gtk_image_new_from_pixbuf (pixbuf);
-					_g_object_unref0 (image);
-					image = g_object_ref_sink (_tmp12_);
-					goto __finally0;
-					__catch0_g_error:
-					{
-						GError * err;
-						err = _inner_error_;
-						_inner_error_ = NULL;
-						g_warning ("dock-manager-api.vala:316: %s", err->message);
-						_g_error_free0 (err);
-					}
-					__finally0:
-					if (_inner_error_ != NULL) {
-						if (_inner_error_->domain == DBUS_GERROR) {
-							g_propagate_error (error, _inner_error_);
-							_g_object_unref0 (pixbuf);
-							_g_free0 (group);
-							_g_object_unref0 (image);
-							_g_object_unref0 (item);
-							return 0;
-						} else {
-							_g_object_unref0 (pixbuf);
-							_g_free0 (group);
-							_g_object_unref0 (image);
-							_g_object_unref0 (item);
-							g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-							g_clear_error (&_inner_error_);
-							return 0;
-						}
-					}
-					_g_object_unref0 (pixbuf);
-				} else {
-					if (g_strcmp0 (key, "container-title") == 0) {
-						const gchar* _tmp13_ = NULL;
-						gchar* _tmp14_;
-						_tmp13_ = g_value_get_string (value);
-						_tmp14_ = g_strdup (_tmp13_);
-						_g_free0 (group);
-						group = _tmp14_;
-					} else {
-						if (g_strcmp0 (key, "uri") == 0) {
-						}
-					}
-				}
-			}
-		}
-	}
-	if (item != NULL) {
-		Block1Data* _data1_;
-		gint _tmp15_;
-		_data1_ = g_slice_new0 (Block1Data);
-		_data1_->_ref_count_ = 1;
-		_data1_->self = g_object_ref (self);
-		if (image != NULL) {
-			gtk_image_menu_item_set_image (item, (GtkWidget*) image);
-		}
-		_tmp15_ = task_icon_add_menu_item (self->priv->icon, (GtkMenuItem*) item, group);
-		_data1_->id = _tmp15_;
-		gtk_widget_show ((GtkWidget*) item);
-		g_signal_connect_data ((GtkMenuItem*) item, "activate", (GCallback) __lambda0__gtk_menu_item_activate, block1_data_ref (_data1_), (GClosureNotify) block1_data_unref, 0);
-		result = _data1_->id;
-		block1_data_unref (_data1_);
-		_data1_ = NULL;
-		_g_free0 (group);
-		_g_object_unref0 (image);
-		_g_object_unref0 (item);
-		return result;
-	}
-	result = 0;
-	_g_free0 (group);
-	_g_object_unref0 (image);
-	_g_object_unref0 (item);
-	return result;
-}
-
-
-static void task_icon_dispatcher_real_remove_menu_item (DockItemDBusInterface* base, gint id, GError** error) {
-	TaskIconDispatcher * self;
-	self = (TaskIconDispatcher*) base;
-	task_icon_remove_menu_item (self->priv->icon, id);
-}
-
-
-static void task_icon_dispatcher_real_update_dock_item (DockItemDBusInterface* base, GHashTable* hints, GError** error) {
-	TaskIconDispatcher * self;
-	GHashTableIter iter = {0};
-	const gchar* key = NULL;
-	GValue* value = NULL;
-	self = (TaskIconDispatcher*) base;
-	g_return_if_fail (hints != NULL);
-	g_hash_table_iter_init (&iter, hints);
-	while (TRUE) {
-		gconstpointer _tmp0_ = NULL;
-		gconstpointer _tmp1_ = NULL;
-		gboolean _tmp2_;
-		GSList* _tmp3_ = NULL;
-		GSList* items;
-		_tmp2_ = g_hash_table_iter_next (&iter, &_tmp0_, &_tmp1_);
-		key = _tmp0_;
-		value = _tmp1_;
-		if (!_tmp2_) {
-			break;
-		}
-		_tmp3_ = task_icon_get_items (self->priv->icon);
-		items = _tmp3_;
-		{
-			GSList* item_collection;
-			GSList* item_it;
-			item_collection = items;
-			for (item_it = item_collection; item_it != NULL; item_it = item_it->next) {
-				TaskItem* item;
-				item = (TaskItem*) item_it->data;
-				{
-					if (TASK_IS_LAUNCHER (item)) {
-						continue;
-					}
-					task_item_update_overlay (item, key, value);
-				}
-			}
-		}
-	}
-}
-
-
-const gchar* task_icon_dispatcher_get_object_path (TaskIconDispatcher* self) {
-	const gchar* result;
-	g_return_val_if_fail (self != NULL, NULL);
-	result = self->priv->_object_path;
-	return result;
-}
-
-
-void task_icon_dispatcher_set_object_path (TaskIconDispatcher* self, const gchar* value) {
-	gchar* _tmp0_;
-	g_return_if_fail (self != NULL);
-	_tmp0_ = g_strdup (value);
-	_g_free0 (self->priv->_object_path);
-	self->priv->_object_path = _tmp0_;
-	g_object_notify ((GObject *) self, "object-path");
-}
-
-
-static gchar* string_replace (const gchar* self, const gchar* old, const gchar* replacement) {
-	gchar* result = NULL;
-	gchar* _tmp0_ = NULL;
-	gchar* _tmp1_;
-	GRegex* _tmp2_ = NULL;
-	GRegex* _tmp3_;
-	GRegex* regex;
-	gchar* _tmp4_ = NULL;
-	gchar* _tmp5_;
-	GError * _inner_error_ = NULL;
-	g_return_val_if_fail (self != NULL, NULL);
-	g_return_val_if_fail (old != NULL, NULL);
-	g_return_val_if_fail (replacement != NULL, NULL);
-	_tmp0_ = g_regex_escape_string (old, -1);
-	_tmp1_ = _tmp0_;
-	_tmp2_ = g_regex_new (_tmp1_, 0, 0, &_inner_error_);
-	_tmp3_ = _tmp2_;
-	_g_free0 (_tmp1_);
-	regex = _tmp3_;
-	if (_inner_error_ != NULL) {
-		if (_inner_error_->domain == G_REGEX_ERROR) {
-			goto __catch1_g_regex_error;
-		}
-		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return NULL;
-	}
-	_tmp4_ = g_regex_replace_literal (regex, self, (gssize) (-1), 0, replacement, 0, &_inner_error_);
-	_tmp5_ = _tmp4_;
-	if (_inner_error_ != NULL) {
-		_g_regex_unref0 (regex);
-		if (_inner_error_->domain == G_REGEX_ERROR) {
-			goto __catch1_g_regex_error;
-		}
-		_g_regex_unref0 (regex);
-		g_critical ("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return NULL;
-	}
-	result = _tmp5_;
-	_g_regex_unref0 (regex);
-	return result;
-	_g_regex_unref0 (regex);
-	goto __finally1;
-	__catch1_g_regex_error:
-	{
-		GError * e;
-		e = _inner_error_;
-		_inner_error_ = NULL;
-		g_assert_not_reached ();
-		_g_error_free0 (e);
-	}
-	__finally1:
-	if (_inner_error_ != NULL) {
-		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return NULL;
-	}
-}
-
-
-static gchar* task_icon_dispatcher_real_get_desktop_file (DockItemDBusInterface* base) {
-	gchar* result;
-	TaskIconDispatcher* self;
-	gchar* _tmp0_;
-	gchar* path;
-	TaskLauncher* launcher = NULL;
-	TaskItem* _tmp1_ = NULL;
-	TaskItem* _tmp2_;
-	self = (TaskIconDispatcher*) base;
-	_tmp0_ = g_strdup ("");
-	path = _tmp0_;
-	_tmp1_ = task_icon_get_launcher (self->priv->icon);
-	_tmp2_ = _tmp1_;
-	launcher = TASK_IS_LAUNCHER (_tmp2_) ? ((TaskLauncher*) _tmp2_) : NULL;
-	if (launcher != NULL) {
-		const gchar* _tmp3_ = NULL;
-		gchar* _tmp4_;
-		gchar* _tmp5_ = NULL;
-		_tmp3_ = task_launcher_get_desktop_path (launcher);
-		_tmp4_ = g_strdup (_tmp3_);
-		_g_free0 (path);
-		path = _tmp4_;
-		_tmp5_ = string_replace (path, "//", "/");
-		_g_free0 (path);
-		path = _tmp5_;
-	}
-	result = path;
-	return result;
-}
-
-
-static gchar* task_icon_dispatcher_real_get_uri (DockItemDBusInterface* base) {
-	gchar* result;
-	TaskIconDispatcher* self;
-	gchar* _tmp0_;
-	self = (TaskIconDispatcher*) base;
-	_tmp0_ = g_strdup ("");
-	result = _tmp0_;
-	return result;
-}
-
-
-static void task_icon_dispatcher_class_init (TaskIconDispatcherClass * klass) {
-	task_icon_dispatcher_parent_class = g_type_class_peek_parent (klass);
-	g_type_class_add_private (klass, sizeof (TaskIconDispatcherPrivate));
-	G_OBJECT_CLASS (klass)->get_property = _vala_task_icon_dispatcher_get_property;
-	G_OBJECT_CLASS (klass)->set_property = _vala_task_icon_dispatcher_set_property;
-	G_OBJECT_CLASS (klass)->finalize = task_icon_dispatcher_finalize;
-	g_object_class_install_property (G_OBJECT_CLASS (klass), TASK_ICON_DISPATCHER_OBJECT_PATH, g_param_spec_string ("object-path", "object-path", "object-path", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
-}
-
-
-static void task_icon_dispatcher_dock_item_dbus_interface_interface_init (DockItemDBusInterfaceIface * iface) {
-	task_icon_dispatcher_dock_item_dbus_interface_parent_iface = g_type_interface_peek_parent (iface);
-	iface->add_menu_item = (gint (*)(DockItemDBusInterface* ,GHashTable* ,GError**)) task_icon_dispatcher_real_add_menu_item;
-	iface->remove_menu_item = (void (*)(DockItemDBusInterface* ,gint ,GError**)) task_icon_dispatcher_real_remove_menu_item;
-	iface->update_dock_item = (void (*)(DockItemDBusInterface* ,GHashTable* ,GError**)) task_icon_dispatcher_real_update_dock_item;
-	iface->get_desktop_file = task_icon_dispatcher_real_get_desktop_file;
-	iface->get_uri = task_icon_dispatcher_real_get_uri;
-}
-
-
-static void task_icon_dispatcher_instance_init (TaskIconDispatcher * self) {
-	self->priv = TASK_ICON_DISPATCHER_GET_PRIVATE (self);
-}
-
-
-static void task_icon_dispatcher_finalize (GObject* obj) {
-	TaskIconDispatcher * self;
-	TaskManagerDispatcher* _tmp0_ = NULL;
-	TaskManagerDispatcher* proxy;
-	self = TASK_ICON_DISPATCHER (obj);
-	_tmp0_ = task_icon_dispatcher_get_manager_proxy (self);
-	proxy = _tmp0_;
-	if (proxy != NULL) {
-		char* _tmp1_ = NULL;
-		char* _tmp2_;
-		_tmp1_ = g_strdup (self->priv->_object_path);
-		_tmp2_ = _tmp1_;
-		g_signal_emit_by_name ((DockManagerDBusInterface*) proxy, "item-removed", _tmp2_);
-		_g_free0 (_tmp2_);
-	}
-	_g_free0 (self->priv->_object_path);
-	G_OBJECT_CLASS (task_icon_dispatcher_parent_class)->finalize (obj);
-}
-
-
-void _task_icon_dispatcher_dbus_unregister (DBusConnection* connection, void* _user_data_) {
-}
-
-
-static DBusHandlerResult _dbus_task_icon_dispatcher_introspect (TaskIconDispatcher* self, DBusConnection* connection, DBusMessage* message) {
-	DBusMessage* reply;
-	DBusMessageIter iter;
-	GString* xml_data;
-	char** children;
-	int i;
-	reply = dbus_message_new_method_return (message);
-	dbus_message_iter_init_append (reply, &iter);
-	xml_data = g_string_new ("<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n");
-	g_string_append (xml_data, "<node>\n<interface name=\"org.freedesktop.DBus.Introspectable\">\n  <method name=\"Introspect\">\n    <arg name=\"data\" direction=\"out\" type=\"s\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.DBus.Properties\">\n  <method name=\"Get\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"out\" type=\"v\"/>\n  </method>\n  <method name=\"Set\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"in\" type=\"v\"/>\n  </method>\n  <method name=\"GetAll\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"props\" direction=\"out\" type=\"a{sv}\"/>\n  </method>\n</interface>\n<interface name=\"net.launchpad.DockItem\">\n  <method name=\"AddMenuItem\">\n    <arg name=\"menu_hints\" type=\"a{sv}\" direction=\"in\"/>\n    <arg name=\"result\" type=\"i\" direction=\"out\"/>\n  </method>\n  <method name=\"RemoveMenuItem\">\n    <arg name=\"id\" type=\"i\" direction=\"in\"/>\n  </method>\n  <method name=\"UpdateDockItem\">\n    <arg name=\"hints\" type=\"a{sv}\" direction=\"in\"/>\n  </method>\n  <property name=\"DesktopFile\" type=\"s\" access=\"read\"/>\n  <property name=\"Uri\" type=\"s\" access=\"read\"/>\n  <signal name=\"MenuItemActivated\">\n    <arg name=\"id\" type=\"i\"/>\n  </signal>\n</interface>\n");
-	dbus_connection_list_registered (connection, g_object_get_data ((GObject *) self, "dbus_object_path"), &children);
-	for (i = 0; children[i]; i++) {
-		g_string_append_printf (xml_data, "<node name=\"%s\"/>\n", children[i]);
-	}
-	dbus_free_string_array (children);
-	g_string_append (xml_data, "</node>\n");
-	dbus_message_iter_append_basic (&iter, DBUS_TYPE_STRING, &xml_data->str);
-	g_string_free (xml_data, TRUE);
-	if (reply) {
-		dbus_connection_send (connection, reply, NULL);
-		dbus_message_unref (reply);
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-}
-
-
-DBusHandlerResult task_icon_dispatcher_dbus_message (DBusConnection* connection, DBusMessage* message, void* object) {
-	DBusHandlerResult result;
-	result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	if (dbus_message_is_method_call (message, "org.freedesktop.DBus.Introspectable", "Introspect")) {
-		result = _dbus_task_icon_dispatcher_introspect (object, connection, message);
-	}
-	if (result == DBUS_HANDLER_RESULT_HANDLED) {
-		return result;
-	} else if (dock_item_dbus_interface_dbus_message (connection, message, object) == DBUS_HANDLER_RESULT_HANDLED) {
-		return DBUS_HANDLER_RESULT_HANDLED;
-	} else {
-		return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
-	}
-}
-
-
-void task_icon_dispatcher_dbus_register_object (DBusConnection* connection, const char* path, void* object) {
-	if (!g_object_get_data (object, "dbus_object_path")) {
-		g_object_set_data (object, "dbus_object_path", g_strdup (path));
-		dbus_connection_register_object_path (connection, path, &_task_icon_dispatcher_dbus_path_vtable, object);
-		g_object_weak_ref (object, _vala_dbus_unregister_object, connection);
-	}
-	dock_item_dbus_interface_dbus_register_object (connection, path, object);
-}
-
-
-GType task_icon_dispatcher_get_type (void) {
-	static volatile gsize task_icon_dispatcher_type_id__volatile = 0;
-	if (g_once_init_enter (&task_icon_dispatcher_type_id__volatile)) {
-		static const GTypeInfo g_define_type_info = { sizeof (TaskIconDispatcherClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) task_icon_dispatcher_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof (TaskIconDispatcher), 0, (GInstanceInitFunc) task_icon_dispatcher_instance_init, NULL };
-		static const GInterfaceInfo dock_item_dbus_interface_info = { (GInterfaceInitFunc) task_icon_dispatcher_dock_item_dbus_interface_interface_init, (GInterfaceFinalizeFunc) NULL, NULL};
-		GType task_icon_dispatcher_type_id;
-		task_icon_dispatcher_type_id = g_type_register_static (G_TYPE_OBJECT, "TaskIconDispatcher", &g_define_type_info, 0);
-		g_type_add_interface_static (task_icon_dispatcher_type_id, TYPE_DOCK_ITEM_DBUS_INTERFACE, &dock_item_dbus_interface_info);
-		g_type_set_qdata (task_icon_dispatcher_type_id, g_quark_from_static_string ("DBusObjectVTable"), (void*) (&_task_icon_dispatcher_dbus_vtable));
-		g_once_init_leave (&task_icon_dispatcher_type_id__volatile, task_icon_dispatcher_type_id);
-	}
-	return task_icon_dispatcher_type_id__volatile;
-}
-
-
-static void _vala_task_icon_dispatcher_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec) {
-	TaskIconDispatcher * self;
-	self = TASK_ICON_DISPATCHER (object);
-	switch (property_id) {
-		case TASK_ICON_DISPATCHER_OBJECT_PATH:
-		g_value_set_string (value, task_icon_dispatcher_get_object_path (self));
-		break;
-		default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-
-static void _vala_task_icon_dispatcher_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec) {
-	TaskIconDispatcher * self;
-	self = TASK_ICON_DISPATCHER (object);
-	switch (property_id) {
-		case TASK_ICON_DISPATCHER_OBJECT_PATH:
-		task_icon_dispatcher_set_object_path (self, g_value_get_string (value));
-		break;
-		default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-		break;
-	}
-}
-
-
-static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func) {
-	if ((array != NULL) && (destroy_func != NULL)) {
-		int i;
-		for (i = 0; i < array_length; i = i + 1) {
-			if (((gpointer*) array)[i] != NULL) {
-				destroy_func (((gpointer*) array)[i]);
-			}
-		}
-	}
-}
-
-
-static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func) {
-	_vala_array_destroy (array, array_length, destroy_func);
-	g_free (array);
+    G_DEFINE_TYPE_EXTENDED(DockItemDBusInterfaceDBusProxy, dock_item_dbus_interface_dbus_proxy, DBUS_TYPE_G_PROXY, 0, G_IMPLEMENT_INTERFACE(TYPE_DOCK_ITEM_DBUS_INTERFACE, dock_item_dbus_interface_dbus_proxy_dock_item_dbus_interface__interface_init));
+}
+
+DockItemDBusInterface* dock_item_dbus_interface_dbus_proxy_new(DBusGConnection* connection, const char* name, const char* path)
+{
+    DockItemDBusInterface* self;
+    self = g_object_new(dock_item_dbus_interface_dbus_proxy_get_type(), "connection", connection, "name", name, "path", path, "interface", "net.launchpad.DockItem", NULL);
+    return self;
+}
+
+
+static GObject* dock_item_dbus_interface_dbus_proxy_construct(GType gtype, guint n_properties, GObjectConstructParam* properties)
+{
+    GObject* self;
+    DBusGConnection* connection;
+    char* path;
+    char* filter;
+    self = G_OBJECT_CLASS(dock_item_dbus_interface_dbus_proxy_parent_class)->constructor(gtype, n_properties, properties);
+    g_object_get(self, "connection", &connection, NULL);
+    g_object_get(self, "path", &path, NULL);
+    dbus_connection_add_filter(dbus_g_connection_get_connection(connection), dock_item_dbus_interface_dbus_proxy_filter, self, NULL);
+    filter = g_strdup_printf("type='signal',path='%s',interface='net.launchpad.DockItem'", path);
+    dbus_bus_add_match(dbus_g_connection_get_connection(connection), filter, NULL);
+    dbus_g_connection_unref(connection);
+    g_free(path);
+    g_free(filter);
+    return self;
+}
+
+
+static void _dbus_handle_dock_item_dbus_interface_menu_item_activated(DockItemDBusInterface* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessageIter iter;
+    gint id = 0;
+    dbus_int32_t _tmp35_;
+    DBusMessage* reply;
+    if (strcmp(dbus_message_get_signature(message), "i")) {
+        return;
+    }
+    dbus_message_iter_init(message, &iter);
+    dbus_message_iter_get_basic(&iter, &_tmp35_);
+    dbus_message_iter_next(&iter);
+    id = _tmp35_;
+    g_signal_emit_by_name(self, "menu-item-activated", id);
+}
+
+
+DBusHandlerResult dock_item_dbus_interface_dbus_proxy_filter(DBusConnection* connection, DBusMessage* message, void* user_data)
+{
+    if (dbus_message_has_path(message, dbus_g_proxy_get_path(user_data))) {
+        if (dbus_message_is_signal(message, "net.launchpad.DockItem", "MenuItemActivated")) {
+            _dbus_handle_dock_item_dbus_interface_menu_item_activated(user_data, connection, message);
+        }
+    }
+    return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+}
+
+
+static void dock_item_dbus_interface_dbus_proxy_dispose(GObject* self)
+{
+    DBusGConnection* connection;
+    if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
+        return;
+    }
+    ((DockItemDBusInterfaceDBusProxy*) self)->disposed = TRUE;
+    g_object_get(self, "connection", &connection, NULL);
+    dbus_connection_remove_filter(dbus_g_connection_get_connection(connection), dock_item_dbus_interface_dbus_proxy_filter, self);
+    G_OBJECT_CLASS(dock_item_dbus_interface_dbus_proxy_parent_class)->dispose(self);
+}
+
+
+static void dock_item_dbus_interface_dbus_proxy_class_init(DockItemDBusInterfaceDBusProxyClass* klass)
+{
+    G_OBJECT_CLASS(klass)->constructor = dock_item_dbus_interface_dbus_proxy_construct;
+    G_OBJECT_CLASS(klass)->dispose = dock_item_dbus_interface_dbus_proxy_dispose;
+    G_OBJECT_CLASS(klass)->get_property = _vala_dock_item_dbus_interface_dbus_proxy_get_property;
+    G_OBJECT_CLASS(klass)->set_property = _vala_dock_item_dbus_interface_dbus_proxy_set_property;
+}
+
+
+static void dock_item_dbus_interface_dbus_proxy_init(DockItemDBusInterfaceDBusProxy* self)
+{
+}
+
+
+static gint dock_item_dbus_interface_dbus_proxy_add_menu_item(DockItemDBusInterface* self, GHashTable* menu_hints, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    DBusMessageIter _tmp36_, _tmp37_;
+    GHashTableIter _tmp38_;
+    gpointer _tmp39_, _tmp40_;
+    gint _result;
+    dbus_int32_t _tmp55_;
+    if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return 0;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockItem", "AddMenuItem");
+    dbus_message_iter_init_append(_message, &_iter);
+    dbus_message_iter_open_container(&_iter, DBUS_TYPE_ARRAY, "{sv}", &_tmp36_);
+    g_hash_table_iter_init(&_tmp38_, menu_hints);
+    while (g_hash_table_iter_next(&_tmp38_, &_tmp39_, &_tmp40_)) {
+        gchar* _key;
+        GValue* _value;
+        const char* _tmp41_;
+        DBusMessageIter _tmp42_;
+        dbus_message_iter_open_container(&_tmp36_, DBUS_TYPE_DICT_ENTRY, NULL, &_tmp37_);
+        _key = (gchar*) _tmp39_;
+        _value = (GValue*) _tmp40_;
+        _tmp41_ = _key;
+        dbus_message_iter_append_basic(&_tmp37_, DBUS_TYPE_STRING, &_tmp41_);
+        if (G_VALUE_TYPE(_value) == G_TYPE_UCHAR) {
+            guint8 _tmp43_;
+            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "y", &_tmp42_);
+            _tmp43_ = g_value_get_uchar(_value);
+            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_BYTE, &_tmp43_);
+            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_BOOLEAN) {
+            dbus_bool_t _tmp44_;
+            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "b", &_tmp42_);
+            _tmp44_ = g_value_get_boolean(_value);
+            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_BOOLEAN, &_tmp44_);
+            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_INT) {
+            dbus_int32_t _tmp45_;
+            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "i", &_tmp42_);
+            _tmp45_ = g_value_get_int(_value);
+            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_INT32, &_tmp45_);
+            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_UINT) {
+            dbus_uint32_t _tmp46_;
+            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "u", &_tmp42_);
+            _tmp46_ = g_value_get_uint(_value);
+            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_UINT32, &_tmp46_);
+            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_INT64) {
+            dbus_int64_t _tmp47_;
+            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "x", &_tmp42_);
+            _tmp47_ = g_value_get_int64(_value);
+            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_INT64, &_tmp47_);
+            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_UINT64) {
+            dbus_uint64_t _tmp48_;
+            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "t", &_tmp42_);
+            _tmp48_ = g_value_get_uint64(_value);
+            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_UINT64, &_tmp48_);
+            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_DOUBLE) {
+            double _tmp49_;
+            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "d", &_tmp42_);
+            _tmp49_ = g_value_get_double(_value);
+            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_DOUBLE, &_tmp49_);
+            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_STRING) {
+            const char* _tmp50_;
+            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "s", &_tmp42_);
+            _tmp50_ = g_value_get_string(_value);
+            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_STRING, &_tmp50_);
+            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_STRV) {
+            const gchar** _tmp51_;
+            DBusMessageIter _tmp52_;
+            int _tmp53_;
+            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "as", &_tmp42_);
+            _tmp51_ = g_value_get_boxed(_value);
+            dbus_message_iter_open_container(&_tmp42_, DBUS_TYPE_ARRAY, "s", &_tmp52_);
+            for (_tmp53_ = 0; _tmp53_ < g_strv_length(g_value_get_boxed(_value)); _tmp53_++) {
+                const char* _tmp54_;
+                _tmp54_ = *_tmp51_;
+                dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_STRING, &_tmp54_);
+                _tmp51_++;
+            }
+            dbus_message_iter_close_container(&_tmp42_, &_tmp52_);
+            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
+        }
+        dbus_message_iter_close_container(&_tmp36_, &_tmp37_);
+    }
+    dbus_message_iter_close_container(&_iter, &_tmp36_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp56_;
+            _edomain = DBUS_GERROR;
+            _tmp56_ = _dbus_error.name + 27;
+            if (strcmp(_tmp56_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp56_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp56_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp56_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp56_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp56_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp56_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp56_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp56_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp56_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp56_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp56_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp56_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp56_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp56_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp56_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp56_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp56_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp56_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp56_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp56_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp56_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp56_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp56_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp56_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp56_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp56_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp56_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp56_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp56_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp56_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp56_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp56_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return 0;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "i")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "i", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return 0;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    dbus_message_iter_get_basic(&_iter, &_tmp55_);
+    dbus_message_iter_next(&_iter);
+    _result = _tmp55_;
+    dbus_message_unref(_reply);
+    return _result;
+}
+
+
+static void dock_item_dbus_interface_dbus_proxy_remove_menu_item(DockItemDBusInterface* self, gint id, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    dbus_int32_t _tmp57_;
+    if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockItem", "RemoveMenuItem");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp57_ = id;
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_INT32, &_tmp57_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp58_;
+            _edomain = DBUS_GERROR;
+            _tmp58_ = _dbus_error.name + 27;
+            if (strcmp(_tmp58_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp58_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp58_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp58_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp58_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp58_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp58_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp58_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp58_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp58_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp58_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp58_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp58_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp58_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp58_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp58_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp58_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp58_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp58_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp58_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp58_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp58_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp58_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp58_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp58_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp58_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp58_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp58_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp58_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp58_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp58_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp58_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp58_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    dbus_message_unref(_reply);
+}
+
+
+static void dock_item_dbus_interface_dbus_proxy_update_dock_item(DockItemDBusInterface* self, GHashTable* hints, GError** error)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter;
+    DBusMessageIter _tmp59_, _tmp60_;
+    GHashTableIter _tmp61_;
+    gpointer _tmp62_, _tmp63_;
+    if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
+        return;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockItem", "UpdateDockItem");
+    dbus_message_iter_init_append(_message, &_iter);
+    dbus_message_iter_open_container(&_iter, DBUS_TYPE_ARRAY, "{sv}", &_tmp59_);
+    g_hash_table_iter_init(&_tmp61_, hints);
+    while (g_hash_table_iter_next(&_tmp61_, &_tmp62_, &_tmp63_)) {
+        gchar* _key;
+        GValue* _value;
+        const char* _tmp64_;
+        DBusMessageIter _tmp65_;
+        dbus_message_iter_open_container(&_tmp59_, DBUS_TYPE_DICT_ENTRY, NULL, &_tmp60_);
+        _key = (gchar*) _tmp62_;
+        _value = (GValue*) _tmp63_;
+        _tmp64_ = _key;
+        dbus_message_iter_append_basic(&_tmp60_, DBUS_TYPE_STRING, &_tmp64_);
+        if (G_VALUE_TYPE(_value) == G_TYPE_UCHAR) {
+            guint8 _tmp66_;
+            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "y", &_tmp65_);
+            _tmp66_ = g_value_get_uchar(_value);
+            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_BYTE, &_tmp66_);
+            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_BOOLEAN) {
+            dbus_bool_t _tmp67_;
+            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "b", &_tmp65_);
+            _tmp67_ = g_value_get_boolean(_value);
+            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_BOOLEAN, &_tmp67_);
+            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_INT) {
+            dbus_int32_t _tmp68_;
+            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "i", &_tmp65_);
+            _tmp68_ = g_value_get_int(_value);
+            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_INT32, &_tmp68_);
+            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_UINT) {
+            dbus_uint32_t _tmp69_;
+            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "u", &_tmp65_);
+            _tmp69_ = g_value_get_uint(_value);
+            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_UINT32, &_tmp69_);
+            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_INT64) {
+            dbus_int64_t _tmp70_;
+            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "x", &_tmp65_);
+            _tmp70_ = g_value_get_int64(_value);
+            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_INT64, &_tmp70_);
+            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_UINT64) {
+            dbus_uint64_t _tmp71_;
+            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "t", &_tmp65_);
+            _tmp71_ = g_value_get_uint64(_value);
+            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_UINT64, &_tmp71_);
+            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_DOUBLE) {
+            double _tmp72_;
+            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "d", &_tmp65_);
+            _tmp72_ = g_value_get_double(_value);
+            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_DOUBLE, &_tmp72_);
+            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_STRING) {
+            const char* _tmp73_;
+            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "s", &_tmp65_);
+            _tmp73_ = g_value_get_string(_value);
+            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_STRING, &_tmp73_);
+            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
+        } else if (G_VALUE_TYPE(_value) == G_TYPE_STRV) {
+            const gchar** _tmp74_;
+            DBusMessageIter _tmp75_;
+            int _tmp76_;
+            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "as", &_tmp65_);
+            _tmp74_ = g_value_get_boxed(_value);
+            dbus_message_iter_open_container(&_tmp65_, DBUS_TYPE_ARRAY, "s", &_tmp75_);
+            for (_tmp76_ = 0; _tmp76_ < g_strv_length(g_value_get_boxed(_value)); _tmp76_++) {
+                const char* _tmp77_;
+                _tmp77_ = *_tmp74_;
+                dbus_message_iter_append_basic(&_tmp75_, DBUS_TYPE_STRING, &_tmp77_);
+                _tmp74_++;
+            }
+            dbus_message_iter_close_container(&_tmp65_, &_tmp75_);
+            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
+        }
+        dbus_message_iter_close_container(&_tmp59_, &_tmp60_);
+    }
+    dbus_message_iter_close_container(&_iter, &_tmp59_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        GQuark _edomain = 0;
+        gint _ecode = 0;
+        if (strstr(_dbus_error.name, "org.freedesktop.DBus.Error") == _dbus_error.name) {
+            const char* _tmp78_;
+            _edomain = DBUS_GERROR;
+            _tmp78_ = _dbus_error.name + 27;
+            if (strcmp(_tmp78_, "Failed") == 0) {
+                _ecode = DBUS_GERROR_FAILED;
+            } else if (strcmp(_tmp78_, "NoMemory") == 0) {
+                _ecode = DBUS_GERROR_NO_MEMORY;
+            } else if (strcmp(_tmp78_, "ServiceUnknown") == 0) {
+                _ecode = DBUS_GERROR_SERVICE_UNKNOWN;
+            } else if (strcmp(_tmp78_, "NameHasNoOwner") == 0) {
+                _ecode = DBUS_GERROR_NAME_HAS_NO_OWNER;
+            } else if (strcmp(_tmp78_, "NoReply") == 0) {
+                _ecode = DBUS_GERROR_NO_REPLY;
+            } else if (strcmp(_tmp78_, "IOError") == 0) {
+                _ecode = DBUS_GERROR_IO_ERROR;
+            } else if (strcmp(_tmp78_, "BadAddress") == 0) {
+                _ecode = DBUS_GERROR_BAD_ADDRESS;
+            } else if (strcmp(_tmp78_, "NotSupported") == 0) {
+                _ecode = DBUS_GERROR_NOT_SUPPORTED;
+            } else if (strcmp(_tmp78_, "LimitsExceeded") == 0) {
+                _ecode = DBUS_GERROR_LIMITS_EXCEEDED;
+            } else if (strcmp(_tmp78_, "AccessDenied") == 0) {
+                _ecode = DBUS_GERROR_ACCESS_DENIED;
+            } else if (strcmp(_tmp78_, "AuthFailed") == 0) {
+                _ecode = DBUS_GERROR_AUTH_FAILED;
+            } else if (strcmp(_tmp78_, "NoServer") == 0) {
+                _ecode = DBUS_GERROR_NO_SERVER;
+            } else if (strcmp(_tmp78_, "Timeout") == 0) {
+                _ecode = DBUS_GERROR_TIMEOUT;
+            } else if (strcmp(_tmp78_, "NoNetwork") == 0) {
+                _ecode = DBUS_GERROR_NO_NETWORK;
+            } else if (strcmp(_tmp78_, "AddressInUse") == 0) {
+                _ecode = DBUS_GERROR_ADDRESS_IN_USE;
+            } else if (strcmp(_tmp78_, "Disconnected") == 0) {
+                _ecode = DBUS_GERROR_DISCONNECTED;
+            } else if (strcmp(_tmp78_, "InvalidArgs") == 0) {
+                _ecode = DBUS_GERROR_INVALID_ARGS;
+            } else if (strcmp(_tmp78_, "FileNotFound") == 0) {
+                _ecode = DBUS_GERROR_FILE_NOT_FOUND;
+            } else if (strcmp(_tmp78_, "FileExists") == 0) {
+                _ecode = DBUS_GERROR_FILE_EXISTS;
+            } else if (strcmp(_tmp78_, "UnknownMethod") == 0) {
+                _ecode = DBUS_GERROR_UNKNOWN_METHOD;
+            } else if (strcmp(_tmp78_, "TimedOut") == 0) {
+                _ecode = DBUS_GERROR_TIMED_OUT;
+            } else if (strcmp(_tmp78_, "MatchRuleNotFound") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_NOT_FOUND;
+            } else if (strcmp(_tmp78_, "MatchRuleInvalid") == 0) {
+                _ecode = DBUS_GERROR_MATCH_RULE_INVALID;
+            } else if (strcmp(_tmp78_, "Spawn.ExecFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_EXEC_FAILED;
+            } else if (strcmp(_tmp78_, "Spawn.ForkFailed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FORK_FAILED;
+            } else if (strcmp(_tmp78_, "Spawn.ChildExited") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_EXITED;
+            } else if (strcmp(_tmp78_, "Spawn.ChildSignaled") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_CHILD_SIGNALED;
+            } else if (strcmp(_tmp78_, "Spawn.Failed") == 0) {
+                _ecode = DBUS_GERROR_SPAWN_FAILED;
+            } else if (strcmp(_tmp78_, "UnixProcessIdUnknown") == 0) {
+                _ecode = DBUS_GERROR_UNIX_PROCESS_ID_UNKNOWN;
+            } else if (strcmp(_tmp78_, "InvalidSignature") == 0) {
+                _ecode = DBUS_GERROR_INVALID_SIGNATURE;
+            } else if (strcmp(_tmp78_, "InvalidFileContent") == 0) {
+                _ecode = DBUS_GERROR_INVALID_FILE_CONTENT;
+            } else if (strcmp(_tmp78_, "SELinuxSecurityContextUnknown") == 0) {
+                _ecode = DBUS_GERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN;
+            } else if (strcmp(_tmp78_, "RemoteException") == 0) {
+                _ecode = DBUS_GERROR_REMOTE_EXCEPTION;
+            }
+        }
+        g_set_error(error, _edomain, _ecode, "%s", _dbus_error.message);
+        dbus_error_free(&_dbus_error);
+        return;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "")) {
+        g_set_error(error, DBUS_GERROR, DBUS_GERROR_INVALID_SIGNATURE, "Invalid signature, expected \"%s\", got \"%s\"", "", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    dbus_message_unref(_reply);
+}
+
+
+static gchar* dock_item_dbus_interface_dbus_proxy_get_desktop_file(DockItemDBusInterface* self)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter, _subiter;
+    const char* _tmp79_;
+    const char* _tmp80_;
+    gchar* _result;
+    const char* _tmp81_;
+    if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
+        return NULL;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp79_ = "net.launchpad.DockItem";
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp79_);
+    _tmp80_ = "DesktopFile";
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp80_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        g_critical("file %s: line %d: uncaught error: %s (%s)", __FILE__, __LINE__, _dbus_error.message, _dbus_error.name);
+        dbus_error_free(&_dbus_error);
+        return NULL;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "v")) {
+        g_critical("file %s: line %d: Invalid signature, expected \"%s\", got \"%s\"", __FILE__, __LINE__, "v", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    dbus_message_iter_recurse(&_iter, &_subiter);
+    if (strcmp(dbus_message_iter_get_signature(&_subiter), "s")) {
+        g_critical("file %s: line %d: Invalid signature, expected \"%s\", got \"%s\"", __FILE__, __LINE__, "s", dbus_message_iter_get_signature(&_subiter));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_get_basic(&_subiter, &_tmp81_);
+    dbus_message_iter_next(&_subiter);
+    _result = g_strdup(_tmp81_);
+    dbus_message_unref(_reply);
+    return _result;
+}
+
+
+static gchar* dock_item_dbus_interface_dbus_proxy_get_uri(DockItemDBusInterface* self)
+{
+    DBusError _dbus_error;
+    DBusGConnection* _connection;
+    DBusMessage* _message, *_reply;
+    DBusMessageIter _iter, _subiter;
+    const char* _tmp82_;
+    const char* _tmp83_;
+    gchar* _result;
+    const char* _tmp84_;
+    if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
+        return NULL;
+    }
+    _message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
+    dbus_message_iter_init_append(_message, &_iter);
+    _tmp82_ = "net.launchpad.DockItem";
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp82_);
+    _tmp83_ = "Uri";
+    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp83_);
+    g_object_get(self, "connection", &_connection, NULL);
+    dbus_error_init(&_dbus_error);
+    _reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), _message, -1, &_dbus_error);
+    dbus_g_connection_unref(_connection);
+    dbus_message_unref(_message);
+    if (dbus_error_is_set(&_dbus_error)) {
+        g_critical("file %s: line %d: uncaught error: %s (%s)", __FILE__, __LINE__, _dbus_error.message, _dbus_error.name);
+        dbus_error_free(&_dbus_error);
+        return NULL;
+    }
+    if (strcmp(dbus_message_get_signature(_reply), "v")) {
+        g_critical("file %s: line %d: Invalid signature, expected \"%s\", got \"%s\"", __FILE__, __LINE__, "v", dbus_message_get_signature(_reply));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_init(_reply, &_iter);
+    dbus_message_iter_recurse(&_iter, &_subiter);
+    if (strcmp(dbus_message_iter_get_signature(&_subiter), "s")) {
+        g_critical("file %s: line %d: Invalid signature, expected \"%s\", got \"%s\"", __FILE__, __LINE__, "s", dbus_message_iter_get_signature(&_subiter));
+        dbus_message_unref(_reply);
+        return NULL;
+    }
+    dbus_message_iter_get_basic(&_subiter, &_tmp84_);
+    dbus_message_iter_next(&_subiter);
+    _result = g_strdup(_tmp84_);
+    dbus_message_unref(_reply);
+    return _result;
+}
+
+
+static void dock_item_dbus_interface_dbus_proxy_dock_item_dbus_interface__interface_init(DockItemDBusInterfaceIface* iface)
+{
+    iface->add_menu_item = dock_item_dbus_interface_dbus_proxy_add_menu_item;
+    iface->remove_menu_item = dock_item_dbus_interface_dbus_proxy_remove_menu_item;
+    iface->update_dock_item = dock_item_dbus_interface_dbus_proxy_update_dock_item;
+    iface->get_desktop_file = dock_item_dbus_interface_dbus_proxy_get_desktop_file;
+    iface->get_uri = dock_item_dbus_interface_dbus_proxy_get_uri;
+}
+
+
+static void _vala_dock_item_dbus_interface_dbus_proxy_get_property(GObject* object, guint property_id, GValue* value, GParamSpec* pspec)
+{
+}
+
+
+static void _vala_dock_item_dbus_interface_dbus_proxy_set_property(GObject* object, guint property_id, const GValue* value, GParamSpec* pspec)
+{
+}
+
+
+TaskManagerDispatcher* task_manager_dispatcher_construct(GType object_type, TaskManager* manager)
+{
+    TaskManagerDispatcher* self = NULL;
+    DBusGConnection* _tmp0_ = NULL;
+    DBusGConnection* conn;
+    gchar* _tmp1_;
+    gchar* obj_path;
+    GError* _inner_error_ = NULL;
+    g_return_val_if_fail(manager != NULL, NULL);
+    self = (TaskManagerDispatcher*) g_object_new(object_type, "manager", manager, NULL);
+    _tmp0_ = dbus_g_bus_get(DBUS_BUS_SESSION, &_inner_error_);
+    conn = _tmp0_;
+    if (_inner_error_ != NULL) {
+        g_critical("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string(_inner_error_->domain), _inner_error_->code);
+        g_clear_error(&_inner_error_);
+        return NULL;
+    }
+    _tmp1_ = g_strdup("/net/launchpad/DockManager");
+    obj_path = _tmp1_;
+    _vala_dbus_register_object(dbus_g_connection_get_connection(conn), obj_path, (GObject*) self);
+    _g_free0(obj_path);
+    _dbus_g_connection_unref0(conn);
+    return self;
+}
+
+
+TaskManagerDispatcher* task_manager_dispatcher_new(TaskManager* manager)
+{
+    return task_manager_dispatcher_construct(TYPE_TASK_MANAGER_DISPATCHER, manager);
+}
+
+
+static char** task_manager_dispatcher_list_to_object_path_array(GSList* list, int* result_length1)
+{
+    char** result = NULL;
+    guint _tmp0_;
+    char** _tmp1_ = NULL;
+    char** _result_;
+    gint _result__length1;
+    gint __result__size_;
+    gint i;
+    char** _tmp8_;
+    _tmp0_ = g_slist_length(list);
+    _tmp1_ = g_new0(char*, _tmp0_ + 1);
+    _result_ = _tmp1_;
+    _result__length1 = _tmp0_;
+    __result__size_ = _tmp0_;
+    i = 0;
+    {
+        GSList* icon_collection;
+        GSList* icon_it;
+        icon_collection = list;
+        for (icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
+            TaskIcon* icon;
+            icon = (TaskIcon*) icon_it->data;
+            {
+                TaskIconDispatcher* dispatcher = NULL;
+                GObject* _tmp2_ = NULL;
+                GObject* _tmp3_;
+                gint _tmp4_;
+                const gchar* _tmp5_ = NULL;
+                char* _tmp6_ = NULL;
+                char* _tmp7_;
+                _tmp2_ = task_icon_get_dbus_dispatcher(icon);
+                _tmp3_ = _tmp2_;
+                dispatcher = IS_TASK_ICON_DISPATCHER(_tmp3_) ? ((TaskIconDispatcher*) _tmp3_) : NULL;
+                _tmp4_ = i;
+                i = _tmp4_ + 1;
+                _tmp5_ = task_icon_dispatcher_get_object_path(dispatcher);
+                _tmp6_ = g_strdup(_tmp5_);
+                _tmp7_ = _tmp6_;
+                _g_free0(_result_[_tmp4_]);
+                _result_[_tmp4_] = _tmp7_;
+            }
+        }
+    }
+    _tmp8_ = _result_;
+    if (result_length1) {
+        *result_length1 = _result__length1;
+    }
+    result = _tmp8_;
+    return result;
+}
+
+
+static gchar** task_manager_dispatcher_real_get_capabilities(DockManagerDBusInterface* base, int* result_length1, GError** error)
+{
+    TaskManagerDispatcher* self;
+    gchar** result = NULL;
+    gchar* _tmp0_;
+    gchar* _tmp1_;
+    gchar* _tmp2_;
+    gchar* _tmp3_;
+    gchar* _tmp4_;
+    gchar* _tmp5_;
+    gchar* _tmp6_;
+    gchar* _tmp7_;
+    gchar* _tmp8_;
+    gchar** _tmp9_ = NULL;
+    gchar** capabilities;
+    gint capabilities_length1;
+    gint _capabilities_size_;
+    gchar** _tmp10_;
+    self = (TaskManagerDispatcher*) base;
+    _tmp0_ = g_strdup("dock-item-badge");
+    _tmp1_ = g_strdup("dock-item-message");
+    _tmp2_ = g_strdup("dock-item-progress");
+    _tmp3_ = g_strdup("dock-item-icon-file");
+    _tmp4_ = g_strdup("menu-item-container-title");
+    _tmp5_ = g_strdup("menu-item-with-label");
+    _tmp6_ = g_strdup("menu-item-icon-name");
+    _tmp7_ = g_strdup("menu-item-icon-file");
+    _tmp8_ = g_strdup("x-awn-set-visibility");
+    _tmp9_ = g_new0(gchar*, 9 + 1);
+    _tmp9_[0] = _tmp0_;
+    _tmp9_[1] = _tmp1_;
+    _tmp9_[2] = _tmp2_;
+    _tmp9_[3] = _tmp3_;
+    _tmp9_[4] = _tmp4_;
+    _tmp9_[5] = _tmp5_;
+    _tmp9_[6] = _tmp6_;
+    _tmp9_[7] = _tmp7_;
+    _tmp9_[8] = _tmp8_;
+    capabilities = _tmp9_;
+    capabilities_length1 = 9;
+    _capabilities_size_ = 9;
+    _tmp10_ = capabilities;
+    if (result_length1) {
+        *result_length1 = capabilities_length1;
+    }
+    result = _tmp10_;
+    return result;
+}
+
+
+static char** task_manager_dispatcher_real_get_items(DockManagerDBusInterface* base, int* result_length1, GError** error)
+{
+    TaskManagerDispatcher* self;
+    char** result = NULL;
+    GSList* _tmp0_ = NULL;
+    gint _tmp1_;
+    char** _tmp2_ = NULL;
+    char** _tmp3_;
+    self = (TaskManagerDispatcher*) base;
+    _tmp0_ = task_manager_get_icons(self->priv->_manager);
+    _tmp2_ = task_manager_dispatcher_list_to_object_path_array(_tmp0_, &_tmp1_);
+    _tmp3_ = _tmp2_;
+    if (result_length1) {
+        *result_length1 = _tmp1_;
+    }
+    result = _tmp3_;
+    return result;
+}
+
+
+static char** task_manager_dispatcher_real_get_items_by_name(DockManagerDBusInterface* base, const gchar* name, int* result_length1, GError** error)
+{
+    TaskManagerDispatcher* self;
+    char** result = NULL;
+    GSList* _tmp0_ = NULL;
+    GSList* icons;
+    GSList* matches;
+    gint _tmp4_;
+    char** _tmp5_ = NULL;
+    char** _tmp6_;
+    self = (TaskManagerDispatcher*) base;
+    g_return_val_if_fail(name != NULL, NULL);
+    _tmp0_ = task_manager_get_icons(self->priv->_manager);
+    icons = _tmp0_;
+    matches = NULL;
+    {
+        GSList* icon_collection;
+        GSList* icon_it;
+        icon_collection = icons;
+        for (icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
+            TaskIcon* icon;
+            icon = (TaskIcon*) icon_it->data;
+            {
+                GSList* _tmp1_ = NULL;
+                _tmp1_ = task_icon_get_items(icon);
+                {
+                    GSList* item_collection;
+                    GSList* item_it;
+                    item_collection = _tmp1_;
+                    for (item_it = item_collection; item_it != NULL; item_it = item_it->next) {
+                        TaskItem* item;
+                        item = (TaskItem*) item_it->data;
+                        {
+                            TaskItem* _tmp2_;
+                            TaskWindow* window;
+                            _tmp2_ = item;
+                            window = TASK_IS_WINDOW(_tmp2_) ? ((TaskWindow*) _tmp2_) : NULL;
+                            if (window != NULL) {
+                                gboolean _tmp3_;
+                                _tmp3_ = task_window_matches_wmclass(window, name);
+                                if (_tmp3_) {
+                                    matches = g_slist_append(matches, icon);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    _tmp5_ = task_manager_dispatcher_list_to_object_path_array(matches, &_tmp4_);
+    _tmp6_ = _tmp5_;
+    if (result_length1) {
+        *result_length1 = _tmp4_;
+    }
+    result = _tmp6_;
+    _g_slist_free0(matches);
+    return result;
+}
+
+
+static char** task_manager_dispatcher_real_get_items_by_desktop_file(DockManagerDBusInterface* base, const gchar* desktop_file, int* result_length1, GError** error)
+{
+    TaskManagerDispatcher* self;
+    char** result = NULL;
+    GSList* _tmp0_ = NULL;
+    GSList* icons;
+    GSList* matches;
+    gint _tmp5_;
+    char** _tmp6_ = NULL;
+    char** _tmp7_;
+    self = (TaskManagerDispatcher*) base;
+    g_return_val_if_fail(desktop_file != NULL, NULL);
+    _tmp0_ = task_manager_get_icons(self->priv->_manager);
+    icons = _tmp0_;
+    matches = NULL;
+    {
+        GSList* icon_collection;
+        GSList* icon_it;
+        icon_collection = icons;
+        for (icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
+            TaskIcon* icon;
+            icon = (TaskIcon*) icon_it->data;
+            {
+                TaskItem* _tmp1_ = NULL;
+                TaskItem* _tmp2_;
+                TaskLauncher* launcher;
+                _tmp1_ = task_icon_get_launcher(icon);
+                _tmp2_ = _tmp1_;
+                launcher = TASK_IS_LAUNCHER(_tmp2_) ? ((TaskLauncher*) _tmp2_) : NULL;
+                if (launcher != NULL) {
+                    const gchar* _tmp3_ = NULL;
+                    gboolean _tmp4_;
+                    _tmp3_ = task_launcher_get_desktop_path(launcher);
+                    _tmp4_ = g_str_has_suffix(_tmp3_, desktop_file);
+                    if (_tmp4_) {
+                        matches = g_slist_append(matches, icon);
+                    }
+                }
+            }
+        }
+    }
+    _tmp6_ = task_manager_dispatcher_list_to_object_path_array(matches, &_tmp5_);
+    _tmp7_ = _tmp6_;
+    if (result_length1) {
+        *result_length1 = _tmp5_;
+    }
+    result = _tmp7_;
+    _g_slist_free0(matches);
+    return result;
+}
+
+
+static char** task_manager_dispatcher_real_get_items_by_pid(DockManagerDBusInterface* base, gint pid, int* result_length1, GError** error)
+{
+    TaskManagerDispatcher* self;
+    char** result = NULL;
+    GSList* _tmp0_ = NULL;
+    GSList* icons;
+    GSList* matches;
+    gint _tmp4_;
+    char** _tmp5_ = NULL;
+    char** _tmp6_;
+    self = (TaskManagerDispatcher*) base;
+    _tmp0_ = task_manager_get_icons(self->priv->_manager);
+    icons = _tmp0_;
+    matches = NULL;
+    {
+        GSList* icon_collection;
+        GSList* icon_it;
+        icon_collection = icons;
+        for (icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
+            TaskIcon* icon;
+            icon = (TaskIcon*) icon_it->data;
+            {
+                GSList* _tmp1_ = NULL;
+                _tmp1_ = task_icon_get_items(icon);
+                {
+                    GSList* item_collection;
+                    GSList* item_it;
+                    item_collection = _tmp1_;
+                    for (item_it = item_collection; item_it != NULL; item_it = item_it->next) {
+                        TaskItem* item;
+                        item = (TaskItem*) item_it->data;
+                        {
+                            if (TASK_IS_WINDOW(item)) {
+                                TaskItem* _tmp2_;
+                                TaskWindow* window;
+                                gint _tmp3_;
+                                _tmp2_ = item;
+                                window = TASK_IS_WINDOW(_tmp2_) ? ((TaskWindow*) _tmp2_) : NULL;
+                                _tmp3_ = task_window_get_pid(window);
+                                if (_tmp3_ == pid) {
+                                    matches = g_slist_append(matches, icon);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    _tmp5_ = task_manager_dispatcher_list_to_object_path_array(matches, &_tmp4_);
+    _tmp6_ = _tmp5_;
+    if (result_length1) {
+        *result_length1 = _tmp4_;
+    }
+    result = _tmp6_;
+    _g_slist_free0(matches);
+    return result;
+}
+
+
+static char* task_manager_dispatcher_real_get_item_by_xid(DockManagerDBusInterface* base, gint64 xid, GError** error)
+{
+    TaskManagerDispatcher* self;
+    char* result = NULL;
+    TaskIcon* _tmp0_ = NULL;
+    TaskIcon* icon;
+    self = (TaskManagerDispatcher*) base;
+    _tmp0_ = task_manager_get_icon_by_xid(self->priv->_manager, xid);
+    icon = _tmp0_;
+    if (icon != NULL) {
+        TaskIconDispatcher* dispatcher = NULL;
+        GObject* _tmp1_ = NULL;
+        GObject* _tmp2_;
+        const gchar* _tmp3_ = NULL;
+        char* _tmp4_ = NULL;
+        _tmp1_ = task_icon_get_dbus_dispatcher(icon);
+        _tmp2_ = _tmp1_;
+        dispatcher = IS_TASK_ICON_DISPATCHER(_tmp2_) ? ((TaskIconDispatcher*) _tmp2_) : NULL;
+        _tmp3_ = task_icon_dispatcher_get_object_path(dispatcher);
+        _tmp4_ = g_strdup(_tmp3_);
+        result = _tmp4_;
+        return result;
+    }
+    result = NULL;
+    return result;
+}
+
+
+static void _g_free0_(gpointer var)
+{
+    var = (g_free(var), NULL);
+}
+
+
+static void _vala_GValue_free(GValue* self)
+{
+    g_value_unset(self);
+    g_free(self);
+}
+
+
+static void __vala_GValue_free0_(gpointer var)
+{
+    (var == NULL) ? NULL : (var = (_vala_GValue_free(var), NULL));
+}
+
+
+static void task_manager_dispatcher_real_awn_set_visibility(DockManagerDBusInterface* base, const gchar* win_name, gboolean visible, GError** error)
+{
+    TaskManagerDispatcher* self;
+    GHashTable* hints = NULL;
+    GHashTable* _tmp0_ = NULL;
+    gchar* _tmp1_;
+    GValue* _tmp2_ = NULL;
+    GValue _tmp3_ = {0};
+    GError* _inner_error_ = NULL;
+    self = (TaskManagerDispatcher*) base;
+    g_return_if_fail(win_name != NULL);
+    _tmp0_ = g_hash_table_new_full(g_str_hash, g_str_equal, _g_free0_, __vala_GValue_free0_);
+    _g_hash_table_unref0(hints);
+    hints = _tmp0_;
+    _tmp1_ = g_strdup("visible");
+    _tmp2_ = g_new0(GValue, 1);
+    g_value_init(_tmp2_, G_TYPE_BOOLEAN);
+    g_value_set_boolean(_tmp2_, visible);
+    g_hash_table_insert(hints, _tmp1_, _tmp2_);
+    g_value_init(&_tmp3_, G_TYPE_STRING);
+    g_value_set_string(&_tmp3_, win_name);
+    task_manager_update(self->priv->_manager, &_tmp3_, hints, &_inner_error_);
+    G_IS_VALUE(&_tmp3_) ? (g_value_unset(&_tmp3_), NULL) : NULL;
+    if (_inner_error_ != NULL) {
+        if (_inner_error_->domain == DBUS_GERROR) {
+            g_propagate_error(error, _inner_error_);
+            _g_hash_table_unref0(hints);
+            return;
+        } else {
+            _g_hash_table_unref0(hints);
+            g_critical("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string(_inner_error_->domain), _inner_error_->code);
+            g_clear_error(&_inner_error_);
+            return;
+        }
+    }
+    _g_hash_table_unref0(hints);
+}
+
+
+static char* task_manager_dispatcher_real_awn_register_proxy_item(DockManagerDBusInterface* base, const gchar* desktop_file, const gchar* uri, GError** error)
+{
+    TaskManagerDispatcher* self;
+    char* result = NULL;
+    char* _tmp0_ = NULL;
+    self = (TaskManagerDispatcher*) base;
+    g_return_val_if_fail(desktop_file != NULL, NULL);
+    g_return_val_if_fail(uri != NULL, NULL);
+    _tmp0_ = g_strdup("/not/yet/implemented");
+    result = _tmp0_;
+    return result;
+}
+
+
+TaskManager* task_manager_dispatcher_get_manager(TaskManagerDispatcher* self)
+{
+    TaskManager* result;
+    g_return_val_if_fail(self != NULL, NULL);
+    result = self->priv->_manager;
+    return result;
+}
+
+
+static gpointer _g_object_ref0(gpointer self)
+{
+    return self ? g_object_ref(self) : NULL;
+}
+
+
+static void task_manager_dispatcher_set_manager(TaskManagerDispatcher* self, TaskManager* value)
+{
+    TaskManager* _tmp0_;
+    g_return_if_fail(self != NULL);
+    _tmp0_ = _g_object_ref0(value);
+    _g_object_unref0(self->priv->_manager);
+    self->priv->_manager = _tmp0_;
+    g_object_notify((GObject*) self, "manager");
+}
+
+
+static void task_manager_dispatcher_class_init(TaskManagerDispatcherClass* klass)
+{
+    task_manager_dispatcher_parent_class = g_type_class_peek_parent(klass);
+    g_type_class_add_private(klass, sizeof(TaskManagerDispatcherPrivate));
+    G_OBJECT_CLASS(klass)->get_property = _vala_task_manager_dispatcher_get_property;
+    G_OBJECT_CLASS(klass)->set_property = _vala_task_manager_dispatcher_set_property;
+    G_OBJECT_CLASS(klass)->finalize = task_manager_dispatcher_finalize;
+    g_object_class_install_property(G_OBJECT_CLASS(klass), TASK_MANAGER_DISPATCHER_MANAGER, g_param_spec_object("manager", "manager", "manager", TASK_TYPE_MANAGER, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+}
+
+
+static void task_manager_dispatcher_dock_manager_dbus_interface_interface_init(DockManagerDBusInterfaceIface* iface)
+{
+    task_manager_dispatcher_dock_manager_dbus_interface_parent_iface = g_type_interface_peek_parent(iface);
+    iface->get_capabilities = (gchar** (*)(DockManagerDBusInterface* , int* , GError**)) task_manager_dispatcher_real_get_capabilities;
+    iface->get_items = (char** (*)(DockManagerDBusInterface* , int* , GError**)) task_manager_dispatcher_real_get_items;
+    iface->get_items_by_name = (char** (*)(DockManagerDBusInterface* , const gchar* , int* , GError**)) task_manager_dispatcher_real_get_items_by_name;
+    iface->get_items_by_desktop_file = (char** (*)(DockManagerDBusInterface* , const gchar* , int* , GError**)) task_manager_dispatcher_real_get_items_by_desktop_file;
+    iface->get_items_by_pid = (char** (*)(DockManagerDBusInterface* , gint , int* , GError**)) task_manager_dispatcher_real_get_items_by_pid;
+    iface->get_item_by_xid = (char * (*)(DockManagerDBusInterface* , gint64 , GError**)) task_manager_dispatcher_real_get_item_by_xid;
+    iface->awn_set_visibility = (void (*)(DockManagerDBusInterface* , const gchar* , gboolean , GError**)) task_manager_dispatcher_real_awn_set_visibility;
+    iface->awn_register_proxy_item = (char * (*)(DockManagerDBusInterface* , const gchar* , const gchar* , GError**)) task_manager_dispatcher_real_awn_register_proxy_item;
+}
+
+
+static void task_manager_dispatcher_instance_init(TaskManagerDispatcher* self)
+{
+    self->priv = TASK_MANAGER_DISPATCHER_GET_PRIVATE(self);
+}
+
+
+static void task_manager_dispatcher_finalize(GObject* obj)
+{
+    TaskManagerDispatcher* self;
+    self = TASK_MANAGER_DISPATCHER(obj);
+    _g_object_unref0(self->priv->_manager);
+    G_OBJECT_CLASS(task_manager_dispatcher_parent_class)->finalize(obj);
+}
+
+
+void _task_manager_dispatcher_dbus_unregister(DBusConnection* connection, void* _user_data_)
+{
+}
+
+
+static DBusHandlerResult _dbus_task_manager_dispatcher_introspect(TaskManagerDispatcher* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessage* reply;
+    DBusMessageIter iter;
+    GString* xml_data;
+    char** children;
+    int i;
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    xml_data = g_string_new("<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n");
+    g_string_append(xml_data, "<node>\n<interface name=\"org.freedesktop.DBus.Introspectable\">\n  <method name=\"Introspect\">\n    <arg name=\"data\" direction=\"out\" type=\"s\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.DBus.Properties\">\n  <method name=\"Get\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"out\" type=\"v\"/>\n  </method>\n  <method name=\"Set\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"in\" type=\"v\"/>\n  </method>\n  <method name=\"GetAll\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"props\" direction=\"out\" type=\"a{sv}\"/>\n  </method>\n</interface>\n<interface name=\"net.launchpad.DockManager\">\n  <method name=\"GetCapabilities\">\n    <arg name=\"result\" type=\"as\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItems\">\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByName\">\n    <arg name=\"name\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByDesktopFile\">\n    <arg name=\"desktop_file\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemsByPid\">\n    <arg name=\"pid\" type=\"i\" direction=\"in\"/>\n    <arg name=\"result\" type=\"ao\" direction=\"out\"/>\n  </method>\n  <method name=\"GetItemByXid\">\n    <arg name=\"xid\" type=\"x\" direction=\"in\"/>\n    <arg name=\"result\" type=\"o\" direction=\"out\"/>\n  </method>\n  <method name=\"AwnSetVisibility\">\n    <arg name=\"win_name\" type=\"s\" direction=\"in\"/>\n    <arg name=\"visible\" type=\"b\" direction=\"in\"/>\n  </method>\n  <method name=\"AwnRegisterProxyItem\">\n    <arg name=\"desktop_file\" type=\"s\" direction=\"in\"/>\n    <arg name=\"uri\" type=\"s\" direction=\"in\"/>\n    <arg name=\"result\" type=\"o\" direction=\"out\"/>\n  </method>\n  <signal name=\"ItemAdded\">\n    <arg name=\"path\" type=\"o\"/>\n  </signal>\n  <signal name=\"ItemRemoved\">\n    <arg name=\"path\" type=\"o\"/>\n  </signal>\n</interface>\n");
+    dbus_connection_list_registered(connection, g_object_get_data((GObject*) self, "dbus_object_path"), &children);
+    for (i = 0; children[i]; i++) {
+        g_string_append_printf(xml_data, "<node name=\"%s\"/>\n", children[i]);
+    }
+    dbus_free_string_array(children);
+    g_string_append(xml_data, "</node>\n");
+    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &xml_data->str);
+    g_string_free(xml_data, TRUE);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+}
+
+
+DBusHandlerResult task_manager_dispatcher_dbus_message(DBusConnection* connection, DBusMessage* message, void* object)
+{
+    DBusHandlerResult result;
+    result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    if (dbus_message_is_method_call(message, "org.freedesktop.DBus.Introspectable", "Introspect")) {
+        result = _dbus_task_manager_dispatcher_introspect(object, connection, message);
+    }
+    if (result == DBUS_HANDLER_RESULT_HANDLED) {
+        return result;
+    } else if (dock_manager_dbus_interface_dbus_message(connection, message, object) == DBUS_HANDLER_RESULT_HANDLED) {
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+}
+
+
+void task_manager_dispatcher_dbus_register_object(DBusConnection* connection, const char* path, void* object)
+{
+    if (!g_object_get_data(object, "dbus_object_path")) {
+        g_object_set_data(object, "dbus_object_path", g_strdup(path));
+        dbus_connection_register_object_path(connection, path, &_task_manager_dispatcher_dbus_path_vtable, object);
+        g_object_weak_ref(object, _vala_dbus_unregister_object, connection);
+    }
+    dock_manager_dbus_interface_dbus_register_object(connection, path, object);
+}
+
+
+GType task_manager_dispatcher_get_type(void)
+{
+    static volatile gsize task_manager_dispatcher_type_id__volatile = 0;
+    if (g_once_init_enter(&task_manager_dispatcher_type_id__volatile)) {
+        static const GTypeInfo g_define_type_info = { sizeof(TaskManagerDispatcherClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) task_manager_dispatcher_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof(TaskManagerDispatcher), 0, (GInstanceInitFunc) task_manager_dispatcher_instance_init, NULL };
+        static const GInterfaceInfo dock_manager_dbus_interface_info = { (GInterfaceInitFunc) task_manager_dispatcher_dock_manager_dbus_interface_interface_init, (GInterfaceFinalizeFunc) NULL, NULL};
+        GType task_manager_dispatcher_type_id;
+        task_manager_dispatcher_type_id = g_type_register_static(G_TYPE_OBJECT, "TaskManagerDispatcher", &g_define_type_info, 0);
+        g_type_add_interface_static(task_manager_dispatcher_type_id, TYPE_DOCK_MANAGER_DBUS_INTERFACE, &dock_manager_dbus_interface_info);
+        g_type_set_qdata(task_manager_dispatcher_type_id, g_quark_from_static_string("DBusObjectVTable"), (void*)(&_task_manager_dispatcher_dbus_vtable));
+        g_once_init_leave(&task_manager_dispatcher_type_id__volatile, task_manager_dispatcher_type_id);
+    }
+    return task_manager_dispatcher_type_id__volatile;
+}
+
+
+static void _vala_task_manager_dispatcher_get_property(GObject* object, guint property_id, GValue* value, GParamSpec* pspec)
+{
+    TaskManagerDispatcher* self;
+    self = TASK_MANAGER_DISPATCHER(object);
+    switch (property_id) {
+    case TASK_MANAGER_DISPATCHER_MANAGER:
+        g_value_set_object(value, task_manager_dispatcher_get_manager(self));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+        break;
+    }
+}
+
+
+static void _vala_task_manager_dispatcher_set_property(GObject* object, guint property_id, const GValue* value, GParamSpec* pspec)
+{
+    TaskManagerDispatcher* self;
+    self = TASK_MANAGER_DISPATCHER(object);
+    switch (property_id) {
+    case TASK_MANAGER_DISPATCHER_MANAGER:
+        task_manager_dispatcher_set_manager(self, g_value_get_object(value));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+        break;
+    }
+}
+
+
+TaskIconDispatcher* task_icon_dispatcher_construct(GType object_type, TaskIcon* icon)
+{
+    TaskIconDispatcher* self = NULL;
+    DBusGConnection* _tmp0_ = NULL;
+    DBusGConnection* conn;
+    gint _tmp1_;
+    gchar* _tmp2_ = NULL;
+    gchar* _tmp3_;
+    GError* _inner_error_ = NULL;
+    g_return_val_if_fail(icon != NULL, NULL);
+    self = (TaskIconDispatcher*) g_object_new(object_type, NULL);
+    self->priv->icon = icon;
+    _tmp0_ = dbus_g_bus_get(DBUS_BUS_SESSION, &_inner_error_);
+    conn = _tmp0_;
+    if (_inner_error_ != NULL) {
+        g_critical("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string(_inner_error_->domain), _inner_error_->code);
+        g_clear_error(&_inner_error_);
+        return NULL;
+    }
+    _tmp1_ = task_icon_dispatcher_counter;
+    task_icon_dispatcher_counter = _tmp1_ + 1;
+    _tmp2_ = g_strdup_printf("/net/launchpad/DockManager/Item%d", _tmp1_);
+    _tmp3_ = _tmp2_;
+    task_icon_dispatcher_set_object_path(self, _tmp3_);
+    _g_free0(_tmp3_);
+    _vala_dbus_register_object(dbus_g_connection_get_connection(conn), self->priv->_object_path, (GObject*) self);
+    task_icon_dispatcher_emit_item_added(self);
+    _dbus_g_connection_unref0(conn);
+    return self;
+}
+
+
+TaskIconDispatcher* task_icon_dispatcher_new(TaskIcon* icon)
+{
+    return task_icon_dispatcher_construct(TYPE_TASK_ICON_DISPATCHER, icon);
+}
+
+
+static TaskManagerDispatcher* task_icon_dispatcher_get_manager_proxy(TaskIconDispatcher* self)
+{
+    TaskManagerDispatcher* result = NULL;
+    TaskManagerDispatcher* proxy = NULL;
+    AwnApplet* _tmp0_ = NULL;
+    AwnApplet* _tmp1_;
+    TaskManager* manager;
+    GObject* _tmp2_ = NULL;
+    GObject* _tmp3_;
+    g_return_val_if_fail(self != NULL, NULL);
+    _tmp0_ = task_icon_get_applet(self->priv->icon);
+    _tmp1_ = _tmp0_;
+    manager = TASK_IS_MANAGER(_tmp1_) ? ((TaskManager*) _tmp1_) : NULL;
+    _tmp2_ = task_manager_get_dbus_dispatcher(manager);
+    _tmp3_ = _tmp2_;
+    proxy = IS_TASK_MANAGER_DISPATCHER(_tmp3_) ? ((TaskManagerDispatcher*) _tmp3_) : NULL;
+    result = proxy;
+    return result;
+}
+
+
+static void task_icon_dispatcher_emit_item_added(TaskIconDispatcher* self)
+{
+    TaskManagerDispatcher* _tmp0_ = NULL;
+    TaskManagerDispatcher* proxy;
+    g_return_if_fail(self != NULL);
+    _tmp0_ = task_icon_dispatcher_get_manager_proxy(self);
+    proxy = _tmp0_;
+    if (proxy != NULL) {
+        char* _tmp1_ = NULL;
+        char* _tmp2_;
+        _tmp1_ = g_strdup(self->priv->_object_path);
+        _tmp2_ = _tmp1_;
+        g_signal_emit_by_name((DockManagerDBusInterface*) proxy, "item-added", _tmp2_);
+        _g_free0(_tmp2_);
+    }
+}
+
+
+static Block1Data* block1_data_ref(Block1Data* _data1_)
+{
+    g_atomic_int_inc(&_data1_->_ref_count_);
+    return _data1_;
+}
+
+
+static void block1_data_unref(Block1Data* _data1_)
+{
+    if (g_atomic_int_dec_and_test(&_data1_->_ref_count_)) {
+        _g_object_unref0(_data1_->self);
+        g_slice_free(Block1Data, _data1_);
+    }
+}
+
+
+static void _lambda0_(GtkMenuItem* w, Block1Data* _data1_)
+{
+    TaskIconDispatcher* self;
+    self = _data1_->self;
+    g_return_if_fail(w != NULL);
+    g_signal_emit_by_name((DockItemDBusInterface*) self, "menu-item-activated", _data1_->id);
+}
+
+
+static void __lambda0__gtk_menu_item_activate(GtkMenuItem* _sender, gpointer self)
+{
+    _lambda0_(_sender, self);
+}
+
+
+static gint task_icon_dispatcher_real_add_menu_item(DockItemDBusInterface* base, GHashTable* menu_hints, GError** error)
+{
+    TaskIconDispatcher* self;
+    gint result = 0;
+    GtkImageMenuItem* item;
+    GtkImage* image;
+    gchar* group;
+    GHashTableIter iter = {0};
+    const gchar* key = NULL;
+    GValue* value = NULL;
+    GError* _inner_error_ = NULL;
+    self = (TaskIconDispatcher*) base;
+    g_return_val_if_fail(menu_hints != NULL, 0);
+    item = NULL;
+    image = NULL;
+    group = NULL;
+    g_hash_table_iter_init(&iter, menu_hints);
+    while (TRUE) {
+        gconstpointer _tmp0_ = NULL;
+        gconstpointer _tmp1_ = NULL;
+        gboolean _tmp2_;
+        _tmp2_ = g_hash_table_iter_next(&iter, &_tmp0_, &_tmp1_);
+        key = _tmp0_;
+        value = _tmp1_;
+        if (!_tmp2_) {
+            break;
+        }
+        if (g_strcmp0(key, "label") == 0) {
+            const gchar* _tmp3_ = NULL;
+            GtkImageMenuItem* _tmp4_ = NULL;
+            _tmp3_ = g_value_get_string(value);
+            _tmp4_ = (GtkImageMenuItem*) gtk_image_menu_item_new_with_label(_tmp3_);
+            _g_object_unref0(item);
+            item = g_object_ref_sink(_tmp4_);
+        } else {
+            if (g_strcmp0(key, "icon-name") == 0) {
+                const gchar* _tmp5_ = NULL;
+                GtkImage* _tmp6_ = NULL;
+                _tmp5_ = g_value_get_string(value);
+                _tmp6_ = (GtkImage*) gtk_image_new_from_icon_name(_tmp5_, GTK_ICON_SIZE_MENU);
+                _g_object_unref0(image);
+                image = g_object_ref_sink(_tmp6_);
+            } else {
+                if (g_strcmp0(key, "icon-file") == 0) {
+                    GdkPixbuf* pixbuf = NULL;
+                    gint w = 0;
+                    gint h = 0;
+                    gint _tmp7_;
+                    gint _tmp8_;
+                    const gchar* _tmp9_ = NULL;
+                    GdkPixbuf* _tmp10_ = NULL;
+                    GdkPixbuf* _tmp11_;
+                    GtkImage* _tmp12_ = NULL;
+                    gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &_tmp7_, &_tmp8_);
+                    w = _tmp7_;
+                    h = _tmp8_;
+                    _tmp9_ = g_value_get_string(value);
+                    _tmp10_ = gdk_pixbuf_new_from_file_at_size(_tmp9_, w, h, &_inner_error_);
+                    _tmp11_ = _tmp10_;
+                    if (_inner_error_ != NULL) {
+                        goto __catch0_g_error;
+                    }
+                    _g_object_unref0(pixbuf);
+                    pixbuf = _tmp11_;
+                    _tmp12_ = (GtkImage*) gtk_image_new_from_pixbuf(pixbuf);
+                    _g_object_unref0(image);
+                    image = g_object_ref_sink(_tmp12_);
+                    goto __finally0;
+__catch0_g_error: {
+                        GError* err;
+                        err = _inner_error_;
+                        _inner_error_ = NULL;
+                        g_warning("dock-manager-api.vala:316: %s", err->message);
+                        _g_error_free0(err);
+                    }
+__finally0:
+                    if (_inner_error_ != NULL) {
+                        if (_inner_error_->domain == DBUS_GERROR) {
+                            g_propagate_error(error, _inner_error_);
+                            _g_object_unref0(pixbuf);
+                            _g_free0(group);
+                            _g_object_unref0(image);
+                            _g_object_unref0(item);
+                            return 0;
+                        } else {
+                            _g_object_unref0(pixbuf);
+                            _g_free0(group);
+                            _g_object_unref0(image);
+                            _g_object_unref0(item);
+                            g_critical("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string(_inner_error_->domain), _inner_error_->code);
+                            g_clear_error(&_inner_error_);
+                            return 0;
+                        }
+                    }
+                    _g_object_unref0(pixbuf);
+                } else {
+                    if (g_strcmp0(key, "container-title") == 0) {
+                        const gchar* _tmp13_ = NULL;
+                        gchar* _tmp14_;
+                        _tmp13_ = g_value_get_string(value);
+                        _tmp14_ = g_strdup(_tmp13_);
+                        _g_free0(group);
+                        group = _tmp14_;
+                    } else {
+                        if (g_strcmp0(key, "uri") == 0) {
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (item != NULL) {
+        Block1Data* _data1_;
+        gint _tmp15_;
+        _data1_ = g_slice_new0(Block1Data);
+        _data1_->_ref_count_ = 1;
+        _data1_->self = g_object_ref(self);
+        if (image != NULL) {
+            gtk_image_menu_item_set_image(item, (GtkWidget*) image);
+        }
+        _tmp15_ = task_icon_add_menu_item(self->priv->icon, (GtkMenuItem*) item, group);
+        _data1_->id = _tmp15_;
+        gtk_widget_show((GtkWidget*) item);
+        g_signal_connect_data((GtkMenuItem*) item, "activate", (GCallback) __lambda0__gtk_menu_item_activate, block1_data_ref(_data1_), (GClosureNotify) block1_data_unref, 0);
+        result = _data1_->id;
+        block1_data_unref(_data1_);
+        _data1_ = NULL;
+        _g_free0(group);
+        _g_object_unref0(image);
+        _g_object_unref0(item);
+        return result;
+    }
+    result = 0;
+    _g_free0(group);
+    _g_object_unref0(image);
+    _g_object_unref0(item);
+    return result;
+}
+
+
+static void task_icon_dispatcher_real_remove_menu_item(DockItemDBusInterface* base, gint id, GError** error)
+{
+    TaskIconDispatcher* self;
+    self = (TaskIconDispatcher*) base;
+    task_icon_remove_menu_item(self->priv->icon, id);
+}
+
+
+static void task_icon_dispatcher_real_update_dock_item(DockItemDBusInterface* base, GHashTable* hints, GError** error)
+{
+    TaskIconDispatcher* self;
+    GHashTableIter iter = {0};
+    const gchar* key = NULL;
+    GValue* value = NULL;
+    self = (TaskIconDispatcher*) base;
+    g_return_if_fail(hints != NULL);
+    g_hash_table_iter_init(&iter, hints);
+    while (TRUE) {
+        gconstpointer _tmp0_ = NULL;
+        gconstpointer _tmp1_ = NULL;
+        gboolean _tmp2_;
+        GSList* _tmp3_ = NULL;
+        GSList* items;
+        _tmp2_ = g_hash_table_iter_next(&iter, &_tmp0_, &_tmp1_);
+        key = _tmp0_;
+        value = _tmp1_;
+        if (!_tmp2_) {
+            break;
+        }
+        _tmp3_ = task_icon_get_items(self->priv->icon);
+        items = _tmp3_;
+        {
+            GSList* item_collection;
+            GSList* item_it;
+            item_collection = items;
+            for (item_it = item_collection; item_it != NULL; item_it = item_it->next) {
+                TaskItem* item;
+                item = (TaskItem*) item_it->data;
+                {
+                    if (TASK_IS_LAUNCHER(item)) {
+                        continue;
+                    }
+                    task_item_update_overlay(item, key, value);
+                }
+            }
+        }
+    }
+}
+
+
+const gchar* task_icon_dispatcher_get_object_path(TaskIconDispatcher* self)
+{
+    const gchar* result;
+    g_return_val_if_fail(self != NULL, NULL);
+    result = self->priv->_object_path;
+    return result;
+}
+
+
+void task_icon_dispatcher_set_object_path(TaskIconDispatcher* self, const gchar* value)
+{
+    gchar* _tmp0_;
+    g_return_if_fail(self != NULL);
+    _tmp0_ = g_strdup(value);
+    _g_free0(self->priv->_object_path);
+    self->priv->_object_path = _tmp0_;
+    g_object_notify((GObject*) self, "object-path");
+}
+
+
+static gchar* string_replace(const gchar* self, const gchar* old, const gchar* replacement)
+{
+    gchar* result = NULL;
+    gchar* _tmp0_ = NULL;
+    gchar* _tmp1_;
+    GRegex* _tmp2_ = NULL;
+    GRegex* _tmp3_;
+    GRegex* regex;
+    gchar* _tmp4_ = NULL;
+    gchar* _tmp5_;
+    GError* _inner_error_ = NULL;
+    g_return_val_if_fail(self != NULL, NULL);
+    g_return_val_if_fail(old != NULL, NULL);
+    g_return_val_if_fail(replacement != NULL, NULL);
+    _tmp0_ = g_regex_escape_string(old, -1);
+    _tmp1_ = _tmp0_;
+    _tmp2_ = g_regex_new(_tmp1_, 0, 0, &_inner_error_);
+    _tmp3_ = _tmp2_;
+    _g_free0(_tmp1_);
+    regex = _tmp3_;
+    if (_inner_error_ != NULL) {
+        if (_inner_error_->domain == G_REGEX_ERROR) {
+            goto __catch1_g_regex_error;
+        }
+        g_critical("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string(_inner_error_->domain), _inner_error_->code);
+        g_clear_error(&_inner_error_);
+        return NULL;
+    }
+    _tmp4_ = g_regex_replace_literal(regex, self, (gssize)(-1), 0, replacement, 0, &_inner_error_);
+    _tmp5_ = _tmp4_;
+    if (_inner_error_ != NULL) {
+        _g_regex_unref0(regex);
+        if (_inner_error_->domain == G_REGEX_ERROR) {
+            goto __catch1_g_regex_error;
+        }
+        _g_regex_unref0(regex);
+        g_critical("file %s: line %d: unexpected error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string(_inner_error_->domain), _inner_error_->code);
+        g_clear_error(&_inner_error_);
+        return NULL;
+    }
+    result = _tmp5_;
+    _g_regex_unref0(regex);
+    return result;
+    _g_regex_unref0(regex);
+    goto __finally1;
+__catch1_g_regex_error: {
+        GError* e;
+        e = _inner_error_;
+        _inner_error_ = NULL;
+        g_assert_not_reached();
+        _g_error_free0(e);
+    }
+__finally1:
+    if (_inner_error_ != NULL) {
+        g_critical("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string(_inner_error_->domain), _inner_error_->code);
+        g_clear_error(&_inner_error_);
+        return NULL;
+    }
+}
+
+
+static gchar* task_icon_dispatcher_real_get_desktop_file(DockItemDBusInterface* base)
+{
+    gchar* result;
+    TaskIconDispatcher* self;
+    gchar* _tmp0_;
+    gchar* path;
+    TaskLauncher* launcher = NULL;
+    TaskItem* _tmp1_ = NULL;
+    TaskItem* _tmp2_;
+    self = (TaskIconDispatcher*) base;
+    _tmp0_ = g_strdup("");
+    path = _tmp0_;
+    _tmp1_ = task_icon_get_launcher(self->priv->icon);
+    _tmp2_ = _tmp1_;
+    launcher = TASK_IS_LAUNCHER(_tmp2_) ? ((TaskLauncher*) _tmp2_) : NULL;
+    if (launcher != NULL) {
+        const gchar* _tmp3_ = NULL;
+        gchar* _tmp4_;
+        gchar* _tmp5_ = NULL;
+        _tmp3_ = task_launcher_get_desktop_path(launcher);
+        _tmp4_ = g_strdup(_tmp3_);
+        _g_free0(path);
+        path = _tmp4_;
+        _tmp5_ = string_replace(path, "//", "/");
+        _g_free0(path);
+        path = _tmp5_;
+    }
+    result = path;
+    return result;
+}
+
+
+static gchar* task_icon_dispatcher_real_get_uri(DockItemDBusInterface* base)
+{
+    gchar* result;
+    TaskIconDispatcher* self;
+    gchar* _tmp0_;
+    self = (TaskIconDispatcher*) base;
+    _tmp0_ = g_strdup("");
+    result = _tmp0_;
+    return result;
+}
+
+
+static void task_icon_dispatcher_class_init(TaskIconDispatcherClass* klass)
+{
+    task_icon_dispatcher_parent_class = g_type_class_peek_parent(klass);
+    g_type_class_add_private(klass, sizeof(TaskIconDispatcherPrivate));
+    G_OBJECT_CLASS(klass)->get_property = _vala_task_icon_dispatcher_get_property;
+    G_OBJECT_CLASS(klass)->set_property = _vala_task_icon_dispatcher_set_property;
+    G_OBJECT_CLASS(klass)->finalize = task_icon_dispatcher_finalize;
+    g_object_class_install_property(G_OBJECT_CLASS(klass), TASK_ICON_DISPATCHER_OBJECT_PATH, g_param_spec_string("object-path", "object-path", "object-path", NULL, G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB | G_PARAM_READABLE | G_PARAM_WRITABLE));
+}
+
+
+static void task_icon_dispatcher_dock_item_dbus_interface_interface_init(DockItemDBusInterfaceIface* iface)
+{
+    task_icon_dispatcher_dock_item_dbus_interface_parent_iface = g_type_interface_peek_parent(iface);
+    iface->add_menu_item = (gint(*)(DockItemDBusInterface* , GHashTable* , GError**)) task_icon_dispatcher_real_add_menu_item;
+    iface->remove_menu_item = (void (*)(DockItemDBusInterface* , gint , GError**)) task_icon_dispatcher_real_remove_menu_item;
+    iface->update_dock_item = (void (*)(DockItemDBusInterface* , GHashTable* , GError**)) task_icon_dispatcher_real_update_dock_item;
+    iface->get_desktop_file = task_icon_dispatcher_real_get_desktop_file;
+    iface->get_uri = task_icon_dispatcher_real_get_uri;
+}
+
+
+static void task_icon_dispatcher_instance_init(TaskIconDispatcher* self)
+{
+    self->priv = TASK_ICON_DISPATCHER_GET_PRIVATE(self);
+}
+
+
+static void task_icon_dispatcher_finalize(GObject* obj)
+{
+    TaskIconDispatcher* self;
+    TaskManagerDispatcher* _tmp0_ = NULL;
+    TaskManagerDispatcher* proxy;
+    self = TASK_ICON_DISPATCHER(obj);
+    _tmp0_ = task_icon_dispatcher_get_manager_proxy(self);
+    proxy = _tmp0_;
+    if (proxy != NULL) {
+        char* _tmp1_ = NULL;
+        char* _tmp2_;
+        _tmp1_ = g_strdup(self->priv->_object_path);
+        _tmp2_ = _tmp1_;
+        g_signal_emit_by_name((DockManagerDBusInterface*) proxy, "item-removed", _tmp2_);
+        _g_free0(_tmp2_);
+    }
+    _g_free0(self->priv->_object_path);
+    G_OBJECT_CLASS(task_icon_dispatcher_parent_class)->finalize(obj);
+}
+
+
+void _task_icon_dispatcher_dbus_unregister(DBusConnection* connection, void* _user_data_)
+{
+}
+
+
+static DBusHandlerResult _dbus_task_icon_dispatcher_introspect(TaskIconDispatcher* self, DBusConnection* connection, DBusMessage* message)
+{
+    DBusMessage* reply;
+    DBusMessageIter iter;
+    GString* xml_data;
+    char** children;
+    int i;
+    reply = dbus_message_new_method_return(message);
+    dbus_message_iter_init_append(reply, &iter);
+    xml_data = g_string_new("<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" \"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">\n");
+    g_string_append(xml_data, "<node>\n<interface name=\"org.freedesktop.DBus.Introspectable\">\n  <method name=\"Introspect\">\n    <arg name=\"data\" direction=\"out\" type=\"s\"/>\n  </method>\n</interface>\n<interface name=\"org.freedesktop.DBus.Properties\">\n  <method name=\"Get\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"out\" type=\"v\"/>\n  </method>\n  <method name=\"Set\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"propname\" direction=\"in\" type=\"s\"/>\n    <arg name=\"value\" direction=\"in\" type=\"v\"/>\n  </method>\n  <method name=\"GetAll\">\n    <arg name=\"interface\" direction=\"in\" type=\"s\"/>\n    <arg name=\"props\" direction=\"out\" type=\"a{sv}\"/>\n  </method>\n</interface>\n<interface name=\"net.launchpad.DockItem\">\n  <method name=\"AddMenuItem\">\n    <arg name=\"menu_hints\" type=\"a{sv}\" direction=\"in\"/>\n    <arg name=\"result\" type=\"i\" direction=\"out\"/>\n  </method>\n  <method name=\"RemoveMenuItem\">\n    <arg name=\"id\" type=\"i\" direction=\"in\"/>\n  </method>\n  <method name=\"UpdateDockItem\">\n    <arg name=\"hints\" type=\"a{sv}\" direction=\"in\"/>\n  </method>\n  <property name=\"DesktopFile\" type=\"s\" access=\"read\"/>\n  <property name=\"Uri\" type=\"s\" access=\"read\"/>\n  <signal name=\"MenuItemActivated\">\n    <arg name=\"id\" type=\"i\"/>\n  </signal>\n</interface>\n");
+    dbus_connection_list_registered(connection, g_object_get_data((GObject*) self, "dbus_object_path"), &children);
+    for (i = 0; children[i]; i++) {
+        g_string_append_printf(xml_data, "<node name=\"%s\"/>\n", children[i]);
+    }
+    dbus_free_string_array(children);
+    g_string_append(xml_data, "</node>\n");
+    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &xml_data->str);
+    g_string_free(xml_data, TRUE);
+    if (reply) {
+        dbus_connection_send(connection, reply, NULL);
+        dbus_message_unref(reply);
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+}
+
+
+DBusHandlerResult task_icon_dispatcher_dbus_message(DBusConnection* connection, DBusMessage* message, void* object)
+{
+    DBusHandlerResult result;
+    result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    if (dbus_message_is_method_call(message, "org.freedesktop.DBus.Introspectable", "Introspect")) {
+        result = _dbus_task_icon_dispatcher_introspect(object, connection, message);
+    }
+    if (result == DBUS_HANDLER_RESULT_HANDLED) {
+        return result;
+    } else if (dock_item_dbus_interface_dbus_message(connection, message, object) == DBUS_HANDLER_RESULT_HANDLED) {
+        return DBUS_HANDLER_RESULT_HANDLED;
+    } else {
+        return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+}
+
+
+void task_icon_dispatcher_dbus_register_object(DBusConnection* connection, const char* path, void* object)
+{
+    if (!g_object_get_data(object, "dbus_object_path")) {
+        g_object_set_data(object, "dbus_object_path", g_strdup(path));
+        dbus_connection_register_object_path(connection, path, &_task_icon_dispatcher_dbus_path_vtable, object);
+        g_object_weak_ref(object, _vala_dbus_unregister_object, connection);
+    }
+    dock_item_dbus_interface_dbus_register_object(connection, path, object);
+}
+
+
+GType task_icon_dispatcher_get_type(void)
+{
+    static volatile gsize task_icon_dispatcher_type_id__volatile = 0;
+    if (g_once_init_enter(&task_icon_dispatcher_type_id__volatile)) {
+        static const GTypeInfo g_define_type_info = { sizeof(TaskIconDispatcherClass), (GBaseInitFunc) NULL, (GBaseFinalizeFunc) NULL, (GClassInitFunc) task_icon_dispatcher_class_init, (GClassFinalizeFunc) NULL, NULL, sizeof(TaskIconDispatcher), 0, (GInstanceInitFunc) task_icon_dispatcher_instance_init, NULL };
+        static const GInterfaceInfo dock_item_dbus_interface_info = { (GInterfaceInitFunc) task_icon_dispatcher_dock_item_dbus_interface_interface_init, (GInterfaceFinalizeFunc) NULL, NULL};
+        GType task_icon_dispatcher_type_id;
+        task_icon_dispatcher_type_id = g_type_register_static(G_TYPE_OBJECT, "TaskIconDispatcher", &g_define_type_info, 0);
+        g_type_add_interface_static(task_icon_dispatcher_type_id, TYPE_DOCK_ITEM_DBUS_INTERFACE, &dock_item_dbus_interface_info);
+        g_type_set_qdata(task_icon_dispatcher_type_id, g_quark_from_static_string("DBusObjectVTable"), (void*)(&_task_icon_dispatcher_dbus_vtable));
+        g_once_init_leave(&task_icon_dispatcher_type_id__volatile, task_icon_dispatcher_type_id);
+    }
+    return task_icon_dispatcher_type_id__volatile;
+}
+
+
+static void _vala_task_icon_dispatcher_get_property(GObject* object, guint property_id, GValue* value, GParamSpec* pspec)
+{
+    TaskIconDispatcher* self;
+    self = TASK_ICON_DISPATCHER(object);
+    switch (property_id) {
+    case TASK_ICON_DISPATCHER_OBJECT_PATH:
+        g_value_set_string(value, task_icon_dispatcher_get_object_path(self));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+        break;
+    }
+}
+
+
+static void _vala_task_icon_dispatcher_set_property(GObject* object, guint property_id, const GValue* value, GParamSpec* pspec)
+{
+    TaskIconDispatcher* self;
+    self = TASK_ICON_DISPATCHER(object);
+    switch (property_id) {
+    case TASK_ICON_DISPATCHER_OBJECT_PATH:
+        task_icon_dispatcher_set_object_path(self, g_value_get_string(value));
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
+        break;
+    }
+}
+
+
+static void _vala_array_destroy(gpointer array, gint array_length, GDestroyNotify destroy_func)
+{
+    if ((array != NULL) && (destroy_func != NULL)) {
+        int i;
+        for (i = 0; i < array_length; i = i + 1) {
+            if (((gpointer*) array)[i] != NULL) {
+                destroy_func(((gpointer*) array)[i]);
+            }
+        }
+    }
+}
+
+
+static void _vala_array_free(gpointer array, gint array_length, GDestroyNotify destroy_func)
+{
+    _vala_array_destroy(array, array_length, destroy_func);
+    g_free(array);
 }
 
 
