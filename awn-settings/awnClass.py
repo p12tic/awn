@@ -1084,7 +1084,7 @@ class awnManager:
         if len(extra_version) > 0:
             version += extra_version
         self.about.set_version(version)
-        self.about.set_copyright("Copyright (C) 2007-2010 Awn-core team")
+        self.about.set_copyright("Copyright (C) 2007-2013 Awn-core team")
         self.about.set_authors([
             'Neil Jagdish Patel <njpatel@gmail.com>',
             'haytjes <hv1989@gmail.com>',
@@ -1094,7 +1094,8 @@ class awnManager:
             'Michal Hruby  <michal.mhr@gmail.com>',
             'Julien Lavergne <julien.lavergne@gmail.com>',
             'Mark Lee <avant-wn@lazymalevolence.com>',
-            'Rodney Cryderman <rcryderman@gmail.com>'
+            'Rodney Cryderman <rcryderman@gmail.com>',
+            'Povilas Kanapickas <tir5c3@yahoo.co.uk>'
             ])
         self.about.set_comments(_("Fully customisable dock-like window navigator for GNOME."))
         self.about.set_license(
