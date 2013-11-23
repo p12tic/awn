@@ -132,9 +132,6 @@ awn_overlay_themed_icon_set_property(GObject* object, guint property_id,
 static void
 awn_overlay_themed_icon_dispose(GObject* object)
 {
-    AwnOverlayThemedIconPrivate* priv;
-    priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE(object);
-
     G_OBJECT_CLASS(awn_overlay_themed_icon_parent_class)->dispose(object);
 }
 
@@ -175,9 +172,6 @@ _awn_overlay_themed_icon_theme_change(AwnOverlayThemedIcon* overlay)
 static void
 awn_overlay_themed_icon_constructed(GObject* object)
 {
-    AwnOverlayThemedIconPrivate* priv;
-    priv = AWN_OVERLAY_THEMED_ICON_GET_PRIVATE(object);
-
     if (G_OBJECT_CLASS(awn_overlay_themed_icon_parent_class)->constructed) {
         G_OBJECT_CLASS(awn_overlay_themed_icon_parent_class)->constructed(object);
     }

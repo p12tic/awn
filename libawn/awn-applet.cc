@@ -137,10 +137,7 @@ static void
 on_prop_changed(DBusGProxy* proxy, const gchar* prop_name,
                 GValue* value, AwnApplet* applet)
 {
-    AwnAppletPrivate* priv;
     g_return_if_fail(AWN_IS_APPLET(applet));
-    priv = applet->priv;
-
     g_object_set_property(G_OBJECT(applet), prop_name, value);
 }
 

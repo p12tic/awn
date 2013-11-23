@@ -922,7 +922,6 @@ awn_background_lucido_get_shape_mask(AwnBackground*   bg,
     gint temp;
     gint x = area->x, y = area->y;
     gint width = area->width, height = area->height;
-    gint x_start_limit = x;
     gboolean expand = FALSE;
     g_object_get(bg->panel, "expand", &expand, NULL);
 
@@ -940,7 +939,6 @@ awn_background_lucido_get_shape_mask(AwnBackground*   bg,
         temp = width;
         width = height;
         height = temp;
-        x_start_limit = y;
         break;
     case GTK_POS_LEFT:
         height += y;
@@ -949,7 +947,6 @@ awn_background_lucido_get_shape_mask(AwnBackground*   bg,
         temp = width;
         width = height;
         height = temp;
-        x_start_limit = y;
         break;
     case GTK_POS_TOP:
         width += x;

@@ -357,10 +357,12 @@ static void     awn_panel_set_strut(AwnPanel* panel);
 
 static void     awn_panel_remove_strut(AwnPanel* panel);
 
+#if !GTK_CHECK_VERSION(2, 19, 5)
 static gboolean awn_panel_dnd_check(gpointer data);
 
 static gboolean awn_panel_set_drag_proxy(AwnPanel* panel,
         gboolean check_mouse_pos);
+#endif
 
 static void     dbus_inhibitor_lost(AwnDBusWatcher* watcher,
                                     gchar* name,
@@ -370,6 +372,7 @@ static void     dbus_inhibitor_lost(AwnDBusWatcher* watcher,
 /*
  * GOBJECT CODE
  */
+#if !GTK_CHECK_VERSION(2, 19, 5)
 static gboolean
 awn_panel_set_drag_proxy(AwnPanel* panel, gboolean check_mouse_pos)
 {
@@ -488,7 +491,6 @@ awn_panel_set_drag_proxy(AwnPanel* panel, gboolean check_mouse_pos)
     return priv->dnd_proxy_win != NULL;
 }
 
-#if !GTK_CHECK_VERSION(2, 19, 5)
 static gboolean
 awn_panel_drag_motion(GtkWidget* widget, GdkDragContext* context,
                       gint x, gint y, guint time_)
@@ -1698,6 +1700,7 @@ poll_mouse_position(gpointer data)
     return FALSE;
 }
 
+#if !GTK_CHECK_VERSION(2, 19, 5)
 static gboolean
 awn_panel_dnd_check(gpointer data)
 {
@@ -1713,6 +1716,7 @@ awn_panel_dnd_check(gpointer data)
     }
     return proxy_set;
 }
+#endif
 
 static void
 awn_panel_dispose(GObject* object)
@@ -3571,10 +3575,7 @@ awn_panel_delete_applet(AwnPanel*  panel,
                         gchar*     uid,
                         GError**   error)
 {
-    AwnPanelPrivate* priv;
-
     g_return_val_if_fail(AWN_IS_PANEL(panel), TRUE);
-    priv = panel->priv;
 
     return TRUE;
 }

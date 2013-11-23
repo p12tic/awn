@@ -111,12 +111,10 @@ static void free_list(GSList** list);
 static void
 awn_applet_manager_constructed(GObject* object)
 {
-    AwnAppletManager*        manager;
     AwnAppletManagerPrivate* priv;
     GValueArray* empty_array;
 
     priv = AWN_APPLET_MANAGER_GET_PRIVATE(object);
-    manager = AWN_APPLET_MANAGER(object);
 
     /* Hook everything up to the config client */
 

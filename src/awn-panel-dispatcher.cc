@@ -1420,7 +1420,6 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_inhibit_autohide(AwnPane
 {
     DBusMessageIter iter;
     GError* error;
-    char* sender = NULL;
     gchar* app_name = NULL;
     const char* _tmp43_;
     gchar* reason = NULL;
@@ -1846,7 +1845,6 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_set_glow(AwnPanelDBusInt
 {
     DBusMessageIter iter;
     GError* error;
-    char* sender = NULL;
     gboolean activate = FALSE;
     dbus_bool_t _tmp49_;
     DBusMessage* reply;
@@ -2110,7 +2108,7 @@ static void _dbus_awn_panel_dbus_interface_property_changed(GObject* _sender, co
     } else if (G_VALUE_TYPE(value) == G_TYPE_STRV) {
         const gchar** _tmp61_;
         DBusMessageIter _tmp62_;
-        int _tmp63_;
+        unsigned int _tmp63_;
         dbus_message_iter_open_container(&_iter, DBUS_TYPE_VARIANT, "as", &_tmp52_);
         _tmp61_ = g_value_get_boxed(value);
         dbus_message_iter_open_container(&_tmp52_, DBUS_TYPE_ARRAY, "s", &_tmp62_);
@@ -2191,7 +2189,6 @@ static void _dbus_handle_awn_panel_dbus_interface_destroy_applet(AwnPanelDBusInt
     DBusMessageIter iter;
     gchar* uid = NULL;
     const char* _tmp0_;
-    DBusMessage* reply;
     if (strcmp(dbus_message_get_signature(message), "s")) {
         return;
     }
@@ -2207,7 +2204,6 @@ static void _dbus_handle_awn_panel_dbus_interface_destroy_applet(AwnPanelDBusInt
 static void _dbus_handle_awn_panel_dbus_interface_destroy_notify(AwnPanelDBusInterface* self, DBusConnection* connection, DBusMessage* message)
 {
     DBusMessageIter iter;
-    DBusMessage* reply;
     if (strcmp(dbus_message_get_signature(message), "")) {
         return;
     }
@@ -2224,7 +2220,6 @@ static void _dbus_handle_awn_panel_dbus_interface_property_changed(AwnPanelDBusI
     GValue value = {0};
     GValue _tmp2_ = {0};
     DBusMessageIter _tmp3_;
-    DBusMessage* reply;
     if (strcmp(dbus_message_get_signature(message), "sv")) {
         return;
     }
@@ -4127,13 +4122,11 @@ static gchar** awn_panel_dispatcher_real_get_inhibitors(AwnPanelDBusInterface* b
     gchar** _tmp1_ = NULL;
     gchar** reasons;
     gint reasons_length1;
-    gint _reasons_size_;
     gchar** _tmp2_;
     self = (AwnPanelDispatcher*) base;
     _tmp1_ = _tmp0_ = awn_panel_get_inhibitors(self->priv->_panel);
     reasons = _tmp1_;
     reasons_length1 = _vala_array_length(_tmp0_);
-    _reasons_size_ = _vala_array_length(_tmp0_);
     _tmp2_ = reasons;
     if (result_length1) {
         *result_length1 = reasons_length1;
@@ -4406,8 +4399,6 @@ static void awn_panel_dispatcher_instance_init(AwnPanelDispatcher* self)
 
 static void awn_panel_dispatcher_finalize(GObject* obj)
 {
-    AwnPanelDispatcher* self;
-    self = AWN_PANEL_DISPATCHER(obj);
     G_OBJECT_CLASS(awn_panel_dispatcher_parent_class)->finalize(obj);
 }
 

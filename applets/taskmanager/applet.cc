@@ -28,8 +28,8 @@
 #include "task-manager.h"
 #include "task-manager-api-wrapper.h"
 
-extern "C" AwnApplet*
-awn_applet_factory_initp(gchar* name, gchar* uid, gint panel_id)
+extern "C" AwnApplet* awn_applet_factory_initp(gchar* name, gchar* uid, gint panel_id);
+extern "C" AwnApplet* awn_applet_factory_initp(gchar* name, gchar* uid, gint panel_id)
 {
     AwnApplet*       applet;
     DBusGConnection* connection;

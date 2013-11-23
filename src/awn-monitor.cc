@@ -372,9 +372,7 @@ awn_monitor_class_init(AwnMonitorClass* klass)
 static void
 awn_monitor_init(AwnMonitor* monitor)
 {
-    AwnMonitorPrivate* priv;
-
-    priv = monitor->priv = AWN_MONITOR_GET_PRIVATE(monitor);
+    monitor->priv = AWN_MONITOR_GET_PRIVATE(monitor);
 }
 
 AwnMonitor*
