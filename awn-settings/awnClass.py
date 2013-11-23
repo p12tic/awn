@@ -1108,7 +1108,7 @@ _("You should have received a copy of the GNU General Public License along with 
         self.about.set_logo(self.safe_load_icon('avant-window-navigator', 96, gtk.ICON_LOOKUP_USE_BUILTIN))
         self.about.set_documenters(["More to come..."])
         self.about.set_artists(["More to come..."])
-        #self.about.set_translator_credits()
+        self.about.set_translator_credits(_("translator-credits"))
         if button is None:
             self.about.set_skip_taskbar_hint(True)
         self.about.run()

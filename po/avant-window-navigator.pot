@@ -894,11 +894,11 @@ msgstr ""
 msgid "Avant Window Navigator"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1099
+#: ../awn-settings/awnClass.py:1100
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1101
+#: ../awn-settings/awnClass.py:1102
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -906,7 +906,7 @@ msgid ""
 "any later version."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1103
+#: ../awn-settings/awnClass.py:1104
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -914,57 +914,61 @@ msgid ""
 "more details."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1105
+#: ../awn-settings/awnClass.py:1106
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
 "Franklin St, Fifth Floor, Boston, MA 02110-1301  USA."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1232
+#: ../awn-settings/awnClass.py:1112
+msgid "translator-credits"
+msgstr ""
+
+#: ../awn-settings/awnClass.py:1233
 msgid "Awn Applet Package"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1277 ../awn-settings/awnClass.py:1307
+#: ../awn-settings/awnClass.py:1278 ../awn-settings/awnClass.py:1308
 msgid "Applet Installation Failed"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1289
+#: ../awn-settings/awnClass.py:1290
 msgid "Applet Successfully Updated"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1305
+#: ../awn-settings/awnClass.py:1306
 msgid "Applet Successfully Added"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1357
+#: ../awn-settings/awnClass.py:1358
 msgid "Can not delete active applet"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1360
+#: ../awn-settings/awnClass.py:1361
 msgid "Delete Applet"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1365
+#: ../awn-settings/awnClass.py:1366
 #, python-format
 msgid "<b>Delete %s?</b>"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1385
+#: ../awn-settings/awnClass.py:1386
 msgid "Unable to Delete Applet"
 msgstr ""
 
 #. Translators: This string is preceded by a filename
-#: ../awn-settings/awnClass.py:1592
+#: ../awn-settings/awnClass.py:1593
 #, python-format
 msgid "%s already exists, unable to export theme."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1668
+#: ../awn-settings/awnClass.py:1669
 msgid "Theme already installed, do you wish to overwrite it?"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:1702
+#: ../awn-settings/awnClass.py:1703
 msgid "This is an incompatible theme file."
 msgstr ""
 
