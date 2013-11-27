@@ -519,14 +519,14 @@ task_manager_dialog_analyze_wm(TaskManagerDialog* dialog)
 {
     TaskManagerDialogPrivate* priv = GET_PRIVATE(dialog);
     WnckScreen* wnck_screen = wnck_screen_get_default();
-    gint wm = WM_UNKNOWN;
+//    gint wm = WM_UNKNOWN;
 
     const gchar* wm_name = wnck_screen_get_window_manager_name(wnck_screen);
 //  g_debug ("%s:  %s",__func__,wm_name);
     for (int i = 0; wm_strings[i].wm_code != WM_END ; i++) {
 //    g_debug ("comp:%d  '%s', '%s'",i,wm_strings[i].wm_name,wm_name);
         if (g_strcmp0(wm_strings[i].wm_name, wm_name) == 0) {
-            wm = wm_strings[i].wm_code;
+//            wm = wm_strings[i].wm_code;
 //     g_message ("WM = %s, code = %d",wm_name,wm);
             if (wm_strings[i].live_previews(dialog)) {
                 if ((priv->dialog_mode == 0) || (priv->dialog_mode == 2)) {

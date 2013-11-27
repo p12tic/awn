@@ -387,7 +387,6 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_property_get(AwnPanelDBu
         dbus_message_iter_close_container(&reply_iter, &subiter);
 
     } else if ((strcmp(interface_name, "org.awnproject.Awn.Panel") == 0) && (strcmp(property_name, "Offset") == 0)) {
-        int result;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "i", &subiter);
         awn::vala_dbus_iter_append_int32(&subiter,
                                          awn_panel_dbus_interface_get_offset(self));
@@ -1605,8 +1604,6 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_offset(AwnPanelDBusInterface
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    const char* _tmp61_;
-    const char* _tmp62_;
     gint _result;
     dbus_int32_t _tmp63_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
@@ -1853,7 +1850,6 @@ static void awn_panel_dbus_interface_dbus_proxy_set_size(AwnPanelDBusInterface* 
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    dbus_int32_t _tmp81_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
         return;
     }

@@ -150,8 +150,6 @@ task_window_get_property(GObject*    object,
                          GParamSpec* pspec)
 {
     TaskWindow* taskwin = TASK_WINDOW(object);
-    TaskWindowPrivate* priv;
-    priv = TASK_WINDOW_GET_PRIVATE(object);
 
     switch (prop_id) {
     case PROP_WINDOW:
@@ -537,7 +535,6 @@ on_window_icon_changed(WnckWindow* wnckwin, TaskWindow* window)
     GdkPixbuf*    pixbuf;
     GdkPixbuf*    scaled;
     gint  height;
-    gint  width;
     gint  scaled_height;
     gint  scaled_width;
     TaskWindowPrivate* priv;
@@ -550,7 +547,6 @@ on_window_icon_changed(WnckWindow* wnckwin, TaskWindow* window)
     pixbuf = _wnck_get_icon_at_size(wnckwin, s->panel_size, s->panel_size);
 
     height = gdk_pixbuf_get_height(pixbuf);
-    width = gdk_pixbuf_get_width(pixbuf);
     gtk_icon_size_lookup(GTK_ICON_SIZE_BUTTON, &scaled_width, &scaled_height);
     if (height != scaled_height) {
         scaled = gdk_pixbuf_scale_simple(pixbuf, scaled_width, scaled_height, GDK_INTERP_BILINEAR);
@@ -1105,15 +1101,12 @@ GtkWidget*
 task_window_popup_context_menu(TaskWindow*     window,
                                GdkEventButton* event)
 {
-    TaskWindowClass* klass;
     TaskWindowPrivate* priv;
     GtkWidget*         item;
 
     g_return_val_if_fail(TASK_IS_WINDOW(window), NULL);
     g_return_val_if_fail(event, NULL);
     priv = window->priv;
-
-    klass = TASK_WINDOW_GET_CLASS(window);
 
     if (priv->menu) {
         gtk_widget_destroy(priv->menu);
@@ -1259,11 +1252,8 @@ _get_image_widget(TaskItem* item)
 static void
 theme_changed_cb(GtkIconTheme* icon_theme, TaskWindow* window)
 {
-    TaskWindowPrivate* priv;
-
     g_return_if_fail(TASK_IS_WINDOW(window));
-    priv = window->priv;
-
+    // TODO
 }
 
 static void

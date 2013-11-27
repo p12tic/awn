@@ -82,7 +82,7 @@ gboolean task_manager_get_capabilities(TaskManager* manager,
                                        GStrv* supported_keys,
                                        GError** error);
 
-gboolean task_manager_update(TaskManager* manager,
+bool task_manager_update(TaskManager* manager,
                              GValue* window,
                              GHashTable* hints, /* mappings from string to GValue */
                              GError** error);

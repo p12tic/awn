@@ -126,13 +126,7 @@ task_manager_api_wrapper_init(TaskManagerApiWrapper* wrapper)
 TaskManagerApiWrapper*
 task_manager_api_wrapper_new(TaskManager* manager)
 {
-    TaskManagerApiWrapper* wrapper = NULL;
-
-    wrapper = g_object_new(TASK_TYPE_MANAGER_API_WRAPPER,
-                           "manager", manager,
-                           NULL);
-
-    return wrapper;
+    return g_object_new(TASK_TYPE_MANAGER_API_WRAPPER, "manager", manager, NULL);
 }
 
 gboolean
@@ -142,7 +136,6 @@ task_manager_api_wrapper_set_task_icon_by_name(TaskManagerApiWrapper* wrapper,
         GError**    error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "icon-file";
@@ -161,10 +154,7 @@ task_manager_api_wrapper_set_task_icon_by_name(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);
@@ -180,7 +170,6 @@ task_manager_api_wrapper_unset_task_icon_by_name(TaskManagerApiWrapper* wrapper,
         GError**      error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "icon-file";
@@ -199,10 +188,7 @@ task_manager_api_wrapper_unset_task_icon_by_name(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);
@@ -219,7 +205,6 @@ task_manager_api_wrapper_set_info_by_name(TaskManagerApiWrapper* wrapper,
         GError**   error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "message";
@@ -238,10 +223,7 @@ task_manager_api_wrapper_set_info_by_name(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);
@@ -257,7 +239,6 @@ task_manager_api_wrapper_unset_info_by_name(TaskManagerApiWrapper* wrapper,
         GError**    error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "message";
@@ -276,10 +257,7 @@ task_manager_api_wrapper_unset_info_by_name(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);
@@ -296,7 +274,6 @@ task_manager_api_wrapper_set_progress_by_name(TaskManagerApiWrapper* wrapper,
         GError**   error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "progress";
@@ -321,10 +298,7 @@ task_manager_api_wrapper_set_progress_by_name(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);
@@ -343,7 +317,6 @@ task_manager_api_wrapper_set_task_icon_by_xid(TaskManagerApiWrapper* wrapper,
         GError**    error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "icon-file";
@@ -362,10 +335,7 @@ task_manager_api_wrapper_set_task_icon_by_xid(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);
@@ -381,7 +351,6 @@ task_manager_api_wrapper_unset_task_icon_by_xid(TaskManagerApiWrapper* wrapper,
         GError**    error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "icon-file";
@@ -400,10 +369,7 @@ task_manager_api_wrapper_unset_task_icon_by_xid(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);
@@ -420,7 +386,6 @@ task_manager_api_wrapper_set_info_by_xid(TaskManagerApiWrapper* wrapper,
         GError**    error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "message";
@@ -439,10 +404,7 @@ task_manager_api_wrapper_set_info_by_xid(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);
@@ -452,19 +414,18 @@ task_manager_api_wrapper_set_info_by_xid(TaskManagerApiWrapper* wrapper,
     return TRUE;
 }
 
-gboolean
+bool
 task_manager_api_wrapper_unset_info_by_xid(TaskManagerApiWrapper* wrapper,
         gint64    xid,
         GError**    error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "message";
     GValue value = {0};
 
-    g_return_val_if_fail(TASK_IS_MANAGER_API_WRAPPER(wrapper), FALSE);
+    g_return_val_if_fail(TASK_IS_MANAGER_API_WRAPPER(wrapper), false);
 
     priv = wrapper->priv;
 
@@ -477,17 +438,14 @@ task_manager_api_wrapper_unset_info_by_xid(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);
     g_value_unset(&value);
     g_hash_table_destroy(hints);
 
-    return TRUE;
+    return true;
 }
 
 gboolean
@@ -497,7 +455,6 @@ task_manager_api_wrapper_set_progress_by_xid(TaskManagerApiWrapper* wrapper,
         GError**    error)
 {
     TaskManagerApiWrapperPrivate* priv;
-    gboolean succeeded;
     GValue window = {0};
     GHashTable* hints;
     const gchar* key = "progress";
@@ -522,10 +479,7 @@ task_manager_api_wrapper_set_progress_by_xid(TaskManagerApiWrapper* wrapper,
     hints = g_hash_table_new(g_str_hash, g_str_equal);
     g_hash_table_insert(hints, (gpointer)key, &value);
 
-    succeeded = task_manager_update(priv->manager,
-                                    &window,
-                                    hints,
-                                    error);
+    task_manager_update(priv->manager, &window, hints, error);
     g_clear_error(error);
 
     g_value_unset(&window);

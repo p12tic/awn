@@ -295,16 +295,10 @@ task_item_class_init(TaskItemClass* klass)
     g_type_class_add_private(obj_class, sizeof(TaskItemPrivate));
 }
 
-static void
-task_item_init(TaskItem* item)
+static void task_item_init(TaskItem* item)
 {
-    TaskItemPrivate* priv;
-    TaskItemClass* klass;
-
-    klass = TASK_ITEM_GET_CLASS(item);
-
     /* get and save private struct */
-    priv = item->priv = TASK_ITEM_GET_PRIVATE(item);
+    item->priv = TASK_ITEM_GET_PRIVATE(item);
 }
 
 

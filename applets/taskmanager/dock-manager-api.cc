@@ -1120,7 +1120,6 @@ static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_pid(DockManage
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter _iter;
-    dbus_int32_t _tmp20_;
     char** _result;
     int _result_length1;
     char** _tmp21_;
@@ -1252,23 +1251,20 @@ static char* dock_manager_dbus_interface_dbus_proxy_awn_register_proxy_item(Dock
 {
     DBusError _dbus_error;
     DBusGConnection* _connection;
-    DBusMessage* message, *reply;
     DBusMessageIter _iter;
-    const char* _tmp31_;
-    const char* _tmp32_;
     char* _result;
     const char* _tmp33_;
     if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
         g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
         return NULL;
     }
-    message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "AwnRegisterProxyItem");
+    DBusMessage* message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "AwnRegisterProxyItem");
     dbus_message_iter_init_append(message, &_iter);
     awn::vala_dbus_iter_append_string(&_iter, desktop_file);
     awn::vala_dbus_iter_append_string(&_iter, uri);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
-    reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
+    DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
     dbus_g_connection_unref(_connection);
     dbus_message_unref(message);
     if (dbus_error_is_set(&_dbus_error)) {
@@ -1435,7 +1431,6 @@ static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get_all(DockIte
     DBusMessageIter iter, reply_iter, subiter, entry_iter, value_iter;
     char* interface_name;
     const char* _tmp4_;
-    const char* property_name;
     if (strcmp(dbus_message_get_signature(message), "s")) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
     }
@@ -1496,7 +1491,6 @@ static DBusHandlerResult _dbus_dock_item_dbus_interface_add_menu_item(DockItemDB
     DBusMessageIter _tmp8_;
     DBusMessageIter _tmp9_;
     gint result;
-    dbus_int32_t _tmp28_;
     error = NULL;
     if (strcmp(dbus_message_get_signature(message), "a{sv}")) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
@@ -1946,8 +1940,6 @@ static gchar* dock_item_dbus_interface_dbus_proxy_get_uri(DockItemDBusInterface*
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter _iter, _subiter;
-    const char* _tmp82_;
-    const char* _tmp83_;
     gchar* _result;
     const char* _tmp84_;
     if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
@@ -2041,52 +2033,26 @@ TaskManagerDispatcher* task_manager_dispatcher_new(TaskManager* manager)
 
 static char** task_manager_dispatcher_list_to_object_path_array(GSList* list, int* result_length1)
 {
-    char** result = NULL;
     guint _tmp0_;
-    char** _tmp1_ = NULL;
-    char** _result_;
-    gint _result__length1;
-    gint __result__size_;
-    char** _tmp8_;
     _tmp0_ = g_slist_length(list);
-    _tmp1_ = g_new0(char*, _tmp0_ + 1);
-    _result_ = _tmp1_;
-    _result__length1 = _tmp0_;
-    __result__size_ = _tmp0_;
+    char** result = g_new0(char*, _tmp0_ + 1);
+    int _result__length1 = _tmp0_;
     int i = 0;
     {
-        GSList* icon_collection;
-        GSList* icon_it;
-        icon_collection = list;
-        for (icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
-            TaskIcon* icon;
-            icon = (TaskIcon*) icon_it->data;
-            {
-                TaskIconDispatcher* dispatcher = NULL;
-                GObject* _tmp2_ = NULL;
-                GObject* _tmp3_;
-                gint _tmp4_;
-                const gchar* _tmp5_ = NULL;
-                char* _tmp6_ = NULL;
-                char* _tmp7_;
-                _tmp2_ = task_icon_get_dbus_dispatcher(icon);
-                _tmp3_ = _tmp2_;
-                dispatcher = IS_TASK_ICON_DISPATCHER(_tmp3_) ? ((TaskIconDispatcher*) _tmp3_) : NULL;
-                _tmp4_ = i;
-                i = _tmp4_ + 1;
-                _tmp5_ = task_icon_dispatcher_get_object_path(dispatcher);
-                _tmp6_ = g_strdup(_tmp5_);
-                _tmp7_ = _tmp6_;
-                _g_free0(_result_[_tmp4_]);
-                _result_[_tmp4_] = _tmp7_;
-            }
+        GSList* icon_collection = list;
+        for (GSList* icon_it = icon_collection; icon_it != NULL; icon_it = icon_it->next) {
+            TaskIcon* icon = (TaskIcon*) icon_it->data;
+            GObject* tmp = task_icon_get_dbus_dispatcher(icon);
+            TaskIconDispatcher* dispatcher = IS_TASK_ICON_DISPATCHER(tmp) ? ((TaskIconDispatcher*) tmp) : NULL;
+            const char* _tmp5_ = task_icon_dispatcher_get_object_path(dispatcher);
+            _g_free0(result[i]);
+            result[i] = g_strdup(_tmp5_);
+            i++;
         }
     }
-    _tmp8_ = _result_;
     if (result_length1) {
         *result_length1 = _result__length1;
     }
-    result = _tmp8_;
     return result;
 }
 

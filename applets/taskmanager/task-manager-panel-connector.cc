@@ -47,13 +47,9 @@ static void
 on_prop_changed(DBusGProxy* proxy, const gchar* prop_name,
                 GValue* value, TaskManagerPanelConnector* conn)
 {
-    TaskManagerPanelConnectorPrivate* priv;
     g_return_if_fail(TASK_MANAGER_IS_PANEL_CONNECTOR(conn));
-    priv = GET_PRIVATE(conn);
 
-    /*
-     Should probably just support all the props of panel
-     */
+    // Should probably just support all the props of panel
     if ((g_strcmp0(prop_name, "panel-id") == 0) ||
             (g_strcmp0(prop_name, "panel-xid") == 0)) {
         g_debug("Setting %s", prop_name);

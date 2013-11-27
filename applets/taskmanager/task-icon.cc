@@ -2842,36 +2842,24 @@ task_icon_dialog_unfocus(GtkWidget*      widget,
 const gchar*
 task_icon_get_custom_name(TaskIcon* icon)
 {
-    TaskIconPrivate* priv;
-
     g_return_val_if_fail(TASK_IS_ICON(icon), FALSE);
-
-    priv = icon->priv;
-
-    return priv->custom_name;
+    return icon->priv->custom_name;
 }
 
 GtkWidget*
 task_icon_get_dialog(TaskIcon* icon)
 {
-    TaskIconPrivate* priv;
-
     g_return_val_if_fail(TASK_IS_ICON(icon), FALSE);
-
-    priv = icon->priv;
-
-    return priv->dialog;
+    return icon->priv->dialog;
 }
 
 static void
 task_icon_set_draggable_state(TaskIcon* icon, gboolean draggable)
 {
-    TaskIconPrivate* priv;
 #ifdef DEBUG
     g_debug("%s", __func__);
 #endif
     g_return_if_fail(TASK_IS_ICON(icon));
-    priv = icon->priv;
 
     if (draggable) {
         gtk_drag_source_set(GTK_WIDGET(icon),

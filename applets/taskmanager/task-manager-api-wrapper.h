@@ -108,10 +108,8 @@ task_manager_api_wrapper_set_info_by_xid(TaskManagerApiWrapper* wrapper,
         gchar*     info,
         GError**    error);
 
-gboolean
-task_manager_api_wrapper_unset_info_by_xid(TaskManagerApiWrapper* wrapper,
-        gint64    xid,
-        GError**    error);
+bool task_manager_api_wrapper_unset_info_by_xid(TaskManagerApiWrapper* wrapper,
+                                                gint64 xid, GError** error);
 
 gboolean
 task_manager_api_wrapper_set_progress_by_xid(TaskManagerApiWrapper* wrapper,

@@ -78,7 +78,6 @@ _wnck_get_wmclass(Window xwindow,
                   char** res_name)
 {
     XClassHint ch;
-    char* retval;
 
     _wnck_error_trap_push();
 
@@ -89,8 +88,6 @@ _wnck_get_wmclass(Window xwindow,
                   &ch);
 
     _wnck_error_trap_pop();
-
-    retval = NULL;
 
     if (res_class) {
         *res_class = NULL;
@@ -189,17 +186,13 @@ find_largest_sizes(gulong* data, gulong nitems, int* width, int* height)
     *height = 0;
 
     while (nitems > 0) {
-        int w, h;
-        gboolean replace;
-
-        replace = FALSE;
 
         if (nitems < 3) {
             return FALSE;    /* no space for w, h */
         }
 
-        w = data[0];
-        h = data[1];
+        int w = data[0];
+        int h = data[1];
 
         if (nitems < ((w * h) + 2)) {
             return FALSE;    /* not enough data */

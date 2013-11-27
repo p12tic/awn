@@ -481,14 +481,12 @@ static void
 task_manager_constructed(GObject* object)
 {
     TaskManagerPrivate* priv;
-    GtkWidget*          widget;
     GError*             error = NULL;
     GStrv              panel_paths;
 
     G_OBJECT_CLASS(task_manager_parent_class)->constructed(object);
 
     priv = TASK_MANAGER_GET_PRIVATE(object);
-    widget = GTK_WIDGET(object);
 
     priv->proxy = dbus_g_proxy_new_for_name(priv->connection,
                                             "org.awnproject.Awn",
@@ -1808,12 +1806,10 @@ task_manager_remove_task_icon(TaskManager*  manager, GtkWidget* icon)
 void
 task_manager_append_launcher(TaskManager*  manager, const gchar* launcher_path)
 {
-    TaskManagerPrivate* priv;
     GValueArray* launcher_paths;
     GValue val = {0,};
 
     g_return_if_fail(TASK_IS_MANAGER(manager));
-    priv = manager->priv;
 
     g_object_get(G_OBJECT(manager), "launcher_paths", &launcher_paths, NULL);
     g_value_init(&val, G_TYPE_STRING);
@@ -1828,12 +1824,10 @@ task_manager_append_launcher(TaskManager*  manager, const gchar* launcher_path)
 void
 task_manager_remove_launcher(TaskManager*  manager, const gchar* launcher_path)
 {
-    TaskManagerPrivate* priv;
     GValueArray* launcher_paths;
     GValue val = {0,};
 
     g_return_if_fail(TASK_IS_MANAGER(manager));
-    priv = manager->priv;
 
     g_object_get(G_OBJECT(manager), "launcher_paths", &launcher_paths, NULL);
     g_value_init(&val, G_TYPE_STRING);
@@ -2689,13 +2683,13 @@ task_manager_active_window_changed_cb(WnckScreen* screen,
                                       WnckWindow* previous_window,
                                       TaskManager* manager)
 {
-    TaskManagerPrivate*  priv;
+    //TaskManagerPrivate*  priv;
     WnckWindow*          win;
     WnckApplication*     app;
     WnckWorkspace*       space;
 
     g_return_if_fail(TASK_IS_MANAGER(manager));
-    priv = manager->priv;
+    //priv = manager->priv;
 
     win = wnck_screen_get_active_window(screen);
     if (!win) {
@@ -2884,8 +2878,7 @@ task_manager_get_dbus_dispatcher(TaskManager* manager)
     return G_OBJECT(priv->dbus_proxy);
 }
 
-gboolean
-task_manager_update(TaskManager* manager,
+bool task_manager_update(TaskManager* manager,
                     GValue* window,
                     GHashTable* hints, /* mappings from string to GValue */
                     GError** error)
@@ -2909,7 +2902,7 @@ task_manager_update(TaskManager* manager,
                     TASK_MANAGER_ERROR_UNSUPPORTED_WINDOW_TYPE,
                     "Window can be specified only by its name or XID");
 
-        return FALSE;
+        return false;
     }
 
     if (matched_window) {
@@ -2945,18 +2938,18 @@ task_manager_update(TaskManager* manager,
             }
         }
 
-        return TRUE;
+        return true;
     } else {
         GHashTableIter iter;
         gpointer key, value;
-        gboolean null_op = TRUE;
+        bool null_op = true;
 
         g_hash_table_iter_init(&iter, hints);
         while (g_hash_table_iter_next(&iter, &key, &value)) {
             gchar* key_name = (gchar*)key;
             if (strcmp("visible", key_name) == 0) {
                 gboolean visible = g_value_get_boolean(value);
-                null_op = FALSE;
+                null_op = false;
                 if (G_VALUE_HOLDS_STRING(window)) {
                     GList* needle = g_list_find_custom(priv->hidden_list,
                                                        g_value_get_string(window),
@@ -2980,9 +2973,9 @@ task_manager_update(TaskManager* manager,
                         task_manager_error_quark(),
                         TASK_MANAGER_ERROR_NO_WINDOW_MATCH,
                         "No matching window found to update.");
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 }
 
@@ -3363,7 +3356,6 @@ _icon_dest_drag_data_received(GtkWidget*      widget,
                               TaskManager*     manager)
 {
     TaskManagerPrivate* priv;
-    GError*          error;
     GdkAtom         target;
     gchar*           target_name;
     gchar*           sdata_data;
@@ -3443,7 +3435,5 @@ _icon_dest_drag_data_received(GtkWidget*      widget,
         gtk_drag_finish(context, TRUE, FALSE, time_);
         return;
     }
-
-    error = NULL;
     gtk_drag_finish(context, TRUE, FALSE, time_);
 }

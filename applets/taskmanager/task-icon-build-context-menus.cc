@@ -499,14 +499,10 @@ _pin_window_cb(GtkMenuItem* menuitem, WnckWindow* win)
 static void
 _minimize_all_cb(GtkMenuItem* menuitem, TaskIcon* icon)
 {
-    TaskIconPrivate* priv = NULL;
-
     g_return_if_fail(TASK_IS_ICON(icon));
 
     GSList* items = task_icon_get_items(icon);
     GSList* iter;
-
-    priv = icon->priv;
 
     for (iter = items; iter; iter = iter->next) {
         if (TASK_IS_LAUNCHER(iter->data)) {
@@ -525,16 +521,12 @@ _minimize_all_cb(GtkMenuItem* menuitem, TaskIcon* icon)
 static void
 _unminimize_all_cb(GtkMenuItem* menuitem, TaskIcon* icon)
 {
-    TaskIconPrivate* priv = NULL;
-
     g_return_if_fail(TASK_IS_ICON(icon));
 
     GSList* items = task_icon_get_items(icon);
     GSList* iter;
     GdkEventButton* event = (GdkEventButton*)gtk_get_current_event();
     g_return_if_fail(event);
-
-    priv = icon->priv;
 
     for (iter = items; iter; iter = iter->next) {
         if (TASK_IS_LAUNCHER(iter->data)) {
@@ -553,15 +545,12 @@ _unminimize_all_cb(GtkMenuItem* menuitem, TaskIcon* icon)
 static void
 _maximize_all_cb(GtkMenuItem* menuitem, TaskIcon* icon)
 {
-    TaskIconPrivate* priv = NULL;
     GdkEventButton* event = (GdkEventButton*)gtk_get_current_event();
 
     g_return_if_fail(TASK_IS_ICON(icon));
 
     GSList* items = task_icon_get_items(icon);
     GSList* iter;
-
-    priv = icon->priv;
 
     for (iter = items; iter; iter = iter->next) {
         if (TASK_IS_LAUNCHER(iter->data)) {
@@ -581,15 +570,12 @@ _maximize_all_cb(GtkMenuItem* menuitem, TaskIcon* icon)
 static void
 _unmaximize_all_cb(GtkMenuItem* menuitem, TaskIcon* icon)
 {
-    TaskIconPrivate* priv = NULL;
     GdkEventButton* event = (GdkEventButton*)gtk_get_current_event();
 
     g_return_if_fail(TASK_IS_ICON(icon));
 
     GSList* items = task_icon_get_items(icon);
     GSList* iter;
-
-    priv = icon->priv;
 
     for (iter = items; iter; iter = iter->next) {
         if (TASK_IS_LAUNCHER(iter->data)) {
@@ -757,12 +743,9 @@ task_icon_get_menu_item_close_all(TaskIcon* icon)
 static GtkWidget*
 task_icon_get_minimize_all(TaskIcon* icon)
 {
-    TaskIconPrivate* priv = NULL;
     GSList* items = task_icon_get_items(icon);
     GSList* iter;
     GtkWidget* menuitem = NULL;
-
-    priv = icon->priv;
 
     if (task_icon_count_tasklist_windows(icon) <= 1) {
         return NULL;
@@ -788,12 +771,9 @@ task_icon_get_minimize_all(TaskIcon* icon)
 static GtkWidget*
 task_icon_get_unminimize_all(TaskIcon* icon)
 {
-    TaskIconPrivate* priv = NULL;
     GSList* items = task_icon_get_items(icon);
     GSList* iter;
     GtkWidget* menuitem = NULL;
-
-    priv = icon->priv;
 
     if (task_icon_count_tasklist_windows(icon) <= 1) {
         return NULL;
@@ -819,12 +799,9 @@ task_icon_get_unminimize_all(TaskIcon* icon)
 static GtkWidget*
 task_icon_get_maximize_all(TaskIcon* icon)
 {
-    TaskIconPrivate* priv = NULL;
     GSList* items = task_icon_get_items(icon);
     GSList* iter;
     GtkWidget* menuitem = NULL;
-
-    priv = icon->priv;
 
     if (task_icon_count_tasklist_windows(icon) <= 1) {
         return NULL;
@@ -850,12 +827,9 @@ task_icon_get_maximize_all(TaskIcon* icon)
 static GtkWidget*
 task_icon_get_unmaximize_all(TaskIcon* icon)
 {
-    TaskIconPrivate* priv = NULL;
     GSList* items = task_icon_get_items(icon);
     GSList* iter;
     GtkWidget* menuitem = NULL;
-
-    priv = icon->priv;
 
     if (task_icon_count_tasklist_windows(icon) <= 1) {
         return NULL;
