@@ -1,4 +1,6 @@
-AC_INIT([avant-window-navigator], [0.4.1], [https://bugs.launchpad.net/awn])
+AC_INIT([avant-window-navigator],
+        [0.4.2],
+        [https://bugs.launchpad.net/awn])
 
 EXTRA_VERSION=
 AC_ARG_ENABLE([extra-version],
