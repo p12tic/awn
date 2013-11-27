@@ -4104,8 +4104,7 @@ awn_panel_get_snapshot(AwnPanel* panel,
     //  ((n_channels * bits_per_sample + 7) / 8);
 
     guchar* pixels = cairo_image_surface_get_data(surface);
-    image->pixel_data = g_memdup(pixels, data_len);
-    image->pixel_data_length1 = data_len;
+    image->pixel_data.assign(pixels, pixels+data_len);
 
     cairo_surface_destroy(surface);
 

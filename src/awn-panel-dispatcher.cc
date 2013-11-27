@@ -156,47 +156,6 @@ static gchar* _vala_array_dup1(gchar* self, int length)
 }
 
 
-void awn_image_struct_copy(const AwnImageStruct* self, AwnImageStruct* dest)
-{
-    *dest = *self;
-    char* tmp = self->pixel_data;
-    dest->pixel_data = (tmp == NULL) ? nullptr :  _vala_array_dup1(tmp, (*self).pixel_data_length1);
-}
-
-
-void awn_image_struct_destroy(AwnImageStruct* self)
-{
-    (*self).pixel_data = (g_free((*self).pixel_data), NULL);
-}
-
-
-AwnImageStruct* awn_image_struct_dup(const AwnImageStruct* self)
-{
-    AwnImageStruct* dup = new AwnImageStruct;
-    awn_image_struct_copy(self, dup);
-    return dup;
-}
-
-
-void awn_image_struct_free(AwnImageStruct* self)
-{
-    awn_image_struct_destroy(self);
-    delete self;
-}
-
-
-GType awn_image_struct_get_type(void)
-{
-    static volatile gsize type_id = 0;
-    if (g_once_init_enter(&type_id)) {
-        GType awn_image_struct_type_id;
-        awn_image_struct_type_id = g_boxed_type_register_static("AwnImageStruct", (GBoxedCopyFunc) awn_image_struct_dup, (GBoxedFreeFunc) awn_image_struct_free);
-        g_once_init_leave(&type_id, awn_image_struct_type_id);
-    }
-    return type_id;
-}
-
-
 void awn_panel_dbus_interface_add_applet(AwnPanelDBusInterface* self, const gchar* desktop_file, GError** error)
 {
     AWN_PANEL_DBUS_INTERFACE_GET_INTERFACE(self)->add_applet(self, desktop_file, error);
@@ -840,17 +799,13 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_get_snapshot(AwnPanelDBu
     dbus_message_iter_append_basic(&_tmp32_, DBUS_TYPE_INT32, &_tmp37_);
     _tmp38_ = result.num_channels;
     dbus_message_iter_append_basic(&_tmp32_, DBUS_TYPE_INT32, &_tmp38_);
-    _tmp39_ = result.pixel_data;
     dbus_message_iter_open_container(&_tmp32_, DBUS_TYPE_ARRAY, "y", &_tmp40_);
-    for (_tmp41_ = 0; _tmp41_ < result.pixel_data_length1; _tmp41_++) {
-        guint8 _tmp42_;
-        _tmp42_ = *_tmp39_;
-        dbus_message_iter_append_basic(&_tmp40_, DBUS_TYPE_BYTE, &_tmp42_);
-        _tmp39_++;
+    for (auto it : result.pixel_data) {
+        guint8 tmp = it;
+        dbus_message_iter_append_basic(&_tmp40_, DBUS_TYPE_BYTE, &tmp);
     }
     dbus_message_iter_close_container(&_tmp32_, &_tmp40_);
     dbus_message_iter_close_container(&iter, &_tmp32_);
-    awn_image_struct_destroy(& result);
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);
@@ -1524,24 +1479,15 @@ static void awn_panel_dbus_interface_dbus_proxy_get_snapshot(AwnPanelDBusInterfa
     dbus_message_iter_get_basic(&subiter, &_tmp39_);
     dbus_message_iter_next(&subiter);
     _tmp32_.num_channels = _tmp39_;
-    _tmp40_ = g_new(gchar, 5);
-    _tmp40__length = 0;
-    _tmp40__size = 4;
-    _tmp40__length1 = 0;
+    _tmp32_.pixel_data.resize(4);
     dbus_message_iter_recurse(&subiter, &_tmp41_);
-    for (; dbus_message_iter_get_arg_type(&_tmp41_); _tmp40__length1++) {
-        guint8 _tmp42_;
-        if (_tmp40__size == _tmp40__length) {
-            _tmp40__size = 2 * _tmp40__size;
-            _tmp40_ = g_renew(gchar, _tmp40_, _tmp40__size + 1);
-        }
-        dbus_message_iter_get_basic(&_tmp41_, &_tmp42_);
+    for (; dbus_message_iter_get_arg_type(&_tmp41_);) {
+        guint8 tmp;
+        dbus_message_iter_get_basic(&_tmp41_, &tmp);
         dbus_message_iter_next(&_tmp41_);
-        _tmp40_[_tmp40__length++] = _tmp42_;
+        _tmp32_.pixel_data.push_back(tmp);
     }
-    _tmp32_.pixel_data_length1 = _tmp40__length1;
     dbus_message_iter_next(&subiter);
-    _tmp32_.pixel_data = _tmp40_;
     dbus_message_iter_next(&iter);
     *result = _tmp32_;
     dbus_message_unref(reply);
@@ -2377,10 +2323,8 @@ static void awn_panel_dispatcher_real_get_snapshot(AwnPanelDBusInterface* base, 
     if (_inner_error_ != NULL) {
         if (_inner_error_->domain == DBUS_GERROR) {
             g_propagate_error(error, _inner_error_);
-            awn_image_struct_destroy(&tmp_res);
             return;
         } else {
-            awn_image_struct_destroy(&tmp_res);
             g_critical("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__,
                        __LINE__, _inner_error_->message,
                        g_quark_to_string(_inner_error_->domain), _inner_error_->code);

@@ -13,12 +13,11 @@
 #include <float.h>
 #include <math.h>
 #include "awn-panel.h"
+#include <vector>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#define AWN_TYPE_IMAGE_STRUCT (awn_image_struct_get_type ())
 
 #define AWN_TYPE_PANEL_DBUS_INTERFACE (awn_panel_dbus_interface_get_type ())
 #define AWN_PANEL_DBUS_INTERFACE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_PANEL_DBUS_INTERFACE, AwnPanelDBusInterface))
@@ -42,8 +41,7 @@ struct AwnImageStruct {
     bool has_alpha;
     int32_t bits_per_sample;
     int32_t num_channels;
-    char* pixel_data;
-    int32_t pixel_data_length1;
+    std::vector<char> pixel_data;
 };
 
 struct _AwnPanelDBusInterfaceIface {
@@ -80,12 +78,6 @@ struct AwnPanelDispatcherClass {
     GObjectClass parent_class;
 };
 
-
-GType awn_image_struct_get_type(void) G_GNUC_CONST;
-AwnImageStruct* awn_image_struct_dup(const AwnImageStruct* self);
-void awn_image_struct_free(AwnImageStruct* self);
-void awn_image_struct_copy(const AwnImageStruct* self, AwnImageStruct* dest);
-void awn_image_struct_destroy(AwnImageStruct* self);
 AwnPanelDBusInterface* awn_panel_dbus_interface_dbus_proxy_new(DBusGConnection* connection, const char* name, const char* path);
 GType awn_panel_dbus_interface_get_type(void) G_GNUC_CONST;
 void awn_panel_dbus_interface_add_applet(AwnPanelDBusInterface* self, const gchar* desktop_file, GError** error);
