@@ -330,8 +330,7 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_introspect(DockManage
     }
     dbus_free_string_array(children);
     xml_data += "</node>\n";
-    const char* str = xml_data.c_str();
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &str);
+    awn::vala_dbus_iter_append_string(&iter, xml_data.c_str());
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);
@@ -377,7 +376,6 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_capabilities(Dock
 {
     DBusMessageIter iter;
     GError* error = nullptr;
-    gchar** _tmp1_;
     if (strcmp(dbus_message_get_signature(message), "")) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
     }
@@ -395,7 +393,7 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_capabilities(Dock
     dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "s", &msg_iter);
     char** ri = result;
     for (int i = 0; i < result_length1; i++) {
-        dbus_message_iter_append_basic(&msg_iter, DBUS_TYPE_STRING, ri);
+        awn::vala_dbus_iter_append_string(&msg_iter, *ri++);
     }
     dbus_message_iter_close_container(&iter, &msg_iter);
 
@@ -435,10 +433,7 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items(DockManager
     _tmp5_ = result;
     dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "o", &_tmp6_);
     for (_tmp7_ = 0; _tmp7_ < result_length1; _tmp7_++) {
-        const char* _tmp8_;
-        _tmp8_ = *_tmp5_;
-        dbus_message_iter_append_basic(&_tmp6_, DBUS_TYPE_OBJECT_PATH, &_tmp8_);
-        _tmp5_++;
+        awn::vala_dbus_iter_append_obj_path(&_tmp6_, *_tmp5_++);
     }
     dbus_message_iter_close_container(&iter, &_tmp6_);
     awn::vala_array_free(result, result_length1, (GDestroyNotify) g_free);
@@ -459,7 +454,6 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_name(Doc
     const char* _tmp9_;
     char** result;
     int result_length1;
-    char** _tmp10_;
     DBusMessageIter _tmp11_;
     int _tmp12_;
     error = NULL;
@@ -479,13 +473,10 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_name(Doc
     DBusMessage* reply = dbus_message_new_method_return(message);
     dbus_message_iter_init_append(reply, &iter);
     _g_free0(name);
-    _tmp10_ = result;
+    char** _tmp10_ = result;
     dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "o", &_tmp11_);
     for (_tmp12_ = 0; _tmp12_ < result_length1; _tmp12_++) {
-        const char* _tmp13_;
-        _tmp13_ = *_tmp10_;
-        dbus_message_iter_append_basic(&_tmp11_, DBUS_TYPE_OBJECT_PATH, &_tmp13_);
-        _tmp10_++;
+        awn::vala_dbus_iter_append_obj_path(&_tmp11_, *_tmp10_++);
     }
     dbus_message_iter_close_container(&iter, &_tmp11_);
     awn::vala_array_free(result, result_length1, (GDestroyNotify) g_free);
@@ -507,7 +498,6 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_desktop_
     const char* _tmp14_;
     char** result;
     int result_length1;
-    char** _tmp15_;
     DBusMessageIter _tmp16_;
     int _tmp17_;
     error = NULL;
@@ -527,13 +517,10 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_desktop_
     DBusMessage* reply = dbus_message_new_method_return(message);
     dbus_message_iter_init_append(reply, &iter);
     _g_free0(desktop_file);
-    _tmp15_ = result;
+    char** _tmp15_ = result;
     dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "o", &_tmp16_);
     for (_tmp17_ = 0; _tmp17_ < result_length1; _tmp17_++) {
-        const char* _tmp18_;
-        _tmp18_ = *_tmp15_;
-        dbus_message_iter_append_basic(&_tmp16_, DBUS_TYPE_OBJECT_PATH, &_tmp18_);
-        _tmp15_++;
+        awn::vala_dbus_iter_append_obj_path(&_tmp16_, *_tmp15_++);
     }
     dbus_message_iter_close_container(&iter, &_tmp16_);
     awn::vala_array_free(result, result_length1, (GDestroyNotify) g_free);
@@ -577,10 +564,7 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_items_by_pid(Dock
     _tmp20_ = result;
     dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "o", &_tmp21_);
     for (_tmp22_ = 0; _tmp22_ < result_length1; _tmp22_++) {
-        const char* _tmp23_;
-        _tmp23_ = *_tmp20_;
-        dbus_message_iter_append_basic(&_tmp21_, DBUS_TYPE_OBJECT_PATH, &_tmp23_);
-        _tmp20_++;
+        awn::vala_dbus_iter_append_obj_path(&_tmp21_, *_tmp20_++);
     }
     dbus_message_iter_close_container(&iter, &_tmp21_);
     awn::vala_array_free(result, result_length1, (GDestroyNotify) g_free);
@@ -601,7 +585,6 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_item_by_xid(DockM
     gint64 xid = 0LL;
     dbus_int64_t _tmp24_;
     char* result;
-    const char* _tmp25_;
     error = NULL;
     if (strcmp(dbus_message_get_signature(message), "x")) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
@@ -617,8 +600,7 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_get_item_by_xid(DockM
     }
     DBusMessage* reply = dbus_message_new_method_return(message);
     dbus_message_iter_init_append(reply, &iter);
-    _tmp25_ = result;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_OBJECT_PATH, &_tmp25_);
+    awn::vala_dbus_iter_append_obj_path(&iter, result);
     _g_free0(result);
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
@@ -668,14 +650,12 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_set_visibility(Do
 static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_register_proxy_item(DockManagerDBusInterface* self, DBusConnection* connection, DBusMessage* message)
 {
     DBusMessageIter iter;
-    GError* error;
+    GError* error = nullptr;
     gchar* desktop_file = NULL;
     const char* _tmp28_;
     gchar* uri = NULL;
     const char* _tmp29_;
     char* result;
-    const char* _tmp30_;
-    error = NULL;
     if (strcmp(dbus_message_get_signature(message), "ss")) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
     }
@@ -695,8 +675,7 @@ static DBusHandlerResult _dbus_dock_manager_dbus_interface_awn_register_proxy_it
     dbus_message_iter_init_append(reply, &iter);
     _g_free0(desktop_file);
     _g_free0(uri);
-    _tmp30_ = result;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_OBJECT_PATH, &_tmp30_);
+    awn::vala_dbus_iter_append_obj_path(&iter, result);
     _g_free0(result);
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
@@ -745,12 +724,10 @@ static void _dbus_dock_manager_dbus_interface_item_added(GObject* _sender, const
 {
     const char* _path;
     DBusMessageIter _iter;
-    const char* _tmp31_;
     _path = g_object_get_data(_sender, "dbus_object_path");
     DBusMessage* message = dbus_message_new_signal(_path, "net.launchpad.DockManager", "ItemAdded");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp31_ = path;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_OBJECT_PATH, &_tmp31_);
+    awn::vala_dbus_iter_append_obj_path(&_iter, path);
     dbus_connection_send(_connection, message, NULL);
     dbus_message_unref(message);
 }
@@ -760,12 +737,10 @@ static void _dbus_dock_manager_dbus_interface_item_removed(GObject* _sender, con
 {
     const char* _path;
     DBusMessageIter _iter;
-    const char* _tmp32_;
     _path = g_object_get_data(_sender, "dbus_object_path");
     DBusMessage* message = dbus_message_new_signal(_path, "net.launchpad.DockManager", "ItemRemoved");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp32_ = path;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_OBJECT_PATH, &_tmp32_);
+    awn::vala_dbus_iter_append_obj_path(&_iter, path);
     dbus_connection_send(_connection, message, NULL);
     dbus_message_unref(message);
 }
@@ -1027,7 +1002,6 @@ static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_name(DockManag
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter _iter;
-    const char* _tmp10_;
     char** _result;
     int _result_length1;
     char** _tmp11_;
@@ -1041,8 +1015,7 @@ static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_name(DockManag
     }
     DBusMessage* message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemsByName");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp10_ = name;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp10_);
+    awn::vala_dbus_iter_append_string(&_iter, name);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
@@ -1090,7 +1063,6 @@ static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_desktop_file(D
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter _iter;
-    const char* _tmp15_;
     char** _result;
     char** _tmp16_;
     int _tmp16__length;
@@ -1102,8 +1074,7 @@ static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_desktop_file(D
     }
     DBusMessage* message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemsByDesktopFile");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp15_ = desktop_file;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp15_);
+    awn::vala_dbus_iter_append_string(&_iter, desktop_file);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
@@ -1163,8 +1134,7 @@ static char** dock_manager_dbus_interface_dbus_proxy_get_items_by_pid(DockManage
     }
     DBusMessage* message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemsByPid");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp20_ = pid;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_INT32, &_tmp20_);
+    awn::vala_dbus_iter_append_int32(&_iter, pid);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
@@ -1212,7 +1182,6 @@ static char* dock_manager_dbus_interface_dbus_proxy_get_item_by_xid(DockManagerD
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter _iter;
-    dbus_int64_t _tmp25_;
     char* _result;
     const char* _tmp26_;
     if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
@@ -1221,8 +1190,7 @@ static char* dock_manager_dbus_interface_dbus_proxy_get_item_by_xid(DockManagerD
     }
     DBusMessage* message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "GetItemByXid");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp25_ = xid;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_INT64, &_tmp25_);
+    awn::vala_dbus_iter_append_int64(&_iter, xid);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
@@ -1252,18 +1220,14 @@ static void dock_manager_dbus_interface_dbus_proxy_awn_set_visibility(DockManage
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter _iter;
-    const char* _tmp28_;
-    dbus_bool_t _tmp29_;
     if (((DockManagerDBusInterfaceDBusProxy*) self)->disposed) {
         g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
         return;
     }
     DBusMessage* message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "AwnSetVisibility");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp28_ = win_name;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp28_);
-    _tmp29_ = visible;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_BOOLEAN, &_tmp29_);
+    awn::vala_dbus_iter_append_string(&_iter, win_name);
+    awn::vala_dbus_iter_append_bool(&_iter, visible);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
@@ -1300,10 +1264,8 @@ static char* dock_manager_dbus_interface_dbus_proxy_awn_register_proxy_item(Dock
     }
     message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockManager", "AwnRegisterProxyItem");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp31_ = desktop_file;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp31_);
-    _tmp32_ = uri;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp32_);
+    awn::vala_dbus_iter_append_string(&_iter, desktop_file);
+    awn::vala_dbus_iter_append_string(&_iter, uri);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
@@ -1410,8 +1372,7 @@ static DBusHandlerResult _dbus_dock_item_dbus_interface_introspect(DockItemDBusI
     }
     dbus_free_string_array(children);
     xml_data += "</node>\n";
-    const char* str = xml_data.c_str();
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &str);
+    awn::vala_dbus_iter_append_string(&iter, xml_data.c_str());
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);
@@ -1442,21 +1403,15 @@ static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get(DockItemDBu
     dbus_message_iter_next(&iter);
     property_name = g_strdup(_tmp1_);
     if ((strcmp(interface_name, "net.launchpad.DockItem") == 0) && (strcmp(property_name, "DesktopFile") == 0)) {
-        gchar* result;
-        const char* _tmp2_;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "s", &subiter);
-        result = dock_item_dbus_interface_get_desktop_file(self);
-        _tmp2_ = result;
-        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_STRING, &_tmp2_);
+        char* result = dock_item_dbus_interface_get_desktop_file(self);
+        awn::vala_dbus_iter_append_string(&subiter, result);
         _g_free0(result);
         dbus_message_iter_close_container(&reply_iter, &subiter);
     } else if ((strcmp(interface_name, "net.launchpad.DockItem") == 0) && (strcmp(property_name, "Uri") == 0)) {
-        gchar* result;
-        const char* _tmp3_;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "s", &subiter);
-        result = dock_item_dbus_interface_get_uri(self);
-        _tmp3_ = result;
-        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_STRING, &_tmp3_);
+        char* result = dock_item_dbus_interface_get_uri(self);
+        awn::vala_dbus_iter_append_string(&subiter, result);
         _g_free0(result);
         dbus_message_iter_close_container(&reply_iter, &subiter);
     } else {
@@ -1496,26 +1451,22 @@ static DBusHandlerResult _dbus_dock_item_dbus_interface_property_get_all(DockIte
             gchar* result;
             const char* _tmp5_;
             dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-            property_name = "DesktopFile";
-            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            awn::vala_dbus_iter_append_string(&entry_iter, "DesktopFile");
             dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "s", &value_iter);
             result = dock_item_dbus_interface_get_desktop_file(self);
             _tmp5_ = result;
-            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_STRING, &_tmp5_);
+            awn::vala_dbus_iter_append_string(&value_iter, _tmp5_);
             _g_free0(result);
             dbus_message_iter_close_container(&entry_iter, &value_iter);
             dbus_message_iter_close_container(&subiter, &entry_iter);
         }
         {
             gchar* result;
-            const char* _tmp6_;
             dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-            property_name = "Uri";
-            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            awn::vala_dbus_iter_append_string(&entry_iter, "Uri");
             dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "s", &value_iter);
-            result = dock_item_dbus_interface_get_uri(self);
-            _tmp6_ = result;
-            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_STRING, &_tmp6_);
+            awn::vala_dbus_iter_append_string(&value_iter,
+                                              dock_item_dbus_interface_get_uri(self));
             _g_free0(result);
             dbus_message_iter_close_container(&entry_iter, &value_iter);
             dbus_message_iter_close_container(&subiter, &entry_iter);
@@ -1579,8 +1530,7 @@ static DBusHandlerResult _dbus_dock_item_dbus_interface_add_menu_item(DockItemDB
     DBusMessage* reply = dbus_message_new_method_return(message);
     dbus_message_iter_init_append(reply, &iter);
     _g_hash_table_unref0(menu_hints);
-    _tmp28_ = result;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_INT32, &_tmp28_);
+    awn::vala_dbus_iter_append_int32(&iter, result);
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);
@@ -1701,14 +1651,11 @@ DBusHandlerResult dock_item_dbus_interface_dbus_message(DBusConnection* connecti
 
 static void _dbus_dock_item_dbus_interface_menu_item_activated(GObject* _sender, gint id, DBusConnection* _connection)
 {
-    const char* _path;
     DBusMessageIter _iter;
-    dbus_int32_t _tmp51_;
-    _path = g_object_get_data(_sender, "dbus_object_path");
-    DBusMessage* message = dbus_message_new_signal(_path, "net.launchpad.DockItem", "MenuItemActivated");
+    const char* path = g_object_get_data(_sender, "dbus_object_path");
+    DBusMessage* message = dbus_message_new_signal(path, "net.launchpad.DockItem", "MenuItemActivated");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp51_ = id;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_INT32, &_tmp51_);
+    awn::vala_dbus_iter_append_int32(&_iter, id);
     dbus_connection_send(_connection, message, NULL);
     dbus_message_unref(message);
 }
@@ -1830,7 +1777,7 @@ static gint dock_item_dbus_interface_dbus_proxy_add_menu_item(DockItemDBusInterf
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter _iter;
-    DBusMessageIter _tmp36_, _tmp37_;
+    DBusMessageIter _tmp36_;
     GHashTableIter _tmp38_;
     gpointer _tmp39_, _tmp40_;
     gint _result;
@@ -1844,80 +1791,10 @@ static gint dock_item_dbus_interface_dbus_proxy_add_menu_item(DockItemDBusInterf
     dbus_message_iter_open_container(&_iter, DBUS_TYPE_ARRAY, "{sv}", &_tmp36_);
     g_hash_table_iter_init(&_tmp38_, menu_hints);
     while (g_hash_table_iter_next(&_tmp38_, &_tmp39_, &_tmp40_)) {
-        gchar* _key;
-        GValue* _value;
-        const char* _tmp41_;
-        DBusMessageIter _tmp42_;
-        dbus_message_iter_open_container(&_tmp36_, DBUS_TYPE_DICT_ENTRY, NULL, &_tmp37_);
-        _key = (gchar*) _tmp39_;
-        _value = (GValue*) _tmp40_;
-        _tmp41_ = _key;
-        dbus_message_iter_append_basic(&_tmp37_, DBUS_TYPE_STRING, &_tmp41_);
-        if (G_VALUE_TYPE(_value) == G_TYPE_UCHAR) {
-            guint8 _tmp43_;
-            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "y", &_tmp42_);
-            _tmp43_ = g_value_get_uchar(_value);
-            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_BYTE, &_tmp43_);
-            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_BOOLEAN) {
-            dbus_bool_t _tmp44_;
-            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "b", &_tmp42_);
-            _tmp44_ = g_value_get_boolean(_value);
-            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_BOOLEAN, &_tmp44_);
-            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_INT) {
-            dbus_int32_t _tmp45_;
-            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "i", &_tmp42_);
-            _tmp45_ = g_value_get_int(_value);
-            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_INT32, &_tmp45_);
-            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_UINT) {
-            dbus_uint32_t _tmp46_;
-            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "u", &_tmp42_);
-            _tmp46_ = g_value_get_uint(_value);
-            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_UINT32, &_tmp46_);
-            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_INT64) {
-            dbus_int64_t _tmp47_;
-            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "x", &_tmp42_);
-            _tmp47_ = g_value_get_int64(_value);
-            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_INT64, &_tmp47_);
-            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_UINT64) {
-            dbus_uint64_t _tmp48_;
-            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "t", &_tmp42_);
-            _tmp48_ = g_value_get_uint64(_value);
-            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_UINT64, &_tmp48_);
-            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_DOUBLE) {
-            double _tmp49_;
-            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "d", &_tmp42_);
-            _tmp49_ = g_value_get_double(_value);
-            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_DOUBLE, &_tmp49_);
-            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_STRING) {
-            const char* _tmp50_;
-            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "s", &_tmp42_);
-            _tmp50_ = g_value_get_string(_value);
-            dbus_message_iter_append_basic(&_tmp42_, DBUS_TYPE_STRING, &_tmp50_);
-            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_STRV) {
-            const gchar** _tmp51_;
-            DBusMessageIter _tmp52_;
-            int _tmp53_;
-            dbus_message_iter_open_container(&_tmp37_, DBUS_TYPE_VARIANT, "as", &_tmp42_);
-            _tmp51_ = g_value_get_boxed(_value);
-            dbus_message_iter_open_container(&_tmp42_, DBUS_TYPE_ARRAY, "s", &_tmp52_);
-            for (_tmp53_ = 0; _tmp53_ < g_strv_length(g_value_get_boxed(_value)); _tmp53_++) {
-                const char* _tmp54_;
-                _tmp54_ = *_tmp51_;
-                dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_STRING, &_tmp54_);
-                _tmp51_++;
-            }
-            dbus_message_iter_close_container(&_tmp42_, &_tmp52_);
-            dbus_message_iter_close_container(&_tmp37_, &_tmp42_);
-        }
-        dbus_message_iter_close_container(&_tmp36_, &_tmp37_);
+        DBusMessageIter it;
+        dbus_message_iter_open_container(&_tmp36_, DBUS_TYPE_DICT_ENTRY, NULL, &it);
+        awn::vala_dbus_append_gvalue(&it, (char*) _tmp39_, (GValue*) _tmp40_);
+        dbus_message_iter_close_container(&_tmp36_, &it);
     }
     dbus_message_iter_close_container(&_iter, &_tmp36_);
     g_object_get(self, "connection", &_connection, NULL);
@@ -1950,15 +1827,13 @@ static void dock_item_dbus_interface_dbus_proxy_remove_menu_item(DockItemDBusInt
     DBusGConnection* _connection;
     DBusMessage* message, *reply;
     DBusMessageIter _iter;
-    dbus_int32_t _tmp57_;
     if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
         g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
         return;
     }
     message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "net.launchpad.DockItem", "RemoveMenuItem");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp57_ = id;
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_INT32, &_tmp57_);
+    awn::vala_dbus_iter_append_int32(&_iter, id);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
@@ -1984,7 +1859,7 @@ static void dock_item_dbus_interface_dbus_proxy_update_dock_item(DockItemDBusInt
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter _iter;
-    DBusMessageIter _tmp59_, _tmp60_;
+    DBusMessageIter _tmp59_;
     GHashTableIter _tmp61_;
     gpointer _tmp62_, _tmp63_;
     if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
@@ -1996,80 +1871,10 @@ static void dock_item_dbus_interface_dbus_proxy_update_dock_item(DockItemDBusInt
     dbus_message_iter_open_container(&_iter, DBUS_TYPE_ARRAY, "{sv}", &_tmp59_);
     g_hash_table_iter_init(&_tmp61_, hints);
     while (g_hash_table_iter_next(&_tmp61_, &_tmp62_, &_tmp63_)) {
-        gchar* _key;
-        GValue* _value;
-        const char* _tmp64_;
-        DBusMessageIter _tmp65_;
-        dbus_message_iter_open_container(&_tmp59_, DBUS_TYPE_DICT_ENTRY, NULL, &_tmp60_);
-        _key = (gchar*) _tmp62_;
-        _value = (GValue*) _tmp63_;
-        _tmp64_ = _key;
-        dbus_message_iter_append_basic(&_tmp60_, DBUS_TYPE_STRING, &_tmp64_);
-        if (G_VALUE_TYPE(_value) == G_TYPE_UCHAR) {
-            guint8 _tmp66_;
-            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "y", &_tmp65_);
-            _tmp66_ = g_value_get_uchar(_value);
-            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_BYTE, &_tmp66_);
-            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_BOOLEAN) {
-            dbus_bool_t _tmp67_;
-            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "b", &_tmp65_);
-            _tmp67_ = g_value_get_boolean(_value);
-            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_BOOLEAN, &_tmp67_);
-            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_INT) {
-            dbus_int32_t _tmp68_;
-            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "i", &_tmp65_);
-            _tmp68_ = g_value_get_int(_value);
-            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_INT32, &_tmp68_);
-            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_UINT) {
-            dbus_uint32_t _tmp69_;
-            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "u", &_tmp65_);
-            _tmp69_ = g_value_get_uint(_value);
-            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_UINT32, &_tmp69_);
-            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_INT64) {
-            dbus_int64_t _tmp70_;
-            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "x", &_tmp65_);
-            _tmp70_ = g_value_get_int64(_value);
-            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_INT64, &_tmp70_);
-            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_UINT64) {
-            dbus_uint64_t _tmp71_;
-            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "t", &_tmp65_);
-            _tmp71_ = g_value_get_uint64(_value);
-            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_UINT64, &_tmp71_);
-            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_DOUBLE) {
-            double _tmp72_;
-            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "d", &_tmp65_);
-            _tmp72_ = g_value_get_double(_value);
-            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_DOUBLE, &_tmp72_);
-            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_STRING) {
-            const char* _tmp73_;
-            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "s", &_tmp65_);
-            _tmp73_ = g_value_get_string(_value);
-            dbus_message_iter_append_basic(&_tmp65_, DBUS_TYPE_STRING, &_tmp73_);
-            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
-        } else if (G_VALUE_TYPE(_value) == G_TYPE_STRV) {
-            const gchar** _tmp74_;
-            DBusMessageIter _tmp75_;
-            int _tmp76_;
-            dbus_message_iter_open_container(&_tmp60_, DBUS_TYPE_VARIANT, "as", &_tmp65_);
-            _tmp74_ = g_value_get_boxed(_value);
-            dbus_message_iter_open_container(&_tmp65_, DBUS_TYPE_ARRAY, "s", &_tmp75_);
-            for (_tmp76_ = 0; _tmp76_ < g_strv_length(g_value_get_boxed(_value)); _tmp76_++) {
-                const char* _tmp77_;
-                _tmp77_ = *_tmp74_;
-                dbus_message_iter_append_basic(&_tmp75_, DBUS_TYPE_STRING, &_tmp77_);
-                _tmp74_++;
-            }
-            dbus_message_iter_close_container(&_tmp65_, &_tmp75_);
-            dbus_message_iter_close_container(&_tmp60_, &_tmp65_);
-        }
-        dbus_message_iter_close_container(&_tmp59_, &_tmp60_);
+        DBusMessageIter it;
+        dbus_message_iter_open_container(&_tmp59_, DBUS_TYPE_DICT_ENTRY, NULL, &it);
+        awn::vala_dbus_append_gvalue(&it, (char*) _tmp62_, (GValue*) _tmp63_);
+        dbus_message_iter_close_container(&_tmp59_, &it);
     }
     dbus_message_iter_close_container(&_iter, &_tmp59_);
     g_object_get(self, "connection", &_connection, NULL);
@@ -2097,8 +1902,6 @@ static gchar* dock_item_dbus_interface_dbus_proxy_get_desktop_file(DockItemDBusI
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter _iter, _subiter;
-    const char* _tmp79_;
-    const char* _tmp80_;
     gchar* _result;
     const char* _tmp81_;
     if (((DockItemDBusInterfaceDBusProxy*) self)->disposed) {
@@ -2106,10 +1909,8 @@ static gchar* dock_item_dbus_interface_dbus_proxy_get_desktop_file(DockItemDBusI
     }
     DBusMessage* message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp79_ = "net.launchpad.DockItem";
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp79_);
-    _tmp80_ = "DesktopFile";
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp80_);
+    awn::vala_dbus_iter_append_string(&_iter, "net.launchpad.DockItem");
+    awn::vala_dbus_iter_append_string(&_iter, "DesktopFile");
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
@@ -2154,10 +1955,8 @@ static gchar* dock_item_dbus_interface_dbus_proxy_get_uri(DockItemDBusInterface*
     }
     DBusMessage* message = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
     dbus_message_iter_init_append(message, &_iter);
-    _tmp82_ = "net.launchpad.DockItem";
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp82_);
-    _tmp83_ = "Uri";
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp83_);
+    awn::vala_dbus_iter_append_string(&_iter, "net.launchpad.DockItem");
+    awn::vala_dbus_iter_append_string(&_iter, "Uri");
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), message, -1, &_dbus_error);
@@ -2633,8 +2432,7 @@ static DBusHandlerResult _dbus_task_manager_dispatcher_introspect(TaskManagerDis
     }
     dbus_free_string_array(children);
     xml_data += "</node>\n";
-    const char* str = xml_data.c_str();
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &str);
+    awn::vala_dbus_iter_append_string(&iter, xml_data.c_str());
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);
@@ -3072,8 +2870,7 @@ static DBusHandlerResult _dbus_task_icon_dispatcher_introspect(TaskIconDispatche
     }
     dbus_free_string_array(children);
     xml_data += "</node>\n";
-    const char* str = xml_data.c_str();
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &str);
+    awn::vala_dbus_iter_append_string(&iter, xml_data.c_str());
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);

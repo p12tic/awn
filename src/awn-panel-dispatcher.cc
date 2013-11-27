@@ -345,8 +345,7 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_introspect(AwnPanelDBusI
     }
     dbus_free_string_array(children);
     xml_data += "</node>\n";
-    const char* str = xml_data.c_str();
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &str);
+    awn::vala_dbus_iter_append_string(&iter, xml_data.c_str());
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);
@@ -376,58 +375,46 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_property_get(AwnPanelDBu
     dbus_message_iter_next(&iter);
 
     if ((strcmp(interface_name, "org.awnproject.Awn.Panel") == 0) && (strcmp(property_name, "OffsetModifier") == 0)) {
-        double result;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "d", &subiter);
-        result = awn_panel_dbus_interface_get_offset_modifier(self);
-        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_DOUBLE, &result);
+        awn::vala_dbus_iter_append_double(&subiter,
+                                          awn_panel_dbus_interface_get_offset_modifier(self));
         dbus_message_iter_close_container(&reply_iter, &subiter);
+
     } else if ((strcmp(interface_name, "org.awnproject.Awn.Panel") == 0) && (strcmp(property_name, "MaxSize") == 0)) {
-        int result;
-        dbus_int32_t _tmp3_;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "i", &subiter);
-        result = awn_panel_dbus_interface_get_max_size(self);
-        _tmp3_ = result;
-        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_INT32, &_tmp3_);
+        awn::vala_dbus_iter_append_int32(&subiter,
+                                         awn_panel_dbus_interface_get_max_size(self));
         dbus_message_iter_close_container(&reply_iter, &subiter);
+
     } else if ((strcmp(interface_name, "org.awnproject.Awn.Panel") == 0) && (strcmp(property_name, "Offset") == 0)) {
         int result;
-        dbus_int32_t _tmp4_;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "i", &subiter);
-        result = awn_panel_dbus_interface_get_offset(self);
-        _tmp4_ = result;
-        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_INT32, &_tmp4_);
+        awn::vala_dbus_iter_append_int32(&subiter,
+                                         awn_panel_dbus_interface_get_offset(self));
         dbus_message_iter_close_container(&reply_iter, &subiter);
+
     } else if ((strcmp(interface_name, "org.awnproject.Awn.Panel") == 0) && (strcmp(property_name, "PathType") == 0)) {
-        int result;
-        dbus_int32_t _tmp5_;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "i", &subiter);
-        result = awn_panel_dbus_interface_get_path_type(self);
-        _tmp5_ = result;
-        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_INT32, &_tmp5_);
+        awn::vala_dbus_iter_append_int32(&subiter,
+                                         awn_panel_dbus_interface_get_path_type(self));
         dbus_message_iter_close_container(&reply_iter, &subiter);
+
     } else if ((strcmp(interface_name, "org.awnproject.Awn.Panel") == 0) && (strcmp(property_name, "Position") == 0)) {
-        int result;
-        dbus_int32_t _tmp6_;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "i", &subiter);
-        result = awn_panel_dbus_interface_get_position(self);
-        _tmp6_ = result;
-        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_INT32, &_tmp6_);
+        awn::vala_dbus_iter_append_int32(&subiter,
+                                         awn_panel_dbus_interface_get_position(self));
         dbus_message_iter_close_container(&reply_iter, &subiter);
+
     } else if ((strcmp(interface_name, "org.awnproject.Awn.Panel") == 0) && (strcmp(property_name, "Size") == 0)) {
-        int result;
-        dbus_int32_t _tmp7_;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "i", &subiter);
-        result = awn_panel_dbus_interface_get_size(self);
-        _tmp7_ = result;
-        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_INT32, &_tmp7_);
+        awn::vala_dbus_iter_append_int32(&subiter,
+                                         awn_panel_dbus_interface_get_size(self));
         dbus_message_iter_close_container(&reply_iter, &subiter);
+
     } else if ((strcmp(interface_name, "org.awnproject.Awn.Panel") == 0) && (strcmp(property_name, "PanelXid") == 0)) {
-        int64_t result;
-        dbus_int64_t _tmp8_;
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_VARIANT, "x", &subiter);
-        result = awn_panel_dbus_interface_get_panel_xid(self);
-        _tmp8_ = result;
-        dbus_message_iter_append_basic(&subiter, DBUS_TYPE_INT64, &_tmp8_);
+        awn::vala_dbus_iter_append_int64(&subiter,
+                                         awn_panel_dbus_interface_get_panel_xid(self));
         dbus_message_iter_close_container(&reply_iter, &subiter);
     } else {
         dbus_message_unref(reply);
@@ -503,7 +490,6 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_property_set(AwnPanelDBu
 static DBusHandlerResult _dbus_awn_panel_dbus_interface_property_get_all(AwnPanelDBusInterface* self, DBusConnection* connection, DBusMessage* message)
 {
     DBusMessageIter iter, reply_iter, subiter, entry_iter, value_iter;
-    const char* property_name;
     if (strcmp(dbus_message_get_signature(message), "s")) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
     }
@@ -519,80 +505,65 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_property_get_all(AwnPane
     if (strcmp(interface_name, "org.awnproject.Awn.Panel") == 0) {
         dbus_message_iter_open_container(&reply_iter, DBUS_TYPE_ARRAY, "{sv}", &subiter);
         {
-            double result;
             dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-            property_name = "OffsetModifier";
-            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            awn::vala_dbus_iter_append_string(&entry_iter, "OffsetModifier");
             dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "d", &value_iter);
-            result = awn_panel_dbus_interface_get_offset_modifier(self);
-            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_DOUBLE, &result);
+            double result = awn_panel_dbus_interface_get_offset_modifier(self);
+            awn::vala_dbus_iter_append_double(&value_iter, result);
             dbus_message_iter_close_container(&entry_iter, &value_iter);
             dbus_message_iter_close_container(&subiter, &entry_iter);
         }
         {
-            dbus_int32_t result;
             dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-            property_name = "MaxSize";
-            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            awn::vala_dbus_iter_append_string(&entry_iter, "MaxSize");
             dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "i", &value_iter);
-            result = awn_panel_dbus_interface_get_max_size(self);
-            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_INT32, &result);
+            awn::vala_dbus_iter_append_int32(&value_iter,
+                                             awn_panel_dbus_interface_get_max_size(self));
             dbus_message_iter_close_container(&entry_iter, &value_iter);
             dbus_message_iter_close_container(&subiter, &entry_iter);
         }
         {
-            gint result;
-            dbus_int32_t _tmp17_;
             dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-            property_name = "Offset";
-            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            awn::vala_dbus_iter_append_string(&entry_iter, "Offset");
             dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "i", &value_iter);
-            result = awn_panel_dbus_interface_get_offset(self);
-            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_INT32, &result);
+            awn::vala_dbus_iter_append_int32(&value_iter,
+                                             awn_panel_dbus_interface_get_offset(self));
             dbus_message_iter_close_container(&entry_iter, &value_iter);
             dbus_message_iter_close_container(&subiter, &entry_iter);
         }
         {
-            dbus_int32_t result;
             dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-            property_name = "PathType";
-            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            awn::vala_dbus_iter_append_string(&entry_iter, "PathType");
             dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "i", &value_iter);
-            result = awn_panel_dbus_interface_get_path_type(self);
-            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_INT32, &result);
+            awn::vala_dbus_iter_append_int32(&value_iter,
+                                             awn_panel_dbus_interface_get_path_type(self));
             dbus_message_iter_close_container(&entry_iter, &value_iter);
             dbus_message_iter_close_container(&subiter, &entry_iter);
         }
         {
-            dbus_int32_t result;
             dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-            property_name = "Position";
-            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            awn::vala_dbus_iter_append_string(&entry_iter, "Position");
             dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "i", &value_iter);
-            result = awn_panel_dbus_interface_get_position(self);
-            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_INT32, &result);
+            awn::vala_dbus_iter_append_int32(&value_iter,
+                                             awn_panel_dbus_interface_get_position(self));
             dbus_message_iter_close_container(&entry_iter, &value_iter);
             dbus_message_iter_close_container(&subiter, &entry_iter);
         }
         {
-            dbus_int32_t result;
             dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-            property_name = "Size";
-            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            awn::vala_dbus_iter_append_string(&entry_iter, "Size");
             dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "i", &value_iter);
-            result = awn_panel_dbus_interface_get_size(self);
-            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_INT32, &result);
+            awn::vala_dbus_iter_append_int32(&value_iter,
+                                               awn_panel_dbus_interface_get_size(self));
             dbus_message_iter_close_container(&entry_iter, &value_iter);
             dbus_message_iter_close_container(&subiter, &entry_iter);
         }
         {
-            dbus_int64_t result;
             dbus_message_iter_open_container(&subiter, DBUS_TYPE_DICT_ENTRY, NULL, &entry_iter);
-            property_name = "PanelXid";
-            dbus_message_iter_append_basic(&entry_iter, DBUS_TYPE_STRING, &property_name);
+            awn::vala_dbus_iter_append_string(&entry_iter, "PanelXid");
             dbus_message_iter_open_container(&entry_iter, DBUS_TYPE_VARIANT, "x", &value_iter);
-            result = awn_panel_dbus_interface_get_panel_xid(self);
-            dbus_message_iter_append_basic(&value_iter, DBUS_TYPE_INT64, &result);
+            awn::vala_dbus_iter_append_int64(&value_iter,
+                                             awn_panel_dbus_interface_get_panel_xid(self));
             dbus_message_iter_close_container(&entry_iter, &value_iter);
             dbus_message_iter_close_container(&subiter, &entry_iter);
         }
@@ -708,7 +679,7 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_docklet_request(AwnPanel
 
     DBusMessage* reply = dbus_message_new_method_return(message);
     dbus_message_iter_init_append(reply, &iter);
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_INT64, &result);
+    awn::vala_dbus_iter_append_int64(&iter, result);
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);
@@ -743,10 +714,7 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_get_inhibitors(AwnPanelD
     _tmp28_ = result;
     dbus_message_iter_open_container(&iter, DBUS_TYPE_ARRAY, "s", &_tmp29_);
     for (int i = 0; i < result_length1; i++) {
-        const char* _tmp31_;
-        _tmp31_ = *_tmp28_;
-        dbus_message_iter_append_basic(&_tmp29_, DBUS_TYPE_STRING, &_tmp31_);
-        _tmp28_++;
+        awn::vala_dbus_iter_append_string(&_tmp29_, *_tmp28_++);
     }
     dbus_message_iter_close_container(&iter, &_tmp29_);
     awn::vala_array_free(result, result_length1, (GDestroyNotify) g_free);
@@ -766,15 +734,7 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_get_snapshot(AwnPanelDBu
     GError* error = nullptr;
     AwnImageStruct result = {0};
     DBusMessageIter _tmp32_;
-    dbus_int32_t _tmp33_;
-    dbus_int32_t _tmp34_;
-    dbus_int32_t _tmp35_;
-    dbus_bool_t _tmp36_;
-    dbus_int32_t _tmp37_;
-    dbus_int32_t _tmp38_;
-    gchar* _tmp39_;
     DBusMessageIter _tmp40_;
-    int _tmp41_;
     if (strcmp(dbus_message_get_signature(message), "")) {
         return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
     }
@@ -787,22 +747,15 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_get_snapshot(AwnPanelDBu
     DBusMessage* reply = dbus_message_new_method_return(message);
     dbus_message_iter_init_append(reply, &iter);
     dbus_message_iter_open_container(&iter, DBUS_TYPE_STRUCT, NULL, &_tmp32_);
-    _tmp33_ = result.width;
-    dbus_message_iter_append_basic(&_tmp32_, DBUS_TYPE_INT32, &_tmp33_);
-    _tmp34_ = result.height;
-    dbus_message_iter_append_basic(&_tmp32_, DBUS_TYPE_INT32, &_tmp34_);
-    _tmp35_ = result.rowstride;
-    dbus_message_iter_append_basic(&_tmp32_, DBUS_TYPE_INT32, &_tmp35_);
-    _tmp36_ = result.has_alpha;
-    dbus_message_iter_append_basic(&_tmp32_, DBUS_TYPE_BOOLEAN, &_tmp36_);
-    _tmp37_ = result.bits_per_sample;
-    dbus_message_iter_append_basic(&_tmp32_, DBUS_TYPE_INT32, &_tmp37_);
-    _tmp38_ = result.num_channels;
-    dbus_message_iter_append_basic(&_tmp32_, DBUS_TYPE_INT32, &_tmp38_);
+    awn::vala_dbus_iter_append_int32(&_tmp32_, result.width);
+    awn::vala_dbus_iter_append_int32(&_tmp32_, result.height);
+    awn::vala_dbus_iter_append_int32(&_tmp32_, result.rowstride);
+    awn::vala_dbus_iter_append_bool(&_tmp32_, result.has_alpha);
+    awn::vala_dbus_iter_append_int32(&_tmp32_, result.bits_per_sample);
+    awn::vala_dbus_iter_append_int32(&_tmp32_, result.num_channels);
     dbus_message_iter_open_container(&_tmp32_, DBUS_TYPE_ARRAY, "y", &_tmp40_);
-    for (auto it : result.pixel_data) {
-        guint8 tmp = it;
-        dbus_message_iter_append_basic(&_tmp40_, DBUS_TYPE_BYTE, &tmp);
+    for (auto c : result.pixel_data) {
+        awn::vala_dbus_iter_append_uint8(&_tmp40_, c);
     }
     dbus_message_iter_close_container(&_tmp32_, &_tmp40_);
     dbus_message_iter_close_container(&iter, &_tmp32_);
@@ -837,8 +790,7 @@ static DBusHandlerResult _dbus_awn_panel_dbus_interface_inhibit_autohide(AwnPane
     }
     DBusMessage* reply = dbus_message_new_method_return(message);
     dbus_message_iter_init_append(reply, &iter);
-    dbus_uint32_t _tmp45_ = result;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_UINT32, &_tmp45_);
+    awn::vala_dbus_iter_append_uint32(&iter, result);
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);
@@ -989,7 +941,7 @@ static void _dbus_awn_panel_dbus_interface_destroy_applet(GObject* _sender, cons
     const char* path = g_object_get_data(_sender, "dbus_object_path");
     DBusMessage* msg = dbus_message_new_signal(path, "org.awnproject.Awn.Panel", "DestroyApplet");
     dbus_message_iter_init_append(msg, &iter);
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &uid);
+    awn::vala_dbus_iter_append_string(&iter, uid);
     dbus_connection_send(_connection, msg, NULL);
     dbus_message_unref(msg);
 }
@@ -1008,79 +960,13 @@ static void _dbus_awn_panel_dbus_interface_destroy_notify(GObject* _sender, DBus
 
 static void _dbus_awn_panel_dbus_interface_property_changed(GObject* _sender, const gchar* prop_name, GValue* value, DBusConnection* _connection)
 {
-    DBusMessageIter iter;
-    DBusMessageIter _tmp52_;
 
     const char* _path = g_object_get_data(_sender, "dbus_object_path");
     DBusMessage* msg = dbus_message_new_signal(_path, "org.awnproject.Awn.Panel", "PropertyChanged");
 
+    DBusMessageIter iter;
     dbus_message_iter_init_append(msg, &iter);
-    const char* _tmp51_ = prop_name;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp51_);
-    if (G_VALUE_TYPE(value) == G_TYPE_UCHAR) {
-        guint8 _tmp53_;
-        dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "y", &_tmp52_);
-        _tmp53_ = g_value_get_uchar(value);
-        dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_BYTE, &_tmp53_);
-        dbus_message_iter_close_container(&iter, &_tmp52_);
-    } else if (G_VALUE_TYPE(value) == G_TYPE_BOOLEAN) {
-        dbus_bool_t _tmp54_;
-        dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "b", &_tmp52_);
-        _tmp54_ = g_value_get_boolean(value);
-        dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_BOOLEAN, &_tmp54_);
-        dbus_message_iter_close_container(&iter, &_tmp52_);
-    } else if (G_VALUE_TYPE(value) == G_TYPE_INT) {
-        dbus_int32_t _tmp55_;
-        dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "i", &_tmp52_);
-        _tmp55_ = g_value_get_int(value);
-        dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_INT32, &_tmp55_);
-        dbus_message_iter_close_container(&iter, &_tmp52_);
-    } else if (G_VALUE_TYPE(value) == G_TYPE_UINT) {
-        dbus_uint32_t _tmp56_;
-        dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "u", &_tmp52_);
-        _tmp56_ = g_value_get_uint(value);
-        dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_UINT32, &_tmp56_);
-        dbus_message_iter_close_container(&iter, &_tmp52_);
-    } else if (G_VALUE_TYPE(value) == G_TYPE_INT64) {
-        dbus_int64_t _tmp57_;
-        dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "x", &_tmp52_);
-        _tmp57_ = g_value_get_int64(value);
-        dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_INT64, &_tmp57_);
-        dbus_message_iter_close_container(&iter, &_tmp52_);
-    } else if (G_VALUE_TYPE(value) == G_TYPE_UINT64) {
-        dbus_uint64_t _tmp58_;
-        dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "t", &_tmp52_);
-        _tmp58_ = g_value_get_uint64(value);
-        dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_UINT64, &_tmp58_);
-        dbus_message_iter_close_container(&iter, &_tmp52_);
-    } else if (G_VALUE_TYPE(value) == G_TYPE_DOUBLE) {
-        double _tmp59_;
-        dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "d", &_tmp52_);
-        _tmp59_ = g_value_get_double(value);
-        dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_DOUBLE, &_tmp59_);
-        dbus_message_iter_close_container(&iter, &_tmp52_);
-    } else if (G_VALUE_TYPE(value) == G_TYPE_STRING) {
-        const char* _tmp60_;
-        dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "s", &_tmp52_);
-        _tmp60_ = g_value_get_string(value);
-        dbus_message_iter_append_basic(&_tmp52_, DBUS_TYPE_STRING, &_tmp60_);
-        dbus_message_iter_close_container(&iter, &_tmp52_);
-    } else if (G_VALUE_TYPE(value) == G_TYPE_STRV) {
-        const gchar** _tmp61_;
-        DBusMessageIter _tmp62_;
-        unsigned int _tmp63_;
-        dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "as", &_tmp52_);
-        _tmp61_ = g_value_get_boxed(value);
-        dbus_message_iter_open_container(&_tmp52_, DBUS_TYPE_ARRAY, "s", &_tmp62_);
-        for (_tmp63_ = 0; _tmp63_ < g_strv_length(g_value_get_boxed(value)); _tmp63_++) {
-            const char* _tmp64_;
-            _tmp64_ = *_tmp61_;
-            dbus_message_iter_append_basic(&_tmp62_, DBUS_TYPE_STRING, &_tmp64_);
-            _tmp61_++;
-        }
-        dbus_message_iter_close_container(&_tmp52_, &_tmp62_);
-        dbus_message_iter_close_container(&iter, &_tmp52_);
-    }
+    awn::vala_dbus_append_gvalue(&iter, prop_name, value);
     dbus_connection_send(_connection, msg, NULL);
     dbus_message_unref(msg);
 }
@@ -1251,7 +1137,7 @@ static void awn_panel_dbus_interface_dbus_proxy_add_applet(AwnPanelDBusInterface
     }
     msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.awnproject.Awn.Panel", "AddApplet");
     dbus_message_iter_init_append(msg, &iter);
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &desktop_file);
+    awn::vala_dbus_iter_append_string(&iter, desktop_file);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1285,7 +1171,7 @@ static void awn_panel_dbus_interface_dbus_proxy_delete_applet(AwnPanelDBusInterf
     }
     msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.awnproject.Awn.Panel", "DeleteApplet");
     dbus_message_iter_init_append(msg, &iter);
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &uid);
+    awn::vala_dbus_iter_append_string(&iter, uid);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1313,9 +1199,6 @@ static gint64 awn_panel_dbus_interface_dbus_proxy_docklet_request(AwnPanelDBusIn
     DBusGConnection* _connection;
     DBusMessage* msg, *reply;
     DBusMessageIter iter;
-    dbus_int32_t _tmp23_;
-    dbus_bool_t _tmp24_;
-    dbus_bool_t _tmp25_;
     gint64 _result;
     dbus_int64_t _tmp26_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
@@ -1324,12 +1207,9 @@ static gint64 awn_panel_dbus_interface_dbus_proxy_docklet_request(AwnPanelDBusIn
     }
     msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.awnproject.Awn.Panel", "DockletRequest");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp23_ = min_size;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_INT32, &_tmp23_);
-    _tmp24_ = shrink;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_BOOLEAN, &_tmp24_);
-    _tmp25_ = expand;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_BOOLEAN, &_tmp25_);
+    awn::vala_dbus_iter_append_int32(&iter, min_size);
+    awn::vala_dbus_iter_append_bool(&iter, shrink);
+    awn::vala_dbus_iter_append_bool(&iter, expand);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1430,10 +1310,6 @@ static void awn_panel_dbus_interface_dbus_proxy_get_snapshot(AwnPanelDBusInterfa
     dbus_bool_t _tmp37_;
     dbus_int32_t _tmp38_;
     dbus_int32_t _tmp39_;
-    gchar* _tmp40_;
-    int _tmp40__length;
-    int _tmp40__size;
-    int _tmp40__length1;
     DBusMessageIter _tmp41_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
         g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
@@ -1508,8 +1384,8 @@ static guint awn_panel_dbus_interface_dbus_proxy_inhibit_autohide(AwnPanelDBusIn
     }
     msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.awnproject.Awn.Panel", "InhibitAutohide");
     dbus_message_iter_init_append(msg, &iter);
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &app_name);
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &reason);
+    awn::vala_dbus_iter_append_string(&iter, app_name);
+    awn::vala_dbus_iter_append_string(&iter, reason);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1540,15 +1416,13 @@ static void awn_panel_dbus_interface_dbus_proxy_uninhibit_autohide(AwnPanelDBusI
     DBusGConnection* _connection;
     DBusMessage* msg, *reply;
     DBusMessageIter iter;
-    dbus_uint32_t _tmp48_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
         g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
         return;
     }
     msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.awnproject.Awn.Panel", "UninhibitAutohide");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp48_ = cookie;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_UINT32, &_tmp48_);
+    awn::vala_dbus_iter_append_uint32(&iter, cookie);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1575,18 +1449,14 @@ static void awn_panel_dbus_interface_dbus_proxy_set_applet_flags(AwnPanelDBusInt
     DBusGConnection* _connection;
     DBusMessage* msg, *reply;
     DBusMessageIter iter;
-    const char* _tmp50_;
-    dbus_int32_t _tmp51_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
         g_set_error(error, DBUS_GERROR, DBUS_GERROR_DISCONNECTED, "%s", "Connection is closed");
         return;
     }
     msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.awnproject.Awn.Panel", "SetAppletFlags");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp50_ = uid;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp50_);
-    _tmp51_ = flags;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_INT32, &_tmp51_);
+    awn::vala_dbus_iter_append_string(&iter, uid);
+    awn::vala_dbus_iter_append_int32(&iter, flags);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1621,8 +1491,7 @@ static void awn_panel_dbus_interface_dbus_proxy_set_glow(AwnPanelDBusInterface* 
     msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.awnproject.Awn.Panel", "SetGlow");
     dbus_message_iter_init_append(msg, &iter);
 
-    dbus_bool_t tmp_bool = activate;
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_BOOLEAN, &tmp_bool);
+    awn::vala_dbus_iter_append_bool(&iter, activate);
 
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
@@ -1650,17 +1519,13 @@ static gdouble awn_panel_dbus_interface_dbus_proxy_get_offset_modifier(AwnPanelD
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    const char* _tmp55_;
-    const char* _tmp56_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
         return 0.0;
     }
     DBusMessage* msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp55_ = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp55_);
-    _tmp56_ = "OffsetModifier";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp56_);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "OffsetModifier");
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1696,8 +1561,6 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_max_size(AwnPanelDBusInterfa
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    const char* _tmp58_;
-    const char* _tmp59_;
     gint _result;
     dbus_int32_t _tmp60_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
@@ -1705,10 +1568,8 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_max_size(AwnPanelDBusInterfa
     }
     DBusMessage* msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp58_ = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp58_);
-    _tmp59_ = "MaxSize";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp59_);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "MaxSize");
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1753,10 +1614,8 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_offset(AwnPanelDBusInterface
     }
     DBusMessage* msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp61_ = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&_iter, DBUS_TYPE_STRING, &_tmp61_);
-    _tmp62_ = "Offset";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp62_);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "Offset");
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1792,21 +1651,15 @@ static void awn_panel_dbus_interface_dbus_proxy_set_offset(AwnPanelDBusInterface
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    const char* _tmp64_;
-    const char* _tmp65_;
-    dbus_int32_t _tmp66_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
         return;
     }
     DBusMessage* msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Set");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp64_ = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp64_);
-    _tmp65_ = "Offset";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp65_);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "Offset");
     dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "i", &subiter);
-    _tmp66_ = value;
-    dbus_message_iter_append_basic(&subiter, DBUS_TYPE_INT32, &_tmp66_);
+    awn::vala_dbus_iter_append_int32(&subiter, value);
     dbus_message_iter_close_container(&iter, &subiter);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
@@ -1833,8 +1686,6 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_path_type(AwnPanelDBusInterf
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    const char* _tmp67_;
-    const char* _tmp68_;
     gint _result;
     dbus_int32_t _tmp69_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
@@ -1842,10 +1693,8 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_path_type(AwnPanelDBusInterf
     }
     DBusMessage* msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp67_ = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp67_);
-    _tmp68_ = "PathType";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp68_);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "PathType");
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1881,8 +1730,6 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_position(AwnPanelDBusInterfa
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    const char* _tmp70_;
-    const char* _tmp71_;
     gint _result;
     dbus_int32_t _tmp72_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
@@ -1890,10 +1737,8 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_position(AwnPanelDBusInterfa
     }
     DBusMessage* msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp70_ = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp70_);
-    _tmp71_ = "Position";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp71_);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "Position");
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -1929,21 +1774,15 @@ static void awn_panel_dbus_interface_dbus_proxy_set_position(AwnPanelDBusInterfa
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    const char* _tmp73_;
-    const char* _tmp74_;
-    dbus_int32_t _tmp75_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
         return;
     }
     DBusMessage* msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Set");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp73_ = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp73_);
-    _tmp74_ = "Position";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp74_);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "Position");
     dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "i", &subiter);
-    _tmp75_ = value;
-    dbus_message_iter_append_basic(&subiter, DBUS_TYPE_INT32, &_tmp75_);
+    awn::vala_dbus_iter_append_int32(&subiter, value);
     dbus_message_iter_close_container(&iter, &subiter);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
@@ -1970,8 +1809,6 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_size(AwnPanelDBusInterface* 
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    const char* _tmp76_;
-    const char* _tmp77_;
     gint _result;
     dbus_int32_t _tmp78_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
@@ -1979,10 +1816,8 @@ static gint awn_panel_dbus_interface_dbus_proxy_get_size(AwnPanelDBusInterface* 
     }
     DBusMessage* msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Get");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp76_ = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp76_);
-    _tmp77_ = "Size";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp77_);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "Size");
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
     DBusMessage* reply = dbus_connection_send_with_reply_and_block(dbus_g_connection_get_connection(_connection), msg, -1, &_dbus_error);
@@ -2018,21 +1853,16 @@ static void awn_panel_dbus_interface_dbus_proxy_set_size(AwnPanelDBusInterface* 
     DBusError _dbus_error;
     DBusGConnection* _connection;
     DBusMessageIter iter, subiter;
-    const char* _tmp79_;
-    const char* _tmp80_;
     dbus_int32_t _tmp81_;
     if (((AwnPanelDBusInterfaceDBusProxy*) self)->disposed) {
         return;
     }
     DBusMessage* msg = dbus_message_new_method_call(dbus_g_proxy_get_bus_name((DBusGProxy*) self), dbus_g_proxy_get_path((DBusGProxy*) self), "org.freedesktop.DBus.Properties", "Set");
     dbus_message_iter_init_append(msg, &iter);
-    _tmp79_ = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp79_);
-    _tmp80_ = "Size";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &_tmp80_);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "Size");
     dbus_message_iter_open_container(&iter, DBUS_TYPE_VARIANT, "i", &subiter);
-    _tmp81_ = value;
-    dbus_message_iter_append_basic(&subiter, DBUS_TYPE_INT32, &_tmp81_);
+    awn::vala_dbus_iter_append_int32(&subiter, value);
     dbus_message_iter_close_container(&iter, &subiter);
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
@@ -2066,10 +1896,8 @@ static gint64 awn_panel_dbus_interface_dbus_proxy_get_panel_xid(AwnPanelDBusInte
     DBusMessageIter iter;
     dbus_message_iter_init_append(msg, &iter);
 
-    const char* s1 = "org.awnproject.Awn.Panel";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &s1);
-    const char* s2 = "PanelXid";
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &s2);
+    awn::vala_dbus_iter_append_string(&iter, "org.awnproject.Awn.Panel");
+    awn::vala_dbus_iter_append_string(&iter, "PanelXid");
 
     g_object_get(self, "connection", &_connection, NULL);
     dbus_error_init(&_dbus_error);
@@ -2550,8 +2378,7 @@ static DBusHandlerResult _dbus_awn_panel_dispatcher_introspect(AwnPanelDispatche
     }
     dbus_free_string_array(children);
     xml_data += "</node>\n";
-    const char* str = xml_data.c_str();
-    dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &str);
+    awn::vala_dbus_iter_append_string(&iter, xml_data.c_str());
     if (reply) {
         dbus_connection_send(connection, reply, NULL);
         dbus_message_unref(reply);

@@ -22,6 +22,7 @@
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib.h>
 #include <glib.h>
+#include <cstdint>
 
 namespace awn {
 
@@ -33,6 +34,60 @@ void vala_set_dbus_error(const DBusError& dbus_error, GError** error);
 void vala_array_free(gpointer array, gint array_length, GDestroyNotify destroy_func);
 
 void vala_dbus_get_gvalue(DBusMessageIter* super_it, GValue* val);
+
+void vala_dbus_append_gvalue(DBusMessageIter* it, const char* key, GValue* val);
+
+inline dbus_bool_t vala_dbus_iter_append_bool(DBusMessageIter *iter, bool val)
+{
+    dbus_bool_t dv = val;
+    return dbus_message_iter_append_basic(iter, DBUS_TYPE_BOOLEAN, &dv);
+}
+
+inline dbus_bool_t vala_dbus_iter_append_uint8(DBusMessageIter *iter, std::uint8_t val)
+{
+    guint8 dv = val;
+    return dbus_message_iter_append_basic(iter, DBUS_TYPE_BYTE, &dv);
+}
+
+inline dbus_bool_t vala_dbus_iter_append_int32(DBusMessageIter *iter, std::int32_t val)
+{
+    dbus_int32_t dv = val;
+    return dbus_message_iter_append_basic(iter, DBUS_TYPE_INT32, &dv);
+}
+
+inline dbus_bool_t vala_dbus_iter_append_uint32(DBusMessageIter *iter, std::uint32_t val)
+{
+    dbus_uint32_t dv = val;
+    return dbus_message_iter_append_basic(iter, DBUS_TYPE_UINT32, &dv);
+}
+
+inline dbus_bool_t vala_dbus_iter_append_int64(DBusMessageIter *iter, std::int64_t val)
+{
+    dbus_int64_t dv = val;
+    return dbus_message_iter_append_basic(iter, DBUS_TYPE_INT64, &dv);
+}
+
+inline dbus_bool_t vala_dbus_iter_append_uint64(DBusMessageIter *iter, std::uint64_t val)
+{
+    dbus_uint64_t dv = val;
+    return dbus_message_iter_append_basic(iter, DBUS_TYPE_UINT64, &dv);
+}
+
+inline dbus_bool_t vala_dbus_iter_append_double(DBusMessageIter *iter, double val)
+{
+    return dbus_message_iter_append_basic(iter, DBUS_TYPE_DOUBLE, &val);
+}
+
+inline dbus_bool_t vala_dbus_iter_append_string(DBusMessageIter *iter, const char* s)
+{
+    return dbus_message_iter_append_basic(iter, DBUS_TYPE_STRING, &s);
+}
+
+inline dbus_bool_t vala_dbus_iter_append_obj_path(DBusMessageIter *iter, const char* s)
+{
+    return dbus_message_iter_append_basic(iter, DBUS_TYPE_OBJECT_PATH, &s);
+}
+
 
 } // namespace awn
 

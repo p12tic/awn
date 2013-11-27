@@ -304,6 +304,57 @@ void vala_dbus_get_gvalue(DBusMessageIter* super_it, GValue* val)
     }
 }
 
+void vala_dbus_append_gvalue(DBusMessageIter* it, const char* key,
+                             GValue* val)
+{
+    DBusMessageIter it2;
+
+    awn::vala_dbus_iter_append_string(it, key);
+    if (G_VALUE_TYPE(val) == G_TYPE_UCHAR) {
+        dbus_message_iter_open_container(it, DBUS_TYPE_VARIANT, "y", &it2);
+        awn::vala_dbus_iter_append_uint8(&it2, g_value_get_uchar(val));
+        dbus_message_iter_close_container(it, &it2);
+    } else if (G_VALUE_TYPE(val) == G_TYPE_BOOLEAN) {
+        dbus_message_iter_open_container(it, DBUS_TYPE_VARIANT, "b", &it2);
+        awn::vala_dbus_iter_append_bool(&it2, g_value_get_boolean(val));
+        dbus_message_iter_close_container(it, &it2);
+    } else if (G_VALUE_TYPE(val) == G_TYPE_INT) {
+        dbus_message_iter_open_container(it, DBUS_TYPE_VARIANT, "i", &it2);
+        awn::vala_dbus_iter_append_int32(&it2, g_value_get_int(val));
+        dbus_message_iter_close_container(it, &it2);
+    } else if (G_VALUE_TYPE(val) == G_TYPE_UINT) {
+        dbus_message_iter_open_container(it, DBUS_TYPE_VARIANT, "u", &it2);
+        awn::vala_dbus_iter_append_uint32(&it2, g_value_get_uint(val));
+        dbus_message_iter_close_container(it, &it2);
+    } else if (G_VALUE_TYPE(val) == G_TYPE_INT64) {
+        dbus_message_iter_open_container(it, DBUS_TYPE_VARIANT, "x", &it2);
+        awn::vala_dbus_iter_append_int64(&it2, g_value_get_int64(val));
+        dbus_message_iter_close_container(it, &it2);
+    } else if (G_VALUE_TYPE(val) == G_TYPE_UINT64) {
+        dbus_message_iter_open_container(it, DBUS_TYPE_VARIANT, "t", &it2);
+        awn::vala_dbus_iter_append_uint64(&it2, g_value_get_uint64(val));
+        dbus_message_iter_close_container(it, &it2);
+    } else if (G_VALUE_TYPE(val) == G_TYPE_DOUBLE) {
+        dbus_message_iter_open_container(it, DBUS_TYPE_VARIANT, "d", &it2);
+        awn::vala_dbus_iter_append_double(&it2, g_value_get_double(val));
+        dbus_message_iter_close_container(it, &it2);
+    } else if (G_VALUE_TYPE(val) == G_TYPE_STRING) {
+        dbus_message_iter_open_container(it, DBUS_TYPE_VARIANT, "s", &it2);
+        awn::vala_dbus_iter_append_string(&it2, g_value_get_string(val));
+        dbus_message_iter_close_container(it, &it2);
+    } else if (G_VALUE_TYPE(val) == G_TYPE_STRV) {
+        DBusMessageIter it3;
+        dbus_message_iter_open_container(it, DBUS_TYPE_VARIANT, "as", &it2);
+        const char** _tmp74_ = g_value_get_boxed(val);
+        dbus_message_iter_open_container(&it2, DBUS_TYPE_ARRAY, "s", &it3);
+        for (int i = 0; i < g_strv_length(g_value_get_boxed(val)); i++) {
+            awn::vala_dbus_iter_append_string(&it3, *_tmp74_++);
+        }
+        dbus_message_iter_close_container(&it2, &it3);
+        dbus_message_iter_close_container(it, &it2);
+    }
+}
+
 void vala_array_destroy(gpointer array, gint array_length, GDestroyNotify destroy_func)
 {
     if ((array != NULL) && (destroy_func != NULL)) {
