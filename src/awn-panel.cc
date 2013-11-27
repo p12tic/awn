@@ -4064,14 +4064,7 @@ awn_panel_docklet_request(AwnPanel* panel,
 
 gboolean
 awn_panel_get_snapshot(AwnPanel* panel,
-                       gint*     width,
-                       gint*     height,
-                       gint*     rowstride,
-                       gboolean* has_alpha,
-                       gint*     bits_per_sample,
-                       gint*     num_channels,
-                       gchar**   pixels,
-                       gint*     pixels_length,
+                       AwnImageStruct* image,
                        GError** error)
 {
     GdkRectangle rect;
@@ -4099,20 +4092,20 @@ awn_panel_get_snapshot(AwnPanel* panel,
     cairo_surface_flush(surface);
 
     // stuff the pixbuf to our out param
-    *width = rect.width;
-    *height = rect.height;
-    *rowstride = cairo_image_surface_get_stride(surface);
-    *has_alpha = TRUE;
-    *bits_per_sample = 8;
-    *num_channels = 4;
+    image->width = rect.width;
+    image->height = rect.height;
+    image->rowstride = cairo_image_surface_get_stride(surface);
+    image->has_alpha = TRUE;
+    image->bits_per_sample = 8;
+    image->num_channels = 4;
 
     data_len = rect.height * cairo_image_surface_get_stride(surface);
     //gint image_len = (height - 1) * rowstride + width *
     //  ((n_channels * bits_per_sample + 7) / 8);
 
-    guchar* image = cairo_image_surface_get_data(surface);
-    *pixels = g_memdup(image, data_len);
-    *pixels_length = data_len;
+    guchar* pixels = cairo_image_surface_get_data(surface);
+    image->pixel_data = g_memdup(pixels, data_len);
+    image->pixel_data_length1 = data_len;
 
     cairo_surface_destroy(surface);
 

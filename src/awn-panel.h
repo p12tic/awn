@@ -120,15 +120,16 @@ gboolean    awn_panel_get_docklet_mode(AwnPanel*         panel);
 
 gboolean    awn_panel_get_composited(AwnPanel*         panel);
 
+// temporary hack
+#ifdef __cplusplus
+struct AwnImageStruct;
+#else
+struct _AwnImageStruct;
+typedef struct _AwnImageStruct AwnImageStruct;
+#endif
+
 gboolean    awn_panel_get_snapshot(AwnPanel* panel,
-                                   gint*     width,
-                                   gint*     height,
-                                   gint*     rowstride,
-                                   gboolean* has_alpha,
-                                   gint*     bits_per_sample,
-                                   gint*     num_channels,
-                                   gchar**   pixels,
-                                   gint*     pixels_length,
+                                   AwnImageStruct* image,
                                    GError** error);
 
 gboolean    awn_panel_get_all_server_flags(AwnPanel* panel,

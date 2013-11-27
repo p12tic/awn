@@ -54,6 +54,7 @@ public_headers = \
 	awn-themed-icon.h \
 	awn-tooltip.h \
 	awn-utils.h \
+	vala-utils.h \
 	libawn.h
 	$(NULL)
 
@@ -125,6 +126,7 @@ source_c = \
 	awn-themed-icon.cc \
 	awn-tooltip.cc \
 	awn-utils.cc \
+	vala-utils.cc \
 	$(NULL)
 
 libawninc_HEADERS = \

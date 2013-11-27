@@ -1034,7 +1034,7 @@ awn_effects_get_priority(const AwnEffect effect)
 }
 
 static gint
-awn_effects_sort(gconstpointer a, gconstpointer b)
+awn_effects_sort(const void* a, const void* b)
 {
     const AwnEffectsAnimation* data1 = (AwnEffectsAnimation*) a;
     const AwnEffectsAnimation* data2 = (AwnEffectsAnimation*) b;

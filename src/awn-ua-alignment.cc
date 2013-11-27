@@ -301,7 +301,7 @@ awn_ua_alignment_plug_removed(GtkWidget* socket, AwnUAAlignment* self)
 
 /*UA*/
 gint
-awn_ua_alignment_list_cmp(gconstpointer a, gconstpointer b)
+awn_ua_alignment_list_cmp(const void* a, const void* b)
 {
     const gchar* str1 = a;
     const gchar* str2 = b;

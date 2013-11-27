@@ -19,7 +19,6 @@ extern "C" {
 #endif
 
 #define AWN_TYPE_IMAGE_STRUCT (awn_image_struct_get_type ())
-typedef struct _AwnImageStruct AwnImageStruct;
 
 #define AWN_TYPE_PANEL_DBUS_INTERFACE (awn_panel_dbus_interface_get_type ())
 #define AWN_PANEL_DBUS_INTERFACE(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), AWN_TYPE_PANEL_DBUS_INTERFACE, AwnPanelDBusInterface))
@@ -36,19 +35,15 @@ typedef struct _AwnPanelDBusInterfaceIface AwnPanelDBusInterfaceIface;
 #define AWN_IS_PANEL_DISPATCHER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), AWN_TYPE_PANEL_DISPATCHER))
 #define AWN_PANEL_DISPATCHER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), AWN_TYPE_PANEL_DISPATCHER, AwnPanelDispatcherClass))
 
-typedef struct _AwnPanelDispatcher AwnPanelDispatcher;
-typedef struct _AwnPanelDispatcherClass AwnPanelDispatcherClass;
-typedef struct _AwnPanelDispatcherPrivate AwnPanelDispatcherPrivate;
-
-struct _AwnImageStruct {
-    gint width;
-    gint height;
-    gint rowstride;
-    gboolean has_alpha;
-    gint bits_per_sample;
-    gint num_channels;
-    gchar* pixel_data;
-    gint pixel_data_length1;
+struct AwnImageStruct {
+    int32_t width;
+    int32_t height;
+    int32_t rowstride;
+    bool has_alpha;
+    int32_t bits_per_sample;
+    int32_t num_channels;
+    char* pixel_data;
+    int32_t pixel_data_length1;
 };
 
 struct _AwnPanelDBusInterfaceIface {
@@ -74,12 +69,14 @@ struct _AwnPanelDBusInterfaceIface {
     gint64(*get_panel_xid)(AwnPanelDBusInterface* self);
 };
 
-struct _AwnPanelDispatcher {
+struct AwnPanelDispatcherPrivate;
+
+struct AwnPanelDispatcher {
     GObject parent_instance;
     AwnPanelDispatcherPrivate* priv;
 };
 
-struct _AwnPanelDispatcherClass {
+struct AwnPanelDispatcherClass {
     GObjectClass parent_class;
 };
 

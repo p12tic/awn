@@ -251,6 +251,8 @@ libawn/awn-utils.h
 libawn/gseal-transition.h
 libawn/libawn-marshal.list
 libawn/libawn.h
+libawn/vala-utils.cc
+libawn/vala-utils.h
 m4/as-ac-expand.m4
 m4/as-compiler-flag.m4
 m4/gconf.m4

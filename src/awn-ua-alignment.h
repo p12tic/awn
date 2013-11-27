@@ -63,7 +63,7 @@ GtkWidget* awn_ua_alignment_get_socket(AwnUAAlignment* self);
 
 GdkWindow* awn_ua_alignment_add_id(AwnUAAlignment* self, GdkNativeWindow native_window);
 
-gint awn_ua_alignment_list_cmp(gconstpointer a, gconstpointer b);
+gint awn_ua_alignment_list_cmp(const void* a, const void* b);
 
 #ifdef __cplusplus
 } // extern "C"

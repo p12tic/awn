@@ -51,9 +51,7 @@ launch_applet_with(const gchar* program,
 static gint
 do_dbus_call(gint panel_id, gchar* desktop_file_path);
 
-static gboolean
-execute_wrapper(const gchar* cmd_line,
-                GError** error);
+static bool execute_wrapper(const gchar* cmd_line, GError** error);
 
 static gint
 g_execute(const gchar* file,
@@ -109,8 +107,7 @@ static GOptionEntry entries[] = {
     { NULL }
 };
 
-gint
-main(gint argc, gchar** argv)
+int main(int argc, char** argv)
 {
     GError* error = NULL;
     GOptionContext* context;
@@ -275,8 +272,7 @@ main(gint argc, gchar** argv)
     return 0;
 }
 
-static gint
-do_dbus_call(gint panel_id, gchar* desktop_file_path)
+static gint do_dbus_call(gint panel_id, gchar* desktop_file_path)
 {
     GError* error = NULL;
     DesktopAgnosticVFSFile* desktop_file = NULL;
@@ -430,11 +426,9 @@ launch_applet_with(const gchar* program,
     g_free(exec);
 }
 
-static gboolean
-execute_wrapper(const gchar* cmd_line,
-                GError** error)
+static bool execute_wrapper(const gchar* cmd_line, GError** error)
 {
-    gboolean retval;
+    bool retval;
     gchar** argv = NULL;
 
     g_return_val_if_fail(cmd_line != NULL, FALSE);
@@ -442,7 +436,7 @@ execute_wrapper(const gchar* cmd_line,
     if (!g_shell_parse_argv(cmd_line,
                             NULL, &argv,
                             error)) {
-        return FALSE;
+        return false;
     }
 
     // FIXME: perhaps we should do some fd closing etc as glib is?
@@ -584,18 +578,16 @@ g_execute(const gchar* file,
             }
         } while (*p++ != '\0');
 
-        /* We tried every element and none of them worked.  */
+        // We tried every element and none of them worked.
         if (got_eacces)
-            /* At least one failure was due to permissions, so report that
-             * error.
-             */
         {
+            // At least one failure was due to permissions, so report that error
             errno = EACCES;
         }
 
         g_free(freeme);
     }
 
-    /* Return the error from the last attempt (probably ENOENT).  */
+    // Return the error from the last attempt (probably ENOENT).
     return -1;
 }
