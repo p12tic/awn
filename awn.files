@@ -96,7 +96,7 @@ awn-settings/awn-settings.svg
 awn-settings/awn-settings.ui
 awn-settings/awnClass.py
 awn-settings/awnDefs.py.in
-awn-settings/awnSettings.py.in
+awn-settings/awnSettings.py
 awn-settings/awnSettingsHelper.py
 awn-settings/awn_settings_launcher.py.in
 awn.config

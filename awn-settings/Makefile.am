@@ -7,11 +7,11 @@ include $(top_srcdir)/Makefile.desktop-files
 python_files = \
 	awnClass.py \
 	awnSettingsHelper.py \
+	awnSettings.py \
 	$(NULL)
 
 generated_python_files = \
 	awnDefs.py \
-	awnSettings.py \
 	awn_settings_launcher.py \
 	$(NULL)
 

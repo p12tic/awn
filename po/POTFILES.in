@@ -11,7 +11,7 @@ applets/simple-launcher/simple-launcher.desktop.in.in
 awn-settings/awn-settings.desktop.in
 [type: gettext/glade]awn-settings/awn-settings.ui
 awn-settings/awnClass.py
-awn-settings/awnSettings.py.in
+awn-settings/awnSettings.py
 bindings/python/__init__.py.in
 data/avant-window-navigator.desktop.in
 [type: gettext/ini]data/avant-window-navigator.schema-ini.in.in

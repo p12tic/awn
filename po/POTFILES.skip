@@ -5,6 +5,5 @@ applets/simple-launcher/simple-launcher.desktop.in
 applets/quick-prefs/applet.c
 applets/quick-prefs/quick-prefs.desktop.in
 awn-manager/
-awn-settings/awnSettings.py
 debian/
 bindings/python/__init__.py

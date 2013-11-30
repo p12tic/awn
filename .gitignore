@@ -40,7 +40,6 @@ stamp-h1
 applet-activation/awn-applet
 applets/quick-prefs/applet.c
 awn-settings/awnDefs.py
-awn-settings/awnSettings.py
 bindings/python/awn.c
 data/avant-window-navigator.schema-ini.in
 debian/*.debhelper.log

@@ -96,14 +96,14 @@ class awnPreferencesMini(awnPreferences):
 
     def __init__(self, wTree, panel_id):
         awnPreferences.__init__(self)
-        
+
         self.wTree = wTree
         self.client = awn.config_get_default(panel_id)
         self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "")
 
         self.btn_edit_custom_effects = self.wTree.get_object("btn_edit_custom_effects")
         self.btn_edit_custom_effects.connect("clicked", self.btn_edit_custom_effects_callback)
-        
+
         # Make sure the config dir exist
         if not os.path.isdir(defs.HOME_CONFIG_DIR):
             os.mkdir(defs.HOME_CONFIG_DIR)
@@ -185,7 +185,7 @@ class awnPreferencesMini(awnPreferences):
             (self.client_taskman, GROUP_DEFAULT, defs.MATCH_STRENGTH,
                 "match-strength", "match_strength_config")
         ]
-        
+
         for item in config_map_simple:
             client, group, key, prop_name, wtree_name = item
             bind_to_gtk_component (client, group, key, self, prop_name,
@@ -308,7 +308,7 @@ class awnPreferencesMini(awnPreferences):
     def btn_edit_custom_effects_callback(self, widget, data=None):
         response = self.custom_effects_dialog.run()
         self.custom_effects_dialog.hide()
-        
+
     def init_custom_effects_dialog(self):
         self.custom_effects_dialog = self.wTree.get_object('customEffectsDialog')
 
@@ -317,7 +317,7 @@ class awnPreferencesMini(awnPreferences):
         awn_image = awn.Image()
         awn_image.set_from_pixbuf(pixbuf)
         awn_image.set_padding(24, 24)
-        self.client.bind(defs.EFFECTS, defs.ICON_EFFECT, 
+        self.client.bind(defs.EFFECTS, defs.ICON_EFFECT,
                          awn_image.get_effects(), "effects", True,
                          config.BIND_METHOD_FALLBACK)
 
@@ -327,7 +327,7 @@ class awnPreferencesMini(awnPreferences):
 
         def preview(button, name):
             fx_map = {
-                'open': awn.EFFECT_OPENING, 
+                'open': awn.EFFECT_OPENING,
                 'close': awn.EFFECT_CLOSING,
                 'launch': awn.EFFECT_LAUNCHING,
                 'attention': awn.EFFECT_ATTENTION
@@ -340,7 +340,7 @@ class awnPreferencesMini(awnPreferences):
             else:
                 awn_image.get_effects().stop(awn.EFFECT_HOVER)
             return False
-            
+
         for name in ['open', 'close', 'launch', 'attention']:
             button = self.wTree.get_object('preview_' + name)
             button.connect('clicked', preview, name)
@@ -353,7 +353,7 @@ class awnPreferencesMini(awnPreferences):
         #button.connect('clicked', lambda w: self.custom_effects_dialog.get_response_for_widget(w))
 
         self.setup_custom_effects(defs.EFFECTS, defs.ICON_EFFECT)
-        
+
     def reload(self):
         # FIXME: this method should be unnecessary soon
         self.load_effect (defs.EFFECTS, defs.ICON_EFFECT, self.wTree.get_object("iconeffects"))
@@ -425,7 +425,7 @@ class awnPreferencesMini(awnPreferences):
         self.add_source(source)
         self.update_repo_view()
 
-            
+
 class awnLauncherMini(awnLauncher):
     def __init__(self, glade):
         self.wTree = glade
@@ -442,7 +442,7 @@ class awnLauncherMini(awnLauncher):
         self.treeview_launchers.set_headers_visible(False)
         treeview_available_selection = self.treeview_launchers.get_selection()
         treeview_available_selection.connect('changed', self.callback_launcher_selection)
-        
+
         self.scrollwindow.add(self.treeview_launchers)
 
         launcher_uris = self.client_taskman.get_list(GROUP_DEFAULT,
@@ -487,17 +487,17 @@ class awnAppletMini(awnApplet):
 
         self.scrollwindow = self.wTree.get_object("appletScrollActive")
         self.scrollwindow1 = self.wTree.get_object("appletScrollActive1")
-        
+
         self.treeview_available =  self.wTree.get_object("appletTreeviewAvailable")
         self.treeview_available.set_headers_visible(False)
-        
+
         self.treeview_available.connect("row-activated", self.activate_applet)
 
         self.appletActivate = self.wTree.get_object("appletActivate")
         self.appletActivate.connect('clicked', self.activate_applet_btn)
         self.appletDeactivate = self.wTree.get_object("appletDeactivate")
         self.appletDeactivate.connect('clicked', self.deactivate_applet)
-		
+
         self.make_active_applets_model()
         # allow reorder by d&d and drop from "available applets" list
         self.icon_view.enable_model_drag_source(
@@ -530,26 +530,26 @@ class awnAppletMini(awnApplet):
         selection = self.choose_category_view.get_selection()
         selection.connect('changed', self.callback_widget_filter_applets_view)
         self.create_category_list(self.list_applets_categories())
- 
+
         self.btn_delete = self.wTree.get_object("appletDelete")
         self.btn_delete.connect("clicked", self.delete_applet)
 
         self.btn_install = self.wTree.get_object("appletInstall")
         self.btn_install.connect("clicked", self.install_applet)
-	
+
         treeview_available_selection = self.treeview_available.get_selection()
         treeview_available_selection.connect('changed', self.callback_applet_selection)
-		
-		
+
+
     def create_category_list(self, categories):
         category_model = gtk.ListStore(str)
-        
+
         cell = gtk.CellRendererText()
         col = gtk.TreeViewColumn("Categories", cell)
         col.set_attributes(cell, markup=0)
-        
+
         self.choose_category_view.append_column(col)
-        
+
         category_model.set_sort_column_id(0, gtk.SORT_ASCENDING)
         self.choose_category_view.set_model (category_model)
         #self.choose_category_view.set_search_column (0)
@@ -557,12 +557,12 @@ class awnAppletMini(awnApplet):
         #ren = gtk.CellRendererText()
         #col = gtk.TreeViewColumn ("Category", ren, markup=1)
         #self.choose_category_view.append_column (col)
-        
+
         [category_model.append([elem]) for elem in categories]
-    
+
 
 class awnThemeCustomizeMini(awnThemeCustomize):
-    
+
     curviness = gobject.property(type=float, default=1)
     curves_symmetry = gobject.property(type=float, default=0)
     floaty_offset = gobject.property(type=int, default=10)
@@ -576,13 +576,13 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     pattern_alpha = gobject.property(type=float, default=1)
     arrow_type = gobject.property(type=str)
     current_panel_id = awn.PANEL_ID_DEFAULT
-            
+
     def __init__(self, wTree, panel_id):
         awnThemeCustomize.__init__(self)
         self.current_panel_id = panel_id
         if not os.path.isdir(defs.HOME_THEME_DIR):
             os.mkdir(defs.HOME_THEME_DIR)
-				
+
         self.wTree = wTree
 
         infobar = self.wTree.get_object("composite_infobar")
@@ -590,7 +590,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 
         if gtk.gdk.screen_get_default().is_composited() == False:
             infobar.get_parent().show_all()
-		
+
         self.client = awn.config_get_default(panel_id)
         self.view_themes_scroll = self.wTree.get_object("list_themes_scroll")
         self.treeview_themes = self.wTree.get_object("list_themes_view")
@@ -605,7 +605,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         self.installTheme.connect('clicked', self.install_theme_callback)
         self.build_theme = self.wTree.get_object("build_theme")
         self.build_theme.connect('clicked', self.build_theme_callback)
-        
+
         self.custom_arrow_chooser_hbox = self.wTree.get_object("custom_arrow_chooser_hbox")
         self.custom_arrow_chooser = self.wTree.get_object("custom_arrow_chooser")
         filename = self.client.get_string(defs.EFFECTS, defs.ARROW_ICON)
@@ -632,15 +632,15 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         filter.add_pattern("*.jpg")
         self.pattern_chooser.add_filter(filter)
         self.pattern_chooser.set_filter(filter)
-        
+
         self.theme_list_panel = self.wTree.get_object("theme_list_panel")
         self.theme_customize_panel = self.wTree.get_object("theme_customize_panel")
-		
+
         self.themeExport = self.wTree.get_object('theme_export')
         self.themeExport.connect('clicked', self.show_export_dialog)
         self.themeClose = self.wTree.get_object('theme_close')
         self.themeClose.connect('clicked', self.close)
-        
+
         self.themeExportDialog = self.wTree.get_object('theme_export_dialog')
         self.themeExportName = self.wTree.get_object('theme_export_name')
         self.themeExportAuthor = self.wTree.get_object('theme_export_author')
@@ -649,24 +649,24 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         self.themeExportCancel.connect('clicked', self.hide_export_dialog)
         self.themeExportSave = self.wTree.get_object('theme_export_save')
         self.themeExportSave.connect('clicked', self.export_save_theme)
-        
+
         self.themeExportOptions = self.wTree.get_object('theme_export_options')
         self.themeExportButtons = self.wTree.get_object('theme_export_buttons')
-        
+
         self.themeExportStyle = self.wTree.get_object('theme_export_style')
         self.themeExportSize = self.wTree.get_object('theme_export_size')
         self.themeExportIcons = self.wTree.get_object('theme_export_icons')
         self.themeExportColors = self.wTree.get_object('theme_export_colors')
         self.themeExportExtras = self.wTree.get_object('theme_export_extras')
         self.themeExportEffects = self.wTree.get_object('theme_export_effects')
-        
+
         self.ui_setup()
-		
-		
+
+
     def export_save_theme(self, widget):
-		
+
 		colors = sizes = icon = extra = style = effects = False
-		
+
 		if self.themeExportColors.get_active(): colors = True
 		if self.themeExportSize.get_active(): sizes = True
 		if self.themeExportIcons.get_active(): icon = True
@@ -679,13 +679,13 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 		config.add_section("config/panel/1")
 		config.add_section("config/theme")
 		config.add_section("config/effects")
-		
+
 		name = self.themeExportName.get_text()
 		author = self.themeExportAuthor.get_text()
 		version = self.themeExportVersion.get_text()
-		
-		if not len( name ) or not len( author ) or not len( version ): return 0 
-		
+
+		if not len( name ) or not len( author ) or not len( version ): return 0
+
 		config.set("theme-info", "Name", name)
 		config.set("theme-info", "Icon", 'thumb.png')
 		config.set("theme-info", "Author", author)
@@ -732,8 +732,8 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 
 		for item in theme_settings:
 			grp, key, type, export_grp = item
-			
-			if export_grp:		
+
+			if export_grp:
 				if grp == 'panel':
 					config.set("config/panel/1", key, self.client.get_value(grp, key))
 				elif grp == 'theme':
@@ -742,7 +742,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 					config.set("config/effects", key, self.client.get_value(grp, key))
 
 		filename = "".join([x for x in name if x.isalpha() or x.isdigit()])
-		
+
 		fc = gtk.FileChooserDialog(title=_('Save Theme...'),
                                    parent=None,
                                    action=gtk.FILE_CHOOSER_ACTION_SAVE,
@@ -762,8 +762,8 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 			self.export_theme(config, filename, result, self.current_panel_id, save_pattern=pattern_mode)
 		else:
 			fc.destroy()
-			self.hide_export_dialog(None)	
-							
+			self.hide_export_dialog(None)
+
     def show_export_dialog(self, widget):
 		fullname = pwd.getpwnam(os.environ['USER'])[4]
 		if not fullname: fullname = os.environ['USER']
@@ -774,7 +774,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 
     def hide_export_dialog(self, widget):
 		self.themeExportDialog.hide()
-				                                   
+
     def close(self, widget):
         self.theme_customize_panel.hide()
         self.theme_list_panel.show()
@@ -783,7 +783,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         dropdown = self.wTree.get_object("theme_icon_font_mode")
         self.create_dropdown(dropdown, [_("Solid"), _("Outline"),
                                         _("Outline, Reversed")])
-                                      
+
         self.color_map = [
             (self.client, defs.THEME, defs.GSTEP1, "theme_firstgradient", True),
             (self.client, defs.THEME, defs.GSTEP2, "theme_secondgradient", True),
@@ -801,13 +801,13 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             (self.client, defs.EFFECTS, defs.ACTIVE_RECT_COLOR, "activerect_color", True),
             (self.client, defs.EFFECTS, defs.ACTIVE_RECT_OUTLINE, "activerect_outline_color", True)
         ]
-        
+
         for item in self.color_map:
             client, group, key, wtree_name, gtk_mode = item
             widget = self.wTree.get_object(wtree_name)
             client.bind (group, key, widget, "da-color",
                          False, config.BIND_METHOD_FALLBACK)
-    
+
         config_map_simple = [
 			(self.client, defs.THEME, defs.ICON_FONT_MODE,
                 "icon-font-mode", "theme_icon_font_mode"),
@@ -838,8 +838,8 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 					   self, "arrow-type",
 					   self.wTree.get_object("arrow_triangle_radio"),
 					   False,
-					   self.arrow_type_getter, self.arrow_type_setter)   
-  
+					   self.arrow_type_getter, self.arrow_type_setter)
+
         bind_to_gtk_component (self.client, defs.THEME, defs.GTK_THEME_MODE,
                        self, "gtk-theme-mode",
                        self.wTree.get_object("theme_gtk_theme_mode"),
@@ -851,12 +851,12 @@ class awnThemeCustomizeMini(awnThemeCustomize):
                        self.wTree.get_object("use_pattern_check"),
                        False,
                        self.pattern_mode_getter),
-					   
+
     def pattern_mode_getter(self, enabled):
         self.pattern_chooser.set_sensitive(enabled)
         self.pattern_alpha_spin.set_sensitive(enabled)
         return enabled
-			
+
     def disable_color_buttons(self, state=False):
         for item in self.color_map:
             client, group, key, wtree_name, gtk_mode = item
@@ -865,11 +865,11 @@ class awnThemeCustomizeMini(awnThemeCustomize):
 				if not state: obj.set_sensitive(True)
 				else: obj.set_sensitive(False)
         return state
-		
+
 	def tooltip_font_name_callback(self, data=None):
-		fontselect = gtk.FontSelectionDialog(_('Select Tooltip Font'))	
+		fontselect = gtk.FontSelectionDialog(_('Select Tooltip Font'))
 		fontselect.set_font_name(fontname)
-		
+
     def update_view_themes(self, data=None):
         themes = self.type_catalog_from_sources_list()
         self.treeview_themes.set_headers_visible(False)
@@ -884,7 +884,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         self.load_settings_from_theme(path[0])
         self.client.set_string(defs.THEME, defs.CURRENT_THEME, path[0])
         self.wTree.get_object("theme_gtk_theme_mode").set_active(False)
-       
+
     def callback_theme_selection(self, selection, data=None):
         (model, iter) = selection.get_selected()
         if iter is not None:
@@ -894,18 +894,18 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             else:
                 self.deleteTheme.set_sensitive(False)
         else:
-            if hasattr(self, 'apply_theme'): 
-                self.applyTheme.set_sensitive(False)     
-    
+            if hasattr(self, 'apply_theme'):
+                self.applyTheme.set_sensitive(False)
+
     def build_theme_callback(self, widget, data=None):
         self.theme_customize_panel.show()
         self.theme_list_panel.hide()
-        
+
     def install_theme_callback(self, widget, data=None):
         dialog = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_OPEN,
                                   buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_OPEN,gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
-        
+
         filter = gtk.FileFilter()
         filter.set_name(_("Awn Theme File"))
         filter.add_pattern("*.tar.gz")
@@ -919,20 +919,20 @@ class awnThemeCustomizeMini(awnThemeCustomize):
             self.install_theme(file)
         else:
             dialog.destroy()
- 
+
     def delete_theme_callback(self, data=None):
 		self.delete_theme()
-		   
+
     def arrow_type_getter(self, arrow_type):
         d = {"__awn_internal_arrow1": 0, "__awn_internal_arrow2": 1}
-        if arrow_type in d: 
+        if arrow_type in d:
             self.custom_arrow_chooser_hbox.set_sensitive(False)
             return d[arrow_type]
-        else: 
+        else:
             self.custom_arrow_chooser_hbox.set_sensitive(True)
             return 2
-			
-    def arrow_type_setter(self, arrow_type):     
+
+    def arrow_type_setter(self, arrow_type):
         d = {0:"__awn_internal_arrow1", 1:"__awn_internal_arrow2"}
         if arrow_type == 2:
             self.custom_arrow_chooser_hbox.set_sensitive(True)
@@ -940,7 +940,7 @@ class awnThemeCustomizeMini(awnThemeCustomize):
         else:
             self.custom_arrow_chooser_hbox.set_sensitive(False)
             return d[arrow_type]
-				
+
     def arrow_select_callback(self, widget, data=None):
         filename = widget.get_filename() or ''
         self.client.set_string(defs.EFFECTS, defs.ARROW_ICON, filename)
@@ -948,25 +948,25 @@ class awnThemeCustomizeMini(awnThemeCustomize):
     def pattern_select_callback(self, widget, data=None):
         filename = widget.get_filename() or ''
         self.client.set_string(defs.THEME, defs.PATTERN_FILENAME, filename)
-        
+
 class awnTaskManagerMini(awnTaskManager):
     launchers_only = gobject.property(type=bool, default=False)
     show_all_windows = gobject.property(type=bool, default=True)
     group_windows = gobject.property(type=bool, default=True)
     long_press = gobject.property(type=bool, default=True)
     drag_drop = gobject.property(type=bool, default=True)
-    
+
     overlay_icons = gobject.property(type=bool, default=True)
     icon_behavior = gobject.property(type=int, default=1)
     icon_overlay_swap = gobject.property(type=bool, default=False)
-        
+
     def __init__(self, wTree, panel_id):
         awnTaskManager.__init__(self)
-			
+
         self.wTree = wTree
         self.client = awn.config_get_default(panel_id)
         self.client_taskman = awn.config_get_default_for_applet_by_info("taskmanager", "")
-        
+
         infobar = self.wTree.get_object("tm_infobar")
         infobar.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("#F7F7BD"))
 
@@ -998,7 +998,7 @@ class awnTaskManagerMini(awnTaskManager):
 										_("Use best quality icons"),
                                         _("Overlay best quality icon with application icon"),
                                         _("Overlay application icon with best quality icon")])
-                                                                           
+
         config_map_simple = [
             (self.client_taskman, GROUP_DEFAULT, defs.ONLY_LAUNCHERS,
                 "launchers-only", "only_launchers_config"),
@@ -1007,35 +1007,35 @@ class awnTaskManagerMini(awnTaskManager):
             (self.client_taskman, GROUP_DEFAULT, defs.GROUPING,
                 "group-windows", "grouping_config"),
             (self.client_taskman, GROUP_DEFAULT, defs.LONG_PRESS,
-                "long-press", "tm_long_press"), 
+                "long-press", "tm_long_press"),
             (self.client_taskman, GROUP_DEFAULT, defs.DRAG_AND_DROP,
                 "drag-drop", "tm_drag_drop")
-        ]        
-                         
+        ]
+
         for item in config_map_simple:
             client, group, key, prop_name, wtree_name = item
             bind_to_gtk_component (client, group, key, self, prop_name,
                                    self.wTree.get_object(wtree_name), False)
-                                   
+
         def icon_behave_callback(widget, *args):
 			active = widget.get_active()
 			if active == 0:
 				if self.icon_behavior != 0: self.icon_behavior = 0
 				if self.overlay_icons: self.overlay_icons = False
-				if self.icon_overlay_swap: self.icon_overlay_swap = False 
+				if self.icon_overlay_swap: self.icon_overlay_swap = False
 			elif active == 1:
 				if self.icon_behavior != 2: self.icon_behavior = 2
 				if self.overlay_icons: self.overlay_icons = False
-				if self.icon_overlay_swap: self.icon_overlay_swap = False 
+				if self.icon_overlay_swap: self.icon_overlay_swap = False
 			elif active == 2:
 				if self.icon_behavior != 1: self.icon_behavior = 1
 				if not self.overlay_icons: self.overlay_icons = True
-				if self.icon_overlay_swap: self.icon_overlay_swap = False 
+				if self.icon_overlay_swap: self.icon_overlay_swap = False
 			elif active == 3:
 				if self.icon_behavior != 1: self.icon_behavior = 1
 				if not self.overlay_icons: self.overlay_icons = True
-				if not self.icon_overlay_swap: self.icon_overlay_swap = True 
-      
+				if not self.icon_overlay_swap: self.icon_overlay_swap = True
+
         def refresh_behaviour(*args):
             behaviour = (self.icon_behavior, self.overlay_icons, self.icon_overlay_swap)
             new_active = 2
@@ -1090,11 +1090,11 @@ class awnManagerMini(awnManager):
     LAUNCHER_PANEL = 2
     THEME_PANEL = 3
     ADVANCED_PANEL = 4
-    
+
     current_panel = None
     current_panel_id = awn.PANEL_ID_DEFAULT
     global_configuration = False
-    
+
     def __init__(self, panel_id):
         awnManager.__init__(self)
         self.panel_list = []
@@ -1137,7 +1137,7 @@ class awnManagerMini(awnManager):
         self.appletManager = awnAppletMini(self.wTree, panel_id)
         self.themeCustomize = awnThemeCustomizeMini(self.wTree, panel_id)
         self.taskManager = awnTaskManagerMini(self.wTree, panel_id)
-		
+
         about = self.wTree.get_object("buttonAbout")
         about.connect("clicked", self.about)
 
@@ -1180,7 +1180,7 @@ class awnManagerMini(awnManager):
         self.wTree = gtk.Builder()
         self.wTree.set_translation_domain(defs.I18N_DOMAIN)
         self.wTree.add_from_file(self.XML_PATH)
-    
+
         self.prefManager = awnPreferencesMini(self.wTree, panel_id)
         self.prefLauncher = awnLauncherMini(self.wTree)
         self.appletManager = awnAppletMini(self.wTree, panel_id)
@@ -1246,19 +1246,19 @@ class awnManagerMini(awnManager):
         store = gtk.ListStore(str, gtk.gdk.Pixbuf, int)
         size = 32
         store.append([
-            _('Preferences'), 
+            _('Preferences'),
             self.safe_load_icon('gtk-preferences', size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.PREFERENCE_PANEL
         ])
 
         store.append([
-            _('Task Manager'), 
+            _('Task Manager'),
             self.safe_load_icon('gtk-execute', size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.LAUNCHER_PANEL
         ])
-        
+
         store.append([
-            _('Applets'), 
+            _('Applets'),
             self.safe_load_icon('awn-plugins', size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.APPLET_PANEL
         ])
@@ -1272,13 +1272,13 @@ class awnManagerMini(awnManager):
         ])
         '''
         store.append([
-            _('Themes'), 
+            _('Themes'),
             self.safe_load_icon("preferences-desktop-theme", size, gtk.ICON_LOOKUP_USE_BUILTIN),
             self.THEME_PANEL
         ])
 
         store.append([
-            _('Advanced'), 
+            _('Advanced'),
             self.safe_load_icon('gtk-properties', size, gtk.ICON_LOOKUP_USE_BUILTIN),
 	        self.ADVANCED_PANEL
         ])
@@ -1299,7 +1299,7 @@ class awnManagerMini(awnManager):
         if self.current_panel is not None:
             self.panel_container.remove(self.current_panel)
             self.current_panel = None
-		
+
         if panel == self.APPLET_PANEL:
             self.showAppletPanel()
         elif panel == self.LAUNCHER_PANEL:
@@ -1317,7 +1317,7 @@ class awnManagerMini(awnManager):
         self.current_panel = self.wTree.get_object("prefPanel")
         self.panel_container.add(self.current_panel)
         self.global_configuration = False
-        
+
     def showAppletPanel(self):
         self.current_panel = self.wTree.get_object("appletPanel")
         self.panel_container.add(self.current_panel)
@@ -1334,13 +1334,13 @@ class awnManagerMini(awnManager):
         self.current_panel = self.wTree.get_object("themePanel")
         self.panel_container.add(self.current_panel)
         self.global_configuration = True
-	
+
     def showAdvPanel(self):
         self.current_panel = self.wTree.get_object("advPanel")
         self.panel_container.add(self.current_panel)
         self.global_configuration = False
-		
-        
+
+
 def main(argv):
     vfs.init()
     panel_id = awn.PANEL_ID_DEFAULT
