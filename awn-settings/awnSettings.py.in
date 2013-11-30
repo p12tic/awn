@@ -27,15 +27,6 @@ import time
 import pwd
 import getopt
 
-PLAT_PKG = '@PY_PLAT_PKG@'
-SITE_PKG = '@PY_SITE_PKG@'
-AWN_SETTINGS_DIR = os.path.join('@PKGDATADIR@', 'awn-settings')
-sys.path = [AWN_SETTINGS_DIR] + sys.path
-if PLAT_PKG not in sys.path:
-    sys.path = [PLAT_PKG] + sys.path
-if SITE_PKG not in sys.path:
-    sys.path = [SITE_PKG] + sys.path
-
 try:
     import pygtk
     pygtk.require("2.0")
@@ -1108,13 +1099,13 @@ class awnManagerMini(awnManager):
         awnManager.__init__(self)
         self.panel_list = []
         self.current_panel_id = panel_id
-        self.XML_PATH = os.path.join(AWN_SETTINGS_DIR, 'awn-settings.ui')
+        self.XML_PATH = os.path.join(defs.AWN_SETTINGS_DIR, 'awn-settings.ui')
 
         self.wTree = gtk.Builder()
         self.wTree.set_translation_domain(defs.I18N_DOMAIN)
         self.wTree.add_from_file(self.XML_PATH)
 
-        icon_search_path = os.path.join('@DATADIR@', 'icons')
+        icon_search_path = os.path.join(defs.DATADIR, 'icons')
         if icon_search_path not in self.theme.get_search_path():
             self.theme.append_search_path(icon_search_path)
 

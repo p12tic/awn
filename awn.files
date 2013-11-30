@@ -98,6 +98,7 @@ awn-settings/awnClass.py
 awn-settings/awnDefs.py.in
 awn-settings/awnSettings.py.in
 awn-settings/awnSettingsHelper.py
+awn-settings/awn_settings_launcher.py.in
 awn.config
 awn.creator
 awn.files

@@ -12,6 +12,7 @@ python_files = \
 generated_python_files = \
 	awnDefs.py \
 	awnSettings.py \
+	awn_settings_launcher.py \
 	$(NULL)
 
 pyfiles_DATA = \
@@ -47,7 +48,7 @@ update-icon-cache:
 
 install-exec-local:
 	test -e "$(DESTDIR)$(bindir)" || mkdir -p "$(DESTDIR)$(bindir)"
-	$(INSTALL) -m 755 awnSettings.py "$(DESTDIR)$(bindir)/awn-settings"
+	$(INSTALL) -m 755 awn_settings_launcher.py "$(DESTDIR)$(bindir)/awn-settings"
 
 uninstall-local:
 	rm -f $(DESTDIR)$(bindir)/awn-settings

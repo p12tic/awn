@@ -205,6 +205,7 @@ awn.pc
 awn-settings/Makefile
 awn-settings/awnDefs.py
 awn-settings/awnSettings.py
+awn-settings/awn_settings_launcher.py
 bindings/python/Makefile
 bindings/python/__init__.py
 bindings/vala/Makefile

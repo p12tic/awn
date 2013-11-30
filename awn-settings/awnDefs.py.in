@@ -24,8 +24,10 @@ from desktopagnostic.config import GROUP_DEFAULT
 
 PREFIX = "@prefix@"
 
+DATADIR = '@DATADIR@'
 LOCALEDIR = '@LOCALEDIR@'
 PKGDATADIR = '@PKGDATADIR@'
+AWN_SETTINGS_DIR = os.path.join('@PKGDATADIR@', 'awn-settings')
 
 HOME_CONFIG_DIR = os.path.join(os.path.expanduser("~"), ".config", "awn")
 HOME_APPLET_DIR = os.path.join(HOME_CONFIG_DIR, "applets")
