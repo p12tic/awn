@@ -30,7 +30,7 @@ if PLAT_PKG not in sys.path:
 if SITE_PKG not in sys.path:
     sys.path = [SITE_PKG] + sys.path
 
-from awnSettings import main
+from awn_settings import main
 
 if __name__ == "__main__":
     main(sys.argv[1:])

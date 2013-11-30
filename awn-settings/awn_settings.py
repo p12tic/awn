@@ -42,14 +42,14 @@ except Exception, e:
 
 from ConfigParser import ConfigParser
 #from awnTheme import AwnThemeManager
-from awnClass import awnPreferences, awnManager, awnLauncher, awnApplet, awnThemeCustomize, awnTaskManager
+from awn_class import awnPreferences, awnManager, awnLauncher, awnApplet, awnThemeCustomize, awnTaskManager
 #from awnApplet import awnApplet
 #from awnLauncher import awnLauncher
 
 import awn
-import awnDefs as defs
+import awn_defs as defs
 
-from awnSettingsHelper import set_panel_glow, bind_to_gtk_component
+from awn_settings_helper import set_panel_glow, bind_to_gtk_component
 
 from desktopagnostic import config
 from desktopagnostic import vfs

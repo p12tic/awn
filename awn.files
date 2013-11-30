@@ -94,10 +94,10 @@ awn-settings/awn-settings.desktop.in
 awn-settings/awn-settings.png
 awn-settings/awn-settings.svg
 awn-settings/awn-settings.ui
-awn-settings/awnClass.py
-awn-settings/awnDefs.py.in
-awn-settings/awnSettings.py
-awn-settings/awnSettingsHelper.py
+awn-settings/awn_class.py
+awn-settings/awn_defs.py.in
+awn-settings/awn_settings.py
+awn-settings/awn_settings_helper.py
 awn-settings/awn_settings_launcher.py.in
 awn.config
 awn.creator

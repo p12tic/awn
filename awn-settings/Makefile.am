@@ -5,13 +5,13 @@ include $(top_srcdir)/Makefile.app-icons
 include $(top_srcdir)/Makefile.desktop-files
 
 python_files = \
-	awnClass.py \
-	awnSettingsHelper.py \
-	awnSettings.py \
+	awn_class.py \
+	awn_settings_helper.py \
+	awn_settings.py \
 	$(NULL)
 
 generated_python_files = \
-	awnDefs.py \
+	awn_defs.py \
 	awn_settings_launcher.py \
 	$(NULL)
 

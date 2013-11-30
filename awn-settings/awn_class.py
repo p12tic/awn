@@ -43,7 +43,7 @@ except Exception, e:
 from xdg.DesktopEntry import DesktopEntry
 
 import awn
-import awnDefs as defs
+import awn_defs as defs
 from desktopagnostic import config
 from desktopagnostic import vfs
 from desktopagnostic.config import GROUP_DEFAULT
