@@ -624,6 +624,7 @@ task_manager_constructed(GObject* object)
                                     "add");
     gtk_container_add(GTK_CONTAINER(priv->box), priv->add_icon);
     gtk_widget_hide(priv->add_icon);
+    gtk_widget_set_no_show_all(priv->add_icon, TRUE);
     gtk_widget_add_events(GTK_WIDGET(priv->add_icon), GDK_ALL_EVENTS_MASK);
     gtk_drag_dest_set(GTK_WIDGET(priv->add_icon),
                       GTK_DEST_DEFAULT_ALL & (~GTK_DEST_DEFAULT_HIGHLIGHT),
@@ -2989,7 +2990,7 @@ task_manager_add_icon_show(TaskManager* manager)
 
     if (priv->add_icon) {
         gtk_box_reorder_child(GTK_BOX(priv->box), priv->add_icon, -1);
-        gtk_widget_show_all(priv->add_icon);
+        gtk_widget_show(priv->add_icon);
     }
 }
 
