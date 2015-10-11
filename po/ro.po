@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: awn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-19 02:04+0200\n"
+"POT-Creation-Date: 2015-10-11 00:16-0400\n"
 "PO-Revision-Date: 2010-10-11 23:46+0000\n"
 "Last-Translator: marianvasile <marianvasile@upcmail.ro>\n"
 "Language-Team: Romanian <ro@li.org>\n"
@@ -55,16 +55,6 @@ msgstr ""
 "Valoarea 0 anulează funcția."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:4
-msgid "Enable reordering of windows by drag and drop "
-msgstr "Activează rearanjarea ferestrelor prin tragere și plasare "
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
-msgid "Delay before activating a window when dragging over an icon."
-msgstr ""
-"Întârzierea înainte de activarea unei ferestre prin deplasarea cursorului "
-"deasupra unei pictograme."
-
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid ""
 "Desktop copy behaviour on drag and drop of desktop files. 0.. Copy all, 1.. "
 "Copy if owned by user, 2.. Do not copy."
@@ -73,13 +63,24 @@ msgstr ""
 "0.. Copiază tot, 1.. Copiază numai dacă deținătorul este utilizatorul, 2.. "
 "Nu copia."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:5
 msgid " kde/compiz previews."
 msgstr ""
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:6
 msgid "Default dialog scale. Previews will be scaled down further as needed."
 msgstr ""
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:7
+#, fuzzy
+msgid "Enable reordering of windows by drag and drop"
+msgstr "Activează rearanjarea ferestrelor prin tragere și plasare "
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:8
+msgid "Delay before activating a window when dragging over an icon."
+msgstr ""
+"Întârzierea înainte de activarea unei ferestre prin deplasarea cursorului "
+"deasupra unei pictograme."
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:9
 msgid "Enable long press to open Dialog."
@@ -147,15 +148,23 @@ msgstr ""
 
 #: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:17
 msgid ""
+"Context menu definition.  Will look in the awn menu installation directory "
+"unless a absolutely path is provided."
+msgstr ""
+"Definire meniu contextual. Va fi citit meniul din directorul în care este "
+"instalat awn, în afară de cazul în care este furnizat un traseu absolut."
+
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
+msgid ""
 " Monitor desktop files. If set to false then changes to desktop files will "
 "not be reflected immediately."
 msgstr ""
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:18
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
 msgid "Only show and manager launcher windows"
 msgstr "Arată și administrează numai ferestrele cu aplicații"
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:19
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
 msgid ""
 " If true then application window icons will be overlayed on the Launcher "
 "icon instead of replacing according to the behaviour defined by "
@@ -165,7 +174,7 @@ msgstr ""
 "în zona pentru pictogramele sarcinilor în loc de a fi înlocuite după "
 "regulile definite de icon_change_behavior."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:20
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
 msgid ""
 " Controls the alpha of the overlay if overlay_application_icons is true. "
 "Valid range 0.0 to 1.0."
@@ -173,7 +182,7 @@ msgstr ""
 " Controlează valoarea alfa pe overlay dacă este configurată ca adevărată "
 "opțiunea overlay_application_icons. Domeniul valid este între 0.0 și 1.0."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:21
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
 msgid ""
 " Controls the size of the overlay if overlay_application_icons is true. "
 "Valid range 0.2 to 0.7."
@@ -181,7 +190,7 @@ msgstr ""
 " Controlează dimensiunea pe overlay dacă valoarea overlay_application_icons "
 "este configurată pe adevărat. Domeniul valid este între 0.2 și 0.7."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:22
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
 msgid ""
 " If overlay_application_icons is true, this key will reverse the overlay/"
 "overlayee if set to true."
@@ -190,25 +199,17 @@ msgstr ""
 "adevărat, această cheie va realiza inversarea overlay, configurată pe "
 "adevărat."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:23
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
 msgid "Show windows from all workspaces"
 msgstr "Arată ferestrele din toate spațiile de lucru"
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:24
+#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:25
 msgid ""
 "The threshold at which text count begins to be displayed. valid range 1.."
 msgstr "Pragul de la care textul începe să fie afișat. Domeniul valid 1.."
 
-#: ../applets/taskmanager/awn-applet-taskmanager.schema-ini.in.h:25
-msgid ""
-"Context menu definition.  Will look in the awn menu installation directory "
-"unless a absolutely path is provided."
-msgstr ""
-"Definire meniu contextual. Va fi citit meniul din directorul în care este "
-"instalat awn, în afară de cazul în care este furnizat un traseu absolut."
-
 #: ../applets/taskmanager/task-launcher.cc:1068
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:957
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:931
 msgid "Launch"
 msgstr "Pornește"
 
@@ -232,83 +233,83 @@ msgstr "Spațiul de lucru 1_0"
 msgid "Workspace %s%d"
 msgstr "Spaţiul %s%d"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:664
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:650
 msgid "Add as Launcher"
 msgstr "Adaugă ca Lansator"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:699
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:685
 msgid "Remove Launcher"
 msgstr "Elimină lansatorul"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:716
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:702
 msgid "_Close"
 msgstr "În_chide"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:741
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:727
 msgid "_Close All"
 msgstr "În_chide tot"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:781
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:764
 msgid "Minimize all"
 msgstr "Minimizează tot"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:812
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:792
 msgid "Unminimize all"
 msgstr "Restaurează tot"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:843
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:820
 msgid "Maximize all"
 msgstr "Maximizează tot"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:874
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:848
 msgid "Unmaximize all"
 msgstr "Restaurează tot"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:887
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:861
 msgid "Ma_ximize"
 msgstr "Ma_ximizează"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:890
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:864
 msgid "Unma_ximize"
 msgstr "_Restaurează"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:914
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:888
 msgid "Always on _Top"
 msgstr "În_totdeauna deasupra"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:934
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:908
 msgid "Mi_nimize"
 msgstr "Mi_nimizează"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:937
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:911
 msgid "Unmi_nimize"
 msgstr "Re_staurează"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:987
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:961
 msgid "Always on Visible Workspace"
 msgstr "Întotdeauna în spațiul de lucru vizibil"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:990
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:964
 msgid "Only on This Workspace"
 msgstr "Numai în acest spațiu de lucru"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:1069
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1043
 msgid "Move to Workspace _Left"
 msgstr "Mută pe spațiul de lucru din _stânga"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:1079
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1053
 msgid "Move to Workspace _Right"
 msgstr "Mută pe spațiul de lucru din _dreapta"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:1088
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1062
 msgid "Move to Workspace _Up"
 msgstr "Mută pe spațiul de lucru de s_us"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:1097
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1071
 msgid "Move to Workspace _Down"
 msgstr "Mută pe spațiul de lucru de _jos"
 
-#: ../applets/taskmanager/task-icon-build-context-menus.cc:1106
+#: ../applets/taskmanager/task-icon-build-context-menus.cc:1080
 msgid "Move to Another _Workspace"
 msgstr "Mută pe un alt s_pațiu de lucru"
 
@@ -320,8 +321,9 @@ msgstr "Lansator/Gestionar de sarcini"
 msgid "Launcher/Taskmanager applet"
 msgstr "Miniaplicație lansator/gestionar de sarcini"
 
+#. about menu item
 #: ../applets/quick-prefs/applet.vala:130
-#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.cc:703
+#: ../applets/quick-prefs/applet.vala:525 ../src/awn-panel.cc:705
 msgid "About Awn"
 msgstr "Despre Awn"
 
@@ -334,8 +336,8 @@ msgstr "Trageți pentru a schimba orientarea panoului"
 msgid "Icon size:"
 msgstr "Dimensiune pictogramă:"
 
-#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.cc:1077
-#: ../src/awn-panel.cc:687
+#: ../applets/quick-prefs/applet.vala:512 ../libawn/awn-applet.cc:1074
+#: ../src/awn-panel.cc:689
 msgid "Dock Preferences"
 msgstr "Preferințele barei de andocare"
 
@@ -562,8 +564,8 @@ msgstr "Triunghi"
 msgid "Glowing dot"
 msgstr "Punct strălucitor"
 
-#: ../awn-settings/awn-settings.ui.h:45 ../awn-settings/awnClass.py:901
-#: ../awn-settings/awnSettings.py.in:152
+#: ../awn-settings/awn-settings.ui.h:45 ../awn-settings/awn_class.py:901
+#: ../awn-settings/awn_settings.py:143
 msgid "Custom"
 msgstr "Personalizat"
 
@@ -854,77 +856,77 @@ msgstr "Efecte configurate"
 msgid "<b>Export Option Groups</b>"
 msgstr "<b>Exportă opțiunile grupurilor</b>"
 
-#: ../awn-settings/awnClass.py:159 ../awn-settings/awnClass.py:178
-#: ../awn-settings/awnClass.py:190
+#: ../awn-settings/awn_class.py:159 ../awn-settings/awn_class.py:178
+#: ../awn-settings/awn_class.py:190
 msgid "Bzr support is not enable, try to install bzr"
 msgstr ""
 
-#: ../awn-settings/awnClass.py:162
+#: ../awn-settings/awn_class.py:162
 #, fuzzy
 msgid "Error, the path already exist"
 msgstr "Eroare, fișierul este gol sau există deja"
 
-#: ../awn-settings/awnClass.py:170
+#: ../awn-settings/awn_class.py:170
 msgid "Socket error, could not create branch."
 msgstr ""
 
-#: ../awn-settings/awnClass.py:248
+#: ../awn-settings/awn_class.py:248
 msgid "Error, a sources.list already exist"
 msgstr "Eroare, un fișier cu surse de programe (sources.list) există deja"
 
-#: ../awn-settings/awnClass.py:316
+#: ../awn-settings/awn_class.py:316
 msgid "Error, the path is empty or already exist"
 msgstr "Eroare, fișierul este gol sau există deja"
 
-#: ../awn-settings/awnClass.py:436
+#: ../awn-settings/awn_class.py:436
 #, python-format
 msgid ""
 "Error %s is missing on your system, please remove it from the sources.list"
 msgstr ""
 "Eroare %s lipsește din sistem, ștergeți și din fișierul cu surse de programe"
 
-#: ../awn-settings/awnClass.py:830 ../awn-settings/awnClass.py:891
-#: ../awn-settings/awnSettings.py.in:142
+#: ../awn-settings/awn_class.py:830 ../awn-settings/awn_class.py:891
+#: ../awn-settings/awn_settings.py:133
 msgid "None"
 msgstr "Nimic"
 
-#: ../awn-settings/awnClass.py:831 ../awn-settings/awnClass.py:892
+#: ../awn-settings/awn_class.py:831 ../awn-settings/awn_class.py:892
 msgid "Simple"
 msgstr "Simplu"
 
-#: ../awn-settings/awnClass.py:832 ../awn-settings/awnClass.py:893
+#: ../awn-settings/awn_class.py:832 ../awn-settings/awn_class.py:893
 msgid "Classic"
 msgstr "Clasic"
 
-#: ../awn-settings/awnClass.py:833 ../awn-settings/awnClass.py:894
+#: ../awn-settings/awn_class.py:833 ../awn-settings/awn_class.py:894
 msgid "Fade"
 msgstr "Estompare"
 
-#: ../awn-settings/awnClass.py:834 ../awn-settings/awnClass.py:895
+#: ../awn-settings/awn_class.py:834 ../awn-settings/awn_class.py:895
 msgid "Spotlight"
 msgstr "Spot luminos"
 
-#: ../awn-settings/awnClass.py:835 ../awn-settings/awnClass.py:896
+#: ../awn-settings/awn_class.py:835 ../awn-settings/awn_class.py:896
 msgid "Zoom"
 msgstr "Mărire"
 
-#: ../awn-settings/awnClass.py:836 ../awn-settings/awnClass.py:897
+#: ../awn-settings/awn_class.py:836 ../awn-settings/awn_class.py:897
 msgid "Squish"
 msgstr "Strivire"
 
-#: ../awn-settings/awnClass.py:837 ../awn-settings/awnClass.py:898
+#: ../awn-settings/awn_class.py:837 ../awn-settings/awn_class.py:898
 msgid "3D Turn"
 msgstr "Rotire 3D"
 
-#: ../awn-settings/awnClass.py:838 ../awn-settings/awnClass.py:899
+#: ../awn-settings/awn_class.py:838 ../awn-settings/awn_class.py:899
 msgid "3D Spotlight Turn"
 msgstr "Rotire 3D cu spot de lumină"
 
-#: ../awn-settings/awnClass.py:839 ../awn-settings/awnClass.py:900
+#: ../awn-settings/awn_class.py:839 ../awn-settings/awn_class.py:900
 msgid "Glow"
 msgstr "Strălucire"
 
-#: ../awn-settings/awnClass.py:981
+#: ../awn-settings/awn_class.py:981
 #, python-format
 msgid ""
 "Automatic creation failed. Please manually create the directory:\n"
@@ -933,11 +935,11 @@ msgstr ""
 "Crearea automată a eșuat. Creați manual directorul:\n"
 "%s"
 
-#: ../awn-settings/awnClass.py:991
+#: ../awn-settings/awn_class.py:991
 msgid "Confirm directory creation"
 msgstr "Confirmați crearea directorului"
 
-#: ../awn-settings/awnClass.py:992
+#: ../awn-settings/awn_class.py:992
 msgid ""
 "There is no existing autostart directory for your user account yet.\n"
 "Do you want me to automatically create it for you?"
@@ -946,27 +948,27 @@ msgstr ""
 "utilizator.\n"
 "Doriți să fie creat unul automat?"
 
-#: ../awn-settings/awnClass.py:1053
+#: ../awn-settings/awn_class.py:1053
 #, python-format
 msgid "Could not locate any of these icons: %s\n"
 msgstr "Următoarele pictograme nu pot fi găsite: %s\n"
 
-#: ../awn-settings/awnClass.py:1060
+#: ../awn-settings/awn_class.py:1060
 #, python-format
 msgid "Could not locate the following icon: %s\n"
 msgstr "Următoarea pictogramă nu poate fi găsită: %s\n"
 
-#: ../awn-settings/awnClass.py:1081
+#: ../awn-settings/awn_class.py:1081
 #: ../data/avant-window-navigator.desktop.in.h:1
 msgid "Avant Window Navigator"
 msgstr "Navigatorul de ferestre Avant"
 
-#: ../awn-settings/awnClass.py:1099
+#: ../awn-settings/awn_class.py:1100
 msgid "Fully customisable dock-like window navigator for GNOME."
 msgstr ""
 "Navigator de ferestre pentru GNOME complet configurabil cu bara de andocare."
 
-#: ../awn-settings/awnClass.py:1101
+#: ../awn-settings/awn_class.py:1102
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -978,7 +980,7 @@ msgstr ""
 "publicată de Free Software Foundation; fie versiunea 2 a Licenței, fie (la "
 "latitudinea dumneavoastră) orice versiune ulterioară."
 
-#: ../awn-settings/awnClass.py:1103
+#: ../awn-settings/awn_class.py:1104
 msgid ""
 "This program is distributed in the hope that it will be useful, but WITHOUT "
 "ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
@@ -989,7 +991,7 @@ msgstr ""
 "GARANȚIE, fără garanție implicită de vandabilitate și conformitate unui "
 "anumit scop. Citiți Licența Publică Generală GNU pentru detalii."
 
-#: ../awn-settings/awnClass.py:1105
+#: ../awn-settings/awn_class.py:1106
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program; if not, write to the Free Software Foundation, Inc., 51 "
@@ -999,198 +1001,202 @@ msgstr ""
 "Generale GNU; dacă nu ați primit puteți scrie Fundației pentru Software "
 "Liber la adresa Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA."
 
-#: ../awn-settings/awnClass.py:1232
+#: ../awn-settings/awn_class.py:1112
+msgid "translator-credits"
+msgstr ""
+
+#: ../awn-settings/awn_class.py:1233
 msgid "Awn Applet Package"
 msgstr "Pachet cu miniaplicații pentru Awn"
 
-#: ../awn-settings/awnClass.py:1277 ../awn-settings/awnClass.py:1307
+#: ../awn-settings/awn_class.py:1278 ../awn-settings/awn_class.py:1308
 msgid "Applet Installation Failed"
 msgstr "Instalarea miniaplicației a eșuat"
 
-#: ../awn-settings/awnClass.py:1289
+#: ../awn-settings/awn_class.py:1290
 msgid "Applet Successfully Updated"
 msgstr "Miniaplicația a fost actualizată cu succes"
 
-#: ../awn-settings/awnClass.py:1305
+#: ../awn-settings/awn_class.py:1306
 msgid "Applet Successfully Added"
 msgstr "Miniaplicația a fost adăugată cu succes"
 
-#: ../awn-settings/awnClass.py:1357
+#: ../awn-settings/awn_class.py:1358
 msgid "Can not delete active applet"
 msgstr "Miniaplicația activă nu poate fi ștearsă"
 
-#: ../awn-settings/awnClass.py:1360
+#: ../awn-settings/awn_class.py:1361
 msgid "Delete Applet"
 msgstr "Șterge miniaplicație"
 
-#: ../awn-settings/awnClass.py:1365
+#: ../awn-settings/awn_class.py:1366
 #, python-format
 msgid "<b>Delete %s?</b>"
 msgstr "<b>Ștergeți %s?</b>"
 
-#: ../awn-settings/awnClass.py:1385
+#: ../awn-settings/awn_class.py:1386
 msgid "Unable to Delete Applet"
 msgstr "Nu se poate șterge miniaplicația"
 
 #. Translators: This string is preceded by a filename
-#: ../awn-settings/awnClass.py:1592
+#: ../awn-settings/awn_class.py:1593
 #, python-format
 msgid "%s already exists, unable to export theme."
 msgstr "%s există deja, tema nu poate fi exportată."
 
-#: ../awn-settings/awnClass.py:1668
+#: ../awn-settings/awn_class.py:1669
 msgid "Theme already installed, do you wish to overwrite it?"
 msgstr "Tema este deja instalată, doriți suprascriere?"
 
-#: ../awn-settings/awnClass.py:1702
+#: ../awn-settings/awn_class.py:1703
 msgid "This is an incompatible theme file."
 msgstr "Acesta este un fișier temă incompatibil."
 
-#: ../awn-settings/awnSettings.py.in:71
+#: ../awn-settings/awn_settings.py:62
 msgid "Awn Settings can't be run as root."
 msgstr "Configurările Awn nu pot fi rulate ca root."
 
-#: ../awn-settings/awnSettings.py.in:137
+#: ../awn-settings/awn_settings.py:128
 msgid "Left"
 msgstr "Stânga"
 
-#: ../awn-settings/awnSettings.py.in:137
+#: ../awn-settings/awn_settings.py:128
 msgid "Right"
 msgstr "Dreapta"
 
-#: ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awn_settings.py:129
 msgid "Top"
 msgstr "Sus"
 
-#: ../awn-settings/awnSettings.py.in:138
+#: ../awn-settings/awn_settings.py:129
 msgid "Bottom"
 msgstr "Jos"
 
-#: ../awn-settings/awnSettings.py.in:142
+#: ../awn-settings/awn_settings.py:133
 msgid "Flat"
 msgstr "Plat"
 
-#: ../awn-settings/awnSettings.py.in:142
+#: ../awn-settings/awn_settings.py:133
 msgid "3d"
 msgstr "3D"
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awn_settings.py:134
 msgid "Curved"
 msgstr "Curbat"
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awn_settings.py:134
 msgid "Edgy"
 msgstr "Marginal"
 
-#: ../awn-settings/awnSettings.py.in:143
+#: ../awn-settings/awn_settings.py:134
 msgid "Floaty"
 msgstr "Mobil"
 
-#: ../awn-settings/awnSettings.py.in:144
+#: ../awn-settings/awn_settings.py:135
 msgid "Lucido"
 msgstr "Lucido"
 
-#: ../awn-settings/awnSettings.py.in:148
+#: ../awn-settings/awn_settings.py:139
 msgid "Panel mode"
 msgstr "Mod panou"
 
-#: ../awn-settings/awnSettings.py.in:149
+#: ../awn-settings/awn_settings.py:140
 msgid "Always visible"
 msgstr "Vizibil întotdeauna"
 
-#: ../awn-settings/awnSettings.py.in:150
+#: ../awn-settings/awn_settings.py:141
 msgid "Intellihide"
 msgstr "Ascundere inteligentă"
 
-#: ../awn-settings/awnSettings.py.in:151
+#: ../awn-settings/awn_settings.py:142
 msgid "Window dodge"
 msgstr "Ascundere ferestre"
 
-#: ../awn-settings/awnSettings.py.in:156
+#: ../awn-settings/awn_settings.py:147
 msgid "Fade out"
 msgstr "Estompare"
 
-#: ../awn-settings/awnSettings.py.in:156
+#: ../awn-settings/awn_settings.py:147
 msgid "Transparency"
 msgstr "Transparenţă"
 
-#: ../awn-settings/awnSettings.py.in:157
+#: ../awn-settings/awn_settings.py:148
 msgid "Keep below"
 msgstr "Dedesubt"
 
-#: ../awn-settings/awnSettings.py.in:625
+#: ../awn-settings/awn_settings.py:616
 msgid "PNG Image"
 msgstr "Imagine PNG"
 
-#: ../awn-settings/awnSettings.py.in:637
+#: ../awn-settings/awn_settings.py:628
 msgid "Images"
 msgstr "Imagini"
 
-#: ../awn-settings/awnSettings.py.in:755
+#: ../awn-settings/awn_settings.py:746
 msgid "Save Theme..."
 msgstr "Salvează tema..."
 
-#: ../awn-settings/awnSettings.py.in:764
+#: ../awn-settings/awn_settings.py:755
 msgid "Awn Theme"
 msgstr "Temă Awn"
 
-#: ../awn-settings/awnSettings.py.in:793
+#: ../awn-settings/awn_settings.py:784
 msgid "Solid"
 msgstr "Solidă"
 
-#: ../awn-settings/awnSettings.py.in:793
+#: ../awn-settings/awn_settings.py:784
 msgid "Outline"
 msgstr "Evidenţiere"
 
-#: ../awn-settings/awnSettings.py.in:794
+#: ../awn-settings/awn_settings.py:785
 msgid "Outline, Reversed"
 msgstr "Evidențiere, inversată"
 
-#: ../awn-settings/awnSettings.py.in:879
+#: ../awn-settings/awn_settings.py:870
 msgid "Select Tooltip Font"
 msgstr "Alegeți fontul pentru indicații"
 
-#: ../awn-settings/awnSettings.py.in:919
+#: ../awn-settings/awn_settings.py:910
 msgid "Awn Theme File"
 msgstr "Fișier cu temă Awn"
 
-#: ../awn-settings/awnSettings.py.in:1006
+#: ../awn-settings/awn_settings.py:997
 msgid "Use application-specified icons"
 msgstr "Utilizează pictogramele specifice aplicațiilor"
 
-#: ../awn-settings/awnSettings.py.in:1007
+#: ../awn-settings/awn_settings.py:998
 msgid "Use best quality icons"
 msgstr "Utilizează pictogramele cu cea mai bună calitate"
 
-#: ../awn-settings/awnSettings.py.in:1008
+#: ../awn-settings/awn_settings.py:999
 msgid "Overlay best quality icon with application icon"
 msgstr ""
 "Suprapune pictogramele cu cea mai bună calitate peste pictogramele "
 "aplicațiilor"
 
-#: ../awn-settings/awnSettings.py.in:1009
+#: ../awn-settings/awn_settings.py:1000
 msgid "Overlay application icon with best quality icon"
 msgstr ""
 "Suprapune pictogramele aplicațiilor peste pictogramele cu cea mai bună "
 "calitate"
 
-#: ../awn-settings/awnSettings.py.in:1258
+#: ../awn-settings/awn_settings.py:1249
 msgid "Preferences"
 msgstr "Preferințe"
 
-#: ../awn-settings/awnSettings.py.in:1264
+#: ../awn-settings/awn_settings.py:1255
 msgid "Task Manager"
 msgstr "Gestionar de sarcini"
 
-#: ../awn-settings/awnSettings.py.in:1270
+#: ../awn-settings/awn_settings.py:1261
 msgid "Applets"
 msgstr "Miniaplicații"
 
-#: ../awn-settings/awnSettings.py.in:1284
+#: ../awn-settings/awn_settings.py:1275
 msgid "Themes"
 msgstr "Teme"
 
-#: ../awn-settings/awnSettings.py.in:1290
+#: ../awn-settings/awn_settings.py:1281
 msgid "Advanced"
 msgstr "Configurări avansate"
 
@@ -1282,6 +1288,16 @@ msgstr ""
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:12
 msgid ""
+"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
+"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
+"through: 3)"
+msgstr ""
+"Autoascunde bara de andocare când cursorul nu se află deasupra acesteia (a "
+"nu se folosi împreună cu modul panou). (nimic:0, dedesubt: 1, estompare: 2, "
+"transparență: 3)"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:13
+msgid ""
 "Provides possibility to click on windows behind the panel. (0: never click "
 "through, 1: click through when holding CTRL, 2: always click through and "
 "interact with panel only when holding CTRL)"
@@ -1291,17 +1307,17 @@ msgstr ""
 "menținerea tastei CTRL, 2: este permis întotdeauna iar interacțiunea cu "
 "panoul se face doar cu ajutorul tastei CTRL)"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:13
+#: ../data/avant-window-navigator.schema-ini.in.in.h:14
 msgid "Offset between the icons and their dialog."
 msgstr "Decalajul dintre pictograme și dialogul acestora."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:14
+#: ../data/avant-window-navigator.schema-ini.in.in.h:15
 msgid "If true, the panel will expand to full monitor width/height."
 msgstr ""
 "Dacă este configurat pe adevărat (true), panoul va fi extins pe toată "
 "lungimea/lățimea monitorului."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:15
+#: ../data/avant-window-navigator.schema-ini.in.in.h:16
 #, fuzzy
 msgid ""
 " Intellihide mode.  0.. Disabled,  1.. use windows on active workspace, 2.. "
@@ -1312,18 +1328,9 @@ msgstr ""
 "ferestrele din spațiul de lucru activ, 1.. utilizează ferestrele "
 "aplicațiilor active."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:16
+#: ../data/avant-window-navigator.schema-ini.in.in.h:17
 msgid "Alignment of a non-expanded panel on the monitor edge."
 msgstr "Aliniere la marginile monitorului pentru panoul ne-extins"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:17
-msgid ""
-"Monitor number where Awn is located (only takes effect when monitor_force is "
-"False, use -1 to automatically pick monitor)."
-msgstr ""
-"Numărul monitorului în care este activ Awn (produce efecte în cazul în care "
-"monitor_force este configurat pe fals (false); pentru alegere automată "
-"folosiți -1)."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:18
 msgid "Force monitor geometry."
@@ -1336,57 +1343,43 @@ msgstr ""
 "monitor_force este adevărată."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:20
+msgid ""
+"Monitor number where Awn is located (only takes effect when monitor_force is "
+"False, use -1 to automatically pick monitor)."
+msgstr ""
+"Numărul monitorului în care este activ Awn (produce efecte în cazul în care "
+"monitor_force este configurat pe fals (false); pentru alegere automată "
+"folosiți -1)."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:21
 msgid "The forced monitor width. Only used if monitor_force is true."
 msgstr ""
 "Lățimea forțată pentru monitor. A se folosi numai dacă valoarea "
 "monitor_force este adevărată."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:21
+#: ../data/avant-window-navigator.schema-ini.in.in.h:22
 msgid "An optional offset when you have more than 1 monitors."
 msgstr "Decalaj opțional pentru cazul în care aveți mai mult de un monitor."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:22
+#: ../data/avant-window-navigator.schema-ini.in.in.h:23
 msgid "Offset of the icons from window border."
 msgstr "Decalajul dintre pictograme și conturul ferestrelor."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:23
+#: ../data/avant-window-navigator.schema-ini.in.in.h:24
 msgid "Orientation of Awn. (left: 0, right: 1, top: 2 and bottom: 3)"
 msgstr "Orientarea Awn. (stânga: 0, dreapta:1, sus: 2, jos: 3)"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:24
+#: ../data/avant-window-navigator.schema-ini.in.in.h:25
 msgid "If true, maximised windows will not cover the panel."
 msgstr ""
 "Dacă este configurat pe adevărat (true), ferestrele maximizate nu vor "
 "acoperi panoul."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:25
+#: ../data/avant-window-navigator.schema-ini.in.in.h:26
 msgid "The user-visible size of Awn."
 msgstr "Dimensiunea vizibilă pentru utilizator a Awn."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:26
-msgid "The active list UA Screenlets for this panel."
-msgstr ""
-"Lista activă cu screenlet-urile aduse de utilizator pentru acest panou."
-
 #: ../data/avant-window-navigator.schema-ini.in.in.h:27
-msgid ""
-"The list of UA Screenlets that have been previous added in the form "
-"ScreeneletInstance::Position."
-msgstr ""
-"Lista cu screenlet-urile adăugate de utilizator care au fost instalate în "
-"forma ScreeneletInstance::Position."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:28
-msgid ""
-"Auto hides the dock when the cursor is not on the dock (shouldn't be used "
-"together with panel_mode). (none: 0, keep below: 1, fade out: 2, see "
-"through: 3)"
-msgstr ""
-"Autoascunde bara de andocare când cursorul nu se află deasupra acesteia (a "
-"nu se folosi împreună cu modul panou). (nimic:0, dedesubt: 1, estompare: 2, "
-"transparență: 3)"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:29
 msgid ""
 "The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: "
 "4, floaty: 5, lucido: 6)"
@@ -1394,31 +1387,44 @@ msgstr ""
 "Stilul panoului. (none:0, panou simplu: 1, panou 3D: 2, panou curbat: 3, "
 "panou marginal: 4, panou mobil: 5, lucido:6)"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:30
-msgid "The list of panel instances."
-msgstr "Lista cu instanțele panoului."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:28
+msgid "The active list UA Screenlets for this panel."
+msgstr ""
+"Lista activă cu screenlet-urile aduse de utilizator pentru acest panou."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:31
+#: ../data/avant-window-navigator.schema-ini.in.in.h:29
+msgid ""
+"The list of UA Screenlets that have been previous added in the form "
+"ScreeneletInstance::Position."
+msgstr ""
+"Lista cu screenlet-urile adăugate de utilizator care au fost instalate în "
+"forma ScreeneletInstance::Position."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:30
 msgid "Delay between mouse leaving the panel and it hiding."
 msgstr ""
 "Întârzierea dintre momentul în care cursorul părăsește panoul și ascunderea "
 "acestuia."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+#: ../data/avant-window-navigator.schema-ini.in.in.h:31
 msgid "Delay for mouse position polling."
 msgstr "Întârziere pentru urmărirea poziției cursorului."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:33
-msgid "Whether to close dialogs on loss of focus."
-msgstr "Închidere dialoguri în lipsă de interes."
+#: ../data/avant-window-navigator.schema-ini.in.in.h:32
+msgid "The list of panel instances."
+msgstr "Lista cu instanțele panoului."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:34
+#: ../data/avant-window-navigator.schema-ini.in.in.h:33
 msgid ""
 "Determines if generic configuration editor is allowed for applets that do "
 "not have a customized preferences dialog."
 msgstr ""
 "Determină dacă editorul pentru configurare generică este permis pentru "
 "miniaplicațiile care nu dispun de un dialog pentru configurări personalizate."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:34
+msgid "Whether to close dialogs on loss of focus."
+msgstr "Închidere dialoguri în lipsă de interes."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:35
 msgid "Time in ms after which AwnIcon will emit long-press signal."
@@ -1451,24 +1457,24 @@ msgid "The curviness of the panel in Curves mode."
 msgstr "Curbarea panoului în modul Curbat."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:41
-msgid "The offset of the Floaty background."
-msgstr "Decalajul pentru fundalul mobil."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:42
-msgid "The thickness in 3D mode."
-msgstr "Grosimea în modul 3D."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:43
-msgid "Whether AwnDialog should use Gtk theme colors."
-msgstr "Configurare culori temă Gtk pentru dialogul Awn."
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:44
 msgid "Background color for AwnDialog."
 msgstr "Culoare fundal pentru dialogul Awn."
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:45
+#: ../data/avant-window-navigator.schema-ini.in.in.h:42
+msgid "Whether AwnDialog should use Gtk theme colors."
+msgstr "Configurare culori temă Gtk pentru dialogul Awn."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:43
 msgid "Background color for AwnDialog's title."
 msgstr "Culoare de fundal pentru titlul dialogurilor Awn."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:44
+msgid "Enable drawing of a pattern."
+msgstr "Permite desenarea unui tipar."
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:45
+msgid "The offset of the Floaty background."
+msgstr "Decalajul pentru fundalul mobil."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:46
 msgid "First highlight gradient step color."
@@ -1539,24 +1545,24 @@ msgid "Draw separators."
 msgstr "Desenează separatori."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:61
-msgid "Enable drawing of a pattern."
-msgstr "Permite desenarea unui tipar."
+msgid "The thickness in 3D mode."
+msgstr "Grosimea în modul 3D."
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:62
 msgid "Background color of the tooltip"
 msgstr "Culoare fundal pentru indicații"
 
 #: ../data/avant-window-navigator.schema-ini.in.in.h:63
-msgid "Outline color of the tooltip"
-msgstr "Culoarea pentru evidențierea indicațiilor"
-
-#: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid "Font color of the tooltip"
 msgstr "Culoarea pentru fontul indicațiilor"
 
-#: ../data/avant-window-navigator.schema-ini.in.in.h:65
+#: ../data/avant-window-navigator.schema-ini.in.in.h:64
 msgid "Font name of the tooltip"
 msgstr "Font pentru indicații"
+
+#: ../data/avant-window-navigator.schema-ini.in.in.h:65
+msgid "Outline color of the tooltip"
+msgstr "Culoarea pentru evidențierea indicațiilor"
 
 #: ../data/awn-themed-icon.ui.h:1
 #, fuzzy
@@ -1578,7 +1584,7 @@ msgstr ""
 "toate miniaplicațiile de acest tip sau pentru fiecare pictogramă de acest "
 "tip din panou."
 
-#: ../libawn/awn-applet.cc:1216
+#: ../libawn/awn-applet.cc:1213
 #, c-format
 msgid "About %s"
 msgstr "Despre %s"
@@ -1609,7 +1615,7 @@ msgstr ""
 "Vai! Miniaplicația a ieșit neașteptat. Efectuați clic pentru repornirea "
 "acesteia."
 
-#: ../src/awn-panel.cc:3995
+#: ../src/awn-panel.cc:3996
 msgid "Close docklet"
 msgstr "Închide bara de andocare"
 
