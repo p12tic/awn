@@ -216,7 +216,7 @@ per_instance = false
 
 [theme/current_theme]
 type = string
-default = @PKGDATADIR@/themes/default.awn-theme
+default = @PKGDATADIR@/themes/dark.awn-theme
 _description=Path to the current desktop file theme.
 per_instance = false
 
@@ -264,7 +264,7 @@ per_instance = false
 
 [theme/ghistep1]
 type = color
-default = #0101018E
+default = #0101010101018EBE
 _description=First highlight gradient step color.
 per_instance = false
 
@@ -342,7 +342,7 @@ per_instance = false
 
 [theme/sep_color]
 type = color
-default = #AAAAAAA4
+default = #AAAAAAAAAAAAA400
 _description=Separator color.
 per_instance = false
 

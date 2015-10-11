@@ -75,7 +75,7 @@ _description= Allow grouping of windows together that have different WM_CLIENT_N
 
 [DEFAULT/launcher_paths]
 type = list-string
-default = /usr/share/applications/firefox.desktop;
+default = 
 _description=a list of paths to .desktop files from which the taskmanager should create it's launchers
 
 [DEFAULT/match_strength]

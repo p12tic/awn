@@ -55,7 +55,7 @@ panel_angle = 45
 # The symmetry of the curve in Curves mode.
 curves_symmetry = 0.5
 # The curviness of the panel in Curves mode.
-curviness = 10
+curviness = 1.0
 # Separator color
 sep_color = #aaaaaaaaaaaaa400
 # Tooltip font
