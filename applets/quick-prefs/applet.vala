@@ -288,7 +288,7 @@ public class PrefsApplet : AppletSimple
 
     if (this.timer_id == 0)
     {
-      this.timer_id = Timeout.add (300, this.on_timer_tick);
+      this.timer_id = GLib.Timeout.add (300, this.on_timer_tick);
     }
     if (this.autohide_cookie == 0)
     {
