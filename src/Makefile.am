@@ -14,10 +14,7 @@ AM_CPPFLAGS =				\
 	-I$(builddir)			\
 	$(NULL)
 
-# override vala: newer versions break awn
-
 VALA_FILES = \
-	awn-app.vala \
 	$(NULL)
 
 VALA_FLAGS = \
@@ -49,6 +46,8 @@ avant_window_navigator_LDADD =			\
 	$(NULL)
 
 avant_window_navigator_SOURCES =	\
+	awn-app.c \
+	awn-app.h \
 	awn-main.cc \
 	awn-applet-manager.cc \
 	awn-applet-manager.h \
@@ -105,7 +104,6 @@ CLEANFILES = \
 
 EXTRA_DIST = \
 	awn-marshal.list \
-	awn-app.vala \
 	awn-panel.vapi  \
 	$(VALA_GENERATED_FILES) \
 	$(NULL)

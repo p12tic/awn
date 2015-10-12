@@ -38,7 +38,6 @@ mkinstalldirs
 py-compile
 stamp-h1
 applet-activation/awn-applet
-applets/quick-prefs/applet.c
 awn-settings/awn_defs.py
 bindings/python/awn.c
 data/avant-window-navigator.schema-ini.in
