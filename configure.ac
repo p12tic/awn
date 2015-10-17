@@ -18,7 +18,7 @@ AC_CONFIG_HEADERS([config.h])
 m4_define(pycairo_required_version,      1.0.2) dnl or 1.1.7
 m4_define(pygtk_required_version,        2.12.0)
 
-AM_INIT_AUTOMAKE([1.8 -Wno-portability tar-ustar])
+AM_INIT_AUTOMAKE([1.11 -Wno-portability tar-ustar foreign])
 AM_MAINTAINER_MODE
 
 AC_SUBST([ACLOCAL_AMFLAGS], ["\${ACLOCAL_FLAGS}"])
@@ -62,7 +62,7 @@ dnl ==============================================
 dnl Vala support
 dnl ==============================================
 
-VALA_PROG_VALAC(0.9.1)
+AM_PROG_VALAC([0.14.0])
 if test "$USE_MAINTAINER_MODE" = "yes"; then
     AC_PATH_PROG(VALA_GEN_INTROSPECT, vala-gen-introspect, vala-gen-introspect, [])
     AC_PATH_PROG(VAPIGEN, vapigen, vapigen, [])

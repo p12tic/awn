@@ -127,4 +127,4 @@ EXTRA_DIST += \
 	labelled-separator.vala \
 	$(NULL)
 
-CLEANFILES += $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES)
+CLEANFILES += $(schema_DATA) $(schemas_DATA) $(BUILT_SOURCES) $(VALA_GENERATED_FILES)

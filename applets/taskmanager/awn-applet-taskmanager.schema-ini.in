@@ -23,16 +23,6 @@ type = integer
 default = 120
 _description=Number of seconds to wait before nagging again, by inhibiting autohide, if attention is required by any windows. A value of 0 disables.
 
-[DEFAULT/drag_and_drop]
-type = boolean
-default = true
-_description=Enable reordering of windows by drag and drop 
-
-[DEFAULT/drag_and_drop_hover_delay]
-type = integer
-default = 500
-_description=Delay before activating a window when dragging over an icon.
-
 [DEFAULT/desktop_copy]
 type = integer
 default = 1
@@ -47,6 +37,16 @@ _description=Dialog display mode. 0 = auto, 1 = standard text, 2 = kde/compiz pr
 type = float
 default = 0.3
 _description=Default dialog scale. Previews will be scaled down further as needed.
+
+[DEFAULT/drag_and_drop]
+type = boolean
+default = true
+_description=Enable reordering of windows by drag and drop
+
+[DEFAULT/drag_and_drop_hover_delay]
+type = integer
+default = 500
+_description=Delay before activating a window when dragging over an icon.
 
 [DEFAULT/enable_long_press]
 type = boolean
@@ -75,7 +75,7 @@ _description= Allow grouping of windows together that have different WM_CLIENT_N
 
 [DEFAULT/launcher_paths]
 type = list-string
-default = /usr/share/applications/firefox.desktop;
+default = 
 _description=a list of paths to .desktop files from which the taskmanager should create it's launchers
 
 [DEFAULT/match_strength]
@@ -87,6 +87,11 @@ _description=How radical matching is applied for grouping items. The value shoul
 type = integer
 default = 3
 _description=Maximum number of task indicators to show under icons. Valid range is 0..3.
+
+[DEFAULT/menu_filename]
+type = string
+default = standard.xml
+_description=Context menu definition.  Will look in the awn menu installation directory unless a absolutely path is provided.
 
 [DEFAULT/monitor_desktops]
 type = boolean
@@ -127,10 +132,5 @@ _description=Show windows from all workspaces
 type = integer
 default = 4
 _description=The threshold at which text count begins to be displayed. valid range 1..
-
-[DEFAULT/menu_filename]
-type = string
-default = standard.xml
-_description=Context menu definition.  Will look in the awn menu installation directory unless a absolutely path is provided.
 
 # vim: set ft=cfg :

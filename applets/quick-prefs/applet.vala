@@ -150,12 +150,17 @@ public class PrefsApplet : AppletSimple
     {
       DBus.Connection con = DBus.Bus.get (DBus.BusType.SESSION);
 
-      var taskman = (DockManager)
-        con.get_object ("net.launchpad.DockManager",
+      dynamic DBus.Object taskman;
+      taskman = con.get_object ("net.launchpad.DockManager",
                         "/net/launchpad/DockManager",
                         "net.launchpad.DockManager");
 
-      string[] caps = yield taskman.get_capabilities ();
+      string[] caps;
+      taskman.call("GetCapabilities", null,
+                GLib.Type.INVALID,
+                typeof(string[]), out caps,
+                GLib.Type.INVALID);
+
       bool supports_visibility_setting = false;
       foreach (string cap in caps)
       {
@@ -164,7 +169,11 @@ public class PrefsApplet : AppletSimple
 
       if (supports_visibility_setting)
       {
-        taskman.awn_set_visibility ("awn-settings", visible);
+        taskman.call("AwnSetVisibility", null,
+                  typeof(string), "awn-settings",
+                  typeof(bool), visible,
+                  GLib.Type.INVALID,
+                  GLib.Type.INVALID);
       }
     }
     catch (DBus.Error err)
@@ -288,7 +297,7 @@ public class PrefsApplet : AppletSimple
 
     if (this.timer_id == 0)
     {
-      this.timer_id = Timeout.add (300, this.on_timer_tick);
+      this.timer_id = GLib.Timeout.add (300, this.on_timer_tick);
     }
     if (this.autohide_cookie == 0)
     {
@@ -592,8 +601,10 @@ public class PrefsApplet : AppletSimple
                             "/org/awnproject/Awn",
                             "org.awnproject.Awn.App");
 
-      GLib.Error err;
-      awn.call("RemovePanel", out err, this.panel_id);
+      awn.call("RemovePanel", null,
+                typeof(int), this.panel_id,
+                GLib.Type.INVALID,
+                GLib.Type.INVALID);
     }
     catch (DBus.Error err)
     {

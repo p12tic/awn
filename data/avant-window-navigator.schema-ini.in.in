@@ -71,6 +71,11 @@ type = list-string
 default = @APPLETSDIR@/quick-prefs.desktop::1;@APPLETSDIR@/separator.desktop::2;@APPLETSDIR@/taskmanager.desktop::3;
 _description=The list of applets for this panel ordered from left-to-right or top-to-bottom.
 
+[panel/autohide]
+type = integer
+default = 0
+_description=Auto hides the dock when the cursor is not on the dock (shouldn't be used together with panel_mode). (none: 0, keep below: 1, fade out: 2, see through: 3)
+
 [panel/clickthrough]
 type = integer
 default = 0
@@ -96,11 +101,6 @@ type = float
 default = 0.5
 _description=Alignment of a non-expanded panel on the monitor edge.
 
-[panel/monitor_num]
-type = integer
-default = -1
-_description=Monitor number where Awn is located (only takes effect when monitor_force is False, use -1 to automatically pick monitor).
-
 [panel/monitor_force]
 type = boolean
 default = false
@@ -110,6 +110,11 @@ _description=Force monitor geometry.
 type = integer
 default = 768
 _description=The forced monitor height. Only used if monitor_force is true.
+
+[panel/monitor_num]
+type = integer
+default = -1
+_description=Monitor number where Awn is located (only takes effect when monitor_force is False, use -1 to automatically pick monitor).
 
 [panel/monitor_width]
 type = integer
@@ -146,6 +151,11 @@ type = integer
 default = 48
 _description=The user-visible size of Awn.
 
+[panel/style]
+type = integer
+default = 1
+_description=The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: 4, floaty: 5, lucido: 6)
+
 [panel/ua_active_list]
 type = list-string
 default = 
@@ -155,22 +165,6 @@ _description=The active list UA Screenlets for this panel.
 type = list-string
 default = 
 _description=The list of UA Screenlets that have been previous added in the form ScreeneletInstance::Position.
-
-[panel/autohide]
-type = integer
-default = 0
-_description=Auto hides the dock when the cursor is not on the dock (shouldn't be used together with panel_mode). (none: 0, keep below: 1, fade out: 2, see through: 3)
-
-[panel/style]
-type = integer
-default = 1
-_description=The style of the bar. (none: 0, flat bar: 1, 3d bar: 2, curved bar: 3, edgy: 4, floaty: 5, lucido: 6)
-
-[panels/panel_list]
-type = list-integer
-default = 1
-_description=The list of panel instances.
-per_instance = false
 
 [panels/hide_delay]
 type = integer
@@ -184,16 +178,22 @@ default = 250
 _description=Delay for mouse position polling.
 per_instance = false
 
-[shared/dialog_focus_loss_behavior]
-type = boolean
-default = true
-_description=Whether to close dialogs on loss of focus.
+[panels/panel_list]
+type = list-integer
+default = 1
+_description=The list of panel instances.
 per_instance = false
 
 [shared/allow_generic_config_edit]
 type = boolean
 default = false
 _description=Determines if generic configuration editor is allowed for applets that do not have a customized preferences dialog.
+per_instance = false
+
+[shared/dialog_focus_loss_behavior]
+type = boolean
+default = true
+_description=Whether to close dialogs on loss of focus.
 per_instance = false
 
 [shared/long_press_timeout]
@@ -216,7 +216,7 @@ per_instance = false
 
 [theme/current_theme]
 type = string
-default = @PKGDATADIR@/themes/default.awn-theme
+default = @PKGDATADIR@/themes/dark.awn-theme
 _description=Path to the current desktop file theme.
 per_instance = false
 
@@ -232,16 +232,10 @@ default = 1.0
 _description=The curviness of the panel in Curves mode.
 per_instance = false
 
-[theme/floaty_offset]
-type = integer
-default = 10
-_description=The offset of the Floaty background.
-per_instance = false
-
-[theme/thickness]
-type = float
-default = 0.6
-_description=The thickness in 3D mode.
+[theme/dialog_bg]
+type = color
+default = #AAAAAAEE
+_description=Background color for AwnDialog.
 per_instance = false
 
 [theme/dialog_gtk_mode]
@@ -250,21 +244,27 @@ default = true
 _description=Whether AwnDialog should use Gtk theme colors.
 per_instance = false
 
-[theme/dialog_bg]
-type = color
-default = #AAAAAAEE
-_description=Background color for AwnDialog.
-per_instance = false
-
 [theme/dialog_title_bg]
 type = color
 default = #FFFFFFFF
 _description=Background color for AwnDialog's title.
 per_instance = false
 
+[theme/draw_pattern]
+type = boolean
+default = false
+_description=Enable drawing of a pattern.
+per_instance = false
+
+[theme/floaty_offset]
+type = integer
+default = 10
+_description=The offset of the Floaty background.
+per_instance = false
+
 [theme/ghistep1]
 type = color
-default = #0101018E
+default = #0101010101018EBE
 _description=First highlight gradient step color.
 per_instance = false
 
@@ -342,7 +342,7 @@ per_instance = false
 
 [theme/sep_color]
 type = color
-default = #AAAAAAA4
+default = #AAAAAAAAAAAAA400
 _description=Separator color.
 per_instance = false
 
@@ -352,22 +352,16 @@ default = true
 _description=Draw separators.
 per_instance = false
 
-[theme/draw_pattern]
-type = boolean
-default = false
-_description=Enable drawing of a pattern.
+[theme/thickness]
+type = float
+default = 0.6
+_description=The thickness in 3D mode.
 per_instance = false
 
 [theme/tooltip_bg_color]
 type = color
 default = #000000B3
 _description=Background color of the tooltip
-per_instance = false
-
-[theme/tooltip_outline_color]
-type = color
-default = #000000A8
-_description=Outline color of the tooltip
 per_instance = false
 
 [theme/tooltip_font_color]
@@ -380,6 +374,12 @@ per_instance = false
 type = string
 default = Sans 10
 _description=Font name of the tooltip
+per_instance = false
+
+[theme/tooltip_outline_color]
+type = color
+default = #000000A8
+_description=Outline color of the tooltip
 per_instance = false
 
 # vim: set ft=cfg :
