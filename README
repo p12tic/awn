@@ -59,4 +59,10 @@ Help
 If you have any questions/bug reports/ideas, you can find help in the following
 locations:
 
-* https://launchpad.net/awn - Main project page
+ - https://github.com/p12tic/awn
+ - https://github.com/p12tic/awn-extras
+ - https://github.com/p12tic/libdesktop-agnostic
+
+This PPA contains packages for testing:
+
+ - https://launchpad.net/~awn-testing/+archive/ppa
