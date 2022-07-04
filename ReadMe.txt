@@ -1,4 +1,4 @@
-This repository contains the code of the Avant Window Navigator (Awn). Awn is a dock-like bar which sits at the bottom of your screen that allows you to launch and control applications. It additionally provides the ability to embed external applets. The appearance is entirely possible to constomize, and thematic support is available.
+This repository contains the code of the Avant Window Navigator (Awn). Awn is a dock-like bar which sits at the bottom of your screen that allows you to launch and control applications. It additionally provides the ability to embed external applets. The appearance is entirely possible to customize, and thematic support is available.
 
 
 Installation:
