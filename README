@@ -2,21 +2,14 @@
 Avant Window Navigator (Awn)
 ============================
 
-A dock-like bar which sits at the bottom of your screen, allowing you to launch
-and control applications. It also has the ability to embed external applets. The
-look and feel are fully customizable, and theming support is also available.
+A dock-like bar which sits at the bottom of your screen, allowing you to launch and control applications. It also has the ability to embed external applets. The look and feel are fully customizable, and theming support is also available.
 
 Installation
 ------------
 
-Please find out if your distribution has either binary packages available for
-Awn, or ebuilds/recipes/build scripts available through your distribution's
-package manager. It will save you a lot of time and energy if you install via
-your distribution's package manager.
+Please find out if your distribution has either binary packages available for Awn, or ebuilds/recipes/build scripts available through your distribution's package manager. It will save you a lot of time and energy if you install via your distribution's package manager.
 
-The following packages are required to build Awn from source. Note that in most
-distributions, you need both the library and development/header packages
-installed in order for the build process to work correctly.
+The following packages are required to build Awn from source. Note that in most distributions, you need both the library and development/header packages installed in order for the build process to work correctly.
 
 * GNU Make
 * libdesktop-agnostic [1]_
@@ -34,30 +27,26 @@ installed in order for the build process to work correctly.
 
 To build from source, run::
 
+    autoupdate
+    autoconf
     ./configure
     make
     make install
 
-``./configure`` can take arguments, please see ``./configure --help`` for
-details. As the default install location is ``/usr/local``, you may need to run
-``sudo make install`` instead of ``make install``.
+`./configure` can take arguments, please see `./configure --help` for details. As the default install location is `/usr/local``, you may need to run `sudo make install` instead of `make install`.
 
 Usage
 -----
 
-You can launch Awn from ``Applications -> Accessories -> Avant Window Navigator``.
-You can change the settings by either launching the preferences dialog from
-``System -> Preferences -> Awn Settings``, or right-clicking on most places on
-the bar, and selecting 'Dock Preferences' in the menu that appears.
+You can launch Awn from `Applications -> Accessories -> Avant Window Navigator`.
+You can change the settings by either launching the preferences dialog from `System -> Preferences -> Awn Settings`, or right-clicking on most places on the bar, and selecting 'Dock Preferences' in the menu that appears.
 
-If the preferences dialog does not start, please run ``awn-settings`` from the
-terminal to see if any dependencies are missing.
+If the preferences dialog does not start, please run `awn-settings` from the terminal to see if any dependencies are missing.
 
 Help
 ----
 
-If you have any questions/bug reports/ideas, you can find help in the following
-locations:
+If you have any questions/bug reports/ideas, you can find help in the following locations:
 
  - https://github.com/p12tic/awn
  - https://github.com/p12tic/awn-extras
