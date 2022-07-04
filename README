@@ -33,7 +33,7 @@ To build from source, run::
     make
     make install
 
-`./configure` can take arguments, please see `./configure --help` for details. As the default install location is `/usr/local``, you may need to run `sudo make install` instead of `make install`.
+`./configure` can take arguments, please see `./configure --help` for details. As the default install location is `/usr/local`, you may need to run `sudo make install` instead of `make install`.
 
 Usage
 -----
