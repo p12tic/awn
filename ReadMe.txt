@@ -35,7 +35,7 @@ Installation:
 
 Usage:
 
-	You can launch Awn from "applications:/Accessories/Avant_Window_Navigator.desktop".
+	You can launch Awn from "applications:/Accessories/$(APPLET_NAME).desktop".
 	Configuration of Awn is possible by invoking "awn-settings".
 
 
